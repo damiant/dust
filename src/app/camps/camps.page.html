@@ -1,0 +1,29 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Camps
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Camps</ion-title>
+    </ion-toolbar>
+    <ion-toolbar>
+      <ion-searchbar (ionInput)="handleInput($event)" [debounce]="1000" placeholder="Find Camps"></ion-searchbar>
+    </ion-toolbar>
+  </ion-header>
+  <ion-card *ngFor="let camp of camps" [routerLink]="'/camps/'+ camp.uid">
+    <ion-card-header>
+      <ion-card-title>{{camp.name}}</ion-card-title>
+      <ion-card-subtitle>{{camp.location_string}}</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      {{camp.description}}
+      <ion-text color="primary"></ion-text>      
+    </ion-card-content>
+  </ion-card>
+</ion-content>

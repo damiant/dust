@@ -1,0 +1,7 @@
+{
+  "name": "ttitd",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

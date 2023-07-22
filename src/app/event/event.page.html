@@ -1,0 +1,31 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [text]="back()"></ion-back-button>
+    </ion-buttons>
+    <!-- <ion-title>Event</ion-title> -->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list *ngIf="event" lines="none">
+    <ion-item>
+      <h1>{{event.name}}</h1>
+    </ion-item>
+    <ion-item><ion-icon slot="start" name="home-outline"></ion-icon><ion-label>{{event.camp}}</ion-label></ion-item>
+    <ion-item>
+      <ion-icon slot="start" name="location-outline"></ion-icon>
+      <ion-label>{{event.location}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="time-outline" slot="start"></ion-icon>
+      <ion-label>{{event.longTimeString}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="pricetag-outline" slot="start"></ion-icon>
+      <ion-label>{{event.event_type.label}}</ion-label>
+    </ion-item>
+    
+    <ion-item><ion-text style="padding-right: 1rem;" class="text">{{event.description}}</ion-text></ion-item>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,45 @@
+import { Component } from '@angular/core';
+import { IonicModule } from '@ionic/angular';
+import { DbService } from '../db.service';
+import { Day, Event } from '../models';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+
+@Component({
+  selector: 'app-events',
+  templateUrl: 'events.page.html',
+  styleUrls: ['events.page.scss'],
+  standalone: true,
+  imports: [IonicModule, CommonModule, RouterModule],
+})
+export class EventsPage {
+  title = 'Events';
+  events: Event[] = [];
+  days: Day[] = [];
+  search: string = '';
+  day: Date | undefined = undefined;
+  constructor(private db: DbService) {}
+
+  async ionViewDidEnter() {
+    await this.db.init();
+    this.events = await this.db.getEvents(0, 10);
+    this.days = await this.db.getDays();
+  }
+
+  handleInput(event: any) {
+    this.search = event.target.value.toLowerCase();
+    this.update();
+  }
+
+  dayChange(event: any) {    
+    this.day = new Date(event.target.value);
+    this.title = this.day.toLocaleDateString('en-US', { weekday: 'long' });
+    this.update();
+  }
+
+  async update() {
+    this.events = await this.db.findEvents(this.search, this.day);    
+    console.log(`${this.events.length} events`);
+  }
+  
+}

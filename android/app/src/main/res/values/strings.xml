@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">ttitd</string>
+    <string name="title_activity_main">ttitd</string>
+    <string name="package_name">ionic.ttitd</string>
+    <string name="custom_url_scheme">ionic.ttitd</string>
+</resources>
