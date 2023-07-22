@@ -33,6 +33,10 @@ export class DbService {
     return await call(this.worker, 'findEvent', uid);    
   }
 
+  public async findCamp(uid: string): Promise<Camp> {
+    return await call(this.worker, 'findCamp', uid);    
+  }
+
   public async getDays(): Promise<Day[]> {
     return await call(this.worker, 'getDays');
   }

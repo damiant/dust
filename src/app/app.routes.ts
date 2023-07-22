@@ -9,4 +9,8 @@ export const routes: Routes = [
     path: 'event/:id',
     loadComponent: () => import('./event/event.page').then( m => m.EventPage)
   },
+  {
+    path: 'camp/:id',
+    loadComponent: () => import('./camp/camp.page').then( m => m.CampPage)
+  },
 ];

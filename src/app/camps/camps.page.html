@@ -15,7 +15,7 @@
       <ion-searchbar (ionInput)="handleInput($event)" [debounce]="1000" placeholder="Find Camps"></ion-searchbar>
     </ion-toolbar>
   </ion-header>
-  <ion-card *ngFor="let camp of camps" [routerLink]="'/camps/'+ camp.uid">
+  <ion-card *ngFor="let camp of camps" [routerLink]="'/camp/'+ camp.uid">
     <ion-card-header>
       <ion-card-title>{{camp.name}}</ion-card-title>
       <ion-card-subtitle>{{camp.location_string}}</ion-card-subtitle>

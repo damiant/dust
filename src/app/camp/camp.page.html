@@ -1,0 +1,24 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Camps"></ion-back-button>
+    </ion-buttons>
+    <!-- <ion-title>Event</ion-title> -->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list *ngIf="camp" lines="none">
+    <ion-item>
+      <h1>{{camp.name}}</h1>
+    </ion-item>
+    <ion-item>
+      <ion-icon slot="start" name="location-outline"></ion-icon>
+      <ion-label>{{camp.location_string}}</ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-text style="padding-right: 1rem;" class="text">{{camp.description}}</ion-text>
+    </ion-item>
+  </ion-list>
+</ion-content>

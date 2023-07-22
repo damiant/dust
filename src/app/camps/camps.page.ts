@@ -19,7 +19,7 @@ export class CampsPage {
 
   async ionViewDidEnter() {
     await this.db.init();
-    this.camps = await this.db.getCamps(0, 10);
+    this.camps = await this.db.getCamps(0, 9999);
     console.log(this.camps);
   }
 

@@ -16,6 +16,7 @@ export class DataManager implements WorkerClass {
             case 'findEvents': return this.findEvents(args[0], args[1]);
             case 'findCamps': return this.findCamps(args[0]);
             case 'findEvent': return this.findEvent(args[0]);
+            case 'findCamp': return this.findCamp(args[0]);
             case 'getCamps': return this.getCamps(args[0], args[1]);
             default: console.error(`Unknown method ${method}`);
         }
@@ -88,6 +89,15 @@ export class DataManager implements WorkerClass {
         for (let event of this.events) {
             if (event.uid == uid) {
                 return event;
+            }
+        }
+        return undefined;
+    }
+
+    public findCamp(uid: string): Camp | undefined {
+        for (let camp of this.camps) {
+            if (camp.uid == uid) {
+                return camp;
             }
         }
         return undefined;

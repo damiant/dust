@@ -1,22 +1,21 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { DbService } from '../db.service';
-import { Event } from '../models';
+import { Camp } from '../models';
 
 @Component({
-  selector: 'app-event',
-  templateUrl: './event.page.html',
-  styleUrls: ['./event.page.scss'],
+  selector: 'app-camp',
+  templateUrl: './camp.page.html',
+  styleUrls: ['./camp.page.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule]
 })
-export class EventPage implements OnInit {
-  public event: Event | undefined;
-  public back = signal('Back');
+export class CampPage implements OnInit {
 
+  camp: Camp | undefined;
   constructor(private route: ActivatedRoute, private db: DbService) {     
   }
 
@@ -24,9 +23,8 @@ export class EventPage implements OnInit {
     const tmp = this.route.snapshot.paramMap.get('id')?.split('+');
     if (!tmp) throw new Error('Route error');
     const id = tmp[0];
-    this.back.set(tmp[1]);
-    this.event = await this.db.findEvent(id);
-    console.log(this.event);
+    this.camp = await this.db.findCamp(id);
+    console.log(this.camp);
   }
 
 }
