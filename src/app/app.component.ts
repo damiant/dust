@@ -1,6 +1,7 @@
 import { Component, EnvironmentInjector, OnInit, inject } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
+import { DbService } from './db.service';
 
 @Component({
   selector: 'app-root',
@@ -12,9 +13,10 @@ import { CommonModule } from '@angular/common';
 export class AppComponent implements OnInit {
   public environmentInjector = inject(EnvironmentInjector);
 
-  constructor() { }
+  constructor(private db: DbService) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+
   }
 
 }

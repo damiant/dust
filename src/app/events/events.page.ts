@@ -4,25 +4,27 @@ import { DbService } from '../db.service';
 import { Day, Event } from '../models';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-events',
   templateUrl: 'events.page.html',
   styleUrls: ['events.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, RouterModule],
+  imports: [IonicModule, CommonModule, RouterModule, ScrollingModule],
 })
 export class EventsPage {
   title = 'Events';
   events: Event[] = [];
   days: Day[] = [];
   search: string = '';
+  screenHeight: number = window.screen.height;
   day: Date | undefined = undefined;
   constructor(private db: DbService) {}
 
-  async ionViewDidEnter() {
-    await this.db.init();
+  async ionViewDidEnter() {    
     this.events = await this.db.getEvents(0, 10);
+    console.log(this.events);
     this.days = await this.db.getDays();
   }
 

@@ -180,3 +180,8 @@ ion-text, ion-card-content,ion-card-subtitle, ion-title, ion-segment-button, ion
     font-family: 'Gelion Black Italic';
     font-family: 'Gelion Black';
 }
+
+cdk-virtual-scroll-viewport {
+    height: 100%;
+    width: 100%;
+  }

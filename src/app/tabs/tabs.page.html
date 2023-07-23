@@ -1,4 +1,7 @@
-<ion-tabs>
+<div class="center">
+  <ion-spinner *ngIf="!ready"></ion-spinner>
+</div>
+<ion-tabs *ngIf="ready">
   <ion-tab-bar slot="bottom">
     <ion-tab-button tab="events">
       <ion-icon aria-hidden="true" name="calendar"></ion-icon>
