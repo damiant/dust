@@ -150,6 +150,13 @@ ion-card-title {
     text-overflow: ellipsis;
 }
 
+ion-card-subtitle {
+    width: 80vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 h2,
 ion-card-title {
     font-family: 'Gelion Semi Bold';
@@ -216,7 +223,7 @@ cdk-virtual-scroll-viewport {
 }
 
 @media screen and (min-width: 1024px) {
-    ion-card-title {
+    ion-card-title, ion-card-subtitle {
         width: 60vw;
     }
     ion-content {
