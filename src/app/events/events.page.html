@@ -24,7 +24,7 @@
     </ion-toolbar>
   </ion-header>
   <cdk-virtual-scroll-viewport itemSize="156" minBufferPx="900" maxBufferPx="1350">
-  <ion-card *cdkVirtualFor="let event of events"  [routerLink]="'/event/'+ event.uid + '+' + title">
+  <ion-card *cdkVirtualFor="let event of events; trackBy: eventsTrackBy"  [routerLink]="'/event/'+ event.uid + '+' + title">
     <ion-card-header>
       <ion-card-title>{{event.name}}</ion-card-title>
       <ion-card-subtitle>{{event.camp}} ({{event.location}})</ion-card-subtitle>

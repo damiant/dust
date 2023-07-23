@@ -23,14 +23,17 @@ export class EventsPage {
   constructor(private db: DbService) {}
 
   async ionViewDidEnter() {    
-    this.events = await this.db.getEvents(0, 10);
-    console.log(this.events);
+    this.events = await this.db.getEvents(0, 9999);    
     this.days = await this.db.getDays();
   }
 
   handleInput(event: any) {
     this.search = event.target.value.toLowerCase();
     this.update();
+  }
+
+  eventsTrackBy(index: number, event: Event) {
+    return event.uid;
   }
 
   dayChange(event: any) {    

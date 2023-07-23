@@ -24,8 +24,10 @@
       <ion-text style="padding-right: 1rem;" class="text">{{art.description}}</ion-text>
     </ion-item>
 
-    <ion-item *ngFor="let image of art.images">
+    <ion-item>      
+      <div class="center" *ngFor="let image of art.images">
       <ion-img *ngIf="image.thumbnail_url" [src]="image.thumbnail_url" [alt]="art.name"></ion-img>
+      </div>
     </ion-item>
   </ion-list>
 </ion-content>
