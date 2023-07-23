@@ -138,30 +138,59 @@
     src: local('Gelion Black'), url('assets/fonts/Gelion Black.woff') format('woff');
 }
 
-h1,
-ion-card-title {
+h1 {
     font-family: 'Gelion Bold';
 }
 
 ion-card-title {
     font-size: 20px;
+    width: 80vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-h2 {
+h2,
+ion-card-title {
     font-family: 'Gelion Semi Bold';
+}
+
+ion-title {
+    font-family: 'Gelion Medium';
 }
 
 .ic-txt {
     margin-top: 10px;
 }
 
-ion-text, ion-card-content,ion-card-subtitle, ion-title, ion-segment-button, ion-back-button {
+.clamp {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.clamp3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+ion-text,
+ion-card-content,
+ion-card-subtitle,
+ion-segment-button,
+ion-back-button {
     font-family: 'Gelion Regular';
 }
 
 .text {
     line-height: 1.5;
     opacity: 0.5;
+
 }
 
 .gelion {
@@ -184,4 +213,4 @@ ion-text, ion-card-content,ion-card-subtitle, ion-title, ion-segment-button, ion
 cdk-virtual-scroll-viewport {
     height: 100%;
     width: 100%;
-  }
+}

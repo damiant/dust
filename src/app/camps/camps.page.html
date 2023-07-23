@@ -15,15 +15,15 @@
       <ion-searchbar (ionInput)="handleInput($event)" [debounce]="1000" placeholder="Find Camps"></ion-searchbar>
     </ion-toolbar>
   </ion-header>
-  <cdk-virtual-scroll-viewport itemSize="156" minBufferPx="900" maxBufferPx="1350">
-  <ion-card *cdkVirtualFor="let camp of camps; trackBy: campsTrackBy" [routerLink]="'/camp/'+ camp.uid">
+  <cdk-virtual-scroll-viewport itemSize="180" minBufferPx="900" maxBufferPx="1350">
+  <ion-card class="item" *cdkVirtualFor="let camp of camps; trackBy: campsTrackBy" [routerLink]="'/camp/'+ camp.uid">
     <ion-card-header>
       <ion-card-title>{{camp.name}}</ion-card-title>
       <ion-card-subtitle>{{camp.location_string}}</ion-card-subtitle>
     </ion-card-header>
 
     <ion-card-content>
-      {{camp.description}}
+      <ion-text class="clamp3">{{camp.description}}</ion-text>
       <ion-text color="primary"></ion-text>      
     </ion-card-content>
   </ion-card>
