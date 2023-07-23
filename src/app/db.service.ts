@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Event, Day, Camp } from './models';
+import { Event, Day, Camp, Art } from './models';
 import { call, registerWorker } from './worker-interface';
 
 @Injectable({
@@ -27,6 +27,14 @@ export class DbService {
 
   public async findCamps(query: string): Promise<Camp[]> {
     return await call(this.worker, 'findCamps', query);    
+  }
+
+  public async findArts(query: string | undefined): Promise<Art[]> {
+    return await call(this.worker, 'findArts', query);    
+  }
+
+  public async findArt(uid: string): Promise<Art> {
+    return await call(this.worker, 'findArt', uid);    
   }
 
   public async findEvent(uid: string): Promise<Event> {

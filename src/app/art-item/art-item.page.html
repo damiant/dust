@@ -1,0 +1,31 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Art"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list *ngIf="art" lines="none">
+    <ion-item>
+      <h1>{{art.name}}</h1>
+    </ion-item>
+    <ion-item>
+      <ion-icon slot="start" name="person-outline"></ion-icon>
+      <ion-label>{{art.artist}} ({{art.hometown}})</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon slot="start" name="location-outline"></ion-icon>
+      <ion-label>{{art.location_string}}</ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-text style="padding-right: 1rem;" class="text">{{art.description}}</ion-text>
+    </ion-item>
+
+    <ion-item *ngFor="let image of art.images">
+      <ion-img *ngIf="image.thumbnail_url" [src]="image.thumbnail_url" [alt]="art.name"></ion-img>
+    </ion-item>
+  </ion-list>
+</ion-content>

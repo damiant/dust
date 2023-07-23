@@ -13,4 +13,8 @@ export const routes: Routes = [
     path: 'camp/:id',
     loadComponent: () => import('./camp/camp.page').then( m => m.CampPage)
   },
+  {
+    path: 'art/:id',
+    loadComponent: () => import('./art-item/art-item.page').then( m => m.ArtItemPage)
+  },
 ];

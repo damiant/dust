@@ -1,0 +1,29 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Art
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Art</ion-title>
+    </ion-toolbar>
+    <ion-toolbar>
+      <ion-searchbar (ionInput)="handleInput($event)" [debounce]="1000" placeholder="Find Art"></ion-searchbar>
+    </ion-toolbar>
+  </ion-header>
+  <ion-card *ngFor="let art of arts" [routerLink]="'/art/'+ art.uid">
+    <ion-card-header>
+      <ion-card-title>{{art.name}}</ion-card-title>
+      <ion-card-subtitle>{{art.artist}}</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      {{art.description}}
+      <ion-text color="primary"></ion-text>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

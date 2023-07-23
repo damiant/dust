@@ -8,6 +8,8 @@
 - Default to today/time if today is in day selection
 - Sort events by time and name
 - Event category filter
+- Filter out camps with no location
+- Filter out events with no location
 
 ### Event Detail
 - days and times

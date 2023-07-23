@@ -13,6 +13,8 @@ export class DataManager implements WorkerClass {
             case 'populate': return await this.populate();
             case 'getDays': return this.getDays();
             case 'getEvents': return this.getEvents(args[0], args[1]);
+            case 'findArts': return this.findArts(args[0]);
+            case 'findArt': return this.findArt(args[0]);
             case 'findEvents': return this.findEvents(args[0], args[1]);
             case 'findCamps': return this.findCamps(args[0]);
             case 'findEvent': return this.findEvent(args[0]);
@@ -36,7 +38,7 @@ export class DataManager implements WorkerClass {
         let artIndex: any = {};
         for (let camp of this.camps) {
             campIndex[camp.uid] = camp.name;
-            locIndex[camp.uid] = notNull(camp.location.intersection) + camp.location.frontage!;
+            locIndex[camp.uid] = camp.location_string;//notNull(camp.location.intersection) + camp.location.frontage!;
         }
         for (let art of this.art) {
             artIndex[art.uid] = art.name;
@@ -103,6 +105,15 @@ export class DataManager implements WorkerClass {
         return undefined;
     }
 
+    public findArt(uid: string): Art | undefined {
+        for (let art of this.art) {
+            if (art.uid == uid) {
+                return art;
+            }
+        }
+        return undefined;
+    }
+
     public findEvents(query: string, day: Date | undefined): Event[] {
         const result: Event[] = [];
 
@@ -120,6 +131,16 @@ export class DataManager implements WorkerClass {
         for (let camp of this.camps) {
             if (camp.name.toLowerCase().includes(query.toLowerCase())) {
                 result.push(camp);
+            }
+        }
+        return result;
+    }
+
+    public findArts(query: string | undefined): Art[] {        
+        const result: Art[] = [];
+        for (let art of this.art) {
+            if (!query || art.name.toLowerCase().includes(query.toLowerCase())) {
+                result.push(art);
             }
         }
         return result;
