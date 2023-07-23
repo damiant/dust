@@ -79,6 +79,7 @@ export interface Camp {
   
   export interface Image {
     gallery_ref: any
+    ready: boolean
     thumbnail_url?: string
   }
   

@@ -25,8 +25,8 @@
     </ion-item>
 
     <ion-item>      
-      <div class="center" *ngFor="let image of art.images">
-      <ion-img *ngIf="image.thumbnail_url" [src]="image.thumbnail_url" [alt]="art.name"></ion-img>
+      <div [@fade]="image.ready ? 'visible' : 'hidden'" class="center" *ngFor="let image of art.images">
+      <img *ngIf="image.thumbnail_url" (load)="ready(image)" [src]="image.thumbnail_url" [alt]="art.name" />
       </div>
     </ion-item>
   </ion-list>

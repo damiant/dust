@@ -214,3 +214,49 @@ cdk-virtual-scroll-viewport {
     height: 100%;
     width: 100%;
 }
+
+@media screen and (min-width: 1024px) {
+    ion-card-title {
+        width: 60vw;
+    }
+    ion-content {
+        --padding-start: 10vw;
+        --padding-end: 10vw;
+        --overflow: hidden;
+    }
+
+    ion-tab-bar {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+
+    ion-icon {
+        font-size: xx-large;
+    }
+
+    ion-tab-button {
+        font-size: large;
+    }
+
+    ::-webkit-scrollbar {
+        width: 10px;
+      }
+      
+      /* Track */
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      
+      /* Handle */
+      ::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 10px;
+      }
+      
+      /* Handle on hover */
+      ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
+
+
+}

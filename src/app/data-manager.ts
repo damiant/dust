@@ -111,6 +111,9 @@ export class DataManager implements WorkerClass {
     public findArt(uid: string): Art | undefined {
         for (let art of this.art) {
             if (art.uid == uid) {
+                for (let image of art.images) {
+                    image.ready = false;
+                  }
                 return art;
             }
         }
