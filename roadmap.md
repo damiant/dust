@@ -21,10 +21,6 @@
 - url
 - show list of Events at camp
 
-### Art
-- list all
-- get detail
-
 ## Favorites
 - Show favorite events
 - Show favorite camps

@@ -27,7 +27,10 @@ export class DataManager implements WorkerClass {
     public async populate(): Promise<number> {
         this.events = await this.loadEvents();
         this.camps = await this.loadCamps();
+        this.camps = this.camps.filter((camp) => { return camp.description || camp.location_string });
+        this.camps.sort((a: Camp, b: Camp) => { return a.name.localeCompare(b.name); });
         this.art = await this.loadArt();
+        this.art.sort((a: Art, b: Art) => { return a.name.localeCompare(b.name); });
         this.init();
         return this.events.length + this.camps.length;
     }
