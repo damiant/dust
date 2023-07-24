@@ -1,7 +1,7 @@
 # Roadmap
 
 ## Features
-- link event to camp detail
+- link event to camp detail (popup)
 - link location/art to art
 - Hide days that have passed from day segment (unless all days have passed)
 - Hide events that have passed
@@ -14,8 +14,6 @@
 ### Event Detail
 - days and times
 
-### Camps
-
 ### Camp Detail
 - email
 - url
@@ -25,6 +23,15 @@
 - Show favorite events
 - Show favorite camps
 - Show favorite art
+
+## Maps
+- Handle rods ring road
+- Handle art directions
+
+## Friends
+- Add Friend: name, street, clock
+- Show QR Code for profile
+
 
 ## Interactivity
 - Add notes to a camp (eg friend)

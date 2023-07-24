@@ -10,7 +10,8 @@
 <ion-content [fullscreen]="true">
   <ion-list *ngIf="camp" lines="none">
     <ion-item>
-      <h1>{{camp.name}}</h1>
+      <h1 *ngIf="!camp.url">{{camp.name}}</h1>
+      <h1 style="color: var(--ion-color-primary)" *ngIf="camp.url" (click)="open(camp.url)">{{camp.name}}</h1>
     </ion-item>
     <ion-item>
       <ion-icon slot="start" name="location-outline"></ion-icon>
@@ -21,4 +22,5 @@
       <ion-text style="padding-right: 1rem;" class="text">{{camp.description}}</ion-text>
     </ion-item>
   </ion-list>
+  <app-map [points]="mapPoints"></app-map>
 </ion-content>

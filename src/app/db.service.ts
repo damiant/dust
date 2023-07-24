@@ -6,7 +6,7 @@ import { call, registerWorker } from './worker-interface';
   providedIn: 'root'
 })
 export class DbService {
-
+  initialized = false;
   worker!: Worker;
 
 
@@ -18,7 +18,14 @@ export class DbService {
     this.worker = new Worker(new URL('./app.worker', import.meta.url));
     registerWorker(this.worker);
     
-    await call(this.worker, 'populate');    
+    await call(this.worker, 'populate');
+    this.initialized = true;
+  }
+
+  public checkInit() {
+    if (!this.initialized) {
+      document.location.href = '';
+    }
   }
 
   public async findEvents(query: string, day: Date | undefined): Promise<Event[]> {

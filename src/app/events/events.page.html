@@ -9,34 +9,33 @@
 
 <ion-content [fullscreen]="true">
   
-    <ion-header collapse="condense">
-      <ion-toolbar>
-        <ion-title size="large">{{title}}</ion-title>
-      </ion-toolbar>
-      <ion-toolbar>
-        <ion-searchbar (ionInput)="handleInput($event)" [debounce]="1000" placeholder="Find Events"></ion-searchbar>
-      </ion-toolbar>
-      <ion-toolbar>
-        <ion-segment (ionChange)="dayChange($event)" [scrollable]="true" value="heart">
-          <ion-segment-button *ngFor="let day of days" [value]="day.date">
-            {{day.name}}
-          </ion-segment-button>
-        </ion-segment>
-      </ion-toolbar>
-    </ion-header>
-    <cdk-virtual-scroll-viewport itemSize="180" minBufferPx="1900" maxBufferPx="2350">      
-      <ion-card class="item" *cdkVirtualFor="let event of events; trackBy: eventsTrackBy"
-        [routerLink]="'/event/'+ event.uid + '+' + title">
-        <ion-card-header>
-          <ion-card-title>{{event.name}}</ion-card-title>
-          <ion-card-subtitle>{{event.camp}} ({{event.location}})</ion-card-subtitle>
-        </ion-card-header>
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">{{title}}</ion-title>
+    </ion-toolbar>
+    <ion-toolbar>
+      <ion-searchbar (ionInput)="handleInput($event)" [debounce]="1000" placeholder="Find Events"></ion-searchbar>
+    </ion-toolbar>
+    <ion-toolbar>
+      <ion-segment (ionChange)="dayChange($event)" [scrollable]="true" value="heart">
+        <ion-segment-button *ngFor="let day of days" [value]="day.date">
+          {{day.name}}
+        </ion-segment-button>
+      </ion-segment>
+    </ion-toolbar>
+  </ion-header>
+  <app-map-modal [title]="mapTitle" [subtitle]="mapSubtitle" [(show)]="showMap" [points]="mapPoints"></app-map-modal>
+  <cdk-virtual-scroll-viewport itemSize="180" minBufferPx="1900" maxBufferPx="2350">    
+    <ion-card class="item" *cdkVirtualFor="let event of events; trackBy: eventsTrackBy">
+      <ion-card-header>
+        <ion-card-title [routerLink]="'/event/'+ event.uid + '+' + title">{{event.name}}</ion-card-title>
+        <ion-card-subtitle color="primary" (click)="map(event.location, event.camp)">{{event.camp}} ({{event.location}})</ion-card-subtitle>
+      </ion-card-header>
 
-        <ion-card-content>
-          <ion-text class="clamp">{{event.print_description}}</ion-text>
-          <ion-text color="primary">{{event.timeString}} {{event.event_type.label}}</ion-text>
-
-        </ion-card-content>
-      </ion-card>
-    </cdk-virtual-scroll-viewport>
+      <ion-card-content [routerLink]="'/event/'+ event.uid + '+' + title">
+        <ion-text class="clamp">{{event.print_description}}</ion-text>
+        <ion-text>{{event.timeString}} {{event.event_type.label}}</ion-text>
+      </ion-card-content>
+    </ion-card>
+  </cdk-virtual-scroll-viewport>
 </ion-content>

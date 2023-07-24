@@ -15,7 +15,7 @@ if (environment.production) {
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    importProvidersFrom(IonicModule.forRoot({ mode: 'ios'})),
+    importProvidersFrom(IonicModule.forRoot({ mode: 'ios' })),
     provideAnimations(),
     provideRouter(routes),
   ],

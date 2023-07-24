@@ -16,5 +16,5 @@ export const routes: Routes = [
   {
     path: 'art/:id',
     loadComponent: () => import('./art-item/art-item.page').then( m => m.ArtItemPage)
-  },
+  }
 ];

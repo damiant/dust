@@ -25,7 +25,9 @@
       <ion-icon name="pricetag-outline" slot="start"></ion-icon>
       <ion-label>{{event.event_type.label}}</ion-label>
     </ion-item>
-    
-    <ion-item><ion-text style="padding-right: 1rem;" class="text">{{event.description}}</ion-text></ion-item>
+    <ion-item>
+      <ion-text style="padding-right: 1rem;" class="text">{{event.description}}</ion-text>
+    </ion-item>
   </ion-list>
+  <app-map [points]="mapPoints"></app-map>
 </ion-content>
