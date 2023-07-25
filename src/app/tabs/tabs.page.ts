@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EnvironmentInjector, OnInit, inject } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { DbService } from '../db.service';
-
+import { SplashScreen } from '@capacitor/splash-screen';
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
@@ -19,5 +19,6 @@ export class TabsPage implements OnInit {
   async ngOnInit() {
     await this.db.init();
     this.ready = true;
+    await SplashScreen.hide();
   }
 }
