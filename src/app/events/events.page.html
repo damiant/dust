@@ -21,7 +21,7 @@
         <ion-segment-button [value]="'all'">
           All
         </ion-segment-button>
-        <ion-segment-button *ngFor="let day of days" [value]="day.date">
+        <ion-segment-button [class.bold]="day.today" *ngFor="let day of days" [value]="day.date">
           {{day.name}}
         </ion-segment-button>
       </ion-segment>

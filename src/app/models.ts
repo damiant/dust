@@ -1,8 +1,10 @@
 export interface Event {
     camp: string; // Calculated
     timeString: string; // Calculated
+    start: Date; // Calculated
     location: string; // Calculated
     longTimeString: string; // Calculated
+    old: boolean; // Calculated
     all_day: any
     check_location?: number
     description: string
@@ -31,6 +33,7 @@ export interface EventType {
 export interface OccurrenceSet {
     end_time: string
     start_time: string
+    old: boolean // Calculated
 }
 
 export interface Camp {
@@ -56,6 +59,7 @@ export interface Camp {
   export interface Day {
     name: string;
     date: Date;
+    today?: boolean;
   }
 
   export interface Art {

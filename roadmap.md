@@ -36,9 +36,6 @@
 ## Features
 - link event to camp detail (popup)
 - link location/art to art
-- Hide days that have passed from day segment (unless all days have passed)
-- Hide events that have passed
-- Default to today/time if today is in day selection
 - photo attach to any camp / event
 - portapotties on map
 - Event category filter

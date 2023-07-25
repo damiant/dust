@@ -8,7 +8,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MapPoint, toMapPoint } from '../map/map.component';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { FormsModule } from '@angular/forms';
-import { sameDay } from '../utils';
+import { now, sameDay } from '../utils';
 
 @Component({
   selector: 'app-events',
@@ -35,14 +35,16 @@ export class EventsPage {
     if (this.events.length == 0) {
 
       this.days = await this.db.getDays();
+      this.setToday();
       await this.db.getEvents(0, 9999);
+      await this.db.checkEvents();
       this.defaultDay = this.chooseDefaultDay();
       this.update();
     }
   }
 
   chooseDefaultDay(): Date | string {
-    const today = new Date();
+    const today = now();
     for (const day of this.days) { 
       if (day.date && sameDay(day.date, today)) {
         this.day = day.date;
@@ -51,6 +53,12 @@ export class EventsPage {
     }
     this.day = undefined;
     return 'all';
+  }
+
+  setToday() {
+    for (const day of this.days) {
+      day.today = sameDay(day.date, now());
+    }
   }
 
   handleInput(event: any) {
@@ -63,7 +71,6 @@ export class EventsPage {
   }
 
   dayChange(event: any) {
-    console.log(event.target.value);
     if (event.target.value == 'all') {
       this.day = undefined;
       this.title = 'Events';

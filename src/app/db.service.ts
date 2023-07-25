@@ -23,20 +23,24 @@ export class DbService {
     }
   }
 
+  public async checkEvents(): Promise<void> {
+    return await call(this.worker, 'checkEvents');    
+  }
+
   public async findEvents(query: string, day: Date | undefined): Promise<Event[]> {
     return await call(this.worker, 'findEvents', query, day);    
   }
 
   public async findCamps(query: string): Promise<Camp[]> {
-    return await call(this.worker, 'findCamps', query);    
+    return await call(this.worker, 'findCamps', query);
   }
 
   public async findArts(query: string | undefined): Promise<Art[]> {
-    return await call(this.worker, 'findArts', query);    
+    return await call(this.worker, 'findArts', query);
   }
 
   public async findArt(uid: string): Promise<Art> {
-    return await call(this.worker, 'findArt', uid);    
+    return await call(this.worker, 'findArt', uid);
   }
 
   public async findEvent(uid: string): Promise<Event> {
@@ -59,3 +63,4 @@ export class DbService {
     return await call(this.worker, 'getCamps', idx, count);
   }
 }
+
