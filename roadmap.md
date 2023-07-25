@@ -5,7 +5,6 @@
 - show map for other locations (smooth & soothe)
 - noon and midnight title case
 - if no location then label as none
-- camp location color primary
 - events for a camp
 - favorite camps
 - favorite events
