@@ -16,7 +16,10 @@
 - filter by category (label is link)
 - tweaking & tassel - doesn’t have location but has link
 - updates: if online then download data
-
+- custom camp icon
+- custom event icon
+- custom art icon
+- Sort events by time and name
 
 - camps near here
 - events near here
@@ -38,7 +41,6 @@
 - Default to today/time if today is in day selection
 - photo attach to any camp / event
 - portapotties on map
-- Sort events by time and name
 - Event category filter
 - Filter out camps with no location
 - Filter out events with no location

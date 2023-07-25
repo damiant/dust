@@ -17,7 +17,10 @@
       <ion-searchbar (ionInput)="handleInput($event)" [debounce]="1000" placeholder="Find Events"></ion-searchbar>
     </ion-toolbar>
     <ion-toolbar>
-      <ion-segment (ionChange)="dayChange($event)" [scrollable]="true" value="heart">
+      <ion-segment (ionChange)="dayChange($event)" [(ngModel)]="defaultDay" [scrollable]="true">
+        <ion-segment-button [value]="'all'">
+          All
+        </ion-segment-button>
         <ion-segment-button *ngFor="let day of days" [value]="day.date">
           {{day.name}}
         </ion-segment-button>

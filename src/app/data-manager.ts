@@ -1,5 +1,6 @@
 import { WorkerClass } from './worker-interface';
 import { Art, Camp, Day, Event } from './models';
+import { sameDay } from './utils';
 
 export class DataManager implements WorkerClass {
     private events: Event[] = [];
@@ -156,7 +157,7 @@ export class DataManager implements WorkerClass {
         for (let occurrence of event.occurrence_set) {
             const start: Date = new Date(occurrence.start_time);
             const end: Date = new Date(occurrence.end_time);
-            if (!day || this.sameDay(start, day) || this.sameDay(end, day)) {
+            if (!day || sameDay(start, day) || sameDay(end, day)) {
                 if (long) {
                     return `${this.time(start)}-${this.time(end)} (${this.timeBetween(end, start)})`;
                 } else {
@@ -206,17 +207,11 @@ export class DataManager implements WorkerClass {
         for (let occurrence of event.occurrence_set) {
             const start = new Date(occurrence.start_time);
             const end = new Date(occurrence.end_time);
-            if (this.sameDay(start, day) || this.sameDay(end, day)) {
+            if (sameDay(start, day) || sameDay(end, day)) {
                 return true;
             }
         }
         return false;
-    }
-
-    private sameDay(d1: Date, d2: Date) {
-        return d1.getFullYear() === d2.getFullYear() &&
-            d1.getMonth() === d2.getMonth() &&
-            d1.getDate() === d2.getDate();
     }
 
     private addDay(date: Date) {
