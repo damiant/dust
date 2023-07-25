@@ -3,7 +3,6 @@
 ## Bugs
  - titles if capital then title case
 - show map for other locations (smooth & soothe)
-- noon and midnight title case
 - if no location then label as none
 - events for a camp
 - favorite camps

@@ -181,7 +181,7 @@ export class DataManager implements WorkerClass {
         const ampm = hrs >= 12 ? 'pm' : 'am';
         hrs = hrs % 12;
         if (hrs == 0) {
-            return (ampm == 'pm') ? 'noon' : 'midnight';
+            return (ampm == 'pm') ? 'Noon' : 'Midnight';
         }
         return `${hrs}${ampm}`;
     }
