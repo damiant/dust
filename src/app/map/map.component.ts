@@ -16,7 +16,9 @@ export function toMapPoint(location: string): MapPoint {
     // eg rod's ring road @ 7:45
     l = '6:00 & c'; // TODO: be more accurate
   }
-  if (l.includes('plaza')) {
+  if (l.includes('center camp plaza')) {
+    l = '6:00 & A';
+  } else if (l.includes('plaza')) {
     // 9:00 B Plaza
     l = l.replace('plaza', '');
     l = l.replace(' ', ' & ');

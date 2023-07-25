@@ -4,15 +4,16 @@
  - titles if capital then title case
 - show map for other locations (smooth & soothe)
 - if no location then label as none
+- search for 6:00 should find all camps on 6:00
+- search for A-E should find all camps on that street
+-
 - events for a camp
 - favorite camps
 - favorite events
-- map popup at 30% rather than 50%
 - dark mode svg for map should be white
 - dark mode primary color set pink
 - fix tab switch refresh
 - subtitle make larger
-- center camp plaza is not shown on map
 - filter by category (label is link)
 - tweaking & tassel - doesn’t have location but has link
 - updates: if online then download data
