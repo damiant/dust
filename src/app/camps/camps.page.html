@@ -16,7 +16,7 @@
     </ion-toolbar>
   </ion-header>
   <app-map-modal [title]="mapTitle" [subtitle]="mapSubtitle" [(show)]="showMap" [points]="mapPoints"></app-map-modal>
-  <cdk-virtual-scroll-viewport itemSize="180" minBufferPx="900" maxBufferPx="1350">
+  <cdk-virtual-scroll-viewport  itemSize="180" [minBufferPx]="minBufferPx" maxBufferPx="1350">
   <ion-card class="item" *cdkVirtualFor="let camp of camps; trackBy: campsTrackBy">
     <ion-card-header>
       <ion-card-title [routerLink]="'/camp/'+ camp.uid">{{camp.name}}</ion-card-title>

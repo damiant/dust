@@ -2,7 +2,6 @@
 
 ## Bugs
 - events for a camp
-- fix tab switch refresh
 - dark mode svg for map should be white
 - dark mode primary color set pink
 
@@ -12,15 +11,14 @@
 - favorite events
 - subtitle make larger
 - filter by category (label is link)
-- tweaking & tassel - doesn’t have location but has link
 - updates: if online then download data
 - custom camp icon
 - custom event icon
 - custom art icon
-- Sort events by time and name
 
 - camps near here
 - events near here
+- press tab button to scroll to top
 
 ## Sharing
 - share event

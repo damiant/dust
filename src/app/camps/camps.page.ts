@@ -21,11 +21,17 @@ export class CampsPage {
   mapTitle = '';
   mapSubtitle = '';
   mapPoints: MapPoint[] = [];
+  minBufferPx = 900;
 
   constructor(private db: DbService) { }
 
   async ionViewDidEnter() {
-    this.camps = await this.db.getCamps(0, 9999);
+    if (this.camps.length == 0) {
+      this.camps = await this.db.getCamps(0, 9999);
+    } else {
+      // Hack to ensure tab view is updated on switch of tabs
+      this.minBufferPx = (this.minBufferPx == 901) ? 900: 901;
+    }
   }
 
   handleInput(event: any) {

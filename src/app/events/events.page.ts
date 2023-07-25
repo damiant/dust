@@ -31,17 +31,18 @@ export class EventsPage implements OnInit {
   mapTitle = '';
   mapSubtitle = '';
   mapPoints: MapPoint[] = [];
+  minBufferPx = 1900;
   constructor(private db: DbService) { }
 
   ngOnInit() {
-    App.addListener('resume', async() => {
+    App.addListener('resume', async () => {
       this.setToday(now());
       await this.db.checkEvents();
       this.update();
     });
   }
 
-  async ionViewDidEnter() {
+  async ionViewWillEnter() {
     if (this.events.length == 0) {
       this.days = await this.db.getDays();
       const today = now();
@@ -50,11 +51,14 @@ export class EventsPage implements OnInit {
       await this.db.checkEvents();
       this.defaultDay = this.chooseDefaultDay(today);
       this.update();
-    }    
+    } else {
+      // Hack to ensure tab view is updated on switch of tabs
+      this.minBufferPx = (this.minBufferPx == 1901) ? 1900 : 1901;
+    }
   }
 
-  chooseDefaultDay(today: Date): Date | string {    
-    for (const day of this.days) { 
+  chooseDefaultDay(today: Date): Date | string {
+    for (const day of this.days) {
       if (day.date && sameDay(day.date, today)) {
         this.day = day.date;
         return day.date;
@@ -64,7 +68,7 @@ export class EventsPage implements OnInit {
     return 'all';
   }
 
-  setToday(today: Date) {    
+  setToday(today: Date) {
     for (const day of this.days) {
       day.today = sameDay(day.date, today);
     }

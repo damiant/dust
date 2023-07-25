@@ -15,7 +15,7 @@
       <ion-searchbar (ionInput)="handleInput($event)" [debounce]="1000" placeholder="Find Art"></ion-searchbar>
     </ion-toolbar>
   </ion-header>
-  <cdk-virtual-scroll-viewport itemSize="180" minBufferPx="900" maxBufferPx="1350">
+  <cdk-virtual-scroll-viewport itemSize="180" [minBufferPx]="minBufferPx" maxBufferPx="1350">
   <ion-card class="item" *cdkVirtualFor="let art of arts; trackBy: artTrackBy" [routerLink]="'/art/'+ art.uid">
     <ion-card-header>
       <ion-card-title>{{art.name}}</ion-card-title>

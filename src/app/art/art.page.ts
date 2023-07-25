@@ -15,11 +15,18 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 })
 export class ArtPage {
   arts: Art[] = [];
+  minBufferPx = 900;
 
   constructor(private db: DbService) { }
 
-  async ionViewDidEnter() {    
-    this.update(undefined);
+  async ionViewDidEnter() {
+    if (this.arts.length == 0) {
+      this.update(undefined);
+    } else {
+      // Hack to ensure tab view is updated on switch of tabs
+      this.minBufferPx = (this.minBufferPx == 901) ? 900: 901;      
+      
+    }
   }
 
   handleInput(event: any) {
