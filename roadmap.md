@@ -23,10 +23,15 @@
 - share app
 
 ## Favorites
-- add to favorite: name, desc, street, camp, gps
+- Save favorite camp
+- Save favorite art
+- Add friend to favorites (name, desc, street, camp, gps)
+- Add local notifications for event
+- Remove local notifications for event
 - Show favorite events
 - Show favorite camps
 - Show favorite art
+- Hide favorite old events
 
 ## Friends
 - Add Friend: name, street, clock
