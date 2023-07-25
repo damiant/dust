@@ -7,7 +7,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <app-map-modal [(show)]="showMap" [points]="mapPoints"></app-map-modal>
+  <app-map-modal [title]="mapTitle" [subtitle]="mapSubtitle" [(show)]="showMap" [points]="mapPoints"></app-map-modal>
   <ion-list *ngIf="art" lines="none">
     <ion-item>
       <h1>{{art.name}}</h1>

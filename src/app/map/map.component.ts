@@ -12,6 +12,10 @@ export function toMapPoint(location: string): MapPoint {
     return { street: '', clock: '' };
   }
   let l = location.toLowerCase();
+  if (l.includes('open playa')) {
+    console.error(`dont know how to location art: ${l}`);
+    return { street: '', clock: '' };
+  }
   if (l.includes('portal')) {
     l = l.replace('portal', '& esplanade');
   }

@@ -6,7 +6,7 @@ import { Art, Image } from '../models';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { DbService } from '../db.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { MapComponent, MapPoint } from '../map/map.component';
+import { MapComponent, MapPoint, toMapPoint } from '../map/map.component';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 
 @Component({
@@ -27,6 +27,8 @@ export class ArtItemPage implements OnInit {
   art: Art | undefined;
   showMap = false;
   mapPoints: MapPoint[] = [];
+  mapTitle = '';
+  mapSubtitle = '';
   constructor(private route: ActivatedRoute, private router: Router, private db: DbService) {     
   }
 
@@ -36,7 +38,9 @@ export class ArtItemPage implements OnInit {
     if (!tmp) throw new Error('Route error');
     const id = tmp[0];
     this.art = await this.db.findArt(id);
-    this.mapPoints.push({ street: 'e', clock: '2:45'});
+    this.mapTitle = this.art.name;
+    this.mapSubtitle = this.art.location_string!;
+    this.mapPoints.push(toMapPoint(this.art.location_string!));
   }
 
   map() {
