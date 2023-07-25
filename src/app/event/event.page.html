@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<ion-header *ngIf="back() !== ''" [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button [text]="back()"></ion-back-button>

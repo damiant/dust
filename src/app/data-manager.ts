@@ -22,6 +22,7 @@ export class DataManager implements WorkerClass {
             case 'findCamps': return this.findCamps(args[0]);
             case 'findEvent': return this.findEvent(args[0]);
             case 'findCamp': return this.findCamp(args[0]);
+            case 'getCampEvents': return this.getCampEvents(args[0]);
             case 'getCamps': return this.getCamps(args[0], args[1]);
             default: console.error(`Unknown method ${method}`);
         }
@@ -172,6 +173,18 @@ export class DataManager implements WorkerClass {
         return result;
     }
 
+    public getCampEvents(campId: string): Event[] {
+        const result: Event[] = [];
+
+        for (let event of this.events) {
+            if (event.hosted_by_camp == campId) {
+                result.push(event);
+            }
+        }
+        result.sort((a: Event, b: Event) => { return a.start.getTime() - b.start.getTime() });
+        return result;
+    }
+
     public findCamps(query: string): Camp[] {
         const result: Camp[] = [];
         const qry = query.toLowerCase();
@@ -200,7 +213,8 @@ export class DataManager implements WorkerClass {
             if (!day || sameDay(start, day) || sameDay(end, day)) {
                 event.start = start;
                 if (long) {
-                    return `${this.time(start)}-${this.time(end)} (${this.timeBetween(end, start)})`;
+                    const day = start.toLocaleDateString([], { weekday: 'long' });
+                    return `${day} ${this.time(start)}-${this.time(end)} (${this.timeBetween(end, start)})`;
                 } else {
                     return `${this.time(start)} (${this.timeBetween(end, start)})`;
                 }

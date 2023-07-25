@@ -8,6 +8,11 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <ion-modal [isOpen]="showEvent" (didDismiss)="showEvent = false"  [initialBreakpoint]="0.75" [breakpoints]="[0, 0.5, 0.75]">
+    <ng-template>
+      <app-event [eventId]="eventId"></app-event>
+    </ng-template>
+  </ion-modal>
   <ion-list *ngIf="camp" lines="none">
     <ion-item>
       <h1 *ngIf="!camp.url">{{camp.name}}</h1>
@@ -20,6 +25,16 @@
 
     <ion-item>
       <ion-text style="padding-right: 1rem;" class="text">{{camp.description}}</ion-text>
+    </ion-item>
+  </ion-list>
+  
+  <ion-list *ngIf="events" lines="none">
+    <ion-item>
+      <h1>Events</h1>
+    </ion-item>
+    <ion-item class="small" *ngFor="let event of events">
+      <ion-icon size="small" slot="start" name="calendar-outline"></ion-icon>
+      <ion-label (click)="show(event)"><small>{{event.name}}</small></ion-label>
     </ion-item>
   </ion-list>
   <app-map [points]="mapPoints"></app-map>

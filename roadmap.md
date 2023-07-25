@@ -4,8 +4,6 @@
 - events for a camp
 - titles if capital then title case
 - show map for other locations (smooth & soothe)
-- favorite camps
-- favorite events
 - subtitle make larger
 - filter by category (label is link)
 - updates: if online then download data
@@ -13,8 +11,10 @@
 - custom event icon
 - custom art icon
 
+## Geolocation
 - camps near here
 - events near here
+- Camps/Events Near me (needs geo and gps)
 - press tab button to scroll to top
 
 ## Sharing
@@ -25,6 +25,13 @@
 ## Favorites
 - add to favorite: name, desc, street, camp, gps
 - find gps: direction arrow + distance
+- Show favorite events
+- Show favorite camps
+- Show favorite art
+
+## Friends
+- Add Friend: name, street, clock
+- Show QR Code for profile
 
 ## Features
 - link event to camp detail (popup)
@@ -40,26 +47,13 @@
 
 ### Camp Detail
 - email
-- url
-- show list of Events at camp
-
-## Favorites
-- Show favorite events
-- Show favorite camps
-- Show favorite art
 
 ## Maps
 - Handle rods ring road
 - Handle art directions
-
-## Friends
-- Add Friend: name, street, clock
-- Show QR Code for profile
-
 
 ## Interactivity
 - Add notes to a camp (eg friend)
 - Add notes to an event (eg invite)
 - Show QR Code for an event - adds the event to calendar
 - Show QR Code for a camp
-- Camps/Events Near me (needs geo and gps)

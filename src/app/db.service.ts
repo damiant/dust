@@ -59,6 +59,10 @@ export class DbService {
     return await call(this.worker, 'getEvents', idx, count);
   }
 
+  public async getCampEvents(campId: string): Promise<Event[]> {
+    return await call(this.worker, 'getCampEvents', campId);
+  }
+
   public async getCamps(idx: number, count: number): Promise<Camp[]> {
     return await call(this.worker, 'getCamps', idx, count);
   }

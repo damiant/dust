@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, Input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
@@ -22,12 +22,16 @@ export class EventPage implements OnInit {
   mapPoints: MapPoint[] = [];
   mapTitle = '';
   mapSubtitle = '';
-  constructor(private route: ActivatedRoute, private db: DbService) {     
+  @Input() eventId: string | undefined;
+  constructor(private route: ActivatedRoute, private db: DbService) {
   }
 
   async ngOnInit() {
     this.db.checkInit();
-    const tmp = this.route.snapshot.paramMap.get('id')?.split('+');
+    const eventId = this.eventId ? this.eventId + '+' : this.route.snapshot.paramMap.get('id');
+   
+    let tmp = eventId?.split('+');
+
     if (!tmp) throw new Error('Route error');
     const id = tmp[0];
     this.back.set(tmp[1]);
