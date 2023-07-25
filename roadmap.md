@@ -1,11 +1,45 @@
 # Roadmap
 
+## Bugs
+ - titles if capital then title case
+- show map for other locations (smooth & soothe)
+- noon and midnight title case
+- if no location then label as none
+- camp location color primary
+- events for a camp
+- favorite camps
+- favorite events
+- map popup at 30% rather than 50%
+- dark mode svg for map should be white
+- dark mode primary color set pink
+- fix tab switch refresh
+- subtitle make larger
+- center camp plaza is not shown on map
+- filter by category (label is link)
+- tweaking & tassel - doesn’t have location but has link
+- updates: if online then download data
+
+
+- camps near here
+- events near here
+
+## Sharing
+- share event
+- share profile
+- share app
+
+## Favorites
+- add to favorite: name, desc, street, camp, gps
+- find gps: direction arrow + distance
+
 ## Features
 - link event to camp detail (popup)
 - link location/art to art
 - Hide days that have passed from day segment (unless all days have passed)
 - Hide events that have passed
 - Default to today/time if today is in day selection
+- photo attach to any camp / event
+- portapotties on map
 - Sort events by time and name
 - Event category filter
 - Filter out camps with no location
