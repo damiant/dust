@@ -93,18 +93,18 @@ export class DataManager implements WorkerClass {
                 const start: Date = new Date(occurrence.start_time);
                 const end: Date = new Date(occurrence.end_time);
                 this.addDay(start);
-                const hrs = this.hoursBetween(start,end);
+                const hrs = this.hoursBetween(start, end);
                 if (hrs > 24) {
                     const old = occurrence.end_time;
                     occurrence.end_time = new Date(start.getFullYear(), start.getMonth(), start.getDate(), end.getHours(), end.getMinutes()).toISOString();
-                    const newHrs = this.hoursBetween(new Date(occurrence.start_time),new Date(occurrence.end_time));
+                    const newHrs = this.hoursBetween(new Date(occurrence.start_time), new Date(occurrence.end_time));
                     console.log(`Fixed end time of ${event.name} from ${old} to ${occurrence.end_time} (starting ${occurrence.start_time}) because event was ${hrs} hours long. Now ${newHrs} hours long.`);
-                    
+
                 }
             }
             event.timeString = this.getTimeString(event, undefined);
             event.longTimeString = this.getTimeString(event, undefined, true);
-   
+
         }
 
     }
@@ -164,7 +164,7 @@ export class DataManager implements WorkerClass {
 
         for (let event of this.events) {
             if (this.eventContains(query, event) && this.onDay(day, event)) {
-                event.timeString = this.getTimeString(event, day);                
+                event.timeString = this.getTimeString(event, day);
                 result.push(event);
             }
         }
@@ -174,13 +174,14 @@ export class DataManager implements WorkerClass {
 
     public findCamps(query: string): Camp[] {
         const result: Camp[] = [];
+        const qry = query.toLowerCase();
         for (let camp of this.camps) {
-            if (camp.name.toLowerCase().includes(query.toLowerCase())) {
+            if (camp.name.toLowerCase().includes(qry) || camp.location_string?.toLowerCase().includes(qry)) {
                 result.push(camp);
             }
         }
         return result;
-    }
+    }    
 
     public findArts(query: string | undefined): Art[] {
         const result: Art[] = [];
@@ -242,7 +243,7 @@ export class DataManager implements WorkerClass {
 
     private eventContains(terms: string, event: Event): boolean {
         return (terms == '') ||
-            (event.name.toLowerCase().includes(terms) ||
+            (event.name.toLowerCase().includes(terms) ||                
                 event.description.toLowerCase().includes(terms));
     }
 
@@ -251,12 +252,12 @@ export class DataManager implements WorkerClass {
         for (let occurrence of event.occurrence_set) {
             const start = new Date(occurrence.start_time);
             const end = new Date(occurrence.end_time);
-            if (!occurrence.old && (sameDay(start, day) || sameDay(end, day))) {                
+            if (!occurrence.old && (sameDay(start, day) || sameDay(end, day))) {
                 return true;
             }
         }
         return false;
-    }    
+    }
 
     private addDay(date: Date) {
         const name = date.toLocaleDateString();
