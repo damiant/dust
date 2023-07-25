@@ -51,6 +51,7 @@ export function toMapPoint(location: string): MapPoint {
 export class MapComponent implements OnInit, AfterViewInit {
 
   points: MapPoint[];
+  src = 'assets/map.svg';
   @ViewChild('zoom') zoom!: ElementRef;
   @ViewChild('map') map!: ElementRef;
   @ViewChild('mapc') mapc!: ElementRef;
@@ -77,6 +78,8 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    const darkMode = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    this.src = darkMode ? 'assets/map-dark.svg' : 'assets/map.svg';
     // Plots every point
     // setTimeout(() => {
     //   for (let clock = 2; clock <= 10; clock += 0.25) {

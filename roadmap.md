@@ -2,9 +2,6 @@
 
 ## Bugs
 - events for a camp
-- dark mode svg for map should be white
-- dark mode primary color set pink
-
 - titles if capital then title case
 - show map for other locations (smooth & soothe)
 - favorite camps
