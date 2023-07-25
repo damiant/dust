@@ -55,7 +55,7 @@ export class DataManager implements WorkerClass {
                 event.camp = event.other_location;
             } else if (event.located_at_art) {
                 event.camp = artIndex[event.located_at_art];
-            } else {
+            } else {                
                 console.log('no location', event);
             }
             if (!event.print_description.endsWith('.')) {

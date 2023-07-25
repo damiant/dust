@@ -8,9 +8,12 @@ export interface MapPoint {
 }
 
 export function toMapPoint(location: string): MapPoint {
+  if (!location) {
+    return { street: '', clock: '' };
+  }
   let l = location.toLowerCase();
   if (l.includes('portal')) {
-    l = l.replace('portal', '& esplanade');    
+    l = l.replace('portal', '& esplanade');
   }
   if (l.includes('ring road')) {
     // eg rod's ring road @ 7:45
@@ -57,11 +60,13 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   }
 
-  ngAfterViewInit() {  
+  ngAfterViewInit() {
     setTimeout(() => {
       for (let point of this.points) {
         console.log(point);
-        this.plot(this.toClock(point.clock), this.toStreetRadius(point.street));
+        if (point.street !== '') {
+          this.plot(this.toClock(point.clock), this.toStreetRadius(point.street));
+        }
       }
     }, 150);
   }
@@ -111,8 +116,8 @@ export class MapComponent implements OnInit, AfterViewInit {
     pt.x += radius;
     pt.y += radius;
     const d = document.createElement("div");
-    d.style.left = `${pt.x-2}px`;
-    d.style.top = `${pt.y-5}px`;
+    d.style.left = `${pt.x - 2}px`;
+    d.style.top = `${pt.y - 5}px`;
     d.style.width = `5px`;
     d.style.height = `5px`;
     d.style.borderRadius = '5px';
@@ -120,7 +125,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     d.style.animationDuration = '1s';
     d.style.animationIterationCount = 'infinite';
     d.style.position = 'absolute';
-    d.style.backgroundColor = `var(--ion-color-primary)`;    
+    d.style.backgroundColor = `var(--ion-color-primary)`;
     const c: HTMLElement = this.mapc.nativeElement;
     c.insertBefore(d, c.firstChild);
     console.log(pt);

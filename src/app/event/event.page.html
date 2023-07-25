@@ -13,7 +13,7 @@
       <h1>{{event.name}}</h1>
     </ion-item>
     <ion-item><ion-icon slot="start" name="home-outline"></ion-icon><ion-label>{{event.camp}}</ion-label></ion-item>
-    <ion-item>
+    <ion-item *ngIf="event.location">
       <ion-icon slot="start" name="location-outline"></ion-icon>
       <ion-label>{{event.location}}</ion-label>
     </ion-item>

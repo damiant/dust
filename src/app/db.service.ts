@@ -9,12 +9,7 @@ export class DbService {
   initialized = false;
   worker!: Worker;
 
-
-  constructor() {
-  }
-
-  async init() {
-    // Create a new
+  public async init() {    
     this.worker = new Worker(new URL('./app.worker', import.meta.url));
     registerWorker(this.worker);
     

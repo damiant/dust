@@ -3,7 +3,6 @@
 ## Bugs
  - titles if capital then title case
 - show map for other locations (smooth & soothe)
-- if no location then label as none
 - search for 6:00 should find all camps on 6:00
 - search for A-E should find all camps on that street
 -
