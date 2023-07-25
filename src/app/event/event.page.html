@@ -3,6 +3,11 @@
     <ion-buttons slot="start">
       <ion-back-button [text]="back()"></ion-back-button>
     </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="star()" slot="icon">
+        <ion-icon [name]="event?.star ? 'star' : 'star-outline'"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <!-- <ion-title>Event</ion-title> -->
   </ion-toolbar>
 </ion-header>

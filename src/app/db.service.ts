@@ -9,10 +9,10 @@ export class DbService {
   initialized = false;
   worker!: Worker;
 
-  public async init() {    
+  public async init() {
     this.worker = new Worker(new URL('./app.worker', import.meta.url));
     registerWorker(this.worker);
-    
+
     await call(this.worker, 'populate');
     this.initialized = true;
   }
@@ -24,11 +24,11 @@ export class DbService {
   }
 
   public async checkEvents(): Promise<void> {
-    return await call(this.worker, 'checkEvents');    
+    return await call(this.worker, 'checkEvents');
   }
 
   public async findEvents(query: string, day: Date | undefined): Promise<Event[]> {
-    return await call(this.worker, 'findEvents', query, day);    
+    return await call(this.worker, 'findEvents', query, day);
   }
 
   public async findCamps(query: string): Promise<Camp[]> {
@@ -44,11 +44,11 @@ export class DbService {
   }
 
   public async findEvent(uid: string): Promise<Event> {
-    return await call(this.worker, 'findEvent', uid);    
+    return await call(this.worker, 'findEvent', uid);
   }
 
   public async findCamp(uid: string): Promise<Camp> {
-    return await call(this.worker, 'findCamp', uid);    
+    return await call(this.worker, 'findCamp', uid);
   }
 
   public async getDays(): Promise<Day[]> {

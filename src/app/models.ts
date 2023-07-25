@@ -5,6 +5,7 @@ export interface Event {
     location: string; // Calculated
     longTimeString: string; // Calculated
     old: boolean; // Calculated
+    star: boolean; // Calculated
     all_day: any
     check_location?: number
     description: string
@@ -98,3 +99,15 @@ export interface Camp {
     string?: string
   }
   
+  export interface Favorites {
+    events: string[];
+    camps: string[];
+    art: string[];
+    friends: Friend[];
+  }
+
+  export interface Friend {
+    name: string;
+    street: string;
+    clock: string;
+  }

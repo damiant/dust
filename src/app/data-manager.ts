@@ -105,9 +105,7 @@ export class DataManager implements WorkerClass {
             }
             event.timeString = this.getTimeString(event, undefined);
             event.longTimeString = this.getTimeString(event, undefined, true);
-
         }
-
     }
 
     public getEvents(idx: number, count: number): Event[] {
@@ -194,7 +192,7 @@ export class DataManager implements WorkerClass {
             }
         }
         return result;
-    }    
+    }
 
     public findArts(query: string | undefined): Art[] {
         const result: Art[] = [];
@@ -258,7 +256,7 @@ export class DataManager implements WorkerClass {
 
     private eventContains(terms: string, event: Event): boolean {
         return (terms == '') ||
-            (event.name.toLowerCase().includes(terms) ||                
+            (event.name.toLowerCase().includes(terms) ||
                 event.description.toLowerCase().includes(terms));
     }
 

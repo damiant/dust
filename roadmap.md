@@ -1,7 +1,6 @@
 # Roadmap
 
 ## Bugs
-- events for a camp
 - titles if capital then title case
 - show map for other locations (smooth & soothe)
 - subtitle make larger
@@ -16,6 +15,7 @@
 - events near here
 - Camps/Events Near me (needs geo and gps)
 - press tab button to scroll to top
+- find gps: direction arrow + distance
 
 ## Sharing
 - share event
@@ -24,7 +24,6 @@
 
 ## Favorites
 - add to favorite: name, desc, street, camp, gps
-- find gps: direction arrow + distance
 - Show favorite events
 - Show favorite camps
 - Show favorite art

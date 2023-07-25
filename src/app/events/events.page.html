@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  
+
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">{{title}}</ion-title>
@@ -22,20 +22,26 @@
           All
         </ion-segment-button>
         <ion-segment-button [class.bold]="day.today" *ngFor="let day of days" [value]="day.date">
-          {{day.name}}<br/>{{day.dayName}}
+          {{day.name}}<br />{{day.dayName}}
         </ion-segment-button>
       </ion-segment>
     </ion-toolbar>
   </ion-header>
   <app-map-modal [title]="mapTitle" [subtitle]="mapSubtitle" [(show)]="showMap" [points]="mapPoints"></app-map-modal>
   <div *ngIf="noEvents" class="message"><ion-text>All the events for this day have concluded.</ion-text></div>
-  <cdk-virtual-scroll-viewport [minBufferPx]="minBufferPx" itemSize="180" maxBufferPx="2350">    
+  <cdk-virtual-scroll-viewport [minBufferPx]="minBufferPx" itemSize="180" maxBufferPx="2350">
     <ion-card class="item" *cdkVirtualFor="let event of events; trackBy: eventsTrackBy">
-      <ion-card-header>
-        <ion-card-title [routerLink]="'/event/'+ event.uid + '+' + title">{{event.name}}</ion-card-title>
-        <ion-card-subtitle color="primary" (click)="map(event.location, event.camp)">{{event.camp}} ({{event.location}})</ion-card-subtitle>
-      </ion-card-header>
 
+      <ion-card-header>
+
+        <ion-card-title [routerLink]="'/event/'+ event.uid + '+' + title">{{event.name}}</ion-card-title>
+        <ion-card-subtitle color="primary" (click)="map(event.location, event.camp)">{{event.camp}} ({{event.location}})
+        </ion-card-subtitle>
+        <!-- <ion-button (click)="star(event)" size="small" fill="clear">
+          <ion-icon slot="icon-only" [name]="event?.star ? 'star' : 'star-outline'"></ion-icon>
+        </ion-button> -->
+      </ion-card-header>
+      
       <ion-card-content [routerLink]="'/event/'+ event.uid + '+' + title">
         <ion-text class="clamp">{{event.print_description}}</ion-text>
         <ion-text>{{event.timeString}} {{event.event_type.label}}</ion-text>

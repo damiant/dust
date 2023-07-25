@@ -14,11 +14,13 @@ export class TabsPage implements OnInit {
   ready = false;
   public environmentInjector = inject(EnvironmentInjector);
 
-  constructor(private db: DbService) {}
+  constructor(private db: DbService) { }
 
   async ngOnInit() {
     await this.db.init();
     this.ready = true;
-    await SplashScreen.hide();
+    setTimeout(() => {
+      SplashScreen.hide();
+    }, 1000);
   }
 }

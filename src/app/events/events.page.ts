@@ -10,6 +10,7 @@ import { MapModalComponent } from '../map-modal/map-modal.component';
 import { FormsModule } from '@angular/forms';
 import { now, sameDay } from '../utils';
 import { App } from '@capacitor/app';
+import { FavoritesService } from '../favorites.service';
 
 @Component({
   selector: 'app-events',
@@ -32,7 +33,7 @@ export class EventsPage implements OnInit {
   mapSubtitle = '';
   mapPoints: MapPoint[] = [];
   minBufferPx = 1900;
-  constructor(private db: DbService) { }
+  constructor(private db: DbService, private fav: FavoritesService) { }
 
   ngOnInit() {
     App.addListener('resume', async () => {
@@ -55,6 +56,11 @@ export class EventsPage implements OnInit {
       // Hack to ensure tab view is updated on switch of tabs
       this.minBufferPx = (this.minBufferPx == 1901) ? 1900 : 1901;
     }
+  }
+
+  star(event: Event) {
+    event.star = !event.star;
+    this.fav.starEvent(event.star, event.uid);
   }
 
   chooseDefaultDay(today: Date): Date | string {

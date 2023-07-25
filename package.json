@@ -33,6 +33,7 @@
     "@ionic/angular": "^7.0.0",
     "@meddv/ngx-pinch-zoom": "16.0.0",
     "ionicons": "^7.0.0",
+    "pouchdb": "8.0.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"
@@ -40,6 +41,7 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "^16.0.0",
     "@angular-eslint/builder": "^16.0.0",
+    "@types/pouchdb": "6.4.0",
     "@angular-eslint/eslint-plugin": "^16.0.0",
     "@angular-eslint/eslint-plugin-template": "^16.0.0",
     "@angular-eslint/schematics": "^16.0.0",
@@ -52,7 +54,6 @@
     "@ionic/angular-toolkit": "10.0.0",
     "@types/jasmine": "~4.3.0",
     "@types/node": "^12.11.1",
-    "@types/pouchdb": "^6.4.0",
     "@typescript-eslint/eslint-plugin": "5.3.0",
     "@typescript-eslint/parser": "5.3.0",
     "eslint": "^7.26.0",

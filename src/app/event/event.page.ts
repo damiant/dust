@@ -7,6 +7,7 @@ import { DbService } from '../db.service';
 import { Event } from '../models';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { MapComponent, MapPoint, toMapPoint } from '../map/map.component';
+import { FavoritesService } from '../favorites.service';
 
 @Component({
   selector: 'app-event',
@@ -23,23 +24,30 @@ export class EventPage implements OnInit {
   mapTitle = '';
   mapSubtitle = '';
   @Input() eventId: string | undefined;
-  constructor(private route: ActivatedRoute, private db: DbService) {
+  constructor(private route: ActivatedRoute, private db: DbService, private fav: FavoritesService) {
   }
 
   async ngOnInit() {
     this.db.checkInit();
     const eventId = this.eventId ? this.eventId + '+' : this.route.snapshot.paramMap.get('id');
-   
+
     let tmp = eventId?.split('+');
 
     if (!tmp) throw new Error('Route error');
     const id = tmp[0];
     this.back.set(tmp[1]);
     this.event = await this.db.findEvent(id);
+    this.event.star = this.fav.isFavEvent(this.event.uid);
     this.mapTitle = this.event.camp;
     this.mapSubtitle = this.event.location;
-    this.mapPoints.push(toMapPoint(this.event.location));
-    console.log(this.event);
+    this.mapPoints.push(toMapPoint(this.event.location));    
+  }
+
+  star() {
+    if (!this.event) return;
+    this.event.star = !this.event?.star;
+    this.fav.starEvent(this.event.star, this.event.uid);
+
   }
 
 }
