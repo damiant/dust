@@ -1,14 +1,15 @@
 # Roadmap
 
 ## Bugs
- - titles if capital then title case
-- show map for other locations (smooth & soothe)
 - events for a camp
-- favorite camps
-- favorite events
+- fix tab switch refresh
 - dark mode svg for map should be white
 - dark mode primary color set pink
-- fix tab switch refresh
+
+- titles if capital then title case
+- show map for other locations (smooth & soothe)
+- favorite camps
+- favorite events
 - subtitle make larger
 - filter by category (label is link)
 - tweaking & tassel - doesn’t have location but has link

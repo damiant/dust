@@ -22,12 +22,13 @@
           All
         </ion-segment-button>
         <ion-segment-button [class.bold]="day.today" *ngFor="let day of days" [value]="day.date">
-          {{day.name}}
+          {{day.name}}<br/>{{day.dayName}}
         </ion-segment-button>
       </ion-segment>
     </ion-toolbar>
   </ion-header>
   <app-map-modal [title]="mapTitle" [subtitle]="mapSubtitle" [(show)]="showMap" [points]="mapPoints"></app-map-modal>
+  <div *ngIf="noEvents" class="message"><ion-text>All the events for this day have concluded.</ion-text></div>
   <cdk-virtual-scroll-viewport itemSize="180" minBufferPx="1900" maxBufferPx="2350">    
     <ion-card class="item" *cdkVirtualFor="let event of events; trackBy: eventsTrackBy">
       <ion-card-header>

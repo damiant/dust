@@ -235,7 +235,8 @@ export class DataManager implements WorkerClass {
     public getDays(): Day[] {
         const result: Day[] = [];
         for (let day of this.days) {
-            result.push({ name: this.getDayName(day).substring(0, 3), date: new Date(day) });
+            const date = new Date(day);
+            result.push({ name: this.getDayName(day).substring(0, 3), dayName: date.getDate().toString(), date });
         }
         result.sort((a, b) => { return a.date.getTime() - b.date.getTime(); });
         return result;

@@ -11,3 +11,11 @@ ion-segment {
     font-weight: bold !important;
     text-transform: capitalize;
 }
+
+.message {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 2rem;
+    opacity: 0.5;
+}

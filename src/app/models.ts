@@ -59,6 +59,7 @@ export interface Camp {
   export interface Day {
     name: string;
     date: Date;
+    dayName: string;
     today?: boolean;
   }
 

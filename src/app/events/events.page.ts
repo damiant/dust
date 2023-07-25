@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { DbService } from '../db.service';
 import { Day, Event } from '../models';
@@ -9,6 +9,7 @@ import { MapPoint, toMapPoint } from '../map/map.component';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { FormsModule } from '@angular/forms';
 import { now, sameDay } from '../utils';
+import { App } from '@capacitor/app';
 
 @Component({
   selector: 'app-events',
@@ -17,12 +18,13 @@ import { now, sameDay } from '../utils';
   standalone: true,
   imports: [IonicModule, CommonModule, RouterModule, ScrollingModule, MapModalComponent, FormsModule],
 })
-export class EventsPage {
+export class EventsPage implements OnInit {
   title = 'Events';
   defaultDay: any = 'all';
   events: Event[] = [];
   days: Day[] = [];
   search: string = '';
+  noEvents = false;
   screenHeight: number = window.screen.height;
   day: Date | undefined = undefined;
   showMap = false;
@@ -31,20 +33,27 @@ export class EventsPage {
   mapPoints: MapPoint[] = [];
   constructor(private db: DbService) { }
 
-  async ionViewDidEnter() {
-    if (this.events.length == 0) {
-
-      this.days = await this.db.getDays();
-      this.setToday();
-      await this.db.getEvents(0, 9999);
+  ngOnInit() {
+    App.addListener('resume', async() => {
+      this.setToday(now());
       await this.db.checkEvents();
-      this.defaultDay = this.chooseDefaultDay();
       this.update();
-    }
+    });
   }
 
-  chooseDefaultDay(): Date | string {
-    const today = now();
+  async ionViewDidEnter() {
+    if (this.events.length == 0) {
+      this.days = await this.db.getDays();
+      const today = now();
+      this.setToday(today);
+      await this.db.getEvents(0, 9999);
+      await this.db.checkEvents();
+      this.defaultDay = this.chooseDefaultDay(today);
+      this.update();
+    }    
+  }
+
+  chooseDefaultDay(today: Date): Date | string {    
     for (const day of this.days) { 
       if (day.date && sameDay(day.date, today)) {
         this.day = day.date;
@@ -55,9 +64,9 @@ export class EventsPage {
     return 'all';
   }
 
-  setToday() {
+  setToday(today: Date) {    
     for (const day of this.days) {
-      day.today = sameDay(day.date, now());
+      day.today = sameDay(day.date, today);
     }
   }
 
@@ -91,6 +100,7 @@ export class EventsPage {
   async update() {
     this.events = await this.db.findEvents(this.search, this.day);
     console.log(`${this.events.length} events`);
+    this.noEvents = this.events.length == 0;
   }
 
 }
