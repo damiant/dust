@@ -9,7 +9,6 @@
 - custom camp icon
 - custom event icon
 - custom art icon
-- icon plain background
 - button to favorite "Add to Favorites"
 - Switch to camp when clicked from events
 - Favorite events for day: show in number order on map
