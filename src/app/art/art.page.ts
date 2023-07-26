@@ -5,13 +5,14 @@ import { DbService } from '../db.service';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { ArtComponent } from './art.component';
 
 @Component({
-  selector: 'app-art',
+  selector: 'app-arts',
   templateUrl: 'art.page.html',
   styleUrls: ['art.page.scss'],
   standalone: true,
-  imports: [IonicModule, RouterLink, CommonModule, ScrollingModule],
+  imports: [IonicModule, RouterLink, CommonModule, ScrollingModule, ArtComponent],
 })
 export class ArtPage {
   arts: Art[] = [];
@@ -33,7 +34,7 @@ export class ArtPage {
     this.update(event.target.value.toLowerCase());
   }
 
-  artTrackBy(index: number, art: Art) {
+  artTrackBy(index: number, art: Art) {    
     return art.uid;
   }
 
