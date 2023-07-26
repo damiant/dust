@@ -39,6 +39,9 @@ export class DbService {
     return await call(this.worker, 'getCampList', ids);
   }
   
+  public async getArtList(ids: string[]): Promise<Art[]> {
+    return await call(this.worker, 'getArtList', ids);
+  }
 
   public async findCamps(query: string): Promise<Camp[]> {
     return await call(this.worker, 'findCamps', query);

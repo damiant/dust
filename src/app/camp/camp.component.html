@@ -1,11 +1,11 @@
 <ion-card class="item">
   <ion-card-header>
-    <ion-card-title [routerLink]="'/camp/'+ camp.uid">{{camp.name}}</ion-card-title>
+    <ion-card-title [routerLink]="'/camp/'+ camp.uid+ '+' + title">{{camp.name}}</ion-card-title>
     <ion-card-subtitle color="primary" (click)="map(camp)">{{camp.location_string}}</ion-card-subtitle>
   </ion-card-header>
 
-  <ion-card-content [routerLink]="'/camp/'+ camp.uid">
+  <ion-card-content [routerLink]="'/camp/'+ camp.uid+ '+' + title">
     <ion-text class="clamp3">{{camp.description}}</ion-text>
-    <ion-text color="primary"></ion-text>      
+    <ion-text color="primary"></ion-text>
   </ion-card-content>
 </ion-card>

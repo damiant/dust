@@ -23,15 +23,18 @@ export class CampPage implements OnInit {
   events: Event[] = [];
   eventId: string | undefined;
   star = false;
+  backText = 'Camps';
+
   constructor(private route: ActivatedRoute, private db: DbService,
     private fav: FavoritesService) {
   }
 
   async ngOnInit() {
     this.db.checkInit();
-    const tmp = this.route.snapshot.paramMap.get('id')?.split('+');    
+    const tmp = this.route.snapshot.paramMap.get('id')?.split('+');
     if (!tmp) throw new Error('Route error');
     const id = tmp[0];
+    this.backText = tmp[1];
     this.camp = await this.db.findCamp(id);
     this.star = await this.fav.isFavCamp(this.camp.uid);
     this.events = await this.db.getCampEvents(id);

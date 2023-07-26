@@ -15,4 +15,6 @@
   <app-event title="Favorites" (mapClick)="mapEvent($event)" [event]="event" [longTime]="true" *ngFor="let event of events; trackBy: eventsTrackBy" />
   <h1 *ngIf="camps.length > 0">Camps</h1>
   <app-camp title="Favorites" (mapClick)="mapCamp($event)" [camp]="camp" *ngFor="let camp of camps; trackBy: campsTrackBy" />
+  <h1 *ngIf="art.length > 0">Art</h1>
+  <app-art title="Favorites" [art]="art" *ngFor="let art of art; trackBy: artTrackBy" />
 </ion-content>

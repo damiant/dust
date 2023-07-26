@@ -18,6 +18,6 @@
   <app-map-modal [title]="mapTitle" [subtitle]="mapSubtitle" [(show)]="showMap" [points]="mapPoints"></app-map-modal>
   
   <cdk-virtual-scroll-viewport  itemSize="180" [minBufferPx]="minBufferPx" maxBufferPx="1350">
-    <app-camp [camp]="camp" (mapClick)="map($event)" *cdkVirtualFor="let camp of camps; trackBy: campsTrackBy" />
+    <app-camp [camp]="camp" title="Camps" (mapClick)="map($event)" *cdkVirtualFor="let camp of camps; trackBy: campsTrackBy" />
 </cdk-virtual-scroll-viewport>
 </ion-content>

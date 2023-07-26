@@ -31,13 +31,9 @@
 - share app
 
 ## Favorites
-- Save favorite camp
-- Save favorite art
 - Add friend to favorites (name, desc, street, camp, gps)
 - Add local notifications for event
 - Remove local notifications for event
-- Show favorite camps
-- Show favorite art
 - Hide favorite old events
 
 ## Friends

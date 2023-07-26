@@ -17,6 +17,7 @@ export class DataManager implements WorkerClass {
             case 'getEvents': return this.getEvents(args[0], args[1]);
             case 'getEventList': return this.getEventList(args[0]);
             case 'getCampList': return this.getCampList(args[0]);
+            case 'getArtList': return this.getArtList(args[0]);
             case 'findArts': return this.findArts(args[0]);
             case 'findArt': return this.findArt(args[0]);
             case 'checkEvents': return this.checkEvents();
@@ -36,9 +37,13 @@ export class DataManager implements WorkerClass {
         this.camps = this.camps.filter((camp) => { return camp.description || camp.location_string });
         this.camps.sort((a: Camp, b: Camp) => { return a.name.localeCompare(b.name); });
         this.art = await this.loadArt();
-        this.art.sort((a: Art, b: Art) => { return a.name.localeCompare(b.name); });
+        this.sortArt(this.art);
         this.init();
         return this.events.length + this.camps.length;
+    }
+
+    private sortArt(art: Art[]) {
+        art.sort((a: Art, b: Art) => { return a.name.localeCompare(b.name); });
     }
 
     private checkEvents(): boolean {
@@ -139,6 +144,17 @@ export class DataManager implements WorkerClass {
             }
         }
         this.sortCamps(result);
+        return result;
+    }
+
+    public getArtList(ids: string[]): Art[] {
+        const result: Art[] = [];
+        for (let art of this.art) {
+            if (ids.includes(art.uid)) {
+                result.push(art);
+            }
+        }
+        this.sortArt(result);
         return result;
     }
 

@@ -30,6 +30,7 @@ export class ArtItemPage implements OnInit {
   mapPoints: MapPoint[] = [];
   mapTitle = '';
   mapSubtitle = '';
+  backText = 'Art';
   star = false;
 
   constructor(private route: ActivatedRoute,
@@ -41,6 +42,7 @@ export class ArtItemPage implements OnInit {
     const tmp = this.route.snapshot.paramMap.get('id')?.split('+');
     if (!tmp) throw new Error('Route error');
     const id = tmp[0];
+    this.backText = tmp[1];
     this.art = await this.db.findArt(id);
     this.mapTitle = this.art.name;
     this.mapSubtitle = this.art.location_string!;
