@@ -47,6 +47,7 @@ export class EventPage implements OnInit {
   async presentToast(message: string) {
     const toast = await this.toastController.create({
       message,
+      color: 'primary',
       duration: 1500,
       position: 'bottom',
     });

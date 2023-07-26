@@ -1,4 +1,4 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable, NgZone, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { LocalNotificationDescriptor, LocalNotifications } from '@capacitor/local-notifications';
 import { OccurrenceSet } from './models';
@@ -20,16 +20,14 @@ export interface ScheduleResult {
   providedIn: 'root'
 })
 export class NotificationService {
-
+  public hasNotification = signal('');
   constructor(private ngZone: NgZone, public router: Router) {
 
   }
 
   public async configure() {
     LocalNotifications.addListener('localNotificationActionPerformed', (notification => {
-      this.ngZone.run(() => {
-        this.router.navigate([`/event/${notification.notification.extra.eventId}`]);
-      });
+      this.hasNotification.set(notification.notification.extra.eventId);      
     }));
   }
 

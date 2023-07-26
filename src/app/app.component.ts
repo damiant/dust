@@ -1,7 +1,6 @@
 import { Component, EnvironmentInjector, OnInit, inject } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
-import { DbService } from './db.service';
 import { NotificationService } from './notification.service';
 
 @Component({
@@ -14,7 +13,7 @@ import { NotificationService } from './notification.service';
 export class AppComponent implements OnInit {
   public environmentInjector = inject(EnvironmentInjector);
 
-  constructor(private db: DbService, private notificationService: NotificationService) { }
+  constructor(private notificationService: NotificationService) { }
 
   async ngOnInit() {
     await this.notificationService.configure();
