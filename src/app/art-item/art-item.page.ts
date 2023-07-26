@@ -8,6 +8,7 @@ import { DbService } from '../db.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MapComponent, MapPoint, toMapPoint } from '../map/map.component';
 import { MapModalComponent } from '../map-modal/map-modal.component';
+import { FavoritesService } from '../favorites.service';
 
 @Component({
   selector: 'app-art-item',
@@ -29,7 +30,10 @@ export class ArtItemPage implements OnInit {
   mapPoints: MapPoint[] = [];
   mapTitle = '';
   mapSubtitle = '';
-  constructor(private route: ActivatedRoute, private router: Router, private db: DbService) {     
+  star = false;
+
+  constructor(private route: ActivatedRoute,
+    private db: DbService, private fav: FavoritesService) {     
   }
 
   async ngOnInit() {
@@ -41,6 +45,7 @@ export class ArtItemPage implements OnInit {
     this.mapTitle = this.art.name;
     this.mapSubtitle = this.art.location_string!;
     this.mapPoints.push(toMapPoint(this.art.location_string!));
+    this.star = await this.fav.isFavArt(this.art.uid);
   }
 
   map() {
@@ -49,6 +54,12 @@ export class ArtItemPage implements OnInit {
 
   ready(image: Image) {
     image.ready = true;    
+  }
+
+  async toggleStar() {
+    if (!this.art) return;
+    this.star = !this.star;
+    await this.fav.starArt(this.star, this.art.uid);
   }
 
 
