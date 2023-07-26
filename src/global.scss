@@ -123,6 +123,14 @@ ion-back-button {
     font-family: 'Gelion Regular';
 }
 
+.center {
+    padding-top: 1rem;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
 .text {
     line-height: 1.5;
     opacity: 0.5;

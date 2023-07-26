@@ -5,12 +5,10 @@
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-button (click)="toggleStar()" slot="icon">
-        <!-- <ion-icon [name]="star ? 'star' : 'star-outline'"></ion-icon> -->
         <ion-icon *ngIf="star" name="star"></ion-icon>
         <ion-icon *ngIf="!star" name="star-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <!-- <ion-title>Event</ion-title> -->
   </ion-toolbar>
 </ion-header>
 
@@ -35,6 +33,9 @@
     <ion-item>
       <ion-text style="padding-right: 1rem;" class="text">{{event.description}}</ion-text>
     </ion-item>
+    <div class="center">
+      <ion-button *ngIf="!star" (click)="toggleStar()" shape="round">Add To Favorites</ion-button>
+    </div>
   </ion-list>
   <app-map [points]="mapPoints"></app-map>
 </ion-content>
