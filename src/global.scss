@@ -91,7 +91,7 @@ ion-card-title {
 }
 
 ion-title {
-    font-family: 'Grotesk Bold';// 'Gelion Medium';
+    font-family: 'Grotesk Bold';
     font-weight: normal;
 }
 
@@ -159,15 +159,26 @@ cdk-virtual-scroll-viewport {
 }
 
 @keyframes pulse {
-    0% { transform: scale(1.0); }
-    50% { transform: scale(1.9); }
-    100% { transform: scale(1.0); }
+    0% {
+        transform: scale(1.0);
+    }
+
+    50% {
+        transform: scale(1.9);
+    }
+
+    100% {
+        transform: scale(1.0);
+    }
 }
 
 @media screen and (min-width: 1024px) {
-    ion-card-title, ion-card-subtitle {
+
+    ion-card-title,
+    ion-card-subtitle {
         width: 60vw;
     }
+
     ion-content {
         --padding-start: 10vw;
         --padding-end: 10vw;
@@ -189,21 +200,18 @@ cdk-virtual-scroll-viewport {
 
     ::-webkit-scrollbar {
         width: 10px;
-      }
-      
-      /* Track */
-      ::-webkit-scrollbar-track {
+    }
+
+    ::-webkit-scrollbar-track {
         background: transparent;
-      }
-      
-      /* Handle */
-      ::-webkit-scrollbar-thumb {
+    }
+
+    ::-webkit-scrollbar-thumb {
         background: #888;
         border-radius: 10px;
-      }
-      
-      /* Handle on hover */
-      ::-webkit-scrollbar-thumb:hover {
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
         background: #555;
-      }
+    }
 }
