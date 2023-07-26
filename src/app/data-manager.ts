@@ -15,6 +15,7 @@ export class DataManager implements WorkerClass {
             case 'populate': return await this.populate();
             case 'getDays': return this.getDays();
             case 'getEvents': return this.getEvents(args[0], args[1]);
+            case 'getEventList': return this.getEventList(args[0]);
             case 'findArts': return this.findArts(args[0]);
             case 'findArt': return this.findArt(args[0]);
             case 'checkEvents': return this.checkEvents();
@@ -114,6 +115,16 @@ export class DataManager implements WorkerClass {
         while (i < this.events.length && result.length < count) {
             result.push(this.events[i]);
             i++;
+        }
+        return result;
+    }
+
+    public getEventList(ids: string[]): Event[] {
+        const result: Event[] = [];
+        for (let event of this.events) {
+            if (ids.includes(event.uid)) {
+                result.push(event);
+            }
         }
         return result;
     }

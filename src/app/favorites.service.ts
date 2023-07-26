@@ -1,5 +1,4 @@
-import { Injectable } from '@angular/core';
-import { DbService } from './db.service';
+import { Injectable, signal } from '@angular/core';
 import PouchDB from 'pouchdb';
 import { Favorites } from './models';
 
@@ -14,20 +13,24 @@ export class FavoritesService {
 
   private db!: PouchDB.Database;
 
+  private ready: Promise<void>;
+  public changed = signal(1);
+
   private favorites: Favorites = { art: [], events: [], camps: [], friends: [] };
 
   constructor() {
     this.db = new PouchDB('favorites');
-    this.load();
+    this.ready = this.load();
   }
 
-  public isFavEvent(id: string): boolean {
-    return this.log('isFavEvent', this.favorites.events.includes(id));
+  public async getEvents(): Promise<string[]> {
+    await this.ready;
+    return this.favorites.events;
   }
 
-  private log(name: string, value: any): any {
-    console.log(name, value);
-    return value;
+  public async isFavEvent(id: string): Promise<boolean> {
+    await this.ready;
+    return this.favorites.events.includes(id);
   }
 
   public async starEvent(star: boolean, eventId: string) {
@@ -35,6 +38,8 @@ export class FavoritesService {
     const doc = await this.get(DbId.favorites, this.favorites);
     doc.data = this.favorites;
     await this.db.put(doc);
+    const i = this.changed();
+    this.changed.set(i + 1);
   }
 
   private async get(id: DbId, defaultValue: any): Promise<any> {

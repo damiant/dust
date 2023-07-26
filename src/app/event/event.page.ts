@@ -23,6 +23,7 @@ export class EventPage implements OnInit {
   mapPoints: MapPoint[] = [];
   mapTitle = '';
   mapSubtitle = '';
+  star = false;
   @Input() eventId: string | undefined;
   constructor(private route: ActivatedRoute, private db: DbService, private fav: FavoritesService) {
   }
@@ -37,17 +38,18 @@ export class EventPage implements OnInit {
     const id = tmp[0];
     this.back.set(tmp[1]);
     this.event = await this.db.findEvent(id);
-    this.event.star = this.fav.isFavEvent(this.event.uid);
     this.mapTitle = this.event.camp;
     this.mapSubtitle = this.event.location;
     this.mapPoints.push(toMapPoint(this.event.location));    
+    this.star = await this.fav.isFavEvent(this.event.uid);
+    console.log(this.star);
   }
 
-  star() {
+  async toggleStar() {
     if (!this.event) return;
-    this.event.star = !this.event?.star;
-    this.fav.starEvent(this.event.star, this.event.uid);
-
+    this.star = !this.star;
+    this.event.star = this.star;
+    await this.fav.starEvent(this.event.star, this.event.uid);
   }
 
 }

@@ -4,8 +4,10 @@
       <ion-back-button [text]="back()"></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button (click)="star()" slot="icon">
-        <ion-icon [name]="event?.star ? 'star' : 'star-outline'"></ion-icon>
+      <ion-button (click)="toggleStar()" slot="icon">
+        <!-- <ion-icon [name]="star ? 'star' : 'star-outline'"></ion-icon> -->
+        <ion-icon *ngIf="star" name="star"></ion-icon>
+        <ion-icon *ngIf="!star" name="star-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
     <!-- <ion-title>Event</ion-title> -->

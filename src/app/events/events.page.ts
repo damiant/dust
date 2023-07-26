@@ -11,13 +11,16 @@ import { FormsModule } from '@angular/forms';
 import { now, sameDay } from '../utils';
 import { App } from '@capacitor/app';
 import { FavoritesService } from '../favorites.service';
+import { EventComponent, MapAction } from '../event/event.component';
 
 @Component({
   selector: 'app-events',
   templateUrl: 'events.page.html',
   styleUrls: ['events.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, RouterModule, ScrollingModule, MapModalComponent, FormsModule],
+  imports: [
+    IonicModule, CommonModule, RouterModule, ScrollingModule, 
+    MapModalComponent, FormsModule, EventComponent],
 })
 export class EventsPage implements OnInit {
   title = 'Events';
@@ -100,10 +103,10 @@ export class EventsPage implements OnInit {
     this.update();
   }
 
-  map(location: string, title: string) {
-    this.mapPoints = [toMapPoint(location)];
-    this.mapTitle = title;
-    this.mapSubtitle = location;
+  map(action: MapAction) {
+    this.mapPoints = [toMapPoint(action.location)];
+    this.mapTitle = action.title;
+    this.mapSubtitle = action.location;
     this.showMap = true;
   }
 
