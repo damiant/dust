@@ -24,6 +24,7 @@ export class EventPage implements OnInit {
   mapTitle = '';
   mapSubtitle = '';
   star = false;
+  private day: Date | undefined;
   @Input() eventId: string | undefined;
   constructor(private route: ActivatedRoute, private db: DbService, private fav: FavoritesService, private toastController: ToastController) {
   }
@@ -36,6 +37,7 @@ export class EventPage implements OnInit {
 
     if (!tmp) throw new Error('Route error');
     const id = tmp[0];
+    
     this.back.set(tmp[1]);
     this.event = await this.db.findEvent(id);
     this.mapTitle = this.event.camp;
@@ -57,8 +59,8 @@ export class EventPage implements OnInit {
 
   async toggleStar() {
     if (!this.event) return;
-    this.star = !this.star;
-    const message = await this.fav.starEvent(this.star, this.event);
+    this.star = !this.star;    
+    const message = await this.fav.starEvent(this.star, this.event, this.db.selectedDay());
     if (message) {
       this.presentToast(message);
     }

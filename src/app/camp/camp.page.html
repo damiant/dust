@@ -12,7 +12,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="app-page">
   <ion-modal [isOpen]="showEvent" (didDismiss)="showEvent = false"  [initialBreakpoint]="0.75" [breakpoints]="[0, 0.5, 0.75]">
     <ng-template>
       <app-event [eventId]="eventId"></app-event>

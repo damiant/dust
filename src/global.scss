@@ -179,7 +179,7 @@ cdk-virtual-scroll-viewport {
         width: 60vw;
     }
 
-    ion-content {
+    ion-content.app-page {
         --padding-start: 10vw;
         --padding-end: 10vw;
         --overflow: hidden;

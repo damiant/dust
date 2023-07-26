@@ -218,6 +218,7 @@ export class DataManager implements WorkerClass {
         for (let event of this.events) {
             if (this.eventContains(query, event) && this.onDay(day, event)) {
                 event.timeString = this.getTimeString(event, day);
+                event.longTimeString = this.getTimeString(event, day, true);
                 result.push(event);
             }
         }

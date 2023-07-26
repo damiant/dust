@@ -44,7 +44,7 @@ export class FavoritesService {
     return this.favorites.camps.includes(id);
   }
 
-  public async starEvent(star: boolean, event: Event): Promise<string | undefined> {
+  public async starEvent(star: boolean, event: Event, selectedDay: Date): Promise<string | undefined> {
     this.favorites.events = this.include(star, event.uid, this.favorites.events);
     await this.saveFavorites();
     if (star) {
@@ -54,7 +54,7 @@ export class FavoritesService {
           title: event.name,
           body: event.description
         },
-        event.occurrence_set);
+        event.occurrence_set, selectedDay);
       return (result.error) ? result.error : `${result.notifications} notification${result.notifications != 1 ? 's' : ''} scheduled for this event`;
     } else {
       // Remove notifications

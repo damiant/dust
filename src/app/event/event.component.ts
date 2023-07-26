@@ -14,6 +14,7 @@ export class EventComponent  implements OnInit {
 
   @Input() event!: Event;
   @Input() title = 'Events';
+  @Input() day: Date | undefined;
   @Input() longTime = false;
   @Output() mapClick = new EventEmitter<any>();
 
@@ -23,6 +24,10 @@ export class EventComponent  implements OnInit {
 
   map(event: Event) {
     this.mapClick.emit(event);
+  }
+
+  getDay() {
+    return this.day;
   }
 
 }

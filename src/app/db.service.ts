@@ -1,13 +1,15 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Event, Day, Camp, Art } from './models';
 import { call, registerWorker } from './worker-interface';
+import { noDate, now } from './utils';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DbService {
-  initialized = false;
-  worker!: Worker;
+  public selectedDay = signal(noDate());
+  private initialized = false;  
+  private worker!: Worker;
 
   public async init() {
     this.worker = new Worker(new URL('./app.worker', import.meta.url));

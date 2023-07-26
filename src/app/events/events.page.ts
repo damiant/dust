@@ -8,7 +8,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MapPoint, toMapPoint } from '../map/map.component';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { FormsModule } from '@angular/forms';
-import { now, sameDay } from '../utils';
+import { noDate, now, sameDay } from '../utils';
 import { App } from '@capacitor/app';
 import { FavoritesService } from '../favorites.service';
 import { EventComponent } from '../event/event.component';
@@ -91,9 +91,11 @@ export class EventsPage implements OnInit {
     if (event.target.value == 'all') {
       this.day = undefined;
       this.title = 'Events';
+      this.db.selectedDay.set(noDate());
     } else {
       this.day = new Date(event.target.value);
       this.title = this.day.toLocaleDateString('en-US', { weekday: 'long' });
+      this.db.selectedDay.set(this.day);
     }
     this.update();
   }

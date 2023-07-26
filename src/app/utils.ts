@@ -1,3 +1,5 @@
+import { OccurrenceSet } from "./models";
+
 export function sameDay(d1: Date, d2: Date) {
     return d1.getFullYear() === d2.getFullYear() &&
         d1.getMonth() === d2.getMonth() &&
@@ -17,4 +19,15 @@ export function randomInt(min: number, max: number) { // min and max included
 
 export function delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(() => resolve(), ms));
+}
+
+export function noDate(): Date {
+    return new Date(0);
+}
+
+export function dateMatches(d: Date, occurrence: OccurrenceSet): boolean {
+    const start = new Date(occurrence.start_time);
+    const end = new Date(occurrence.end_time);
+    return sameDay(d, start) || sameDay(d, end);
+
 }

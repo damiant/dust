@@ -2,7 +2,7 @@ import { Injectable, NgZone, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { LocalNotificationDescriptor, LocalNotifications } from '@capacitor/local-notifications';
 import { OccurrenceSet } from './models';
-import { now, randomInt } from './utils';
+import { dateMatches, noDate, now, randomInt } from './utils';
 
 export interface Reminder {
   title: string,
@@ -27,11 +27,11 @@ export class NotificationService {
 
   public async configure() {
     LocalNotifications.addListener('localNotificationActionPerformed', (notification => {
-      this.hasNotification.set(notification.notification.extra.eventId);      
+      this.hasNotification.set(notification.notification.extra.eventId);
     }));
   }
 
-  public async scheduleAll(reminder: Reminder, occurrence_set: OccurrenceSet[]): Promise<ScheduleResult> {
+  public async scheduleAll(reminder: Reminder, occurrence_set: OccurrenceSet[], selectedDay: Date): Promise<ScheduleResult> {
     const error = await this.verifyPermissions();
     if (error) {
       return { notifications: 0, error };
@@ -40,14 +40,22 @@ export class NotificationService {
     let last;
     for (let occurrence of occurrence_set) {
       try {
-        const start = new Date(occurrence.start_time);
-        reminder.when = this.reminderTime(start);
-        console.log(reminder.when);
-        if (!this.sameDate(last, reminder.when)) {
-          await this.schedule(reminder);
-          count++;
+        let isValid = true;
+        if (!this.sameDate(selectedDay, noDate())) {
+           // User has selected a particular day
+           isValid = dateMatches(selectedDay, occurrence);
         }
-        last = reminder.when;
+        console.log(`for this day=${isValid} selected=${selectedDay} start=${occurrence.start_time} end=${occurrence.end_time}`);
+        if (isValid) {
+          const start = new Date(occurrence.start_time);
+          reminder.when = this.reminderTime(start);
+          console.log(reminder.when);
+          if (!this.sameDate(last, reminder.when)) {
+            await this.schedule(reminder);
+            count++;
+          }
+          last = reminder.when;
+        }
       } catch {
         // This can occur if the time is in the past
         console.error(`Unable to schedule reminder`, reminder);
