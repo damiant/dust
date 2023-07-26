@@ -25,6 +25,9 @@
 - press tab button to scroll to top
 - find gps: direction arrow + distance
 
+## Notifications
+- Remind only on the first (non old) occurrence of the event or if the user chose a day then for that day
+
 ## Sharing
 - share event
 - share profile
@@ -32,8 +35,7 @@
 
 ## Favorites
 - Add friend to favorites (name, desc, street, camp, gps)
-- Add local notifications for event
-- Remove local notifications for event
+
 - Hide favorite old events
 
 ## Friends

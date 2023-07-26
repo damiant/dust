@@ -1,6 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import PouchDB from 'pouchdb';
-import { Favorites } from './models';
+import { Event, Favorites } from './models';
+import { NotificationService } from './notification.service';
 
 enum DbId {
   favorites = 'favorites'
@@ -18,7 +19,7 @@ export class FavoritesService {
 
   private favorites: Favorites = { art: [], events: [], camps: [], friends: [] };
 
-  constructor() {
+  constructor(private notificationService: NotificationService) {
     this.db = new PouchDB('favorites');
     this.ready = this.load();
   }
@@ -43,17 +44,23 @@ export class FavoritesService {
     return this.favorites.camps.includes(id);
   }
 
-  public async starEvent(star: boolean, eventId: string) {
-    this.favorites.events = this.include(star, eventId, this.favorites.events);
+  public async starEvent(star: boolean, event: Event): Promise<string | undefined> {
+    this.favorites.events = this.include(star, event.uid, this.favorites.events);
     await this.saveFavorites();
-  }
-
-  private async saveFavorites() {
-    const doc = await this.get(DbId.favorites, this.favorites);
-    doc.data = this.favorites;
-    await this.db.put(doc);
-    const i = this.changed();
-    this.changed.set(i + 1);
+    if (star) {
+      const result = await this.notificationService.scheduleAll(
+        {
+          id: event.uid,
+          title: event.name,
+          body: event.description
+        },
+        event.occurrence_set);
+      return (result.error) ? result.error : `${result.notifications} notification${result.notifications != 1 ? 's' : ''} scheduled for this event`;
+    } else {
+      // Remove notifications
+      this.notificationService.unscheduleAll(event.uid);
+      return undefined;
+    }
   }
 
   public async starArt(star: boolean, artId: string) {
@@ -65,6 +72,14 @@ export class FavoritesService {
   public async starCamp(star: boolean, campId: string) {
     this.favorites.camps = this.include(star, campId, this.favorites.camps);
     await this.saveFavorites();
+  }
+
+  private async saveFavorites() {
+    const doc = await this.get(DbId.favorites, this.favorites);
+    doc.data = this.favorites;
+    await this.db.put(doc);
+    const i = this.changed();
+    this.changed.set(i + 1);
   }
 
   private async get(id: DbId, defaultValue: any): Promise<any> {

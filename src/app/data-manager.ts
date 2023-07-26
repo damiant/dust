@@ -52,6 +52,12 @@ export class DataManager implements WorkerClass {
         for (const event of this.events) {
             event.old = true;
             for (let occurrence of event.occurrence_set) {
+                // This makes all events happen today
+                // let start: Date = new Date(occurrence.start_time);
+                // let end: Date = new Date(occurrence.end_time);
+                // occurrence.start_time = this.setToday(start).toString();
+                // occurrence.end_time = this.setToday(end).toString();
+
                 if (this.allEventsOld) {
                     event.old = false;
                     occurrence.old = false;
@@ -98,8 +104,8 @@ export class DataManager implements WorkerClass {
                 event.print_description = event.print_description + '.';
             }
             for (let occurrence of event.occurrence_set) {
-                const start: Date = new Date(occurrence.start_time);
-                const end: Date = new Date(occurrence.end_time);
+                let start: Date = new Date(occurrence.start_time);
+                let end: Date = new Date(occurrence.end_time);
                 this.addDay(start);
                 const hrs = this.hoursBetween(start, end);
                 if (hrs > 24) {
@@ -107,12 +113,19 @@ export class DataManager implements WorkerClass {
                     occurrence.end_time = new Date(start.getFullYear(), start.getMonth(), start.getDate(), end.getHours(), end.getMinutes()).toISOString();
                     const newHrs = this.hoursBetween(new Date(occurrence.start_time), new Date(occurrence.end_time));
                     console.log(`Fixed end time of ${event.name} from ${old} to ${occurrence.end_time} (starting ${occurrence.start_time}) because event was ${hrs} hours long. Now ${newHrs} hours long.`);
-
                 }
             }
             event.timeString = this.getTimeString(event, undefined);
             event.longTimeString = this.getTimeString(event, undefined, true);
         }
+    }
+
+    private setToday(d: Date): Date {
+        const today = now();
+        d.setDate(today.getDate());
+        d.setMonth(today.getMonth());
+        d.setFullYear(today.getFullYear());
+        return d;
     }
 
     public getEvents(idx: number, count: number): Event[] {
