@@ -21,6 +21,7 @@ export class EventComponent  implements OnInit {
 
   @Input() event!: Event;
   @Input() title = 'Events';
+  @Input() longTime = false;
   @Output() mapClick = new EventEmitter<any>();
 
   constructor() { }

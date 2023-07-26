@@ -126,6 +126,7 @@ export class DataManager implements WorkerClass {
                 result.push(event);
             }
         }
+        this.sortEvents(result);
         return result;
     }
 
@@ -178,8 +179,12 @@ export class DataManager implements WorkerClass {
                 result.push(event);
             }
         }
-        result.sort((a: Event, b: Event) => { return a.start.getTime() - b.start.getTime() });
+        this.sortEvents(result);
         return result;
+    }
+
+    private sortEvents(events: Event[]) {
+        events.sort((a: Event, b: Event) => { return a.start.getTime() - b.start.getTime() });
     }
 
     public getCampEvents(campId: string): Event[] {
@@ -190,7 +195,7 @@ export class DataManager implements WorkerClass {
                 result.push(event);
             }
         }
-        result.sort((a: Event, b: Event) => { return a.start.getTime() - b.start.getTime() });
+        this.sortEvents(result);
         return result;
     }
 

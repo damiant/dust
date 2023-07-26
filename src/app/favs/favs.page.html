@@ -10,5 +10,5 @@
       <ion-title size="large">Favorites</ion-title>
     </ion-toolbar>
   </ion-header>
-  <app-event title="Favorites" [event]="event" *ngFor="let event of events; trackBy: eventsTrackBy"></app-event>
+  <app-event title="Favorites" [event]="event" [longTime]="true" *ngFor="let event of events; trackBy: eventsTrackBy"></app-event>
 </ion-content>

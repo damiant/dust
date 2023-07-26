@@ -30,7 +30,6 @@ export class FavsPage implements OnInit {
      if (this.events.length == 0) {
       this.update();
      }
-     console.log('favs enter', this.events);
   }
 
   private async update() {

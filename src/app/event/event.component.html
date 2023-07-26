@@ -7,6 +7,6 @@
   
   <ion-card-content [routerLink]="'/event/'+ event.uid + '+' + title">
     <ion-text class="clamp">{{event.print_description}}</ion-text>
-    <ion-text>{{event.timeString}} {{event.event_type.label}}</ion-text>
+    <ion-text>{{longTime ? event.longTimeString : event.timeString}} {{event.event_type.label}}</ion-text>
   </ion-card-content>
 </ion-card>
