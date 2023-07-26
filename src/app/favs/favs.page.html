@@ -10,5 +10,9 @@
       <ion-title size="large">Favorites</ion-title>
     </ion-toolbar>
   </ion-header>
-  <app-event title="Favorites" [event]="event" [longTime]="true" *ngFor="let event of events; trackBy: eventsTrackBy"></app-event>
+  <app-map-modal [title]="mapTitle" [subtitle]="mapSubtitle" [(show)]="showMap" [points]="mapPoints"></app-map-modal>
+  <h1 *ngIf="events.length > 0">Events</h1>
+  <app-event title="Favorites" (mapClick)="mapEvent($event)" [event]="event" [longTime]="true" *ngFor="let event of events; trackBy: eventsTrackBy" />
+  <h1 *ngIf="events.length > 0">Camps</h1>
+  <app-camp title="Favorites" (mapClick)="mapCamp($event)" [camp]="camp" *ngFor="let camp of camps; trackBy: campsTrackBy" />
 </ion-content>

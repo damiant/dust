@@ -16,6 +16,7 @@ export class DataManager implements WorkerClass {
             case 'getDays': return this.getDays();
             case 'getEvents': return this.getEvents(args[0], args[1]);
             case 'getEventList': return this.getEventList(args[0]);
+            case 'getCampList': return this.getCampList(args[0]);
             case 'findArts': return this.findArts(args[0]);
             case 'findArt': return this.findArt(args[0]);
             case 'checkEvents': return this.checkEvents();
@@ -130,6 +131,17 @@ export class DataManager implements WorkerClass {
         return result;
     }
 
+    public getCampList(ids: string[]): Camp[] {
+        const result: Camp[] = [];
+        for (let camp of this.camps) {
+            if (ids.includes(camp.uid)) {
+                result.push(camp);
+            }
+        }
+        this.sortCamps(result);
+        return result;
+    }
+
     public getCamps(idx: number, count: number): Camp[] {
         const result: Camp[] = [];
         let i = idx;
@@ -137,6 +149,7 @@ export class DataManager implements WorkerClass {
             result.push(this.camps[i]);
             i++;
         }
+        this.sortCamps(result);
         return result;
     }
 
@@ -187,6 +200,10 @@ export class DataManager implements WorkerClass {
         events.sort((a: Event, b: Event) => { return a.start.getTime() - b.start.getTime() });
     }
 
+    private sortCamps(camps: Camp[]) {
+        camps.sort((a: Camp, b: Camp) => { return a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }) });
+    }
+
     public getCampEvents(campId: string): Event[] {
         const result: Event[] = [];
 
@@ -207,6 +224,7 @@ export class DataManager implements WorkerClass {
                 result.push(camp);
             }
         }
+        this.sortCamps(result);
         return result;
     }
 

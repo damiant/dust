@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { now, sameDay } from '../utils';
 import { App } from '@capacitor/app';
 import { FavoritesService } from '../favorites.service';
-import { EventComponent, MapAction } from '../event/event.component';
+import { EventComponent } from '../event/event.component';
 
 @Component({
   selector: 'app-events',
@@ -61,11 +61,6 @@ export class EventsPage implements OnInit {
     }
   }
 
-  star(event: Event) {
-    event.star = !event.star;
-    this.fav.starEvent(event.star, event.uid);
-  }
-
   chooseDefaultDay(today: Date): Date | string {
     for (const day of this.days) {
       if (day.date && sameDay(day.date, today)) {
@@ -103,10 +98,10 @@ export class EventsPage implements OnInit {
     this.update();
   }
 
-  map(action: MapAction) {
-    this.mapPoints = [toMapPoint(action.location)];
-    this.mapTitle = action.title;
-    this.mapSubtitle = action.location;
+  map(event: Event) {
+    this.mapPoints = [toMapPoint(event.location)];
+    this.mapTitle = event.camp;
+    this.mapSubtitle = event.location;
     this.showMap = true;
   }
 

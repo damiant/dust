@@ -3,7 +3,12 @@
     <ion-buttons slot="start">
       <ion-back-button text="Camps"></ion-back-button>
     </ion-buttons>
-    <!-- <ion-title>Event</ion-title> -->
+    <ion-buttons slot="end">
+      <ion-button (click)="toggleStar()" slot="icon">
+        <ion-icon *ngIf="star" name="star"></ion-icon>
+        <ion-icon *ngIf="!star" name="star-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 

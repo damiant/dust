@@ -7,13 +7,14 @@ import { CommonModule } from '@angular/common';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MapPoint, toMapPoint } from '../map/map.component';
 import { MapModalComponent } from '../map-modal/map-modal.component';
+import { CampComponent } from '../camp/camp.component';
 
 @Component({
   selector: 'app-camps',
   templateUrl: 'camps.page.html',
   styleUrls: ['camps.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, RouterModule, ScrollingModule, MapModalComponent]
+  imports: [IonicModule, CommonModule, RouterModule, ScrollingModule, MapModalComponent, CampComponent]
 })
 export class CampsPage {
   camps: Camp[] = [];

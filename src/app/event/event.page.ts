@@ -48,8 +48,7 @@ export class EventPage implements OnInit {
   async toggleStar() {
     if (!this.event) return;
     this.star = !this.star;
-    this.event.star = this.star;
-    await this.fav.starEvent(this.event.star, this.event.uid);
+    await this.fav.starEvent(this.star, this.event.uid);
   }
 
 }

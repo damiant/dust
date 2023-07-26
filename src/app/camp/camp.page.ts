@@ -7,6 +7,7 @@ import { DbService } from '../db.service';
 import { Camp, Event } from '../models';
 import { MapComponent, MapPoint, toMapPoint } from '../map/map.component';
 import { EventPage } from '../event/event.page';
+import { FavoritesService } from '../favorites.service';
 
 @Component({
   selector: 'app-camp',
@@ -21,7 +22,9 @@ export class CampPage implements OnInit {
   mapPoints: MapPoint[] = [];
   events: Event[] = [];
   eventId: string | undefined;
-  constructor(private route: ActivatedRoute, private db: DbService) {
+  star = false;
+  constructor(private route: ActivatedRoute, private db: DbService,
+    private fav: FavoritesService) {
   }
 
   async ngOnInit() {
@@ -30,8 +33,8 @@ export class CampPage implements OnInit {
     if (!tmp) throw new Error('Route error');
     const id = tmp[0];
     this.camp = await this.db.findCamp(id);
+    this.star = await this.fav.isFavCamp(this.camp.uid);
     this.events = await this.db.getCampEvents(id);
-    console.log(this.events, id)
     this.mapPoints = [toMapPoint(this.camp.location_string!)];
     console.log(this.camp);
   }
@@ -43,6 +46,12 @@ export class CampPage implements OnInit {
   show(event: Event) {
     this.eventId = event.uid;
     this.showEvent = true;
+  }
+
+  async toggleStar() {
+    if (!this.camp) return;
+    this.star = !this.star;
+    await this.fav.starCamp(this.star, this.camp.uid);
   }
 
 }

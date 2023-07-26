@@ -23,9 +23,9 @@ export class FavoritesService {
     this.ready = this.load();
   }
 
-  public async getEvents(): Promise<string[]> {
+  public async getFavorites(): Promise<Favorites> {
     await this.ready;
-    return this.favorites.events;
+    return this.favorites;
   }
 
   public async isFavEvent(id: string): Promise<boolean> {
@@ -33,8 +33,22 @@ export class FavoritesService {
     return this.favorites.events.includes(id);
   }
 
+  public async isFavCamp(id: string): Promise<boolean> {
+    await this.ready;
+    return this.favorites.camps.includes(id);
+  }
+
   public async starEvent(star: boolean, eventId: string) {
     this.favorites.events = this.include(star, eventId, this.favorites.events);
+    const doc = await this.get(DbId.favorites, this.favorites);
+    doc.data = this.favorites;
+    await this.db.put(doc);
+    const i = this.changed();
+    this.changed.set(i + 1);
+  }
+
+  public async starCamp(star: boolean, campId: string) {
+    this.favorites.camps = this.include(star, campId, this.favorites.camps);
     const doc = await this.get(DbId.favorites, this.favorites);
     doc.data = this.favorites;
     await this.db.put(doc);

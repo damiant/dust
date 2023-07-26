@@ -5,7 +5,6 @@ export interface Event {
     location: string; // Calculated
     longTimeString: string; // Calculated
     old: boolean; // Calculated
-    star: boolean; // Calculated
     all_day: any
     check_location?: number
     description: string
