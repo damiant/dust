@@ -9,6 +9,16 @@
 - custom camp icon
 - custom event icon
 - custom art icon
+- icon plain background
+- button to favorite "Add to Favorites"
+- Switch to camp when clicked from events
+- Favorite events for day: show in number order on map
+- Favorites use prefix on db (eg bm-2022)
+- Remove scrollbar in segment
+- Notes page with items as checkboxes (ie check list)
+
+## Intro
+- Show days until event
 
 ## Geolocation
 - camps near here
@@ -28,7 +38,6 @@
 - Add friend to favorites (name, desc, street, camp, gps)
 - Add local notifications for event
 - Remove local notifications for event
-- Show favorite events
 - Show favorite camps
 - Show favorite art
 - Hide favorite old events
