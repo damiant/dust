@@ -8,15 +8,16 @@ import { noDate, now } from './utils';
 })
 export class DbService {
   public selectedDay = signal(noDate());
+  public selectedYear = signal('');
   private initialized = false;  
   private worker!: Worker;
 
-  public async init() {
+  public async init(dataset: string) {
     if (this.initialized) return;
     this.worker = new Worker(new URL('./app.worker', import.meta.url));
     registerWorker(this.worker);
 
-    await call(this.worker, 'populate');
+    await call(this.worker, 'populate', dataset);
     this.initialized = true;
   }
 

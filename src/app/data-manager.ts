@@ -8,11 +8,12 @@ export class DataManager implements WorkerClass {
     private art: Art[] = [];
     private days: string[] = [];
     private allEventsOld = false;
+    private dataset: string = '';
 
     // This is required for a WorkerClass
     public async doWork(method: string, args: any[]): Promise<any> {
         switch (method) {
-            case 'populate': return await this.populate();
+            case 'populate': return await this.populate(args[0]);
             case 'getDays': return this.getDays();
             case 'getEvents': return this.getEvents(args[0], args[1]);
             case 'getEventList': return this.getEventList(args[0]);
@@ -31,7 +32,8 @@ export class DataManager implements WorkerClass {
         }
     }
 
-    public async populate(): Promise<number> {
+    public async populate(dataset: string): Promise<number> {
+        this.dataset = dataset;
         this.events = await this.loadEvents();
         this.camps = await this.loadCamps();
         this.camps = this.camps.filter((camp) => { return camp.description || camp.location_string });
@@ -368,18 +370,21 @@ export class DataManager implements WorkerClass {
         return date.toLocaleDateString([], { weekday: 'long' });
     }
 
+    private path(name: string): string {
+        return `assets/${this.dataset}/${name}.json`;
+    }
     private async loadEvents(): Promise<Event[]> {
-        const res = await fetch('assets/events.json');
+        const res = await fetch(this.path('events'));
         return await res.json();
     }
 
     private async loadCamps(): Promise<Camp[]> {
-        const res = await fetch('assets/camps.json');
+        const res = await fetch(this.path('camps'));
         return await res.json();
     }
 
     private async loadArt(): Promise<Art[]> {
-        const res = await fetch('assets/art.json');
+        const res = await fetch(this.path('art'));
         return await res.json();
     }
 }

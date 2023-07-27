@@ -20,7 +20,7 @@ export class ArtPage {
   minBufferPx = 900;
   @ViewChild(CdkVirtualScrollViewport) virtualScroll!: CdkVirtualScrollViewport;
 
-  constructor(private db: DbService, private ui: UiService) { 
+  constructor(public db: DbService, private ui: UiService) { 
     effect(() => {
       this.ui.scrollUp('art', this.virtualScroll);
     });

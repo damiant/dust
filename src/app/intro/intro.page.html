@@ -3,7 +3,18 @@
     <h1>dust.</h1>
     <ion-text><b>dust</b> is a guide for burners to find events, camps and art.</ion-text>
   </div>
+  <div class="container" id="scroll-container">
+    <div class="card" [ngClass]="(selected?.year === card.year) ? 'select' : 'unselect'" *ngFor="let card of cards" (click)="open(card)">
+      <div class="card-container">
+        <ion-text>{{card.name}}<br/>{{card.year}}</ion-text>
+      </div>
+      </div>
+  </div>
+  <div class="center">
+    <ion-spinner color="light" *ngIf="!ready"></ion-spinner>
+  </div>
   <div class="footer">
-    <ion-button [disabled]="!ready" routerLink="/tabs/events" size="large" fill="round">Get Dusty</ion-button>
+
+    <ion-button [disabled]="!ready" (click)="go()" size="large" fill="round">GET DUSTY<ion-icon name="arrow-forward-outline"></ion-icon></ion-button>
   </div>
 </ion-content>

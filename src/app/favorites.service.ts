@@ -14,13 +14,16 @@ export class FavoritesService {
 
   private db!: PouchDB.Database;
 
-  private ready: Promise<void>;
+  private ready: Promise<void> | undefined;
   public changed = signal(1);
 
   private favorites: Favorites = { art: [], events: [], camps: [], friends: [] };
 
   constructor(private notificationService: NotificationService) {
-    this.db = new PouchDB('favorites');
+  }
+
+  public init(dataset: string) {
+    this.db = new PouchDB(`favorites-${dataset}`);
     this.ready = this.load();
   }
 

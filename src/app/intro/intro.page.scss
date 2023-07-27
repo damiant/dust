@@ -14,7 +14,10 @@ ion-button {
 h1 {
     font-size: 60px;
     font-family: 'Nunito';
+}
 
+ion-spinner {
+    padding-top: 2rem;
 }
 
 .rows {
@@ -23,8 +26,59 @@ h1 {
     padding-left: 10vw;
     padding-right: 10vw;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50%;
 }
 
 ion-text {
     font-size: x-large;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    overflow-y: hidden;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 20px;
+    scroll-behavior: smooth;
+}
+
+.card {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+
+    background-color: transparent;
+    border: 4px solid var(--ion-color-light);
+    border-radius: 50%;//10px;
+    min-width: calc(40vw - 30px);
+    min-height: calc(40vw - 30px); 
+    
+    margin: 0.5rem;
+    display: flex;
+    align-items: center;
+    align-self: flex-start;
+    justify-content: center;
+}
+
+.select {
+    background-color:  var(--ion-color-light);
+    color: var(--ion-color-primary);
+}
+
+.unselect {
+    opacity: 0.75;
+}
+
+.card-container {
+    overflow-y: scroll;
+    //height: calc(100vh - 150px);
+}
+
+div::-webkit-scrollbar {
+    display: none;
 }

@@ -10,13 +10,16 @@
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Camps</ion-title>
+      <ion-badge *ngIf="db.selectedYear() !== ''" slot="end">{{db.selectedYear()}}</ion-badge>
     </ion-toolbar>
     <ion-toolbar>
       <ion-searchbar (ionInput)="handleInput($event)" [debounce]="1000" placeholder="Find Camps"></ion-searchbar>
     </ion-toolbar>
   </ion-header>
   <app-map-modal [title]="mapTitle" [subtitle]="mapSubtitle" [(show)]="showMap" [points]="mapPoints"></app-map-modal>
-  
+  <div *ngIf="camps.length === 0" class="center pad-top">
+    <ion-text color="medium">No camps were found.</ion-text>
+  </div>
   <cdk-virtual-scroll-viewport  itemSize="180" [minBufferPx]="minBufferPx" maxBufferPx="1350">
     <app-camp [camp]="camp" title="Camps" (mapClick)="map($event)" *cdkVirtualFor="let camp of camps; trackBy: campsTrackBy" />
 </cdk-virtual-scroll-viewport>

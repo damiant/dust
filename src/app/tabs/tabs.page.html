@@ -1,6 +1,4 @@
-<div class="vcenter">
-  <ion-spinner *ngIf="!ready"></ion-spinner>
-</div>
+
 <ion-tabs *ngIf="ready" (ionTabsWillChange)="changeTab($event)">
   <ion-tab-bar slot="bottom" translucent>
     <ion-tab-button tab="events" (click)="select('events')">

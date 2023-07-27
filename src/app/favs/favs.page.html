@@ -8,10 +8,11 @@
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Favorites</ion-title>
+      <ion-badge *ngIf="db.selectedYear() !== ''" slot="end">{{db.selectedYear()}}</ion-badge>
     </ion-toolbar>
   </ion-header>
-  <app-map-modal [title]="mapTitle" [subtitle]="mapSubtitle" [(show)]="showMap" [points]="mapPoints"></app-map-modal>
-  <div *ngIf="noFavorites" class="vcenter">
+  <app-map-modal [title]="mapTitle" [subtitle]="mapSubtitle" [(show)]="showMap" [points]="mapPoints"></app-map-modal>  
+  <div *ngIf="noFavorites" class="center pad-top">
     <ion-text color="medium">Press the <ion-icon name="star-outline"></ion-icon> icon on Events, Camps and Art.</ion-text>
   </div>
   <h1 *ngIf="events.length > 0">Events</h1>

@@ -105,6 +105,10 @@ export interface Camp {
     friends: Friend[];
   }
 
+  export interface Settings {
+    dataset: string;
+  }
+
   export interface Friend {
     name: string;
     street: string;

@@ -33,7 +33,7 @@ export class FavsPage implements OnInit {
   mapPoints: MapPoint[] = [];
   @ViewChild(IonContent) ionContent!: IonContent;
 
-  constructor(private fav: FavoritesService, private ui: UiService, private db: DbService) { 
+  constructor(private fav: FavoritesService, private ui: UiService, public db: DbService) { 
     effect(() => {
       console.log('update fav');
       this.fav.changed();

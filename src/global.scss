@@ -122,6 +122,10 @@ ion-title {
     -webkit-box-orient: vertical;
 }
 
+ion-badge {
+    margin-right: 2rem;
+}
+
 ion-text,
 ion-card-content,
 ion-card-subtitle,
@@ -149,6 +153,10 @@ ion-back-button {
 .text {
     line-height: 1.5;
     opacity: 0.5;
+}
+
+.pad-top {
+    padding-top: 5rem;
 }
 
 cdk-virtual-scroll-viewport {
