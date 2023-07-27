@@ -104,15 +104,26 @@ export class DataManager implements WorkerClass {
                 event.print_description = event.print_description + '.';
             }
             for (let occurrence of event.occurrence_set) {
+
                 let start: Date = new Date(occurrence.start_time);
                 let end: Date = new Date(occurrence.end_time);
+
                 this.addDay(start);
                 const hrs = this.hoursBetween(start, end);
                 if (hrs > 24) {
                     const old = occurrence.end_time;
                     occurrence.end_time = new Date(start.getFullYear(), start.getMonth(), start.getDate(), end.getHours(), end.getMinutes()).toISOString();
                     const newHrs = this.hoursBetween(new Date(occurrence.start_time), new Date(occurrence.end_time));
-                    console.log(`Fixed end time of ${event.name} from ${old} to ${occurrence.end_time} (starting ${occurrence.start_time}) because event was ${hrs} hours long. Now ${newHrs} hours long.`);
+                    end = new Date(occurrence.end_time);
+                    console.log(`Fixed end time of ${event.name} from ${old}=>${occurrence.end_time} (starting ${occurrence.start_time}) because event was ${hrs} hours long. Now ${newHrs} hours long.`);
+                }
+                if (end.getHours() == 0 && end.getMinutes() == 0) {
+                    // Midnight is set to 11:59
+                    const prev = end;
+                    
+                    occurrence.end_time = new Date(start.getFullYear(), start.getMonth(), start.getDate(), 23, 59).toISOString();
+                    end = new Date(occurrence.end_time);
+                    console.log(`Fixed midnight ${event.name} ${prev}=>${end}`);
                 }
             }
             event.timeString = this.getTimeString(event, undefined);
@@ -286,7 +297,7 @@ export class DataManager implements WorkerClass {
     }
 
     private timeBetween(d1: any, d2: any): string {
-        const hrs = (Math.abs(d1 - d2) / 36e5);
+        const hrs = Math.floor(Math.abs(d1 - d2) / 36e5);
         const mins = Math.floor((Math.abs(d1 - d2) / 1000) / 60);
         return (mins < 60) ? `${mins}mins` : `${hrs}hrs`;
     }
