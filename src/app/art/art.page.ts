@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, effect } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { Art } from '../models';
 import { DbService } from '../db.service';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ScrollingModule } from '@angular/cdk/scrolling';
+import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { ArtComponent } from './art.component';
+import { UiService } from '../ui.service';
 
 @Component({
   selector: 'app-arts',
@@ -17,8 +18,13 @@ import { ArtComponent } from './art.component';
 export class ArtPage {
   arts: Art[] = [];
   minBufferPx = 900;
+  @ViewChild(CdkVirtualScrollViewport) virtualScroll!: CdkVirtualScrollViewport;
 
-  constructor(private db: DbService) { }
+  constructor(private db: DbService, private ui: UiService) { 
+    effect(() => {
+      this.ui.scrollUp('art', this.virtualScroll);
+    });
+  }
 
   async ionViewDidEnter() {
     if (this.arts.length == 0) {
