@@ -34,7 +34,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: '/tabs/events',
+    redirectTo: '/intro',
     pathMatch: 'full',
   },
 ];

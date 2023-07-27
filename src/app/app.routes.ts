@@ -1,9 +1,14 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
+  
   {
     path: '',
     loadChildren: () => import('./tabs/tabs.routes').then((m) => m.routes),
+  },
+  {
+    path: 'intro',
+    loadComponent: () => import('./intro/intro.page').then( m => m.IntroPage)
   },
   {
     path: 'event/:id',
@@ -16,5 +21,9 @@ export const routes: Routes = [
   {
     path: 'art/:id',
     loadComponent: () => import('./art-item/art-item.page').then( m => m.ArtItemPage)
+  },
+  {
+    path: 'intro',
+    loadComponent: () => import('./intro/intro.page').then( m => m.IntroPage)
   }
 ];

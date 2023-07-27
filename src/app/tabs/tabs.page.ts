@@ -31,9 +31,6 @@ export class TabsPage implements OnInit {
   async ngOnInit() {
     await this.db.init();
     this.ready = true;
-    setTimeout(async () => {
-      await SplashScreen.hide();
-    }, 1000);
   }
 
   async goToFavEvent(eventId: string) {

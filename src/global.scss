@@ -60,6 +60,13 @@
     src: local('Gelion Bold'), url('assets/fonts/gelion-bold.woff') format('woff');
 }
 
+@font-face {
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Nunito'), url('assets/fonts/nunito-extrabold.woff') format('woff');
+}
+
 
 h1 {
     font-family: 'Gelion Bold';
@@ -142,23 +149,6 @@ ion-back-button {
 .text {
     line-height: 1.5;
     opacity: 0.5;
-}
-
-.gelion {
-    font-family: 'Gelion Regular Italic';
-    font-family: 'Gelion Regular';
-    font-family: 'Gelion Light';
-    font-family: 'Gelion Thin Italic';
-    font-family: 'Gelion Light Italic';
-    font-family: 'Gelion Thin';
-    font-family: 'Gelion Medium Italic';
-    font-family: 'Gelion Medium';
-    font-family: 'Gelion Semi Bold Italic';
-    font-family: 'Gelion Semi Bold';
-    font-family: 'Gelion Bold Italic';
-    font-family: 'Gelion Bold';
-    font-family: 'Gelion Black Italic';
-    font-family: 'Gelion Black';
 }
 
 cdk-virtual-scroll-viewport {

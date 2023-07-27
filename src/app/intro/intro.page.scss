@@ -1,0 +1,30 @@
+ion-button {
+    color: var(--ion-color-primary);
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 2rem;
+}
+
+h1 {
+    font-size: 60px;
+    font-family: 'Nunito';
+
+}
+
+.rows {
+    margin-top: -2rem;
+    flex-direction: column;
+    padding-left: 10vw;
+    padding-right: 10vw;
+    text-align: center;
+}
+
+ion-text {
+    font-size: x-large;
+}

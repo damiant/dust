@@ -12,6 +12,7 @@ export class DbService {
   private worker!: Worker;
 
   public async init() {
+    if (this.initialized) return;
     this.worker = new Worker(new URL('./app.worker', import.meta.url));
     registerWorker(this.worker);
 
