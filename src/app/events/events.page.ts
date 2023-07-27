@@ -37,7 +37,7 @@ export class EventsPage implements OnInit {
   mapPoints: MapPoint[] = [];
   minBufferPx = 1900;
   @ViewChild(CdkVirtualScrollViewport) virtualScroll!: CdkVirtualScrollViewport;
-  
+
   constructor(private db: DbService, private ui: UiService) {
     effect(() => {
       this.ui.scrollUp('events', this.virtualScroll);
@@ -93,7 +93,7 @@ export class EventsPage implements OnInit {
     return event.uid;
   }
 
-  dayChange(event: any) {
+  async dayChange(event: any) {
     if (event.target.value == 'all') {
       this.day = undefined;
       this.title = 'Events';
@@ -102,8 +102,9 @@ export class EventsPage implements OnInit {
       this.day = new Date(event.target.value);
       this.title = this.day.toLocaleDateString('en-US', { weekday: 'long' });
       this.db.selectedDay.set(this.day);
-    }
-    this.update();
+    }    
+    await this.update();
+    this.virtualScroll.scrollToOffset(0);
   }
 
   map(event: Event) {
