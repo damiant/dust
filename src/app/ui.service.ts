@@ -2,6 +2,7 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Injectable, signal } from '@angular/core';
 import { randomInt } from './utils';
 import { IonContent } from '@ionic/angular';
+import { SplashScreen } from '@capacitor/splash-screen';
 
 @Injectable({
   providedIn: 'root'
@@ -28,5 +29,10 @@ export class UiService {
 
   public setTab(name: string) {
     this.clickedTab.set(`${name}.${randomInt(1,9999999)}`);
+  }
+
+  public async home() {
+    await SplashScreen.show();
+    document.location.href = '/';
   }
 }

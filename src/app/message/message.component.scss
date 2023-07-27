@@ -1,0 +1,22 @@
+.tall {
+    min-height: 50vh;
+    padding: 10vw;
+    flex-direction: column;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 2rem;
+}
+
+ion-button {
+    padding-top: 2rem;
+}
+
+ion-text {
+    font-size: larger;
+}

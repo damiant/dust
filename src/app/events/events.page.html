@@ -11,7 +11,7 @@
     <ion-toolbar>
       
       <ion-title size="large">{{title}}</ion-title>
-      <ion-badge *ngIf="db.selectedYear() !== ''" slot="end">{{db.selectedYear()}}</ion-badge>
+      <ion-badge *ngIf="db.selectedYear() !== ''" slot="end" (click)="home()">{{db.selectedYear()}}</ion-badge>
     </ion-toolbar>
     <ion-toolbar>
       <ion-searchbar (ionInput)="handleInput($event)" [debounce]="1000" placeholder="Find Events"></ion-searchbar>

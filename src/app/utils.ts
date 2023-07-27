@@ -29,5 +29,23 @@ export function dateMatches(d: Date, occurrence: OccurrenceSet): boolean {
     const start = new Date(occurrence.start_time);
     const end = new Date(occurrence.end_time);
     return sameDay(d, start) || sameDay(d, end);
+}
+
+export function daysBetween(date1: any, date2: any) {
+
+    // The number of milliseconds in one day
+    const ONE_DAY = 1000 * 60 * 60 * 24;
+
+    // Calculate the difference in milliseconds
+    const differenceMs = Math.abs(date1 - date2);
+
+    // Convert back to days and return
+    return Math.round(differenceMs / ONE_DAY);
 
 }
+
+export function addDays(date: Date, days: number) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  }

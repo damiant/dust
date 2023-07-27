@@ -26,6 +26,10 @@ export class ArtPage {
     });
   }
 
+  home() {
+    this.ui.home();
+  }
+
   async ionViewDidEnter() {
     if (this.arts.length == 0) {
       this.update(undefined);

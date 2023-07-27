@@ -52,6 +52,10 @@ export class EventsPage implements OnInit {
     });
   }
 
+  home() {
+    this.ui.home();
+  }
+
   async ionViewWillEnter() {
     if (this.events.length == 0) {
       this.days = await this.db.getDays();

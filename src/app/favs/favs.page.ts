@@ -51,6 +51,10 @@ export class FavsPage implements OnInit {
      }
   }
 
+  home() {
+    this.ui.home();
+  }
+
   private async update() {
     const favs = await this.fav.getFavorites();
     this.events = await this.db.getEventList(favs.events);

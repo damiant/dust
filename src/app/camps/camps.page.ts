@@ -31,6 +31,10 @@ export class CampsPage {
       this.ui.scrollUp('camps', this.virtualScroll);
     });
   }
+  
+  home() {
+    this.ui.home();
+  }
 
   async ionViewDidEnter() {
     if (this.camps.length == 0) {
