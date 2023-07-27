@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, effect } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { Camp } from '../models';
 import { DbService } from '../db.service';
 import { CommonModule } from '@angular/common';
-import { ScrollingModule } from '@angular/cdk/scrolling';
+import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { MapPoint, toMapPoint } from '../map/map.component';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { CampComponent } from '../camp/camp.component';
+import { UiService } from '../ui.service';
 
 @Component({
   selector: 'app-camps',
@@ -23,8 +24,13 @@ export class CampsPage {
   mapSubtitle = '';
   mapPoints: MapPoint[] = [];
   minBufferPx = 900;
+  @ViewChild(CdkVirtualScrollViewport) virtualScroll!: CdkVirtualScrollViewport;
 
-  constructor(private db: DbService) { }
+  constructor(private db: DbService, private ui: UiService) { 
+    effect(() => {
+      this.ui.scrollUp('camps', this.virtualScroll);
+    });
+  }
 
   async ionViewDidEnter() {
     if (this.camps.length == 0) {

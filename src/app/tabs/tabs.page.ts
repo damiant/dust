@@ -52,7 +52,6 @@ export class TabsPage implements OnInit {
 
   select(tab: string) {
     if (tab == this.currentTab) {
-      console.log('selected', tab);
       this.ui.setTab(tab);
     }
 

@@ -12,7 +12,7 @@ export class UiService {
   public scrollUp(name: string, virtualScroll: CdkVirtualScrollViewport) {
     const tab = this.clickedTab();
     if (tab.startsWith(name))  {
-      console.log('scroll to top');
+      console.log(`${name}: scroll to top`);
       virtualScroll.scrollToIndex(0);
     }
   }
