@@ -1,7 +1,7 @@
-import { Component, OnInit, effect } from '@angular/core';
+import { Component, OnInit, ViewChild, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonContent, IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 import { Art, Camp, Event } from '../models';
 import { FavoritesService } from '../favorites.service';
@@ -11,6 +11,7 @@ import { CampComponent } from '../camp/camp.component';
 import { MapPoint, toMapPoint } from '../map/map.component';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { ArtComponent } from '../art/art.component';
+import { UiService } from '../ui.service';
 
 @Component({
   selector: 'app-favs',
@@ -30,12 +31,17 @@ export class FavsPage implements OnInit {
   mapTitle = '';
   mapSubtitle = '';
   mapPoints: MapPoint[] = [];
+  @ViewChild(IonContent) ionContent!: IonContent;
 
-  constructor(private fav: FavoritesService, private db: DbService) { 
+  constructor(private fav: FavoritesService, private ui: UiService, private db: DbService) { 
     effect(() => {
       console.log('update fav');
       this.fav.changed();
-      this.update();
+      this.update();      
+    });
+
+    effect(() => {
+      this.ui.scrollUpContent('favs', this.ionContent);
     });
   }
 

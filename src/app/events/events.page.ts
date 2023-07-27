@@ -37,6 +37,7 @@ export class EventsPage implements OnInit {
   mapPoints: MapPoint[] = [];
   minBufferPx = 1900;
   @ViewChild(CdkVirtualScrollViewport) virtualScroll!: CdkVirtualScrollViewport;
+  
   constructor(private db: DbService, private ui: UiService) {
     effect(() => {
       this.ui.scrollUp('events', this.virtualScroll);
