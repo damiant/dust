@@ -2,7 +2,7 @@
   <ion-spinner *ngIf="!ready"></ion-spinner>
 </div>
 <ion-tabs *ngIf="ready" (ionTabsWillChange)="changeTab($event)">
-  <ion-tab-bar slot="bottom">
+  <ion-tab-bar slot="bottom" translucent>
     <ion-tab-button tab="events" (click)="select('events')">
       <ion-icon aria-hidden="true" name="calendar"></ion-icon>
       <ion-label>Events</ion-label>

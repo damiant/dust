@@ -1,6 +1,11 @@
 ion-segment {
     margin-left: 12px;
-    margin-right: 12px;
+    margin-right: 12px;    
+}
+
+// Hides the scroll bar without affecting scrolling
+ion-segment::-webkit-scrollbar{
+    display: none;
 }
 
 .item {

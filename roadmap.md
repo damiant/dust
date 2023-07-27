@@ -1,21 +1,25 @@
 # Roadmap
 
-## Big Bugs
-
 ## Small Bugs
 - titles if capital then title case
+- updates: if online then download data
+- Favorites use prefix on db (eg bm-2022)
+- Remove scrollbar in segment
+- Notes page with items as checkboxes (ie check list)
+
+## Features
 - show map for other locations (smooth & soothe)
 - subtitle make larger
 - filter by category (label is link)
-- updates: if online then download data
 - custom camp icon
 - custom event icon
 - custom art icon
 - Switch to camp when clicked from events
-- Favorite events for day: show in number order on map
-- Favorites use prefix on db (eg bm-2022)
-- Remove scrollbar in segment
-- Notes page with items as checkboxes (ie check list)
+
+## Profile
+- Feedback button > email yo@dust.events
+- Find restrooms > Map
+- Censor toggle for "Mature Audiences"
 
 ## Intro
 - Show days until event
@@ -37,8 +41,11 @@
 
 ## Favorites
 - Add friend to favorites (name, desc, street, camp, gps)
-
 - Hide favorite old events
+- Favorite events for day: show in number order on map
+- Show Map of Favorites (click Camps)
+- Show/Collapse Groups
+
 
 ## Friends
 - Add Friend: name, street, clock

@@ -86,6 +86,9 @@ export class DataManager implements WorkerClass {
         }
         for (let art of this.art) {
             artIndex[art.uid] = art.name;
+            if (!art.location_string) {
+                art.location_string = 'Unknown';                
+            }
         }
         this.days = [];
         this.allEventsOld = !this.checkEvents();
