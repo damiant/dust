@@ -1,17 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, effect } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { DbService } from '../db.service';
 import { Day, Event } from '../models';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ScrollingModule } from '@angular/cdk/scrolling';
+import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { MapPoint, toMapPoint } from '../map/map.component';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { FormsModule } from '@angular/forms';
 import { noDate, now, sameDay } from '../utils';
 import { App } from '@capacitor/app';
-import { FavoritesService } from '../favorites.service';
 import { EventComponent } from '../event/event.component';
+import { UiService } from '../ui.service';
 
 @Component({
   selector: 'app-events',
@@ -36,7 +36,12 @@ export class EventsPage implements OnInit {
   mapSubtitle = '';
   mapPoints: MapPoint[] = [];
   minBufferPx = 1900;
-  constructor(private db: DbService, private fav: FavoritesService) { }
+  @ViewChild(CdkVirtualScrollViewport) virtualScroll!: CdkVirtualScrollViewport;
+  constructor(private db: DbService, private ui: UiService) {
+    effect(() => {
+      this.ui.scrollUp('events', this.virtualScroll);
+    });
+   }
 
   ngOnInit() {
     App.addListener('resume', async () => {

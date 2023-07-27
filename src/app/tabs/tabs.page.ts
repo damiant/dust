@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, EnvironmentInjector, OnInit, ViewChild, effect, inject } from '@angular/core';
-import { IonTabs, IonicModule } from '@ionic/angular';
+import { Component, EnvironmentInjector, OnInit, effect, inject } from '@angular/core';
+import { IonicModule } from '@ionic/angular';
 import { DbService } from '../db.service';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { NotificationService } from '../notification.service';
 import { Router } from '@angular/router';
 import { delay } from '../utils';
+import { UiService } from '../ui.service';
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
@@ -15,8 +16,9 @@ import { delay } from '../utils';
 })
 export class TabsPage implements OnInit {
   ready = false;
+  currentTab = '';
   public environmentInjector = inject(EnvironmentInjector);
-  constructor(private db: DbService, private notificationService: NotificationService, private router: Router) {
+  constructor(private db: DbService, private ui: UiService, private notificationService: NotificationService, private router: Router) {
     effect(() => {
       console.log('go to notification');
       const eventId = this.notificationService.hasNotification();
@@ -42,5 +44,17 @@ export class TabsPage implements OnInit {
     setTimeout(() => {
       this.router.navigateByUrl(`/event/${eventId}`);
     }, 1000);
+  }
+
+  changeTab(e: any) {
+    this.currentTab = e.tab;
+  }
+
+  select(tab: string) {
+    if (tab == this.currentTab) {
+      console.log('selected', tab);
+      this.ui.setTab(tab);
+    }
+
   }
 }
