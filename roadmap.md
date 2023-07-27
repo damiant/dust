@@ -3,7 +3,6 @@
 ## Big Bugs
 
 ## Small Bugs
-- When selecting a day (say Saturday) and enter "banter" then click event. The event should not show up as it ends at midnight
 - titles if capital then title case
 - show map for other locations (smooth & soothe)
 - subtitle make larger

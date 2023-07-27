@@ -283,13 +283,19 @@ export class DataManager implements WorkerClass {
         for (let occurrence of event.occurrence_set) {
             const start: Date = new Date(occurrence.start_time);
             const end: Date = new Date(occurrence.end_time);
-            if (!day || sameDay(start, day) || sameDay(end, day)) {
+            const startsToday = day && sameDay(start, day);
+            const endsToday = day && sameDay(end, day);
+            if (!day || startsToday || endsToday) {
                 event.start = start;
                 if (long) {
                     const day = start.toLocaleDateString([], { weekday: 'long' });
                     return `${day} ${this.time(start)}-${this.time(end)} (${this.timeBetween(end, start)})`;
                 } else {
+                    if (endsToday) {
+                        return `Until ${this.time(end)} (${this.timeBetween(end, start)})`;
+                    } else {
                     return `${this.time(start)} (${this.timeBetween(end, start)})`;
+                    }
                 }
             }
         }
@@ -297,7 +303,7 @@ export class DataManager implements WorkerClass {
     }
 
     private timeBetween(d1: any, d2: any): string {
-        const hrs = Math.floor(Math.abs(d1 - d2) / 36e5);
+        const hrs = Math.ceil(Math.abs(d1 - d2) / 36e5);
         const mins = Math.floor((Math.abs(d1 - d2) / 1000) / 60);
         return (mins < 60) ? `${mins}mins` : `${hrs}hrs`;
     }
