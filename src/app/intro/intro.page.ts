@@ -25,18 +25,15 @@ export interface Card {
 export class IntroPage implements OnInit {
   ready = true;
   showMessage = false;
-  cards: Card[] = [
-    { name: 'TTITD', year: '2023', start: '2023-08-27T07:00:00.000Z' },
-    { name: 'TTITD', year: '2022', start: '2022-08-28T00:00:00-07:00' },
-    { name: 'TTITD', year: '2019', start: '2019-08-26T00:00:00-07:00' },
-    { name: 'TTITD', year: '2018', start: '2018-08-27T00:00:00-07:00' },
-    { name: 'TTITD', year: '2017', start: '2017-08-28T00:00:00-07:00' }];
-  selected: Card = this.cards[0];
+  cards: Card[] = [];
+  selected: Card | undefined;
   message = '';
 
   constructor(private db: DbService, private settingsService: SettingsService, private fav: FavoritesService, private router: Router) { }
 
-  async ngOnInit() {    
+  async ngOnInit() {
+    this.cards = await this.loadDatasets();
+    this.selected = this.cards[0];
     this.save(); // Needed in case user has restarted
     setTimeout(async () => {
       await SplashScreen.hide();
@@ -47,24 +44,25 @@ export class IntroPage implements OnInit {
     this.showMessage = false;
   }
 
-  async go() {    
+  async go() {
+    if (!this.selected) return;
     const thisYear = this.selected.year == this.cards[0].year;
     const start = new Date(this.cards[0].start);
-    const manBurns = addDays(start, 6);    
+    const manBurns = addDays(start, 6);
     const x = daysBetween(now(), manBurns);
     const until = daysBetween(now(), start);
     console.log(start, manBurns, x, until);
     if (thisYear && until > 1) {
       this.message = `Information for this year will become available on Sunday 27th. There are ${x} days until the man burns.`;
-      this.showMessage = true;      
+      this.showMessage = true;
     } else {
       this.launch();
     }
-  }  
+  }
 
   async launch() {
     try {
-      console.log(this.showMessage)
+      if (!this.selected) return;
       this.ready = false;
       await this.db.init(this.settingsService.settings.dataset);
       this.fav.init(this.settingsService.settings.dataset);
@@ -77,7 +75,6 @@ export class IntroPage implements OnInit {
   }
 
   open(card: Card) {
-
     this.selected = card;
     this.save();
   }
@@ -85,6 +82,11 @@ export class IntroPage implements OnInit {
   save() {
     this.settingsService.settings.dataset = `${this.selected?.name.toLowerCase()}-${this.selected?.year.toLowerCase()}`;
     this.settingsService.save();
+  }
+
+  private async loadDatasets(): Promise<Card[]> {
+    const res = await fetch('assets/datasets.json');
+    return await res.json();
   }
 
 }

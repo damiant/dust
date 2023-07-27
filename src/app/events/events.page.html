@@ -9,8 +9,7 @@
 <ion-content [fullscreen]="true" class="app-page">
   <ion-header collapse="condense">
     <ion-toolbar>
-      
-      <ion-title size="large">{{title}}</ion-title>
+      <ion-title (click)="home()" size="large">{{title}}</ion-title>
       <ion-badge *ngIf="db.selectedYear() !== ''" slot="end" (click)="home()">{{db.selectedYear()}}</ion-badge>
     </ion-toolbar>
     <ion-toolbar>
