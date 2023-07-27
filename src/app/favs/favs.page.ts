@@ -26,6 +26,7 @@ export class FavsPage implements OnInit {
   art: Art[] = [];
 
   showMap = false;
+  noFavorites = false;
   mapTitle = '';
   mapSubtitle = '';
   mapPoints: MapPoint[] = [];
@@ -49,6 +50,7 @@ export class FavsPage implements OnInit {
     this.events = await this.db.getEventList(favs.events);
     this.camps = await this.db.getCampList(favs.camps);
     this.art = await this.db.getArtList(favs.art);
+    this.noFavorites = this.art.length == 0 && this.camps.length == 0 && this.events.length == 0;
   }
 
   ngOnInit() {

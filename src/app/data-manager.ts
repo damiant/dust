@@ -115,7 +115,7 @@ export class DataManager implements WorkerClass {
                     occurrence.end_time = new Date(start.getFullYear(), start.getMonth(), start.getDate(), end.getHours(), end.getMinutes()).toISOString();
                     const newHrs = this.hoursBetween(new Date(occurrence.start_time), new Date(occurrence.end_time));
                     end = new Date(occurrence.end_time);
-                    console.log(`Fixed end time of ${event.name} from ${old}=>${occurrence.end_time} (starting ${occurrence.start_time}) because event was ${hrs} hours long. Now ${newHrs} hours long.`);
+                    //console.log(`Fixed end time of ${event.name} from ${old}=>${occurrence.end_time} (starting ${occurrence.start_time}) because event was ${hrs} hours long. Now ${newHrs} hours long.`);
                 }
                 if (end.getHours() == 0 && end.getMinutes() == 0) {
                     // Midnight is set to 11:59
@@ -123,7 +123,7 @@ export class DataManager implements WorkerClass {
                     
                     occurrence.end_time = new Date(start.getFullYear(), start.getMonth(), start.getDate(), 23, 59).toISOString();
                     end = new Date(occurrence.end_time);
-                    console.log(`Fixed midnight ${event.name} ${prev}=>${end}`);
+                    //console.log(`Fixed midnight ${event.name} ${prev}=>${end}`);
                 }
             }
             event.timeString = this.getTimeString(event, undefined);
