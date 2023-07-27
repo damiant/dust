@@ -37,6 +37,7 @@ export class ArtPage {
   }
 
   handleInput(event: any) {
+    this.virtualScroll.scrollToOffset(0);
     this.update(event.target.value.toLowerCase());
   }
 

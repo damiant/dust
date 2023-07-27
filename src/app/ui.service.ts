@@ -14,7 +14,7 @@ export class UiService {
     const tab = this.clickedTab();
     if (tab.startsWith(name))  {
       console.log(`${name}: scroll to top`);
-      virtualScroll.scrollToIndex(0);
+      virtualScroll.scrollToIndex(0, 'smooth');
     }
   }
 

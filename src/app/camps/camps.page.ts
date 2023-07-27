@@ -42,6 +42,7 @@ export class CampsPage {
   }
 
   handleInput(event: any) {
+    this.virtualScroll.scrollToOffset(0);
     this.update(event.target.value.toLowerCase());
   }
 

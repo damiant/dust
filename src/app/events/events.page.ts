@@ -86,6 +86,7 @@ export class EventsPage implements OnInit {
 
   handleInput(event: any) {
     this.search = event.target.value.toLowerCase();
+    this.virtualScroll.scrollToOffset(0);
     this.update();
   }
 
