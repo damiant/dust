@@ -23,7 +23,7 @@ export class FavoritesService {
   }
 
   public init(dataset: string) {
-    this.db = new PouchDB(`favorites-${dataset}`);
+    this.db = new PouchDB(`data-${dataset}`);
     this.ready = this.load();
   }
 
@@ -96,7 +96,6 @@ export class FavoritesService {
   private async load() {
     const doc = await this.get(DbId.favorites, this.favorites);
     this.favorites = doc.data;
-    console.log('load', this.favorites);
   }
 
   private include(add: boolean, value: string, items: string[]): string[] {

@@ -15,6 +15,7 @@ export class DataManager implements WorkerClass {
         switch (method) {
             case 'populate': return await this.populate(args[0]);
             case 'getDays': return this.getDays();
+            case 'setDataset': return this.setDataset(args[0], args[1], args[2], args[3]);
             case 'getEvents': return this.getEvents(args[0], args[1]);
             case 'getEventList': return this.getEventList(args[0]);
             case 'getCampList': return this.getCampList(args[0]);
@@ -36,10 +37,8 @@ export class DataManager implements WorkerClass {
         this.dataset = dataset;
         this.events = await this.loadEvents();
         this.camps = await this.loadCamps();
-        this.camps = this.camps.filter((camp) => { return camp.description || camp.location_string });
-        this.camps.sort((a: Camp, b: Camp) => { return a.name.localeCompare(b.name); });
         this.art = await this.loadArt();
-        this.sortArt(this.art);
+
         this.init();
         return this.events.length + this.camps.length;
     }
@@ -79,6 +78,11 @@ export class DataManager implements WorkerClass {
     }
 
     private init() {
+        this.camps = this.camps.filter((camp) => { return camp.description || camp.location_string });
+        this.camps.sort((a: Camp, b: Camp) => { return a.name.localeCompare(b.name); });   
+        this.sortArt(this.art);
+        this.allEventsOld = false;
+
         let campIndex: any = {};
         let locIndex: any = {};
         let artIndex: any = {};
@@ -142,6 +146,14 @@ export class DataManager implements WorkerClass {
         d.setMonth(today.getMonth());
         d.setFullYear(today.getFullYear());
         return d;
+    }
+
+    public setDataset(dataset: string, events: Event[], camps: Camp[], art: Art[]) {
+        this.dataset = dataset;
+        this.events = events;
+        this.camps = camps;
+        this.art = art;
+        this.init();
     }
 
     public getEvents(idx: number, count: number): Event[] {
@@ -230,7 +242,6 @@ export class DataManager implements WorkerClass {
 
     public findEvents(query: string, day: Date | undefined): Event[] {
         const result: Event[] = [];
-
         for (let event of this.events) {
             if (this.eventContains(query, event) && this.onDay(day, event)) {
                 event.timeString = this.getTimeString(event, day);

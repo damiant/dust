@@ -5,16 +5,21 @@
     <ion-text><b>dust</b> is a guide for burners to find events, camps and art.</ion-text>
   </div>
   <div class="container" id="scroll-container">
-    <div class="card" [ngClass]="(selected?.year === card.year) ? 'select' : 'unselect'" *ngFor="let card of cards" (click)="open(card)">
+    <div class="card" [ngClass]="(selected?.year === card.year) ? 'select' : 'unselect'" *ngFor="let card of cards"
+      (click)="open(card)">
       <div class="card-container">
-        <ion-text>{{card.name}}<br/>{{card.year}}</ion-text>
+        <ion-text>{{card.name}}<br />{{card.year}}</ion-text>
       </div>
-      </div>
+    </div>
   </div>
   <div class="center">
     <ion-spinner color="light" *ngIf="!ready"></ion-spinner>
+    <div [hidden]="!downloading">
+      <ion-spinner color="light"></ion-spinner>
+    </div>
   </div>
   <div class="footer">
-    <ion-button color="dark" [disabled]="!ready" (click)="go()" size="large" shape="round">GET DUSTY<ion-icon name="arrow-forward-outline"></ion-icon></ion-button>
+    <ion-button color="dark" [disabled]="!ready" (click)="go()" size="large" shape="round">GET DUSTY<ion-icon
+        name="arrow-forward-outline"></ion-icon></ion-button>
   </div>
 </ion-content>

@@ -32,7 +32,6 @@ export function dateMatches(d: Date, occurrence: OccurrenceSet): boolean {
 }
 
 export function daysBetween(date1: any, date2: any) {
-
     // The number of milliseconds in one day
     const ONE_DAY = 1000 * 60 * 60 * 24;
 
@@ -41,8 +40,13 @@ export function daysBetween(date1: any, date2: any) {
 
     // Convert back to days and return
     return Math.round(differenceMs / ONE_DAY);
-
 }
+
+export function minutesBetween(date2: Date, date1: Date) {
+    var differenceValue =(date2.getTime() - date1.getTime()) / 1000;
+    differenceValue /= 60;
+    return Math.abs(Math.round(differenceValue));
+ }
 
 export function addDays(date: Date, days: number) {
     var result = new Date(date);

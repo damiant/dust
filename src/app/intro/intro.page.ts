@@ -9,12 +9,10 @@ import { SettingsService } from '../settings.service';
 import { FavoritesService } from '../favorites.service';
 import { MessageComponent } from '../message/message.component';
 import { addDays, daysBetween, now } from '../utils';
+import { Dataset } from '../models';
+import { datasetFilename } from '../api';
+import { ApiService } from '../api.service';
 
-export interface Card {
-  name: string;
-  year: string;
-  start: string;
-}
 @Component({
   selector: 'app-intro',
   templateUrl: './intro.page.html',
@@ -25,11 +23,14 @@ export interface Card {
 export class IntroPage implements OnInit {
   ready = true;
   showMessage = false;
-  cards: Card[] = [];
-  selected: Card | undefined;
+  downloading = false;
+  cards: Dataset[] = [];
+  selected: Dataset | undefined;
   message = '';
 
-  constructor(private db: DbService, private settingsService: SettingsService, private fav: FavoritesService, private router: Router) { }
+  constructor(private db: DbService, private api: ApiService,
+    private settingsService: SettingsService,
+    private fav: FavoritesService, private router: Router) { }
 
   async ngOnInit() {
     this.cards = await this.loadDatasets();
@@ -38,6 +39,15 @@ export class IntroPage implements OnInit {
     setTimeout(async () => {
       await SplashScreen.hide();
     }, 100);
+
+    setTimeout(async () => {
+      try {
+        this.downloading = true;
+        await this.api.download();
+      } finally {
+        this.downloading = false;        
+      }
+    }, 1000);
   }
 
   ionViewWillEnter() {
@@ -51,7 +61,7 @@ export class IntroPage implements OnInit {
     const manBurns = addDays(start, 6);
     const x = daysBetween(now(), manBurns);
     const until = daysBetween(now(), start);
-    console.log(start, manBurns, x, until);
+    //console.log(start, manBurns, x, until);
     if (thisYear && until > 1) {
       this.message = `Information for this year will become available on Sunday 27th. There are ${x} days until the man burns.`;
       this.showMessage = true;
@@ -65,6 +75,7 @@ export class IntroPage implements OnInit {
       if (!this.selected) return;
       this.ready = false;
       await this.db.init(this.settingsService.settings.dataset);
+      await this.api.sendDataToWorker();
       this.fav.init(this.settingsService.settings.dataset);
       const title = (this.selected.year == this.cards[0].year) ? '' : this.selected.year;
       this.db.selectedYear.set(title);
@@ -74,18 +85,18 @@ export class IntroPage implements OnInit {
     }
   }
 
-  open(card: Card) {
+  open(card: Dataset) {
     this.selected = card;
     this.save();
   }
 
   save() {
-    this.settingsService.settings.dataset = `${this.selected?.name.toLowerCase()}-${this.selected?.year.toLowerCase()}`;
+    this.settingsService.settings.dataset = datasetFilename(this.selected!);
     this.settingsService.save();
   }
 
-  private async loadDatasets(): Promise<Card[]> {
-    const res = await fetch('assets/datasets.json');
+  private async loadDatasets(): Promise<Dataset[]> {
+    const res = await fetch('assets/datasets/datasets.json');
     return await res.json();
   }
 

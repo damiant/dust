@@ -107,10 +107,17 @@ export interface Camp {
 
   export interface Settings {
     dataset: string;
+    lastDownload: string;
   }
 
   export interface Friend {
     name: string;
     street: string;
     clock: string;
+  }
+
+  export interface Dataset {
+    name: string;
+    year: string;
+    start: string;
   }

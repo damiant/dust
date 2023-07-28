@@ -75,6 +75,13 @@ export class DbService {
     return await call(this.worker, 'getEvents', idx, count);
   }
 
+  public async setDataset(dataset: string, events: Event[], camps: Camp[], art: Art[]): Promise<void> {
+    if (events.length == 0) {
+      return;
+    }
+    return await call(this.worker, 'setDataset', dataset, events, camps, art);
+  }
+
   public async getCampEvents(campId: string): Promise<Event[]> {
     return await call(this.worker, 'getCampEvents', campId);
   }

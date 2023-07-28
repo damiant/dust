@@ -7,7 +7,7 @@ import { Settings } from './models';
 export class SettingsService {
 
   public settings!: Settings;
-  constructor() { 
+  constructor() {
     this.settings = this.getSettings();
   }
 
@@ -15,7 +15,15 @@ export class SettingsService {
     try {
       return JSON.parse(localStorage['settings']);
     } catch {
-      return { dataset: '' };
+      return { dataset: '', lastDownload: '' };
+    }
+  }
+
+  public getLastDownload(): Date {
+    try {
+      return new Date(this.settings.lastDownload);
+    } catch {
+      return new Date(0);
     }
   }
 
