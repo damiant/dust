@@ -1,5 +1,6 @@
 ion-button {
-    color: var(--ion-color-primary);
+    color: white;
+    --background: black;
 }
 
 .footer {
@@ -53,7 +54,7 @@ ion-text {
     scroll-snap-stop: always;
 
     background-color: transparent;
-    border: 4px solid var(--ion-color-light);
+    border: 4px solid white;
     border-radius: 50%;//10px;
     min-width: calc(40vw - 30px);
     min-height: calc(40vw - 30px); 
@@ -66,7 +67,7 @@ ion-text {
 }
 
 .select {
-    background-color:  var(--ion-color-light);
+    background-color: white;
     color: var(--ion-color-primary);
 }
 
