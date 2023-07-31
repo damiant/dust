@@ -16,7 +16,7 @@ Nice
 Bugs
 x (bad data) search 2019 - Elvis espresso. It shows 1am to 7am but description is 9-12
 - Switching days can cause scroll glitch
-- The “until” should only appear if the event starts on the previous day selected
+
 New
 - align message popup vertically
 - 2017 blows up during load

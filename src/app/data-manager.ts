@@ -317,7 +317,7 @@ export class DataManager implements WorkerClass {
                     const day = start.toLocaleDateString([], { weekday: 'long' });
                     return `${day} ${this.time(start)}-${this.time(end)} (${this.timeBetween(end, start)})`;
                 } else {
-                    if (endsToday) {
+                    if (endsToday && !startsToday) {
                         return `Until ${this.time(end)} (${this.timeBetween(end, start)})`;
                     } else {
                         return `${this.time(start)} (${this.timeBetween(end, start)})`;
