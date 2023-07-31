@@ -27,6 +27,10 @@ export class FavoritesService {
     this.ready = this.load();
   }
 
+  private noData(): Favorites {
+    return { art: [], events: [], camps: [], friends: [] };
+  }
+
   public async getFavorites(): Promise<Favorites> {
     await this.ready;
     return this.favorites;
@@ -54,7 +58,7 @@ export class FavoritesService {
       const result = await this.notificationService.scheduleAll(
         {
           id: event.uid,
-          title:`${event.location}: ${event.title}`,
+          title: `${event.location}: ${event.title}`,
           body: event.description
         },
         event.occurrence_set, selectedDay);
@@ -96,6 +100,9 @@ export class FavoritesService {
   private async load() {
     const doc = await this.get(DbId.favorites, this.favorites);
     this.favorites = doc.data;
+    if (!this.favorites) {
+      this.favorites = this.noData();
+    }
   }
 
   private include(add: boolean, value: string, items: string[]): string[] {
