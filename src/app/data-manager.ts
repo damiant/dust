@@ -52,25 +52,30 @@ export class DataManager implements WorkerClass {
         let hasLiveEvents = false;
         for (const event of this.events) {
             event.old = true;
-            for (let occurrence of event.occurrence_set) {
-                // This makes all events happen today
-                // let start: Date = new Date(occurrence.start_time);
-                // let end: Date = new Date(occurrence.end_time);
-                // occurrence.start_time = this.setToday(start).toString();
-                // occurrence.end_time = this.setToday(end).toString();
+            try {
+                for (let occurrence of event.occurrence_set) {
+                    // This makes all events happen today
+                    // let start: Date = new Date(occurrence.start_time);
+                    // let end: Date = new Date(occurrence.end_time);
+                    // occurrence.start_time = this.setToday(start).toString();
+                    // occurrence.end_time = this.setToday(end).toString();
 
-                if (this.allEventsOld) {
-                    event.old = false;
-                    occurrence.old = false;
-                    hasLiveEvents = true;
-                } else {
-                    occurrence.old = (new Date(occurrence.end_time).getTime() - today.getTime() < 0);
-                    if (!occurrence.old) {
+                    if (this.allEventsOld) {
                         event.old = false;
+                        occurrence.old = false;
                         hasLiveEvents = true;
+                    } else {
+                        occurrence.old = (new Date(occurrence.end_time).getTime() - today.getTime() < 0);
+                        if (!occurrence.old) {
+                            event.old = false;
+                            hasLiveEvents = true;
+                        }
                     }
-                }
 
+                }
+            } catch (err) {
+                console.error('Failed', event);
+                throw err;
             }
         }
         console.log(`Event has live events: ${hasLiveEvents}`);
@@ -79,7 +84,12 @@ export class DataManager implements WorkerClass {
 
     private init() {
         this.camps = this.camps.filter((camp) => { return camp.description || camp.location_string });
-        this.camps.sort((a: Camp, b: Camp) => { return a.name.localeCompare(b.name); });   
+        for (const camp of this.camps) {
+            if (typeof camp.name == 'number') {
+                console.error(`Invalid camp`, camp);
+            }
+        }
+        this.camps.sort((a: Camp, b: Camp) => { return a.name.localeCompare(b.name); });
         this.sortArt(this.art);
         this.allEventsOld = false;
 
@@ -93,7 +103,7 @@ export class DataManager implements WorkerClass {
         for (let art of this.art) {
             artIndex[art.uid] = art.name;
             if (!art.location_string) {
-                art.location_string = 'Unknown';                
+                art.location_string = 'Unknown';
             }
         }
         this.days = [];
@@ -129,7 +139,7 @@ export class DataManager implements WorkerClass {
                 if (end.getHours() == 0 && end.getMinutes() == 0) {
                     // Midnight is set to 11:59
                     const prev = end;
-                    
+
                     occurrence.end_time = new Date(start.getFullYear(), start.getMonth(), start.getDate(), 23, 59).toISOString();
                     end = new Date(occurrence.end_time);
                     //console.log(`Fixed midnight ${event.name} ${prev}=>${end}`);
@@ -310,7 +320,7 @@ export class DataManager implements WorkerClass {
                     if (endsToday) {
                         return `Until ${this.time(end)} (${this.timeBetween(end, start)})`;
                     } else {
-                    return `${this.time(start)} (${this.timeBetween(end, start)})`;
+                        return `${this.time(start)} (${this.timeBetween(end, start)})`;
                     }
                 }
             }
@@ -353,7 +363,7 @@ export class DataManager implements WorkerClass {
 
     private eventContains(terms: string, event: Event): boolean {
         return (terms == '') ||
-            (event.name.toLowerCase().includes(terms) ||
+            (event.title.toLowerCase().includes(terms) ||
                 event.description.toLowerCase().includes(terms));
     }
 

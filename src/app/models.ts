@@ -12,7 +12,6 @@ export interface Event {
     event_type: EventType
     hosted_by_camp?: string
     located_at_art?: string
-    name: string
     occurrence_set: OccurrenceSet[]
     other_location?: string
     print_description: string

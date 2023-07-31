@@ -1,5 +1,44 @@
 # Roadmap
 
+Burn
+- get burn.events
+- Verify times using a phone not in PST
+- Verify notification times are PST
+
+Nice
+- feedback button: email yo@burn.events
+- Find restrooms button => map
+- Map of favorites
+- Favorite events grouped by day if a lot
+- Show/collapse fav group
+- Censor “mature audiences” in profile
+
+Bugs
+x (bad data) search 2019 - Elvis espresso. It shows 1am to 7am but description is 9-12
+- Switching days can cause scroll glitch
+- The “until” should only appear if the event starts on the previous day selected
+New
+- align message popup vertically
+- 2017 blows up during load
+- Notification for gates open
+- Notification for week before (daily)
+- ^these give chance to download data
+- Art location
+- Art image in list view
+- Favorites search
+- Map points should show text “G 8:15”
+- Add an event to favorites
+- Mark some events as “soon” if < 1hr (underway if happening)
+- When clicking back, highlight previous item that was viewed
+- Long press to fav
+- Camp events need day/time
+- Camp events need opacity when over
+- Revision json on dataset to reduce bandwidth
+- All category should show the day name
+
+
+
+
 ## Small Bugs
 - titles if capital then title case
 - updates: if online then download data

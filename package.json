@@ -3,12 +3,14 @@
   "version": "0.0.1",
   "author": "Ionic Framework",
   "homepage": "https://ionicframework.com/",
+  "type": "module",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
+    "test": "ng test",    
+    "download":"node scripts/download.js 2017 2018 2019 2022",
     "lint": "ng lint"
   },
   "private": true,
@@ -70,6 +72,7 @@
     "karma-coverage-istanbul-reporter": "~3.0.2",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
+    "node-fetch": "^3.3.2",
     "ts-node": "^8.3.0",
     "typescript": "~5.0.2"
   },

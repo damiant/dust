@@ -69,7 +69,7 @@ export class FavsPage implements OnInit {
 
   mapEvent(event: Event) {    
     this.mapPoints = [toMapPoint(event.location)];
-    this.mapTitle = event.name;
+    this.mapTitle = event.title;
     this.mapSubtitle = event.location;
     this.showMap = true;
   }

@@ -39,7 +39,7 @@
     </ion-item>
     <ion-item class="small" *ngFor="let event of events">
       <ion-icon size="small" slot="start" name="calendar-outline"></ion-icon>
-      <ion-label (click)="show(event)"><small>{{event.name}}</small></ion-label>
+      <ion-label (click)="show(event)"><small>{{event.title}}</small></ion-label>
     </ion-item>
   </ion-list>
   <app-map [points]="mapPoints"></app-map>

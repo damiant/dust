@@ -54,7 +54,7 @@ export class FavoritesService {
       const result = await this.notificationService.scheduleAll(
         {
           id: event.uid,
-          title:`${event.location}: ${event.name}`,
+          title:`${event.location}: ${event.title}`,
           body: event.description
         },
         event.occurrence_set, selectedDay);
