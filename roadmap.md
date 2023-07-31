@@ -1,11 +1,12 @@
 # Roadmap
 
-Burn
-- get burn.events
+
+## Maps
+- Handle rods ring road
+- Handle art directions
+
 - Verify times using a phone not in PST
 - Verify notification times are PST
-
-Nice
 - feedback button: email yo@burn.events
 - Find restrooms button => map
 - Map of favorites
@@ -13,12 +14,7 @@ Nice
 - Show/collapse fav group
 - Censor “mature audiences” in profile
 
-Bugs
-x (bad data) search 2019 - Elvis espresso. It shows 1am to 7am but description is 9-12
-
-
-New
-- align message popup vertically
+## New
 - Notification for gates open
 - Notification for week before (daily)
 - ^these give chance to download data
@@ -93,15 +89,9 @@ New
 - Filter out camps with no location
 - Filter out events with no location
 
-### Event Detail
-- days and times
-
 ### Camp Detail
 - email
 
-## Maps
-- Handle rods ring road
-- Handle art directions
 
 ## Interactivity
 - Add notes to a camp (eg friend)
