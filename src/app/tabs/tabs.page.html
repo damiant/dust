@@ -2,22 +2,22 @@
 <ion-tabs *ngIf="ready" (ionTabsWillChange)="changeTab($event)">
   <ion-tab-bar slot="bottom" translucent>
     <ion-tab-button tab="events" (click)="select('events')">
-      <ion-icon aria-hidden="true" name="calendar"></ion-icon>
+      <ion-icon aria-hidden="true" name="calendar-outline"></ion-icon>
       <ion-label>Events</ion-label>
     </ion-tab-button>
 
     <ion-tab-button tab="camps" (click)="select('camps')">
-      <ion-icon aria-hidden="true" name="home"></ion-icon>
+      <ion-icon aria-hidden="true" [src]="'assets/icon/camp.svg'"></ion-icon>
       <ion-label>Camps</ion-label>
     </ion-tab-button>
 
     <ion-tab-button tab="favs" id="favButton"  (click)="select('favs')">
-      <ion-icon aria-hidden="true" name="star"></ion-icon>
+      <ion-icon aria-hidden="true" name="star-outline"></ion-icon>
       <ion-label>Favorites</ion-label>
     </ion-tab-button>
 
     <ion-tab-button tab="art" (click)="select('art')">
-      <ion-icon aria-hidden="true" name="color-palette"></ion-icon>
+      <ion-icon aria-hidden="true" name="color-palette-outline"></ion-icon>
       <ion-label>Art</ion-label>
     </ion-tab-button>
   </ion-tab-bar>

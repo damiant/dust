@@ -47,9 +47,6 @@ New
 - show map for other locations (smooth & soothe)
 - subtitle make larger
 - filter by category (label is link)
-- custom camp icon
-- custom event icon
-- custom art icon
 - Switch to camp when clicked from events
 
 ## Profile

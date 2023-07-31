@@ -1,5 +1,5 @@
 import { WorkerClass } from './worker-interface';
-import { Art, Camp, Day, Event, LocationName } from './models';
+import { Art, Camp, Day, Event, LocationName, OccurrenceSet } from './models';
 import { now, sameDay } from './utils';
 
 interface TimeOptions {
@@ -155,6 +155,7 @@ export class DataManager implements WorkerClass {
                     end = new Date(occurrence.end_time);
                     //console.log(`Fixed midnight ${event.name} ${prev}=>${end}`);
                 }
+                occurrence.longTimeString = this.getOccurrenceTimeString(occurrence, undefined, { long: true });
             }
             event.timeString = this.getTimeString(event, undefined);
             event.longTimeString = this.getTimeString(event, undefined, { long: true });
@@ -319,22 +320,30 @@ export class DataManager implements WorkerClass {
 
 
     private getTimeString(event: Event, day: Date | undefined, options?: TimeOptions): string {
+        
         for (let occurrence of event.occurrence_set) {
             const start: Date = new Date(occurrence.start_time);
-            const end: Date = new Date(occurrence.end_time);
-            const startsToday = day && sameDay(start, day);
-            const endsToday = day && sameDay(end, day);
-            if (!day || startsToday || endsToday) {
-                event.start = start;
-                if (options?.long) {
-                    const day = start.toLocaleDateString([], { weekday: 'long' });
-                    return `${day} ${this.time(start)}-${this.time(end)} (${this.timeBetween(end, start)})`;
+            event.start = start;
+            return this.getOccurrenceTimeString(occurrence, day, options);
+        }
+        return 'dont know';
+    }
+
+    private getOccurrenceTimeString(occurrence: OccurrenceSet, day: Date | undefined, options?: TimeOptions): string {
+
+        const start: Date = new Date(occurrence.start_time);
+        const end: Date = new Date(occurrence.end_time);
+        const startsToday = day && sameDay(start, day);
+        const endsToday = day && sameDay(end, day);
+        if (!day || startsToday || endsToday) {            
+            if (options?.long) {
+                const day = start.toLocaleDateString([], { weekday: 'long' });
+                return `${day} ${this.time(start)}-${this.time(end)} (${this.timeBetween(end, start)})`;
+            } else {
+                if (endsToday && !startsToday) {
+                    return `Until ${this.time(end)} (${this.timeBetween(end, start)})`;
                 } else {
-                    if (endsToday && !startsToday) {
-                        return `Until ${this.time(end)} (${this.timeBetween(end, start)})`;
-                    } else {
-                        return `${this.time(start)} (${this.timeBetween(end, start)})`;
-                    }
+                    return `${this.time(start)} (${this.timeBetween(end, start)})`;
                 }
             }
         }

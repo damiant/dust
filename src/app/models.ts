@@ -37,6 +37,7 @@ export interface OccurrenceSet {
     end_time: string
     start_time: string
     old: boolean // Calculated
+    longTimeString: string // Calculated
 }
 
 export interface Camp {

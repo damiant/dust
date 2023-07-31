@@ -13,6 +13,7 @@ import { Dataset } from '../models';
 import { datasetFilename } from '../api';
 import { ApiService } from '../api.service';
 import { StatusBar, Style } from '@capacitor/status-bar';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-intro',
@@ -34,7 +35,9 @@ export class IntroPage implements OnInit {
     private fav: FavoritesService, private router: Router) { }
 
   async ngOnInit() {
-    StatusBar.setStyle({style: Style.Dark});
+    if (Capacitor.isNativePlatform()) {
+      StatusBar.setStyle({ style: Style.Dark });
+    }
     this.cards = await this.loadDatasets();
     this.selected = this.cards[0];
     this.save(); // Needed in case user has restarted
@@ -47,7 +50,7 @@ export class IntroPage implements OnInit {
         this.downloading = true;
         await this.api.download();
       } finally {
-        this.downloading = false;        
+        this.downloading = false;
       }
     }, 1000);
   }
@@ -81,7 +84,9 @@ export class IntroPage implements OnInit {
       this.fav.init(this.settingsService.settings.dataset);
       const title = (this.selected.year == this.cards[0].year) ? '' : this.selected.year;
       this.db.selectedYear.set(title);
-      StatusBar.setStyle({style: Style.Default });
+      if (Capacitor.isNativePlatform()) {
+        StatusBar.setStyle({ style: Style.Default });
+      }
       this.router.navigateByUrl('/tabs/events');
     } finally {
       this.ready = true;

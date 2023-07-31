@@ -39,7 +39,6 @@ export class CampPage implements OnInit {
     this.star = await this.fav.isFavCamp(this.camp.uid);
     this.events = await this.db.getCampEvents(id);
     this.mapPoints = [toMapPoint(this.camp.location_string!)];
-    console.log(this.camp);
   }
 
   open(url: string) {
