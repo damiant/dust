@@ -1,10 +1,11 @@
 ion-label {
     opacity: 0.5;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
 }
 
 ion-item.small {
     --padding-top: 0px;
     --padding-bottom: 0px;
     --min-height: unset;
-    height: 45px;
   }
