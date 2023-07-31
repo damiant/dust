@@ -15,7 +15,7 @@ Nice
 
 Bugs
 x (bad data) search 2019 - Elvis espresso. It shows 1am to 7am but description is 9-12
-- Switching days can cause scroll glitch
+
 
 New
 - align message popup vertically

@@ -65,10 +65,14 @@ export class EventsPage implements OnInit {
       await this.db.checkEvents();
       this.defaultDay = this.chooseDefaultDay(today);
       this.update();
-    } else {
-      // Hack to ensure tab view is updated on switch of tabs
-      this.minBufferPx = (this.minBufferPx == 1901) ? 1900 : 1901;
+    } else {      
+      this.hack();
     }
+  }
+
+  hack() {
+    // Hack to ensure tab view is updated on switch of tabs or when day is changed
+    this.minBufferPx = (this.minBufferPx == 1901) ? 1900 : 1901;
   }
 
   chooseDefaultDay(today: Date): Date | string {
@@ -110,6 +114,7 @@ export class EventsPage implements OnInit {
     }    
     await this.update();
     this.virtualScroll.scrollToOffset(0);
+    this.hack();
   }
 
   map(event: Event) {
