@@ -68,8 +68,7 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     setTimeout(() => {
-      for (let point of this.points) {
-        console.log(point);
+      for (let point of this.points) {        
         if (point.street !== '' && point.street.localeCompare(LocationName.Unavailable, undefined, { sensitivity: 'accent' })) {
           this.plot(this.toClock(point.clock), this.toStreetRadius(point.street));
         }

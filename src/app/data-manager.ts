@@ -2,6 +2,10 @@ import { WorkerClass } from './worker-interface';
 import { Art, Camp, Day, Event, LocationName } from './models';
 import { now, sameDay } from './utils';
 
+interface TimeOptions {
+    long?: boolean;
+}
+
 export class DataManager implements WorkerClass {
     private events: Event[] = [];
     private camps: Camp[] = [];
@@ -153,7 +157,7 @@ export class DataManager implements WorkerClass {
                 }
             }
             event.timeString = this.getTimeString(event, undefined);
-            event.longTimeString = this.getTimeString(event, undefined, true);
+            event.longTimeString = this.getTimeString(event, undefined, { long: true });
         }
     }
 
@@ -262,7 +266,7 @@ export class DataManager implements WorkerClass {
         for (let event of this.events) {
             if (this.eventContains(query, event) && this.onDay(day, event)) {
                 event.timeString = this.getTimeString(event, day);
-                event.longTimeString = this.getTimeString(event, day, true);
+                event.longTimeString = this.getTimeString(event, day, { long: true });
                 result.push(event);
             }
         }
@@ -312,7 +316,9 @@ export class DataManager implements WorkerClass {
         return result;
     }
 
-    private getTimeString(event: Event, day: Date | undefined, long?: boolean): string {
+
+
+    private getTimeString(event: Event, day: Date | undefined, options?: TimeOptions): string {
         for (let occurrence of event.occurrence_set) {
             const start: Date = new Date(occurrence.start_time);
             const end: Date = new Date(occurrence.end_time);
@@ -320,7 +326,7 @@ export class DataManager implements WorkerClass {
             const endsToday = day && sameDay(end, day);
             if (!day || startsToday || endsToday) {
                 event.start = start;
-                if (long) {
+                if (options?.long) {
                     const day = start.toLocaleDateString([], { weekday: 'long' });
                     return `${day} ${this.time(start)}-${this.time(end)} (${this.timeBetween(end, start)})`;
                 } else {
