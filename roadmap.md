@@ -1,9 +1,7 @@
 # Roadmap
 
-
 ## Maps
 - Handle rods ring road
-- Handle art directions
 
 - Verify times using a phone not in PST
 - Verify notification times are PST

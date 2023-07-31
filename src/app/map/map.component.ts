@@ -5,7 +5,8 @@ import { LocationName } from '../models';
 
 export interface MapPoint {
   street: string,
-  clock: string
+  clock: string,
+  feet?: number
 }
 
 export function toMapPoint(location: string): MapPoint {
@@ -13,9 +14,8 @@ export function toMapPoint(location: string): MapPoint {
     return { street: '', clock: '' };
   }
   let l = location.toLowerCase();
-  if (l.includes('open playa')) {
-    console.error(`dont know how to location art: ${l}`);
-    return { street: '', clock: '' };
+  if (l.includes('open playa') || l.includes(`'`)) {    
+    return convertArt(l);
   }
   if (l.includes('portal')) {
     l = l.replace('portal', '& esplanade');
@@ -46,6 +46,15 @@ export function toMapPoint(location: string): MapPoint {
   }
 }
 
+function convertArt(l: string): MapPoint {
+  const tmp = l.split(' ');
+  const clock = tmp[0].trim();
+  const feet = parseInt(tmp[1].trim().replace(`'`, ''));
+  console.log(clock);
+  return { street: '', clock, feet };
+}
+
+
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -68,9 +77,11 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     setTimeout(() => {
-      for (let point of this.points) {        
-        if (point.street !== '' && point.street.localeCompare(LocationName.Unavailable, undefined, { sensitivity: 'accent' })) {
+      for (let point of this.points) {
+        if (point.street !== '' && point.street?.localeCompare(LocationName.Unavailable, undefined, { sensitivity: 'accent' })) {
           this.plot(this.toClock(point.clock), this.toStreetRadius(point.street));
+        } else if (point.feet) {
+          this.plot(this.toClock(point.clock), this.toRadius(point.feet));
         }
       }
     }, 150);
@@ -108,6 +119,14 @@ export class MapComponent implements OnInit, AfterViewInit {
     }
   }
 
+  toRadius(feet: number): number {
+    // 2500ft from man to espanade
+    const toEspanade = this.streets[0];
+    const pixels = feet / 2500.0 * toEspanade;
+    return pixels;
+
+  }
+
   // eg 2:45 => 2.75
   toClock(clock: string): number {
     const tmp = clock.split(':');
@@ -116,7 +135,6 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   plot(clock: number, rad: number) {
-
     const radius = this.getCircleRadius();
     console.log('plot', clock, rad, radius);
     const pt = this.getPointOnCircle(rad * radius, this.clockToDegree(clock));
