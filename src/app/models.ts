@@ -23,6 +23,10 @@ export interface Event {
     contact?: string
 }
 
+export enum LocationName {
+  Unavailable = 'Available Soon'
+}
+
 export interface EventType {
     abbr: string
     id: number

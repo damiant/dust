@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { PinchZoomModule } from '@meddv/ngx-pinch-zoom';
+import { LocationName } from '../models';
 
 export interface MapPoint {
   street: string,
@@ -69,7 +70,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       for (let point of this.points) {
         console.log(point);
-        if (point.street !== '') {
+        if (point.street !== '' && point.street.localeCompare(LocationName.Unavailable, undefined, { sensitivity: 'accent' })) {
           this.plot(this.toClock(point.clock), this.toStreetRadius(point.street));
         }
       }

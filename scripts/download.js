@@ -5,7 +5,7 @@ const key = process.env.DUST_KEY;
 
 if (!key) {
     console.error('DUST_KEY is not set');
-    return;
+    exit(1);
 }
 
 async function download(name, year, filename, folder, options) {

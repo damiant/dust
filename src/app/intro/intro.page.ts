@@ -38,7 +38,7 @@ export class IntroPage implements OnInit {
     this.save(); // Needed in case user has restarted
     setTimeout(async () => {
       await SplashScreen.hide();
-    }, 100);
+    }, 500);
 
     setTimeout(async () => {
       try {
@@ -63,7 +63,7 @@ export class IntroPage implements OnInit {
     const until = daysBetween(now(), start);
     //console.log(start, manBurns, x, until);
     if (thisYear && until > 1) {
-      this.message = `Information for this year will become available on Sunday 27th. There are ${x} days until the man burns.`;
+      this.message = `Locations for camps and art will be released in the app on Sunday 27th. There are ${x} days until the man burns.`;
       this.showMessage = true;
     } else {
       this.launch();

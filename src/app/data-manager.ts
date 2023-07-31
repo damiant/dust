@@ -1,5 +1,5 @@
 import { WorkerClass } from './worker-interface';
-import { Art, Camp, Day, Event } from './models';
+import { Art, Camp, Day, Event, LocationName } from './models';
 import { now, sameDay } from './utils';
 
 export class DataManager implements WorkerClass {
@@ -97,6 +97,9 @@ export class DataManager implements WorkerClass {
         let locIndex: any = {};
         let artIndex: any = {};
         for (let camp of this.camps) {
+            if (!camp.location_string) {
+                camp.location_string = LocationName.Unavailable;
+            }
             campIndex[camp.uid] = camp.name;
             locIndex[camp.uid] = camp.location_string;//notNull(camp.location.intersection) + camp.location.frontage!;
         }
@@ -118,6 +121,10 @@ export class DataManager implements WorkerClass {
                 event.camp = artIndex[event.located_at_art];
             } else {
                 console.log('no location', event);
+            }
+            if (event.print_description === '') {
+                // Happens before events go to the WWW guide
+                event.print_description = event.description;
             }
             if (!event.print_description.endsWith('.')) {
                 event.print_description = event.print_description + '.';
