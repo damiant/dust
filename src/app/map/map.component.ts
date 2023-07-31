@@ -6,7 +6,9 @@ import { LocationName } from '../models';
 export interface MapPoint {
   street: string,
   clock: string,
-  feet?: number
+  feet?: number,
+  streetOffset?: string,
+  clockOffset?: string
 }
 
 export function toMapPoint(location: string): MapPoint {
@@ -14,15 +16,17 @@ export function toMapPoint(location: string): MapPoint {
     return { street: '', clock: '' };
   }
   let l = location.toLowerCase();
-  if (l.includes('open playa') || l.includes(`'`)) {    
+  if (l.includes('ring road')) {
+    console.log('help with', l);
+    // eg rod's ring road @ 7:45
+    return convertRods(l);
+    l = '6:00 & c'; // TODO: be more accurate
+  }
+  if (l.includes('open playa') || l.includes(`'`)) {
     return convertArt(l);
   }
   if (l.includes('portal')) {
     l = l.replace('portal', '& esplanade');
-  }
-  if (l.includes('ring road')) {
-    // eg rod's ring road @ 7:45
-    l = '6:00 & c'; // TODO: be more accurate
   }
   if (l.includes('center camp plaza')) {
     l = '6:00 & A';
@@ -54,6 +58,15 @@ function convertArt(l: string): MapPoint {
   return { street: '', clock, feet };
 }
 
+function convertRods(l: string): MapPoint {
+  if (l.includes('&')) {
+    // May be rod's ring road & D
+    return { street: 'd', clock: '6:00' };
+  }
+  const tmp = l.split('@');
+  const clock = tmp[1].trim();
+  return { street: '', clock, feet: 650, streetOffset: 'b', clockOffset: '6:00' };
+}
 
 @Component({
   selector: 'app-map',
@@ -81,7 +94,17 @@ export class MapComponent implements OnInit, AfterViewInit {
         if (point.street !== '' && point.street?.localeCompare(LocationName.Unavailable, undefined, { sensitivity: 'accent' })) {
           this.plot(this.toClock(point.clock), this.toStreetRadius(point.street));
         } else if (point.feet) {
-          this.plot(this.toClock(point.clock), this.toRadius(point.feet));
+          if (point.streetOffset && point.clockOffset) {
+            console.log('handle offset', point);
+            const offset = this.getPoint(this.toClock(point.clockOffset), this.toStreetRadius(point.streetOffset));
+            const center = this.getPoint(0, 0);
+            offset.x -= center.x;
+            offset.y -= center.y;
+            console.log(offset)
+            this.plot(this.toClock(point.clock), this.toRadius(point.feet), offset);
+          } else {
+            this.plot(this.toClock(point.clock), this.toRadius(point.feet));
+          }
         }
       }
     }, 150);
@@ -134,12 +157,12 @@ export class MapComponent implements OnInit, AfterViewInit {
     return parseInt(tmp[0]) + v;
   }
 
-  plot(clock: number, rad: number) {
-    const radius = this.getCircleRadius();
-    console.log('plot', clock, rad, radius);
-    const pt = this.getPointOnCircle(rad * radius, this.clockToDegree(clock));
-    pt.x += radius;
-    pt.y += radius;
+  plot(clock: number, rad: number, offset?: any) {
+    const pt = this.getPoint(clock, rad);
+    if (offset) {
+      pt.x += offset.x;
+      pt.y += offset.y;
+    }
     const d = document.createElement("div");
     d.style.left = `${pt.x - 2}px`;
     d.style.top = `${pt.y - 5}px`;
@@ -154,6 +177,14 @@ export class MapComponent implements OnInit, AfterViewInit {
     const c: HTMLElement = this.mapc.nativeElement;
     c.insertBefore(d, c.firstChild);
     console.log(pt);
+  }
+
+  getPoint(clock: number, rad: number) {
+    const radius = this.getCircleRadius();
+    const pt = this.getPointOnCircle(rad * radius, this.clockToDegree(clock));
+    pt.x += radius;
+    pt.y += radius;
+    return pt;
   }
 
   mapPoint(event: any) {

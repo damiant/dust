@@ -21,8 +21,7 @@ export class MapModalComponent  implements OnInit {
 
   close() {    
     this.show = false;
-    this.showChange.emit(this.show);
-    console.log('closed');
+    this.showChange.emit(this.show);    
   }
 
   open() {
