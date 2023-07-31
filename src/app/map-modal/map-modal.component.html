@@ -1,10 +1,5 @@
-<ion-modal [isOpen]="show" (didDismiss)="close()"  [initialBreakpoint]="0.60" [breakpoints]="[0, 0.5, 0.75]">
+<ion-modal [isOpen]="show" (didDismiss)="close()"  [initialBreakpoint]="0.60" [breakpoints]="[0, 0.60, 0.75]">
   <ng-template>
-    <!-- <ion-fab (click)="close()" slot="fixed" vertical="top" horizontal="end">
-      <ion-fab-button color="light">
-        <ion-icon name="close"></ion-icon>
-      </ion-fab-button>
-    </ion-fab> -->
     <app-map [points]="points"></app-map>
     <div class="float">
       <h2>{{title}}</h2>
