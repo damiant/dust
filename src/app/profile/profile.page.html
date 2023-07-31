@@ -1,0 +1,28 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Profile</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-list [inset]="true">
+    <ion-item href="mailto:damian@dust.events?subject=dust" detail="true">
+      <ion-icon slot="start" name="mail-unread-outline"></ion-icon>
+      Send Feedback
+    </ion-item>
+    <ion-item (click)="unimplemented()" detail="true">
+      <ion-icon slot="start" name="map-outline"></ion-icon>
+      Map of Restrooms
+    </ion-item>
+    <ion-item (click)="home()" detail="true">
+      <ion-icon slot="start" name="exit-outline"></ion-icon>
+      Back to Home
+    </ion-item>
+
+  </ion-list>
+</ion-content>

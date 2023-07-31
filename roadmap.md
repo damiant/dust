@@ -29,14 +29,8 @@
 - Revision json on dataset to reduce bandwidth
 - All category should show the day name
 
-
-
-
 ## Small Bugs
-- titles if capital then title case
-- updates: if online then download data
-- Favorites use prefix on db (eg bm-2022)
-- Remove scrollbar in segment
+- titles if all capital then title case
 - Notes page with items as checkboxes (ie check list)
 
 ## Features
@@ -46,7 +40,6 @@
 - Switch to camp when clicked from events
 
 ## Profile
-- Feedback button > email yo@dust.events
 - Find restrooms > Map
 - Censor toggle for "Mature Audiences"
 

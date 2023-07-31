@@ -24,6 +24,10 @@ export const routes: Routes = [
         path: 'art',
         loadComponent: () =>
           import('../art/art.page').then((m) => m.ArtPage),
+      },      
+      {
+        path: 'profile',
+        loadComponent: () => import('../profile/profile.page').then(m => m.ProfilePage)
       },
       {
         path: '',
