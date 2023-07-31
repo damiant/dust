@@ -1,22 +1,16 @@
 # Roadmap
 
-## Maps
-- Handle rods ring road
-
 - Verify times using a phone not in PST
 - Verify notification times are PST
-- feedback button: email yo@burn.events
 - Find restrooms button => map
 - Map of favorites
 - Favorite events grouped by day if a lot
 - Show/collapse fav group
 - Censor “mature audiences” in profile
 
-## New
 - Notification for gates open
 - Notification for week before (daily)
 - ^these give chance to download data
-- Art location
 - Art image in list view
 - Favorites search
 - Map points should show text “G 8:15”
@@ -25,7 +19,6 @@
 - Long press to fav
 - Camp events need opacity when over
 - Revision json on dataset to reduce bandwidth
-- All category should show the day name
 
 ## Small Bugs
 - titles if all capital then title case
@@ -48,7 +41,6 @@
 - camps near here
 - events near here
 - Camps/Events Near me (needs geo and gps)
-- press tab button to scroll to top
 - find gps: direction arrow + distance
 
 ## Notifications
@@ -73,7 +65,6 @@
 
 ## Features
 - link event to camp detail (popup)
-- link location/art to art
 - photo attach to any camp / event
 - portapotties on map
 - Event category filter

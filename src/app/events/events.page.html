@@ -29,6 +29,6 @@
   <app-map-modal [title]="mapTitle" [subtitle]="mapSubtitle" [(show)]="showMap" [points]="mapPoints"></app-map-modal>
   <div *ngIf="noEvents" class="message"><ion-text>All the events for this day have concluded.</ion-text></div>
   <cdk-virtual-scroll-viewport [minBufferPx]="minBufferPx" itemSize="180" maxBufferPx="2350">
-    <app-event [day]="day" [event]="event" (mapClick)="map($event)" *cdkVirtualFor="let event of events; trackBy: eventsTrackBy" />
+    <app-event [longTime]="!day" [day]="day" [event]="event" (mapClick)="map($event)" *cdkVirtualFor="let event of events; trackBy: eventsTrackBy" />
   </cdk-virtual-scroll-viewport>
 </ion-content>

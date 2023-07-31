@@ -155,7 +155,8 @@ export class DataManager implements WorkerClass {
                     end = new Date(occurrence.end_time);
                     //console.log(`Fixed midnight ${event.name} ${prev}=>${end}`);
                 }
-                occurrence.longTimeString = this.getOccurrenceTimeString(occurrence, undefined, { long: true });
+                const res = this.getOccurrenceTimeString(occurrence, undefined, { long: true });
+                occurrence.longTimeString = res ? res : 'Unknown';
             }
             event.timeString = this.getTimeString(event, undefined);
             event.longTimeString = this.getTimeString(event, undefined, { long: true });
@@ -319,18 +320,19 @@ export class DataManager implements WorkerClass {
 
 
 
-    private getTimeString(event: Event, day: Date | undefined, options?: TimeOptions): string {
-        
+    private getTimeString(event: Event, day: Date | undefined, options?: TimeOptions): string {        
         for (let occurrence of event.occurrence_set) {
             const start: Date = new Date(occurrence.start_time);
             event.start = start;
-            return this.getOccurrenceTimeString(occurrence, day, options);
+            const res = this.getOccurrenceTimeString(occurrence, day, options);
+            if (res) {
+                return res;
+            }
         }
-        return 'dont know';
+        return 'Dont know';
     }
 
-    private getOccurrenceTimeString(occurrence: OccurrenceSet, day: Date | undefined, options?: TimeOptions): string {
-
+    private getOccurrenceTimeString(occurrence: OccurrenceSet, day: Date | undefined, options?: TimeOptions): string | undefined {
         const start: Date = new Date(occurrence.start_time);
         const end: Date = new Date(occurrence.end_time);
         const startsToday = day && sameDay(start, day);
@@ -347,7 +349,8 @@ export class DataManager implements WorkerClass {
                 }
             }
         }
-        return 'dont know';
+        console.log(day, start, end, startsToday, endsToday);        
+        return undefined;
     }
 
     private timeBetween(d1: any, d2: any): string {
