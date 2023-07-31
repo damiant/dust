@@ -106,7 +106,7 @@ export class DataManager implements WorkerClass {
         for (let art of this.art) {
             artIndex[art.uid] = art.name;
             if (!art.location_string) {
-                art.location_string = 'Unknown';
+                art.location_string = LocationName.Unavailable;
             }
         }
         this.days = [];

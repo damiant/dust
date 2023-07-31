@@ -10,6 +10,7 @@ if (!key) {
 
 async function download(name, year, filename, folder, options) {
     const url = getUrl(name, year);
+    console.log(`Downloading ${url}...`);
     const res = await fetch(url, {
         method: 'Get', headers: { 'Authorization': `Basic ${btoa(key)}` }
     });
@@ -28,6 +29,7 @@ async function download(name, year, filename, folder, options) {
             }
         }
     }
+    json.sort((a,b) => a.uid - b.uid);
     json = json.filter((item) => !item.invalid);
 
     const f = `./src/assets/${folder}/${filename}.json`;

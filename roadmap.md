@@ -19,7 +19,6 @@ x (bad data) search 2019 - Elvis espresso. It shows 1am to 7am but description i
 
 New
 - align message popup vertically
-- 2017 blows up during load
 - Notification for gates open
 - Notification for week before (daily)
 - ^these give chance to download data
