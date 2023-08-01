@@ -80,7 +80,7 @@ export class DbService {
   }
 
   public async setDataset(dataset: string, events: Event[], camps: Camp[], art: Art[]): Promise<void> {
-    if (events.length == 0) {
+    if (!events || events.length == 0) {
       return;
     }
     return await call(this.worker, 'setDataset', dataset, events, camps, art);

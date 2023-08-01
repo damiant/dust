@@ -21,20 +21,20 @@ export class TabsPage implements OnInit {
   currentTab = '';
   public environmentInjector = inject(EnvironmentInjector);
   constructor(
-    private db: DbService, private ui: UiService, 
-    private notificationService: NotificationService, 
+    private db: DbService, private ui: UiService,
+    private notificationService: NotificationService,
     private router: Router, private settingsService: SettingsService) {
     effect(() => {
-      console.log('go to notification');
       const eventId = this.notificationService.hasNotification();
       if (eventId && eventId.length > 0) {
+        console.log('go to notification');
         this.goToFavEvent(eventId);
       }
     });
   }
 
-  async ngOnInit() {   
-    await this.db.init(this.settingsService.settings.dataset); 
+  async ngOnInit() {
+    await this.db.init(this.settingsService.settings.dataset);
     this.ready = true;
   }
 

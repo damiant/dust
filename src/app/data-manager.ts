@@ -2,8 +2,15 @@ import { WorkerClass } from './worker-interface';
 import { Art, Camp, Day, Event, LocationName, OccurrenceSet } from './models';
 import { now, sameDay } from './utils';
 
-interface TimeOptions {
-    long?: boolean;
+
+
+interface TimeString {
+    short: string;
+    long: string;
+}
+
+interface TimeCache {
+    [index: string]: TimeString | undefined;
 }
 
 export class DataManager implements WorkerClass {
@@ -14,6 +21,7 @@ export class DataManager implements WorkerClass {
     private days: string[] = [];
     private allEventsOld = false;
     private dataset: string = '';
+    private cache: TimeCache = {};
 
     // This is required for a WorkerClass
     public async doWork(method: string, args: any[]): Promise<any> {
@@ -84,11 +92,12 @@ export class DataManager implements WorkerClass {
                 throw err;
             }
         }
-        console.log(`Event has live events: ${hasLiveEvents}`);
         return hasLiveEvents;
     }
 
     private init() {
+        console.time('init');
+        this.cache = {};
         this.camps = this.camps.filter((camp) => { return camp.description || camp.location_string });
         for (const camp of this.camps) {
             if (typeof camp.name == 'number') {
@@ -149,9 +158,9 @@ export class DataManager implements WorkerClass {
                 if (hrs > 24) {
                     const old = occurrence.end_time;
                     occurrence.end_time = new Date(start.getFullYear(), start.getMonth(), start.getDate(), end.getHours(), end.getMinutes()).toISOString();
-                    const newHrs = this.hoursBetween(new Date(occurrence.start_time), new Date(occurrence.end_time));
+                    //const newHrs = this.hoursBetween(new Date(occurrence.start_time), new Date(occurrence.end_time));
                     end = new Date(occurrence.end_time);
-                    //console.log(`Fixed end time of ${event.name} from ${old}=>${occurrence.end_time} (starting ${occurrence.start_time}) because event was ${hrs} hours long. Now ${newHrs} hours long.`);
+                    //console.log(`Fixed end time of ${event.title} from ${old}=>${occurrence.end_time} (starting ${occurrence.start_time}) because event was ${hrs} hours long. Now ${newHrs} hours long.`);
                 }
                 if (end.getHours() == 0 && end.getMinutes() == 0) {
                     // Midnight is set to 11:59
@@ -161,13 +170,16 @@ export class DataManager implements WorkerClass {
                     end = new Date(occurrence.end_time);
                     //console.log(`Fixed midnight ${event.name} ${prev}=>${end}`);
                 }
-                const res = this.getOccurrenceTimeString(occurrence, undefined, { long: true });
-                occurrence.longTimeString = res ? res : 'Unknown';
+                const res = this.getOccurrenceTimeStringCached(start, end, undefined);
+                occurrence.longTimeString = res ? res.long : 'Unknown';
             }
-            event.timeString = this.getTimeString(event, undefined);
-            event.longTimeString = this.getTimeString(event, undefined, { long: true });
+            const timeString = this.getTimeString(event, undefined);
+            event.timeString = timeString.short;
+            event.longTimeString = timeString.long;
         }
         this.categories.sort();
+        this.cache = {};
+        console.timeEnd('init');
     }
 
     private setToday(d: Date): Date {
@@ -274,8 +286,9 @@ export class DataManager implements WorkerClass {
         const result: Event[] = [];
         for (let event of this.events) {
             if (this.eventContains(query, event) && this.eventIsCategory(category, event) && this.onDay(day, event)) {
-                event.timeString = this.getTimeString(event, day);
-                event.longTimeString = this.getTimeString(event, day, { long: true });
+                const timeString = this.getTimeString(event, day);
+                event.timeString = timeString.short;
+                event.longTimeString = timeString.long;
                 result.push(event);
             }
         }
@@ -330,36 +343,44 @@ export class DataManager implements WorkerClass {
         return event.event_type?.label === category;
     }
 
-    private getTimeString(event: Event, day: Date | undefined, options?: TimeOptions): string {
+    private getTimeString(event: Event, day: Date | undefined): TimeString {
         for (let occurrence of event.occurrence_set) {
             const start: Date = new Date(occurrence.start_time);
+            const end: Date = new Date(occurrence.end_time);
             event.start = start;
-            const res = this.getOccurrenceTimeString(occurrence, day, options);
+            const res = this.getOccurrenceTimeStringCached(start, end, day);
             if (res) {
                 return res;
             }
         }
-        return 'Dont know';
+        return { short: 'Dont know', long: 'Dont know' };
     }
 
-    private getOccurrenceTimeString(occurrence: OccurrenceSet, day: Date | undefined, options?: TimeOptions): string | undefined {
-        const start: Date = new Date(occurrence.start_time);
-        const end: Date = new Date(occurrence.end_time);
+    private getOccurrenceTimeString(start: Date, end: Date, day: Date | undefined): TimeString | undefined {
         const startsToday = day && sameDay(start, day);
         const endsToday = day && sameDay(end, day);
         if (!day || startsToday || endsToday) {
-            if (options?.long) {
-                const day = start.toLocaleDateString([], { weekday: 'long' });
-                return `${day} ${this.time(start)}-${this.time(end)} (${this.timeBetween(end, start)})`;
-            } else {
-                if (endsToday && !startsToday) {
-                    return `Until ${this.time(end)} (${this.timeBetween(end, start)})`;
-                } else {
-                    return `${this.time(start)} (${this.timeBetween(end, start)})`;
-                }
+            const day = start.toLocaleDateString([], { weekday: 'long' });
+            const short = (endsToday && !startsToday) ? 
+               `Until ${this.time(end)} (${this.timeBetween(end, start)})` :
+               `${this.time(start)} (${this.timeBetween(end, start)})`;
+            
+            return {
+                long: `${day} ${this.time(start)}-${this.time(end)} (${this.timeBetween(end, start)})`,
+                short 
             }
         }
         return undefined;
+    }
+    
+    
+
+    private getOccurrenceTimeStringCached(start: Date, end: Date, day: Date | undefined): TimeString | undefined {
+        const key = `${start.getTime()}-${end.getTime()}-${day}`;
+        if (!(key in this.cache)) {
+            this.cache[key] = this.getOccurrenceTimeString(start, end, day);            
+        }
+        return this.cache[key];
     }
 
     private timeBetween(d1: any, d2: any): string {
@@ -419,6 +440,8 @@ export class DataManager implements WorkerClass {
             this.days.push(name);
         }
     }
+
+
 
     private getDayName(dateStr: string) {
         var date = new Date(dateStr);
