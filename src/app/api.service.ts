@@ -10,7 +10,12 @@ enum Names {
   datasets = 'datasets',
   events = 'events',
   art = 'art',
-  camps = 'camps'
+  camps = 'camps',
+  revision = 'revision'
+}
+
+interface Revision {
+  revision: number;
 }
 
 @Injectable({
@@ -44,9 +49,19 @@ export class ApiService {
     const datasets: Dataset[] = await getLive('datasets', Names.datasets);
     await this.save(Names.datasets, datasets);
     const latest = datasetFilename(datasets[0]);
+    const revision: Revision = await getLive(latest, Names.revision);
+    // Check the current revision
+    const id = this.getId(latest, Names.revision);
+    const currentRevision: Revision = await this.get(id, { revision: 0 });    
+    if (revision && currentRevision && revision.revision === currentRevision.revision) {
+      console.log(`Will not download data for ${latest} as it is already at revision ${currentRevision.revision}`);
+      return;
+    }
+
     const events = await getLive(latest, Names.events);
     const art = await getLive(latest, Names.art);
     const camps = await getLive(latest, Names.camps);
+    await this.save(this.getId(latest, Names.revision), revision);
     await this.save(this.getId(latest, Names.events), events);
     await this.save(this.getId(latest, Names.camps), camps);
     await this.save(this.getId(latest, Names.art), art);
@@ -69,6 +84,6 @@ export class ApiService {
   }
 
   private async save(id: string, data: any) {
-    await Preferences.set({ key: id, value: JSON.stringify(data)});
+    await Preferences.set({ key: id, value: JSON.stringify(data) });
   }
 }
