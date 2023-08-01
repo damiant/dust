@@ -35,14 +35,19 @@ export class IntroPage implements OnInit {
     private fav: FavoritesService, private router: Router) { }
 
   async ngOnInit() {
-    if (Capacitor.isNativePlatform()) {
-      StatusBar.setStyle({ style: Style.Dark });
-    }
+
     this.cards = await this.loadDatasets();
     this.selected = this.cards[0];
     this.save(); // Needed in case user has restarted
     setTimeout(async () => {
-      await SplashScreen.hide();
+      if (Capacitor.isNativePlatform()) {
+        await StatusBar.setStyle({ style: Style.Dark });
+        StatusBar.setBackgroundColor({ color: '#F61067' });
+        await SplashScreen.hide();
+        setTimeout(async () => {
+          await StatusBar.setBackgroundColor({ color: '#F61067' });
+        }, 200);
+      }
     }, 500);
 
     setTimeout(async () => {
@@ -87,7 +92,10 @@ export class IntroPage implements OnInit {
       const title = (this.selected.year == this.cards[0].year) ? '' : this.selected.year;
       this.db.selectedYear.set(title);
       if (Capacitor.isNativePlatform()) {
-        StatusBar.setStyle({ style: Style.Default });
+        setTimeout(async () => {
+          await StatusBar.setStyle({ style: Style.Light });
+          await StatusBar.setBackgroundColor({ color: '#FFFFFF' });
+        }, 100);
       }
       await this.router.navigateByUrl('/tabs/events');
     } finally {

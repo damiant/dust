@@ -3,6 +3,8 @@ import { Injectable, signal } from '@angular/core';
 import { randomInt } from './utils';
 import { IonContent } from '@ionic/angular';
 import { SplashScreen } from '@capacitor/splash-screen';
+import { StatusBar, Style } from '@capacitor/status-bar';
+import { Capacitor } from '@capacitor/core';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,7 @@ export class UiService {
 
   public scrollUp(name: string, virtualScroll: CdkVirtualScrollViewport) {
     const tab = this.clickedTab();
-    if (tab.startsWith(name))  {
+    if (tab.startsWith(name)) {
       console.log(`${name}: scroll to top`);
       virtualScroll.scrollToIndex(0, 'smooth');
     }
@@ -21,18 +23,27 @@ export class UiService {
 
   public scrollUpContent(name: string, ionContent: IonContent) {
     const tab = this.clickedTab();
-    if (tab.startsWith(name))  {
+    if (tab.startsWith(name)) {
       console.log(`${name}: scroll to top`);
       ionContent.scrollToTop(100);
     }
   }
 
   public setTab(name: string) {
-    this.clickedTab.set(`${name}.${randomInt(1,9999999)}`);
+    this.clickedTab.set(`${name}.${randomInt(1, 9999999)}`);
   }
 
   public async home() {
-    await SplashScreen.show();
+    if (Capacitor.isNativePlatform()) {
+      await SplashScreen.show();
+      setTimeout(async() => {
+        await StatusBar.setStyle({ style: Style.Dark });
+        await StatusBar.setBackgroundColor({ color: '#F61067' });
+      }, 500);
+
+    }
+
+
     document.location.href = '/';
   }
 }

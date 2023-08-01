@@ -57,14 +57,13 @@ export class EventsPage implements OnInit {
 
   async ionViewWillEnter() {
     if (this.events.length == 0) {
-      this.days = await this.db.getDays();
-      this.categories = await this.db.getCategories();
       const today = now();
       this.setToday(today);
-      await this.db.getEvents(0, 9999);
       await this.db.checkEvents();
+      this.db.getDays().then((days) => this.days = days);
+      this.db.getCategories().then((categories) => this.categories = categories);
       this.defaultDay = this.chooseDefaultDay(today);
-      this.update();
+      await this.update();
     } else {
       this.hack();
     }
@@ -130,7 +129,9 @@ export class EventsPage implements OnInit {
   }
 
   async update(scrollToTop?: boolean) {
+    console.time('update');
     this.events = await this.db.findEvents(this.search, this.day, this.category);
+    console.timeEnd('update');
     console.log(`${this.events.length} events`);
     this.noEvents = this.events.length == 0;
     if (scrollToTop) {      

@@ -1,9 +1,7 @@
 import { OccurrenceSet } from "./models";
 
 export function sameDay(d1: Date, d2: Date) {
-    return d1.getFullYear() === d2.getFullYear() &&
-        d1.getMonth() === d2.getMonth() &&
-        d1.getDate() === d2.getDate();
+    return d1.getDate() === d2.getDate() && d1.getMonth() === d2.getMonth() && d1.getFullYear() === d2.getFullYear();
 }
 
 export function now(): Date {
@@ -43,13 +41,13 @@ export function daysBetween(date1: any, date2: any) {
 }
 
 export function minutesBetween(date2: Date, date1: Date) {
-    var differenceValue =(date2.getTime() - date1.getTime()) / 1000;
+    var differenceValue = (date2.getTime() - date1.getTime()) / 1000;
     differenceValue /= 60;
     return Math.abs(Math.round(differenceValue));
- }
+}
 
 export function addDays(date: Date, days: number) {
     var result = new Date(date);
     result.setDate(result.getDate() + days);
     return result;
-  }
+}

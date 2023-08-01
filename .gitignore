@@ -8,6 +8,7 @@
 *.tmp.*
 UserInterfaceState.xcuserstate
 $RECYCLE.BIN/
+/android-keys
 
 *.log
 log.txt

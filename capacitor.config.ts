@@ -9,12 +9,18 @@ const config: CapacitorConfig = {
   },
   plugins: {
     SplashScreen: {
-      backgroundColor: '#F61067',
-      splashFullScreen: true,
+      backgroundColor: '#f61067',
+      splashFullScreen: false,
       splashImmersive: false,
       launchAutoHide: false,
     }
   },
+  android: {
+    buildOptions: {
+      keystorePath: './ttitd/android-keys/Untitled',
+      keystoreAlias: 'dust',
+    }
+  }
 };
 
 export default config;
