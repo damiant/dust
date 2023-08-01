@@ -1,4 +1,5 @@
 import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { basename, join } from 'path';
 import fetch from 'node-fetch';
 
 const key = process.env.DUST_KEY;
@@ -21,6 +22,10 @@ async function download(name, year, filename, folder, options) {
             item.name = item.name.toString();
             console.warn(`Replaced invalid name ${item.name}`);
         }
+        if (options?.fixUid) {
+            item.uid = item.event_id.toString();
+            item.event_id = undefined;
+        }
         if (options?.fixOccurrence) {
             if (!item.occurrence_set) {
                 console.warn(`${item.title} has invalid occurrence_set and event was removed.`);
@@ -33,8 +38,7 @@ async function download(name, year, filename, folder, options) {
     json = json.filter((item) => !item.invalid);
 
     const f = `./src/assets/${folder}/${filename}.json`;
-    writeFileSync(f, JSON.stringify(json, undefined, 2));
-    console.log(`Wrote "${f}"`);
+    save(f, folder, JSON.stringify(json, undefined, 2));
 }
 
 function saveRevision(folder) {
@@ -45,7 +49,21 @@ function saveRevision(folder) {
         revision = r.revision;
     }
     const json = { revision: revision + 1 };
-    writeFileSync(f, JSON.stringify(json, undefined, 2));
+    save(f, folder, JSON.stringify(json, undefined, 2));
+}
+
+function save(path, folder, data) {
+    const filename = basename(path);
+    writeFileSync(path, data);
+    console.log(`Wrote "${path}"`);
+    const p = `../dust-web/src/assets/data/${folder}`;
+    if (!existsSync(p)) {
+        throw new Error(`Path must exist: ${p}`);
+    }
+    const otherPath = join(p, filename);
+
+    writeFileSync(otherPath, data);
+    console.log(`Wrote "${otherPath}"`);
 }
 
 function getUrl(name, year) {
@@ -59,7 +77,7 @@ for (const year of years) {
     console.log(`Downloading ${year}`);
     await download('art', year, 'art', `ttitd-${year}`, { fixName: true });
     await download('camp', year, 'camps', `ttitd-${year}`, { fixName: true });
-    await download('event', year, 'events', `ttitd-${year}`, { fixOccurrence: true });
+    await download('event', year, 'events', `ttitd-${year}`, { fixOccurrence: true, fixUid: true });
     saveRevision(`ttitd-${year}`);
 }
 
