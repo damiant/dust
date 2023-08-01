@@ -87,9 +87,11 @@ export class IntroPage implements OnInit {
       if (Capacitor.isNativePlatform()) {
         StatusBar.setStyle({ style: Style.Default });
       }
-      this.router.navigateByUrl('/tabs/events');
+      await this.router.navigateByUrl('/tabs/events');
     } finally {
-      this.ready = true;
+      setTimeout(() => {
+        this.ready = true;
+      }, 2000);
     }
   }
 

@@ -12,14 +12,14 @@
       </div>
     </div>
   </div>
-  <div class="center">
-    <ion-spinner color="light" *ngIf="!ready"></ion-spinner>
+  <div class="center">    
     <div [hidden]="!downloading">
       <ion-spinner color="light"></ion-spinner>
     </div>
   </div>
   <div class="footer">
-    <ion-button [disabled]="!ready" (click)="go()" size="large" shape="round">Get Dusty<ion-icon
-        name="arrow-forward-outline"></ion-icon></ion-button>
+    <ion-button [disabled]="!ready" (click)="go()" size="large" shape="round">Get Dusty
+      <ion-spinner style="margin-left: 0.5rem" color="light" name="circular" *ngIf="!ready"></ion-spinner>
+      <ion-icon *ngIf="ready" name="arrow-forward-outline"></ion-icon></ion-button>
   </div>
 </ion-content>
