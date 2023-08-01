@@ -9,7 +9,8 @@ import { noDate, now } from './utils';
 export class DbService {
   public selectedDay = signal(noDate());
   public selectedYear = signal('');
-  private initialized = false;  
+  private initialized = false;
+  private hideLocations = true;
   private worker!: Worker;
 
   public async init(dataset: string) {
@@ -17,7 +18,7 @@ export class DbService {
     this.worker = new Worker(new URL('./app.worker', import.meta.url));
     registerWorker(this.worker);
 
-    await call(this.worker, 'populate', dataset);
+    await call(this.worker, 'populate', dataset, this.hideLocations);
     this.initialized = true;
   }
 
@@ -25,6 +26,10 @@ export class DbService {
     if (!this.initialized) {
       document.location.href = '';
     }
+  }
+
+  public setHideLocations(hide: boolean) {
+    this.hideLocations = hide;
   }
 
   public async checkEvents(): Promise<void> {
@@ -83,7 +88,7 @@ export class DbService {
     if (!events || events.length == 0) {
       return;
     }
-    return await call(this.worker, 'setDataset', dataset, events, camps, art);
+    return await call(this.worker, 'setDataset', dataset, events, camps, art, this.hideLocations);
   }
 
   public async getCampEvents(campId: string): Promise<Event[]> {

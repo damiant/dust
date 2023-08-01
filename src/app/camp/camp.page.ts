@@ -50,6 +50,10 @@ export class CampPage implements OnInit {
     this.showEvent = true;
   }
 
+  noop() {
+    
+  }
+
   async toggleStar() {
     if (!this.camp) return;
     this.star = !this.star;

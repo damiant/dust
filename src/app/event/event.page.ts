@@ -58,6 +58,10 @@ export class EventPage implements OnInit {
     await toast.present();
   }
 
+  noop() {
+    
+  }
+
   async toggleStar(occurrence: OccurrenceSet) {
     if (!this.event) return;
     occurrence.star = !occurrence.star;

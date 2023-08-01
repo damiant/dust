@@ -4,7 +4,6 @@
 1 If you choose a day filter events for a camp to that day
 1 If you favorite an event on a day only add notification for that day
 1 Add elipsis to event time listing
-1 Verify locations will not show before event start
 
 2 Verify times using a phone not in PST
 2 Verify notification times are PST

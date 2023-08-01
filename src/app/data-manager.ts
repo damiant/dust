@@ -26,10 +26,10 @@ export class DataManager implements WorkerClass {
     // This is required for a WorkerClass
     public async doWork(method: string, args: any[]): Promise<any> {
         switch (method) {
-            case 'populate': return await this.populate(args[0]);
+            case 'populate': return await this.populate(args[0], args[1]);
             case 'getDays': return this.getDays();
             case 'getCategories': return this.categories;
-            case 'setDataset': return this.setDataset(args[0], args[1], args[2], args[3]);
+            case 'setDataset': return this.setDataset(args[0], args[1], args[2], args[3], args[4]);
             case 'getEvents': return this.getEvents(args[0], args[1]);
             case 'getEventList': return this.getEventList(args[0]);
             case 'getCampList': return this.getCampList(args[0]);
@@ -47,13 +47,13 @@ export class DataManager implements WorkerClass {
         }
     }
 
-    public async populate(dataset: string): Promise<number> {
+    public async populate(dataset: string, hideLocations: boolean): Promise<number> {
         this.dataset = dataset;
         this.events = await this.loadEvents();
         this.camps = await this.loadCamps();
         this.art = await this.loadArt();
 
-        this.init();
+        this.init(hideLocations);
         return this.events.length + this.camps.length;
     }
 
@@ -95,7 +95,7 @@ export class DataManager implements WorkerClass {
         return hasLiveEvents;
     }
 
-    private init() {
+    private init(hideLocations: boolean) {
         console.time('init');
         this.cache = {};
         this.camps = this.camps.filter((camp) => { return camp.description || camp.location_string });
@@ -112,7 +112,7 @@ export class DataManager implements WorkerClass {
         let locIndex: any = {};
         let artIndex: any = {};
         for (let camp of this.camps) {
-            if (!camp.location_string) {
+            if (!camp.location_string || hideLocations) {
                 camp.location_string = LocationName.Unavailable;
             }
             campIndex[camp.uid] = camp.name;
@@ -120,7 +120,7 @@ export class DataManager implements WorkerClass {
         }
         for (let art of this.art) {
             artIndex[art.uid] = art.name;
-            if (!art.location_string) {
+            if (!art.location_string || hideLocations) {
                 art.location_string = LocationName.Unavailable;
             }
         }
@@ -190,12 +190,12 @@ export class DataManager implements WorkerClass {
         return d;
     }
 
-    public setDataset(dataset: string, events: Event[], camps: Camp[], art: Art[]) {
+    public setDataset(dataset: string, events: Event[], camps: Camp[], art: Art[], hideLocations: boolean) {
         this.dataset = dataset;
         this.events = events;
         this.camps = camps;
         this.art = art;
-        this.init();
+        this.init(hideLocations);
     }
 
     public getEvents(idx: number, count: number): Event[] {

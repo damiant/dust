@@ -11,10 +11,13 @@
     <ion-item>
       <h1>{{event.title}}</h1>
     </ion-item>
-    <ion-item><ion-icon slot="start" name="home-outline"></ion-icon><ion-label>{{event.camp}}</ion-label></ion-item>
-    <ion-item *ngIf="event.location">
+    <ion-item>
+      <ion-icon slot="start" [src]="'assets/icon/camp.svg'"></ion-icon>
+      <ion-label>{{event.camp}}</ion-label>
+    </ion-item>
+    <ion-item (click)="noop()" *ngIf="event.location">
       <ion-icon slot="start" name="location-outline"></ion-icon>
-      <ion-label>{{event.location}}</ion-label>
+      <ion-label >{{event.location}}</ion-label>
     </ion-item>
     <ion-item (click)="toggleStar(occurrence)" *ngFor="let occurrence of event.occurrence_set">
       <ion-icon name="time-outline" slot="start"></ion-icon>

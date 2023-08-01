@@ -70,7 +70,9 @@ export class IntroPage implements OnInit {
     if (thisYear && until > 1) {
       this.message = `Locations for camps and art will be released in the app on Sunday 27th. There are ${x} days until the man burns.`;
       this.showMessage = true;
+      this.db.setHideLocations(true);
     } else {
+      this.db.setHideLocations(false);
       this.launch();
     }
   }
