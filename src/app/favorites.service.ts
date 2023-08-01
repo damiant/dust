@@ -1,7 +1,8 @@
 import { Injectable, signal } from '@angular/core';
-import PouchDB from 'pouchdb';
-import { Event, Favorites } from './models';
+import { Event, Favorites, OccurrenceSet } from './models';
 import { NotificationService } from './notification.service';
+import { Preferences } from '@capacitor/preferences';
+import { SettingsService } from './settings.service';
 
 enum DbId {
   favorites = 'favorites'
@@ -12,18 +13,19 @@ enum DbId {
 })
 export class FavoritesService {
 
-  private db!: PouchDB.Database;
-
   private ready: Promise<void> | undefined;
   public changed = signal(1);
+  private dataset: string = '';
 
   private favorites: Favorites = { art: [], events: [], camps: [], friends: [] };
 
-  constructor(private notificationService: NotificationService) {
+  constructor(private notificationService: NotificationService, private settingsService: SettingsService) {
+    this.init(this.settingsService.settings.dataset);
   }
 
-  public init(dataset: string) {
-    this.db = new PouchDB(`data-${dataset}`);
+
+  public async init(dataset: string) {
+    this.dataset = dataset;
     this.ready = this.load();
   }
 
@@ -36,9 +38,9 @@ export class FavoritesService {
     return this.favorites;
   }
 
-  public async isFavEvent(id: string): Promise<boolean> {
+  public async isFavEventOccurrence(id: string, occurrence: OccurrenceSet): Promise<boolean> {
     await this.ready;
-    return this.favorites.events.includes(id);
+    return this.favorites.events.includes(`${id}-${occurrence.start_time}`);
   }
 
   public async isFavArt(id: string): Promise<boolean> {
@@ -51,9 +53,20 @@ export class FavoritesService {
     return this.favorites.camps.includes(id);
   }
 
-  public async starEvent(star: boolean, event: Event, selectedDay: Date): Promise<string | undefined> {
-    this.favorites.events = this.include(star, event.uid, this.favorites.events);
+  public eventsFrom(eventOccurrences: string[]): string[] {
+    const result = [];
+    for (const eventOccurrence of eventOccurrences) {
+      const oc = eventOccurrence.split('-');
+      result.push(oc[0]);
+    }
+    return result;
+  }
+
+  public async starEvent(star: boolean, event: Event, selectedDay: Date, occurrence?: OccurrenceSet): Promise<string | undefined> {
+    this.favorites.events = this.include(star, this.eventId(event, occurrence), this.favorites.events);
+    console.log('starEvent', star, JSON.stringify(this.favorites));
     await this.saveFavorites();
+
     if (star) {
       const result = await this.notificationService.scheduleAll(
         {
@@ -61,7 +74,8 @@ export class FavoritesService {
           title: `${event.location}: ${event.title}`,
           body: event.description
         },
-        event.occurrence_set, selectedDay);
+        occurrence ? [occurrence] : event.occurrence_set,
+        selectedDay);
       return (result.error) ? result.error : `${result.notifications} notification${result.notifications != 1 ? 's' : ''} scheduled for this event`;
     } else {
       // Remove notifications
@@ -70,8 +84,16 @@ export class FavoritesService {
     }
   }
 
+  private eventId(event: Event, occurrence?: OccurrenceSet): string {
+    if (!occurrence) {
+      return event.uid;
+    } else {
+      return `${event.uid}-${occurrence.start_time}`;
+    }
+  }
+
   public async starArt(star: boolean, artId: string) {
-    this.favorites.events = this.include(star, artId, this.favorites.art);
+    this.favorites.art = this.include(star, artId, this.favorites.art);
     await this.saveFavorites();
 
   }
@@ -82,27 +104,36 @@ export class FavoritesService {
   }
 
   private async saveFavorites() {
-    const doc = await this.get(DbId.favorites, this.favorites);
-    doc.data = this.favorites;
-    await this.db.put(doc);
+    const id = DbId.favorites;
+    const value = this.favorites;
+    await Preferences.set({ key: `${this.dataset}-${id}`, value: JSON.stringify(value) });
+    console.log('saved', value);
     const i = this.changed();
     this.changed.set(i + 1);
   }
 
   private async get(id: DbId, defaultValue: any): Promise<any> {
     try {
-      return await this.db.get(DbId.favorites);
+      const result = await Preferences.get({ key: `${this.dataset}-${id}` });
+      if (result.value == null) {
+        return defaultValue;
+      }
+      return result.value;
     } catch {
-      return { _id: id, data: defaultValue };
+      return defaultValue;
     }
   }
 
+
+
   private async load() {
-    const doc = await this.get(DbId.favorites, this.favorites);
-    this.favorites = doc.data;
-    if (!this.favorites) {
+    try {
+      this.favorites = JSON.parse(await this.get(DbId.favorites, this.favorites));
+      console.log('loaded', this.favorites);
+    } catch {
       this.favorites = this.noData();
     }
+
   }
 
   private include(add: boolean, value: string, items: string[]): string[] {

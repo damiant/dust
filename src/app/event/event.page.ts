@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule, ToastController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { DbService } from '../db.service';
-import { Event } from '../models';
+import { Event, OccurrenceSet } from '../models';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { MapComponent, MapPoint, toMapPoint } from '../map/map.component';
 import { FavoritesService } from '../favorites.service';
@@ -23,7 +23,6 @@ export class EventPage implements OnInit {
   mapPoints: MapPoint[] = [];
   mapTitle = '';
   mapSubtitle = '';
-  star = false;
   private day: Date | undefined;
   @Input() eventId: string | undefined;
   constructor(private route: ActivatedRoute, private db: DbService, private fav: FavoritesService, private toastController: ToastController) {
@@ -43,7 +42,9 @@ export class EventPage implements OnInit {
     this.mapTitle = this.event.camp;
     this.mapSubtitle = this.event.location;
     this.mapPoints.push(toMapPoint(this.event.location));
-    this.star = await this.fav.isFavEvent(this.event.uid);
+    for (let occurrence of this.event.occurrence_set) {
+      occurrence.star = await this.fav.isFavEventOccurrence(this.event.uid, occurrence);
+    }
   }
 
   async presentToast(message: string) {
@@ -57,10 +58,10 @@ export class EventPage implements OnInit {
     await toast.present();
   }
 
-  async toggleStar() {
+  async toggleStar(occurrence: OccurrenceSet) {
     if (!this.event) return;
-    this.star = !this.star;    
-    const message = await this.fav.starEvent(this.star, this.event, this.db.selectedDay());
+    occurrence.star = !occurrence.star;
+    const message = await this.fav.starEvent(occurrence.star, this.event, this.db.selectedDay(), occurrence);
     if (message) {
       this.presentToast(message);
     }

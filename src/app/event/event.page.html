@@ -3,12 +3,6 @@
     <ion-buttons slot="start">
       <ion-back-button [text]="back()"></ion-back-button>
     </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button (click)="toggleStar()" slot="icon">
-        <ion-icon *ngIf="star" name="star"></ion-icon>
-        <ion-icon *ngIf="!star" name="star-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -22,9 +16,13 @@
       <ion-icon slot="start" name="location-outline"></ion-icon>
       <ion-label>{{event.location}}</ion-label>
     </ion-item>
-    <ion-item *ngFor="let occurrence of event.occurrence_set">
+    <ion-item (click)="toggleStar(occurrence)" *ngFor="let occurrence of event.occurrence_set">
       <ion-icon name="time-outline" slot="start"></ion-icon>
-      <ion-label>{{occurrence.longTimeString}}</ion-label>
+      <ion-label color="primary">{{occurrence.longTimeString}}</ion-label>
+      <ion-button color="primary" fill="clear" slot="end">
+        <ion-icon *ngIf="occurrence.star" name="star"></ion-icon>
+        <ion-icon *ngIf="!occurrence.star" name="star-outline"></ion-icon>
+      </ion-button>
     </ion-item>
     <ion-item>
       <ion-icon name="pricetag-outline" slot="start"></ion-icon>
@@ -33,8 +31,8 @@
     <ion-item>
       <ion-text style="padding-right: 1rem;" class="text">{{event.description}}</ion-text>
     </ion-item>
-    <div class="center">
-      <ion-button *ngIf="!star" (click)="toggleStar()" shape="round">Add To Favorites</ion-button>
+    <div class="center" *ngIf="event.occurrence_set.length === 1">
+      <ion-button *ngIf="!event.occurrence_set[0].star" (click)="toggleStar(event.occurrence_set[0])" shape="round">Add To Favorites</ion-button>
     </div>
   </ion-list>
   <app-map [points]="mapPoints"></app-map>

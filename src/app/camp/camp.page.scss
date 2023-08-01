@@ -1,7 +1,14 @@
 ion-label {
-    opacity: 0.5;
     margin-top: 0.25rem;
     margin-bottom: 0.25rem;
+}
+
+ion-label.text {
+     opacity: 0.5;
+}
+
+ion-item.event {
+    font-weight: bold;
 }
 
 ion-item.small {
@@ -12,4 +19,8 @@ ion-item.small {
 
 .pad {
     padding: 1rem;
+}
+
+.pad-left {
+    padding-left: 2.7rem;
 }

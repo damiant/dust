@@ -38,6 +38,7 @@ export interface OccurrenceSet {
     start_time: string
     old: boolean // Calculated
     longTimeString: string // Calculated
+    star?: boolean;
 }
 
 export interface Camp {

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import PouchDB from 'pouchdb';
 import { Dataset } from './models';
 import { datasetFilename, getLive } from './api';
 import { SettingsService } from './settings.service';
 import { minutesBetween, now } from './utils';
 import { DbService } from './db.service';
+import { Preferences } from '@capacitor/preferences';
 
 enum Names {
   datasets = 'datasets',
@@ -17,9 +17,7 @@ enum Names {
   providedIn: 'root'
 })
 export class ApiService {
-  private db!: PouchDB.Database;
   constructor(private settingsService: SettingsService, private dbService: DbService) {
-    this.db = new PouchDB(`datasets`);
   }
 
   public async sendDataToWorker() {
@@ -33,7 +31,7 @@ export class ApiService {
   }
 
   private async read(dataset: string, name: Names): Promise<any> {
-    return (await this.get(this.getId(dataset, name), [])).data;
+    return (await this.get(this.getId(dataset, name), []));
   }
 
   public async download() {
@@ -63,15 +61,14 @@ export class ApiService {
 
   private async get(id: string, defaultValue: any): Promise<any> {
     try {
-      return await this.db.get(id);
+      const res = await Preferences.get({ key: id });
+      return JSON.parse(res.value!);
     } catch {
-      return { _id: id, data: defaultValue };
+      return defaultValue;
     }
   }
 
   private async save(id: string, data: any) {
-    const doc = await this.get(id, data);
-    doc.data = data;
-    await this.db.put(doc);
+    await Preferences.set({ key: id, value: JSON.stringify(data)});
   }
 }

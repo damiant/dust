@@ -1,5 +1,10 @@
 # Roadmap
 
+1 Camp details popup on event page
+1 If you choose a day filter events for a camp to that day
+1 If you favorite an event on a day only add notification for that day
+1 Add elipsis to event time listing
+1 Press a camps multi day event to favorite it
 2 Verify times using a phone not in PST
 2 Verify notification times are PST
 2 Find restrooms button => map
