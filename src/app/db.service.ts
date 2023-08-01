@@ -31,12 +31,16 @@ export class DbService {
     return await call(this.worker, 'checkEvents');
   }
 
-  public async findEvents(query: string, day: Date | undefined): Promise<Event[]> {
-    return await call(this.worker, 'findEvents', query, day);
+  public async findEvents(query: string, day: Date | undefined, category: string): Promise<Event[]> {
+    return await call(this.worker, 'findEvents', query, day, category);
   }
 
   public async getEventList(ids: string[]): Promise<Event[]> {
     return await call(this.worker, 'getEventList', ids);
+  }
+
+  public async getCategories(): Promise<string[]> {
+    return await call(this.worker, 'getCategories');
   }
 
   public async getCampList(ids: string[]): Promise<Camp[]> {

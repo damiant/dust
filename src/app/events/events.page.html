@@ -3,6 +3,7 @@
     <ion-title>
       {{title}}
     </ion-title>
+    <ion-badge *ngIf="db.selectedYear() !== ''" slot="end">{{db.selectedYear()}}</ion-badge>
   </ion-toolbar>
 </ion-header>
 
@@ -10,7 +11,10 @@
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title (click)="home()" size="large">{{title}}</ion-title>
-      <ion-badge *ngIf="db.selectedYear() !== ''" slot="end" (click)="home()">{{db.selectedYear()}}</ion-badge>
+      <ion-buttons slot="end">
+        <app-category (change)="categoryChanged()" [(category)]="category" [categories]="categories"
+          slot="end"></app-category>
+      </ion-buttons>
     </ion-toolbar>
     <ion-toolbar>
       <ion-searchbar (ionInput)="handleInput($event)" [debounce]="1000" placeholder="Find Events"></ion-searchbar>
@@ -29,6 +33,7 @@
   <app-map-modal [title]="mapTitle" [subtitle]="mapSubtitle" [(show)]="showMap" [points]="mapPoints"></app-map-modal>
   <div *ngIf="noEvents" class="message"><ion-text>All the events for this day have concluded.</ion-text></div>
   <cdk-virtual-scroll-viewport [minBufferPx]="minBufferPx" itemSize="180" maxBufferPx="2350">
-    <app-event [longTime]="!day" [day]="day" [event]="event" (mapClick)="map($event)" *cdkVirtualFor="let event of events; trackBy: eventsTrackBy" />
+    <app-event [title]="title" [longTime]="!day" [day]="day" [event]="event" (mapClick)="map($event)"
+      *cdkVirtualFor="let event of events; trackBy: eventsTrackBy" />
   </cdk-virtual-scroll-viewport>
 </ion-content>

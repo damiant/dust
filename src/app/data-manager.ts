@@ -9,6 +9,7 @@ interface TimeOptions {
 export class DataManager implements WorkerClass {
     private events: Event[] = [];
     private camps: Camp[] = [];
+    private categories: string[] = [];
     private art: Art[] = [];
     private days: string[] = [];
     private allEventsOld = false;
@@ -19,6 +20,7 @@ export class DataManager implements WorkerClass {
         switch (method) {
             case 'populate': return await this.populate(args[0]);
             case 'getDays': return this.getDays();
+            case 'getCategories': return this.categories;
             case 'setDataset': return this.setDataset(args[0], args[1], args[2], args[3]);
             case 'getEvents': return this.getEvents(args[0], args[1]);
             case 'getEventList': return this.getEventList(args[0]);
@@ -27,7 +29,7 @@ export class DataManager implements WorkerClass {
             case 'findArts': return this.findArts(args[0]);
             case 'findArt': return this.findArt(args[0]);
             case 'checkEvents': return this.checkEvents();
-            case 'findEvents': return this.findEvents(args[0], args[1]);
+            case 'findEvents': return this.findEvents(args[0], args[1], args[2]);
             case 'findCamps': return this.findCamps(args[0]);
             case 'findEvent': return this.findEvent(args[0]);
             case 'findCamp': return this.findCamp(args[0]);
@@ -114,8 +116,12 @@ export class DataManager implements WorkerClass {
             }
         }
         this.days = [];
+        this.categories = [];
         this.allEventsOld = !this.checkEvents();
         for (let event of this.events) {
+            if (!this.categories.includes(event.event_type.label)) {
+                this.categories.push(event.event_type.label);
+            }
             if (event.hosted_by_camp) {
                 event.camp = campIndex[event.hosted_by_camp];
                 event.location = locIndex[event.hosted_by_camp];
@@ -161,6 +167,7 @@ export class DataManager implements WorkerClass {
             event.timeString = this.getTimeString(event, undefined);
             event.longTimeString = this.getTimeString(event, undefined, { long: true });
         }
+        this.categories.sort();
     }
 
     private setToday(d: Date): Date {
@@ -263,10 +270,10 @@ export class DataManager implements WorkerClass {
         return undefined;
     }
 
-    public findEvents(query: string, day: Date | undefined): Event[] {
+    public findEvents(query: string, day: Date | undefined, category: string): Event[] {
         const result: Event[] = [];
         for (let event of this.events) {
-            if (this.eventContains(query, event) && this.onDay(day, event)) {
+            if (this.eventContains(query, event) && this.eventIsCategory(category, event) && this.onDay(day, event)) {
                 event.timeString = this.getTimeString(event, day);
                 event.longTimeString = this.getTimeString(event, day, { long: true });
                 result.push(event);
@@ -318,9 +325,12 @@ export class DataManager implements WorkerClass {
         return result;
     }
 
+    private eventIsCategory(category: string, event: Event): boolean {
+        if (category === '') return true;
+        return event.event_type?.label === category;
+    }
 
-
-    private getTimeString(event: Event, day: Date | undefined, options?: TimeOptions): string {        
+    private getTimeString(event: Event, day: Date | undefined, options?: TimeOptions): string {
         for (let occurrence of event.occurrence_set) {
             const start: Date = new Date(occurrence.start_time);
             event.start = start;
@@ -337,7 +347,7 @@ export class DataManager implements WorkerClass {
         const end: Date = new Date(occurrence.end_time);
         const startsToday = day && sameDay(start, day);
         const endsToday = day && sameDay(end, day);
-        if (!day || startsToday || endsToday) {            
+        if (!day || startsToday || endsToday) {
             if (options?.long) {
                 const day = start.toLocaleDateString([], { weekday: 'long' });
                 return `${day} ${this.time(start)}-${this.time(end)} (${this.timeBetween(end, start)})`;
@@ -349,7 +359,6 @@ export class DataManager implements WorkerClass {
                 }
             }
         }
-        console.log(day, start, end, startsToday, endsToday);        
         return undefined;
     }
 

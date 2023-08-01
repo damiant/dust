@@ -25,8 +25,16 @@ ion-segment::-webkit-scrollbar{
     opacity: 0.5;
 }
 
-ion-button {
-    position: absolute;
-    right: 1rem;
-    top: 0.5rem;    
+.small {
+    font-size: 26px;
+    padding-bottom: 16px;
+}
+
+.smaller {
+    font-size: 21px;
+    padding-bottom: 19px;
+}
+
+ion-buttons {
+    margin-top: -12px;
 }

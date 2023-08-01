@@ -4,7 +4,6 @@
 1 If you choose a day filter events for a camp to that day
 1 If you favorite an event on a day only add notification for that day
 1 Add elipsis to event time listing
-1 Press a camps multi day event to favorite it
 2 Verify times using a phone not in PST
 2 Verify notification times are PST
 2 Find restrooms button => map
@@ -28,7 +27,6 @@
 3 titles if all capital then title case
 3 Notes page with items as checkboxes (ie check list)
 4 subtitle make larger
-2 filter by category (label is link)
 2 Switch to camp when clicked from events
 3 Censor toggle for "Mature Audiences"
 2 Show days until event

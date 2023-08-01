@@ -12,6 +12,7 @@ import { noDate, now, sameDay } from '../utils';
 import { App } from '@capacitor/app';
 import { EventComponent } from '../event/event.component';
 import { UiService } from '../ui.service';
+import { CategoryComponent } from '../category/category.component';
 
 @Component({
   selector: 'app-events',
@@ -19,14 +20,16 @@ import { UiService } from '../ui.service';
   styleUrls: ['events.page.scss'],
   standalone: true,
   imports: [
-    IonicModule, CommonModule, RouterModule, ScrollingModule, 
-    MapModalComponent, FormsModule, EventComponent],
+    IonicModule, CommonModule, RouterModule, ScrollingModule,
+    MapModalComponent, FormsModule, EventComponent, CategoryComponent],
 })
 export class EventsPage implements OnInit {
   title = 'Events';
   defaultDay: any = 'all';
+  category = '';
   events: Event[] = [];
   days: Day[] = [];
+  categories: string[] = [];
   search: string = '';
   noEvents = false;
   screenHeight: number = window.screen.height;
@@ -42,7 +45,7 @@ export class EventsPage implements OnInit {
     effect(() => {
       this.ui.scrollUp('events', this.virtualScroll);
     });
-   }
+  }
 
   ngOnInit() {
     App.addListener('resume', async () => {
@@ -59,23 +62,29 @@ export class EventsPage implements OnInit {
   async ionViewWillEnter() {
     if (this.events.length == 0) {
       this.days = await this.db.getDays();
+      this.categories = await this.db.getCategories();
       const today = now();
       this.setToday(today);
       await this.db.getEvents(0, 9999);
       await this.db.checkEvents();
       this.defaultDay = this.chooseDefaultDay(today);
       this.update();
-    } else {      
+    } else {
       this.hack();
     }
   }
 
-  hack() {
+  public categoryChanged() {
+    this.update(true);
+  }
+
+
+  private hack() {
     // Hack to ensure tab view is updated on switch of tabs or when day is changed
     this.minBufferPx = (this.minBufferPx == 1901) ? 1900 : 1901;
   }
 
-  chooseDefaultDay(today: Date): Date | string {
+  private chooseDefaultDay(today: Date): Date | string {
     for (const day of this.days) {
       if (day.date && sameDay(day.date, today)) {
         this.day = day.date;
@@ -94,8 +103,7 @@ export class EventsPage implements OnInit {
 
   handleInput(event: any) {
     this.search = event.target.value.toLowerCase();
-    this.virtualScroll.scrollToOffset(0);
-    this.update();
+    this.update(true);
   }
 
   eventsTrackBy(index: number, event: Event) {
@@ -105,16 +113,17 @@ export class EventsPage implements OnInit {
   async dayChange(event: any) {
     if (event.target.value == 'all') {
       this.day = undefined;
-      this.title = 'Events';
       this.db.selectedDay.set(noDate());
     } else {
       this.day = new Date(event.target.value);
-      this.title = this.day.toLocaleDateString('en-US', { weekday: 'long' });
       this.db.selectedDay.set(this.day);
-    }    
-    await this.update();
-    this.virtualScroll.scrollToOffset(0);
-    this.hack();
+    }
+    this.updateTitle();
+    await this.update(true);
+  }
+
+  private updateTitle() {
+    this.title = (this.day) ? this.day.toLocaleDateString('en-US', { weekday: 'long' }) : 'Events';
   }
 
   map(event: Event) {
@@ -124,10 +133,14 @@ export class EventsPage implements OnInit {
     this.showMap = true;
   }
 
-  async update() {
-    this.events = await this.db.findEvents(this.search, this.day);
+  async update(scrollToTop?: boolean) {
+    this.events = await this.db.findEvents(this.search, this.day, this.category);
     console.log(`${this.events.length} events`);
     this.noEvents = this.events.length == 0;
+    if (scrollToTop) {      
+      this.hack();
+      this.virtualScroll.scrollToOffset(0, 'smooth');
+    }
   }
 
 }
