@@ -10,7 +10,7 @@
 <ion-content [fullscreen]="true" class="app-page">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title (click)="home()" size="large">{{title}}</ion-title>
+      <ion-title size="large">{{title}}</ion-title>
       <ion-buttons slot="end">
         <app-category (change)="categoryChanged()" [(category)]="category" [categories]="categories"
           slot="end"></app-category>

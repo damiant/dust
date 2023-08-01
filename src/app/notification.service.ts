@@ -43,13 +43,12 @@ export class NotificationService {
         let isValid = true;
         if (!this.sameDate(selectedDay, noDate())) {
            // User has selected a particular day
-           isValid = dateMatches(selectedDay, occurrence);
+           isValid = true;// dateMatches(selectedDay, occurrence);
         }
         console.log(`for this day=${isValid} selected=${selectedDay} start=${occurrence.start_time} end=${occurrence.end_time}`);
         if (isValid) {
           const start = new Date(occurrence.start_time);
           reminder.when = this.reminderTime(start);
-          console.log(reminder.when);
           if (!this.sameDate(last, reminder.when)) {
             await this.schedule(reminder);
             count++;

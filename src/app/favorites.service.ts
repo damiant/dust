@@ -68,10 +68,11 @@ export class FavoritesService {
     await this.saveFavorites();
 
     if (star) {
+      const title = event.location ? `${event.location}: ${event.title}` : event.title;
       const result = await this.notificationService.scheduleAll(
         {
           id: event.uid,
-          title: `${event.location}: ${event.title}`,
+          title,
           body: event.description
         },
         occurrence ? [occurrence] : event.occurrence_set,
