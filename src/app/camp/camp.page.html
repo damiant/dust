@@ -40,7 +40,7 @@
     </ion-item>
     <div *ngFor="let event of events">
     <ion-item class="event">
-      <ion-icon slot="start" name="calendar-outline"></ion-icon>
+      <ion-icon class="event-icon" slot="start" name="calendar-outline"></ion-icon>
       <ion-label color="primary" (click)="show(event)">{{event.title}}</ion-label>
     </ion-item>
     <ion-item class="small" *ngFor="let occurrence of event.occurrence_set">
