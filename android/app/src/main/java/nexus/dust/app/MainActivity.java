@@ -1,4 +1,4 @@
-package ionic.ttitd;
+package nexus.dust.app;
 
 import com.getcapacitor.BridgeActivity;
 
