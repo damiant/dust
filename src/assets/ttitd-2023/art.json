@@ -3528,27 +3528,6 @@
     ]
   },
   {
-    "uid": "a2I8X00000hDNBaUAO",
-    "year": 2023,
-    "name": "Temple Anam Cara",
-    "url": "https://obsydianstudios.com/",
-    "contact_email": "obsydianstudios@gmail.com",
-    "hometown": "San Francisco, CA",
-    "description": "The Temple Anam Cara is a Mexica pyramid with multicultural references to a collective of ancestral heritages. A kinetic tree sculpture emerges from the temple roof with an interactive prayer wheel that engages the canopy of sculpted branches and roots in celebration of the cultural similarities shared through a love for mother Gaia. The base sanctuary is adorned by murals, mirrors and sound reactive LEDs to welcome all to offered ceremonial experiences.  This sculpture is a creation in honor of the indigenous wisdom embraced by the creators of Temple Anam Cara, a shared expression of love of community, life and earth.",
-    "artist": "A Celtic Light and Obsydian Studios creation",
-    "category": "Open Playa",
-    "program": "Self-Funded",
-    "donation_link": null,
-    "guided_tours": 0,
-    "self_guided_tour_map": 0,
-    "images": [
-      {
-        "gallery_ref": 0,
-        "thumbnail_url": "https://burningman.widen.net/content/78nzqxcsuo/jpeg/a2I8X00000hDNBaUAO-1.jpeg?w=640&keep=c&crop=yes&color=cccccc&quality=80&u=r3rtjx"
-      }
-    ]
-  },
-  {
     "uid": "a2I8X00000hDD7pUAG",
     "year": 2023,
     "name": "Persistence",
@@ -7214,6 +7193,27 @@
       {
         "gallery_ref": 0,
         "thumbnail_url": "https://burningman.widen.net/content/lrk2dhwk9b/jpeg/a2I8X00000hDLZ6UAO-1.jpeg?w=640&keep=c&crop=yes&color=cccccc&quality=80&u=r3rtjx"
+      }
+    ]
+  },
+  {
+    "uid": "a2I8X00000hDNBaUAO",
+    "year": 2023,
+    "name": "Temple Anam Cara",
+    "url": "https://obsydianstudios.com/",
+    "contact_email": "obsydianstudios@gmail.com",
+    "hometown": "San Francisco, CA",
+    "description": "Anam Cara is an ancient Celtic phrase referring to the concept of the “soul friend” in spirituality. Temple Anam Cara intertwines a Celtic Tree of Life upon an Aztec Step Pyramid, an homage to the ancestral heritages of our co-creators. The shared belief in this concept has inspired the creation of this sculpture. We recognize that the path of wisdom is woven by countless cultures and civilizations, each offering unique insights into the nature of existence - to celebrate the shared connections of our Soul Friends that have guided and inspired deeper connections to the universe’s beauty. At the heart of Temple Anam Cara lies a deep belief in the unity of love, light, and consciousness—a recognition that all ancient traditions converge in their quest for higher truth. The base sanctuary is adorned by murals, mirrors and LEDs to welcome all to offered experiences. This sculpture is a creation in honor of the indigenous wisdom embraced by the creators of Temple Anam Cara, a shared expression of love of community, life and earth.\nwww.templeanamcara.com",
+    "artist": "A Celtic Light and Obsydian Studios creation",
+    "category": "Open Playa",
+    "program": "Self-Funded",
+    "donation_link": null,
+    "guided_tours": 0,
+    "self_guided_tour_map": 0,
+    "images": [
+      {
+        "gallery_ref": 0,
+        "thumbnail_url": "https://burningman.widen.net/content/78nzqxcsuo/jpeg/a2I8X00000hDNBaUAO-1.jpeg?w=640&keep=c&crop=yes&color=cccccc&quality=80&u=r3rtjx"
       }
     ]
   }

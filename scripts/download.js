@@ -1,4 +1,4 @@
-import { writeFileSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 import fetch from 'node-fetch';
 
 const key = process.env.DUST_KEY;
@@ -17,7 +17,7 @@ async function download(name, year, filename, folder, options) {
     let json = await res.json();
 
     for (let item of json) {
-        if (options?.fixName && typeof item.name == 'number') {            
+        if (options?.fixName && typeof item.name == 'number') {
             item.name = item.name.toString();
             console.warn(`Replaced invalid name ${item.name}`);
         }
@@ -29,12 +29,23 @@ async function download(name, year, filename, folder, options) {
             }
         }
     }
-    json.sort((a,b) => a.uid - b.uid);
+    json.sort((a, b) => a.uid - b.uid);
     json = json.filter((item) => !item.invalid);
 
     const f = `./src/assets/${folder}/${filename}.json`;
     writeFileSync(f, JSON.stringify(json, undefined, 2));
     console.log(`Wrote "${f}"`);
+}
+
+function saveRevision(folder) {
+    const f = `./src/assets/${folder}/revision.json`;
+    let revision = 0;
+    if (existsSync(f)) {
+        const r = JSON.parse(readFileSync(f));
+        revision = r.revision;
+    }
+    const json = { revision: revision + 1 };
+    writeFileSync(f, JSON.stringify(json, undefined, 2));
 }
 
 function getUrl(name, year) {
@@ -49,5 +60,6 @@ for (const year of years) {
     await download('art', year, 'art', `ttitd-${year}`, { fixName: true });
     await download('camp', year, 'camps', `ttitd-${year}`, { fixName: true });
     await download('event', year, 'events', `ttitd-${year}`, { fixOccurrence: true });
+    saveRevision(`ttitd-${year}`);
 }
 
