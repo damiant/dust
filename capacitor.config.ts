@@ -17,7 +17,7 @@ const config: CapacitorConfig = {
   },
   android: {
     buildOptions: {
-      keystorePath: './ttitd/android-keys/Untitled',
+      keystorePath: '../android-keys/Untitled',
       keystoreAlias: 'dust',
     }
   }
