@@ -1,9 +1,13 @@
 <h1 *ngIf="event.group">{{event.group}}</h1>
 <ion-card class="item">
+
+  <p *ngIf="event.happening" class="badge">NOW</p>
   <ion-card-header>
-    <ion-card-title [routerLink]="'/event/'+ event.uid + '+' + title">{{event.title}}</ion-card-title>
-    <ion-badge *ngIf="event.happening" style="position: absolute; margin-top: 0.25rem; right:-1.5rem" color="primary">Now</ion-badge>
-    <ion-card-subtitle color="primary" (click)="map(event)">{{event.camp}} ({{event.location}})
+    <ion-card-title [routerLink]="'/event/'+ event.uid + '+' + title">{{event.title}}
+    </ion-card-title>
+    <ion-card-subtitle color="primary" (click)="map(event)">
+      {{event.camp}} ({{event.location}})
+
     </ion-card-subtitle>
   </ion-card-header>
   

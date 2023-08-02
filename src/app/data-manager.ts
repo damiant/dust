@@ -33,7 +33,7 @@ export class DataManager implements WorkerClass {
             case 'getArtList': return this.getArtList(args[0]);
             case 'findArts': return this.findArts(args[0]);
             case 'findArt': return this.findArt(args[0]);
-            case 'checkEvents': return this.checkEvents();
+            case 'checkEvents': return this.checkEvents(args[0]);
             case 'findEvents': return this.findEvents(args[0], args[1], args[2]);
             case 'findCamps': return this.findCamps(args[0]);
             case 'findEvent': return this.findEvent(args[0]);
@@ -58,7 +58,7 @@ export class DataManager implements WorkerClass {
         art.sort((a: Art, b: Art) => { return a.name.localeCompare(b.name); });
     }
 
-    private checkEvents(): boolean {
+    private checkEvents(day?: Date): boolean {
         const today = now();
         let hasLiveEvents = false;
         for (const event of this.events) {
@@ -91,7 +91,6 @@ export class DataManager implements WorkerClass {
                             event.happening = true;
                         }
                     }
-
                 }
             } catch (err) {
                 console.error('Failed', event);
@@ -395,10 +394,12 @@ export class DataManager implements WorkerClass {
 
     private onDay(day: Date | undefined, event: Event): boolean {
         if (!day) return true;
+        const today = now();
         for (let occurrence of event.occurrence_set) {
             const start = new Date(occurrence.start_time);
             const end = new Date(occurrence.end_time);
-            if (!occurrence.old && (sameDay(start, day) || sameDay(end, day))) {
+            
+            if (!occurrence.old && ((sameDay(start, day) || sameDay(end, day)))) {
                 return true;
             }
         }

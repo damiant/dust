@@ -25,9 +25,10 @@
       <ion-label >{{event.location}}</ion-label>
     </ion-item>
     <ion-item (click)="toggleStar(occurrence)" *ngFor="let occurrence of event.occurrence_set">
-      <ion-icon color="primary" name="time-outline" slot="start"></ion-icon>
+      <ion-icon name="time-outline" slot="start"></ion-icon>
       <ion-label>{{occurrence.longTimeString}}</ion-label>
-      <ion-button color="primary" fill="clear" slot="end">
+      <ion-badge *ngIf="occurrence.happening">Now</ion-badge>
+      <ion-button *ngIf="!occurrence.happening" color="primary" fill="clear" slot="end">
         <ion-icon *ngIf="occurrence.star" name="star"></ion-icon>
         <ion-icon *ngIf="!occurrence.star" name="star-outline"></ion-icon>
       </ion-button>

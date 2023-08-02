@@ -9,6 +9,8 @@
 - Favorite events that have passed do not show in the list
 - Fix to correctly choose todays day if its available in events
 - Search now has a "go" button
+- Show events that are happening now
+- Better message when no events match
 
 ### 1.1 - August 2, 2023
 - Submitted to the App Store

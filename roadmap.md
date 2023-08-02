@@ -1,5 +1,7 @@
 # Roadmap
 
+- If an event is happening now then show it in event view
+
 1 If you choose a day filter events for a camp to that day
 1 If you favorite an event on a day only add notification for that day
 1 Icon for event categories

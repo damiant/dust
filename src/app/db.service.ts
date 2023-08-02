@@ -32,8 +32,8 @@ export class DbService {
     this.hideLocations = hide;
   }
 
-  public async checkEvents(): Promise<void> {
-    return await call(this.worker, 'checkEvents');
+  public async checkEvents(day?: Date): Promise<void> {
+    return await call(this.worker, 'checkEvents', day);
   }
 
   public async findEvents(query: string, day: Date | undefined, category: string): Promise<Event[]> {
