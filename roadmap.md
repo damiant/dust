@@ -4,6 +4,11 @@
 1 If you choose a day filter events for a camp to that day
 1 If you favorite an event on a day only add notification for that day
 1 Add elipsis to event time listing
+1 Icon for event categories
+1 Capitalized event should be title cased in download.js
+1 If an event has a long durations (>3hrs) then let user choose notification hour
+1 favs: show group for "Events Today" and "Events"
+
 
 2 Verify times using a phone not in PST
 2 Verify notification times are PST
@@ -26,7 +31,7 @@
 3 titles if all capital then title case
 3 Notes page with items as checkboxes (ie check list)
 3 Censor toggle for "Mature Audiences"
-2 Show days until event
+2 Show days until1 event
 3 camps near here
 3 events near here
 3 Favorite events grouped by day if a lot
@@ -48,6 +53,7 @@
 4 share app
 4 Favorite events for day: show in number order on map
 4 photo attach to any camp / event
+4 Route planner: show from 1...x with lines between on map
 
 5 email (contact camp)
 5 Add notes to a camp (eg friend)
