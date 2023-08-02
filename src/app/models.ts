@@ -5,6 +5,7 @@ export interface Event {
     location: string; // Calculated
     longTimeString: string; // Calculated
     old: boolean; // Calculated
+    group?: string; // Calculated (grouping for favorites)
     all_day: any
     check_location?: number
     description: string
@@ -126,3 +127,8 @@ export interface Camp {
     year: string;
     start: string;
   }
+
+  export interface TimeString {
+    short: string;
+    long: string;
+}

@@ -91,6 +91,13 @@ ion-card-subtitle {
     text-overflow: ellipsis;
 }
 
+ion-text.one-line {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 h2,
 ion-card-title {
     font-family: 'Gelion Semi Bold';
@@ -99,7 +106,7 @@ ion-card-title {
 
 ion-title {
     font-family: 'Grotesk Bold';
-    font-weight: normal;    
+    font-weight: normal;
 }
 
 .ic-txt {

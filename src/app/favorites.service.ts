@@ -3,6 +3,8 @@ import { Event, Favorites, OccurrenceSet } from './models';
 import { NotificationService } from './notification.service';
 import { Preferences } from '@capacitor/preferences';
 import { SettingsService } from './settings.service';
+import { DbService } from './db.service';
+import { getDayName, getOccurrenceTimeString } from './utils';
 
 enum DbId {
   favorites = 'favorites'
@@ -19,7 +21,7 @@ export class FavoritesService {
 
   private favorites: Favorites = { art: [], events: [], camps: [], friends: [] };
 
-  constructor(private notificationService: NotificationService, private settingsService: SettingsService) {
+  constructor(private notificationService: NotificationService, private settingsService: SettingsService, private db: DbService) {
     this.init(this.settingsService.settings.dataset);
   }
 
@@ -104,6 +106,50 @@ export class FavoritesService {
     await this.saveFavorites();
   }
 
+  public async getEventList(ids: string[]): Promise<Event[]> {
+    const events = await this.db.getEventList(this.eventsFrom(ids));
+    // Group events
+    // Set event time string to favorited event occurrence
+    const eventItems = await this.splitEvents(events);
+
+    // ToDo: Sort by event occurrence stars
+    this.groupEvents(eventItems);
+    console.log(eventItems);
+    return eventItems;
+  }
+
+  private async splitEvents(events: Event[]): Promise<Event[]> {
+    const eventItems: Event[] = [];
+    for (let event of events) {
+      for (let occurrence of event.occurrence_set) {
+        occurrence.star = await this.isFavEventOccurrence(event.uid, occurrence);
+        if (occurrence.star) {
+          const eventItem = structuredClone(event);
+          eventItem.occurrence_set = [structuredClone(occurrence)];
+          let start: Date = new Date(occurrence.start_time);
+          let end: Date = new Date(occurrence.end_time);
+          const times = getOccurrenceTimeString(start, end, undefined);
+          eventItem.timeString = times ? times?.short : '';
+          eventItem.longTimeString = times ? times?.long: '';
+          eventItems.push(eventItem);
+        }
+      }
+    }
+    eventItems.sort((a, b) => { return Date.parse(a.occurrence_set[0].start_time) - Date.parse(b.occurrence_set[0].start_time); });
+    return eventItems;
+  }
+
+  private groupEvents(events: Event[]) {
+    let group = '';
+    for (let event of events) {
+      const day = getDayName(event.occurrence_set[0].start_time);
+      if (day !== group) {
+        group = day;
+        event.group = group;
+      }
+    }
+  }
+
   private async saveFavorites() {
     const id = DbId.favorites;
     const value = this.favorites;
@@ -124,8 +170,6 @@ export class FavoritesService {
       return defaultValue;
     }
   }
-
-
 
   private async load() {
     try {

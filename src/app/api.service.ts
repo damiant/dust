@@ -61,10 +61,14 @@ export class ApiService {
     const events = await getLive(latest, Names.events);
     const art = await getLive(latest, Names.art);
     const camps = await getLive(latest, Names.camps);
-    await this.save(this.getId(latest, Names.revision), revision);
+    if (events.length < 100 || art.length < 100 || camps.length < 100) {
+      console.error(`Download failed`);
+      return;
+    }
     await this.save(this.getId(latest, Names.events), events);
     await this.save(this.getId(latest, Names.camps), camps);
     await this.save(this.getId(latest, Names.art), art);
+    await this.save(this.getId(latest, Names.revision), revision);
     console.log(`Downloaded data`, latest);
     this.settingsService.settings.lastDownload = now().toISOString();
     this.settingsService.save();

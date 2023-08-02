@@ -1,13 +1,10 @@
 import { WorkerClass } from './worker-interface';
-import { Art, Camp, Day, Event, LocationName, OccurrenceSet } from './models';
-import { now, sameDay } from './utils';
+import { Art, Camp, Day, Event, LocationName, OccurrenceSet, TimeString } from './models';
+import { getDayName, getOccurrenceTimeString, now, sameDay } from './utils';
 
 
 
-interface TimeString {
-    short: string;
-    long: string;
-}
+
 
 interface TimeCache {
     [index: string]: TimeString | undefined;
@@ -356,61 +353,23 @@ export class DataManager implements WorkerClass {
         return { short: 'Dont know', long: 'Dont know' };
     }
 
-    private getOccurrenceTimeString(start: Date, end: Date, day: Date | undefined): TimeString | undefined {
-        const startsToday = day && sameDay(start, day);
-        const endsToday = day && sameDay(end, day);
-        if (!day || startsToday || endsToday) {
-            const day = start.toLocaleDateString([], { weekday: 'long' });
-            const short = (endsToday && !startsToday) ? 
-               `Until ${this.time(end)} (${this.timeBetween(end, start)})` :
-               `${this.time(start)} (${this.timeBetween(end, start)})`;
-            
-            return {
-                long: `${day} ${this.time(start)}-${this.time(end)} (${this.timeBetween(end, start)})`,
-                short 
-            }
-        }
-        return undefined;
-    }
-    
-    
-
     private getOccurrenceTimeStringCached(start: Date, end: Date, day: Date | undefined): TimeString | undefined {
         const key = `${start.getTime()}-${end.getTime()}-${day}`;
         if (!(key in this.cache)) {
-            this.cache[key] = this.getOccurrenceTimeString(start, end, day);            
+            this.cache[key] = getOccurrenceTimeString(start, end, day);            
         }
         return this.cache[key];
-    }
-
-    private timeBetween(d1: any, d2: any): string {
-        const hrs = Math.ceil(Math.abs(d1 - d2) / 36e5);
-        const mins = Math.floor((Math.abs(d1 - d2) / 1000) / 60);
-        return (mins < 60) ? `${mins}mins` : `${hrs}hrs`;
     }
 
     private hoursBetween(d1: any, d2: any): number {
         return Math.abs(d1 - d2) / 36e5;
     }
 
-    private time(d: Date): string {
-        if (d.getMinutes() != 0) {
-            return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }).toLowerCase().replace(' ', '');
-        }
-        let hrs = d.getHours();
-        const ampm = hrs >= 12 ? 'pm' : 'am';
-        hrs = hrs % 12;
-        if (hrs == 0) {
-            return (ampm == 'pm') ? 'Noon' : 'Midnight';
-        }
-        return `${hrs}${ampm}`;
-    }
-
     public getDays(): Day[] {
         const result: Day[] = [];
         for (let day of this.days) {
             const date = new Date(day);
-            result.push({ name: this.getDayName(day).substring(0, 3), dayName: date.getDate().toString(), date });
+            result.push({ name: getDayName(day).substring(0, 3), dayName: date.getDate().toString(), date });
         }
         result.sort((a, b) => { return a.date.getTime() - b.date.getTime(); });
         return result;
@@ -443,10 +402,7 @@ export class DataManager implements WorkerClass {
 
 
 
-    private getDayName(dateStr: string) {
-        var date = new Date(dateStr);
-        return date.toLocaleDateString([], { weekday: 'long' });
-    }
+
 
     private path(name: string): string {
         return `assets/${this.dataset}/${name}.json`;

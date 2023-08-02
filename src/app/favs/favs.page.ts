@@ -57,7 +57,7 @@ export class FavsPage implements OnInit {
 
   private async update() {
     const favs = await this.fav.getFavorites();
-    this.events = await this.db.getEventList(this.fav.eventsFrom(favs.events));
+    this.events = await this.fav.getEventList(favs.events);
     this.camps = await this.db.getCampList(favs.camps);
     this.art = await this.db.getArtList(favs.art);
     this.noFavorites = this.art.length == 0 && this.camps.length == 0 && this.events.length == 0;

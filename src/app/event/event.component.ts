@@ -2,13 +2,14 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { Event } from '../models';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-event',
   templateUrl: './event.component.html',
   styleUrls: ['./event.component.scss'],
   standalone: true,
-  imports: [IonicModule, RouterModule]
+  imports: [IonicModule, CommonModule, RouterModule]
 })
 export class EventComponent  implements OnInit {
 

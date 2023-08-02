@@ -1,4 +1,4 @@
-import { OccurrenceSet } from "./models";
+import { OccurrenceSet, TimeString } from "./models";
 
 export function sameDay(d1: Date, d2: Date) {
     return d1.getDate() === d2.getDate() && d1.getMonth() === d2.getMonth() && d1.getFullYear() === d2.getFullYear();
@@ -29,6 +29,11 @@ export function dateMatches(d: Date, occurrence: OccurrenceSet): boolean {
     return sameDay(d, start) || sameDay(d, end);
 }
 
+export function getDayName(dateStr: string) {
+    var date = new Date(dateStr);
+    return date.toLocaleDateString([], { weekday: 'long' });
+}
+
 export function daysBetween(date1: any, date2: any) {
     // The number of milliseconds in one day
     const ONE_DAY = 1000 * 60 * 60 * 24;
@@ -50,4 +55,40 @@ export function addDays(date: Date, days: number) {
     var result = new Date(date);
     result.setDate(result.getDate() + days);
     return result;
+}
+
+export function time(d: Date): string {
+    if (d.getMinutes() != 0) {
+        return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }).toLowerCase().replace(' ', '');
+    }
+    let hrs = d.getHours();
+    const ampm = hrs >= 12 ? 'pm' : 'am';
+    hrs = hrs % 12;
+    if (hrs == 0) {
+        return (ampm == 'pm') ? 'Noon' : 'Midnight';
+    }
+    return `${hrs}${ampm}`;
+}
+
+export function getOccurrenceTimeString(start: Date, end: Date, day: Date | undefined): TimeString | undefined {
+    const startsToday = day && sameDay(start, day);
+    const endsToday = day && sameDay(end, day);
+    if (!day || startsToday || endsToday) {
+        const day = start.toLocaleDateString([], { weekday: 'long' });
+        const short = (endsToday && !startsToday) ? 
+           `Until ${time(end)} (${timeBetween(end, start)})` :
+           `${time(start)} (${timeBetween(end, start)})`;
+        
+        return {
+            long: `${day} ${time(start)}-${time(end)} (${timeBetween(end, start)})`,
+            short 
+        }
+    }
+    return undefined;
+}
+
+function timeBetween(d1: any, d2: any): string {
+    const hrs = Math.ceil(Math.abs(d1 - d2) / 36e5);
+    const mins = Math.floor((Math.abs(d1 - d2) / 1000) / 60);
+    return (mins < 60) ? `${mins}mins` : `${hrs}hrs`;
 }

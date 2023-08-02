@@ -1,3 +1,4 @@
+<h1 *ngIf="event.group">{{event.group}}</h1>
 <ion-card class="item">
   <ion-card-header>
     <ion-card-title [routerLink]="'/event/'+ event.uid + '+' + title">{{event.title}}</ion-card-title>
@@ -7,6 +8,6 @@
   
   <ion-card-content [routerLink]="'/event/'+ event.uid + '+' + title">
     <ion-text class="clamp">{{event.print_description}}</ion-text>
-    <ion-text>{{longTime ? event.longTimeString : event.timeString}} {{event.event_type.label}}</ion-text>
+    <ion-text class="one-line">{{longTime ? event.longTimeString : event.timeString}} {{event.event_type.label}}</ion-text>
   </ion-card-content>
 </ion-card>
