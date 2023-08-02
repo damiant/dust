@@ -1,8 +1,8 @@
-import { Component, Input, OnInit, signal } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule, ToastController } from '@ionic/angular';
-import { ActivatedRoute } from '@angular/router';
+import { IonPopover, IonicModule, ToastController } from '@ionic/angular';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DbService } from '../db.service';
 import { Event, OccurrenceSet } from '../models';
 import { MapModalComponent } from '../map-modal/map-modal.component';
@@ -14,15 +14,18 @@ import { FavoritesService } from '../favorites.service';
   templateUrl: './event.page.html',
   styleUrls: ['./event.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, MapModalComponent, MapComponent]
+  imports: [IonicModule, CommonModule, RouterLink, FormsModule, MapModalComponent, MapComponent]
 })
 export class EventPage implements OnInit {
   public event: Event | undefined;
   public back = signal('Back');
+  @ViewChild(IonPopover) popover!: IonPopover;
+  isOpen = false;
   showMap = false;
   mapPoints: MapPoint[] = [];
   mapTitle = '';
   mapSubtitle = '';
+  campDescription = '';
   private day: Date | undefined;
   @Input() eventId: string | undefined;
   constructor(private route: ActivatedRoute, private db: DbService, private fav: FavoritesService, private toastController: ToastController) {
@@ -36,7 +39,7 @@ export class EventPage implements OnInit {
 
     if (!tmp) throw new Error('Route error');
     const id = tmp[0];
-    
+
     this.back.set(tmp[1]);
     this.event = await this.db.findEvent(id);
     this.mapTitle = this.event.camp;
@@ -58,8 +61,16 @@ export class EventPage implements OnInit {
     await toast.present();
   }
 
+  async showCamp(e: any) {
+    this.popover.event = e;
+    const camp = await this.db.findCamp(this.event?.hosted_by_camp!);
+    if (camp) {
+      this.campDescription = camp.description!;
+      this.isOpen = true;
+    }
+  }
+
   noop() {
-    
   }
 
   async toggleStar(occurrence: OccurrenceSet) {

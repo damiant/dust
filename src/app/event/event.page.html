@@ -7,12 +7,17 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <ion-popover #popover side="bottom" [isOpen]="isOpen" (didDismiss)="isOpen = false">
+    <ng-template>
+      <ion-content class="ion-padding">{{campDescription}}</ion-content>
+    </ng-template>
+  </ion-popover>
   <ion-list *ngIf="event" lines="none">
     <ion-item>
       <h1>{{event.title}}</h1>
     </ion-item>
-    <ion-item>
-      <ion-icon slot="start" [src]="'assets/icon/camp.svg'"></ion-icon>
+    <ion-item (click)="showCamp($event)">
+      <ion-icon color="primary" slot="start" [src]="'assets/icon/camp.svg'"></ion-icon>
       <ion-label>{{event.camp}}</ion-label>
     </ion-item>
     <ion-item (click)="noop()" *ngIf="event.location">
@@ -20,8 +25,8 @@
       <ion-label >{{event.location}}</ion-label>
     </ion-item>
     <ion-item (click)="toggleStar(occurrence)" *ngFor="let occurrence of event.occurrence_set">
-      <ion-icon name="time-outline" slot="start"></ion-icon>
-      <ion-label color="primary">{{occurrence.longTimeString}}</ion-label>
+      <ion-icon color="primary" name="time-outline" slot="start"></ion-icon>
+      <ion-label>{{occurrence.longTimeString}}</ion-label>
       <ion-button color="primary" fill="clear" slot="end">
         <ion-icon *ngIf="occurrence.star" name="star"></ion-icon>
         <ion-icon *ngIf="!occurrence.star" name="star-outline"></ion-icon>
