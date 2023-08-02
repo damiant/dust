@@ -80,7 +80,7 @@ export class DataManager implements WorkerClass {
                         hasLiveEvents = false;
                     } else {
                         const isOld = (new Date(occurrence.end_time).getTime() - today.getTime() < 0);
-                        const isHappening = !isOld && (new Date(occurrence.start_time).getTime() - today.getTime() < 0);
+                        const isHappening = !isOld && (new Date(occurrence.start_time).getTime() < today.getTime());
                         occurrence.old = isOld;
                         occurrence.happening = isHappening;
                         if (!occurrence.old) {

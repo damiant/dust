@@ -108,13 +108,9 @@ export class FavoritesService {
 
   public async getEventList(ids: string[]): Promise<Event[]> {
     const events = await this.db.getEventList(this.eventsFrom(ids));
-    // Group events
-    // Set event time string to favorited event occurrence
+    // Group events and Set event time string to favorited event occurrence
     const eventItems = await this.splitEvents(events);
-
-    // ToDo: Sort by event occurrence stars
     this.groupEvents(eventItems);
-    console.log(eventItems);
     return eventItems;
   }
 
@@ -132,7 +128,7 @@ export class FavoritesService {
           let end: Date = new Date(occurrence.end_time);
 
           const isOld = (end.getTime() - timeNow < 0);
-          const isHappening = (start.getTime() - timeNow < 0) && !isOld;
+          const isHappening = (start.getTime() < timeNow) && !isOld;
           eventItem.occurrence_set[0].old = isOld;
           eventItem.occurrence_set[0].happening = isHappening;
           // console.log(eventItem.title);
@@ -187,7 +183,6 @@ export class FavoritesService {
   private async load() {
     try {
       this.favorites = JSON.parse(await this.get(DbId.favorites, this.favorites));
-      console.log('loaded', this.favorites);
     } catch {
       this.favorites = this.noData();
     }
