@@ -62,9 +62,8 @@ export class EventsPage implements OnInit {
       const today = now();
       this.setToday(today);
       await this.db.checkEvents();
-      this.db.getDays().then((days) => this.days = days);
+      this.days = await this.db.getDays();
       this.db.getCategories().then((categories) => this.categories = categories);
-      this.defaultDay = this.chooseDefaultDay(today);
       await this.update();
     } else {
       this.hack();
@@ -82,9 +81,11 @@ export class EventsPage implements OnInit {
   }
 
   private chooseDefaultDay(today: Date): Date | string {
+    console.log('chooseDefaultDay', today, this.days);
     for (const day of this.days) {
       if (day.date && sameDay(day.date, today)) {
         this.day = day.date;
+        console.log(`Chose day as ${day.name}`);
         return day.date;
       }
     }
@@ -132,6 +133,7 @@ export class EventsPage implements OnInit {
 
   async update(scrollToTop?: boolean) {
     console.time('update');
+    this.defaultDay = this.chooseDefaultDay(now());
     this.events = await this.db.findEvents(this.search, this.day, this.category);
     console.timeEnd('update');
     console.log(`${this.events.length} events`);

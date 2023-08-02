@@ -2,12 +2,15 @@
 <ion-card class="item">
   <ion-card-header>
     <ion-card-title [routerLink]="'/event/'+ event.uid + '+' + title">{{event.title}}</ion-card-title>
+    <ion-badge *ngIf="event.happening" style="position: absolute; margin-top: 0.25rem; right:-1.5rem" color="primary">Now</ion-badge>
     <ion-card-subtitle color="primary" (click)="map(event)">{{event.camp}} ({{event.location}})
     </ion-card-subtitle>
   </ion-card-header>
   
   <ion-card-content [routerLink]="'/event/'+ event.uid + '+' + title">
     <ion-text class="clamp">{{event.print_description}}</ion-text>
-    <ion-text class="one-line">{{longTime ? event.longTimeString : event.timeString}} {{event.event_type.label}}</ion-text>
+    <ion-text class="one-line">
+      
+      {{longTime ? event.longTimeString : event.timeString}} {{event.event_type.label}}</ion-text>
   </ion-card-content>
 </ion-card>

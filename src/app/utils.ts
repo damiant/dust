@@ -1,3 +1,4 @@
+import { environment } from "src/environments/environment";
 import { OccurrenceSet, TimeString } from "./models";
 
 export function sameDay(d1: Date, d2: Date) {
@@ -5,10 +6,11 @@ export function sameDay(d1: Date, d2: Date) {
 }
 
 export function now(): Date {
-    // let d = new Date(2022, 7, randomInt(26,31), randomInt(0,23),randomInt(1,59));
-    // console.log('today is simulated:',d);
-    // return d;
-    return new Date();
+    if (!environment.simulatedTime) {
+        return new Date();
+    }
+    console.log(`Simulating time ${environment.simulatedTime}`);
+    return new Date(environment.simulatedTime);
 }
 
 export function randomInt(min: number, max: number) { // min and max included 
@@ -75,13 +77,13 @@ export function getOccurrenceTimeString(start: Date, end: Date, day: Date | unde
     const endsToday = day && sameDay(end, day);
     if (!day || startsToday || endsToday) {
         const day = start.toLocaleDateString([], { weekday: 'long' });
-        const short = (endsToday && !startsToday) ? 
-           `Until ${time(end)} (${timeBetween(end, start)})` :
-           `${time(start)} (${timeBetween(end, start)})`;
-        
+        const short = (endsToday && !startsToday) ?
+            `Until ${time(end)} (${timeBetween(end, start)})` :
+            `${time(start)} (${timeBetween(end, start)})`;
+
         return {
             long: `${day} ${time(start)}-${time(end)} (${timeBetween(end, start)})`,
-            short 
+            short
         }
     }
     return undefined;

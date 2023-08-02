@@ -4,7 +4,7 @@ import { NotificationService } from './notification.service';
 import { Preferences } from '@capacitor/preferences';
 import { SettingsService } from './settings.service';
 import { DbService } from './db.service';
-import { getDayName, getOccurrenceTimeString } from './utils';
+import { getDayName, getOccurrenceTimeString, now } from './utils';
 
 enum DbId {
   favorites = 'favorites'
@@ -120,18 +120,31 @@ export class FavoritesService {
 
   private async splitEvents(events: Event[]): Promise<Event[]> {
     const eventItems: Event[] = [];
+    const timeNow = now().getTime();
     for (let event of events) {
       for (let occurrence of event.occurrence_set) {
         occurrence.star = await this.isFavEventOccurrence(event.uid, occurrence);
         if (occurrence.star) {
           const eventItem = structuredClone(event);
           eventItem.occurrence_set = [structuredClone(occurrence)];
+
           let start: Date = new Date(occurrence.start_time);
           let end: Date = new Date(occurrence.end_time);
+
+          const isOld = (end.getTime() - timeNow < 0);
+          const isHappening = (start.getTime() - timeNow < 0) && !isOld;
+          eventItem.occurrence_set[0].old = isOld;
+          eventItem.occurrence_set[0].happening = isHappening;
+          // console.log(eventItem.title);
+          // console.log(`Ends ${end} (${end.getTime()}), now=${now()} (${timeNow}), isHappening=${isHappening} isOld=${isOld}`);
+          eventItem.old = isOld;
+          eventItem.happening = isHappening;
           const times = getOccurrenceTimeString(start, end, undefined);
           eventItem.timeString = times ? times?.short : '';
-          eventItem.longTimeString = times ? times?.long: '';
-          eventItems.push(eventItem);
+          eventItem.longTimeString = times ? times?.long : '';
+          if (!eventItem.old) {
+            eventItems.push(eventItem);
+          }
         }
       }
     }

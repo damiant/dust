@@ -63,6 +63,7 @@ export class DataManager implements WorkerClass {
         let hasLiveEvents = false;
         for (const event of this.events) {
             event.old = true;
+            event.happening = false;
             try {
                 for (let occurrence of event.occurrence_set) {
                     // This makes all events happen today
@@ -73,13 +74,21 @@ export class DataManager implements WorkerClass {
 
                     if (this.allEventsOld) {
                         event.old = false;
+                        event.happening = false;
                         occurrence.old = false;
-                        hasLiveEvents = true;
+                        occurrence.happening = false;
+                        hasLiveEvents = false;
                     } else {
-                        occurrence.old = (new Date(occurrence.end_time).getTime() - today.getTime() < 0);
+                        const isOld = (new Date(occurrence.end_time).getTime() - today.getTime() < 0);
+                        const isHappening = !isOld && (new Date(occurrence.start_time).getTime() - today.getTime() < 0);
+                        occurrence.old = isOld;
+                        occurrence.happening = isHappening;
                         if (!occurrence.old) {
                             event.old = false;
                             hasLiveEvents = true;
+                        }
+                        if (occurrence.happening) {
+                            event.happening = true;
                         }
                     }
 
