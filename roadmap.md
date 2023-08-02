@@ -6,7 +6,17 @@
 1 Icon for event categories
 1 If an event has a long durations (>3hrs) then let user choose notification hour
 1 favs: show group for "Events Today" and "Events"
+1 Bug: fav events shows first event not favorited event(s)
+1 Search keyboard hint should be "search"
+1 Pressing the tab again should clear search
+1 If no events found then text should be "No events found on X matching Y"
+1 Badge for "now" and "upcoming"
+1 Description should start with a capital letter and end with a .
+1 Favorites filter by events, art, camps, all
+1 Share app
 
+2 Filter by a-z for camps and art
+2 If day is burn night show animation of burn
 2 Verify times using a phone not in PST
 2 Verify notification times are PST
 2 Find restrooms button => map

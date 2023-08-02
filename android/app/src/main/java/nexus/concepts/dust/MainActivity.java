@@ -1,4 +1,4 @@
-package nexus.dust.app;
+package nexus.concepts.dust;
 
 import com.getcapacitor.BridgeActivity;
 
