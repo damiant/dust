@@ -2,11 +2,11 @@
   {
     "title": "Barry’s Boob Camp",
     "uid": "40978",
-    "description": "The very breast competition on playa. Compete in a series of boob-themed events to be crowned the Booblympic Champion.",
+    "description": "The breast happy hour on playa. Take a photo in our Boobs-In-A-Hole photo opp and cool off with some ice cold drinks!",
     "event_type": {
-      "id": 4,
-      "label": "Games",
-      "abbr": "game"
+      "id": 2,
+      "label": "Gathering/Party",
+      "abbr": "prty"
     },
     "year": 2023,
     "print_description": "",
@@ -4650,7 +4650,7 @@
     ]
   },
   {
-    "title": "“LO SIENTO” HAPPY HOUR",
+    "title": "“Lo Siento” Happy Hour",
     "uid": "41143",
     "description": "Ven a disfrutar de nuestra Hora Feliz! Sip spicy and tropical vodkas, and dance to classic salsa, cha cha and cumbia.",
     "event_type": {
@@ -5429,7 +5429,7 @@
     ]
   },
   {
-    "title": "GBHH",
+    "title": "Gbhh",
     "uid": "41168",
     "description": "Adorn yourself in gold & or drop it low for golden hour. Sip our signature champagne cocktail with Rat Camp at Cornstars",
     "event_type": {
@@ -6088,7 +6088,7 @@
     ]
   },
   {
-    "title": "VIB",
+    "title": "Vib",
     "uid": "41191",
     "description": "Are you feeling very important? Name on the list? Stop by the Very Important Burners' radically exclusive cocktail hour.",
     "event_type": {
@@ -7340,7 +7340,7 @@
     ]
   },
   {
-    "title": "\"RAVE-IOLI\"",
+    "title": "\"Rave-ioli\"",
     "uid": "41234",
     "description": "Do you like Music, Lights & Stuffed Pasta Bites? Grab your Vicks and Glo-sticks ‘n Get down to the 1 ‘n only \"RAVE-IOLI",
     "event_type": {
@@ -7440,7 +7440,7 @@
     ]
   },
   {
-    "title": "SORRY SOIREE",
+    "title": "Sorry Soiree",
     "uid": "41238",
     "description": "Artisanal vodka tasting at the Well of Regret (ask for the secret menu). Greeting card & flower shop will be open!",
     "event_type": {
@@ -8409,7 +8409,7 @@
     ]
   },
   {
-    "title": "THE DROP",
+    "title": "The Drop",
     "uid": "41272",
     "description": "In a drop shaped chamber, you will dive into a MULTI sensorial deprivation environment",
     "event_type": {
@@ -9019,6 +9019,31 @@
       {
         "start_time": "2023-08-30T11:00:00-07:00",
         "end_time": "2023-08-30T12:00:00-07:00"
+      }
+    ]
+  },
+  {
+    "title": "Speakeasy  & East Coast Swing Lesson",
+    "uid": "41293",
+    "description": "Come schmooze in your dustiest formal attire. We’ll ruminate, philosophize, and share a drink. Dance at lesson at 2 PM.",
+    "event_type": {
+      "id": 3,
+      "label": "Class/Workshop",
+      "abbr": "work"
+    },
+    "year": 2023,
+    "print_description": "",
+    "slug": "ogHukkm3EXhu2TSNWzWF-speakeasy-east-coast-swing-lesson",
+    "hosted_by_camp": "a1X8X00000jIzGWUA0",
+    "located_at_art": null,
+    "other_location": null,
+    "check_location": 0,
+    "url": null,
+    "all_day": null,
+    "occurrence_set": [
+      {
+        "start_time": "2023-09-01T13:00:00-07:00",
+        "end_time": "2023-09-01T15:00:00-07:00"
       }
     ]
   },
@@ -9779,7 +9804,7 @@
     ]
   },
   {
-    "title": "SORRY SALON: APOLOGIES DELIVERED DAILY!",
+    "title": "Sorry Salon: Apologies Delivered Daily!",
     "uid": "41321",
     "description": "Did you eff up? Send apologies, BRC-centric greeting cards and flowers across the playa. Delivery volunteers welcome!",
     "event_type": {
@@ -9978,7 +10003,7 @@
     ]
   },
   {
-    "title": "HAVE YOU HAD YOUR NERVOUS BREAKDOWN YET?",
+    "title": "Have You Had Your Nervous Breakdown Yet?",
     "uid": "41328",
     "description": "IT'S A WEDNESDAY. Empathetic. Catharsis. We get it.",
     "event_type": {
@@ -11508,6 +11533,31 @@
     ]
   },
   {
+    "title": "Co-Chilla (Onesie Party)",
+    "uid": "41381",
+    "description": "Party in a cozy onesie & witness a DJ lineup that would kill the dinos all over again. Furries Welcome.",
+    "event_type": {
+      "id": 2,
+      "label": "Gathering/Party",
+      "abbr": "prty"
+    },
+    "year": 2023,
+    "print_description": "",
+    "slug": "4Ssc6cKkmdRPVAkV5yXE-co-chilla-onesie-party",
+    "hosted_by_camp": "a1X8X00000k32wrUAA",
+    "located_at_art": null,
+    "other_location": "",
+    "check_location": 0,
+    "url": null,
+    "all_day": null,
+    "occurrence_set": [
+      {
+        "start_time": "2023-08-29T21:00:00-07:00",
+        "end_time": "2023-08-30T02:00:00-07:00"
+      }
+    ]
+  },
+  {
     "title": "Blue Moon Cafe",
     "uid": "41382",
     "description": "Harmonious birthday and blue moon bash. Moon themed drinks/food and photo station",
@@ -11558,7 +11608,7 @@
     ]
   },
   {
-    "title": "DIY POP-UP THEME CAMP",
+    "title": "Diy Pop-up Theme Camp",
     "uid": "41384",
     "description": "Beta test epic (or silly) theme camp concepts at our pop-up camp booth, with customizable signage and megaphone.",
     "event_type": {
@@ -12788,7 +12838,7 @@
     ]
   },
   {
-    "title": "GET FABULOUS!",
+    "title": "Get Fabulous!",
     "uid": "41428",
     "description": "Calling all Fashion Freaks! Let us slip you into something a little more questionable.",
     "event_type": {
@@ -14461,7 +14511,7 @@
     ]
   },
   {
-    "title": "THE STRIKE",
+    "title": "The Strike",
     "uid": "41482",
     "description": "YOU ARE AGAINST EVERYTHING? A good and perfectly justified reasons to organize an essential French tradition: THE STRIKE",
     "event_type": {
@@ -19594,6 +19644,31 @@
     ]
   },
   {
+    "title": "Time Travelers Unite!",
+    "uid": "41659",
+    "description": "Inviting time travelers to break the space time continuum. Are you a Viking or from the year 1501? Come party with us!",
+    "event_type": {
+      "id": 2,
+      "label": "Gathering/Party",
+      "abbr": "prty"
+    },
+    "year": 2023,
+    "print_description": "",
+    "slug": "5NAwshXzkc7RgGyKWEgR-time-travelers-unite",
+    "hosted_by_camp": "a1X8X00000k32wrUAA",
+    "located_at_art": null,
+    "other_location": "",
+    "check_location": 0,
+    "url": null,
+    "all_day": null,
+    "occurrence_set": [
+      {
+        "start_time": "2023-08-31T21:00:00-07:00",
+        "end_time": "2023-09-01T02:00:00-07:00"
+      }
+    ]
+  },
+  {
     "title": "Get Head You Want",
     "uid": "41660",
     "description": "Partner not going down? Not feeling good when they do? Guys learn things YOU can do to receive more and better oral sex.",
@@ -22798,7 +22873,7 @@
     ]
   },
   {
-    "title": "PYRO 101",
+    "title": "Pyro 101",
     "uid": "41771",
     "description": "Learn how to safely assemble your own pyrotechnics ground display with tips on acquiring your own official license.",
     "event_type": {
@@ -25852,7 +25927,7 @@
     ]
   },
   {
-    "title": "RODEO OF OZ",
+    "title": "Rodeo Of Oz",
     "uid": "41880",
     "description": "Strap-On Bull Fights, Lolipop Kids Vs. Billy the Kids, lassoing inflatable cows…c’mon!",
     "event_type": {
@@ -34699,7 +34774,7 @@
     ]
   },
   {
-    "title": "FRITES & BEATS",
+    "title": "Frites & Beats",
     "uid": "42198",
     "description": "Calling all Tater THOTs! Feeling saucy? Enjoy piping hot fries while shaking your ass like a salt shaker!",
     "event_type": {
@@ -37293,7 +37368,7 @@
     ]
   },
   {
-    "title": "CULT INITIATION",
+    "title": "Cult Initiation",
     "uid": "42290",
     "description": "this is not not a cult! JOIN US. drinks, odd gifts, readings, black robes & horns. embrace the actual void! JOIN US.",
     "event_type": {
@@ -37426,7 +37501,7 @@
     ]
   },
   {
-    "title": "CULTY HOUR",
+    "title": "Culty Hour",
     "uid": "42296",
     "description": "welcome! explore our temple & enjoy cult classic drinks, eccentric gifts (chosen just for YOU), & other dark surprises.",
     "event_type": {
@@ -38799,7 +38874,7 @@
     ]
   },
   {
-    "title": "SPACE JAM",
+    "title": "Space Jam",
     "uid": "42347",
     "description": "Blast off and boogie down! This party will have it all: Aliens! Drinks! Basketball! It'll be out of this world!",
     "event_type": {
@@ -47697,7 +47772,7 @@
     ]
   },
   {
-    "title": "EMBODYING BREATHWORK",
+    "title": "Embodying Breathwork",
     "uid": "42657",
     "description": "A breathwork journey into the depths of who we are, exploring our relationship with our body, heart, and mind",
     "event_type": {
@@ -52872,7 +52947,7 @@
     ]
   },
   {
-    "title": "NIPPLE STAMP STATION",
+    "title": "Nipple Stamp Station",
     "uid": "42839",
     "description": "OFFICIAL NIPPLE STAMP STATION - get you nips INKED. Any time. NOT tatoo'd. Participate even more to earn cool SWAG.",
     "event_type": {
@@ -60881,7 +60956,7 @@
     ]
   },
   {
-    "title": "S'MORES",
+    "title": "S'mores",
     "uid": "43117",
     "description": "S'mores making and eating for all ages. Campfire entertainment invited. Come join us for a wonderful sweet treat to eat.",
     "event_type": {
@@ -61515,7 +61590,7 @@
     ]
   },
   {
-    "title": "DIY DENIM DISCO!",
+    "title": "Diy Denim Disco!",
     "uid": "43140",
     "description": "We provide the paint, you provide the denim! Paint your clothes and dance to disco music!",
     "event_type": {
@@ -61667,7 +61742,7 @@
     ]
   },
   {
-    "title": "AWKWARD ACRO & APEROL SPRITZ",
+    "title": "Awkward Acro & Aperol Spritz",
     "uid": "43146",
     "description": "Come be awkward, learn acroyoga, be entertained by acrobats and sip on some Aperol Spritz!",
     "event_type": {
@@ -64712,7 +64787,7 @@
     ]
   },
   {
-    "title": "THE BELLIGERENT BUTTFIGHT TOURNAMENT",
+    "title": "The Belligerent Buttfight Tournament",
     "uid": "43262",
     "description": "Our 6th Year! Single elim physical battle of butt-on collisions. 2 butts enter, 1 butt leaves! Bring ur best butts.",
     "event_type": {
@@ -68338,7 +68413,7 @@
     ]
   },
   {
-    "title": "GONG SOUND BATH",
+    "title": "Gong Sound Bath",
     "uid": "43383",
     "description": "The gong is an ancient instrument that is a portal to deep revitalization and healing. Immerse yourself.",
     "event_type": {
@@ -74322,7 +74397,7 @@
     ]
   },
   {
-    "title": "SONIC PATHWAYS: A JOURNEY",
+    "title": "Sonic Pathways: A Journey",
     "uid": "43597",
     "description": "Join us in our Gold party with DJ sets",
     "event_type": {
@@ -74392,7 +74467,7 @@
     ]
   },
   {
-    "title": "POLARIS ASCENDING: THE GUIDING STAR",
+    "title": "Polaris Ascending: The Guiding Star",
     "uid": "43599",
     "description": "POLARIS Art Car visits HORIZON for a Tie Up",
     "event_type": {
@@ -76604,7 +76679,7 @@
     ]
   },
   {
-    "title": "LIMINAL LABS' INTERSPECIES WEDDING CHAPEL",
+    "title": "Liminal Labs' Interspecies Wedding Chapel",
     "uid": "43681",
     "description": "Animalia of every persuasion invited to tie the knot under our welcoming chuppah. Veils and invisible rice provided.",
     "event_type": {
@@ -76703,7 +76778,7 @@
     ]
   },
   {
-    "title": "LIMINAL LABS COUCHSIDE CHAT",
+    "title": "Liminal Labs Couchside Chat",
     "uid": "43684",
     "description": "Join Lady Bee for an overview of the challenges and rewards inherent in archiving Burning Man's wide array of art.",
     "event_type": {
@@ -76757,7 +76832,7 @@
     ]
   },
   {
-    "title": "LIMINAL LABS DREAMSCAPE CINEMA",
+    "title": "Liminal Labs Dreamscape Cinema",
     "uid": "43686",
     "description": "Two movies showing side-by-side every night. All night. For your viewing pleasure. Kick back. Enjoy.",
     "event_type": {
@@ -92573,7 +92648,7 @@
     ]
   },
   {
-    "title": "BLASTO",
+    "title": "Blasto",
     "uid": "44270",
     "description": "Fireball shooting range returns! Use a \"rocket launcher\" to set-off a propane boosh flame effect",
     "event_type": {
@@ -92972,7 +93047,7 @@
     ]
   },
   {
-    "title": "LOTTA BAD BUNNI",
+    "title": "Lotta Bad Bunni",
     "uid": "44284",
     "description": "Be a bad bunny and get your tail fluffed at this Hip and Hop Reggeton-fueled Dance off...if you got the carrots to come",
     "event_type": {
@@ -96470,7 +96545,7 @@
     ]
   },
   {
-    "title": "B2B2B2B2B2B+++",
+    "title": "B2b2b2b2b2b+++",
     "uid": "44407",
     "description": "Endless music marathon! Journey w/ us from camp base to the Deep Playa dancefloor and back for sunrise. 24 hr boogie!!!",
     "event_type": {
@@ -98755,47 +98830,6 @@
     ]
   },
   {
-    "title": "Skiing, Snowboarding, or Sledding!",
-    "uid": "44481",
-    "description": "You read that right! Slide on over to our snow park for skiing, snowboarding, and sledding! Yes, seriously!",
-    "event_type": {
-      "id": 4,
-      "label": "Games",
-      "abbr": "game"
-    },
-    "year": 2023,
-    "print_description": "",
-    "slug": "34EjqgutcYxJNbT3fcZZ-skiing-snowboarding-or-sledding",
-    "hosted_by_camp": "a1X8X00000k3KHAUA2",
-    "located_at_art": null,
-    "other_location": null,
-    "check_location": 0,
-    "url": null,
-    "all_day": null,
-    "occurrence_set": [
-      {
-        "start_time": "2023-08-27T18:00:00-07:00",
-        "end_time": "2023-08-27T20:00:00-07:00"
-      },
-      {
-        "start_time": "2023-08-28T18:00:00-07:00",
-        "end_time": "2023-08-28T20:00:00-07:00"
-      },
-      {
-        "start_time": "2023-08-29T18:00:00-07:00",
-        "end_time": "2023-08-29T20:00:00-07:00"
-      },
-      {
-        "start_time": "2023-09-01T18:00:00-07:00",
-        "end_time": "2023-09-01T20:00:00-07:00"
-      },
-      {
-        "start_time": "2023-09-02T18:00:00-07:00",
-        "end_time": "2023-09-02T20:00:00-07:00"
-      }
-    ]
-  },
-  {
     "title": "Monsters, Stunts, Red Noses, Strange talents",
     "uid": "44482",
     "description": "A no-holds barred discussion with the most colorful, dynamic and fun people you will ever meet",
@@ -99391,51 +99425,6 @@
       {
         "start_time": "2023-08-29T16:00:00-07:00",
         "end_time": "2023-08-29T19:00:00-07:00"
-      }
-    ]
-  },
-  {
-    "title": "Powder Bun's Après Ski!",
-    "uid": "44504",
-    "description": "Grab your skis and slide on down for refreshing drinks to the sound of our amazing DJs! Non-alcoholic options available!",
-    "event_type": {
-      "id": 5,
-      "label": "Food & Drink",
-      "abbr": "food"
-    },
-    "year": 2023,
-    "print_description": "",
-    "slug": "72BgB4yDmqHr7iehnhTw-powder-buns-apres-ski",
-    "hosted_by_camp": "a1X8X00000k3KHAUA2",
-    "located_at_art": null,
-    "other_location": "",
-    "check_location": 0,
-    "url": null,
-    "all_day": null,
-    "occurrence_set": [
-      {
-        "start_time": "2023-08-27T18:00:00-07:00",
-        "end_time": "2023-08-27T20:00:00-07:00"
-      },
-      {
-        "start_time": "2023-08-28T18:00:00-07:00",
-        "end_time": "2023-08-28T20:00:00-07:00"
-      },
-      {
-        "start_time": "2023-08-29T18:00:00-07:00",
-        "end_time": "2023-08-29T20:00:00-07:00"
-      },
-      {
-        "start_time": "2023-08-30T18:00:00-07:00",
-        "end_time": "2023-08-30T20:00:00-07:00"
-      },
-      {
-        "start_time": "2023-09-01T18:00:00-07:00",
-        "end_time": "2023-09-01T20:00:00-07:00"
-      },
-      {
-        "start_time": "2023-09-02T18:00:00-07:00",
-        "end_time": "2023-09-02T20:00:00-07:00"
       }
     ]
   },
@@ -100133,7 +100122,7 @@
     ]
   },
   {
-    "title": "LIGHTDREAM",
+    "title": "Lightdream",
     "uid": "44527",
     "description": "Lights and music join together in a magical dome-shaped journey.",
     "event_type": {
@@ -100208,7 +100197,7 @@
     ]
   },
   {
-    "title": "MAN BURN PARTY",
+    "title": "Man Burn Party",
     "uid": "44529",
     "description": "Party like it's 2023 at the Honey Puddle Man Burn Party",
     "event_type": {
@@ -100583,7 +100572,7 @@
     ]
   },
   {
-    "title": "MARCHING BAND MARCH OFF",
+    "title": "Marching Band March Off",
     "uid": "44544",
     "description": "Marching Bands! Competition! Trophies! Come celebrate and vote for your favorite Marching Band!",
     "event_type": {
@@ -100725,7 +100714,7 @@
     ]
   },
   {
-    "title": "SPEAK EASY STAGE",
+    "title": "Speak Easy Stage",
     "uid": "44548",
     "description": "Open Daily, the Speak Easy Stage gives YOU a (literal) platform for poetry, storytelling, and vocal stylings. Come play.",
     "event_type": {
@@ -102961,7 +102950,7 @@
     ]
   },
   {
-    "title": "G.O.D.",
+    "title": "G.o.d.",
     "uid": "44628",
     "description": "An all female DJ line up serving fresh beats. Wash your playa sins away with cold brews and baptisms.",
     "event_type": {
@@ -103419,7 +103408,7 @@
     ]
   },
   {
-    "title": "PLAYAWIDE COMPOST PROGRAM",
+    "title": "Playawide Compost Program",
     "uid": "44647",
     "description": "Bring us your delicious organic food waste to compost for NV farmers - don't take it home!",
     "event_type": {
@@ -104996,7 +104985,7 @@
     ]
   },
   {
-    "title": "INTRO TO SLACKLINE",
+    "title": "Intro To Slackline",
     "uid": "44699",
     "description": "We have a big, tall slackline, but also some lower ones for beginners. Come by and get a lesson from the pros, most days",
     "event_type": {
@@ -105560,7 +105549,7 @@
     ]
   },
   {
-    "title": "YARDWERK & TWERK OFF",
+    "title": "Yardwerk & Twerk Off",
     "uid": "44718",
     "description": "We provide the bounce music and you provide the jiggle. Feet up on the pool table? Ass on the lawnmower?! No limits.",
     "event_type": {
@@ -106654,6 +106643,48 @@
       {
         "start_time": "2023-08-31T23:45:00-07:00",
         "end_time": "2023-09-01T01:30:00-07:00"
+      }
+    ]
+  },
+  {
+    "title": "Melt Playa Dust into Black Glass with the Sun",
+    "uid": "44761",
+    "description": "Use our welding goggles and fresnel lenses to make beads of glass you mount at our jewelry station. Closed if cloudy!",
+    "event_type": {
+      "id": 14,
+      "label": "Arts & Crafts",
+      "abbr": "arts"
+    },
+    "year": 2023,
+    "print_description": "",
+    "slug": "3LEJzKt4n3wQciBQS49K-melt-playa-dust-into-black-glass-with-the-sun",
+    "hosted_by_camp": "a1X8X00000k31GBUAY",
+    "located_at_art": null,
+    "other_location": "",
+    "check_location": 0,
+    "url": null,
+    "all_day": null,
+    "contact": "mat6@cornell.edu",
+    "occurrence_set": [
+      {
+        "start_time": "2023-08-28T12:00:00-07:00",
+        "end_time": "2023-08-28T14:00:00-07:00"
+      },
+      {
+        "start_time": "2023-08-29T12:00:00-07:00",
+        "end_time": "2023-08-29T14:00:00-07:00"
+      },
+      {
+        "start_time": "2023-08-30T12:00:00-07:00",
+        "end_time": "2023-08-30T14:00:00-07:00"
+      },
+      {
+        "start_time": "2023-08-31T12:00:00-07:00",
+        "end_time": "2023-08-31T14:00:00-07:00"
+      },
+      {
+        "start_time": "2023-09-01T12:00:00-07:00",
+        "end_time": "2023-09-01T14:00:00-07:00"
       }
     ]
   },
@@ -108711,7 +108742,7 @@
     ]
   },
   {
-    "title": "INTERGALACTIC JUMPSUIT PARTY",
+    "title": "Intergalactic Jumpsuit Party",
     "uid": "44832",
     "description": "Hold onto your Space Bacon, it’s a Jumpsuit Family Gathering! Join us for a Polish Ambassador themed dance party!",
     "event_type": {
@@ -117361,9 +117392,34 @@
     ]
   },
   {
+    "title": "Understanding our Playa Home with Paiute Elder",
+    "uid": "45162",
+    "description": "Unearth the vibrant history of the very ground beneath our dancing feet with Paiute Elder, Dean Barlese.",
+    "event_type": {
+      "id": 3,
+      "label": "Class/Workshop",
+      "abbr": "work"
+    },
+    "year": 2023,
+    "print_description": "",
+    "slug": "5fZoKH2z7iZiem95Bt9j-understanding-our-playa-home-with-paiute-elder",
+    "hosted_by_camp": null,
+    "located_at_art": null,
+    "other_location": "Center Camp",
+    "check_location": 0,
+    "url": null,
+    "all_day": null,
+    "occurrence_set": [
+      {
+        "start_time": "2023-08-31T16:00:00-07:00",
+        "end_time": "2023-08-31T17:00:00-07:00"
+      }
+    ]
+  },
+  {
     "title": "Down to Love",
     "uid": "45164",
-    "description": "Downtemp and love in the afternoon",
+    "description": "Downtempo and love in the afternoon",
     "event_type": {
       "id": 2,
       "label": "Gathering/Party",
@@ -117413,7 +117469,7 @@
   {
     "title": "Improv Comedy Show",
     "uid": "45166",
-    "description": "Improv comedy by The Playa Improvides at the Penguins",
+    "description": "Comedy with The Playa Improvides. Come watch and even participate by inspiring the performers with audience suggestions!",
     "event_type": {
       "id": 7,
       "label": "Performance",
@@ -117461,6 +117517,32 @@
     ]
   },
   {
+    "title": "Self-defense Workshop for Women (Open to Everyone)",
+    "uid": "45168",
+    "description": "Fundamentals and basic techniques in order to avoid assaulting or encounter agressions, and knowledge about body balance",
+    "event_type": {
+      "id": 3,
+      "label": "Class/Workshop",
+      "abbr": "work"
+    },
+    "year": 2023,
+    "print_description": "",
+    "slug": "5JgQVcD9zpno5K67FkEA-self-defense-workshop-for-women-open-to-everyone",
+    "hosted_by_camp": "a1X8X00000jKaBXUA0",
+    "located_at_art": null,
+    "other_location": null,
+    "check_location": 1,
+    "url": null,
+    "all_day": null,
+    "contact": "Julitomedina13@gmail.com",
+    "occurrence_set": [
+      {
+        "start_time": "2023-08-30T10:00:00-07:00",
+        "end_time": "2023-08-30T11:00:00-07:00"
+      }
+    ]
+  },
+  {
     "title": "Mind Meter",
     "uid": "45169",
     "description": "10 minute guided meditation...Relax...Rest",
@@ -117482,6 +117564,597 @@
       {
         "start_time": "2023-08-30T15:00:00-07:00",
         "end_time": "2023-08-30T15:15:00-07:00"
+      }
+    ]
+  },
+  {
+    "title": "Pit Stop!",
+    "uid": "45172",
+    "description": "The Pit Stop is for all your body's maintenance needs! Car buffer massage, nail painting, fluid levels, and much more!",
+    "event_type": {
+      "id": 8,
+      "label": "Self Care",
+      "abbr": "care"
+    },
+    "year": 2023,
+    "print_description": "",
+    "slug": "5LUgdAPT5rnsaetrDJLc-pit-stop",
+    "hosted_by_camp": "a1X8X00000k3AGpUAM",
+    "located_at_art": null,
+    "other_location": "",
+    "check_location": 0,
+    "url": null,
+    "all_day": null,
+    "occurrence_set": [
+      {
+        "start_time": "2023-08-28T12:00:00-07:00",
+        "end_time": "2023-08-28T16:00:00-07:00"
+      },
+      {
+        "start_time": "2023-08-29T12:00:00-07:00",
+        "end_time": "2023-08-29T16:00:00-07:00"
+      },
+      {
+        "start_time": "2023-08-30T12:00:00-07:00",
+        "end_time": "2023-08-30T16:00:00-07:00"
+      },
+      {
+        "start_time": "2023-08-31T12:00:00-07:00",
+        "end_time": "2023-08-31T16:00:00-07:00"
+      },
+      {
+        "start_time": "2023-09-01T12:00:00-07:00",
+        "end_time": "2023-09-01T16:00:00-07:00"
+      },
+      {
+        "start_time": "2023-09-02T12:00:00-07:00",
+        "end_time": "2023-09-02T16:00:00-07:00"
+      }
+    ]
+  },
+  {
+    "title": "Kids Elephant Poi Class",
+    "uid": "45176",
+    "description": "Poi spinning is fun, especially when they have elephant ears! Supplies provided, decorate them and spin them to silly music.",
+    "event_type": {
+      "id": 11,
+      "label": "For Kids",
+      "abbr": "kid"
+    },
+    "year": 2023,
+    "print_description": "",
+    "slug": "4qPqBUDxBqSLMBGGHiYi-kids-elephant-poi-class",
+    "hosted_by_camp": "a1X8X00000jIJMAUA4",
+    "located_at_art": null,
+    "other_location": null,
+    "check_location": 0,
+    "url": null,
+    "all_day": null,
+    "occurrence_set": [
+      {
+        "start_time": "2023-08-29T11:00:00-07:00",
+        "end_time": "2023-08-29T13:00:00-07:00"
+      }
+    ]
+  },
+  {
+    "title": "Rock the Litterbox Pussy Party",
+    "uid": "45178",
+    "description": "Come get down and dirty in the litterbox with the cool cats and get your paws on the dance floor",
+    "event_type": {
+      "id": 2,
+      "label": "Gathering/Party",
+      "abbr": "prty"
+    },
+    "year": 2023,
+    "print_description": "",
+    "slug": "5U5vnc4wLVUNPDP27Jte-rock-the-litterbox-pussy-party",
+    "hosted_by_camp": "a1X8X00000jKGAfUAO",
+    "located_at_art": null,
+    "other_location": "",
+    "check_location": 0,
+    "url": null,
+    "all_day": null,
+    "occurrence_set": [
+      {
+        "start_time": "2023-08-28T19:00:00-07:00",
+        "end_time": "2023-08-28T23:00:00-07:00"
+      }
+    ]
+  },
+  {
+    "title": "Radical Intimacy Workshop",
+    "uid": "45179",
+    "description": "We guide couples through questions that lead from vulnerability to intimacy, understanding, and togetherness.",
+    "event_type": {
+      "id": 8,
+      "label": "Self Care",
+      "abbr": "care"
+    },
+    "year": 2023,
+    "print_description": "",
+    "slug": "7hpcCEPkKNzYV3PJBbaQ-radical-intimacy-workshop",
+    "hosted_by_camp": "a1X8X00000k2ZwvUAE",
+    "located_at_art": null,
+    "other_location": "",
+    "check_location": 1,
+    "url": null,
+    "all_day": null,
+    "occurrence_set": [
+      {
+        "start_time": "2023-08-31T13:30:00-07:00",
+        "end_time": "2023-08-31T15:00:00-07:00"
+      }
+    ]
+  },
+  {
+    "title": "Tequila Shots, Foot Massages and Live Music!",
+    "uid": "45181",
+    "description": "Visit the Leopard Lounge and Day Spa for tequila shots and live music while you enjoy and/or provide a foot massage.",
+    "event_type": {
+      "id": 5,
+      "label": "Food & Drink",
+      "abbr": "food"
+    },
+    "year": 2023,
+    "print_description": "",
+    "slug": "7Xa4gDN5D3PTDPKETQnD-tequila-shots-foot-massages-and-live-music",
+    "hosted_by_camp": "a1X8X00000k2tJNUAY",
+    "located_at_art": null,
+    "other_location": "",
+    "check_location": 1,
+    "url": null,
+    "all_day": null,
+    "contact": "brc.bingo@gmail.com",
+    "occurrence_set": [
+      {
+        "start_time": "2023-08-28T12:00:00-07:00",
+        "end_time": "2023-08-28T16:00:00-07:00"
+      },
+      {
+        "start_time": "2023-08-29T12:00:00-07:00",
+        "end_time": "2023-08-29T16:00:00-07:00"
+      },
+      {
+        "start_time": "2023-08-30T12:00:00-07:00",
+        "end_time": "2023-08-30T16:00:00-07:00"
+      },
+      {
+        "start_time": "2023-08-31T12:00:00-07:00",
+        "end_time": "2023-08-31T16:00:00-07:00"
+      },
+      {
+        "start_time": "2023-09-01T12:00:00-07:00",
+        "end_time": "2023-09-01T16:00:00-07:00"
+      }
+    ]
+  },
+  {
+    "title": "Akashic Records Soundbath & Cosmohealing",
+    "uid": "45182",
+    "description": "This is a transformative experience and spiritual journey into the hidden parts of your subconscious.",
+    "event_type": {
+      "id": 3,
+      "label": "Class/Workshop",
+      "abbr": "work"
+    },
+    "year": 2023,
+    "print_description": "",
+    "slug": "4dJDGGNXpWgBzCHjuk7Q-akashic-records-soundbath-cosmohealing",
+    "hosted_by_camp": "a1X8X00000k1wY8UAI",
+    "located_at_art": null,
+    "other_location": null,
+    "check_location": 1,
+    "url": null,
+    "all_day": null,
+    "contact": "events@campcontact.org",
+    "occurrence_set": [
+      {
+        "start_time": "2023-08-31T15:00:00-07:00",
+        "end_time": "2023-08-31T17:00:00-07:00"
+      }
+    ]
+  },
+  {
+    "title": "Slow Flow Yoga",
+    "uid": "45183",
+    "description": "Slow vinyasa to become aware of our body, our breathing, our thoughts and through movement connect with ourselves",
+    "event_type": {
+      "id": 22,
+      "label": "Yoga/Movement/Fitness",
+      "abbr": "yoga"
+    },
+    "year": 2023,
+    "print_description": "",
+    "slug": "5xQHCMUDLLmTGTZxu73T-slow-flow-yoga",
+    "hosted_by_camp": "a1X8X00000k1wY8UAI",
+    "located_at_art": null,
+    "other_location": "",
+    "check_location": 1,
+    "url": null,
+    "all_day": null,
+    "contact": "events@campcontact.org",
+    "occurrence_set": [
+      {
+        "start_time": "2023-09-01T08:00:00-07:00",
+        "end_time": "2023-09-01T09:00:00-07:00"
+      }
+    ]
+  },
+  {
+    "title": "Lion’s Den Vocal Activation",
+    "uid": "45184",
+    "description": "This is for singers and “non” singers alike. We will play. We will make noises. We will be like the animals!",
+    "event_type": {
+      "id": 3,
+      "label": "Class/Workshop",
+      "abbr": "work"
+    },
+    "year": 2023,
+    "print_description": "",
+    "slug": "5MmgCATNJroS7zZeoe32-lions-den-vocal-activation",
+    "hosted_by_camp": "a1X8X00000k1wY8UAI",
+    "located_at_art": null,
+    "other_location": "",
+    "check_location": 1,
+    "url": null,
+    "all_day": null,
+    "contact": "events@campcontact.org",
+    "occurrence_set": [
+      {
+        "start_time": "2023-08-30T15:30:00-07:00",
+        "end_time": "2023-08-30T17:00:00-07:00"
+      }
+    ]
+  },
+  {
+    "title": "Musical Meditation Through the Chakras",
+    "uid": "45185",
+    "description": "An experiential musical journey through your chakras. Get ready for a playful and creative experience of your aliveness",
+    "event_type": {
+      "id": 22,
+      "label": "Yoga/Movement/Fitness",
+      "abbr": "yoga"
+    },
+    "year": 2023,
+    "print_description": "",
+    "slug": "6fKt2iCtPvZfemNP2tCW-musical-meditation-through-the-chakras",
+    "hosted_by_camp": "a1X8X00000k1wY8UAI",
+    "located_at_art": null,
+    "other_location": "",
+    "check_location": 0,
+    "url": null,
+    "all_day": null,
+    "contact": "events@campcontact.org",
+    "occurrence_set": [
+      {
+        "start_time": "2023-08-29T20:30:00-07:00",
+        "end_time": "2023-08-29T22:00:00-07:00"
+      }
+    ]
+  },
+  {
+    "title": "Booty Up Hands Down! Intro to Handstands",
+    "uid": "45186",
+    "description": "Shoulder prep and core conditioning to get your booty up and hands down!",
+    "event_type": {
+      "id": 22,
+      "label": "Yoga/Movement/Fitness",
+      "abbr": "yoga"
+    },
+    "year": 2023,
+    "print_description": "",
+    "slug": "774LY2jvG5Zyp7YjcJUU-booty-up-hands-down-intro-to-handstands",
+    "hosted_by_camp": "a1X8X00000k1wY8UAI",
+    "located_at_art": null,
+    "other_location": null,
+    "check_location": 1,
+    "url": null,
+    "all_day": null,
+    "contact": "events@campcontact.org",
+    "occurrence_set": [
+      {
+        "start_time": "2023-08-30T12:00:00-07:00",
+        "end_time": "2023-08-30T13:30:00-07:00"
+      }
+    ]
+  },
+  {
+    "title": "Somatic Movement",
+    "uid": "45187",
+    "description": "A guided movement exploration to deepen your mind body connection and move authentically. All bodies welcome.",
+    "event_type": {
+      "id": 22,
+      "label": "Yoga/Movement/Fitness",
+      "abbr": "yoga"
+    },
+    "year": 2023,
+    "print_description": "",
+    "slug": "5wvVQEtcoEDXZWfCFiH6-somatic-movement",
+    "hosted_by_camp": "a1X8X00000k1wY8UAI",
+    "located_at_art": null,
+    "other_location": "",
+    "check_location": 0,
+    "url": null,
+    "all_day": null,
+    "occurrence_set": [
+      {
+        "start_time": "2023-08-29T16:30:00-07:00",
+        "end_time": "2023-08-29T18:00:00-07:00"
+      }
+    ]
+  },
+  {
+    "title": "Energetic Hatha Class",
+    "uid": "45188",
+    "description": "A dynamic yoga practice that combines traditional Hatha poses with breath-focused movements to energize the body.",
+    "event_type": {
+      "id": 22,
+      "label": "Yoga/Movement/Fitness",
+      "abbr": "yoga"
+    },
+    "year": 2023,
+    "print_description": "",
+    "slug": "3PPpL2TvM5trwiAh5Txq-energetic-hatha-class",
+    "hosted_by_camp": "a1X8X00000k1wY8UAI",
+    "located_at_art": null,
+    "other_location": "",
+    "check_location": 0,
+    "url": null,
+    "all_day": null,
+    "contact": "events@campcontact.org",
+    "occurrence_set": [
+      {
+        "start_time": "2023-08-28T10:30:00-07:00",
+        "end_time": "2023-08-28T11:30:00-07:00"
+      }
+    ]
+  },
+  {
+    "title": "12 Stages of Healing: Discovering You - In 3 parts",
+    "uid": "45189",
+    "description": "12 Stages of Healing. Like getting on a spaceship and traveling through universes inside of yourself.",
+    "event_type": {
+      "id": 3,
+      "label": "Class/Workshop",
+      "abbr": "work"
+    },
+    "year": 2023,
+    "print_description": "",
+    "slug": "46SPvsPqfJPviVUNeSJD-12-stages-of-healing-discovering-you-in-3-parts",
+    "hosted_by_camp": "a1X8X00000k1wY8UAI",
+    "located_at_art": null,
+    "other_location": "",
+    "check_location": 1,
+    "url": null,
+    "all_day": null,
+    "contact": "events@campcontact.org",
+    "occurrence_set": [
+      {
+        "start_time": "2023-08-28T08:30:00-07:00",
+        "end_time": "2023-08-28T10:30:00-07:00"
+      },
+      {
+        "start_time": "2023-08-30T08:30:00-07:00",
+        "end_time": "2023-08-30T10:30:00-07:00"
+      },
+      {
+        "start_time": "2023-09-01T08:30:00-07:00",
+        "end_time": "2023-09-01T10:30:00-07:00"
+      }
+    ]
+  },
+  {
+    "title": "Restorative Yoga",
+    "uid": "45190",
+    "description": "A session of deep stretches that release tension and nourish your body and soul.",
+    "event_type": {
+      "id": 22,
+      "label": "Yoga/Movement/Fitness",
+      "abbr": "yoga"
+    },
+    "year": 2023,
+    "print_description": "",
+    "slug": "5e5D7UYYozndKYvXPKB2-restorative-yoga",
+    "hosted_by_camp": "a1X8X00000k1wY8UAI",
+    "located_at_art": null,
+    "other_location": "",
+    "check_location": 1,
+    "url": null,
+    "all_day": null,
+    "contact": "events@campcontact.org",
+    "occurrence_set": [
+      {
+        "start_time": "2023-08-31T16:00:00-07:00",
+        "end_time": "2023-08-31T17:00:00-07:00"
+      }
+    ]
+  },
+  {
+    "title": "Tango Embrace and Connection",
+    "uid": "45191",
+    "description": "Introduction to Tango dancing dynamics. Connecting with a partner in open and close embrace.",
+    "event_type": {
+      "id": 3,
+      "label": "Class/Workshop",
+      "abbr": "work"
+    },
+    "year": 2023,
+    "print_description": "",
+    "slug": "3ZDj9Ag9o9xZJmWX8co4-tango-embrace-and-connection",
+    "hosted_by_camp": "a1X8X00000k1wY8UAI",
+    "located_at_art": null,
+    "other_location": "",
+    "check_location": 0,
+    "url": null,
+    "all_day": null,
+    "occurrence_set": [
+      {
+        "start_time": "2023-08-31T18:30:00-07:00",
+        "end_time": "2023-08-31T20:00:00-07:00"
+      }
+    ]
+  },
+  {
+    "title": "Fresh Waffles and Iced Tea",
+    "uid": "45192",
+    "description": "IHOTT (The Intergalactic House of Time Travelers) is serving fresh waffles and iced tea for breakfast!",
+    "event_type": {
+      "id": 5,
+      "label": "Food & Drink",
+      "abbr": "food"
+    },
+    "year": 2023,
+    "print_description": "",
+    "slug": "7N3c9MebGSVPt3eVRKjf-fresh-waffles-and-iced-tea",
+    "hosted_by_camp": "a1X8X00000k2UyhUAE",
+    "located_at_art": null,
+    "other_location": "",
+    "check_location": 0,
+    "url": null,
+    "all_day": null,
+    "occurrence_set": [
+      {
+        "start_time": "2023-08-28T10:30:00-07:00",
+        "end_time": "2023-08-28T12:00:00-07:00"
+      },
+      {
+        "start_time": "2023-08-29T10:30:00-07:00",
+        "end_time": "2023-08-29T12:00:00-07:00"
+      },
+      {
+        "start_time": "2023-08-31T10:30:00-07:00",
+        "end_time": "2023-08-31T12:00:00-07:00"
+      }
+    ]
+  },
+  {
+    "title": "Fancy Waffle Service",
+    "uid": "45193",
+    "description": "IHOTT (The Intergalactic House of Time Travelers) is serving fresh waffles for a fancy dinner party -- Dress to impress!",
+    "event_type": {
+      "id": 5,
+      "label": "Food & Drink",
+      "abbr": "food"
+    },
+    "year": 2023,
+    "print_description": "",
+    "slug": "4pBzPGodSPkUhxGPudhS-fancy-waffle-service",
+    "hosted_by_camp": "a1X8X00000k2UyhUAE",
+    "located_at_art": null,
+    "other_location": "",
+    "check_location": 0,
+    "url": null,
+    "all_day": null,
+    "occurrence_set": [
+      {
+        "start_time": "2023-08-30T18:30:00-07:00",
+        "end_time": "2023-08-30T20:00:00-07:00"
+      }
+    ]
+  },
+  {
+    "title": "Nonviolent Communication",
+    "uid": "45198",
+    "description": "Come learn and practice communication and listening skills for deepening connection, understanding and intimacy",
+    "event_type": {
+      "id": 3,
+      "label": "Class/Workshop",
+      "abbr": "work"
+    },
+    "year": 2023,
+    "print_description": "",
+    "slug": "58FEZu22v6qgsbkzjpGz-nonviolent-communication",
+    "hosted_by_camp": "a1X8X00000k2pgBUAQ",
+    "located_at_art": null,
+    "other_location": "",
+    "check_location": 1,
+    "url": null,
+    "all_day": null,
+    "contact": "tajeaston@gmail.com",
+    "occurrence_set": [
+      {
+        "start_time": "2023-08-29T16:00:00-07:00",
+        "end_time": "2023-08-29T17:30:00-07:00"
+      },
+      {
+        "start_time": "2023-08-31T16:00:00-07:00",
+        "end_time": "2023-08-31T17:30:00-07:00"
+      }
+    ]
+  },
+  {
+    "title": "Waffle Olympic Pep Rally for IHOTT",
+    "uid": "45199",
+    "description": "Cheer on the Intergalactic House of Time Travelers (IHOTT) as they prepare to defeat their rivals at Waffles N House",
+    "event_type": {
+      "id": 2,
+      "label": "Gathering/Party",
+      "abbr": "prty"
+    },
+    "year": 2023,
+    "print_description": "",
+    "slug": "L8UUzvtwpM9beZwUw7uz-waffle-olympic-pep-rally-for-ihott",
+    "hosted_by_camp": "a1X8X00000k2UyhUAE",
+    "located_at_art": null,
+    "other_location": null,
+    "check_location": 0,
+    "url": null,
+    "all_day": null,
+    "occurrence_set": [
+      {
+        "start_time": "2023-09-01T10:30:00-07:00",
+        "end_time": "2023-09-01T11:15:00-07:00"
+      }
+    ]
+  },
+  {
+    "title": "EGGS Bar Opening Party",
+    "uid": "45201",
+    "description": "Celebrating the opening day (and triumphant return) of EGGS Bar with a special mashup happy hour set!",
+    "event_type": {
+      "id": 2,
+      "label": "Gathering/Party",
+      "abbr": "prty"
+    },
+    "year": 2023,
+    "print_description": "",
+    "slug": "KXEboGYpWw2WxcFkfdMb-eggs-bar-opening-party",
+    "hosted_by_camp": "a1X8X00000k20d7UAA",
+    "located_at_art": null,
+    "other_location": null,
+    "check_location": 0,
+    "url": null,
+    "all_day": null,
+    "occurrence_set": [
+      {
+        "start_time": "2023-08-28T16:00:00-07:00",
+        "end_time": "2023-08-28T19:00:00-07:00"
+      }
+    ]
+  },
+  {
+    "title": "Friends & Family Fight Night",
+    "uid": "45202",
+    "description": "Thunderdome opens with dark aggro mashups and fights amongst staff, crew, and friends!",
+    "event_type": {
+      "id": 22,
+      "label": "Yoga/Movement/Fitness",
+      "abbr": "yoga"
+    },
+    "year": 2023,
+    "print_description": "",
+    "slug": "6bjqnEmjrnFGBpgwGPh2-friends-family-fight-night",
+    "hosted_by_camp": "a1X8X00000jJGU1UAO",
+    "located_at_art": null,
+    "other_location": null,
+    "check_location": 0,
+    "url": null,
+    "all_day": null,
+    "occurrence_set": [
+      {
+        "start_time": "2023-08-28T21:30:00-07:00",
+        "end_time": "2023-08-28T23:00:00-07:00"
       }
     ]
   }

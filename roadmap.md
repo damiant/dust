@@ -4,10 +4,8 @@
 1 If you favorite an event on a day only add notification for that day
 1 Add elipsis to event time listing
 1 Icon for event categories
-1 Capitalized event should be title cased in download.js
 1 If an event has a long durations (>3hrs) then let user choose notification hour
 1 favs: show group for "Events Today" and "Events"
-
 
 2 Verify times using a phone not in PST
 2 Verify notification times are PST

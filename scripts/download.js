@@ -18,13 +18,23 @@ async function download(name, year, filename, folder, options) {
     let json = await res.json();
 
     for (let item of json) {
-        if (options?.fixName && typeof item.name == 'number') {
-            item.name = item.name.toString();
-            console.warn(`Replaced invalid name ${item.name}`);
+        if (options?.fixName) {
+            if (typeof item.name == 'number') {
+                item.name = item.name.toString();
+                console.warn(`Replaced invalid name ${item.name}`);
+            }
+            if (item.name.toUpperCase() === item.name) {
+                item.name = toTitleCase(item.name);
+            }
         }
         if (options?.fixUid) {
             item.uid = item.event_id.toString();
             item.event_id = undefined;
+        }
+        if (options?.fixTitle) {
+            if (item.title.toUpperCase() === item.title) {
+                item.title = toTitleCase(item.title);
+            }          
         }
         if (options?.fixOccurrence) {
             if (!item.occurrence_set) {
@@ -39,6 +49,14 @@ async function download(name, year, filename, folder, options) {
 
     const f = `./src/assets/${folder}/${filename}.json`;
     save(f, folder, JSON.stringify(json, undefined, 2));
+}
+
+function toTitleCase(str) {
+    return str.replace(
+        /\w\S*/g,
+        function (txt) {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
 }
 
 function saveRevision(folder) {
@@ -77,7 +95,7 @@ for (const year of years) {
     console.log(`Downloading ${year}`);
     await download('art', year, 'art', `ttitd-${year}`, { fixName: true });
     await download('camp', year, 'camps', `ttitd-${year}`, { fixName: true });
-    await download('event', year, 'events', `ttitd-${year}`, { fixOccurrence: true, fixUid: true });
+    await download('event', year, 'events', `ttitd-${year}`, { fixOccurrence: true, fixTitle: true, fixUid: true });
     saveRevision(`ttitd-${year}`);
 }
 
