@@ -31,6 +31,12 @@
     </ion-toolbar>
   </ion-header>
   <app-map-modal [title]="mapTitle" [subtitle]="mapSubtitle" [(show)]="showMap" [points]="mapPoints"></app-map-modal>
+  <div *ngIf="!noEvents && this.events.length === 0">
+    <app-skeleton-event></app-skeleton-event>
+    <app-skeleton-event></app-skeleton-event>
+    <app-skeleton-event></app-skeleton-event>
+    <app-skeleton-event></app-skeleton-event>
+  </div>
   <div *ngIf="noEvents" class="message"><ion-text>All the events for this day have concluded.</ion-text></div>
   <cdk-virtual-scroll-viewport [minBufferPx]="minBufferPx" itemSize="180" maxBufferPx="2350">
     <app-event [title]="title" [longTime]="!day" [day]="day" [event]="event" (mapClick)="map($event)"

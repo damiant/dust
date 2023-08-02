@@ -13,6 +13,7 @@ import { App } from '@capacitor/app';
 import { EventComponent } from '../event/event.component';
 import { UiService } from '../ui.service';
 import { CategoryComponent } from '../category/category.component';
+import { SkeletonEventComponent } from '../skeleton-event/skeleton-event.component';
 
 @Component({
   selector: 'app-events',
@@ -21,7 +22,8 @@ import { CategoryComponent } from '../category/category.component';
   standalone: true,
   imports: [
     IonicModule, CommonModule, RouterModule, ScrollingModule,
-    MapModalComponent, FormsModule, EventComponent, CategoryComponent],
+    MapModalComponent, FormsModule, EventComponent, CategoryComponent,
+    SkeletonEventComponent],
 })
 export class EventsPage implements OnInit {
   title = 'Events';

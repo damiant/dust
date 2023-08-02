@@ -1,6 +1,5 @@
 # Roadmap
 
-1 Camp details popup on event page
 1 If you choose a day filter events for a camp to that day
 1 If you favorite an event on a day only add notification for that day
 1 Add elipsis to event time listing
