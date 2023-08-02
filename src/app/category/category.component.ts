@@ -11,6 +11,7 @@ import { IonicModule } from '@ionic/angular';
 })
 export class CategoryComponent implements OnInit {
 
+  @Input() allTitle: string = '';
   @Input() category: string = '';
   @Input() categories: string[] = [];
   @Output() categoryChange = new EventEmitter<string>();

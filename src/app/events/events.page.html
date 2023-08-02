@@ -12,7 +12,7 @@
     <ion-toolbar>
       <ion-title size="large">{{title}}</ion-title>
       <ion-buttons slot="end">
-        <app-category (change)="categoryChanged()" [(category)]="category" [categories]="categories"
+        <app-category allTitle="All Events" (change)="categoryChanged()" [(category)]="category" [categories]="categories"
           slot="end"></app-category>
       </ion-buttons>
     </ion-toolbar>

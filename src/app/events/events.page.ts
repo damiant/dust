@@ -31,7 +31,7 @@ export class EventsPage implements OnInit {
   category = '';
   events: Event[] = [];
   days: Day[] = [];
-  categories: string[] = [];
+  categories: string[] = ['All Events'];
   search: string = '';
   noEvents = false;
   screenHeight: number = window.screen.height;

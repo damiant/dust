@@ -4,7 +4,7 @@
   <ng-template>
     <ion-content>
       <ion-radio-group (ionChange)="changed($event)" [value]="category">
-        <ion-radio labelPlacement="end" justify="start" value="">All Events</ion-radio><br/>
+        <ion-radio labelPlacement="end" justify="start" value="">{{allTitle}}</ion-radio><br/>
         <ion-radio labelPlacement="end" justify="start" *ngFor="let category of categories" [value]="category">{{category}}</ion-radio><br/>        
       </ion-radio-group>
     </ion-content>

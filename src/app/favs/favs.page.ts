@@ -12,19 +12,30 @@ import { MapPoint, toMapPoint } from '../map/map.component';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { ArtComponent } from '../art/art.component';
 import { UiService } from '../ui.service';
+import { CategoryComponent } from '../category/category.component';
+
+enum Filter {
+  All = '',
+  Camps = 'Camps',
+  Art = 'Art',
+  Events = 'Events'
+}
 
 @Component({
   selector: 'app-favs',
   templateUrl: './favs.page.html',
   styleUrls: ['./favs.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, RouterModule, EventComponent, CampComponent, MapModalComponent, ArtComponent]
+  imports: [IonicModule, CommonModule, FormsModule, RouterModule, EventComponent, 
+    CampComponent, MapModalComponent, ArtComponent, CategoryComponent]
 })
 export class FavsPage implements OnInit {
 
+  filter = '';
   events: Event[] = [];
   camps: Camp[] = [];
   art: Art[] = [];
+  filters = [Filter.Events, Filter.Camps, Filter.Art];
 
   showMap = false;
   noFavorites = false;
@@ -35,7 +46,7 @@ export class FavsPage implements OnInit {
 
   constructor(private fav: FavoritesService, private ui: UiService, public db: DbService) { 
     effect(() => {
-      console.log('update fav');
+      console.log('update favorite');
       this.fav.changed();
       this.update();      
     });
@@ -57,10 +68,17 @@ export class FavsPage implements OnInit {
 
   private async update() {
     const favs = await this.fav.getFavorites();
-    this.events = await this.fav.getEventList(favs.events);
-    this.camps = await this.db.getCampList(favs.camps);
-    this.art = await this.db.getArtList(favs.art);
+    this.events = this.filterItems(Filter.Events,await this.fav.getEventList(favs.events));
+    this.camps = this.filterItems(Filter.Camps, await this.db.getCampList(favs.camps));
+    this.art = this.filterItems(Filter.Art, await this.db.getArtList(favs.art));
     this.noFavorites = this.art.length == 0 && this.camps.length == 0 && this.events.length == 0;
+  }
+
+  private filterItems(filter: Filter, items: any): any {
+    if (this.filter === filter || this.filter === Filter.All) {
+      return items;
+    } 
+    return [];
   }
 
   ngOnInit() {
@@ -91,5 +109,9 @@ export class FavsPage implements OnInit {
 
   artTrackBy(index: number, art: Art) {
     return art.uid;
+  }
+
+  filterChanged() {
+    this.update();
   }
 }
