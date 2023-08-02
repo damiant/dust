@@ -1,13 +1,10 @@
 # Roadmap
 
-1 Search keyboard hint should be "search" instead of "go"
-
 1 If you choose a day filter events for a camp to that day
 1 If you favorite an event on a day only add notification for that day
 1 Icon for event categories
 1 If an event has a long durations (>3hrs) then let user choose notification hour
 1 Pressing the tab again should clear search
-1 If no events found then text should be "No events found on X matching Y"
 1 Description should start with a capital letter and end with a .
 1 Share app
 
@@ -26,6 +23,7 @@
 2 Favorites search
 2 Map points should show text “G 8:15”
 2 Mark some events as “soon” if < 1hr (underway if happening)
+2 Search keyboard hint should be "search" instead of "go"
 2 Camp events need opacity when over
 2 Switch to camp when clicked from events
 

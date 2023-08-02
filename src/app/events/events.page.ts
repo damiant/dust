@@ -35,6 +35,7 @@ export class EventsPage implements OnInit {
   categories: string[] = ['All Events'];
   search: string = '';
   noEvents = false;
+  noEventsMessage = '';
   screenHeight: number = window.screen.height;
   day: Date | undefined = undefined;
   showMap = false;
@@ -82,11 +83,9 @@ export class EventsPage implements OnInit {
   }
 
   private chooseDefaultDay(today: Date): Date | string {
-    console.log('chooseDefaultDay', today, this.days);
     for (const day of this.days) {
       if (day.date && sameDay(day.date, today)) {
         this.day = day.date;
-        console.log(`Chose day as ${day.name}`);
         return day.date;
       }
     }
@@ -137,8 +136,10 @@ export class EventsPage implements OnInit {
     this.defaultDay = this.chooseDefaultDay(now());
     this.events = await this.db.findEvents(this.search, this.day, this.category);
     console.timeEnd('update');
-    console.log(`${this.events.length} events`);
     this.noEvents = this.events.length == 0;
+    this.noEventsMessage = this.search?.length > 0 ? 
+    `There are no events matching "${this.search}"` : 
+    'All the events for this day have concluded.';
     if (scrollToTop) {      
       this.hack();
       this.virtualScroll.scrollToOffset(0, 'smooth');
