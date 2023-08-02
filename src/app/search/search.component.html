@@ -1,0 +1,3 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <ion-searchbar type="search" spellcheck="false" enterkeyhint="search" autocorrect="off" formControlName="search" inputmode="search" (ionInput)="handleInput($event)" [debounce]="1000" [placeholder]="placeholder"></ion-searchbar>
+</form>

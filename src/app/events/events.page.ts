@@ -14,6 +14,7 @@ import { EventComponent } from '../event/event.component';
 import { UiService } from '../ui.service';
 import { CategoryComponent } from '../category/category.component';
 import { SkeletonEventComponent } from '../skeleton-event/skeleton-event.component';
+import { SearchComponent } from '../search/search.component';
 
 @Component({
   selector: 'app-events',
@@ -23,7 +24,7 @@ import { SkeletonEventComponent } from '../skeleton-event/skeleton-event.compone
   imports: [
     IonicModule, CommonModule, RouterModule, ScrollingModule,
     MapModalComponent, FormsModule, EventComponent, CategoryComponent,
-    SkeletonEventComponent],
+    SkeletonEventComponent, SearchComponent],
 })
 export class EventsPage implements OnInit {
   title = 'Events';
@@ -99,8 +100,8 @@ export class EventsPage implements OnInit {
     }
   }
 
-  handleInput(event: any) {
-    this.search = event.target.value.toLowerCase();
+  searchEvents(value: string) {
+    this.search = value.toLowerCase();
     this.update(true);
   }
 

@@ -1,6 +1,6 @@
 # Roadmap
 
-1 Search keyboard hint should be "search"
+1 Search keyboard hint should be "search" instead of "go"
 
 1 If you choose a day filter events for a camp to that day
 1 If you favorite an event on a day only add notification for that day

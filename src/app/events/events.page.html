@@ -12,12 +12,12 @@
     <ion-toolbar>
       <ion-title size="large">{{title}}</ion-title>
       <ion-buttons slot="end">
-        <app-category allTitle="All Events" (change)="categoryChanged()" [(category)]="category" [categories]="categories"
-          slot="end"></app-category>
+        <app-category allTitle="All Events" (change)="categoryChanged()" [(category)]="category"
+          [categories]="categories" slot="end"></app-category>
       </ion-buttons>
     </ion-toolbar>
     <ion-toolbar>
-      <ion-searchbar (ionInput)="handleInput($event)" [debounce]="1000" placeholder="Find Events"></ion-searchbar>
+      <app-search placeholder="Find Events" (search)="searchEvents($event)" />
     </ion-toolbar>
     <ion-toolbar>
       <ion-segment (ionChange)="dayChange($event)" [(ngModel)]="defaultDay" [scrollable]="true">

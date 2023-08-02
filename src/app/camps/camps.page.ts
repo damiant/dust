@@ -9,13 +9,15 @@ import { MapPoint, toMapPoint } from '../map/map.component';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { CampComponent } from '../camp/camp.component';
 import { UiService } from '../ui.service';
+import { SearchComponent } from '../search/search.component';
 
 @Component({
   selector: 'app-camps',
   templateUrl: 'camps.page.html',
   styleUrls: ['camps.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, RouterModule, ScrollingModule, MapModalComponent, CampComponent]
+  imports: [IonicModule, CommonModule, RouterModule, ScrollingModule, MapModalComponent, 
+    CampComponent, SearchComponent]
 })
 export class CampsPage {
   camps: Camp[] = [];
@@ -45,9 +47,9 @@ export class CampsPage {
     }
   }
 
-  handleInput(event: any) {
+  search(value: string) {
     this.virtualScroll.scrollToOffset(0);
-    this.update(event.target.value.toLowerCase());
+    this.update(value);
   }
 
   campsTrackBy(index: number, camp: Camp) {
