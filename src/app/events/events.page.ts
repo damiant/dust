@@ -85,7 +85,7 @@ export class EventsPage implements OnInit {
   private chooseDefaultDay(today: Date): Date | string {
     for (const day of this.days) {
       if (day.date && sameDay(day.date, today)) {
-        this.day = day.date;
+        //this.day = day.date;
         return day.date;
       }
     }
@@ -134,13 +134,13 @@ export class EventsPage implements OnInit {
   async update(scrollToTop?: boolean) {
     console.time('update');
     this.defaultDay = this.chooseDefaultDay(now());
-    this.events = await this.db.findEvents(this.search, this.day, this.category);
+      this.events = await this.db.findEvents(this.search, this.day, this.category);
     console.timeEnd('update');
     this.noEvents = this.events.length == 0;
-    this.noEventsMessage = this.search?.length > 0 ? 
-    `There are no events matching "${this.search}"` : 
-    'All the events for this day have concluded.';
-    if (scrollToTop) {      
+    this.noEventsMessage = this.search?.length > 0 ?
+      `There are no events matching "${this.search}"` :
+      'All the events for this day have concluded.';
+    if (scrollToTop) {
       this.hack();
       this.virtualScroll.scrollToOffset(0, 'smooth');
     }

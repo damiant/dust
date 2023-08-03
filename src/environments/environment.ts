@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  simulatedTime: 'Wed Aug 30 2023 18:18:00 GMT-0700'
+  simulatedTime: 'Wed Aug 30 2023 01:18:00 GMT-0700'
 };
 
 /*

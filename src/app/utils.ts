@@ -9,7 +9,7 @@ export function now(): Date {
     if (!environment.simulatedTime) {
         return new Date();
     }
-    console.log(`Simulating time ${environment.simulatedTime}`);
+    //console.log(`Simulating time ${environment.simulatedTime}`);
     return new Date(environment.simulatedTime);
 }
 
