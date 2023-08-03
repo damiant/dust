@@ -1,13 +1,15 @@
 # Roadmap
 
-- If an event is happening now then show it in event view
+Analog Internet Installation
+Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
+
 
 1 If you choose a day filter events for a camp to that day
 1 If you favorite an event on a day only add notification for that day
 1 Icon for event categories
 1 If an event has a long durations (>3hrs) then let user choose notification hour
 1 Pressing the tab again should clear search
-1 Description should start with a capital letter and end with a .
+
 1 Share app
 
 2 Filter by a-z for camps and art
