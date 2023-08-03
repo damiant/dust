@@ -17,7 +17,7 @@
   </ion-header>
   <app-map-modal [title]="mapTitle" [subtitle]="mapSubtitle" [(show)]="showMap" [points]="mapPoints"></app-map-modal>  
   <div *ngIf="noFavorites" class="center pad-top">
-    <ion-text color="medium">Press the <ion-icon name="star-outline"></ion-icon> icon on Events, Camps and Art.</ion-text>
+    <ion-text color="medium">Press the <ion-icon [src]="'assets/icon/star.svg'"></ion-icon> icon on Events, Camps and Art to add them here.</ion-text>
   </div>
   <app-event title="Favorites" (mapClick)="mapEvent($event)" [event]="event" [longTime]="true"
     *ngFor="let event of events; trackBy: eventsTrackBy" />
