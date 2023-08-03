@@ -10,7 +10,7 @@
     <ion-toolbar>
       <ion-title size="large">Favorites</ion-title>
       <ion-buttons slot="end">
-        <app-category allTitle="All" (change)="filterChanged()" [(category)]="filter" [categories]="filters"
+        <app-category id="fav-categories" allTitle="All" (change)="filterChanged()" [(category)]="filter" [categories]="filters"
           slot="end"></app-category>
       </ion-buttons>
     </ion-toolbar>

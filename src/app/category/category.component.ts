@@ -10,7 +10,7 @@ import { IonicModule } from '@ionic/angular';
   imports: [IonicModule, NgFor]
 })
 export class CategoryComponent implements OnInit {
-
+  @Input() id = '';
   @Input() allTitle: string = '';
   @Input() category: string = '';
   @Input() categories: string[] = [];

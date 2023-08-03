@@ -292,6 +292,7 @@ export class DataManager implements WorkerClass {
 
     public findEvents(query: string, day: Date | undefined, category: string): Event[] {
         const result: Event[] = [];
+        console.log(`Find Events(query:"${query}",day:"${day}",category:"${category}")`);
         for (let event of this.events) {
             if (this.eventContains(query, event) && this.eventIsCategory(category, event) && this.onDay(day, event)) {
                 const timeString = this.getTimeString(event, day);
@@ -394,7 +395,6 @@ export class DataManager implements WorkerClass {
 
     private onDay(day: Date | undefined, event: Event): boolean {
         if (!day) return true;
-        const today = now();
         for (let occurrence of event.occurrence_set) {
             const start = new Date(occurrence.start_time);
             const end = new Date(occurrence.end_time);

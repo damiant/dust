@@ -1,6 +1,6 @@
 
-<ion-button fill="clear" id="popover-button">{{category}} <ion-icon name="chevron-down"></ion-icon></ion-button>
-<ion-popover trigger="popover-button" size="auto" side="bottom" [dismissOnSelect]="true">
+<ion-button fill="clear" [id]="id">{{category}} <ion-icon name="chevron-down"></ion-icon></ion-button>
+<ion-popover [trigger]="id" size="auto" side="bottom" [dismissOnSelect]="true">
   <ng-template>
     <ion-content>
       <ion-radio-group (ionChange)="changed($event)" [value]="category">

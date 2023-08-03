@@ -66,6 +66,7 @@ export class EventsPage implements OnInit {
       await this.db.checkEvents();
       this.days = await this.db.getDays();
       this.db.getCategories().then((categories) => this.categories = categories);
+      this.defaultDay = this.chooseDefaultDay(now());
       await this.update();
     } else {
       this.hack();
@@ -85,11 +86,13 @@ export class EventsPage implements OnInit {
   private chooseDefaultDay(today: Date): Date | string {
     for (const day of this.days) {
       if (day.date && sameDay(day.date, today)) {
-        //this.day = day.date;
+        this.day = day.date;
+        this.db.selectedDay.set(this.day);
         return day.date;
       }
     }
     this.day = undefined;
+    this.db.selectedDay.set(noDate());
     return 'all';
   }
 
@@ -110,18 +113,22 @@ export class EventsPage implements OnInit {
 
   async dayChange(event: any) {
     if (event.target.value == 'all') {
-      this.day = undefined;
       this.db.selectedDay.set(noDate());
+      this.day = undefined;
     } else {
-      this.day = new Date(event.target.value);
-      this.db.selectedDay.set(this.day);
+      this.db.selectedDay.set(new Date(event.target.value));
+      this.day = this.db.selectedDay();
     }
+    console.log(`Day Change ${this.day}`);
+
     this.updateTitle();
     await this.update(true);
   }
 
   private updateTitle() {
-    this.title = (this.day) ? this.day.toLocaleDateString('en-US', { weekday: 'long' }) : 'Events';
+    const day = this.db.selectedDay();
+
+    this.title = (day !== noDate()) ? day.toLocaleDateString('en-US', { weekday: 'long' }) : 'Events';
   }
 
   map(event: Event) {
@@ -133,8 +140,7 @@ export class EventsPage implements OnInit {
 
   async update(scrollToTop?: boolean) {
     console.time('update');
-    this.defaultDay = this.chooseDefaultDay(now());
-      this.events = await this.db.findEvents(this.search, this.day, this.category);
+    this.events = await this.db.findEvents(this.search, this.day, this.category);
     console.timeEnd('update');
     this.noEvents = this.events.length == 0;
     this.noEventsMessage = this.search?.length > 0 ?
