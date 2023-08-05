@@ -3,6 +3,11 @@
 Analog Internet Installation
 Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
 
+1 Map of favorite events should show only today
+
+
+
+
 1 After adding a favorite show the badge count on the fav tab increase (and disappear after opening it)
 1 On android - the tab bar has too much padding on the top.
 
@@ -17,9 +22,6 @@ Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
 2 Verify times using a phone not in PST
 2 Verify notification times are PST
 2 Find restrooms button => map
-2 Map of favorite art
-2 Map of favorite events (today)
-2 Map of favorite camps
 2 Event category filter
 2 Show/collapse fav group
 2 Notification for gates open

@@ -21,6 +21,10 @@ export const routes: Routes = [
         loadComponent: () => import('../favs/favs.page').then(m => m.FavsPage)
       },
       {
+        path: 'favs/map',
+        loadComponent: () => import('../fav-map/fav-map.page').then( m => m.FavMapPage)
+      },
+      {
         path: 'art',
         loadComponent: () =>
           import('../art/art.page').then((m) => m.ArtPage),

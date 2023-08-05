@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonicModule } from '@ionic/angular';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Art, Camp, Event } from '../models';
 import { FavoritesService } from '../favorites.service';
 import { EventComponent } from '../event/event.component';
@@ -46,7 +46,8 @@ export class FavsPage implements OnInit {
   mapPoints: MapPoint[] = [];
   @ViewChild(IonContent) ionContent!: IonContent;
 
-  constructor(private fav: FavoritesService, private ui: UiService, public db: DbService) { 
+  constructor(private fav: FavoritesService, private ui: UiService, public db: DbService,
+    private router: Router) { 
     effect(() => {
       console.log('update favorite');
       this.fav.changed();
@@ -75,7 +76,7 @@ export class FavsPage implements OnInit {
 
   private async update() {
     const favs = await this.fav.getFavorites();
-    this.events = this.filterItems(Filter.Events,await this.fav.getEventList(favs.events));
+    this.events = this.filterItems(Filter.Events,await this.fav.getEventList(favs.events, this.db.selectedYear() !== ''));
     this.camps = this.filterItems(Filter.Camps, await this.db.getCampList(favs.camps));
     this.art = this.filterItems(Filter.Art, await this.db.getArtList(favs.art));
     this.noFavorites = this.art.length == 0 && this.camps.length == 0 && this.events.length == 0;
@@ -104,6 +105,25 @@ export class FavsPage implements OnInit {
     return false;
   }
 
+  map() {
+    const points: MapPoint[] = [];
+    for (const event of this.events) {
+      points.push(toMapPoint(event.location, 
+        {title: event.title, location: event.location, subtitle: event.longTimeString}));
+    }
+    for (const art of this.art) {
+      const imageUrl: string = art.images?.length > 0 ? art.images[0].thumbnail_url! : '';
+      points.push(toMapPoint(art.location_string,
+        {title: art.name, location: art.location_string!, subtitle: '', imageUrl: imageUrl}));
+    }
+    for (const camp of this.camps) {
+      points.push(toMapPoint(camp.location_string,
+        {title: camp.name, location: camp.location_string!, subtitle: ''}));
+    }
+    this.fav.setMapPoints(points);
+    console.log(points);
+    this.router.navigate(['tabs/favs/map']);
+  }
   ngOnInit() {
 
   }

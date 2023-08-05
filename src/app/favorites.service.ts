@@ -5,6 +5,7 @@ import { Preferences } from '@capacitor/preferences';
 import { SettingsService } from './settings.service';
 import { DbService } from './db.service';
 import { getDayName, getOccurrenceTimeString, now } from './utils';
+import { MapPoint } from './map/map.component';
 
 enum DbId {
   favorites = 'favorites'
@@ -18,6 +19,7 @@ export class FavoritesService {
   private ready: Promise<void> | undefined;
   public changed = signal(1);
   private dataset: string = '';
+  private mapPoints: MapPoint[] = [];
 
   private favorites: Favorites = { art: [], events: [], camps: [], friends: [] };
 
@@ -29,6 +31,14 @@ export class FavoritesService {
   public async init(dataset: string) {
     this.dataset = dataset;
     this.ready = this.load();
+  }
+
+  public setMapPoints(mapPoints: MapPoint[]) {
+    this.mapPoints = mapPoints;
+  }
+
+  public getMapPoints(): MapPoint[] {
+    return this.mapPoints;
   }
 
   private noData(): Favorites {
@@ -106,15 +116,15 @@ export class FavoritesService {
     await this.saveFavorites();
   }
 
-  public async getEventList(ids: string[]): Promise<Event[]> {
+  public async getEventList(ids: string[], historical: boolean): Promise<Event[]> {
     const events = await this.db.getEventList(this.eventsFrom(ids));
     // Group events and Set event time string to favorited event occurrence
-    const eventItems = await this.splitEvents(events);
+    const eventItems = await this.splitEvents(events, historical);
     this.groupEvents(eventItems);
     return eventItems;
   }
 
-  private async splitEvents(events: Event[]): Promise<Event[]> {
+  private async splitEvents(events: Event[], historical: boolean): Promise<Event[]> {
     const eventItems: Event[] = [];
     const timeNow = now().getTime();
     for (let event of events) {
@@ -138,7 +148,7 @@ export class FavoritesService {
           const times = getOccurrenceTimeString(start, end, undefined);
           eventItem.timeString = times ? times?.short : '';
           eventItem.longTimeString = times ? times?.long : '';
-          if (!eventItem.old) {
+          if (!eventItem.old || historical) {
             eventItems.push(eventItem);
           }
         }

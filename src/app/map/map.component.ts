@@ -2,28 +2,36 @@ import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { PinchZoomModule } from '@meddv/ngx-pinch-zoom';
 import { LocationName } from '../models';
+import { IonicModule, PopoverController } from '@ionic/angular';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 export interface MapPoint {
   street: string,
   clock: string,
   feet?: number,
   streetOffset?: string,
-  clockOffset?: string
+  clockOffset?: string,
+  info?: MapInfo
 }
 
-export function toMapPoint(location: string): MapPoint {
+export interface MapInfo {
+  title: string;
+  location: string;
+  subtitle: string;
+  imageUrl?: string;
+}
+
+export function toMapPoint(location: string | undefined, info?: MapInfo): MapPoint {
   if (!location) {
     return { street: '', clock: '' };
   }
   let l = location.toLowerCase();
   if (l.includes('ring road')) {
-    console.log('help with', l);
     // eg rod's ring road @ 7:45
-    return convertRods(l);
-    l = '6:00 & c'; // TODO: be more accurate
+    return convertRods(l, info);
   }
   if (l.includes('open playa') || l.includes(`'`)) {
-    return convertArt(l);
+    return convertArt(l, info);
   }
   if (l.includes('portal')) {
     l = l.replace('portal', '& esplanade');
@@ -40,28 +48,29 @@ export function toMapPoint(location: string): MapPoint {
   if (tmp[0].includes(':')) {
     return {
       street: tmp[1]?.trim(),
-      clock: tmp[0]?.trim()
+      clock: tmp[0]?.trim(),
+      info
     }
   } else {
     return {
       street: tmp[0]?.trim(),
-      clock: tmp[1]?.trim()
+      clock: tmp[1]?.trim(),
+      info
     }
   }
 }
 
-function convertArt(l: string): MapPoint {
+function convertArt(l: string, info?: MapInfo): MapPoint {
   const tmp = l.split(' ');
   const clock = tmp[0].trim();
   const feet = parseInt(tmp[1].trim().replace(`'`, ''));
-  console.log(clock);
-  return { street: '', clock, feet };
+  return { street: '', clock, feet, info };
 }
 
-function convertRods(l: string): MapPoint {
+function convertRods(l: string, info?: MapInfo): MapPoint {
   if (l.includes('&')) {
     // May be rod's ring road & D
-    return { street: 'd', clock: '6:00' };
+    return { street: 'd', clock: '6:00', info };
   }
   const tmp = l.split('@');
   const clock = tmp[1].trim();
@@ -72,12 +81,23 @@ function convertRods(l: string): MapPoint {
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
-  imports: [PinchZoomModule, CommonModule],
-  standalone: true
+  imports: [IonicModule, PinchZoomModule, CommonModule],
+  standalone: true,
+  animations: [
+    trigger('fade', [ 
+      state('visible', style({ opacity: 1 })),
+      state('hidden', style({ opacity: 0 })),
+      transition('visible <=> hidden', animate('0.3s ease-in-out')),
+    ])
+  ]
 })
 export class MapComponent implements OnInit, AfterViewInit {
 
   points: MapPoint[];
+  isOpen = false;
+  imageReady = false;
+  @ViewChild('popover') popover: any;
+  info: MapInfo | undefined;
   src = 'assets/map.svg';
   @ViewChild('zoom') zoom!: ElementRef;
   @ViewChild('map') map!: ElementRef;
@@ -85,14 +105,13 @@ export class MapComponent implements OnInit, AfterViewInit {
   @Input() height: string = 'height: 100%';
   @Input('points') set setPoints(points: MapPoint[]) {
     this.points = points;
-
   }
 
   ngAfterViewInit() {
     setTimeout(() => {
       for (let point of this.points) {
         if (point.street !== '' && point.street?.localeCompare(LocationName.Unavailable, undefined, { sensitivity: 'accent' })) {
-          this.plot(this.toClock(point.clock), this.toStreetRadius(point.street));
+          this.plot(this.toClock(point.clock), this.toStreetRadius(point.street), undefined, point.info);
         } else if (point.feet) {
           if (point.streetOffset && point.clockOffset) {
             console.log('handle offset', point);
@@ -101,17 +120,21 @@ export class MapComponent implements OnInit, AfterViewInit {
             offset.x -= center.x;
             offset.y -= center.y;
             console.log(offset)
-            this.plot(this.toClock(point.clock), this.toRadius(point.feet), offset);
+            this.plot(this.toClock(point.clock), this.toRadius(point.feet), offset, point.info);
           } else {
-            this.plot(this.toClock(point.clock), this.toRadius(point.feet));
+            this.plot(this.toClock(point.clock), this.toRadius(point.feet), undefined, point.info);
           }
         }
       }
     }, 150);
   }
 
+  ready() {
+    this.imageReady = true;    
+  }
+
   streets = [0.285, 0.338, 0.369, 0.405, 0.435, 0.465, 0.525, 0.557, 0.590, 0.621, 0.649, 0.678];
-  constructor() {
+  constructor(private popoverController: PopoverController) {
     this.points = [];
   }
 
@@ -157,26 +180,34 @@ export class MapComponent implements OnInit, AfterViewInit {
     return parseInt(tmp[0]) + v;
   }
 
-  plot(clock: number, rad: number, offset?: any) {
+  plot(clock: number, rad: number, offset?: any, info?: MapInfo) {
     const pt = this.getPoint(clock, rad);
+    const sz = info ? 10 : 5;
     if (offset) {
       pt.x += offset.x;
       pt.y += offset.y;
     }
     const d = document.createElement("div");
-    d.style.left = `${pt.x - 2}px`;
-    d.style.top = `${pt.y - 5}px`;
-    d.style.width = `5px`;
-    d.style.height = `5px`;
-    d.style.borderRadius = '5px';
-    d.style.animationName = 'pulse';
+    d.style.left = `${pt.x - (sz-3)}px`;
+    d.style.top = `${pt.y - sz}px`;
+    d.style.width = `${sz}px`;
+    d.style.height = `${sz}px`;
+    d.style.borderRadius = `${sz}px`;
+    d.style.animationName = info ? '' : 'pulse';
     d.style.animationDuration = '1s';
     d.style.animationIterationCount = 'infinite';
     d.style.position = 'absolute';
     d.style.backgroundColor = `var(--ion-color-primary)`;
+    d.onclick = (e) => { this.info = info;
+      this.presentPopover(e);
+    };
     const c: HTMLElement = this.mapc.nativeElement;
     c.insertBefore(d, c.firstChild);
-    console.log(pt);
+  }
+
+  async presentPopover(e: Event) {
+      this.popover.event = e;
+      this.isOpen = true;
   }
 
   getPoint(clock: number, rad: number) {
