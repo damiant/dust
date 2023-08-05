@@ -3,7 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  simulatedTime: 'Wed Aug 30 2023 01:18:00 GMT-0700'
 };
 
 /*

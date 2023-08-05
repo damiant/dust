@@ -10,10 +10,10 @@
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Camps</ion-title>
-      <ion-badge *ngIf="db.selectedYear() !== ''" (click)="home()" slot="end">{{db.selectedYear()}}</ion-badge>
+      <ion-badge class="pad-right" *ngIf="db.selectedYear() !== ''" (click)="home()" slot="end">{{db.selectedYear()}}</ion-badge>
     </ion-toolbar>
     <ion-toolbar>
-      <ion-searchbar (ionInput)="handleInput($event)" [debounce]="1000" placeholder="Find Camps"></ion-searchbar>
+      <app-search placeholder="Find Camps" (search)="search($event)" />
     </ion-toolbar>
   </ion-header>
   <app-map-modal [title]="mapTitle" [subtitle]="mapSubtitle" [(show)]="showMap" [points]="mapPoints"></app-map-modal>

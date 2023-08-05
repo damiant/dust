@@ -1,0 +1,23 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Favorites"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Map</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <app-map [points]="points"></app-map>
+  <ion-toast
+  [isOpen]="isToastOpen"
+  message="Location information will be released when gates open on Sunday"
+  [duration]="5000"
+  position="middle"
+  (didDismiss)="isToastOpen = false"
+></ion-toast>
+</ion-content>

@@ -45,6 +45,7 @@ export class EventPage implements OnInit {
     this.mapTitle = this.event.camp;
     this.mapSubtitle = this.event.location;
     this.mapPoints.push(toMapPoint(this.event.location));
+    this.event.occurrence_set = this.event.occurrence_set.filter((o) => !o.old);
     for (let occurrence of this.event.occurrence_set) {
       occurrence.star = await this.fav.isFavEventOccurrence(this.event.uid, occurrence);
     }

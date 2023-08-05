@@ -1,6 +1,8 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>Favorites</ion-title>
+    <ion-badge class="pad-right" *ngIf="db.selectedYear() !== ''" (click)="home()"
+      slot="end">{{db.selectedYear()}}</ion-badge>
   </ion-toolbar>
 </ion-header>
 
@@ -8,14 +10,25 @@
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Favorites</ion-title>
-      <ion-badge *ngIf="db.selectedYear() !== ''" (click)="home()" slot="end">{{db.selectedYear()}}</ion-badge>
+      <ion-buttons class="up" slot="end">
+        <app-category id="fav-categories" allTitle="All" (change)="filterChanged()" [(category)]="filter"
+          [categories]="filters" slot="end"></app-category>
+      </ion-buttons>
+    </ion-toolbar>
+    <ion-toolbar *ngIf="!noFavorites">
+      <app-search placeholder="Find Favorites" (search)="searchFavs($event)" />
+      <ion-buttons slot="end">
+        <ion-button (click)="map()">
+          <ion-icon slot="icon-only" name="map-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
     </ion-toolbar>
   </ion-header>
-  <app-map-modal [title]="mapTitle" [subtitle]="mapSubtitle" [(show)]="showMap" [points]="mapPoints"></app-map-modal>  
+  <app-map-modal [title]="mapTitle" [subtitle]="mapSubtitle" [(show)]="showMap" [points]="mapPoints"></app-map-modal>
   <div *ngIf="noFavorites" class="center pad-top">
-    <ion-text color="medium">Press the <ion-icon name="star-outline"></ion-icon> icon on Events, Camps and Art.</ion-text>
+    <ion-text color="medium">Press the <ion-icon [src]="'assets/icon/star.svg'"></ion-icon> icon on Events, Camps and
+      Art to add them here.</ion-text>
   </div>
-  <h1 *ngIf="events.length > 0">Events</h1>
   <app-event title="Favorites" (mapClick)="mapEvent($event)" [event]="event" [longTime]="true"
     *ngFor="let event of events; trackBy: eventsTrackBy" />
   <h1 *ngIf="camps.length > 0">Camps</h1>
@@ -23,4 +36,5 @@
     *ngFor="let camp of camps; trackBy: campsTrackBy" />
   <h1 *ngIf="art.length > 0">Art</h1>
   <app-art title="Favorites" [art]="art" *ngFor="let art of art; trackBy: artTrackBy" />
+  <div style="padding:2.5rem"></div>
 </ion-content>

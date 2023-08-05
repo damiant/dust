@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonicModule } from '@ionic/angular';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Art, Camp, Event } from '../models';
 import { FavoritesService } from '../favorites.service';
 import { EventComponent } from '../event/event.component';
@@ -12,30 +12,44 @@ import { MapPoint, toMapPoint } from '../map/map.component';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { ArtComponent } from '../art/art.component';
 import { UiService } from '../ui.service';
+import { CategoryComponent } from '../category/category.component';
+import { SearchComponent } from '../search/search.component';
+
+enum Filter {
+  All = '',
+  Camps = 'Camps',
+  Art = 'Art',
+  Events = 'Events'
+}
 
 @Component({
   selector: 'app-favs',
   templateUrl: './favs.page.html',
   styleUrls: ['./favs.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, RouterModule, EventComponent, CampComponent, MapModalComponent, ArtComponent]
+  imports: [IonicModule, CommonModule, FormsModule, RouterModule, EventComponent, 
+    CampComponent, MapModalComponent, ArtComponent, CategoryComponent, SearchComponent]
 })
 export class FavsPage implements OnInit {
 
+  filter = '';
   events: Event[] = [];
   camps: Camp[] = [];
   art: Art[] = [];
+  filters = [Filter.Events, Filter.Camps, Filter.Art];
 
   showMap = false;
   noFavorites = false;
   mapTitle = '';
+  search = '';
   mapSubtitle = '';
   mapPoints: MapPoint[] = [];
   @ViewChild(IonContent) ionContent!: IonContent;
 
-  constructor(private fav: FavoritesService, private ui: UiService, public db: DbService) { 
+  constructor(private fav: FavoritesService, private ui: UiService, public db: DbService,
+    private router: Router) { 
     effect(() => {
-      console.log('update fav');
+      console.log('update favorite');
       this.fav.changed();
       this.update();      
     });
@@ -55,14 +69,61 @@ export class FavsPage implements OnInit {
     this.ui.home();
   }
 
+  searchFavs(value: string) {
+    this.search = value;
+     this.update();
+  }
+
   private async update() {
     const favs = await this.fav.getFavorites();
-    this.events = await this.db.getEventList(this.fav.eventsFrom(favs.events));
-    this.camps = await this.db.getCampList(favs.camps);
-    this.art = await this.db.getArtList(favs.art);
+    this.events = this.filterItems(Filter.Events,await this.fav.getEventList(favs.events, this.db.selectedYear() !== ''));
+    this.camps = this.filterItems(Filter.Camps, await this.db.getCampList(favs.camps));
+    this.art = this.filterItems(Filter.Art, await this.db.getArtList(favs.art));
     this.noFavorites = this.art.length == 0 && this.camps.length == 0 && this.events.length == 0;
   }
 
+  private filterItems(filter: Filter, items: any[]): any[] {
+    if (this.filter === filter || this.filter === Filter.All) {
+      if (this.search) {
+        return this.searchTerms(items);
+      }
+      return items;
+    } 
+    return [];
+  }
+
+  private searchTerms(items: any[]): any[] {
+     return items.filter((a) => this.filterTerms(a));
+  }
+
+  private filterTerms(item: any): boolean {
+    const search = this.search.toLowerCase();
+    if (item.title && item.title.toLowerCase().includes(search)) return true;
+    if (item.description && item.description.toLowerCase().includes(search)) return true;
+    if (item.print_description && item.print_description.toLowerCase().includes(search)) return true;
+    if (item.location_string && item.location_string.toLowerCase().includes(search)) return true;
+    return false;
+  }
+
+  map() {
+    const points: MapPoint[] = [];
+    for (const event of this.events) {
+      points.push(toMapPoint(event.location, 
+        {title: event.title, location: event.location, subtitle: event.longTimeString}));
+    }
+    for (const art of this.art) {
+      const imageUrl: string = art.images?.length > 0 ? art.images[0].thumbnail_url! : '';
+      points.push(toMapPoint(art.location_string,
+        {title: art.name, location: art.location_string!, subtitle: '', imageUrl: imageUrl}));
+    }
+    for (const camp of this.camps) {
+      points.push(toMapPoint(camp.location_string,
+        {title: camp.name, location: camp.location_string!, subtitle: ''}));
+    }
+    this.fav.setMapPoints(points);
+    console.log(points);
+    this.router.navigate(['tabs/favs/map']);
+  }
   ngOnInit() {
 
   }
@@ -91,5 +152,9 @@ export class FavsPage implements OnInit {
 
   artTrackBy(index: number, art: Art) {
     return art.uid;
+  }
+
+  filterChanged() {
+    this.update();
   }
 }

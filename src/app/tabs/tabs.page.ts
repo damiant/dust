@@ -2,12 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, EnvironmentInjector, OnInit, effect, inject } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { DbService } from '../db.service';
-import { SplashScreen } from '@capacitor/splash-screen';
 import { NotificationService } from '../notification.service';
 import { Router } from '@angular/router';
 import { delay } from '../utils';
 import { UiService } from '../ui.service';
-import { FavoritesService } from '../favorites.service';
 import { SettingsService } from '../settings.service';
 @Component({
   selector: 'app-tabs',

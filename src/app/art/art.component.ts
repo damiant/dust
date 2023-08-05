@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Art } from '../models';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
   templateUrl: './art.component.html',
   styleUrls: ['./art.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [IonicModule, CommonModule, RouterModule]
 })
 export class ArtComponent implements OnInit {

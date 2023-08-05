@@ -4,7 +4,9 @@ export interface Event {
     start: Date; // Calculated
     location: string; // Calculated
     longTimeString: string; // Calculated
-    old: boolean; // Calculated
+    old: boolean; // Calculated (whether the event has already passed)
+    happening: boolean; // Calculated (whether the event is happening now)
+    group?: string; // Calculated (grouping for favorites)
     all_day: any
     check_location?: number
     description: string
@@ -37,6 +39,7 @@ export interface OccurrenceSet {
     end_time: string
     start_time: string
     old: boolean // Calculated
+    happening: boolean; // Calculated (whether the event is happening now)
     longTimeString: string // Calculated
     star?: boolean;
 }
@@ -126,3 +129,8 @@ export interface Camp {
     year: string;
     start: string;
   }
+
+  export interface TimeString {
+    short: string;
+    long: string;
+}

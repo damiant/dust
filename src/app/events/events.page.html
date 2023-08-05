@@ -3,7 +3,7 @@
     <ion-title>
       {{title}}
     </ion-title>
-    <ion-badge *ngIf="db.selectedYear() !== ''" slot="end">{{db.selectedYear()}}</ion-badge>
+    <ion-badge class="pad-right" *ngIf="db.selectedYear() !== ''" slot="end">{{db.selectedYear()}}</ion-badge>
   </ion-toolbar>
 </ion-header>
 
@@ -12,12 +12,12 @@
     <ion-toolbar>
       <ion-title size="large">{{title}}</ion-title>
       <ion-buttons slot="end">
-        <app-category (change)="categoryChanged()" [(category)]="category" [categories]="categories"
-          slot="end"></app-category>
+        <app-category id="event-categories" allTitle="All Events" (change)="categoryChanged()" [(category)]="category"
+          [categories]="categories" slot="end"></app-category>
       </ion-buttons>
     </ion-toolbar>
     <ion-toolbar>
-      <ion-searchbar (ionInput)="handleInput($event)" [debounce]="1000" placeholder="Find Events"></ion-searchbar>
+      <app-search placeholder="Find Events" (search)="searchEvents($event)" />
     </ion-toolbar>
     <ion-toolbar>
       <ion-segment (ionChange)="dayChange($event)" [(ngModel)]="defaultDay" [scrollable]="true">
@@ -37,7 +37,7 @@
     <app-skeleton-event></app-skeleton-event>
     <app-skeleton-event></app-skeleton-event>
   </div>
-  <div *ngIf="noEvents" class="message"><ion-text>All the events for this day have concluded.</ion-text></div>
+  <div *ngIf="noEvents" class="message"><ion-text>{{noEventsMessage}}</ion-text></div>
   <cdk-virtual-scroll-viewport [minBufferPx]="minBufferPx" itemSize="180" maxBufferPx="2350">
     <app-event [title]="title" [longTime]="!day" [day]="day" [event]="event" (mapClick)="map($event)"
       *cdkVirtualFor="let event of events; trackBy: eventsTrackBy" />

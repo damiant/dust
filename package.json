@@ -34,6 +34,7 @@
     "@capacitor/local-notifications": "5.0.6",
     "@capacitor/network": "5.0.6",
     "@capacitor/preferences": "5.0.6",
+    "@capacitor/share": "5.0.6",
     "@capacitor/splash-screen": "5.0.6",
     "@capacitor/status-bar": "5.0.6",
     "@ionic/angular": "7.2.1",

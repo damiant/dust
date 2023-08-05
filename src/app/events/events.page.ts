@@ -14,6 +14,7 @@ import { EventComponent } from '../event/event.component';
 import { UiService } from '../ui.service';
 import { CategoryComponent } from '../category/category.component';
 import { SkeletonEventComponent } from '../skeleton-event/skeleton-event.component';
+import { SearchComponent } from '../search/search.component';
 
 @Component({
   selector: 'app-events',
@@ -23,7 +24,7 @@ import { SkeletonEventComponent } from '../skeleton-event/skeleton-event.compone
   imports: [
     IonicModule, CommonModule, RouterModule, ScrollingModule,
     MapModalComponent, FormsModule, EventComponent, CategoryComponent,
-    SkeletonEventComponent],
+    SkeletonEventComponent, SearchComponent],
 })
 export class EventsPage implements OnInit {
   title = 'Events';
@@ -31,9 +32,10 @@ export class EventsPage implements OnInit {
   category = '';
   events: Event[] = [];
   days: Day[] = [];
-  categories: string[] = [];
+  categories: string[] = ['All Events'];
   search: string = '';
   noEvents = false;
+  noEventsMessage = '';
   screenHeight: number = window.screen.height;
   day: Date | undefined = undefined;
   showMap = false;
@@ -62,9 +64,9 @@ export class EventsPage implements OnInit {
       const today = now();
       this.setToday(today);
       await this.db.checkEvents();
-      this.db.getDays().then((days) => this.days = days);
+      this.days = await this.db.getDays();
       this.db.getCategories().then((categories) => this.categories = categories);
-      this.defaultDay = this.chooseDefaultDay(today);
+      this.defaultDay = this.chooseDefaultDay(now());
       await this.update();
     } else {
       this.hack();
@@ -85,10 +87,12 @@ export class EventsPage implements OnInit {
     for (const day of this.days) {
       if (day.date && sameDay(day.date, today)) {
         this.day = day.date;
+        this.db.selectedDay.set(this.day);
         return day.date;
       }
     }
     this.day = undefined;
+    this.db.selectedDay.set(noDate());
     return 'all';
   }
 
@@ -98,8 +102,8 @@ export class EventsPage implements OnInit {
     }
   }
 
-  handleInput(event: any) {
-    this.search = event.target.value.toLowerCase();
+  searchEvents(value: string) {
+    this.search = value.toLowerCase();
     this.update(true);
   }
 
@@ -109,18 +113,22 @@ export class EventsPage implements OnInit {
 
   async dayChange(event: any) {
     if (event.target.value == 'all') {
-      this.day = undefined;
       this.db.selectedDay.set(noDate());
+      this.day = undefined;
     } else {
-      this.day = new Date(event.target.value);
-      this.db.selectedDay.set(this.day);
+      this.db.selectedDay.set(new Date(event.target.value));
+      this.day = this.db.selectedDay();
     }
+    console.log(`Day Change ${this.day}`);
+
     this.updateTitle();
     await this.update(true);
   }
 
   private updateTitle() {
-    this.title = (this.day) ? this.day.toLocaleDateString('en-US', { weekday: 'long' }) : 'Events';
+    const day = this.db.selectedDay();
+
+    this.title = (day !== noDate()) ? day.toLocaleDateString('en-US', { weekday: 'long' }) : 'Events';
   }
 
   map(event: Event) {
@@ -134,9 +142,11 @@ export class EventsPage implements OnInit {
     console.time('update');
     this.events = await this.db.findEvents(this.search, this.day, this.category);
     console.timeEnd('update');
-    console.log(`${this.events.length} events`);
     this.noEvents = this.events.length == 0;
-    if (scrollToTop) {      
+    this.noEventsMessage = this.search?.length > 0 ?
+      `There are no events matching "${this.search}"` :
+      'All the events for this day have concluded.';
+    if (scrollToTop) {
       this.hack();
       this.virtualScroll.scrollToOffset(0, 'smooth');
     }

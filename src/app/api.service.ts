@@ -55,17 +55,25 @@ export class ApiService {
     const currentRevision: Revision = await this.get(id, { revision: 0 });    
     if (revision && currentRevision && revision.revision === currentRevision.revision) {
       console.log(`Will not download data for ${latest} as it is already at revision ${currentRevision.revision}`);
+      this.rememberLastDownload();
       return;
     }
 
     const events = await getLive(latest, Names.events);
     const art = await getLive(latest, Names.art);
     const camps = await getLive(latest, Names.camps);
-    await this.save(this.getId(latest, Names.revision), revision);
+    if (events.length < 100 || art.length < 100 || camps.length < 100) {
+      console.error(`Download failed`);
+      return;
+    }
     await this.save(this.getId(latest, Names.events), events);
     await this.save(this.getId(latest, Names.camps), camps);
     await this.save(this.getId(latest, Names.art), art);
-    console.log(`Downloaded data`, latest);
+    await this.save(this.getId(latest, Names.revision), revision);
+    this.rememberLastDownload();
+  }
+
+  private rememberLastDownload() {
     this.settingsService.settings.lastDownload = now().toISOString();
     this.settingsService.save();
   }

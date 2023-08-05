@@ -1,13 +1,10 @@
 import { WorkerClass } from './worker-interface';
-import { Art, Camp, Day, Event, LocationName, OccurrenceSet } from './models';
-import { now, sameDay } from './utils';
+import { Art, Camp, Day, Event, LocationName, OccurrenceSet, TimeString } from './models';
+import { getDayName, getOccurrenceTimeString, now, sameDay } from './utils';
 
 
 
-interface TimeString {
-    short: string;
-    long: string;
-}
+
 
 interface TimeCache {
     [index: string]: TimeString | undefined;
@@ -36,7 +33,7 @@ export class DataManager implements WorkerClass {
             case 'getArtList': return this.getArtList(args[0]);
             case 'findArts': return this.findArts(args[0]);
             case 'findArt': return this.findArt(args[0]);
-            case 'checkEvents': return this.checkEvents();
+            case 'checkEvents': return this.checkEvents(args[0]);
             case 'findEvents': return this.findEvents(args[0], args[1], args[2]);
             case 'findCamps': return this.findCamps(args[0]);
             case 'findEvent': return this.findEvent(args[0]);
@@ -61,11 +58,12 @@ export class DataManager implements WorkerClass {
         art.sort((a: Art, b: Art) => { return a.name.localeCompare(b.name); });
     }
 
-    private checkEvents(): boolean {
+    private checkEvents(day?: Date): boolean {
         const today = now();
         let hasLiveEvents = false;
         for (const event of this.events) {
             event.old = true;
+            event.happening = false;
             try {
                 for (let occurrence of event.occurrence_set) {
                     // This makes all events happen today
@@ -76,16 +74,23 @@ export class DataManager implements WorkerClass {
 
                     if (this.allEventsOld) {
                         event.old = false;
+                        event.happening = false;
                         occurrence.old = false;
-                        hasLiveEvents = true;
+                        occurrence.happening = false;
+                        hasLiveEvents = false;
                     } else {
-                        occurrence.old = (new Date(occurrence.end_time).getTime() - today.getTime() < 0);
+                        const isOld = (new Date(occurrence.end_time).getTime() - today.getTime() < 0);
+                        const isHappening = !isOld && (new Date(occurrence.start_time).getTime() < today.getTime());
+                        occurrence.old = isOld;
+                        occurrence.happening = isHappening;
                         if (!occurrence.old) {
                             event.old = false;
                             hasLiveEvents = true;
                         }
+                        if (occurrence.happening) {
+                            event.happening = true;
+                        }
                     }
-
                 }
             } catch (err) {
                 console.error('Failed', event);
@@ -273,6 +278,9 @@ export class DataManager implements WorkerClass {
     public findArt(uid: string): Art | undefined {
         for (let art of this.art) {
             if (art.uid == uid) {
+                if (!art.images) {
+                    art.images = [];
+                }
                 for (let image of art.images) {
                     image.ready = false;
                 }
@@ -284,6 +292,7 @@ export class DataManager implements WorkerClass {
 
     public findEvents(query: string, day: Date | undefined, category: string): Event[] {
         const result: Event[] = [];
+        console.log(`Find Events(query:"${query}",day:"${day}",category:"${category}")`);
         for (let event of this.events) {
             if (this.eventContains(query, event) && this.eventIsCategory(category, event) && this.onDay(day, event)) {
                 const timeString = this.getTimeString(event, day);
@@ -356,61 +365,23 @@ export class DataManager implements WorkerClass {
         return { short: 'Dont know', long: 'Dont know' };
     }
 
-    private getOccurrenceTimeString(start: Date, end: Date, day: Date | undefined): TimeString | undefined {
-        const startsToday = day && sameDay(start, day);
-        const endsToday = day && sameDay(end, day);
-        if (!day || startsToday || endsToday) {
-            const day = start.toLocaleDateString([], { weekday: 'long' });
-            const short = (endsToday && !startsToday) ? 
-               `Until ${this.time(end)} (${this.timeBetween(end, start)})` :
-               `${this.time(start)} (${this.timeBetween(end, start)})`;
-            
-            return {
-                long: `${day} ${this.time(start)}-${this.time(end)} (${this.timeBetween(end, start)})`,
-                short 
-            }
-        }
-        return undefined;
-    }
-    
-    
-
     private getOccurrenceTimeStringCached(start: Date, end: Date, day: Date | undefined): TimeString | undefined {
         const key = `${start.getTime()}-${end.getTime()}-${day}`;
         if (!(key in this.cache)) {
-            this.cache[key] = this.getOccurrenceTimeString(start, end, day);            
+            this.cache[key] = getOccurrenceTimeString(start, end, day);            
         }
         return this.cache[key];
-    }
-
-    private timeBetween(d1: any, d2: any): string {
-        const hrs = Math.ceil(Math.abs(d1 - d2) / 36e5);
-        const mins = Math.floor((Math.abs(d1 - d2) / 1000) / 60);
-        return (mins < 60) ? `${mins}mins` : `${hrs}hrs`;
     }
 
     private hoursBetween(d1: any, d2: any): number {
         return Math.abs(d1 - d2) / 36e5;
     }
 
-    private time(d: Date): string {
-        if (d.getMinutes() != 0) {
-            return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }).toLowerCase().replace(' ', '');
-        }
-        let hrs = d.getHours();
-        const ampm = hrs >= 12 ? 'pm' : 'am';
-        hrs = hrs % 12;
-        if (hrs == 0) {
-            return (ampm == 'pm') ? 'Noon' : 'Midnight';
-        }
-        return `${hrs}${ampm}`;
-    }
-
     public getDays(): Day[] {
         const result: Day[] = [];
         for (let day of this.days) {
             const date = new Date(day);
-            result.push({ name: this.getDayName(day).substring(0, 3), dayName: date.getDate().toString(), date });
+            result.push({ name: getDayName(day).substring(0, 3), dayName: date.getDate().toString(), date });
         }
         result.sort((a, b) => { return a.date.getTime() - b.date.getTime(); });
         return result;
@@ -427,7 +398,8 @@ export class DataManager implements WorkerClass {
         for (let occurrence of event.occurrence_set) {
             const start = new Date(occurrence.start_time);
             const end = new Date(occurrence.end_time);
-            if (!occurrence.old && (sameDay(start, day) || sameDay(end, day))) {
+            
+            if (!occurrence.old && ((sameDay(start, day) || sameDay(end, day)))) {
                 return true;
             }
         }
@@ -443,10 +415,7 @@ export class DataManager implements WorkerClass {
 
 
 
-    private getDayName(dateStr: string) {
-        var date = new Date(dateStr);
-        return date.toLocaleDateString([], { weekday: 'long' });
-    }
+
 
     private path(name: string): string {
         return `assets/${this.dataset}/${name}.json`;

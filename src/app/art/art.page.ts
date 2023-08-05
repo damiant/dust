@@ -7,20 +7,23 @@ import { CommonModule } from '@angular/common';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { ArtComponent } from './art.component';
 import { UiService } from '../ui.service';
+import { SearchComponent } from '../search/search.component';
 
 @Component({
   selector: 'app-arts',
   templateUrl: 'art.page.html',
   styleUrls: ['art.page.scss'],
   standalone: true,
-  imports: [IonicModule, RouterLink, CommonModule, ScrollingModule, ArtComponent],
+  imports: [IonicModule, RouterLink, CommonModule,
+    ScrollingModule, ArtComponent, SearchComponent],
 })
 export class ArtPage {
   arts: Art[] = [];
   minBufferPx = 900;
+
   @ViewChild(CdkVirtualScrollViewport) virtualScroll!: CdkVirtualScrollViewport;
 
-  constructor(public db: DbService, private ui: UiService) { 
+  constructor(public db: DbService, private ui: UiService) {
     effect(() => {
       this.ui.scrollUp('art', this.virtualScroll);
     });
@@ -35,17 +38,22 @@ export class ArtPage {
       this.update(undefined);
     } else {
       // Hack to ensure tab view is updated on switch of tabs
-      this.minBufferPx = (this.minBufferPx == 901) ? 900: 901;      
-      
+      this.minBufferPx = (this.minBufferPx == 901) ? 900 : 901;
+
     }
   }
 
   handleInput(event: any) {
-    this.virtualScroll.scrollToOffset(0);
-    this.update(event.target.value.toLowerCase());
+    this.search(event.target.value);
   }
 
-  artTrackBy(index: number, art: Art) {    
+  search(val: string | undefined | null) {
+    if (!val) return;
+    this.virtualScroll.scrollToOffset(0);
+    this.update(val.toLowerCase());
+  }
+
+  artTrackBy(index: number, art: Art) {
     return art.uid;
   }
 

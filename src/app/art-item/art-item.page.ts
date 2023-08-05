@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Art, Image } from '../models';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { DbService } from '../db.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MapComponent, MapPoint, toMapPoint } from '../map/map.component';
