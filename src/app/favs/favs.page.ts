@@ -121,7 +121,6 @@ export class FavsPage implements OnInit {
         {title: camp.name, location: camp.location_string!, subtitle: ''}));
     }
     this.fav.setMapPoints(points);
-    console.log(points);
     this.router.navigate(['tabs/favs/map']);
   }
   ngOnInit() {

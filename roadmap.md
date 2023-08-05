@@ -3,6 +3,7 @@
 Analog Internet Installation
 Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
 
+1 Map of medical
 1 Map of favorite events should show only today
 1 Deep links for android
 1 Website buttons for app store links
@@ -20,7 +21,6 @@ Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
 2 If day is burn night show animation of burn
 2 Verify times using a phone not in PST
 2 Verify notification times are PST
-2 Find restrooms button => map
 2 Event category filter
 2 Show/collapse fav group
 2 Notification for gates open

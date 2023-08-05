@@ -1,4 +1,6 @@
 ## Changes
+### 1.3
+- Map of Restrooms added
 
 ### 1.2
 - Favorite filter added for events, art, camps, all

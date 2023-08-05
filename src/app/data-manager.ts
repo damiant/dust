@@ -1,10 +1,6 @@
 import { WorkerClass } from './worker-interface';
-import { Art, Camp, Day, Event, LocationName, OccurrenceSet, TimeString } from './models';
+import { Art, Camp, Day, Event, LocationName, OccurrenceSet, Pin, TimeString } from './models';
 import { getDayName, getOccurrenceTimeString, now, sameDay } from './utils';
-
-
-
-
 
 interface TimeCache {
     [index: string]: TimeString | undefined;
@@ -25,6 +21,7 @@ export class DataManager implements WorkerClass {
         switch (method) {
             case 'populate': return await this.populate(args[0], args[1]);
             case 'getDays': return this.getDays();
+            case 'getPotties': return this.getPotties();
             case 'getCategories': return this.categories;
             case 'setDataset': return this.setDataset(args[0], args[1], args[2], args[3], args[4]);
             case 'getEvents': return this.getEvents(args[0], args[1]);
@@ -422,6 +419,11 @@ export class DataManager implements WorkerClass {
     }
     private async loadEvents(): Promise<Event[]> {
         const res = await fetch(this.path('events'));
+        return await res.json();
+    }
+
+    public async getPotties(): Promise<Pin[]> {
+        const res = await fetch(this.path('potties'));
         return await res.json();
     }
 

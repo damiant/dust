@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { AlertController, IonicModule } from '@ionic/angular';
 import { UiService } from '../ui.service';
 import { Share } from '@capacitor/share';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -14,13 +15,17 @@ import { Share } from '@capacitor/share';
 })
 export class ProfilePage implements OnInit {
 
-  constructor(private ui: UiService, private alertController: AlertController) { }
+  constructor(private ui: UiService, private router: Router, private alertController: AlertController) { }
 
   ngOnInit() {
   }
 
   home() {
     this.ui.home();
+  }
+
+  restrooms() {
+    this.router.navigate(['tabs/profile/restrooms']);
   }
 
   async unimplemented() {

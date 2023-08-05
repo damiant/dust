@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { Event, Day, Camp, Art } from './models';
+import { Event, Day, Camp, Art, Pin } from './models';
 import { call, registerWorker } from './worker-interface';
 import { noDate, now } from './utils';
 
@@ -46,6 +46,10 @@ export class DbService {
 
   public async getEventList(ids: string[]): Promise<Event[]> {
     return await call(this.worker, 'getEventList', ids);
+  }
+
+  public async getPotties(): Promise<Pin[]> {
+    return await call(this.worker, 'getPotties');
   }
 
   public async getCategories(): Promise<string[]> {
