@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { Event } from '../models';
@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './event.component.html',
   styleUrls: ['./event.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [IonicModule, CommonModule, RouterModule]
 })
 export class EventComponent  implements OnInit {
