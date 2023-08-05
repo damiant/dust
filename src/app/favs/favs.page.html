@@ -11,7 +11,7 @@
     <ion-toolbar>
       <ion-title size="large">Favorites</ion-title>
       <ion-buttons class="up" slot="end">
-        <app-category id="fav-categories" allTitle="All" (change)="filterChanged()" [(category)]="filter"
+        <app-category *ngIf="!noFavorites" id="fav-categories" allTitle="All" (change)="filterChanged()" [(category)]="filter"
           [categories]="filters" slot="end"></app-category>
       </ion-buttons>
     </ion-toolbar>
@@ -25,7 +25,7 @@
     </ion-toolbar>
   </ion-header>
   <app-map-modal [title]="mapTitle" [subtitle]="mapSubtitle" [(show)]="showMap" [points]="mapPoints"></app-map-modal>
-  <div *ngIf="noFavorites" class="center pad-top">
+  <div *ngIf="noFavorites" class="center pad-top pad-sides">
     <ion-text color="medium">Press the <ion-icon [src]="'assets/icon/star.svg'"></ion-icon> icon on Events, Camps and
       Art to add them here.</ion-text>
   </div>
