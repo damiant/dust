@@ -3,6 +3,8 @@
 Analog Internet Installation
 Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
 
+1 Favorites search
+
 1 After adding a favorite show the badge count on the fav tab increase (and disappear after opening it)
 1 On android - the tab bar has too much padding on the top.
 
@@ -11,8 +13,6 @@ Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
 1 Icon for event categories
 1 If an event has a long durations (>3hrs) then let user choose notification hour
 1 Pressing the tab again should clear search
-
-1 Share app
 
 2 Filter by a-z for camps and art
 2 If day is burn night show animation of burn
@@ -26,11 +26,9 @@ Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
 2 Show/collapse fav group
 2 Notification for gates open
 2 Notification for week before (daily) ^these give chance to download data
-2 Favorites search
 2 Map points should show text “G 8:15”
 2 Mark some events as “soon” if < 1hr (underway if happening)
 2 Search keyboard hint should be "search" instead of "go"
-2 Camp events need opacity when over
 2 Switch to camp when clicked from events
 
 3 When clicking back, highlight previous item that was viewed
@@ -57,7 +55,6 @@ Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
 4 Censor “mature audiences” in profile
 4 share event
 4 share profile
-4 share app
 4 Favorite events for day: show in number order on map
 4 photo attach to any camp / event
 4 Route planner: show from 1...x with lines between on map
