@@ -11,6 +11,7 @@
 - Search now has a "go" button
 - Show events that are happening now
 - Better message when no events match
+- Share app feature added
 
 ### 1.1 - August 2, 2023
 - Submitted to the App Store

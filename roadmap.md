@@ -3,6 +3,8 @@
 Analog Internet Installation
 Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
 
+1 After adding a favorite show the badge count on the fav tab increase (and disappear after opening it)
+1 On android - the tab bar has too much padding on the top.
 
 1 If you choose a day filter events for a camp to that day
 1 If you favorite an event on a day only add notification for that day
