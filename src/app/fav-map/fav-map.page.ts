@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { MapComponent, MapPoint } from '../map/map.component';
 import { FavoritesService } from '../favorites.service';
+import { DbService } from '../db.service';
 
 @Component({
   selector: 'app-fav-map',
@@ -13,15 +14,18 @@ import { FavoritesService } from '../favorites.service';
   imports: [IonicModule, CommonModule, FormsModule, MapComponent]
 })
 export class FavMapPage implements OnInit {
-
+  isToastOpen = false;
   points: MapPoint[] = [];
-  constructor(private fav: FavoritesService) { }
+  constructor(private fav: FavoritesService, private db: DbService) { }
 
   ngOnInit() {
   }
 
   ionViewWillEnter() {
     this.points = this.fav.getMapPoints();
+    if (this.db.locationsHidden()) {
+      this.isToastOpen = true;
+    }
   }
 
 }

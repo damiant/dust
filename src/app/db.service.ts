@@ -32,6 +32,10 @@ export class DbService {
     this.hideLocations = hide;
   }
 
+  public locationsHidden(): boolean {
+    return this.hideLocations;
+  }
+
   public async checkEvents(day?: Date): Promise<void> {
     return await call(this.worker, 'checkEvents', day);
   }

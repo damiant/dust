@@ -13,4 +13,11 @@
     </ion-toolbar>
   </ion-header>
   <app-map [points]="points"></app-map>
+  <ion-toast
+  [isOpen]="isToastOpen"
+  message="Location information will be released when gates open on Sunday"
+  [duration]="5000"
+  position="middle"
+  (didDismiss)="isToastOpen = false"
+></ion-toast>
 </ion-content>
