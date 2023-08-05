@@ -11,6 +11,8 @@
 - Search now has a "go" button
 - Show events that are happening now
 - Better message when no events match
+- Favorites can be searched
+- Events that happened will disappear
 - Share app feature added
 
 ### 1.1 - August 2, 2023

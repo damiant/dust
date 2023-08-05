@@ -13,6 +13,7 @@ import { MapModalComponent } from '../map-modal/map-modal.component';
 import { ArtComponent } from '../art/art.component';
 import { UiService } from '../ui.service';
 import { CategoryComponent } from '../category/category.component';
+import { SearchComponent } from '../search/search.component';
 
 enum Filter {
   All = '',
@@ -27,7 +28,7 @@ enum Filter {
   styleUrls: ['./favs.page.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, RouterModule, EventComponent, 
-    CampComponent, MapModalComponent, ArtComponent, CategoryComponent]
+    CampComponent, MapModalComponent, ArtComponent, CategoryComponent, SearchComponent]
 })
 export class FavsPage implements OnInit {
 
@@ -40,6 +41,7 @@ export class FavsPage implements OnInit {
   showMap = false;
   noFavorites = false;
   mapTitle = '';
+  search = '';
   mapSubtitle = '';
   mapPoints: MapPoint[] = [];
   @ViewChild(IonContent) ionContent!: IonContent;
@@ -66,6 +68,11 @@ export class FavsPage implements OnInit {
     this.ui.home();
   }
 
+  searchFavs(value: string) {
+    this.search = value;
+     this.update();
+  }
+
   private async update() {
     const favs = await this.fav.getFavorites();
     this.events = this.filterItems(Filter.Events,await this.fav.getEventList(favs.events));
@@ -74,11 +81,27 @@ export class FavsPage implements OnInit {
     this.noFavorites = this.art.length == 0 && this.camps.length == 0 && this.events.length == 0;
   }
 
-  private filterItems(filter: Filter, items: any): any {
+  private filterItems(filter: Filter, items: any[]): any[] {
     if (this.filter === filter || this.filter === Filter.All) {
+      if (this.search) {
+        return this.searchTerms(items);
+      }
       return items;
     } 
     return [];
+  }
+
+  private searchTerms(items: any[]): any[] {
+     return items.filter((a) => this.filterTerms(a));
+  }
+
+  private filterTerms(item: any): boolean {
+    const search = this.search.toLowerCase();
+    if (item.title && item.title.toLowerCase().includes(search)) return true;
+    if (item.description && item.description.toLowerCase().includes(search)) return true;
+    if (item.print_description && item.print_description.toLowerCase().includes(search)) return true;
+    if (item.location_string && item.location_string.toLowerCase().includes(search)) return true;
+    return false;
   }
 
   ngOnInit() {
