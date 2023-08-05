@@ -5,8 +5,6 @@ Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
 
 1 Map of favorite events should show only today
 
-
-
 1 After adding a favorite show the badge count on the fav tab increase (and disappear after opening it)
 1 On android - the tab bar has too much padding on the top.
 
