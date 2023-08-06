@@ -2,6 +2,7 @@
 ### 1.3
 - Map of Restrooms added
 - fix for status bar color on ios in darkmode
+- Art images are loaded if on wifi
 - Map points show location information and are clickable
 
 ### 1.2

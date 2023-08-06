@@ -14,7 +14,7 @@ import { ArtComponent } from '../art/art.component';
 import { UiService } from '../ui.service';
 import { CategoryComponent } from '../category/category.component';
 import { SearchComponent } from '../search/search.component';
-import { sameDay } from '../utils';
+import { Network } from '@capacitor/network';
 
 enum Filter {
   All = '',
@@ -37,6 +37,7 @@ export class FavsPage implements OnInit {
   events: Event[] = [];
   camps: Camp[] = [];
   art: Art[] = [];
+  showImages = true;
   filters = [Filter.Events, Filter.Camps, Filter.Art];
 
   showMap = false;
@@ -61,6 +62,8 @@ export class FavsPage implements OnInit {
   }
 
   async ionViewWillEnter() {
+    const status = await Network.getStatus();
+    this.showImages = (status.connectionType == 'wifi');
     if (this.events.length == 0) {
       this.update();
     }

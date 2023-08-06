@@ -8,6 +8,7 @@ import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrollin
 import { ArtComponent } from './art.component';
 import { UiService } from '../ui.service';
 import { SearchComponent } from '../search/search.component';
+import { Network } from '@capacitor/network';
 
 @Component({
   selector: 'app-arts',
@@ -18,6 +19,7 @@ import { SearchComponent } from '../search/search.component';
     ScrollingModule, ArtComponent, SearchComponent],
 })
 export class ArtPage {
+  showImage = false;
   arts: Art[] = [];
   minBufferPx = 900;
 
@@ -34,6 +36,8 @@ export class ArtPage {
   }
 
   async ionViewDidEnter() {
+    const status = await Network.getStatus();
+    this.showImage = (status.connectionType == 'wifi');
     if (this.arts.length == 0) {
       this.update(undefined);
     } else {
