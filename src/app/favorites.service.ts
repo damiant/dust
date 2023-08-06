@@ -98,7 +98,7 @@ export class FavoritesService {
         },
         occurrence ? [occurrence] : event.occurrence_set,
         selectedDay);
-      return (result.error) ? result.error : `${result.notifications} notification${result.notifications != 1 ? 's' : ''} scheduled for this event`;
+      return (result.error) ? result.error : result.message;
     } else {
       // Remove notifications
       this.notificationService.unscheduleAll(event.uid);

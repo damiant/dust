@@ -5,7 +5,6 @@ Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
 
 ## Priority 1
 - Map of medical
-- Map of favorite events should show only today
 - Deep links for android
 - If day selected then show that day first and other days grouped smaller below
 - If not PST then show timezone with times
