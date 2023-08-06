@@ -2,6 +2,7 @@
 ### 1.3
 - Map of Restrooms added
 - fix for status bar color on ios in darkmode
+- Map points show location information and are clickable
 
 ### 1.2
 - Favorite filter added for events, art, camps, all

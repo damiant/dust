@@ -21,7 +21,6 @@ Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
 - Show/collapse fav group
 - Notification for gates open
 - Notification for week before (daily) ^these give chance to download data
-- Map points should show text “G 8:15”
 - Mark some events as “soon” if < 1hr
 - Search keyboard hint should be "search" instead of "go"
 
