@@ -7,7 +7,6 @@ Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
 - Map of medical
 - Map of favorite events should show only today
 - Deep links for android
-- Website buttons for app store links
 - After adding a favorite show the badge count on the fav tab increase (and disappear after opening it)
 - If you choose a day filter events for a camp to that day
 - Icon for event categories

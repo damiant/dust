@@ -19,6 +19,7 @@ export class EventComponent  implements OnInit {
   @Input() day: Date | undefined;
   @Input() longTime = false;
   @Output() mapClick = new EventEmitter<any>();
+  @Output() groupClick = new EventEmitter<Event>();
 
   constructor() { }
 
@@ -26,6 +27,10 @@ export class EventComponent  implements OnInit {
 
   map(event: Event) {
     this.mapClick.emit(event);
+  }
+
+  group(event: Event) {
+    this.groupClick.emit(event);
   }
 
   getDay() {

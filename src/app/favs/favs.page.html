@@ -11,17 +11,13 @@
     <ion-toolbar>
       <ion-title size="large">Favorites</ion-title>
       <ion-buttons class="up" slot="end">
-        <app-category *ngIf="!noFavorites" id="fav-categories" allTitle="All" (change)="filterChanged()" [(category)]="filter"
+        <app-category id="fav-categories" allTitle="All" (change)="filterChanged()" [(category)]="filter"
           [categories]="filters" slot="end"></app-category>
       </ion-buttons>
     </ion-toolbar>
     <ion-toolbar *ngIf="!noFavorites">
       <app-search placeholder="Find Favorites" (search)="searchFavs($event)" />
-      <ion-buttons slot="end">
-        <ion-button (click)="map()">
-          <ion-icon slot="icon-only" name="map-outline"></ion-icon>
-        </ion-button>
-      </ion-buttons>
+
     </ion-toolbar>
   </ion-header>
   <app-map-modal [title]="mapTitle" [subtitle]="mapSubtitle" [(show)]="showMap" [points]="mapPoints"></app-map-modal>
@@ -29,12 +25,24 @@
     <ion-text color="medium">Press the <ion-icon [src]="'assets/icon/star.svg'"></ion-icon> icon on Events, Camps and
       Art to add them here.</ion-text>
   </div>
-  <app-event title="Favorites" (mapClick)="mapEvent($event)" [event]="event" [longTime]="true"
+  <app-event (groupClick)="groupClick($event)" title="Favorites" (mapClick)="mapEvent($event)" [event]="event" [longTime]="true"
     *ngFor="let event of events; trackBy: eventsTrackBy" />
-  <h1 *ngIf="camps.length > 0">Camps</h1>
+  <h1 class="flex" *ngIf="camps.length > 0">Camps
+    <ion-buttons slot="end">
+      <ion-button (click)="mapCamps()">
+        <ion-icon slot="icon-only" name="map-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </h1>
   <app-camp title="Favorites" (mapClick)="mapCamp($event)" [camp]="camp"
     *ngFor="let camp of camps; trackBy: campsTrackBy" />
-  <h1 *ngIf="art.length > 0">Art</h1>
+  <h1 class="flex" *ngIf="art.length > 0">Art
+    <ion-buttons slot="end">
+      <ion-button (click)="mapArt()">
+        <ion-icon slot="icon-only" name="map-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </h1>
   <app-art title="Favorites" [art]="art" *ngFor="let art of art; trackBy: artTrackBy" />
   <div style="padding:2.5rem"></div>
 </ion-content>

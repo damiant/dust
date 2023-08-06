@@ -206,7 +206,7 @@ export class MapComponent implements OnInit, AfterViewInit {
       pt.x += offset.x;
       pt.y += offset.y;
     }
-    this.createPin(pt.x, pt.y, info ? 10 : 5);
+    this.createPin(pt.x, pt.y, info ? 10 : 5, info);
   }
 
   createPin(x: number, y: number, sz: number, info?: MapInfo) {
@@ -223,6 +223,8 @@ export class MapComponent implements OnInit, AfterViewInit {
     d.style.backgroundColor = `var(--ion-color-primary)`;
     d.onclick = (e) => {
       this.info = info;
+
+      console.log(this.info);
       this.presentPopover(e);
     };
     const c: HTMLElement = this.mapc.nativeElement;
