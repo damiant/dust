@@ -14,6 +14,7 @@ import { datasetFilename } from '../api';
 import { ApiService } from '../api.service';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
+import { UiService } from '../ui.service';
 
 @Component({
   selector: 'app-intro',
@@ -31,21 +32,20 @@ export class IntroPage implements OnInit {
   message = '';
 
   constructor(private db: DbService, private api: ApiService,
-    private settingsService: SettingsService,
+    private settingsService: SettingsService, private ui: UiService,
     private fav: FavoritesService, private router: Router) { }
 
   async ngOnInit() {
-
     this.cards = await this.loadDatasets();
     this.selected = this.cards[0];
     this.save(); // Needed in case user has restarted
     setTimeout(async () => {
       if (Capacitor.isNativePlatform()) {
         await StatusBar.setStyle({ style: Style.Dark });
-        StatusBar.setBackgroundColor({ color: '#F61067' });
+        await this.ui.setStatusBarColor();
         await SplashScreen.hide();
         setTimeout(async () => {
-          await StatusBar.setBackgroundColor({ color: '#F61067' });
+          await this.ui.setStatusBarColor();
         }, 200);
       }
     }, 500);
@@ -93,8 +93,8 @@ export class IntroPage implements OnInit {
       this.db.selectedYear.set(title);
       if (Capacitor.isNativePlatform()) {
         setTimeout(async () => {
-          await StatusBar.setStyle({ style: Style.Light });
-          await StatusBar.setBackgroundColor({ color: '#FFFFFF' });
+          await StatusBar.setStyle({ style:this.ui.darkMode() ? Style.Dark : Style.Light });
+          await this.ui.setStatusBarColor('#FFFFFF');
         }, 100);
       }
       await this.router.navigateByUrl('/tabs/events');

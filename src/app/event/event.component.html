@@ -1,4 +1,11 @@
-<h1 *ngIf="event.group">{{event.group}}</h1>
+<h1 style="display:flex" *ngIf="event.group">{{event.group}}
+  <ion-buttons slot="end">
+    <ion-button (click)="group(event)">
+      <ion-icon slot="icon-only" name="map-outline"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</h1>
+
 <ion-card class="item">
 
   <p *ngIf="event.happening" class="badge">NOW</p>

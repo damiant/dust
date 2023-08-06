@@ -3,6 +3,7 @@
     <ion-title>
       Art
     </ion-title>
+    <ion-badge *ngIf="db.selectedYear() !== ''" (click)="home()" slot="end">{{db.selectedYear()}}</ion-badge>
   </ion-toolbar>
 </ion-header>
 
@@ -10,7 +11,6 @@
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Art</ion-title>
-      <ion-badge *ngIf="db.selectedYear() !== ''" (click)="home()" slot="end">{{db.selectedYear()}}</ion-badge>
     </ion-toolbar>
     <ion-toolbar>
       <app-search placeholder="Find Art" (search)="search($event)"></app-search>
@@ -19,7 +19,7 @@
   <div *ngIf="arts.length === 0" class="center pad-top">
     <ion-text color="medium">No art was found.</ion-text>
   </div>
-  <cdk-virtual-scroll-viewport itemSize="180" [minBufferPx]="minBufferPx" maxBufferPx="1350">
-    <app-art [art]="art" *cdkVirtualFor="let art of arts; trackBy: artTrackBy" />
+  <cdk-virtual-scroll-viewport [itemSize]="showImage ? 380 : 180" [minBufferPx]="minBufferPx" maxBufferPx="1350">
+    <app-art [showImage]="showImage" [art]="art" *cdkVirtualFor="let art of arts; trackBy: artTrackBy" />
 </cdk-virtual-scroll-viewport>
 </ion-content>

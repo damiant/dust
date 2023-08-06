@@ -36,14 +36,24 @@ export class UiService {
   public async home() {
     if (Capacitor.isNativePlatform()) {
       await SplashScreen.show();
-      setTimeout(async() => {
+      setTimeout(async () => {
         await StatusBar.setStyle({ style: Style.Dark });
-        await StatusBar.setBackgroundColor({ color: '#F61067' });
+        await this.setStatusBarColor();
       }, 500);
 
     }
 
 
     document.location.href = '/';
+  }
+
+  public async setStatusBarColor(color?: string) {
+    if (Capacitor.getPlatform() == 'android') {
+      await StatusBar.setBackgroundColor({ color: color ? color : '#F61067' });
+    }
+  }
+
+  public darkMode(): boolean {
+    return (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
   }
 }

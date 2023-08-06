@@ -1,10 +1,6 @@
 import { WorkerClass } from './worker-interface';
-import { Art, Camp, Day, Event, LocationName, OccurrenceSet, TimeString } from './models';
+import { Art, Camp, Day, Event, LocationName, OccurrenceSet, Pin, TimeString } from './models';
 import { getDayName, getOccurrenceTimeString, now, sameDay } from './utils';
-
-
-
-
 
 interface TimeCache {
     [index: string]: TimeString | undefined;
@@ -25,6 +21,7 @@ export class DataManager implements WorkerClass {
         switch (method) {
             case 'populate': return await this.populate(args[0], args[1]);
             case 'getDays': return this.getDays();
+            case 'getPotties': return this.getPotties();
             case 'getCategories': return this.categories;
             case 'setDataset': return this.setDataset(args[0], args[1], args[2], args[3], args[4]);
             case 'getEvents': return this.getEvents(args[0], args[1]);
@@ -104,11 +101,6 @@ export class DataManager implements WorkerClass {
         console.time('init');
         this.cache = {};
         this.camps = this.camps.filter((camp) => { return camp.description || camp.location_string });
-        for (const camp of this.camps) {
-            if (typeof camp.name == 'number') {
-                console.error(`Invalid camp`, camp);
-            }
-        }
         this.camps.sort((a: Camp, b: Camp) => { return a.name.localeCompare(b.name); });
         this.sortArt(this.art);
         this.allEventsOld = false;
@@ -150,9 +142,7 @@ export class DataManager implements WorkerClass {
                 // Happens before events go to the WWW guide
                 event.print_description = event.description;
             }
-            if (!event.print_description.endsWith('.')) {
-                event.print_description = event.print_description + '.';
-            }
+
             for (let occurrence of event.occurrence_set) {
 
                 let start: Date = new Date(occurrence.start_time);
@@ -161,7 +151,7 @@ export class DataManager implements WorkerClass {
                 this.addDay(start);
                 const hrs = this.hoursBetween(start, end);
                 if (hrs > 24) {
-                    const old = occurrence.end_time;
+                    //const old = occurrence.end_time;
                     occurrence.end_time = new Date(start.getFullYear(), start.getMonth(), start.getDate(), end.getHours(), end.getMinutes()).toISOString();
                     //const newHrs = this.hoursBetween(new Date(occurrence.start_time), new Date(occurrence.end_time));
                     end = new Date(occurrence.end_time);
@@ -185,14 +175,6 @@ export class DataManager implements WorkerClass {
         this.categories.sort();
         this.cache = {};
         console.timeEnd('init');
-    }
-
-    private setToday(d: Date): Date {
-        const today = now();
-        d.setDate(today.getDate());
-        d.setMonth(today.getMonth());
-        d.setFullYear(today.getFullYear());
-        return d;
     }
 
     public setDataset(dataset: string, events: Event[], camps: Camp[], art: Art[], hideLocations: boolean) {
@@ -422,6 +404,11 @@ export class DataManager implements WorkerClass {
     }
     private async loadEvents(): Promise<Event[]> {
         const res = await fetch(this.path('events'));
+        return await res.json();
+    }
+
+    public async getPotties(): Promise<Pin[]> {
+        const res = await fetch(this.path('potties'));
         return await res.json();
     }
 

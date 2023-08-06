@@ -16,12 +16,14 @@ import { DbService } from '../db.service';
 export class FavMapPage implements OnInit {
   isToastOpen = false;
   points: MapPoint[] = [];
+  title = '';
   constructor(private fav: FavoritesService, private db: DbService) { }
 
   ngOnInit() {
   }
 
   ionViewWillEnter() {
+    this.title = this.fav.getMapPointsTitle();
     this.points = this.fav.getMapPoints();
     if (this.db.locationsHidden()) {
       this.isToastOpen = true;

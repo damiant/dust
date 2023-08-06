@@ -19,6 +19,7 @@ export class FavoritesService {
   private ready: Promise<void> | undefined;
   public changed = signal(1);
   private dataset: string = '';
+  private mapPointsTitle: string = '';
   private mapPoints: MapPoint[] = [];
 
   private favorites: Favorites = { art: [], events: [], camps: [], friends: [] };
@@ -35,6 +36,14 @@ export class FavoritesService {
 
   public setMapPoints(mapPoints: MapPoint[]) {
     this.mapPoints = mapPoints;
+  }
+
+  public setMapPointsTitle(title: string) {
+    this.mapPointsTitle = title;
+  }
+
+  public getMapPointsTitle() {
+    return this.mapPointsTitle;
   }
 
   public getMapPoints(): MapPoint[] {
@@ -89,7 +98,7 @@ export class FavoritesService {
         },
         occurrence ? [occurrence] : event.occurrence_set,
         selectedDay);
-      return (result.error) ? result.error : `${result.notifications} notification${result.notifications != 1 ? 's' : ''} scheduled for this event`;
+      return (result.error) ? result.error : result.message;
     } else {
       // Remove notifications
       this.notificationService.unscheduleAll(event.uid);

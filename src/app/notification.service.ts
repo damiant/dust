@@ -2,7 +2,7 @@ import { Injectable, NgZone, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { LocalNotificationDescriptor, LocalNotifications } from '@capacitor/local-notifications';
 import { OccurrenceSet } from './models';
-import { dateMatches, noDate, now, randomInt } from './utils';
+import { getDayName, noDate, now, randomInt, time } from './utils';
 
 export interface Reminder {
   title: string,
@@ -13,7 +13,8 @@ export interface Reminder {
 
 export interface ScheduleResult {
   notifications: number,
-  error?: string
+  error?: string,
+  message?: string
 }
 
 @Injectable({
@@ -38,6 +39,7 @@ export class NotificationService {
     }
     let count = 0;
     let last;
+    let message = '';
     for (let occurrence of occurrence_set) {
       try {
         let isValid = true;
@@ -51,6 +53,7 @@ export class NotificationService {
           reminder.when = this.reminderTime(start);
           if (!this.sameDate(last, reminder.when)) {
             await this.schedule(reminder);
+            message = `You'll be notified of this event on ${getDayName(reminder.when.toString())} at ${time(reminder.when)}`;
             count++;
           }
           last = reminder.when;
@@ -60,7 +63,7 @@ export class NotificationService {
         console.error(`Unable to schedule reminder`, reminder);
       }
     }
-    return { notifications: count };
+    return { notifications: count, message };
   }
 
   public async unscheduleAll(eventId: string) {

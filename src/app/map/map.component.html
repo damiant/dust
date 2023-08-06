@@ -1,16 +1,16 @@
 <ion-popover #popover [isOpen]="isOpen" (didDismiss)="isOpen = false">
   <ng-template>
     <ion-content *ngIf="info" class="ion-padding">
-      {{info.title}}<br />{{info.location}}<br />{{info.subtitle}}
+      <b>{{info.title}}</b><br />{{info.location}}<br />{{info.subtitle}}
       <div [@fade]="imageReady ? 'visible' : 'hidden'" class="center">
         <img *ngIf="info.imageUrl" (load)="ready()" [src]="info.imageUrl" [alt]="info.title" />
       </div>
     </ion-content>
   </ng-template>
 </ion-popover>
-<pinch-zoom [backgroundColor]="'var(--ion-background-color)'" #zoom [style]="height" [limit-zoom]="20"
+<pinch-zoom [backgroundColor]="'var(--ion-background-color)'" #zoom [style]="height" [limit-zoom]="30"
   [double-tap-scale]="4">
   <div #mapc style="height: 100%">
-    <img #map (click)="mapPoint($event)" [src]="src" />
+    <img #map (contextmenu)="mapPoint($event)" [src]="src" />
   </div>
 </pinch-zoom>

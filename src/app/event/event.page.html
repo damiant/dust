@@ -44,5 +44,5 @@
       <ion-button *ngIf="!event.occurrence_set[0].star" (click)="toggleStar(event.occurrence_set[0])" shape="round">Add To Favorites</ion-button>
     </div>
   </ion-list>
-  <app-map [points]="mapPoints"></app-map>
+  <app-map *ngIf="event" [points]="mapPoints"></app-map>
 </ion-content>
