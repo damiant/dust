@@ -101,11 +101,6 @@ export class DataManager implements WorkerClass {
         console.time('init');
         this.cache = {};
         this.camps = this.camps.filter((camp) => { return camp.description || camp.location_string });
-        for (const camp of this.camps) {
-            if (typeof camp.name == 'number') {
-                console.error(`Invalid camp`, camp);
-            }
-        }
         this.camps.sort((a: Camp, b: Camp) => { return a.name.localeCompare(b.name); });
         this.sortArt(this.art);
         this.allEventsOld = false;
@@ -147,9 +142,7 @@ export class DataManager implements WorkerClass {
                 // Happens before events go to the WWW guide
                 event.print_description = event.description;
             }
-            if (!event.print_description.endsWith('.')) {
-                event.print_description = event.print_description + '.';
-            }
+
             for (let occurrence of event.occurrence_set) {
 
                 let start: Date = new Date(occurrence.start_time);
@@ -158,7 +151,7 @@ export class DataManager implements WorkerClass {
                 this.addDay(start);
                 const hrs = this.hoursBetween(start, end);
                 if (hrs > 24) {
-                    const old = occurrence.end_time;
+                    //const old = occurrence.end_time;
                     occurrence.end_time = new Date(start.getFullYear(), start.getMonth(), start.getDate(), end.getHours(), end.getMinutes()).toISOString();
                     //const newHrs = this.hoursBetween(new Date(occurrence.start_time), new Date(occurrence.end_time));
                     end = new Date(occurrence.end_time);
@@ -182,14 +175,6 @@ export class DataManager implements WorkerClass {
         this.categories.sort();
         this.cache = {};
         console.timeEnd('init');
-    }
-
-    private setToday(d: Date): Date {
-        const today = now();
-        d.setDate(today.getDate());
-        d.setMonth(today.getMonth());
-        d.setFullYear(today.getFullYear());
-        return d;
     }
 
     public setDataset(dataset: string, events: Event[], camps: Camp[], art: Art[], hideLocations: boolean) {
