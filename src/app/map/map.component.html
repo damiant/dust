@@ -1,7 +1,7 @@
 <ion-popover #popover [isOpen]="isOpen" (didDismiss)="isOpen = false">
   <ng-template>
     <ion-content *ngIf="info" class="ion-padding">
-      {{info.title}}<br />{{info.location}}<br />{{info.subtitle}}
+      <b>{{info.title}}</b><br />{{info.location}}<br />{{info.subtitle}}
       <div [@fade]="imageReady ? 'visible' : 'hidden'" class="center">
         <img *ngIf="info.imageUrl" (load)="ready()" [src]="info.imageUrl" [alt]="info.title" />
       </div>

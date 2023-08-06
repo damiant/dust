@@ -29,7 +29,7 @@ export class PinMapPage implements OnInit {
   private pinsToMapPoints(pins: Pin[]): MapPoint[] {
     const points: MapPoint[] = [];
     for (const pin of pins) {
-       points.push({street: '', clock: '', x: pin.x, y: pin.y });
+       points.push({street: '', clock: '', x: pin.x, y: pin.y, info: {title: 'Restroom', location: 'Tip: At night, look for the blue light on poles marking porta potty banks.', subtitle: ''} });
     }
     return points;
   }
