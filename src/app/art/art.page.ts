@@ -21,7 +21,7 @@ import { Network } from '@capacitor/network';
 export class ArtPage {
   showImage = false;
   arts: Art[] = [];
-  minBufferPx = 900;
+  minBufferPx = 1900;
 
   @ViewChild(CdkVirtualScrollViewport) virtualScroll!: CdkVirtualScrollViewport;
 
@@ -42,7 +42,7 @@ export class ArtPage {
       this.update(undefined);
     } else {
       // Hack to ensure tab view is updated on switch of tabs
-      this.minBufferPx = (this.minBufferPx == 901) ? 900 : 901;
+      this.minBufferPx = (this.minBufferPx == 1901) ? 1900 : 1901;
 
     }
   }

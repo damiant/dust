@@ -19,7 +19,7 @@
   <div *ngIf="arts.length === 0" class="center pad-top">
     <ion-text color="medium">No art was found.</ion-text>
   </div>
-  <cdk-virtual-scroll-viewport [itemSize]="showImage ? 380 : 180" [minBufferPx]="minBufferPx" maxBufferPx="1350">
+  <cdk-virtual-scroll-viewport  class="ion-content-scroll-host" [itemSize]="showImage ? 404 : 180" [minBufferPx]="minBufferPx" maxBufferPx="1350">
     <app-art [showImage]="showImage" [art]="art" *cdkVirtualFor="let art of arts; trackBy: artTrackBy" />
 </cdk-virtual-scroll-viewport>
 </ion-content>
