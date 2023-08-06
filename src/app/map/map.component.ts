@@ -198,6 +198,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     const py = y / 10000.0 * r.height;
 
     this.createPin(px, py, 5, info);
+
   }
 
   plot(clock: number, rad: number, offset?: any, info?: MapInfo) {
@@ -206,15 +207,21 @@ export class MapComponent implements OnInit, AfterViewInit {
       pt.x += offset.x;
       pt.y += offset.y;
     }
+    if (info) {
+      this.placeLabel(pt.x, pt.y, info);
+    }
     this.createPin(pt.x, pt.y, info ? 10 : 5, info);
+
   }
 
   createPin(x: number, y: number, sz: number, info?: MapInfo) {
+    console.log(x,y,sz,info)
     const d = document.createElement("div");
-    d.style.left = `${x - (sz - 3)}px`;
-    d.style.top = `${y - sz}px`;
+    d.style.left = `${x - (sz - 4)}px`;
+    d.style.top = `${y - sz + 4}px`;
     d.style.width = `${sz}px`;
     d.style.height = `${sz}px`;
+    d.style.border = '1px solid var(--ion-color-dark)';
     d.style.borderRadius = `${sz}px`;
     d.style.animationName = info ? '' : 'pulse';
     d.style.animationDuration = '1s';
@@ -225,6 +232,26 @@ export class MapComponent implements OnInit, AfterViewInit {
       this.info = info;
 
       console.log(this.info);
+      this.presentPopover(e);
+    };
+    const c: HTMLElement = this.mapc.nativeElement;
+    c.insertBefore(d, c.firstChild);
+  }
+
+  private placeLabel(x: number, y: number, info?: MapInfo) {
+    const d = document.createElement('p');
+    const node = document.createTextNode(info!.location);
+    d.appendChild(node);
+    d.style.left = `${x}px`;
+    d.style.top = `${y-7}px`;
+    d.style.position = 'absolute';
+    d.style.fontSize = '3px';
+    d.style.padding = '1px';
+    d.style.borderRadius = '3px';
+    d.style.color = `var(--ion-color-light)`;
+    d.style.backgroundColor = `var(--ion-color-dark)`;
+    d.onclick = (e) => {
+      this.info = info;
       this.presentPopover(e);
     };
     const c: HTMLElement = this.mapc.nativeElement;
@@ -272,7 +299,7 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   getMapRectangle(): DOMRect {
     const el: HTMLElement = this.map.nativeElement;
-    return el.getBoundingClientRect();  
+    return el.getBoundingClientRect();
   }
 
   getPointOnCircle(radius: number, degree: number) {

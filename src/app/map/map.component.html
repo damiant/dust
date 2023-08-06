@@ -8,7 +8,7 @@
     </ion-content>
   </ng-template>
 </ion-popover>
-<pinch-zoom [backgroundColor]="'var(--ion-background-color)'" #zoom [style]="height" [limit-zoom]="20"
+<pinch-zoom [backgroundColor]="'var(--ion-background-color)'" #zoom [style]="height" [limit-zoom]="30"
   [double-tap-scale]="4">
   <div #mapc style="height: 100%">
     <img #map (contextmenu)="mapPoint($event)" [src]="src" />
