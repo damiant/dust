@@ -1,4 +1,4 @@
-<ion-card [ngClass]="{'pic': showImage}" class="item" [routerLink]="'/art/'+ art.uid+'+'+title">
+<ion-card [ngClass]="{'pic': showImage}" class="item" (click)="click()">
   <img loading="lazy" class="image" *ngIf="showImage && art.images" [@fade]="isReady ? 'visible' : 'hidden'" alt="{{art.name}}" (load)="ready()" [src]="art.images[0].thumbnail_url" />
   <ion-card-header>
     <ion-card-title>{{art.name}}</ion-card-title>
