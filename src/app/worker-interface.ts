@@ -1,3 +1,5 @@
+import { DataMethods } from "./models";
+
 export interface Call {
     method: string;
     id: string;
@@ -43,7 +45,7 @@ export function registerWorker(worker: Worker) {
     };
 }
 
-export function call(worker: Worker, method: string, ...args: any[]): Promise<any> {
+export function call(worker: Worker, method: DataMethods, ...args: any[]): Promise<any> {
     const id = uniqueId();
     let resolver;
     const callPromise: CallPromise = {

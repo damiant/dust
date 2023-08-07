@@ -15,7 +15,7 @@
           [categories]="filters" slot="end"></app-category>
       </ion-buttons>
     </ion-toolbar>
-    <ion-toolbar *ngIf="!noFavorites">
+    <ion-toolbar>
       <app-search placeholder="Find Favorites" (search)="searchFavs($event)" />
 
     </ion-toolbar>
