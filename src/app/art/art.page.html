@@ -16,8 +16,14 @@
       <app-search placeholder="Find Art" (search)="search($event)"></app-search>
     </ion-toolbar>
   </ion-header>
-  <div *ngIf="arts.length === 0" class="center pad-top">
+  <div *ngIf="!busy && arts.length === 0" class="center pad-top">
     <ion-text color="medium">No art was found.</ion-text>
+  </div>
+  <div *ngIf="busy && arts.length === 0">
+    <app-skeleton-art />
+    <app-skeleton-art />
+    <app-skeleton-art />
+    <app-skeleton-art />
   </div>
   <li-virtual-scroll [items]="arts" [trackBy]="artTrackBy" [itemHeight]="showImage ? 404 : 180">
     <app-art (artClick)="click($event)" [showImage]="showImage" [art]="art" *liVirtualItem="let art" />

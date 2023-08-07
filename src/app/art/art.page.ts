@@ -9,6 +9,7 @@ import { UiService } from '../ui.service';
 import { SearchComponent } from '../search/search.component';
 import { Network } from '@capacitor/network';
 import { NgxVirtualScrollModule } from '@lithiumjs/ngx-virtual-scroll';
+import { SkeletonArtComponent } from '../skeleton-art/skeleton-art.component';
 
 @Component({
   selector: 'app-arts',
@@ -16,10 +17,11 @@ import { NgxVirtualScrollModule } from '@lithiumjs/ngx-virtual-scroll';
   styleUrls: ['art.page.scss'],
   standalone: true,
   imports: [IonicModule, RouterLink, CommonModule, NgxVirtualScrollModule,
-    ArtComponent, SearchComponent],
+    ArtComponent, SearchComponent, SkeletonArtComponent],
 })
 export class ArtPage {
   showImage = false;
+  public busy = false;
   arts: Art[] = [];
 
   @ViewChild(IonContent) ionContent!: IonContent;
@@ -58,10 +60,15 @@ export class ArtPage {
   }
 
   async update(search: string | undefined) {
-    this.arts = await this.db.findArts(search);
+    try {
+      this.busy = true;
+      this.arts = await this.db.findArts(search);
+    } finally {
+      this.busy = false;
+    }
   }
 
   click(art: Art) {
-    this.router.navigate(['/art/'+ art.uid+'+Art']);
+    this.router.navigate(['/art/' + art.uid + '+Art']);
   }
 }

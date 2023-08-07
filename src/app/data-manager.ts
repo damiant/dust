@@ -320,6 +320,9 @@ export class DataManager implements WorkerClass {
     }
 
     public findArts(query: string | undefined): Art[] {
+        if (!query) {
+            return this.art;
+        }
         const result: Art[] = [];
         for (let art of this.art) {
             if (!query || art.name.toLowerCase().includes(query.toLowerCase())) {
