@@ -25,7 +25,7 @@
     <app-skeleton-art />
     <app-skeleton-art />
   </div>
-  <li-virtual-scroll [items]="arts" [trackBy]="artTrackBy" [itemHeight]="showImage ? 404 : 180">
+  <li-virtual-scroll [viewCache]="256" [items]="arts" [trackBy]="artTrackBy" [itemHeight]="showImage ? 404 : 180">
     <app-art (artClick)="click($event)" [showImage]="showImage" [art]="art" *liVirtualItem="let art" />
   </li-virtual-scroll>
 </ion-content>

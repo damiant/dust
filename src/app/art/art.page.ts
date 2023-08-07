@@ -28,7 +28,6 @@ export class ArtPage {
 
   constructor(public db: DbService, private ui: UiService, private router: Router) {
     effect(() => {
-      console.log('scroll up')
       this.ui.scrollUpContent('art', this.ionContent);
     });
   }
@@ -38,10 +37,15 @@ export class ArtPage {
   }
 
   async ionViewDidEnter() {
-    const status = await Network.getStatus();
-    this.showImage = (status.connectionType == 'wifi');
-    if (this.arts.length == 0) {
-      this.update(undefined);
+    try {
+      this.busy = true;
+      const status = await Network.getStatus();
+      this.showImage = (status.connectionType == 'wifi');
+      if (this.arts.length == 0) {
+        this.update(undefined);
+      }
+    } finally {
+      this.busy = false;
     }
   }
 
@@ -60,12 +64,7 @@ export class ArtPage {
   }
 
   async update(search: string | undefined) {
-    try {
-      this.busy = true;
-      this.arts = await this.db.findArts(search);
-    } finally {
-      this.busy = false;
-    }
+    this.arts = await this.db.findArts(search);
   }
 
   click(art: Art) {
