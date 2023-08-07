@@ -73,6 +73,10 @@ export class FavsPage implements OnInit {
     this.ui.home();
   }
 
+  artClick(art: Art) {
+    this.router.navigate(['/art/'+ art.uid+'+Art']);
+  }
+
   searchFavs(value: string) {
     this.search = value;
     this.update();

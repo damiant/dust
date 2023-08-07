@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content  class="app-page" [fullscreen]="true">
+<ion-content class="app-page" [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Art</ion-title>
@@ -19,7 +19,7 @@
   <div *ngIf="arts.length === 0" class="center pad-top">
     <ion-text color="medium">No art was found.</ion-text>
   </div>
-  <cdk-virtual-scroll-viewport [itemSize]="showImage ? 380 : 180" [minBufferPx]="minBufferPx" maxBufferPx="1350">
-    <app-art [showImage]="showImage" [art]="art" *cdkVirtualFor="let art of arts; trackBy: artTrackBy" />
-</cdk-virtual-scroll-viewport>
+  <li-virtual-scroll [items]="arts" [trackBy]="artTrackBy" [itemHeight]="showImage ? 404 : 180">
+    <app-art (artClick)="click($event)" [showImage]="showImage" [art]="art" *liVirtualItem="let art" />
+  </li-virtual-scroll>
 </ion-content>

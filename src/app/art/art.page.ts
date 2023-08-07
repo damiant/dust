@@ -1,33 +1,33 @@
 import { Component, ViewChild, effect } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { IonContent, IonicModule } from '@ionic/angular';
 import { Art } from '../models';
 import { DbService } from '../db.service';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { ArtComponent } from './art.component';
 import { UiService } from '../ui.service';
 import { SearchComponent } from '../search/search.component';
 import { Network } from '@capacitor/network';
+import { NgxVirtualScrollModule } from '@lithiumjs/ngx-virtual-scroll';
 
 @Component({
   selector: 'app-arts',
   templateUrl: 'art.page.html',
   styleUrls: ['art.page.scss'],
   standalone: true,
-  imports: [IonicModule, RouterLink, CommonModule,
-    ScrollingModule, ArtComponent, SearchComponent],
+  imports: [IonicModule, RouterLink, CommonModule, NgxVirtualScrollModule,
+    ArtComponent, SearchComponent],
 })
 export class ArtPage {
   showImage = false;
   arts: Art[] = [];
-  minBufferPx = 900;
 
-  @ViewChild(CdkVirtualScrollViewport) virtualScroll!: CdkVirtualScrollViewport;
+  @ViewChild(IonContent) ionContent!: IonContent;
 
-  constructor(public db: DbService, private ui: UiService) {
+  constructor(public db: DbService, private ui: UiService, private router: Router) {
     effect(() => {
-      this.ui.scrollUp('art', this.virtualScroll);
+      console.log('scroll up')
+      this.ui.scrollUpContent('art', this.ionContent);
     });
   }
 
@@ -40,10 +40,6 @@ export class ArtPage {
     this.showImage = (status.connectionType == 'wifi');
     if (this.arts.length == 0) {
       this.update(undefined);
-    } else {
-      // Hack to ensure tab view is updated on switch of tabs
-      this.minBufferPx = (this.minBufferPx == 901) ? 900 : 901;
-
     }
   }
 
@@ -53,7 +49,7 @@ export class ArtPage {
 
   search(val: string | undefined | null) {
     if (!val) return;
-    this.virtualScroll.scrollToOffset(0);
+    this.ionContent.scrollToTop(100);
     this.update(val.toLowerCase());
   }
 
@@ -63,5 +59,9 @@ export class ArtPage {
 
   async update(search: string | undefined) {
     this.arts = await this.db.findArts(search);
+  }
+
+  click(art: Art) {
+    this.router.navigate(['/art/'+ art.uid+'+Art']);
   }
 }

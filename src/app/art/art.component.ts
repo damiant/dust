@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { Art, Image } from '../models';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Art } from '../models';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
@@ -11,7 +10,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
   styleUrls: ['./art.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IonicModule, CommonModule, RouterModule],
+  imports: [IonicModule, CommonModule],
   animations: [
     trigger('fade', [ 
       state('visible', style({ opacity: 1 })),
@@ -25,6 +24,7 @@ export class ArtComponent implements OnInit {
   @Input() art!: Art;
   @Input() title = 'Art';
   @Input() showImage = true;
+  @Output() artClick = new EventEmitter<Art>();
   isReady = false;
   constructor() { }
 
@@ -32,5 +32,9 @@ export class ArtComponent implements OnInit {
 
   ready() {
     this.isReady = true;    
+  }
+
+  click() {
+    this.artClick.emit(this.art);
   }
 }
