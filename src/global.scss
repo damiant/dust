@@ -163,6 +163,10 @@ ion-back-button {
     opacity: 0.5;
 }
 
+[hidden] {
+    display: none !important;
+  }
+
 .pad-top {
     padding-top: 5rem;
 }

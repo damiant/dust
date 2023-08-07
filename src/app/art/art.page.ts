@@ -21,7 +21,7 @@ import { SkeletonArtComponent } from '../skeleton-art/skeleton-art.component';
 })
 export class ArtPage {
   showImage = false;
-  public busy = false;
+  public busy = true;
   arts: Art[] = [];
 
   @ViewChild(IonContent) ionContent!: IonContent;
@@ -37,13 +37,12 @@ export class ArtPage {
   }
 
   async ionViewDidEnter() {
+    if (this.arts.length > 0) return;
     try {
       this.busy = true;
       const status = await Network.getStatus();
       this.showImage = (status.connectionType == 'wifi');
-      if (this.arts.length == 0) {
-        this.update(undefined);
-      }
+      await this.update(undefined);
     } finally {
       this.busy = false;
     }
@@ -56,6 +55,7 @@ export class ArtPage {
   search(val: string | undefined | null) {
     if (!val) return;
     this.ionContent.scrollToTop(100);
+    console.log(`Search for art "${val}"`);
     this.update(val.toLowerCase());
   }
 
@@ -63,7 +63,7 @@ export class ArtPage {
     return art.uid;
   }
 
-  async update(search: string | undefined) {
+  private async update(search: string | undefined) {
     this.arts = await this.db.findArts(search);
   }
 

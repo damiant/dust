@@ -16,10 +16,10 @@
       <app-search placeholder="Find Art" (search)="search($event)"></app-search>
     </ion-toolbar>
   </ion-header>
-  <div *ngIf="!busy && arts.length === 0" class="center pad-top">
+  <div [hidden]="arts.length > 0 || busy" class="center pad-top">
     <ion-text color="medium">No art was found.</ion-text>
   </div>
-  <div *ngIf="busy && arts.length === 0">
+  <div [hidden]="!busy">
     <app-skeleton-art />
     <app-skeleton-art />
     <app-skeleton-art />
