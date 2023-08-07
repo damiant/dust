@@ -1,8 +1,8 @@
 {
-  "name": "ttitd",
+  "name": "dust",
   "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "author": "Damian Tarnawsky",
+  "homepage": "https://dust.events",
   "type": "module",
   "scripts": {
     "ng": "ng",
@@ -79,5 +79,6 @@
     "ts-node": "^8.3.0",
     "typescript": "~5.0.2"
   },
-  "description": "An Ionic project"
+  "license": "MIT",
+  "description": "An offline guide for the events, theme camps & art of Burning Man."
 }
