@@ -109,8 +109,11 @@ ion-title {
     font-weight: normal;
 }
 
-ion-title.ios {
-    margin-top: 5px;
+// This ensures it only is used on Android devices
+@supports not (-webkit-touch-callout: none) {
+    ion-title.ios {
+        margin-top: 5px;
+    }
 }
 
 .ic-txt {
