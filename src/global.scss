@@ -109,6 +109,10 @@ ion-title {
     font-weight: normal;
 }
 
+ion-title.ios {
+    margin-top: 5px;
+}
+
 .ic-txt {
     margin-top: 10px;
 }
