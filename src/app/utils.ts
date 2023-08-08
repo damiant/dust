@@ -93,6 +93,12 @@ export function getOccurrenceTimeString(start: Date, end: Date, day: Date | unde
     return undefined;
 }
 
+export function isWhiteSpace(s: string): boolean {
+    if (!s) return true;
+    if (s.trim() == '') return true;
+    return false;
+  }
+
 function timeBetween(d1: any, d2: any): string {
     const hrs = Math.ceil(Math.abs(d1 - d2) / 36e5);
     const mins = Math.floor((Math.abs(d1 - d2) / 1000) / 60);

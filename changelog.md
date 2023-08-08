@@ -2,6 +2,7 @@
 
 ### 1.4
 - Fix for region with non-US date formats
+- Fix for scrolling on Events and Camps page
 
 ### 1.3
 - Map of Restrooms added

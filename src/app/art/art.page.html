@@ -17,7 +17,7 @@
     </ion-toolbar>
   </ion-header>
   <div [hidden]="arts.length > 0 || busy" class="center pad-top">
-    <ion-text color="medium">No art was found.</ion-text>
+    <ion-text class="large" color="medium">{{noArtMessage}}</ion-text>
   </div>
   <div [hidden]="!busy">
     <app-skeleton-art />

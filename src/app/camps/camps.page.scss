@@ -1,3 +1,8 @@
 .item {
     height: 156px;
 }
+
+// Fix the prevent it creating a larger than screen width
+::ng-deep .cdk-virtual-scroll-content-wrapper {
+    max-width: 100%;
+}

@@ -10,6 +10,7 @@ import { SearchComponent } from '../search/search.component';
 import { Network } from '@capacitor/network';
 import { NgxVirtualScrollModule } from '@lithiumjs/ngx-virtual-scroll';
 import { SkeletonArtComponent } from '../skeleton-art/skeleton-art.component';
+import { isWhiteSpace } from '../utils';
 
 @Component({
   selector: 'app-arts',
@@ -22,6 +23,7 @@ import { SkeletonArtComponent } from '../skeleton-art/skeleton-art.component';
 export class ArtPage {
   showImage = false;
   public busy = true;
+  public noArtMessage = 'No art was found';
   arts: Art[] = [];
 
   @ViewChild(IonContent) ionContent!: IonContent;
@@ -40,11 +42,14 @@ export class ArtPage {
     if (this.arts.length > 0) return;
     try {
       this.busy = true;
-      const status = await Network.getStatus();
-      this.showImage = (status.connectionType == 'wifi');
-      await this.update(undefined);
+      setTimeout(async () => {
+        const status = await Network.getStatus();
+        this.showImage = (status.connectionType == 'wifi');
+        await this.update(undefined);
+        this.busy = false;
+      }, 500);
     } finally {
-      this.busy = false;
+      
     }
   }
 
@@ -56,6 +61,7 @@ export class ArtPage {
     if (!val) return;
     this.ionContent.scrollToTop(100);
     console.log(`Search for art "${val}"`);
+    this.noArtMessage = isWhiteSpace(val) ? `No art were found.` : `No art were found matching "${val}"`;
     this.update(val.toLowerCase());
   }
 

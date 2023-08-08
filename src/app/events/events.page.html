@@ -8,38 +8,40 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="app-page">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">{{title}}</ion-title>
-      <ion-buttons slot="end">
-        <app-category id="event-categories" allTitle="All Events" (change)="categoryChanged()" [(category)]="category"
-          [categories]="categories" slot="end"></app-category>
-      </ion-buttons>
-    </ion-toolbar>
-    <ion-toolbar>
-      <app-search placeholder="Find Events" (search)="searchEvents($event)" />
-    </ion-toolbar>
-    <ion-toolbar>
-      <ion-segment (ionChange)="dayChange($event)" [(ngModel)]="defaultDay" [scrollable]="true">
-        <ion-segment-button [value]="'all'">
-          All
-        </ion-segment-button>
-        <ion-segment-button [class.bold]="day.today" *ngFor="let day of days" [value]="day.date">
-          {{day.name}}<br />{{day.dayName}}
-        </ion-segment-button>
-      </ion-segment>
-    </ion-toolbar>
-  </ion-header>
-  <app-map-modal [title]="mapTitle" [subtitle]="mapSubtitle" [(show)]="showMap" [points]="mapPoints"></app-map-modal>
-  <div *ngIf="!noEvents && this.events.length === 0">
-    <app-skeleton-event></app-skeleton-event>
-    <app-skeleton-event></app-skeleton-event>
-    <app-skeleton-event></app-skeleton-event>
-    <app-skeleton-event></app-skeleton-event>
+  <div class="virtual-scroll-container ion-content-scroll-host" cdkVirtualScrollingElement>
+    <ion-header collapse="condense">
+      <ion-toolbar>
+        <ion-title size="large">{{title}}</ion-title>
+        <ion-buttons slot="end">
+          <app-category id="event-categories" allTitle="All Events" (change)="categoryChanged()" [(category)]="category"
+            [categories]="categories" slot="end"></app-category>
+        </ion-buttons>
+      </ion-toolbar>
+      <ion-toolbar>
+        <app-search placeholder="Find Events" (search)="searchEvents($event)" />
+      </ion-toolbar>
+      <ion-toolbar>
+        <ion-segment (ionChange)="dayChange($event)" [(ngModel)]="defaultDay" [scrollable]="true">
+          <ion-segment-button [value]="'all'">
+            All
+          </ion-segment-button>
+          <ion-segment-button [class.bold]="day.today" *ngFor="let day of days" [value]="day.date">
+            {{day.name}}<br />{{day.dayName}}
+          </ion-segment-button>
+        </ion-segment>
+      </ion-toolbar>
+    </ion-header>
+    <app-map-modal [title]="mapTitle" [subtitle]="mapSubtitle" [(show)]="showMap" [points]="mapPoints"></app-map-modal>
+    <div *ngIf="!noEvents && this.events.length === 0">
+      <app-skeleton-event></app-skeleton-event>
+      <app-skeleton-event></app-skeleton-event>
+      <app-skeleton-event></app-skeleton-event>
+      <app-skeleton-event></app-skeleton-event>
+    </div>
+    <div *ngIf="noEvents" class="message large"><ion-text>{{noEventsMessage}}</ion-text></div>
+    <cdk-virtual-scroll-viewport [minBufferPx]="minBufferPx" itemSize="180" maxBufferPx="2350">
+      <app-event [title]="title" [longTime]="!day" [day]="day" [event]="event" (mapClick)="map($event)"
+        *cdkVirtualFor="let event of events; trackBy: eventsTrackBy" />
+    </cdk-virtual-scroll-viewport>
   </div>
-  <div *ngIf="noEvents" class="message"><ion-text>{{noEventsMessage}}</ion-text></div>
-  <cdk-virtual-scroll-viewport [minBufferPx]="minBufferPx" itemSize="180" maxBufferPx="2350">
-    <app-event [title]="title" [longTime]="!day" [day]="day" [event]="event" (mapClick)="map($event)"
-      *cdkVirtualFor="let event of events; trackBy: eventsTrackBy" />
-  </cdk-virtual-scroll-viewport>
 </ion-content>

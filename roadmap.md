@@ -6,6 +6,10 @@ Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
 ## Priority 1
 - Map of medical
 - Deep links for android
+- Share art, share event
+- Show ice locations
+- Center Camp State - Add to list of camps but show in profile
+- Font on event details
 - If day selected then show that day first and other days grouped smaller below
 - If not PST then show timezone with times
 - After adding a favorite show the badge count on the fav tab increase (and disappear after opening it)
