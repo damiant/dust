@@ -14,7 +14,7 @@ import { datasetFilename } from '../api';
 import { ApiService } from '../api.service';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
-import { UiService } from '../ui.service';
+import { ThemePrimaryColor, UiService } from '../ui.service';
 
 @Component({
   selector: 'app-intro',
@@ -39,6 +39,7 @@ export class IntroPage implements OnInit {
     this.cards = await this.loadDatasets();
     this.selected = this.cards[0];
     this.save(); // Needed in case user has restarted
+    this.ui.setNavigationBar(ThemePrimaryColor);
     setTimeout(async () => {
       if (Capacitor.isNativePlatform()) {
         await StatusBar.setStyle({ style: Style.Dark });
@@ -71,6 +72,7 @@ export class IntroPage implements OnInit {
     const manBurns = addDays(start, 6);
     const x = daysBetween(now(), manBurns);
     const until = daysBetween(now(), start);
+
     //console.log(start, manBurns, x, until);
     if (thisYear && until > 1) {
       this.message = `Locations for camps and art will be released in the app on Sunday 27th. There are ${x} days until the man burns.`;
@@ -93,8 +95,10 @@ export class IntroPage implements OnInit {
       this.db.selectedYear.set(title);
       if (Capacitor.isNativePlatform()) {
         setTimeout(async () => {
-          await StatusBar.setStyle({ style:this.ui.darkMode() ? Style.Dark : Style.Light });
-          await this.ui.setStatusBarBackgroundColor(this.ui.darkMode() ? '#000000' : '#FFFFFF');
+          this.ui.setNavigationBar();
+          this.ui.hideNavigationBar();
+          StatusBar.setStyle({ style: this.ui.darkMode() ? Style.Dark : Style.Light });
+          this.ui.setStatusBarBackgroundColor(this.ui.darkMode() ? '#000000' : '#FFFFFF');
         }, 100);
       }
       await this.router.navigateByUrl('/tabs/events');

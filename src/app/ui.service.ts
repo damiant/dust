@@ -5,6 +5,9 @@ import { IonContent } from '@ionic/angular';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
+import { NavigationBar } from '@mauricewegner/capacitor-navigation-bar';
+
+export const ThemePrimaryColor = '#F61067';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +21,19 @@ export class UiService {
     if (tab.startsWith(name)) {
       console.log(`${name}: scroll to top`);
       virtualScroll.scrollToIndex(0, 'smooth');
+    }
+  }
+
+  public async setNavigationBar(color?: string) {
+    if (this.isAndroid()) {
+      let bcolor = color ? color : this.darkMode() ? '#000000': '#FFFFFF';
+      await NavigationBar.setColor({ color: bcolor, darkButtons: !this.darkMode() });
+    }
+  }
+
+  public async hideNavigationBar() {
+    if (this.isAndroid()) {
+      await NavigationBar.hide();
     }
   }
 
@@ -48,9 +64,13 @@ export class UiService {
   }
 
   public async setStatusBarBackgroundColor(color?: string) {
-    if (Capacitor.getPlatform() == 'android') {
-      await StatusBar.setBackgroundColor({ color: color ? color : '#F61067' });
+    if (this.isAndroid()) {
+      await StatusBar.setBackgroundColor({ color: color ? color : ThemePrimaryColor });
     }
+  }
+
+  private isAndroid(): boolean {
+    return (Capacitor.getPlatform() == 'android');
   }
 
   public darkMode(): boolean {
