@@ -43,11 +43,11 @@ export class EventsPage implements OnInit {
   mapSubtitle = '';
   mapPoints: MapPoint[] = [];
   minBufferPx = 1900;
-  @ViewChild(CdkVirtualScrollViewport) virtualScroll!: CdkVirtualScrollViewport;
+  @ViewChild(CdkVirtualScrollViewport) virtualScroll!: CdkVirtualScrollViewport;  
 
   constructor(public db: DbService, private ui: UiService) {
     effect(() => {
-      this.ui.scrollUp('events', this.virtualScroll);
+      this.ui.scrollUp('events', this.virtualScroll);      
     });
   }
 
@@ -144,7 +144,7 @@ export class EventsPage implements OnInit {
     console.timeEnd('update');
     this.noEvents = this.events.length == 0;
     this.noEventsMessage = this.search?.length > 0 ?
-      `There are no events matching "${this.search}"` :
+      `There are no events matching "${this.search}".` :
       'All the events for this day have concluded.';
     if (scrollToTop) {
       this.hack();

@@ -139,3 +139,24 @@ export interface Pin {
   x: number;
   y: number;
 }
+
+export enum DataMethods {
+  Populate = 'populate',
+  GetDays = 'getDays',
+  GetPotties = 'getPotties',
+  GetCategories = 'getCategories',
+  SetDataset = 'setDataset',
+  GetEvents = 'getEvents',
+  GetEventList = 'getEventList',
+  GetCampList = 'getCampList',
+  GetArtList = 'getArtList',
+  FindArts = 'findArts',
+  FindArt = 'findArt',
+  CheckEvents = 'checkEvents',
+  FindEvents = 'findEvents',
+  FindCamps = 'findCamps',
+  FindEvent = 'findEvent',
+  FindCamp = 'findCamp',
+  GetCampEvents = 'getCampEvents',
+  GetCamps = 'getCamps'
+}

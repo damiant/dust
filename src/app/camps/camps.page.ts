@@ -10,13 +10,14 @@ import { MapModalComponent } from '../map-modal/map-modal.component';
 import { CampComponent } from '../camp/camp.component';
 import { UiService } from '../ui.service';
 import { SearchComponent } from '../search/search.component';
+import { isWhiteSpace } from '../utils';
 
 @Component({
   selector: 'app-camps',
   templateUrl: 'camps.page.html',
   styleUrls: ['camps.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, RouterModule, ScrollingModule, MapModalComponent, 
+  imports: [IonicModule, CommonModule, RouterModule, ScrollingModule, MapModalComponent,
     CampComponent, SearchComponent]
 })
 export class CampsPage {
@@ -24,16 +25,17 @@ export class CampsPage {
   showMap = false;
   mapTitle = '';
   mapSubtitle = '';
+  noCampsMessage = 'No camps were found.';
   mapPoints: MapPoint[] = [];
   minBufferPx = 900;
   @ViewChild(CdkVirtualScrollViewport) virtualScroll!: CdkVirtualScrollViewport;
 
-  constructor(public db: DbService, private ui: UiService) { 
+  constructor(public db: DbService, private ui: UiService) {
     effect(() => {
       this.ui.scrollUp('camps', this.virtualScroll);
     });
   }
-  
+
   home() {
     this.ui.home();
   }
@@ -43,7 +45,7 @@ export class CampsPage {
       this.camps = await this.db.getCamps(0, 9999);
     } else {
       // Hack to ensure tab view is updated on switch of tabs
-      this.minBufferPx = (this.minBufferPx == 901) ? 900: 901;
+      this.minBufferPx = (this.minBufferPx == 901) ? 900 : 901;
     }
   }
 
@@ -65,5 +67,6 @@ export class CampsPage {
 
   async update(search: string) {
     this.camps = await this.db.findCamps(search);
+    this.noCampsMessage = isWhiteSpace(search) ? `No camps were found.` : `No camps were found matching "${search}"`;
   }
 }

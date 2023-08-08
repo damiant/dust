@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Dataset } from './models';
+import { Art, Camp, Dataset } from './models';
 import { datasetFilename, getLive } from './api';
 import { SettingsService } from './settings.service';
 import { minutesBetween, now } from './utils';
@@ -27,16 +27,25 @@ export class ApiService {
 
   public async sendDataToWorker() {
     const ds = this.settingsService.settings.dataset;
-    this.dbService.setDataset(
-      ds,
-      await this.read(ds, Names.events),
-      await this.read(ds, Names.camps),
-      await this.read(ds, Names.art)
-    );
+    const events = await this.read(ds, Names.events);
+    const art = await this.read(ds, Names.art);
+    const camps = await this.read(ds, Names.camps);
+    if (this.badData(events, art, camps)) {
+      // Download failed
+      console.error('Bad data in app. Reverting to default install.');
+      this.settingsService.settings.lastDownload = '';
+      this.settingsService.save();      
+      return;
+    }
+    this.dbService.setDataset(ds, events, camps, art);
   }
 
   private async read(dataset: string, name: Names): Promise<any> {
     return (await this.get(this.getId(dataset, name), []));
+  }
+
+  private badData(events: Event[], art: Art[], camps: Camp[]): boolean {
+    return (!camps || camps.length == 0 || !art || art.length == 0 || !events || events.length == 0);
   }
 
   public async download() {
@@ -52,7 +61,7 @@ export class ApiService {
     const revision: Revision = await getLive(latest, Names.revision);
     // Check the current revision
     const id = this.getId(latest, Names.revision);
-    const currentRevision: Revision = await this.get(id, { revision: 0 });    
+    const currentRevision: Revision = await this.get(id, { revision: 0 });
     if (revision && currentRevision && revision.revision === currentRevision.revision) {
       console.log(`Will not download data for ${latest} as it is already at revision ${currentRevision.revision}`);
       this.rememberLastDownload();
@@ -62,7 +71,7 @@ export class ApiService {
     const events = await getLive(latest, Names.events);
     const art = await getLive(latest, Names.art);
     const camps = await getLive(latest, Names.camps);
-    if (events.length < 100 || art.length < 100 || camps.length < 100) {
+    if (this.badData(events, art, camps)) {
       console.error(`Download failed`);
       return;
     }

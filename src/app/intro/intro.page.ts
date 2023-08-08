@@ -42,10 +42,10 @@ export class IntroPage implements OnInit {
     setTimeout(async () => {
       if (Capacitor.isNativePlatform()) {
         await StatusBar.setStyle({ style: Style.Dark });
-        await this.ui.setStatusBarColor();
+        await this.ui.setStatusBarBackgroundColor();
         await SplashScreen.hide();
         setTimeout(async () => {
-          await this.ui.setStatusBarColor();
+          await this.ui.setStatusBarBackgroundColor();
         }, 200);
       }
     }, 500);
@@ -94,7 +94,7 @@ export class IntroPage implements OnInit {
       if (Capacitor.isNativePlatform()) {
         setTimeout(async () => {
           await StatusBar.setStyle({ style:this.ui.darkMode() ? Style.Dark : Style.Light });
-          await this.ui.setStatusBarColor('#FFFFFF');
+          await this.ui.setStatusBarBackgroundColor(this.ui.darkMode() ? '#000000' : '#FFFFFF');
         }, 100);
       }
       await this.router.navigateByUrl('/tabs/events');

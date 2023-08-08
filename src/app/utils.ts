@@ -36,6 +36,10 @@ export function getDayName(dateStr: string) {
     return date.toLocaleDateString([], { weekday: 'long' });
 }
 
+export function getDayNameFromDate(date: Date): string {
+    return date.toLocaleDateString([], { weekday: 'long' });
+}
+
 export function daysBetween(date1: any, date2: any) {
     // The number of milliseconds in one day
     const ONE_DAY = 1000 * 60 * 60 * 24;
@@ -88,6 +92,12 @@ export function getOccurrenceTimeString(start: Date, end: Date, day: Date | unde
     }
     return undefined;
 }
+
+export function isWhiteSpace(s: string): boolean {
+    if (!s) return true;
+    if (s.trim() == '') return true;
+    return false;
+  }
 
 function timeBetween(d1: any, d2: any): string {
     const hrs = Math.ceil(Math.abs(d1 - d2) / 36e5);

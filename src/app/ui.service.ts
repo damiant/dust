@@ -38,7 +38,7 @@ export class UiService {
       await SplashScreen.show();
       setTimeout(async () => {
         await StatusBar.setStyle({ style: Style.Dark });
-        await this.setStatusBarColor();
+        await this.setStatusBarBackgroundColor();
       }, 500);
 
     }
@@ -47,7 +47,7 @@ export class UiService {
     document.location.href = '/';
   }
 
-  public async setStatusBarColor(color?: string) {
+  public async setStatusBarBackgroundColor(color?: string) {
     if (Capacitor.getPlatform() == 'android') {
       await StatusBar.setBackgroundColor({ color: color ? color : '#F61067' });
     }

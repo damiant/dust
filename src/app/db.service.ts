@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
-import { Event, Day, Camp, Art, Pin } from './models';
+import { Event, Day, Camp, Art, Pin, DataMethods } from './models';
 import { call, registerWorker } from './worker-interface';
-import { noDate, now } from './utils';
+import { noDate } from './utils';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,7 @@ export class DbService {
     this.worker = new Worker(new URL('./app.worker', import.meta.url));
     registerWorker(this.worker);
 
-    await call(this.worker, 'populate', dataset, this.hideLocations);
+    await call(this.worker, DataMethods.Populate, dataset, this.hideLocations);
     this.initialized = true;
   }
 
@@ -37,74 +37,74 @@ export class DbService {
   }
 
   public async checkEvents(day?: Date): Promise<void> {
-    return await call(this.worker, 'checkEvents', day);
+    return await call(this.worker, DataMethods.CheckEvents, day);
   }
 
   public async findEvents(query: string, day: Date | undefined, category: string): Promise<Event[]> {
-    return await call(this.worker, 'findEvents', query, day, category);
+    return await call(this.worker, DataMethods.FindEvents, query, day, category);
   }
 
   public async getEventList(ids: string[]): Promise<Event[]> {
-    return await call(this.worker, 'getEventList', ids);
+    return await call(this.worker, DataMethods.GetEventList, ids);
   }
 
   public async getPotties(): Promise<Pin[]> {
-    return await call(this.worker, 'getPotties');
+    return await call(this.worker, DataMethods.GetPotties);
   }
 
   public async getCategories(): Promise<string[]> {
-    return await call(this.worker, 'getCategories');
+    return await call(this.worker, DataMethods.GetCategories);
   }
 
   public async getCampList(ids: string[]): Promise<Camp[]> {
-    return await call(this.worker, 'getCampList', ids);
+    return await call(this.worker, DataMethods.GetCampList, ids);
   }
   
   public async getArtList(ids: string[]): Promise<Art[]> {
-    return await call(this.worker, 'getArtList', ids);
+    return await call(this.worker, DataMethods.GetArtList, ids);
   }
 
   public async findCamps(query: string): Promise<Camp[]> {
-    return await call(this.worker, 'findCamps', query);
+    return await call(this.worker, DataMethods.FindCamps, query);
   }
 
   public async findArts(query: string | undefined): Promise<Art[]> {
-    return await call(this.worker, 'findArts', query);
+    return await call(this.worker, DataMethods.FindArts, query);
   }
 
   public async findArt(uid: string): Promise<Art> {
-    return await call(this.worker, 'findArt', uid);
+    return await call(this.worker, DataMethods.FindArt, uid);
   }
 
   public async findEvent(uid: string): Promise<Event> {
-    return await call(this.worker, 'findEvent', uid);
+    return await call(this.worker, DataMethods.FindEvent, uid);
   }
 
   public async findCamp(uid: string): Promise<Camp> {
-    return await call(this.worker, 'findCamp', uid);
+    return await call(this.worker, DataMethods.FindCamp, uid);
   }
 
   public async getDays(): Promise<Day[]> {
-    return await call(this.worker, 'getDays');
+    return await call(this.worker, DataMethods.GetDays);
   }
 
   public async getEvents(idx: number, count: number): Promise<Event[]> {
-    return await call(this.worker, 'getEvents', idx, count);
+    return await call(this.worker,DataMethods.GetEvents, idx, count);
   }
 
   public async setDataset(dataset: string, events: Event[], camps: Camp[], art: Art[]): Promise<void> {
     if (!events || events.length == 0) {
       return;
     }
-    return await call(this.worker, 'setDataset', dataset, events, camps, art, this.hideLocations);
+    return await call(this.worker, DataMethods.SetDataset, dataset, events, camps, art, this.hideLocations);
   }
 
   public async getCampEvents(campId: string): Promise<Event[]> {
-    return await call(this.worker, 'getCampEvents', campId);
+    return await call(this.worker, DataMethods.GetCampEvents, campId);
   }
 
   public async getCamps(idx: number, count: number): Promise<Camp[]> {
-    return await call(this.worker, 'getCamps', idx, count);
+    return await call(this.worker, DataMethods.GetCamps, idx, count);
   }
 }
 

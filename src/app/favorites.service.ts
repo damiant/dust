@@ -61,7 +61,18 @@ export class FavoritesService {
 
   public async isFavEventOccurrence(id: string, occurrence: OccurrenceSet): Promise<boolean> {
     await this.ready;
+    return this.starredEvent(id, occurrence);
+  }
+
+  private starredEvent(id: string, occurrence: OccurrenceSet) {
     return this.favorites.events.includes(`${id}-${occurrence.start_time}`);
+  }
+
+  public async setEventStars(event: Event) {
+    await this.ready;
+    for (let occurrence of event.occurrence_set) {
+      occurrence.star = this.starredEvent(event.uid, occurrence);
+    }
   }
 
   public async isFavArt(id: string): Promise<boolean> {

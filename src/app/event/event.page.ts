@@ -21,6 +21,7 @@ export class EventPage implements OnInit {
   public back = signal('Back');
   @ViewChild(IonPopover) popover!: IonPopover;
   isOpen = false;
+  ready = false;
   showMap = false;
   mapPoints: MapPoint[] = [];
   mapTitle = '';
@@ -33,22 +34,25 @@ export class EventPage implements OnInit {
 
   async ngOnInit() {
     this.db.checkInit();
-    const eventId = this.eventId ? this.eventId + '+' : this.route.snapshot.paramMap.get('id');
+    try {
+      this.ready = false;
+      const eventId = this.eventId ? this.eventId + '+' : this.route.snapshot.paramMap.get('id');
 
-    let tmp = eventId?.split('+');
+      let tmp = eventId?.split('+');
 
-    if (!tmp) throw new Error('Route error');
-    const id = tmp[0];
+      if (!tmp) throw new Error('Route error');
+      const id = tmp[0];
 
-    this.back.set(tmp[1]);
-    this.event = await this.db.findEvent(id);
-    this.mapTitle = this.event.camp;
-    this.mapSubtitle = this.event.location;
-    this.mapPoints.push(toMapPoint(this.event.location,
-      { title: this.event.title, location: this.event.location, subtitle: this.event.camp }));
-    this.event.occurrence_set = this.event.occurrence_set.filter((o) => !o.old);
-    for (let occurrence of this.event.occurrence_set) {
-      occurrence.star = await this.fav.isFavEventOccurrence(this.event.uid, occurrence);
+      this.back.set(tmp[1]);
+      this.event = await this.db.findEvent(id);
+      this.mapTitle = this.event.camp;
+      this.mapSubtitle = this.event.location;
+      this.mapPoints.push(toMapPoint(this.event.location,
+        { title: this.event.title, location: this.event.location, subtitle: this.event.camp }));
+      this.event.occurrence_set = this.event.occurrence_set.filter((o) => !o.old);
+      await this.fav.setEventStars(this.event);
+    } finally {
+      this.ready = true;
     }
   }
 

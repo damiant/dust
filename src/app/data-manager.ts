@@ -1,6 +1,6 @@
 import { WorkerClass } from './worker-interface';
-import { Art, Camp, Day, Event, LocationName, OccurrenceSet, Pin, TimeString } from './models';
-import { getDayName, getOccurrenceTimeString, now, sameDay } from './utils';
+import { Art, Camp, DataMethods, Day, Event, LocationName, Pin, TimeString } from './models';
+import { getDayName, getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from './utils';
 
 interface TimeCache {
     [index: string]: TimeString | undefined;
@@ -11,32 +11,33 @@ export class DataManager implements WorkerClass {
     private camps: Camp[] = [];
     private categories: string[] = [];
     private art: Art[] = [];
-    private days: string[] = [];
+    private days: number[] = [];
     private allEventsOld = false;
     private dataset: string = '';
     private cache: TimeCache = {};
 
     // This is required for a WorkerClass
-    public async doWork(method: string, args: any[]): Promise<any> {
+    public async doWork(method: DataMethods, args: any[]): Promise<any> {
+        console.warn(`${method}`,args);
         switch (method) {
-            case 'populate': return await this.populate(args[0], args[1]);
-            case 'getDays': return this.getDays();
-            case 'getPotties': return this.getPotties();
-            case 'getCategories': return this.categories;
-            case 'setDataset': return this.setDataset(args[0], args[1], args[2], args[3], args[4]);
-            case 'getEvents': return this.getEvents(args[0], args[1]);
-            case 'getEventList': return this.getEventList(args[0]);
-            case 'getCampList': return this.getCampList(args[0]);
-            case 'getArtList': return this.getArtList(args[0]);
-            case 'findArts': return this.findArts(args[0]);
-            case 'findArt': return this.findArt(args[0]);
-            case 'checkEvents': return this.checkEvents(args[0]);
-            case 'findEvents': return this.findEvents(args[0], args[1], args[2]);
-            case 'findCamps': return this.findCamps(args[0]);
-            case 'findEvent': return this.findEvent(args[0]);
-            case 'findCamp': return this.findCamp(args[0]);
-            case 'getCampEvents': return this.getCampEvents(args[0]);
-            case 'getCamps': return this.getCamps(args[0], args[1]);
+            case DataMethods.Populate: return await this.populate(args[0], args[1]);
+            case DataMethods.GetDays: return this.getDays();
+            case DataMethods.GetPotties: return this.getPotties();
+            case DataMethods.GetCategories: return this.categories;
+            case DataMethods.SetDataset: return this.setDataset(args[0], args[1], args[2], args[3], args[4]);
+            case DataMethods.GetEvents: return this.getEvents(args[0], args[1]);
+            case DataMethods.GetEventList: return this.getEventList(args[0]);
+            case DataMethods.GetCampList: return this.getCampList(args[0]);
+            case DataMethods.GetArtList: return this.getArtList(args[0]);
+            case DataMethods.FindArts: return this.findArts(args[0]);
+            case DataMethods.FindArt: return this.findArt(args[0]);
+            case DataMethods.CheckEvents: return this.checkEvents(args[0]);
+            case DataMethods.FindEvents: return this.findEvents(args[0], args[1], args[2]);
+            case DataMethods.FindCamps: return this.findCamps(args[0]);
+            case DataMethods.FindEvent: return this.findEvent(args[0]);
+            case DataMethods.FindCamp: return this.findCamp(args[0]);
+            case DataMethods.GetCampEvents: return this.getCampEvents(args[0]);
+            case DataMethods.GetCamps: return this.getCamps(args[0], args[1]);
             default: console.error(`Unknown method ${method}`);
         }
     }
@@ -98,7 +99,7 @@ export class DataManager implements WorkerClass {
     }
 
     private init(hideLocations: boolean) {
-        console.time('init');
+        console.time('init');        
         this.cache = {};
         this.camps = this.camps.filter((camp) => { return camp.description || camp.location_string });
         this.camps.sort((a: Camp, b: Camp) => { return a.name.localeCompare(b.name); });
@@ -147,7 +148,6 @@ export class DataManager implements WorkerClass {
 
                 let start: Date = new Date(occurrence.start_time);
                 let end: Date = new Date(occurrence.end_time);
-
                 this.addDay(start);
                 const hrs = this.hoursBetween(start, end);
                 if (hrs > 24) {
@@ -320,6 +320,9 @@ export class DataManager implements WorkerClass {
     }
 
     public findArts(query: string | undefined): Art[] {
+        if (!query) {
+            return this.art;
+        }
         const result: Art[] = [];
         for (let art of this.art) {
             if (!query || art.name.toLowerCase().includes(query.toLowerCase())) {
@@ -363,7 +366,7 @@ export class DataManager implements WorkerClass {
         const result: Day[] = [];
         for (let day of this.days) {
             const date = new Date(day);
-            result.push({ name: getDayName(day).substring(0, 3), dayName: date.getDate().toString(), date });
+            result.push({ name: getDayNameFromDate(date).substring(0, 3), dayName: date.getDate().toString(), date });
         }
         result.sort((a, b) => { return a.date.getTime() - b.date.getTime(); });
         return result;
@@ -390,8 +393,10 @@ export class DataManager implements WorkerClass {
 
     private addDay(date: Date) {
         const name = date.toLocaleDateString();
-        if (!this.days.includes(name)) {
-            this.days.push(name);
+        const day = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
+        if (!this.days.includes(day)) {
+            console.log(day);
+            this.days.push(day);
         }
     }
 

@@ -1,10 +1,10 @@
 ion-segment {
     margin-left: 12px;
-    margin-right: 12px;    
+    margin-right: 12px;
 }
 
 // Hides the scroll bar without affecting scrolling
-ion-segment::-webkit-scrollbar{
+ion-segment::-webkit-scrollbar {
     display: none;
 }
 
@@ -37,4 +37,9 @@ ion-segment::-webkit-scrollbar{
 
 ion-buttons {
     margin-top: -12px;
+}
+
+// Fix the prevent it creating a larger than screen width
+::ng-deep .cdk-virtual-scroll-content-wrapper {
+    max-width: 100%;
 }
