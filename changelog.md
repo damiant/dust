@@ -1,4 +1,8 @@
 ## Changes
+
+### 1.4
+- Fix for region with non-US date formats
+
 ### 1.3
 - Map of Restrooms added
 - fix for status bar color on ios in darkmode

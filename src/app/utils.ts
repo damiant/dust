@@ -36,6 +36,10 @@ export function getDayName(dateStr: string) {
     return date.toLocaleDateString([], { weekday: 'long' });
 }
 
+export function getDayNameFromDate(date: Date): string {
+    return date.toLocaleDateString([], { weekday: 'long' });
+}
+
 export function daysBetween(date1: any, date2: any) {
     // The number of milliseconds in one day
     const ONE_DAY = 1000 * 60 * 60 * 24;

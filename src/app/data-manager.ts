@@ -1,6 +1,6 @@
 import { WorkerClass } from './worker-interface';
 import { Art, Camp, DataMethods, Day, Event, LocationName, Pin, TimeString } from './models';
-import { getDayName, getOccurrenceTimeString, now, sameDay } from './utils';
+import { getDayName, getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from './utils';
 
 interface TimeCache {
     [index: string]: TimeString | undefined;
@@ -11,13 +11,14 @@ export class DataManager implements WorkerClass {
     private camps: Camp[] = [];
     private categories: string[] = [];
     private art: Art[] = [];
-    private days: string[] = [];
+    private days: number[] = [];
     private allEventsOld = false;
     private dataset: string = '';
     private cache: TimeCache = {};
 
     // This is required for a WorkerClass
     public async doWork(method: DataMethods, args: any[]): Promise<any> {
+        console.warn(`${method}`,args);
         switch (method) {
             case DataMethods.Populate: return await this.populate(args[0], args[1]);
             case DataMethods.GetDays: return this.getDays();
@@ -98,7 +99,7 @@ export class DataManager implements WorkerClass {
     }
 
     private init(hideLocations: boolean) {
-        console.time('init');
+        console.time('init');        
         this.cache = {};
         this.camps = this.camps.filter((camp) => { return camp.description || camp.location_string });
         this.camps.sort((a: Camp, b: Camp) => { return a.name.localeCompare(b.name); });
@@ -147,7 +148,6 @@ export class DataManager implements WorkerClass {
 
                 let start: Date = new Date(occurrence.start_time);
                 let end: Date = new Date(occurrence.end_time);
-
                 this.addDay(start);
                 const hrs = this.hoursBetween(start, end);
                 if (hrs > 24) {
@@ -366,7 +366,7 @@ export class DataManager implements WorkerClass {
         const result: Day[] = [];
         for (let day of this.days) {
             const date = new Date(day);
-            result.push({ name: getDayName(day).substring(0, 3), dayName: date.getDate().toString(), date });
+            result.push({ name: getDayNameFromDate(date).substring(0, 3), dayName: date.getDate().toString(), date });
         }
         result.sort((a, b) => { return a.date.getTime() - b.date.getTime(); });
         return result;
@@ -393,8 +393,10 @@ export class DataManager implements WorkerClass {
 
     private addDay(date: Date) {
         const name = date.toLocaleDateString();
-        if (!this.days.includes(name)) {
-            this.days.push(name);
+        const day = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
+        if (!this.days.includes(day)) {
+            console.log(day);
+            this.days.push(day);
         }
     }
 
