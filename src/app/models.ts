@@ -115,6 +115,7 @@ export interface Favorites {
 
 export interface Settings {
   dataset: string;
+  eventTitle: string;
   lastDownload: string;
 }
 
@@ -126,6 +127,7 @@ export interface Friend {
 
 export interface Dataset {
   name: string;
+  title: string;
   year: string;
   start: string;
 }

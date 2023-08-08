@@ -21,8 +21,8 @@
   </ion-modal>
   <ion-list *ngIf="camp" lines="none">
     <ion-item>
-      <h1 *ngIf="!camp.url">{{camp.name}}</h1>
-      <h1 style="color: var(--ion-color-primary)" *ngIf="camp.url" (click)="open(camp.url)">{{camp.name}}</h1>
+      <h1 *ngIf="!camp.url">{{camp.name}}&nbsp;<ion-icon color="primary" size="small" name="share-outline" (click)="share()"></ion-icon></h1>
+      <h1 style="color: var(--ion-color-primary)" *ngIf="camp.url" (click)="open(camp.url)">{{camp.name}}&nbsp;<ion-icon color="primary" size="small" name="share-outline" (click)="share()"></ion-icon></h1>
     </ion-item>
     <ion-item (click)="noop()">
       <ion-icon slot="start" name="location-outline"></ion-icon>

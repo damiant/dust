@@ -15,7 +15,7 @@ export class SettingsService {
     try {
       return JSON.parse(localStorage['settings']);
     } catch {
-      return { dataset: '', lastDownload: '' };
+      return { dataset: '', lastDownload: '', eventTitle: '' };
     }
   }
 
@@ -25,6 +25,10 @@ export class SettingsService {
     } catch {
       return new Date(0);
     }
+  }
+
+  public eventTitle(): string {
+    return this.settings.eventTitle;
   }
 
   public save() {

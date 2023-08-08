@@ -1,4 +1,8 @@
 ## Changes
+### 1.6
+- Share Art
+- Share Event
+- Share Theme Camp
 
 ### 1.5
 - Fix for region with non-US date formats

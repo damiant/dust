@@ -10,6 +10,8 @@ import { MapComponent, MapPoint, toMapPoint } from '../map/map.component';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { FavoritesService } from '../favorites.service';
 import { UiService } from '../ui.service';
+import { SettingsService } from '../settings.service';
+import { ShareInfoType } from '../share.service';
 
 @Component({
   selector: 'app-art-item',
@@ -34,8 +36,12 @@ export class ArtItemPage implements OnInit {
   backText = 'Art';
   star = false;
 
-  constructor(private route: ActivatedRoute, private ui: UiService,
-    private db: DbService, private fav: FavoritesService) {
+  constructor(
+    private route: ActivatedRoute,
+    private ui: UiService,
+    private db: DbService, 
+    private settings: SettingsService,
+    private fav: FavoritesService) {
   }
 
   async ngOnInit() {
@@ -66,18 +72,14 @@ export class ArtItemPage implements OnInit {
   }
 
   share() {
-    const url = `https://dust.events?art=${this.art?.uid}`;
+    const url = `https://dust.events?${ShareInfoType.art}=${this.art?.uid}`;
     this.ui.share({
       title: this.art?.name,
       dialogTitle: this.art?.name,
-      text: `Check out ${this.art?.name} at ${this.eventName()} using the dust app: ${url}`,
+      text: `Check out ${this.art?.name} at ${this.settings.eventTitle()} using the dust app: ${url}`,
       url: this.art?.images[0].thumbnail_url
       //url: `https://dust.events/art/${this.art?.uid}`
     });
-  }
-
-  private eventName(): string {
-    return 'Burning Man';
   }
 
 

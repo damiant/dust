@@ -8,6 +8,9 @@ import { Event, OccurrenceSet } from '../models';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { MapComponent, MapPoint, toMapPoint } from '../map/map.component';
 import { FavoritesService } from '../favorites.service';
+import { ShareInfoType } from '../share.service';
+import { SettingsService } from '../settings.service';
+import { UiService } from '../ui.service';
 
 @Component({
   selector: 'app-event',
@@ -29,7 +32,13 @@ export class EventPage implements OnInit {
   campDescription = '';
   private day: Date | undefined;
   @Input() eventId: string | undefined;
-  constructor(private route: ActivatedRoute, private db: DbService, private fav: FavoritesService, private toastController: ToastController) {
+  constructor(
+    private route: ActivatedRoute,
+    private db: DbService,
+    private fav: FavoritesService,
+    private settings: SettingsService,
+    private ui: UiService,
+    private toastController: ToastController) {
   }
 
   async ngOnInit() {
@@ -77,6 +86,16 @@ export class EventPage implements OnInit {
   }
 
   noop() {
+  }
+
+  share() {
+    const url = `https://dust.events?${ShareInfoType.event}=${this.event?.uid}`;
+    this.ui.share({
+      title: this.event?.title,
+      dialogTitle: this.event?.title,
+      text: `Check out ${this.event?.title} at ${this.event?.camp} (${this.event?.location}) ${this.settings.eventTitle()} using the dust app.`,
+      url
+    });
   }
 
   async toggleStar(occurrence: OccurrenceSet) {

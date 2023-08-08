@@ -116,6 +116,7 @@ export class IntroPage implements OnInit {
 
   save() {
     this.settingsService.settings.dataset = datasetFilename(this.selected!);
+    this.settingsService.settings.eventTitle = this.selected!.title;
     this.settingsService.save();
   }
 

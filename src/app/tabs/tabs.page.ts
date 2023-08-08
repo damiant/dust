@@ -8,6 +8,7 @@ import { delay } from '../utils';
 import { UiService } from '../ui.service';
 import { SettingsService } from '../settings.service';
 import { ShareInfoType, ShareService } from '../share.service';
+
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
@@ -34,8 +35,11 @@ export class TabsPage implements OnInit {
     effect(async () => {
       const shareItem = this.shareService.hasShare();
       if (shareItem && shareItem.type !== ShareInfoType.none) {
+        console.log(`Open shared item ${shareItem.type} ${shareItem.id}`);
         switch (shareItem.type) {
-          case ShareInfoType.art: return await this.goToArt(shareItem.id);
+          case ShareInfoType.art: return await this.navTo('art', shareItem.id);
+          case ShareInfoType.camp: return await this.navTo('camp', shareItem.id);
+          case ShareInfoType.event: return await this.navTo('event', shareItem.id);
         }
       }
     })
@@ -46,15 +50,15 @@ export class TabsPage implements OnInit {
     this.ready = true;
   }
 
-  async goToArt(id: string) {
+  private async navTo(page: string, id: string) {
     while (!this.ready) {
       await delay(500);
-    }
-    document.getElementById('artButton')?.click();
+    }    
     setTimeout(() => {
-      this.router.navigateByUrl(`/art/${id}`);
-    }, 1000);
+      this.router.navigateByUrl(`/${page}/${id}`);
+    }, 100);
   }
+
   async goToFavEvent(eventId: string) {
     while (!this.ready) {
       await delay(500);
