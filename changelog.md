@@ -1,6 +1,6 @@
 ## Changes
 
-### 1.4
+### 1.5
 - Fix for region with non-US date formats
 - Fix for scrolling on Events and Camps page
 
