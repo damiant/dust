@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { delay } from '../utils';
 import { UiService } from '../ui.service';
 import { SettingsService } from '../settings.service';
+import { ShareInfoType, ShareService } from '../share.service';
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
@@ -21,6 +22,7 @@ export class TabsPage implements OnInit {
   constructor(
     private db: DbService, private ui: UiService,
     private notificationService: NotificationService,
+    private shareService: ShareService,
     private router: Router, private settingsService: SettingsService) {
     effect(() => {
       const eventId = this.notificationService.hasNotification();
@@ -29,6 +31,14 @@ export class TabsPage implements OnInit {
         this.goToFavEvent(eventId);
       }
     });
+    effect(async () => {
+      const shareItem = this.shareService.hasShare();
+      if (shareItem && shareItem.type !== ShareInfoType.none) {
+        switch (shareItem.type) {
+          case ShareInfoType.art: return await this.goToArt(shareItem.id);
+        }
+      }
+    })
   }
 
   async ngOnInit() {
@@ -36,6 +46,15 @@ export class TabsPage implements OnInit {
     this.ready = true;
   }
 
+  async goToArt(id: string) {
+    while (!this.ready) {
+      await delay(500);
+    }
+    document.getElementById('artButton')?.click();
+    setTimeout(() => {
+      this.router.navigateByUrl(`/art/${id}`);
+    }, 1000);
+  }
   async goToFavEvent(eventId: string) {
     while (!this.ready) {
       await delay(500);

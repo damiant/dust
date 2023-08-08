@@ -6,6 +6,7 @@ import { SplashScreen } from '@capacitor/splash-screen';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
 import { NavigationBar } from '@mauricewegner/capacitor-navigation-bar';
+import { Share, ShareOptions } from '@capacitor/share';
 
 export const ThemePrimaryColor = '#F61067';
 
@@ -35,6 +36,10 @@ export class UiService {
     if (this.isAndroid()) {
       await NavigationBar.hide();
     }
+  }
+
+  public async share(options: ShareOptions) {
+    await Share.share(options);
   }
 
   public scrollUpContent(name: string, ionContent: IonContent) {
