@@ -96,7 +96,7 @@ export class IntroPage implements OnInit {
       if (Capacitor.isNativePlatform()) {
         setTimeout(async () => {
           this.ui.setNavigationBar();
-          this.ui.hideNavigationBar();
+          //this.ui.hideNavigationBar();
           StatusBar.setStyle({ style: this.ui.darkMode() ? Style.Dark : Style.Light });
           this.ui.setStatusBarBackgroundColor(this.ui.darkMode() ? '#000000' : '#FFFFFF');
         }, 100);
