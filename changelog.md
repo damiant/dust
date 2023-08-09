@@ -5,6 +5,7 @@
 - Share Theme Camp
 - Fix padding near year label
 - Fix navigation bar being hidden on Android 12
+- Fix page title animation
 
 ### 1.5
 - Fix for region with non-US date formats
