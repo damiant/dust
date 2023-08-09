@@ -3,6 +3,7 @@
 - Share Art
 - Share Event
 - Share Theme Camp
+- Fix padding near year label
 
 ### 1.5
 - Fix for region with non-US date formats

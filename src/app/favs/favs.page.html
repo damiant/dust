@@ -10,14 +10,13 @@
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Favorites</ion-title>
-      <ion-buttons class="up" slot="end">
+      <ion-buttons class=" b-pad-r up" slot="end">
         <app-category id="fav-categories" allTitle="All" (change)="filterChanged()" [(category)]="filter"
           [categories]="filters" slot="end"></app-category>
       </ion-buttons>
     </ion-toolbar>
     <ion-toolbar>
       <app-search placeholder="Find Favorites" (search)="searchFavs($event)" />
-
     </ion-toolbar>
   </ion-header>
   <app-map-modal [title]="mapTitle" [subtitle]="mapSubtitle" [(show)]="showMap" [points]="mapPoints"></app-map-modal>

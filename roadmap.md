@@ -3,6 +3,12 @@
 Analog Internet Installation
 Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
 
+- navigation bar hidden
+- Understanding how to get back to home
+- Switch between years
+- JD Tabs for favorites
+- Robin - Camps filter by clock (eg Near 7:00 which would be 6:30-7:30)
+
 ## Priority 1
 - Map of medical
 - Deep links for android
