@@ -5,13 +5,14 @@ import { AlertController, IonicModule } from '@ionic/angular';
 import { UiService } from '../ui.service';
 import { Share } from '@capacitor/share';
 import { Router } from '@angular/router';
+import { FriendsComponent } from '../friends/friends.component';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, FriendsComponent]
 })
 export class ProfilePage implements OnInit {
 

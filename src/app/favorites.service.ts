@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { Event, Favorites, OccurrenceSet } from './models';
+import { Event, Favorites, Friend, OccurrenceSet } from './models';
 import { NotificationService } from './notification.service';
 import { Preferences } from '@capacitor/preferences';
 import { SettingsService } from './settings.service';
@@ -128,7 +128,22 @@ export class FavoritesService {
   public async starArt(star: boolean, artId: string) {
     this.favorites.art = this.include(star, artId, this.favorites.art);
     await this.saveFavorites();
+  }
 
+  public async addFriend(friend: Friend) {
+    this.favorites.friends.push(friend);
+    await this.saveFavorites();
+  }
+
+  public async updateFriend(friend: Friend, old: Friend) {
+    const idx = this.favorites.friends.findIndex((f) => f.name == old.name && f.address == old.address);
+    this.favorites.friends[idx] = friend;
+    await this.saveFavorites();
+  }
+
+  public async deleteFriend(toDelete: Friend) {
+    this.favorites.friends = this.favorites.friends.filter((friend) => friend.name !== toDelete.name || friend.address !== toDelete.address);
+    await this.saveFavorites();
   }
 
   public async starCamp(star: boolean, campId: string) {

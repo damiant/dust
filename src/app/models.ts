@@ -119,12 +119,6 @@ export interface Settings {
   lastDownload: string;
 }
 
-export interface Friend {
-  name: string;
-  street: string;
-  clock: string;
-}
-
 export interface Dataset {
   name: string;
   title: string;
@@ -140,6 +134,12 @@ export interface TimeString {
 export interface Pin {
   x: number;
   y: number;
+}
+
+export interface Friend {
+  name: string;
+  address: string;
+  notes: string;
 }
 
 export enum DataMethods {
