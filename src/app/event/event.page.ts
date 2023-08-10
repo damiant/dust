@@ -6,11 +6,12 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DbService } from '../db.service';
 import { Event, MapPoint, OccurrenceSet } from '../models';
 import { MapModalComponent } from '../map-modal/map-modal.component';
-import { MapComponent, toMapPoint } from '../map/map.component';
+import { MapComponent } from '../map/map.component';
 import { FavoritesService } from '../favorites.service';
 import { ShareInfoType } from '../share.service';
 import { SettingsService } from '../settings.service';
 import { UiService } from '../ui.service';
+import { toMapPoint } from '../map/map.utils';
 
 @Component({
   selector: 'app-event',

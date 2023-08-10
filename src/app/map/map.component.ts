@@ -4,62 +4,11 @@ import { PinchZoomModule } from '@meddv/ngx-pinch-zoom';
 import { LocationName, MapInfo, MapPoint, Pin } from '../models';
 import { IonicModule, PopoverController } from '@ionic/angular';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { clockToDegree, getPointOnCircle, toClock, toRadius, toStreetRadius } from './map.utils';
+import { delay } from '../utils';
+import { GeoService } from '../geo.service';
+import { SettingsService } from '../settings.service';
 
-export function toMapPoint(location: string | undefined, info?: MapInfo): MapPoint {
-  if (!location) {
-    return { street: '', clock: '' };
-  }
-  let l = location.toLowerCase();
-  if (l.includes('ring road')) {
-    // eg rod's ring road @ 7:45
-    return convertRods(l, info);
-  }
-  if (l.includes('open playa') || l.includes(`'`)) {
-    return convertArt(l, info);
-  }
-  if (l.includes('portal')) {
-    l = l.replace('portal', '& esplanade');
-  }
-  if (l.includes('center camp plaza')) {
-    l = '6:00 & A';
-  } else if (l.includes('plaza')) {
-    // 9:00 B Plaza
-    l = l.replace('plaza', '');
-    l = l.replace(' ', ' & ');
-
-  }
-  const tmp = l.split('&');
-  if (tmp[0].includes(':')) {
-    return {
-      street: tmp[1]?.trim(),
-      clock: tmp[0]?.trim(),
-      info
-    }
-  } else {
-    return {
-      street: tmp[0]?.trim(),
-      clock: tmp[1]?.trim(),
-      info
-    }
-  }
-}
-
-function convertArt(l: string, info?: MapInfo): MapPoint {
-  const tmp = l.split(' ');
-  const clock = tmp[0].trim();
-  const feet = parseInt(tmp[1].trim().replace(`'`, ''));
-  return { street: '', clock, feet, info };
-}
-
-function convertRods(l: string, info?: MapInfo): MapPoint {
-  if (l.includes('&')) {
-    // May be rod's ring road & D
-    return { street: 'd', clock: '6:00', info };
-  }
-  const tmp = l.split('@');
-  const clock = tmp[1].trim();
-  return { street: '', clock, feet: 650, streetOffset: 'b', clockOffset: '6:00' };
-}
 
 @Component({
   selector: 'app-map',
@@ -76,7 +25,6 @@ function convertRods(l: string, info?: MapInfo): MapPoint {
   ]
 })
 export class MapComponent implements OnInit, AfterViewInit {
-
   points: MapPoint[];
   isOpen = false;
   imageReady = false;
@@ -95,29 +43,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     }
   }
 
-  update() {
-    setTimeout(() => {
-      for (let point of this.points) {
-        if (point.x && point.y) {
-          this.plotXY(point.x, point.y, point.info);
-        } else if (point.street !== '' && point.street?.localeCompare(LocationName.Unavailable, undefined, { sensitivity: 'accent' })) {
-          this.plot(this.toClock(point.clock), this.toStreetRadius(point.street), undefined, point.info);
-        } else if (point.feet) {
-          if (point.streetOffset && point.clockOffset) {
-            console.log('handle offset', point);
-            const offset = this.getPoint(this.toClock(point.clockOffset), this.toStreetRadius(point.streetOffset));
-            const center = this.getPoint(0, 0);
-            offset.x -= center.x;
-            offset.y -= center.y;
-            console.log(offset)
-            this.plot(this.toClock(point.clock), this.toRadius(point.feet), offset, point.info);
-          } else {
-            this.plot(this.toClock(point.clock), this.toRadius(point.feet), undefined, point.info);
-          }
-        }
-      }
-    }, 150);
-  }
+
 
   ngAfterViewInit() {
   }
@@ -126,8 +52,11 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.imageReady = true;
   }
 
-  streets = [0.285, 0.338, 0.369, 0.405, 0.435, 0.465, 0.525, 0.557, 0.590, 0.621, 0.649, 0.678];
-  constructor(private popoverController: PopoverController) {
+
+  constructor(
+    private popoverController: PopoverController, 
+    private geo: GeoService,
+    private settings: SettingsService) {
     this.points = [];
   }
 
@@ -144,34 +73,35 @@ export class MapComponent implements OnInit, AfterViewInit {
     // }, 2000);
   }
 
-  toStreetRadius(street: string): number {
-    try {
-      const acode = 'a'.charCodeAt(0);
-      const c = street.toLowerCase().charCodeAt(0) - acode;
-      
-      if (street.toLowerCase() == 'esplanade') {
-        return this.streets[0];
+  async update() {
+    await delay(150);
+    for (let point of this.points) {
+      if (point.x && point.y) {
+        this.plotXY(point.x, point.y, point.info);
+      } else if (point.street !== '' && point.street?.localeCompare(LocationName.Unavailable, undefined, { sensitivity: 'accent' })) {
+        this.plot(toClock(point.clock), toStreetRadius(point.street), undefined, point.info);
+      } else if (point.feet) {
+        if (point.streetOffset && point.clockOffset) {
+          console.log('handle offset', point);
+          const offset = this.getPoint(toClock(point.clockOffset), toStreetRadius(point.streetOffset));
+          const center = this.getPoint(0, 0);
+          offset.x -= center.x;
+          offset.y -= center.y;
+          console.log(offset)
+          this.plot(toClock(point.clock), toRadius(point.feet), offset, point.info);
+        } else {
+          this.plot(toClock(point.clock), toRadius(point.feet), undefined, point.info);
+        }
       }
-      return this.streets[c + 1];
-    } catch {
-      console.error(`Unable to find street ${street}`);
-      return 0;
     }
+    this.checkGeolocation();    
   }
 
-  toRadius(feet: number): number {
-    // 2500ft from man to espanade
-    const toEspanade = this.streets[0];
-    const pixels = feet / 2500.0 * toEspanade;
-    return pixels;
-
-  }
-
-  // eg 2:45 => 2.75
-  toClock(clock: string): number {
-    const tmp = clock.split(':');
-    const v = parseInt(tmp[1]) / 60.0; // eg 2:45 => 45/60 => 0.75
-    return parseInt(tmp[0]) + v;
+  private async checkGeolocation() {
+    if (!this.settings.settings.locationEnabled) {
+      return;
+    }
+    await this.geo.getPosition();
   }
 
   plotXY(x: number, y: number, info?: MapInfo) {
@@ -197,7 +127,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   createPin(x: number, y: number, sz: number, info?: MapInfo) {
-    console.log(x,y,sz,info)
+    console.log(x, y, sz, info)
     const d = document.createElement("div");
     d.style.left = `${x - (sz - 4)}px`;
     d.style.top = `${y - sz + 4}px`;
@@ -225,7 +155,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     const node = document.createTextNode(info!.location);
     d.appendChild(node);
     d.style.left = `${x}px`;
-    d.style.top = `${y-7}px`;
+    d.style.top = `${y - 7}px`;
     d.style.position = 'absolute';
     d.style.fontSize = '3px';
     d.style.padding = '1px';
@@ -247,7 +177,7 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   getPoint(clock: number, rad: number) {
     const radius = this.getCircleRadius();
-    const pt = this.getPointOnCircle(rad * radius, this.clockToDegree(clock));
+    const pt = getPointOnCircle(rad * radius, clockToDegree(clock));
     pt.x += radius;
     pt.y += radius;
     return pt;
@@ -270,24 +200,13 @@ export class MapComponent implements OnInit, AfterViewInit {
     console.log(JSON.stringify(this.pins));
   }
 
-  clockToDegree(c: number): number {
-    const r = 360 / 12;
-    return (c - 3 % 12) * r;
-  }
-
-  getCircleRadius(): number {
+  private getCircleRadius(): number {
     return this.getMapRectangle().width / 2;
   }
 
-  getMapRectangle(): DOMRect {
+  private getMapRectangle(): DOMRect {
     const el: HTMLElement = this.map.nativeElement;
     return el.getBoundingClientRect();
   }
-
-  getPointOnCircle(radius: number, degree: number) {
-    const radian = degree * Math.PI / 180;
-    const x = radius * Math.cos(radian);
-    const y = radius * Math.sin(radian);
-    return { x, y };
-  }
 }
+

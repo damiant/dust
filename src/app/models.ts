@@ -117,6 +117,7 @@ export interface Settings {
   dataset: string;
   eventTitle: string;
   lastDownload: string;
+  locationEnabled: boolean;
 }
 
 export interface Dataset {

@@ -5,12 +5,12 @@ import { Camp, MapPoint } from '../models';
 import { DbService } from '../db.service';
 import { CommonModule } from '@angular/common';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
-import { toMapPoint } from '../map/map.component';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { CampComponent } from '../camp/camp.component';
 import { UiService } from '../ui.service';
 import { SearchComponent } from '../search/search.component';
 import { isWhiteSpace } from '../utils';
+import { toMapPoint } from '../map/map.utils';
 
 @Component({
   selector: 'app-camps',

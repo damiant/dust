@@ -8,13 +8,13 @@ import { FavoritesService } from '../favorites.service';
 import { EventComponent } from '../event/event.component';
 import { DbService } from '../db.service';
 import { CampComponent } from '../camp/camp.component';
-import { toMapPoint } from '../map/map.component';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { ArtComponent } from '../art/art.component';
 import { UiService } from '../ui.service';
 import { CategoryComponent } from '../category/category.component';
 import { SearchComponent } from '../search/search.component';
 import { Network } from '@capacitor/network';
+import { toMapPoint } from '../map/map.utils';
 
 enum Filter {
   All = '',

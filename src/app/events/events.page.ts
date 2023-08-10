@@ -5,7 +5,6 @@ import { Day, Event, MapPoint } from '../models';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
-import { toMapPoint } from '../map/map.component';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { FormsModule } from '@angular/forms';
 import { noDate, now, sameDay } from '../utils';
@@ -15,6 +14,7 @@ import { UiService } from '../ui.service';
 import { CategoryComponent } from '../category/category.component';
 import { SkeletonEventComponent } from '../skeleton-event/skeleton-event.component';
 import { SearchComponent } from '../search/search.component';
+import { toMapPoint } from '../map/map.utils';
 
 @Component({
   selector: 'app-events',
