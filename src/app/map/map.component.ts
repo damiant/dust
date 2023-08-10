@@ -4,11 +4,17 @@ import { PinchZoomModule } from '@meddv/ngx-pinch-zoom';
 import { LocationName, MapInfo, MapPoint, Pin } from '../models';
 import { IonicModule, PopoverController } from '@ionic/angular';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { clockToDegree, getPointOnCircle, toClock, toRadius, toStreetRadius } from './map.utils';
+import { clockToDegree, getPoint, getPointOnCircle, toClock, toRadius, toStreetRadius } from './map.utils';
 import { delay } from '../utils';
 import { GeoService } from '../geo.service';
 import { SettingsService } from '../settings.service';
+import { Point } from './geo.utils';
 
+interface MapInformation {
+  width: number; // Width of the map
+  height: number; // Height of the map
+  circleRadius: number; // Half width
+}
 
 @Component({
   selector: 'app-map',
@@ -32,6 +38,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   info: MapInfo | undefined;
   src = 'assets/map.svg';
   pins: Pin[] = [];
+  private mapInformation: MapInformation | undefined;
   @ViewChild('zoom') zoom!: ElementRef;
   @ViewChild('map') map!: ElementRef;
   @ViewChild('mapc') mapc!: ElementRef;
@@ -54,7 +61,7 @@ export class MapComponent implements OnInit, AfterViewInit {
 
 
   constructor(
-    private popoverController: PopoverController, 
+    private popoverController: PopoverController,
     private geo: GeoService,
     private settings: SettingsService) {
     this.points = [];
@@ -73,8 +80,19 @@ export class MapComponent implements OnInit, AfterViewInit {
     // }, 2000);
   }
 
+  private setMapInformation() {
+    const el: HTMLElement = this.map.nativeElement;
+    const rect = el.getBoundingClientRect();
+    this.mapInformation = {
+      width: rect.width,
+      height: rect.height,
+      circleRadius: rect.width / 2
+    }
+  }
   async update() {
     await delay(150);
+    this.setMapInformation();
+
     for (let point of this.points) {
       if (point.x && point.y) {
         this.plotXY(point.x, point.y, point.info);
@@ -83,8 +101,8 @@ export class MapComponent implements OnInit, AfterViewInit {
       } else if (point.feet) {
         if (point.streetOffset && point.clockOffset) {
           console.log('handle offset', point);
-          const offset = this.getPoint(toClock(point.clockOffset), toStreetRadius(point.streetOffset));
-          const center = this.getPoint(0, 0);
+          const offset = getPoint(toClock(point.clockOffset), toStreetRadius(point.streetOffset), this.mapInformation!.circleRadius);
+          const center = getPoint(0, 0, this.mapInformation!.circleRadius);
           offset.x -= center.x;
           offset.y -= center.y;
           console.log(offset)
@@ -94,27 +112,40 @@ export class MapComponent implements OnInit, AfterViewInit {
         }
       }
     }
-    this.checkGeolocation();    
+    this.checkGeolocation();
   }
 
   private async checkGeolocation() {
     if (!this.settings.settings.locationEnabled) {
       return;
     }
-    await this.geo.getPosition();
+    //const gpsCoord = await this.geo.getPosition();
+    const gpsCoord = { lat: -119.21121456711064, lng: 40.780501492435846 }; // Center Camp
+    console.log('checkGeolocation', gpsCoord);
+    const pt = await this.geo.placeOnMap(gpsCoord,
+      (mapPoint: MapPoint) => {
+        const clock = toClock(mapPoint.clock);
+        const rad = toStreetRadius(mapPoint.street);
+        const circleRad = this.mapInformation!.circleRadius;
+        console.log('checkGeolocation', mapPoint, clock, rad, circleRad);
+        return getPoint(clock, rad, circleRad);
+      }
+    );
+    console.log(pt);
+    this.createPin(pt.x, pt.y, 10, { title: 'center camp', subtitle: '', location: ''});
+
   }
 
-  plotXY(x: number, y: number, info?: MapInfo) {
-    const r = this.getMapRectangle();
-    const px = x / 10000.0 * r.width;
-    const py = y / 10000.0 * r.height;
+  private plotXY(x: number, y: number, info?: MapInfo) {
+    const px = x / 10000.0 * this.mapInformation!.width;
+    const py = y / 10000.0 * this.mapInformation!.height;
 
     this.createPin(px, py, 5, info);
 
   }
 
-  plot(clock: number, rad: number, offset?: any, info?: MapInfo) {
-    const pt = this.getPoint(clock, rad);
+  private plot(clock: number, rad: number, offset?: any, info?: MapInfo) {
+    const pt = getPoint(clock, rad, this.mapInformation!.circleRadius);
     if (offset) {
       pt.x += offset.x;
       pt.y += offset.y;
@@ -175,14 +206,6 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.isOpen = true;
   }
 
-  getPoint(clock: number, rad: number) {
-    const radius = this.getCircleRadius();
-    const pt = getPointOnCircle(rad * radius, clockToDegree(clock));
-    pt.x += radius;
-    pt.y += radius;
-    return pt;
-  }
-
   mapPoint(event: any) {
     const x = event.clientX;
     const y = event.clientY;
@@ -198,15 +221,6 @@ export class MapComponent implements OnInit, AfterViewInit {
   store(x: number, y: number) {
     this.pins.push({ x, y });
     console.log(JSON.stringify(this.pins));
-  }
-
-  private getCircleRadius(): number {
-    return this.getMapRectangle().width / 2;
-  }
-
-  private getMapRectangle(): DOMRect {
-    const el: HTMLElement = this.map.nativeElement;
-    return el.getBoundingClientRect();
   }
 }
 

@@ -167,6 +167,13 @@ export interface MapSet {
   points: MapPoint[];
 }
 
+export interface GeoRef {
+  title: string;
+  street: string;
+  clock: string;
+  coordinates: number[];
+}
+
 export enum DataMethods {
   Populate = 'populate',
   GetDays = 'getDays',
@@ -186,5 +193,6 @@ export enum DataMethods {
   FindEvent = 'findEvent',
   FindCamp = 'findCamp',
   GetCampEvents = 'getCampEvents',
-  GetCamps = 'getCamps'
+  GetCamps = 'getCamps',
+  GetGeoReferences = 'getGeoReferences'
 }

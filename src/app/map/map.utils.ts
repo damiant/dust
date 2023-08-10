@@ -65,17 +65,25 @@ export function toRadius(feet: number): number {
 
 }
 
+
+export function getPoint(clock: number, rad: number, circleRadius: number) {
+    const pt = getPointOnCircle(rad * circleRadius, clockToDegree(clock));
+    pt.x += circleRadius;
+    pt.y += circleRadius;
+    return pt;
+}
+
 export function clockToDegree(c: number): number {
     const r = 360 / 12;
     return (c - 3 % 12) * r;
-  }
+}
 
-  export function getPointOnCircle(radius: number, degree: number) {
+export function getPointOnCircle(radius: number, degree: number) {
     const radian = degree * Math.PI / 180;
     const x = radius * Math.cos(radian);
     const y = radius * Math.sin(radian);
     return { x, y };
-  }
+}
 
 // eg 2:45 => 2.75
 export function toClock(clock: string): number {

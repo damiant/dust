@@ -1,6 +1,6 @@
 import { WorkerClass } from './worker-interface';
-import { Art, Camp, DataMethods, Day, Event, LocationName, MapSet, Pin, TimeString } from './models';
-import { getDayName, getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from './utils';
+import { Art, Camp, DataMethods, Day, Event, GeoRef, LocationName, MapSet, Pin, TimeString } from './models';
+import { getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from './utils';
 
 interface TimeCache {
     [index: string]: TimeString | undefined;
@@ -37,6 +37,7 @@ export class DataManager implements WorkerClass {
             case DataMethods.FindCamps: return this.findCamps(args[0]);
             case DataMethods.FindEvent: return this.findEvent(args[0]);
             case DataMethods.FindCamp: return this.findCamp(args[0]);
+            case DataMethods.GetGeoReferences: return this.getGeoReferences();
             case DataMethods.GetCampEvents: return this.getCampEvents(args[0]);
             case DataMethods.GetCamps: return this.getCamps(args[0], args[1]);
             default: console.error(`Unknown method ${method}`);
@@ -401,10 +402,6 @@ export class DataManager implements WorkerClass {
         }
     }
 
-
-
-
-
     private path(name: string): string {
         return `assets/${this.dataset}/${name}.json`;
     }
@@ -420,6 +417,11 @@ export class DataManager implements WorkerClass {
 
     public async getMapPoints(name: string): Promise<MapSet> {
         const res = await fetch(this.path(name));
+        return await res.json();
+    }
+
+    public async getGeoReferences(): Promise<GeoRef[]> {
+        const res = await fetch(this.path('geo'));
         return await res.json();
     }
 
