@@ -41,6 +41,8 @@ export class IntroPage implements OnInit {
     this.yearSelectedAlready = !isWhiteSpace(this.settingsService.settings.dataset);
 
     this.cards = await this.loadDatasets();
+
+
     this.ui.setNavigationBar(ThemePrimaryColor);
     await delay(500);
     if (Capacitor.isNativePlatform()) {
@@ -51,12 +53,9 @@ export class IntroPage implements OnInit {
       await this.ui.setStatusBarBackgroundColor();
     }
 
-    console.log(this.settingsService.settings.dataset);
-    this.selected = this.cards[0];
-    this.save(); // Needed in case user has restarted
-
-
-    await delay(1000);
+    // need to load
+    this.load();
+    
     try {
       this.downloading = true;
       await this.api.download();
@@ -66,6 +65,20 @@ export class IntroPage implements OnInit {
     if (this.yearSelectedAlready) {
       this.go();
     }
+  }
+
+  private load() {
+    const idx = this.cards.findIndex((c) => datasetFilename(c) == this.settingsService.settings.dataset);
+
+    if (idx >= 0) {
+      this.selected = this.cards[idx];     
+      console.log('intro.load', this.selected); 
+    } else {
+      // First time in: select this year
+      this.selected = this.cards[0];
+      this.save();
+    }
+    
   }
 
   ionViewWillEnter() {

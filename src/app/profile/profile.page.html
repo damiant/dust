@@ -1,6 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>More</ion-title>
+    <ion-badge  class="pad-right" *ngIf="db.selectedYear() !== ''" (click)="home()" slot="end">{{db.selectedYear()}}</ion-badge>
   </ion-toolbar>
 </ion-header>
 
@@ -58,7 +59,7 @@
         <ion-text>Medical</ion-text>
       </div>
     </ion-button>
-    <ion-button color="light">
+    <ion-button color="light" (click)="directions()">
       <div class="flex">
         <ion-icon size="large" name="compass-outline"></ion-icon>
         <ion-text>Directions</ion-text>
@@ -92,4 +93,5 @@
       </ion-list>
     </ion-card-content>
   </ion-card>
+  <div class="pad-top"></div>
 </ion-content>

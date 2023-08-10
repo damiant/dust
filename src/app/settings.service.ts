@@ -31,6 +31,12 @@ export class SettingsService {
     return this.settings.eventTitle;
   }
 
+  public clearSelectedEvent() {
+    this.settings.dataset = '';
+    this.settings.eventTitle = '';
+    this.save();
+  }
+
   public save() {
     localStorage['settings'] = JSON.stringify(this.settings);
   }
