@@ -9,13 +9,16 @@ import { FriendsComponent } from '../friends/friends.component';
 import { SettingsService } from '../settings.service';
 import { MapService } from '../map.service';
 import { DbService } from '../db.service';
+import { TileContainerComponent } from '../tile-container/tile-container.component';
+import { TileComponent } from '../tile/tile.component';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, RouterModule, FriendsComponent]
+  imports: [IonicModule, CommonModule, FormsModule, RouterModule, FriendsComponent,
+     TileContainerComponent, TileComponent]
 })
 export class ProfilePage implements OnInit {
 

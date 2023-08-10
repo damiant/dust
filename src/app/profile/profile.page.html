@@ -1,7 +1,8 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>More</ion-title>
-    <ion-badge  class="pad-right" *ngIf="db.selectedYear() !== ''" (click)="home()" slot="end">{{db.selectedYear()}}</ion-badge>
+    <ion-badge class="pad-right" *ngIf="db.selectedYear() !== ''" (click)="home()"
+      slot="end">{{db.selectedYear()}}</ion-badge>
   </ion-toolbar>
 </ion-header>
 
@@ -12,64 +13,14 @@
     </ion-toolbar>
   </ion-header>
 
+  <app-tile-container>
+    <app-tile title="Restrooms" routerLink="./restrooms" imgSrc="assets/icon/toilet.svg"></app-tile>
+    <app-tile title="Ice" routerLink="./ice" imgSrc="assets/icon/ice.svg"></app-tile>
+    <app-tile title="Medical" routerLink="./medical" imgSrc="assets/icon/medical.svg"></app-tile>
+    <app-tile title="Directions" (click)="directions()" iconName="compass-outline"></app-tile>
+  </app-tile-container>
+
   <app-friends />
-
-  <!-- <ion-card>
-    <ion-card-header>
-      <ion-card-title>Find</ion-card-title>
-    </ion-card-header>
-
-    <ion-card-content>
-      <ion-list>
-        <ion-item [routerLink]="'./restrooms'" detail="true">
-          <ion-icon slot="start" name="map-outline"></ion-icon>
-          Restrooms
-        </ion-item>
-        <ion-item [routerLink]="'./ice'" detail="true">
-          <ion-icon slot="start" name="map-outline"></ion-icon>
-          Ice
-        </ion-item>
-      </ion-list>
-    </ion-card-content>
-  </ion-card> -->
-
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Map</ion-card-title>
-    </ion-card-header>
-
-    <ion-card-content>
-
-  <div class="tile-container">
-    <ion-button color="light" [routerLink]="'./restrooms'">
-      <div class="flex">
-        <ion-icon size="large" [src]="'assets/icon/toilet.svg'"></ion-icon>
-        <ion-text>Restrooms</ion-text>
-      </div>
-    </ion-button>
-    <ion-button color="light" [routerLink]="'./ice'">
-      <div class="flex">
-        <ion-icon size="large" [src]="'assets/icon/ice.svg'"></ion-icon>
-        <ion-text>Ice</ion-text>
-      </div>
-    </ion-button>
-    <ion-button color="light" [routerLink]="'./medical'">
-      <div class="flex">
-        <ion-icon size="large" [src]="'assets/icon/medical.svg'"></ion-icon>
-        <ion-text>Medical</ion-text>
-      </div>
-    </ion-button>
-    <ion-button color="light" (click)="directions()">
-      <div class="flex">
-        <ion-icon size="large" name="compass-outline"></ion-icon>
-        <ion-text>Directions</ion-text>
-      </div>
-    </ion-button>
-  </div>
-
-  </ion-card-content>
-  </ion-card>
-
 
   <ion-card>
     <ion-card-header>

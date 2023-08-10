@@ -1,0 +1,17 @@
+div::-webkit-scrollbar {
+    display: none;
+}
+
+.tile-container {
+    padding: 0.8rem;
+    display: flex;
+    gap: 0.2rem;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    overflow-y: hidden;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 20px;
+    scroll-behavior: smooth;
+}
