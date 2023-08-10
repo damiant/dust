@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { MapComponent, MapPoint } from '../map/map.component';
+import { MapComponent } from '../map/map.component';
 import { FavoritesService } from '../favorites.service';
 import { DbService } from '../db.service';
+import { MapPoint } from '../models';
 
 @Component({
   selector: 'app-fav-map',

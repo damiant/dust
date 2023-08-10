@@ -1,36 +1,48 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Profile</ion-title>
+    <ion-title>More</ion-title>
+    <ion-badge class="pad-right" *ngIf="db.selectedYear() !== ''" (click)="home()"
+      slot="end">{{db.selectedYear()}}</ion-badge>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Profile</ion-title>
+      <ion-title size="large">More</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-list [inset]="true">
-    <ion-item href="mailto:damian@dust.events?subject=dust" detail="true">
-      <ion-icon slot="start" name="mail-unread-outline"></ion-icon>
-      Send Feedback
-    </ion-item>
-    <ion-item (click)="restrooms()" detail="true">
-      <ion-icon slot="start" name="map-outline"></ion-icon>
-      Map of Restrooms
-    </ion-item>
-    <ion-item (click)="unimplemented()" detail="true">
-      <ion-icon slot="start" name="musical-notes-outline"></ion-icon>
-      Rock Star Librarian
-    </ion-item>
-    <ion-item (click)="share()" detail="true">
-      <ion-icon slot="start" name="share-outline"></ion-icon>
-      Share App
-    </ion-item>
-    <ion-item (click)="home()" detail="true">
-      <ion-icon slot="start" name="exit-outline"></ion-icon>
-      Back to Home
-    </ion-item>
 
-  </ion-list>
+  <app-tile-container>
+    <app-tile title="Restrooms" routerLink="./restrooms" imgSrc="assets/icon/toilet.svg"></app-tile>
+    <app-tile title="Ice" routerLink="./ice" imgSrc="assets/icon/ice.svg"></app-tile>
+    <app-tile title="Medical" routerLink="./medical" imgSrc="assets/icon/medical.svg"></app-tile>
+    <app-tile title="Directions" (click)="directions()" iconName="compass-outline"></app-tile>
+  </app-tile-container>
+
+  <app-friends />
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Options</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list>
+        <ion-item href="mailto:damian@dust.events?subject=dust" detail="true">
+          <ion-icon slot="start" name="mail-unread-outline"></ion-icon>
+          Send Feedback
+        </ion-item>
+        <ion-item (click)="share()" detail="true">
+          <ion-icon slot="start" name="share-outline"></ion-icon>
+          Share App
+        </ion-item>
+        <ion-item (click)="home()" detail="true">
+          <ion-icon slot="start" name="exit-outline"></ion-icon>
+          Select a Different Year
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <div class="pad-top"></div>
 </ion-content>

@@ -1,0 +1,26 @@
+<ion-card>
+  <ion-card-header>
+    
+    <ion-card-title>Friends</ion-card-title>
+    <!-- <ion-card-subtitle>F</ion-card-subtitle> -->
+    <ion-fab-button style="position: absolute; top: 0.2rem; z-index:1; right:0.2rem; left: auto" (click)="addFriend()" size="small">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-card-header>
+
+  <ion-card-content>
+    <ion-list>
+      <div *ngIf="friends.length === 0" class="center">
+        <ion-text class="large" color="medium">Press + to add your friends and their location to this list.</ion-text>
+      </div>
+      <ion-item (click)="editFriend(friend)" *ngFor="let friend of friends">
+        <ion-icon slot="start" aria-hidden="true" [src]="'assets/icon/person.svg'"></ion-icon>
+        <ion-label>
+          {{friend.name}}
+          <p>{{friend.notes}}</p>
+        </ion-label>
+        <ion-text slot="end">{{friend.address}}</ion-text>
+      </ion-item>
+    </ion-list>
+  </ion-card-content>
+</ion-card>

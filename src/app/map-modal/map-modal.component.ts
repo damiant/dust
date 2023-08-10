@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MapComponent, MapPoint } from '../map/map.component';
+import { MapComponent } from '../map/map.component';
 import { IonicModule } from '@ionic/angular';
+import { MapPoint } from '../models';
 
 @Component({
   selector: 'app-map-modal',

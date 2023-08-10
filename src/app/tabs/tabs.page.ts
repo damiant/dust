@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import { delay } from '../utils';
 import { UiService } from '../ui.service';
 import { SettingsService } from '../settings.service';
+import { ShareInfoType, ShareService } from '../share.service';
+
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
@@ -21,6 +23,7 @@ export class TabsPage implements OnInit {
   constructor(
     private db: DbService, private ui: UiService,
     private notificationService: NotificationService,
+    private shareService: ShareService,
     private router: Router, private settingsService: SettingsService) {
     effect(() => {
       const eventId = this.notificationService.hasNotification();
@@ -29,11 +32,31 @@ export class TabsPage implements OnInit {
         this.goToFavEvent(eventId);
       }
     });
+    effect(async () => {
+      const shareItem = this.shareService.hasShare();
+      if (shareItem && shareItem.type !== ShareInfoType.none) {
+        console.log(`Open shared item ${shareItem.type} ${shareItem.id}`);
+        switch (shareItem.type) {
+          case ShareInfoType.art: return await this.navTo('art', shareItem.id);
+          case ShareInfoType.camp: return await this.navTo('camp', shareItem.id);
+          case ShareInfoType.event: return await this.navTo('event', shareItem.id);
+        }
+      }
+    })
   }
 
   async ngOnInit() {
     await this.db.init(this.settingsService.settings.dataset);
     this.ready = true;
+  }
+
+  private async navTo(page: string, id: string) {
+    while (!this.ready) {
+      await delay(500);
+    }    
+    setTimeout(() => {
+      this.router.navigateByUrl(`/${page}/${id}`);
+    }, 100);
   }
 
   async goToFavEvent(eventId: string) {

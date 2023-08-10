@@ -4,10 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { DbService } from '../db.service';
-import { Camp, Event } from '../models';
-import { MapComponent, MapPoint, toMapPoint } from '../map/map.component';
+import { Camp, Event, MapPoint } from '../models';
+import { MapComponent, toMapPoint } from '../map/map.component';
 import { EventPage } from '../event/event.page';
 import { FavoritesService } from '../favorites.service';
+import { UiService } from '../ui.service';
+import { SettingsService } from '../settings.service';
+import { ShareInfoType } from '../share.service';
 
 @Component({
   selector: 'app-camp',
@@ -25,8 +28,12 @@ export class CampPage implements OnInit {
   star = false;
   backText = 'Camps';
 
-  constructor(private route: ActivatedRoute, private db: DbService,
-    private fav: FavoritesService) {
+  constructor(
+    private route: ActivatedRoute, 
+    private db: DbService,
+    private fav: FavoritesService, 
+    private settings: SettingsService,
+    private ui: UiService) {
   }
 
   async ngOnInit() {
@@ -51,8 +58,17 @@ export class CampPage implements OnInit {
     this.showEvent = true;
   }
 
-  noop() {
-    
+  noop() {    
+  }
+
+  share() {
+    const url = `https://dust.events?${ShareInfoType.camp}=${this.camp?.uid}`;
+    this.ui.share({
+      title: this.camp?.name,
+      dialogTitle: this.camp?.name,
+      text: `Check out ${this.camp?.name} at ${this.settings.eventTitle()} using the dust app.`,
+      url     
+    });
   }
 
   async toggleStar() {

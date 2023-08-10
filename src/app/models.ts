@@ -115,17 +115,13 @@ export interface Favorites {
 
 export interface Settings {
   dataset: string;
+  eventTitle: string;
   lastDownload: string;
-}
-
-export interface Friend {
-  name: string;
-  street: string;
-  clock: string;
 }
 
 export interface Dataset {
   name: string;
+  title: string;
   year: string;
   start: string;
 }
@@ -140,10 +136,41 @@ export interface Pin {
   y: number;
 }
 
+export interface Friend {
+  name: string;
+  address: string;
+  notes: string;
+}
+
+export interface MapPoint {
+  street: string,
+  clock: string,
+  feet?: number,
+  streetOffset?: string,
+  clockOffset?: string,
+  x?: number,
+  y?: number,
+  info?: MapInfo
+}
+
+export interface MapInfo {
+  title: string;
+  location: string;
+  subtitle: string;
+  imageUrl?: string;
+}
+
+export interface MapSet {
+  title: string;
+  description: string;
+  points: MapPoint[];
+}
+
 export enum DataMethods {
   Populate = 'populate',
   GetDays = 'getDays',
   GetPotties = 'getPotties',
+  GetMapPoints = 'getMapPoints',
   GetCategories = 'getCategories',
   SetDataset = 'setDataset',
   GetEvents = 'getEvents',

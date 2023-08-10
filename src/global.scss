@@ -109,9 +109,12 @@ ion-title {
     font-weight: normal;
 }
 
-ion-title.ios {
-    margin-top: 5px;
-}
+// This ensures it only is used on Android devices
+// @supports not (-webkit-touch-callout: none) {
+//     ion-title.ios {
+//         margin-top: 5px !important;
+//     }
+// }
 
 .ic-txt {
     margin-top: 10px;
@@ -133,8 +136,8 @@ ion-title.ios {
     -webkit-box-orient: vertical;
 }
 
-ion-badge .pad-right {
-    margin-right: 2rem;
+ion-badge.pad-right {
+    margin-right: 0.8rem;
 }
 
 ion-label {
@@ -172,7 +175,7 @@ ion-back-button {
     align-items: center;
     flex-direction: column;
     width: 100%;
-    height: 100%;
+    height: 100vh;    
 }
 
 .text {

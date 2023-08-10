@@ -1,11 +1,11 @@
 import { Component, ViewChild, effect } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
-import { Camp } from '../models';
+import { Camp, MapPoint } from '../models';
 import { DbService } from '../db.service';
 import { CommonModule } from '@angular/common';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
-import { MapPoint, toMapPoint } from '../map/map.component';
+import { toMapPoint } from '../map/map.component';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { CampComponent } from '../camp/camp.component';
 import { UiService } from '../ui.service';

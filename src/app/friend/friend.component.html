@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+    </ion-buttons>
+    <ion-title>Friend</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="confirm()" [strong]="true">Save</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-input autocapitalize="words" name="Playa Name" id="Playa Name" label="Name" [(ngModel)]="friend.name" placeholder="Your friends name"></ion-input>
+  </ion-item>
+
+  <ion-item id="pick-address">
+    <ion-input label="Address" [class.button]="(friend.address === 'Choose Address')" [value]="friend.address" [readonly]="true">      
+    </ion-input>
+  </ion-item>  
+  <ion-item>
+    <ion-input label="Notes" [(ngModel)]="friend.notes" placeholder=""></ion-input>
+  </ion-item>
+
+  <div class="center" *ngIf="isEdit">
+    <ion-button (click)="deleteFriend()" shape="round">Delete</ion-button>
+  </div>
+  <ion-picker trigger="pick-address" [columns]="addresses" [buttons]="pickerButtons"></ion-picker>
+</ion-content>

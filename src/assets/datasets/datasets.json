@@ -1,26 +1,31 @@
 [
     {
         "name": "TTITD",
+        "title": "Burning Man 2023",
         "year": "2023",
         "start": "2023-08-27T07:00:00.000Z"
     },
     {
         "name": "TTITD",
+        "title": "Burning Man 2022",
         "year": "2022",
         "start": "2022-08-28T00:00:00-07:00"
     },
     {
         "name": "TTITD",
+        "title": "Burning Man 2019",
         "year": "2019",
         "start": "2019-08-26T00:00:00-07:00"
     },
     {
         "name": "TTITD",
+        "title": "Burning Man 2018",
         "year": "2018",
         "start": "2018-08-27T00:00:00-07:00"
     },
     {
         "name": "TTITD",
+        "title": "Burning Man 2017",
         "year": "2017",
         "start": "2017-08-28T00:00:00-07:00"
     }

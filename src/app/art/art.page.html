@@ -3,7 +3,7 @@
     <ion-title>
       Art
     </ion-title>
-    <ion-badge *ngIf="db.selectedYear() !== ''" (click)="home()" slot="end">{{db.selectedYear()}}</ion-badge>
+    <ion-badge  class="pad-right" *ngIf="db.selectedYear() !== ''" (click)="home()" slot="end">{{db.selectedYear()}}</ion-badge>
   </ion-toolbar>
 </ion-header>
 

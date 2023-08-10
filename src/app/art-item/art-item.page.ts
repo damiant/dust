@@ -2,13 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { Art, Image } from '../models';
+import { Art, Image, MapPoint } from '../models';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { DbService } from '../db.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { MapComponent, MapPoint, toMapPoint } from '../map/map.component';
+import { MapComponent, toMapPoint } from '../map/map.component';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { FavoritesService } from '../favorites.service';
+import { UiService } from '../ui.service';
+import { SettingsService } from '../settings.service';
+import { ShareInfoType } from '../share.service';
 
 @Component({
   selector: 'app-art-item',
@@ -17,14 +20,14 @@ import { FavoritesService } from '../favorites.service';
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, RouterModule, MapComponent, MapModalComponent],
   animations: [
-    trigger('fade', [ 
+    trigger('fade', [
       state('visible', style({ opacity: 1 })),
       state('hidden', style({ opacity: 0 })),
       transition('visible <=> hidden', animate('0.3s ease-in-out')),
     ])
   ]
 })
-export class ArtItemPage implements OnInit {  
+export class ArtItemPage implements OnInit {
   art: Art | undefined;
   showMap = false;
   mapPoints: MapPoint[] = [];
@@ -33,8 +36,12 @@ export class ArtItemPage implements OnInit {
   backText = 'Art';
   star = false;
 
-  constructor(private route: ActivatedRoute,
-    private db: DbService, private fav: FavoritesService) {     
+  constructor(
+    private route: ActivatedRoute,
+    private ui: UiService,
+    private db: DbService, 
+    private settings: SettingsService,
+    private fav: FavoritesService) {
   }
 
   async ngOnInit() {
@@ -51,17 +58,28 @@ export class ArtItemPage implements OnInit {
   }
 
   map() {
-    this.showMap = true;    
+    this.showMap = true;
   }
 
   ready(image: Image) {
-    image.ready = true;    
+    image.ready = true;
   }
 
   async toggleStar() {
     if (!this.art) return;
     this.star = !this.star;
     await this.fav.starArt(this.star, this.art.uid);
+  }
+
+  share() {
+    const url = `https://dust.events?${ShareInfoType.art}=${this.art?.uid}`;
+    this.ui.share({
+      title: this.art?.name,
+      dialogTitle: this.art?.name,
+      text: `Check out ${this.art?.name} at ${this.settings.eventTitle()} using the dust app: ${url}`,
+      url: this.art?.images[0].thumbnail_url
+      //url: `https://dust.events/art/${this.art?.uid}`
+    });
   }
 
 
