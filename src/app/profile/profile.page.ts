@@ -4,39 +4,28 @@ import { FormsModule } from '@angular/forms';
 import { AlertController, IonicModule } from '@ionic/angular';
 import { UiService } from '../ui.service';
 import { Share } from '@capacitor/share';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FriendsComponent } from '../friends/friends.component';
+import { SettingsService } from '../settings.service';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, FriendsComponent]
+  imports: [IonicModule, CommonModule, FormsModule, RouterModule, FriendsComponent]
 })
 export class ProfilePage implements OnInit {
 
-  constructor(private ui: UiService, private router: Router, private alertController: AlertController) { }
+  constructor(private ui: UiService, private settings: SettingsService) { }
 
   ngOnInit() {
   }
 
   home() {
+    this.settings.settings.dataset = '';
+    this.settings.save();
     this.ui.home();
-  }
-
-  restrooms() {
-    this.router.navigate(['tabs/profile/restrooms']);
-  }
-
-  async unimplemented() {
-    const alert = await this.alertController.create({
-      header: 'Under Development',      
-      message: 'This feature is currently being worked on.',
-      buttons: ['OK'],
-    });
-
-    await alert.present();
   }
 
   async share() {

@@ -1,5 +1,5 @@
 import { WorkerClass } from './worker-interface';
-import { Art, Camp, DataMethods, Day, Event, LocationName, Pin, TimeString } from './models';
+import { Art, Camp, DataMethods, Day, Event, LocationName, MapSet, Pin, TimeString } from './models';
 import { getDayName, getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from './utils';
 
 interface TimeCache {
@@ -31,6 +31,7 @@ export class DataManager implements WorkerClass {
             case DataMethods.GetArtList: return this.getArtList(args[0]);
             case DataMethods.FindArts: return this.findArts(args[0]);
             case DataMethods.FindArt: return this.findArt(args[0]);
+            case DataMethods.GetMapPoints: return this.getMapPoints(args[0]);
             case DataMethods.CheckEvents: return this.checkEvents(args[0]);
             case DataMethods.FindEvents: return this.findEvents(args[0], args[1], args[2]);
             case DataMethods.FindCamps: return this.findCamps(args[0]);
@@ -414,6 +415,11 @@ export class DataManager implements WorkerClass {
 
     public async getPotties(): Promise<Pin[]> {
         const res = await fetch(this.path('potties'));
+        return await res.json();
+    }
+
+    public async getMapPoints(name: string): Promise<MapSet> {
+        const res = await fetch(this.path(name));
         return await res.json();
     }
 

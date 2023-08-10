@@ -1,11 +1,11 @@
 import { Injectable, signal } from '@angular/core';
-import { Event, Favorites, Friend, OccurrenceSet } from './models';
+import { Event, Favorites, Friend, MapPoint, OccurrenceSet } from './models';
 import { NotificationService } from './notification.service';
 import { Preferences } from '@capacitor/preferences';
 import { SettingsService } from './settings.service';
 import { DbService } from './db.service';
 import { getDayName, getOccurrenceTimeString, now } from './utils';
-import { MapPoint } from './map/map.component';
+
 
 enum DbId {
   favorites = 'favorites'

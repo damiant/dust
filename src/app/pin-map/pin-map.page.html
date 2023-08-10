@@ -9,8 +9,11 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Restrooms</ion-title>
-    </ion-toolbar>
+      <ion-title size="large">{{title}}
+        
+      </ion-title>
+      </ion-toolbar>      
   </ion-header>
+  <div style="position: absolute;" class="ion-padding">{{description}}</div>
   <app-map [points]="points"></app-map>
 </ion-content>

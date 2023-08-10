@@ -142,10 +142,35 @@ export interface Friend {
   notes: string;
 }
 
+export interface MapPoint {
+  street: string,
+  clock: string,
+  feet?: number,
+  streetOffset?: string,
+  clockOffset?: string,
+  x?: number,
+  y?: number,
+  info?: MapInfo
+}
+
+export interface MapInfo {
+  title: string;
+  location: string;
+  subtitle: string;
+  imageUrl?: string;
+}
+
+export interface MapSet {
+  title: string;
+  description: string;
+  points: MapPoint[];
+}
+
 export enum DataMethods {
   Populate = 'populate',
   GetDays = 'getDays',
   GetPotties = 'getPotties',
+  GetMapPoints = 'getMapPoints',
   GetCategories = 'getCategories',
   SetDataset = 'setDataset',
   GetEvents = 'getEvents',

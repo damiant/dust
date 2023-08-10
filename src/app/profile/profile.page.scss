@@ -1,3 +1,24 @@
 ion-item:last-child {
     --inner-border-width: 0;
-  }
+}
+
+.flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 5rem;
+}
+
+ion-button.tile {
+    --background: var(--ion-item-background);
+    --color: var(--ion-color-text);
+}
+
+.tile-container {
+    padding: 0rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}

@@ -1,28 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { PinchZoomModule } from '@meddv/ngx-pinch-zoom';
-import { LocationName, Pin } from '../models';
+import { LocationName, MapInfo, MapPoint, Pin } from '../models';
 import { IonicModule, PopoverController } from '@ionic/angular';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-
-export interface MapPoint {
-  street: string,
-  clock: string,
-  feet?: number,
-  streetOffset?: string,
-  clockOffset?: string,
-  x?: number,
-  y?: number,
-  info?: MapInfo
-}
-
-export interface MapInfo {
-  title: string;
-  location: string;
-  subtitle: string;
-  imageUrl?: string;
-}
-
 
 export function toMapPoint(location: string | undefined, info?: MapInfo): MapPoint {
   if (!location) {
@@ -167,7 +148,8 @@ export class MapComponent implements OnInit, AfterViewInit {
     try {
       const acode = 'a'.charCodeAt(0);
       const c = street.toLowerCase().charCodeAt(0) - acode;
-      if (street == 'esplanade') {
+      
+      if (street.toLowerCase() == 'esplanade') {
         return this.streets[0];
       }
       return this.streets[c + 1];

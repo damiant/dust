@@ -1,0 +1,33 @@
+{
+    "title": "Medical",
+    "description": "Personnel wear year 'Emergency Services' shirts featuring the ESD logo on their uniform and vehicles.",
+    "points": [
+        {
+            "street": "esplanade",
+            "clock": "5:15",
+            "info": {
+                "title": "Emergency Services Department - 5:15 & Esplanade",
+                "subtitle": "Personnel wear year 'Emergency Services' shirts featuring the ESD logo on their uniform and vehicles.",
+                "location": "5:15 & Esplanade"
+            }
+        },
+        {
+            "street": "G",
+            "clock": "9:00",
+            "info": {
+                "title": "Emergency Services Department - 9 & G",
+                "subtitle": "Personnel wear year 'Emergency Services' shirts featuring the ESD logo on their uniform and vehicles.",
+                "location": "9:00 G Plaza"
+            }
+        },
+        {
+            "street": "G",
+            "clock": "3:00",
+            "info": {
+                "title": "Emergency Services Department - 3 & G",
+                "subtitle": "Personnel wear year 'Emergency Services' shirts featuring the ESD logo on their uniform and vehicles.",
+                "location": "3:00 G Plaza"
+            }
+        }
+    ]
+}

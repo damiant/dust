@@ -8,7 +8,7 @@ import { SplashScreen } from '@capacitor/splash-screen';
 import { SettingsService } from '../settings.service';
 import { FavoritesService } from '../favorites.service';
 import { MessageComponent } from '../message/message.component';
-import { addDays, daysBetween, now } from '../utils';
+import { addDays, daysBetween, delay, isWhiteSpace, now } from '../utils';
 import { Dataset } from '../models';
 import { datasetFilename } from '../api';
 import { ApiService } from '../api.service';
@@ -27,6 +27,7 @@ export class IntroPage implements OnInit {
   ready = true;
   showMessage = false;
   downloading = false;
+  yearSelectedAlready = true;
   cards: Dataset[] = [];
   selected: Dataset | undefined;
   message = '';
@@ -36,29 +37,35 @@ export class IntroPage implements OnInit {
     private fav: FavoritesService, private router: Router) { }
 
   async ngOnInit() {
+    // Whether the user has selected a year previously
+    this.yearSelectedAlready = !isWhiteSpace(this.settingsService.settings.dataset);
+
     this.cards = await this.loadDatasets();
+    this.ui.setNavigationBar(ThemePrimaryColor);
+    await delay(500);
+    if (Capacitor.isNativePlatform()) {
+      await StatusBar.setStyle({ style: Style.Dark });
+      await this.ui.setStatusBarBackgroundColor();
+      await SplashScreen.hide();
+      await delay(200);
+      await this.ui.setStatusBarBackgroundColor();
+    }
+
+    console.log(this.settingsService.settings.dataset);
     this.selected = this.cards[0];
     this.save(); // Needed in case user has restarted
-    this.ui.setNavigationBar(ThemePrimaryColor);
-    setTimeout(async () => {
-      if (Capacitor.isNativePlatform()) {
-        await StatusBar.setStyle({ style: Style.Dark });
-        await this.ui.setStatusBarBackgroundColor();
-        await SplashScreen.hide();
-        setTimeout(async () => {
-          await this.ui.setStatusBarBackgroundColor();
-        }, 200);
-      }
-    }, 500);
 
-    setTimeout(async () => {
-      try {
-        this.downloading = true;
-        await this.api.download();
-      } finally {
-        this.downloading = false;
-      }
-    }, 1000);
+
+    await delay(1000);
+    try {
+      this.downloading = true;
+      await this.api.download();
+    } finally {
+      this.downloading = false;
+    }
+    if (this.yearSelectedAlready) {
+      this.go();
+    }
   }
 
   ionViewWillEnter() {
@@ -73,13 +80,14 @@ export class IntroPage implements OnInit {
     const x = daysBetween(now(), manBurns);
     const until = daysBetween(now(), start);
 
+
+    const hideLocations = (thisYear && until > 1);
+    this.db.setHideLocations(hideLocations);
     //console.log(start, manBurns, x, until);
-    if (thisYear && until > 1) {
+    if (hideLocations && !this.yearSelectedAlready) {
       this.message = `Locations for camps and art will be released in the app on Sunday 27th. There are ${x} days until the man burns.`;
       this.showMessage = true;
-      this.db.setHideLocations(true);
     } else {
-      this.db.setHideLocations(false);
       this.launch();
     }
   }
