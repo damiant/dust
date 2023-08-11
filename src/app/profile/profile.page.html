@@ -29,6 +29,10 @@
 
     <ion-card-content>
       <ion-list>
+        <ion-item>
+          <ion-icon slot="start" name="locate-outline"></ion-icon>
+          <ion-toggle (ionChange)="toggleLocation($event)" [checked]="locationEnabled">Show My Location</ion-toggle>
+        </ion-item>
         <ion-item href="mailto:damian@dust.events?subject=dust" detail="true">
           <ion-icon slot="start" name="mail-unread-outline"></ion-icon>
           Send Feedback
@@ -37,6 +41,7 @@
           <ion-icon slot="start" name="share-outline"></ion-icon>
           Share App
         </ion-item>
+
         <ion-item (click)="home()" detail="true">
           <ion-icon slot="start" name="exit-outline"></ion-icon>
           Select a Different Year

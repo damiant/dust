@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  simulatedTime: 'Wed Aug 30 2023 01:18:00 GMT-0700'
+  simulatedTime: new Date('Wed Aug 30 2023 01:18:00 GMT-0700'),
+  gps: { lat: -119.21121456711064, lng: 40.780501492435846 }
 };
 
 /*

@@ -1,4 +1,13 @@
 ## Changes
+
+### 1.7
+- Show your current location on the map
+- Fix background on the more page for dark mode
+- Fix description on map in dark mode
+- Fix for calculation of event start date
+- Fix for selected day
+- Fix for timezones other than PST
+
 ### 1.6
 - Share Art
 - Share Event

@@ -8,6 +8,7 @@ import { delay } from '../utils';
 import { UiService } from '../ui.service';
 import { SettingsService } from '../settings.service';
 import { ShareInfoType, ShareService } from '../share.service';
+import { Network } from '@capacitor/network';
 
 @Component({
   selector: 'app-tabs',
@@ -45,9 +46,13 @@ export class TabsPage implements OnInit {
     })
   }
 
-  async ngOnInit() {
-    await this.db.init(this.settingsService.settings.dataset);
+  async ngOnInit() {    
     this.ready = true;
+    Network.addListener('networkStatusChange', status => {
+      this.db.networkStatus.set(status.connectionType);
+    });
+    const status = await Network.getStatus();
+    this.db.networkStatus.set(status.connectionType);
   }
 
   private async navTo(page: string, id: string) {

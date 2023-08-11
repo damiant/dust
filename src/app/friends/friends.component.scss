@@ -1,3 +1,7 @@
 ion-item:last-child {
-    --inner-border-width: 0;
-  }
+  --inner-border-width: 0;
+}
+
+ion-list {
+  --ion-item-background: transparent;
+}

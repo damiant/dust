@@ -5,12 +5,13 @@ import { IonicModule } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { DbService } from '../db.service';
 import { Camp, Event, MapPoint } from '../models';
-import { MapComponent, toMapPoint } from '../map/map.component';
+import { MapComponent } from '../map/map.component';
 import { EventPage } from '../event/event.page';
 import { FavoritesService } from '../favorites.service';
 import { UiService } from '../ui.service';
 import { SettingsService } from '../settings.service';
 import { ShareInfoType } from '../share.service';
+import { toMapPoint } from '../map/map.utils';
 
 @Component({
   selector: 'app-camp',

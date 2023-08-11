@@ -1,6 +1,6 @@
 import { WorkerClass } from './worker-interface';
-import { Art, Camp, DataMethods, Day, Event, LocationName, MapSet, Pin, TimeString } from './models';
-import { getDayName, getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from './utils';
+import { Art, Camp, DataMethods, Day, Event, GeoRef, LocationName, MapSet, Pin, TimeString } from './models';
+import { getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from './utils';
 
 interface TimeCache {
     [index: string]: TimeString | undefined;
@@ -18,7 +18,6 @@ export class DataManager implements WorkerClass {
 
     // This is required for a WorkerClass
     public async doWork(method: DataMethods, args: any[]): Promise<any> {
-        console.warn(`${method}`,args);
         switch (method) {
             case DataMethods.Populate: return await this.populate(args[0], args[1]);
             case DataMethods.GetDays: return this.getDays();
@@ -37,6 +36,7 @@ export class DataManager implements WorkerClass {
             case DataMethods.FindCamps: return this.findCamps(args[0]);
             case DataMethods.FindEvent: return this.findEvent(args[0]);
             case DataMethods.FindCamp: return this.findCamp(args[0]);
+            case DataMethods.GetGeoReferences: return this.getGeoReferences();
             case DataMethods.GetCampEvents: return this.getCampEvents(args[0]);
             case DataMethods.GetCamps: return this.getCamps(args[0], args[1]);
             default: console.error(`Unknown method ${method}`);
@@ -100,7 +100,7 @@ export class DataManager implements WorkerClass {
     }
 
     private init(hideLocations: boolean) {
-        console.time('init');        
+        console.time('init');
         this.cache = {};
         this.camps = this.camps.filter((camp) => { return camp.description || camp.location_string });
         this.camps.sort((a: Camp, b: Camp) => { return a.name.localeCompare(b.name); });
@@ -273,9 +273,8 @@ export class DataManager implements WorkerClass {
         return undefined;
     }
 
-    public findEvents(query: string, day: Date | undefined, category: string): Event[] {
+    public findEvents(query: string, day: Date | undefined, category: string): Event[] {        
         const result: Event[] = [];
-        console.log(`Find Events(query:"${query}",day:"${day}",category:"${category}")`);
         for (let event of this.events) {
             if (this.eventContains(query, event) && this.eventIsCategory(category, event) && this.onDay(day, event)) {
                 const timeString = this.getTimeString(event, day);
@@ -354,7 +353,7 @@ export class DataManager implements WorkerClass {
     private getOccurrenceTimeStringCached(start: Date, end: Date, day: Date | undefined): TimeString | undefined {
         const key = `${start.getTime()}-${end.getTime()}-${day}`;
         if (!(key in this.cache)) {
-            this.cache[key] = getOccurrenceTimeString(start, end, day);            
+            this.cache[key] = getOccurrenceTimeString(start, end, day);
         }
         return this.cache[key];
     }
@@ -384,7 +383,7 @@ export class DataManager implements WorkerClass {
         for (let occurrence of event.occurrence_set) {
             const start = new Date(occurrence.start_time);
             const end = new Date(occurrence.end_time);
-            
+
             if (!occurrence.old && ((sameDay(start, day) || sameDay(end, day)))) {
                 return true;
             }
@@ -396,14 +395,9 @@ export class DataManager implements WorkerClass {
         const name = date.toLocaleDateString();
         const day = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
         if (!this.days.includes(day)) {
-            console.log(day);
             this.days.push(day);
         }
     }
-
-
-
-
 
     private path(name: string): string {
         return `assets/${this.dataset}/${name}.json`;
@@ -420,6 +414,11 @@ export class DataManager implements WorkerClass {
 
     public async getMapPoints(name: string): Promise<MapSet> {
         const res = await fetch(this.path(name));
+        return await res.json();
+    }
+
+    public async getGeoReferences(): Promise<GeoRef[]> {
+        const res = await fetch(this.path('geo'));
         return await res.json();
     }
 

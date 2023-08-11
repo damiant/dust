@@ -25,7 +25,9 @@ export function registerWorkerClass(workerClass: WorkerClass) {
     addEventListener('message', async ({ data }) => {
         const call: Call = data;
         const response: Response = { id: call.id, data: undefined };
+        console.time(call.method);
         response.data = await workerClass.doWork(call.method, call.arguments);
+        console.timeEnd(call.method);
         postMessage(response);
     });
 }
@@ -33,13 +35,13 @@ export function registerWorkerClass(workerClass: WorkerClass) {
 const calls: CallPromise[] = [];
 
 export function registerWorker(worker: Worker) {
-    worker.onmessage = ({ data }) => {        
+    worker.onmessage = ({ data }) => {
         const response: Response = data;
         if (!response.id) {
             console.error(`Response id cannot be undefined`);
         }
 
-        const idx = calls.findIndex((p) => p.id == response.id);        
+        const idx = calls.findIndex((p) => p.id == response.id);
         calls[idx].resolve(response.data);
         calls.splice(idx, 1);
     };

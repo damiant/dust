@@ -3,18 +3,14 @@
 Analog Internet Installation
 Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
 
+- Show Date/Times in PST regardless of users timezone
+- Art page is still slow
 - Understanding how to get back to home
-- Switch between years possible bug
 - JD Tabs for favorites
 - Robin - Camps filter by clock (eg Near 7:00 which would be 6:30-7:30)
 
 ## Priority 1
-- Map of medical
-- Deep links for android
-- Share art, share event
-- Show ice locations
 - Center Camp State - Add to list of camps but show in profile
-- Font on event details
 - If day selected then show that day first and other days grouped smaller below
 - If not PST then show timezone with times
 - After adding a favorite show the badge count on the fav tab increase (and disappear after opening it)
@@ -41,23 +37,29 @@ Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
 - Show days until event
 - camps near here
 - events near here
-- Camps/Events Near me (needs geo and gps)
 - find gps: direction arrow + distance
-- Add friend to favorites (name, desc, street, camp, gps)
-- Add Friend: name, street, clock
 - Show QR Code for profile
 
 ## Priority 4
-- subtitle make larger
-- Art image in list view
-- share event
 - share profile
 - photo attach to any camp / event
 - Route planner: show from 1...x with lines between on map
 
 ## Priority 5
 - email (contact camp)
-- Add notes to a camp (eg friend)
 - Add notes to an event (eg invite)
 - Show QR Code for an event - adds the event to calendar
 - Show QR Code for a camp
+
+## Marketing
+- Facebook posts to bm groups
+- Soundcloud link
+- Mastodon
+- Instagram
+- Twitter post from official
+- Twitter post for ionic/cap
+- SEO for metadata
+- Twitter metadata image and app link
+- Linked In Post
+- Page Info about the app on dust.events
+- Burning Mondays

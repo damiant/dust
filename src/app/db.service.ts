@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { Event, Day, Camp, Art, Pin, DataMethods, MapSet } from './models';
+import { Event, Day, Camp, Art, Pin, DataMethods, MapSet, GeoRef } from './models';
 import { call, registerWorker } from './worker-interface';
 import { noDate } from './utils';
 
@@ -9,17 +9,20 @@ import { noDate } from './utils';
 export class DbService {
   public selectedDay = signal(noDate());
   public selectedYear = signal('');
+  public networkStatus = signal('');
   private initialized = false;
   private hideLocations = true;
   private worker!: Worker;
 
   public async init(dataset: string) {
-    if (this.initialized) return;
-    this.worker = new Worker(new URL('./app.worker', import.meta.url));
-    registerWorker(this.worker);
+    if (!this.initialized) {
+      this.worker = new Worker(new URL('./app.worker', import.meta.url));
+      registerWorker(this.worker);
+      this.initialized = true;
+    }
 
     await call(this.worker, DataMethods.Populate, dataset, this.hideLocations);
-    this.initialized = true;
+
   }
 
   public checkInit() {
@@ -48,6 +51,10 @@ export class DbService {
     return await call(this.worker, DataMethods.GetEventList, ids);
   }
 
+  public async getGeoReferences(): Promise<GeoRef[]> {
+    return await call(this.worker, DataMethods.GetGeoReferences);
+  }
+
   public async getPotties(): Promise<Pin[]> {
     return await call(this.worker, DataMethods.GetPotties);
   }
@@ -63,7 +70,7 @@ export class DbService {
   public async getCampList(ids: string[]): Promise<Camp[]> {
     return await call(this.worker, DataMethods.GetCampList, ids);
   }
-  
+
   public async getArtList(ids: string[]): Promise<Art[]> {
     return await call(this.worker, DataMethods.GetArtList, ids);
   }
@@ -93,7 +100,7 @@ export class DbService {
   }
 
   public async getEvents(idx: number, count: number): Promise<Event[]> {
-    return await call(this.worker,DataMethods.GetEvents, idx, count);
+    return await call(this.worker, DataMethods.GetEvents, idx, count);
   }
 
   public async setDataset(dataset: string, events: Event[], camps: Camp[], art: Art[]): Promise<void> {

@@ -5,12 +5,34 @@ import { Camp, MapPoint } from '../models';
 import { DbService } from '../db.service';
 import { CommonModule } from '@angular/common';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
-import { toMapPoint } from '../map/map.component';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { CampComponent } from '../camp/camp.component';
 import { UiService } from '../ui.service';
 import { SearchComponent } from '../search/search.component';
 import { isWhiteSpace } from '../utils';
+import { toMapPoint } from '../map/map.utils';
+
+interface CampsState {
+  camps: Camp[],
+  showMap: boolean,
+  mapTitle: string,
+  mapSubtitle: string,
+  noCampsMessage: string,
+  mapPoints: MapPoint[],
+  minBufferPx: number
+}
+
+function initialState(): CampsState {
+  return {
+    camps: [],
+    showMap: false,
+    mapTitle: '',
+    mapSubtitle: '',
+    noCampsMessage: 'No camps were found.',
+    mapPoints: [],
+    minBufferPx: 900
+  };
+}
 
 @Component({
   selector: 'app-camps',
@@ -21,18 +43,19 @@ import { isWhiteSpace } from '../utils';
     CampComponent, SearchComponent]
 })
 export class CampsPage {
-  camps: Camp[] = [];
-  showMap = false;
-  mapTitle = '';
-  mapSubtitle = '';
-  noCampsMessage = 'No camps were found.';
-  mapPoints: MapPoint[] = [];
-  minBufferPx = 900;
+  vm: CampsState = initialState();
+
   @ViewChild(CdkVirtualScrollViewport) virtualScroll!: CdkVirtualScrollViewport;
 
   constructor(public db: DbService, private ui: UiService) {
     effect(() => {
       this.ui.scrollUp('camps', this.virtualScroll);
+    });
+    effect(() => {
+      const year = this.db.selectedYear();
+      console.log(`CampsPage.yearChange ${year}`);
+      this.vm = initialState();
+      this.update('');
     });
   }
 
@@ -41,12 +64,8 @@ export class CampsPage {
   }
 
   async ionViewDidEnter() {
-    if (this.camps.length == 0) {
-      this.camps = await this.db.getCamps(0, 9999);
-    } else {
-      // Hack to ensure tab view is updated on switch of tabs
-      this.minBufferPx = (this.minBufferPx == 901) ? 900 : 901;
-    }
+    // Hack to ensure tab view is updated on switch of tabs
+    this.vm.minBufferPx = (this.vm.minBufferPx == 901) ? 900 : 901;
   }
 
   search(value: string) {
@@ -59,14 +78,14 @@ export class CampsPage {
   }
 
   map(camp: Camp) {
-    this.mapPoints = [toMapPoint(camp.location_string!)];
-    this.mapTitle = camp.name;
-    this.mapSubtitle = camp.location_string!;
-    this.showMap = true;
+    this.vm.mapPoints = [toMapPoint(camp.location_string!)];
+    this.vm.mapTitle = camp.name;
+    this.vm.mapSubtitle = camp.location_string!;
+    this.vm.showMap = true;
   }
 
   async update(search: string) {
-    this.camps = await this.db.findCamps(search);
-    this.noCampsMessage = isWhiteSpace(search) ? `No camps were found.` : `No camps were found matching "${search}"`;
+    this.vm.camps = await this.db.findCamps(search);
+    this.vm.noCampsMessage = isWhiteSpace(search) ? `No camps were found.` : `No camps were found matching "${search}"`;
   }
 }

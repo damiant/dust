@@ -6,11 +6,13 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DbService } from '../db.service';
 import { Event, MapPoint, OccurrenceSet } from '../models';
 import { MapModalComponent } from '../map-modal/map-modal.component';
-import { MapComponent, toMapPoint } from '../map/map.component';
+import { MapComponent } from '../map/map.component';
 import { FavoritesService } from '../favorites.service';
 import { ShareInfoType } from '../share.service';
 import { SettingsService } from '../settings.service';
 import { UiService } from '../ui.service';
+import { toMapPoint } from '../map/map.utils';
+import { dateMatches, noDate, sameDay } from '../utils';
 
 @Component({
   selector: 'app-event',
@@ -58,7 +60,13 @@ export class EventPage implements OnInit {
       this.mapSubtitle = this.event.location;
       this.mapPoints.push(toMapPoint(this.event.location,
         { title: this.event.title, location: this.event.location, subtitle: this.event.camp }));
-      this.event.occurrence_set = this.event.occurrence_set.filter((o) => !o.old);
+        const selectedDay = this.db.selectedDay();            
+      this.event.occurrence_set = this.event.occurrence_set.filter((o) => {
+        if (!sameDay(selectedDay,noDate()) && !dateMatches(selectedDay, o)) {
+          return false;
+        }
+        return !o.old; 
+      });
       await this.fav.setEventStars(this.event);
     } finally {
       this.ready = true;

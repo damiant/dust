@@ -6,12 +6,13 @@ import { Art, Image, MapPoint } from '../models';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { DbService } from '../db.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { MapComponent, toMapPoint } from '../map/map.component';
+import { MapComponent } from '../map/map.component';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { FavoritesService } from '../favorites.service';
 import { UiService } from '../ui.service';
 import { SettingsService } from '../settings.service';
 import { ShareInfoType } from '../share.service';
+import { toMapPoint } from '../map/map.utils';
 
 @Component({
   selector: 'app-art-item',

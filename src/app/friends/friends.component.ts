@@ -38,7 +38,7 @@ export class FriendsComponent implements OnInit {
     modal.present();
 
     const { data, role } = await modal.onWillDismiss();
-    delay(500); // Time for animation
+    delay(800); // Time for animation
     switch (role) {
       case FriendResult.confirm: {
         if (friend) {
@@ -60,7 +60,6 @@ export class FriendsComponent implements OnInit {
   async update() {
     const favs = await this.fav.getFavorites();
     this.friends = favs.friends;
-    console.log(this.friends);
   }
 
   async editFriend(friend: Friend) {

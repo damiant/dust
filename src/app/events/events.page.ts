@@ -5,7 +5,6 @@ import { Day, Event, MapPoint } from '../models';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
-import { toMapPoint } from '../map/map.component';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { FormsModule } from '@angular/forms';
 import { noDate, now, sameDay } from '../utils';
@@ -15,6 +14,47 @@ import { UiService } from '../ui.service';
 import { CategoryComponent } from '../category/category.component';
 import { SkeletonEventComponent } from '../skeleton-event/skeleton-event.component';
 import { SearchComponent } from '../search/search.component';
+import { toMapPoint } from '../map/map.utils';
+
+interface EventsState {
+  title: string,
+  defaultDay: any,
+  category: string,
+  events: Event[],
+  days: Day[],
+  categories: string[],
+  search: string,
+  noEvents: boolean,
+  noEventsMessage: string,
+  screenHeight: number,
+  day: Date | undefined,
+  showMap: boolean
+  mapTitle: string,
+  mapSubtitle: string,
+  mapPoints: MapPoint[],
+  minBufferPx: number
+}
+
+function initialState(): EventsState {
+  return {
+    title: 'Events',
+    defaultDay: 'all',
+    category: '',
+    events: [],
+    days: [],
+    categories: ['All Events'],
+    search: '',
+    noEvents: false,
+    noEventsMessage: '',
+    screenHeight: window.screen.height,
+    day: undefined,
+    showMap: false,
+    mapTitle: '',
+    mapSubtitle: '',
+    mapPoints: [],
+    minBufferPx: 1900
+  };
+}
 
 @Component({
   selector: 'app-events',
@@ -27,27 +67,19 @@ import { SearchComponent } from '../search/search.component';
     SkeletonEventComponent, SearchComponent],
 })
 export class EventsPage implements OnInit {
-  title = 'Events';
-  defaultDay: any = 'all';
-  category = '';
-  events: Event[] = [];
-  days: Day[] = [];
-  categories: string[] = ['All Events'];
-  search: string = '';
-  noEvents = false;
-  noEventsMessage = '';
-  screenHeight: number = window.screen.height;
-  day: Date | undefined = undefined;
-  showMap = false;
-  mapTitle = '';
-  mapSubtitle = '';
-  mapPoints: MapPoint[] = [];
-  minBufferPx = 1900;
-  @ViewChild(CdkVirtualScrollViewport) virtualScroll!: CdkVirtualScrollViewport;  
+  vm: EventsState = initialState();
+
+  @ViewChild(CdkVirtualScrollViewport) virtualScroll!: CdkVirtualScrollViewport;
 
   constructor(public db: DbService, private ui: UiService) {
     effect(() => {
-      this.ui.scrollUp('events', this.virtualScroll);      
+      this.ui.scrollUp('events', this.virtualScroll);
+    });
+    effect(() => {
+      const year = this.db.selectedYear();
+      console.log(`EventsPage.yearChange ${year}`);
+      this.vm = initialState();
+      this.init();
     });
   }
 
@@ -59,18 +91,18 @@ export class EventsPage implements OnInit {
     });
   }
 
-  async ionViewWillEnter() {
-    if (this.events.length == 0) {
-      const today = now();
-      this.setToday(today);
-      await this.db.checkEvents();
-      this.days = await this.db.getDays();
-      this.db.getCategories().then((categories) => this.categories = categories);
-      this.defaultDay = this.chooseDefaultDay(now());
-      await this.update();
-    } else {
-      this.hack();
-    }
+  ionViewDidEnter() {
+    this.hack();
+  }
+
+  private async init() {
+    const today = now();
+    this.setToday(today);
+    await this.db.checkEvents();
+    this.vm.days = await this.db.getDays();
+    this.db.getCategories().then((categories) => this.vm.categories = categories);
+    this.vm.defaultDay = this.chooseDefaultDay(now());
+    await this.update();
   }
 
   public categoryChanged() {
@@ -80,30 +112,30 @@ export class EventsPage implements OnInit {
 
   private hack() {
     // Hack to ensure tab view is updated on switch of tabs or when day is changed
-    this.minBufferPx = (this.minBufferPx == 1901) ? 1900 : 1901;
+    this.vm.minBufferPx = (this.vm.minBufferPx == 1901) ? 1900 : 1901;
   }
 
   private chooseDefaultDay(today: Date): Date | string {
-    for (const day of this.days) {
+    for (const day of this.vm.days) {      
       if (day.date && sameDay(day.date, today)) {
-        this.day = day.date;
-        this.db.selectedDay.set(this.day);
+        this.vm.day = day.date;
+        this.db.selectedDay.set(this.vm.day);
         return day.date;
       }
     }
-    this.day = undefined;
+    this.vm.day = undefined;
     this.db.selectedDay.set(noDate());
     return 'all';
   }
 
   setToday(today: Date) {
-    for (const day of this.days) {
+    for (const day of this.vm.days) {      
       day.today = sameDay(day.date, today);
     }
   }
 
   searchEvents(value: string) {
-    this.search = value.toLowerCase();
+    this.vm.search = value.toLowerCase();
     this.update(true);
   }
 
@@ -114,12 +146,12 @@ export class EventsPage implements OnInit {
   async dayChange(event: any) {
     if (event.target.value == 'all') {
       this.db.selectedDay.set(noDate());
-      this.day = undefined;
+      this.vm.day = undefined;
     } else {
       this.db.selectedDay.set(new Date(event.target.value));
-      this.day = this.db.selectedDay();
+      this.vm.day = this.db.selectedDay();
     }
-    console.log(`Day Change ${this.day}`);
+    console.log(`Day Change ${this.vm.day}`);
 
     this.updateTitle();
     await this.update(true);
@@ -127,29 +159,25 @@ export class EventsPage implements OnInit {
 
   private updateTitle() {
     const day = this.db.selectedDay();
-
-    this.title = (day !== noDate()) ? day.toLocaleDateString('en-US', { weekday: 'long' }) : 'Events';
+    this.vm.title = (!sameDay(day,noDate())) ? day.toLocaleDateString('en-US', { weekday: 'long' }) : 'Events';
   }
 
   map(event: Event) {
-    this.mapPoints = [toMapPoint(event.location)];
-    this.mapTitle = event.camp;
-    this.mapSubtitle = event.location;
-    this.showMap = true;
+    this.vm.mapPoints = [toMapPoint(event.location)];
+    this.vm.mapTitle = event.camp;
+    this.vm.mapSubtitle = event.location;
+    this.vm.showMap = true;
   }
 
-  async update(scrollToTop?: boolean) {
-    console.time('update');
-    this.events = await this.db.findEvents(this.search, this.day, this.category);
-    console.timeEnd('update');
-    this.noEvents = this.events.length == 0;
-    this.noEventsMessage = this.search?.length > 0 ?
-      `There are no events matching "${this.search}".` :
+  async update(scrollToTop?: boolean) {    
+    this.vm.events = await this.db.findEvents(this.vm.search, this.vm.day, this.vm.category);
+    this.vm.noEvents = this.vm.events.length == 0;
+    this.vm.noEventsMessage = this.vm.search?.length > 0 ?
+      `There are no events matching "${this.vm.search}".` :
       'All the events for this day have concluded.';
     if (scrollToTop) {
       this.hack();
       this.virtualScroll.scrollToOffset(0, 'smooth');
     }
   }
-
 }

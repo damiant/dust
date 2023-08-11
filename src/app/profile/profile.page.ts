@@ -11,6 +11,8 @@ import { MapService } from '../map.service';
 import { DbService } from '../db.service';
 import { TileContainerComponent } from '../tile-container/tile-container.component';
 import { TileComponent } from '../tile/tile.component';
+import { GeoService } from '../geo.service';
+import { LocationEnabledStatus } from '../models';
 
 @Component({
   selector: 'app-profile',
@@ -18,18 +20,26 @@ import { TileComponent } from '../tile/tile.component';
   styleUrls: ['./profile.page.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, RouterModule, FriendsComponent,
-     TileContainerComponent, TileComponent]
+    TileContainerComponent, TileComponent]
 })
 export class ProfilePage implements OnInit {
+
+  locationEnabled = false;
 
   constructor(
     private ui: UiService,
     private settings: SettingsService,
     private map: MapService,
+    private geo: GeoService,
     public db: DbService
   ) { }
 
   ngOnInit() {
+    this.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
+  }
+
+  ionViewDidEnter() {
+    
   }
 
   home() {
@@ -44,6 +54,20 @@ export class ProfilePage implements OnInit {
       url: 'https://dust.events/',
       dialogTitle: 'Share dust with friends',
     });
+  }
+
+  async toggleLocation(e: any) {
+    const turnedOn = e.detail.checked;
+    if (turnedOn) {
+      const success = await this.geo.getPermission();
+      if (success) {
+        this.locationEnabled = turnedOn;        
+      }
+    } else {
+      this.locationEnabled = false;
+    }
+    this.settings.settings.locationEnabled = this.locationEnabled ? LocationEnabledStatus.Enabled : LocationEnabledStatus.Disabled;
+    this.settings.save();
   }
 
   async directions() {

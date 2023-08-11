@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  simulatedTime: undefined
+  simulatedTime: undefined,
+  gps: undefined
 };
