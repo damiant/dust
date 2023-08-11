@@ -10,7 +10,7 @@ export function now(): Date {
         return new Date();
     }
     //console.log(`Simulating time ${environment.simulatedTime}`);
-    return new Date(environment.simulatedTime);
+    return environment.simulatedTime;
 }
 
 export function randomInt(min: number, max: number) { // min and max included 

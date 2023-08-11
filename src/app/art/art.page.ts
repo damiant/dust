@@ -54,6 +54,11 @@ export class ArtPage {
       this.vm = initialState();
       this.init();
     });
+    effect(() => {
+      const status = this.db.networkStatus();
+      console.log(`Network status ${status}`);
+      this.vm.showImage = (status == 'wifi');
+    });
   }
 
 
@@ -61,17 +66,15 @@ export class ArtPage {
     this.ui.home();
   }
 
-  init() {
+  async init() {
     this.vm.busy = true;
-    setTimeout(async () => {
-      try {
-        const status = await Network.getStatus();
-        this.vm.showImage = (status.connectionType == 'wifi');
+    // setTimeout(async () => {
+       try {
         await this.update(undefined);
       } finally {
         this.vm.busy = false;
       }
-    }, 500);
+    //}, 500);
   }
 
   async ionViewDidEnter() {

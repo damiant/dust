@@ -3,8 +3,8 @@
 Analog Internet Installation
 Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
 
+- Show Date/Times in PST regardless of users timezone
 - Understanding how to get back to home
-- Switch between years possible bug
 - JD Tabs for favorites
 - Robin - Camps filter by clock (eg Near 7:00 which would be 6:30-7:30)
 

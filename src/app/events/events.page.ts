@@ -116,7 +116,7 @@ export class EventsPage implements OnInit {
   }
 
   private chooseDefaultDay(today: Date): Date | string {
-    for (const day of this.vm.days) {
+    for (const day of this.vm.days) {      
       if (day.date && sameDay(day.date, today)) {
         this.vm.day = day.date;
         this.db.selectedDay.set(this.vm.day);
@@ -129,7 +129,7 @@ export class EventsPage implements OnInit {
   }
 
   setToday(today: Date) {
-    for (const day of this.vm.days) {
+    for (const day of this.vm.days) {      
       day.today = sameDay(day.date, today);
     }
   }
@@ -169,11 +169,8 @@ export class EventsPage implements OnInit {
     this.vm.showMap = true;
   }
 
-  async update(scrollToTop?: boolean) {
-    console.time('update');
+  async update(scrollToTop?: boolean) {    
     this.vm.events = await this.db.findEvents(this.vm.search, this.vm.day, this.vm.category);
-    console.timeEnd('update');
-
     this.vm.noEvents = this.vm.events.length == 0;
     this.vm.noEventsMessage = this.vm.search?.length > 0 ?
       `There are no events matching "${this.vm.search}".` :

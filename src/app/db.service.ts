@@ -9,6 +9,7 @@ import { noDate } from './utils';
 export class DbService {
   public selectedDay = signal(noDate());
   public selectedYear = signal('');
+  public networkStatus = signal('');
   private initialized = false;
   private hideLocations = true;
   private worker!: Worker;

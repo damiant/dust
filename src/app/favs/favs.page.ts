@@ -13,7 +13,6 @@ import { ArtComponent } from '../art/art.component';
 import { UiService } from '../ui.service';
 import { CategoryComponent } from '../category/category.component';
 import { SearchComponent } from '../search/search.component';
-import { Network } from '@capacitor/network';
 import { toMapPoint } from '../map/map.utils';
 
 enum Filter {
@@ -32,7 +31,6 @@ enum Filter {
     CampComponent, MapModalComponent, ArtComponent, CategoryComponent, SearchComponent]
 })
 export class FavsPage implements OnInit {
-
   filter = '';
   events: Event[] = [];
   camps: Camp[] = [];
@@ -59,12 +57,15 @@ export class FavsPage implements OnInit {
     effect(() => {
       this.ui.scrollUpContent('favs', this.ionContent);
     });
+    effect(() => {
+      const status = this.db.networkStatus();
+      this.showImages = (status == 'wifi');
+    });
   }
 
   async ionViewWillEnter() {
-    const status = await Network.getStatus();
-    this.showImages = (status.connectionType == 'wifi');
     if (this.events.length == 0) {
+      console.log('ionViewWillEnter.update');
       this.update();
     }
   }
@@ -79,6 +80,7 @@ export class FavsPage implements OnInit {
 
   searchFavs(value: string) {
     this.search = value;
+    console.log('searchFavs.update');
     this.update();
   }
 

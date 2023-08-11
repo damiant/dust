@@ -23,9 +23,11 @@ export interface WorkerClass {
 
 export function registerWorkerClass(workerClass: WorkerClass) {
     addEventListener('message', async ({ data }) => {
-        const call: Call = JSON.parse(data);
+        const call: Call = data;
         const response: Response = { id: call.id, data: undefined };
+        console.time(call.method);
         response.data = await workerClass.doWork(call.method, call.arguments);
+        console.timeEnd(call.method);
         postMessage(response);
     });
 }
@@ -59,7 +61,7 @@ export function call(worker: Worker, method: DataMethods, ...args: any[]): Promi
 
 
     calls.push(callPromise);
-    worker.postMessage(JSON.stringify({ method, id, arguments: args }));
+    worker.postMessage({ method, id, arguments: args });
     return callPromise.promise;
 }
 

@@ -18,7 +18,6 @@ export class DataManager implements WorkerClass {
 
     // This is required for a WorkerClass
     public async doWork(method: DataMethods, args: any[]): Promise<any> {
-        console.warn(`${method}`,args);
         switch (method) {
             case DataMethods.Populate: return await this.populate(args[0], args[1]);
             case DataMethods.GetDays: return this.getDays();
@@ -101,7 +100,7 @@ export class DataManager implements WorkerClass {
     }
 
     private init(hideLocations: boolean) {
-        console.time('init');        
+        console.time('init');
         this.cache = {};
         this.camps = this.camps.filter((camp) => { return camp.description || camp.location_string });
         this.camps.sort((a: Camp, b: Camp) => { return a.name.localeCompare(b.name); });
@@ -274,9 +273,8 @@ export class DataManager implements WorkerClass {
         return undefined;
     }
 
-    public findEvents(query: string, day: Date | undefined, category: string): Event[] {
+    public findEvents(query: string, day: Date | undefined, category: string): Event[] {        
         const result: Event[] = [];
-        console.log(`Find Events(query:"${query}",day:"${day}",category:"${category}")`);
         for (let event of this.events) {
             if (this.eventContains(query, event) && this.eventIsCategory(category, event) && this.onDay(day, event)) {
                 const timeString = this.getTimeString(event, day);
@@ -355,7 +353,7 @@ export class DataManager implements WorkerClass {
     private getOccurrenceTimeStringCached(start: Date, end: Date, day: Date | undefined): TimeString | undefined {
         const key = `${start.getTime()}-${end.getTime()}-${day}`;
         if (!(key in this.cache)) {
-            this.cache[key] = getOccurrenceTimeString(start, end, day);            
+            this.cache[key] = getOccurrenceTimeString(start, end, day);
         }
         return this.cache[key];
     }
@@ -385,7 +383,7 @@ export class DataManager implements WorkerClass {
         for (let occurrence of event.occurrence_set) {
             const start = new Date(occurrence.start_time);
             const end = new Date(occurrence.end_time);
-            
+
             if (!occurrence.old && ((sameDay(start, day) || sameDay(end, day)))) {
                 return true;
             }
