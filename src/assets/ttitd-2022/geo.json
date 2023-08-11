@@ -1,0 +1,29 @@
+[
+    {
+        "title": "Not Accurate",
+        "clock": "9:00",
+        "street": "G",
+        "coordinates": [
+            -119.21598911904059,
+            40.795840024963383
+        ]
+    },
+    {
+        "title": "Not Accurate",
+        "clock": "6:00",
+        "street": "G",
+        "coordinates": [
+            -119.21593603809804,
+            40.776897403162963
+        ]
+    },
+    {
+        "title": "Not Accurate",
+        "clock": "3:00",
+        "street": "B",
+        "coordinates": [
+            -119.19523827373492,
+            40.780131009710473
+        ]
+    }
+]

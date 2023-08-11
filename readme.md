@@ -19,7 +19,6 @@ You can build and run for iOS with:
 In `assets/ttitd-2023/geo.json` is 3 data points like below:
 ```json
     {
-        "title": "9 & G Plaza from https://bm-innovate.s3.amazonaws.com/2023/GIS/CPNs.json",
         "clock": "9:00",
         "street": "G",
         "coordinates": [

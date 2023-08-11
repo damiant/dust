@@ -2,6 +2,10 @@ ion-item:last-child {
     --inner-border-width: 0;
 }
 
+ion-list {
+    --ion-item-background: transparent;
+}
+
 .flex {
     display: flex;
     justify-content: center;

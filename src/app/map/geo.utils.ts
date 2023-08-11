@@ -1,4 +1,7 @@
 export function setReferencePoints(coords: GpsCoord[], mapXY: Point[]) {
+    if (!coords || coords.length < 3 || !mapXY || mapXY.length < 3) {
+        console.error(`setReferencePoints requires at least 3 GPS points and map points`);
+    }
     gpsCoords = structuredClone(coords);
     bitmapPoints = structuredClone(mapXY);
     console.log('gpsCoords',gpsCoords);

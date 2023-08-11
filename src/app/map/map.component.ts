@@ -119,20 +119,23 @@ export class MapComponent implements OnInit, AfterViewInit {
     if (!this.settings.settings.locationEnabled) {
       return;
     }
-    //const gpsCoord = await this.geo.getPosition();
-    const gpsCoord = { lat: -119.21121456711064, lng: 40.780501492435846 }; // Center Camp
+    const gpsCoord = await this.geo.getPosition();
+    //const gpsCoord = { lat: -119.21121456711064, lng: 40.780501492435846 }; // Center Camp
     console.log('checkGeolocation', gpsCoord);
-    const pt = await this.geo.placeOnMap(gpsCoord,
-      (mapPoint: MapPoint) => {
-        const clock = toClock(mapPoint.clock);
-        const rad = toStreetRadius(mapPoint.street);
-        const circleRad = this.mapInformation!.circleRadius;
-        console.log('checkGeolocation', mapPoint, clock, rad, circleRad);
-        return getPoint(clock, rad, circleRad);
-      }
-    );
-    console.log(pt);
-    this.createPin(pt.x, pt.y, 10, { title: 'center camp', subtitle: '', location: ''});
+    try {
+      const pt = await this.geo.placeOnMap(gpsCoord,
+        (mapPoint: MapPoint) => {
+          const clock = toClock(mapPoint.clock);
+          const rad = toStreetRadius(mapPoint.street);
+          const circleRad = this.mapInformation!.circleRadius;
+          console.log('checkGeolocation', mapPoint, clock, rad, circleRad);
+          return getPoint(clock, rad, circleRad);
+        }
+      );
+      this.createPin(pt.x, pt.y, 10, undefined, 'var(--ion-color-secondary)');
+    } catch (err) {
+      console.error('checkGeolocation.error', err);
+    }
 
   }
 
@@ -157,7 +160,7 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   }
 
-  createPin(x: number, y: number, sz: number, info?: MapInfo) {
+  createPin(x: number, y: number, sz: number, info?: MapInfo, bgColor?: string) {
     console.log(x, y, sz, info)
     const d = document.createElement("div");
     d.style.left = `${x - (sz - 4)}px`;
@@ -170,7 +173,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     d.style.animationDuration = '1s';
     d.style.animationIterationCount = 'infinite';
     d.style.position = 'absolute';
-    d.style.backgroundColor = `var(--ion-color-primary)`;
+    d.style.backgroundColor = bgColor ? bgColor : `var(--ion-color-primary)`;
     d.onclick = (e) => {
       this.info = info;
 
