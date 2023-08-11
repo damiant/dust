@@ -13,6 +13,19 @@ export function now(): Date {
     return environment.simulatedTime;
 }
 
+
+/**
+ * Case Insensitive Compare of 2 strings
+ *
+ * @export
+ * @param {string} s1
+ * @param {string} s2
+ * @returns {boolean} true if the strings are the same
+ */
+export function compareStr(s1: string, s2: string): boolean {
+    return s1.localeCompare(s2, undefined, { sensitivity: 'accent' }) == 0;
+}
+
 export function randomInt(min: number, max: number) { // min and max included 
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
@@ -40,12 +53,12 @@ export function getDayNameFromDate(date: Date): string {
     return date.toLocaleDateString([], { weekday: 'long' });
 }
 
-export function daysBetween(date1: any, date2: any) {
+export function daysUntil(date1: any, date2: any) {
     // The number of milliseconds in one day
     const ONE_DAY = 1000 * 60 * 60 * 24;
 
     // Calculate the difference in milliseconds
-    const differenceMs = Math.abs(date1 - date2);
+    const differenceMs = date1 - date2;
 
     // Convert back to days and return
     return Math.round(differenceMs / ONE_DAY);

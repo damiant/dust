@@ -87,6 +87,10 @@ export function getPointOnCircle(radius: number, degree: number) {
 
 // eg 2:45 => 2.75
 export function toClock(clock: string): number {
+    if (!clock) {
+        console.error(`Invalid clock string`);
+        return 0;
+    }
     const tmp = clock.split(':');
     const v = parseInt(tmp[1]) / 60.0; // eg 2:45 => 45/60 => 0.75
     return parseInt(tmp[0]) + v;

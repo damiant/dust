@@ -1,14 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { PinchZoomModule } from '@meddv/ngx-pinch-zoom';
 import { LocationEnabledStatus, LocationName, MapInfo, MapPoint, Pin } from '../models';
 import { IonicModule, PopoverController } from '@ionic/angular';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { clockToDegree, getPoint, getPointOnCircle, toClock, toRadius, toStreetRadius } from './map.utils';
-import { delay } from '../utils';
+import { getPoint, toClock, toRadius, toStreetRadius } from './map.utils';
+import { compareStr, delay } from '../utils';
 import { GeoService } from '../geo.service';
 import { SettingsService } from '../settings.service';
-import { Point } from './geo.utils';
 import { MessageComponent } from '../message/message.component';
 
 interface MapInformation {
@@ -104,16 +103,14 @@ export class MapComponent implements OnInit, AfterViewInit {
     for (let point of this.points) {
       if (point.x && point.y) {
         this.plotXY(point.x, point.y, point.info);
-      } else if (point.street !== '' && point.street?.localeCompare(LocationName.Unavailable, undefined, { sensitivity: 'accent' })) {
+      } else if (point.street !== '' && compareStr(point.street, LocationName.Unavailable)) {
         this.plot(toClock(point.clock), toStreetRadius(point.street), undefined, point.info);
       } else if (point.feet) {
         if (point.streetOffset && point.clockOffset) {
-          console.log('handle offset', point);
           const offset = getPoint(toClock(point.clockOffset), toStreetRadius(point.streetOffset), this.mapInformation!.circleRadius);
           const center = getPoint(0, 0, this.mapInformation!.circleRadius);
           offset.x -= center.x;
-          offset.y -= center.y;
-          console.log(offset)
+          offset.y -= center.y;          
           this.plot(toClock(point.clock), toRadius(point.feet), offset, point.info);
         } else {
           this.plot(toClock(point.clock), toRadius(point.feet), undefined, point.info);
@@ -123,7 +120,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.checkGeolocation();
   }
 
-  private async checkGeolocation() {    
+  private async checkGeolocation() {
     if (this.settings.settings.locationEnabled === LocationEnabledStatus.Unknown) {
       console.log('Show geolocation message');
       this.showMessage = true;
@@ -143,15 +140,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     //const gpsCoord = { lat: -119.21121456711064, lng: 40.780501492435846 }; // Center Camp
     console.log('checkGeolocation', gpsCoord);
     try {
-      const pt = await this.geo.placeOnMap(gpsCoord,
-        (mapPoint: MapPoint) => {
-          const clock = toClock(mapPoint.clock);
-          const rad = toStreetRadius(mapPoint.street);
-          const circleRad = this.mapInformation!.circleRadius;
-          console.log('checkGeolocation', mapPoint, clock, rad, circleRad);
-          return getPoint(clock, rad, circleRad);
-        }
-      );
+      const pt = await this.geo.placeOnMap(gpsCoord, this.mapInformation!.circleRadius);
       this.createPin(pt.x, pt.y, 10, undefined, 'var(--ion-color-secondary)');
     } catch (err) {
       console.error('checkGeolocation.error', err);

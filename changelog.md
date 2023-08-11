@@ -4,6 +4,7 @@
 - Show your current location on the map
 - Fix background on the more page for dark mode
 - Fix description on map in dark mode
+- Fix for calculation of event start date
 
 ### 1.6
 - Share Art

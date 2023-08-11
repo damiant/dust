@@ -8,7 +8,7 @@ import { SplashScreen } from '@capacitor/splash-screen';
 import { SettingsService } from '../settings.service';
 import { FavoritesService } from '../favorites.service';
 import { MessageComponent } from '../message/message.component';
-import { addDays, daysBetween, delay, isWhiteSpace, now } from '../utils';
+import { addDays, daysUntil, delay, isWhiteSpace, now } from '../utils';
 import { Dataset } from '../models';
 import { datasetFilename } from '../api';
 import { ApiService } from '../api.service';
@@ -101,10 +101,11 @@ export class IntroPage {
     const thisYear = this.vm.selected.year == this.vm.cards[0].year;
     const start = new Date(this.vm.cards[0].start);
     const manBurns = addDays(start, 6);
-    const x = daysBetween(now(), manBurns);
-    const until = daysBetween(now(), start);
+    const x = daysUntil(manBurns, now());
+    const until = daysUntil(start,now());
 
     const hideLocations = (thisYear && until > 1);
+    console.log(`Event starts ${start}, today is ${now()} and there are ${until} days until then`);
     this.db.setHideLocations(hideLocations);
     if (hideLocations && !this.vm.yearSelectedAlready) {
       this.vm.message = `Locations for camps and art will be released in the app on Sunday 27th. There are ${x} days until the man burns.`;
