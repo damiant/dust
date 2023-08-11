@@ -77,16 +77,11 @@ export function addDays(date: Date, days: number) {
 }
 
 export function time(d: Date): string {
-    if (d.getMinutes() != 0) {
-        return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }).toLowerCase().replace(' ', '');
-    }
-    let hrs = d.getHours();
-    const ampm = hrs >= 12 ? 'pm' : 'am';
-    hrs = hrs % 12;
-    if (hrs == 0) {
-        return (ampm == 'pm') ? 'Noon' : 'Midnight';
-    }
-    return `${hrs}${ampm}`;
+    // Burning Man is in PST timezone so report it that way in the UI (useful for people looking in other timezones)
+    const s = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'America/Los_Angeles' }).toLowerCase().replace(' ', '').replace(':00','');
+    if (s == '12am') return 'Midnight';
+    if (s == '12pm') return 'Noon';
+    return s;
 }
 
 export function getOccurrenceTimeString(start: Date, end: Date, day: Date | undefined): TimeString | undefined {

@@ -6,6 +6,7 @@
 - Fix description on map in dark mode
 - Fix for calculation of event start date
 - Fix for selected day
+- Fix for timezones other than PST
 
 ### 1.6
 - Share Art
