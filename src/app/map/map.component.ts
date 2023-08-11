@@ -131,15 +131,15 @@ export class MapComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    if (!await this.geo.checkPermissions()) {
+    const hasGeo = await this.geo.checkPermissions();
+    if (!hasGeo) {
       console.log('Show geolocation message');
       this.showMessage = true;
       return;
     }
-    const gpsCoord = await this.geo.getPosition();
-    //const gpsCoord = { lat: -119.21121456711064, lng: 40.780501492435846 }; // Center Camp
-    console.log('checkGeolocation', gpsCoord);
+    
     try {
+      const gpsCoord = await this.geo.getPosition();
       const pt = await this.geo.placeOnMap(gpsCoord, this.mapInformation!.circleRadius);
       this.createPin(pt.x, pt.y, 10, undefined, 'var(--ion-color-secondary)');
     } catch (err) {

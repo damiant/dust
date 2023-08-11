@@ -16,7 +16,8 @@ export class GeoService {
   // Returns true if you are granted permission
   public async checkPermissions(): Promise<boolean> {
     const status = await Geolocation.checkPermissions();
-    return !(status.location == 'denied' || status.coarseLocation == 'denied');
+    console.log(status);
+    return (status.location == 'granted' || status.coarseLocation == 'granted');
   }
 
   public async getPermission(): Promise<boolean> {
