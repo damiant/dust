@@ -159,7 +159,7 @@ export class EventsPage implements OnInit {
 
   private updateTitle() {
     const day = this.db.selectedDay();
-    this.vm.title = (day !== noDate()) ? day.toLocaleDateString('en-US', { weekday: 'long' }) : 'Events';
+    this.vm.title = (!sameDay(day,noDate())) ? day.toLocaleDateString('en-US', { weekday: 'long' }) : 'Events';
   }
 
   map(event: Event) {
