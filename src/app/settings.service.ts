@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Settings } from './models';
+import { LocationEnabledStatus, Settings } from './models';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class SettingsService {
     try {
       return JSON.parse(localStorage['settings']);
     } catch {
-      return { dataset: '', lastDownload: '', eventTitle: '', locationEnabled: false };
+      return { dataset: '', lastDownload: '', eventTitle: '', locationEnabled: LocationEnabledStatus.Unknown };
     }
   }
 

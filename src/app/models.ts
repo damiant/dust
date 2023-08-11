@@ -113,11 +113,17 @@ export interface Favorites {
   friends: Friend[];
 }
 
+export enum LocationEnabledStatus {
+  Unknown = 0,
+  Enabled = 1,
+  Disabled = 2
+}
+
 export interface Settings {
   dataset: string;
   eventTitle: string;
   lastDownload: string;
-  locationEnabled: boolean;
+  locationEnabled: LocationEnabledStatus;
 }
 
 export interface Dataset {

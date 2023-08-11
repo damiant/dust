@@ -12,6 +12,7 @@ import { DbService } from '../db.service';
 import { TileContainerComponent } from '../tile-container/tile-container.component';
 import { TileComponent } from '../tile/tile.component';
 import { GeoService } from '../geo.service';
+import { LocationEnabledStatus } from '../models';
 
 @Component({
   selector: 'app-profile',
@@ -34,7 +35,7 @@ export class ProfilePage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.locationEnabled = this.settings.settings.locationEnabled;
+    this.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
   }
 
   ionViewDidEnter() {
@@ -65,7 +66,7 @@ export class ProfilePage implements OnInit {
     } else {
       this.locationEnabled = false;
     }
-    this.settings.settings.locationEnabled = this.locationEnabled;
+    this.settings.settings.locationEnabled = this.locationEnabled ? LocationEnabledStatus.Enabled : LocationEnabledStatus.Disabled;
     this.settings.save();
   }
 

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { PinchZoomModule } from '@meddv/ngx-pinch-zoom';
-import { LocationName, MapInfo, MapPoint, Pin } from '../models';
+import { LocationEnabledStatus, LocationName, MapInfo, MapPoint, Pin } from '../models';
 import { IonicModule, PopoverController } from '@ionic/angular';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { clockToDegree, getPoint, getPointOnCircle, toClock, toRadius, toStreetRadius } from './map.utils';
@@ -9,6 +9,7 @@ import { delay } from '../utils';
 import { GeoService } from '../geo.service';
 import { SettingsService } from '../settings.service';
 import { Point } from './geo.utils';
+import { MessageComponent } from '../message/message.component';
 
 interface MapInformation {
   width: number; // Width of the map
@@ -20,7 +21,7 @@ interface MapInformation {
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
-  imports: [IonicModule, PinchZoomModule, CommonModule],
+  imports: [IonicModule, PinchZoomModule, CommonModule, MessageComponent],
   standalone: true,
   animations: [
     trigger('fade', [
@@ -37,6 +38,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   @ViewChild('popover') popover: any;
   info: MapInfo | undefined;
   src = 'assets/map.svg';
+  showMessage = false;
   pins: Pin[] = [];
   private mapInformation: MapInformation | undefined;
   @ViewChild('zoom') zoom!: ElementRef;
@@ -50,13 +52,19 @@ export class MapComponent implements OnInit, AfterViewInit {
     }
   }
 
-
-
   ngAfterViewInit() {
   }
 
   ready() {
     this.imageReady = true;
+  }
+
+  async enableGeoLocation() {
+    if (await this.geo.getPermission()) {
+      this.settings.settings.locationEnabled = LocationEnabledStatus.Enabled;
+      this.settings.save();
+      this.checkGeolocation();
+    }
   }
 
 
@@ -115,8 +123,20 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.checkGeolocation();
   }
 
-  private async checkGeolocation() {
-    if (!this.settings.settings.locationEnabled) {
+  private async checkGeolocation() {    
+    if (this.settings.settings.locationEnabled === LocationEnabledStatus.Unknown) {
+      console.log('Show geolocation message');
+      this.showMessage = true;
+      return;
+    }
+    if (this.settings.settings.locationEnabled === LocationEnabledStatus.Disabled) {
+      console.log('Geolocation is disabled');
+      return;
+    }
+
+    if (!await this.geo.checkPermissions()) {
+      console.log('Show geolocation message');
+      this.showMessage = true;
       return;
     }
     const gpsCoord = await this.geo.getPosition();
