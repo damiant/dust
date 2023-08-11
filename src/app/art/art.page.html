@@ -3,7 +3,8 @@
     <ion-title>
       Art
     </ion-title>
-    <ion-badge  class="pad-right" *ngIf="db.selectedYear() !== ''" (click)="home()" slot="end">{{db.selectedYear()}}</ion-badge>
+    <ion-badge class="pad-right" *ngIf="db.selectedYear() !== ''" (click)="home()"
+      slot="end">{{db.selectedYear()}}</ion-badge>
   </ion-toolbar>
 </ion-header>
 
@@ -17,21 +18,18 @@
         <app-search placeholder="Find Art" (search)="search($event)"></app-search>
       </ion-toolbar>
     </ion-header>
-    <div [hidden]="arts.length > 0 || busy" class="center pad-top">
-      <ion-text class="large" color="medium">{{noArtMessage}}</ion-text>
+    <div [hidden]="vm.arts.length > 0 || vm.busy" class="center pad-top">
+      <ion-text class="large" color="medium">{{vm.noArtMessage}}</ion-text>
     </div>
-    <div [hidden]="!busy">
+    <div [hidden]="!vm.busy">
       <app-skeleton-art />
       <app-skeleton-art />
       <app-skeleton-art />
       <app-skeleton-art />
     </div>
-    <cdk-virtual-scroll-viewport [minBufferPx]="minBufferPx" itemSize="180" maxBufferPx="2350">
-      <app-art *ngFor="let art of arts; trackBy: artTrackBy" (artClick)="click($event)" [showImage]="showImage"
+    <cdk-virtual-scroll-viewport [minBufferPx]="vm.minBufferPx" itemSize="180" maxBufferPx="2350">
+      <app-art *ngFor="let art of vm.arts; trackBy: artTrackBy" (artClick)="click($event)" [showImage]="vm.showImage"
         [art]="art" />
     </cdk-virtual-scroll-viewport>
-    <!-- <li-virtual-scroll [viewCache]="256" [items]="arts" [trackBy]="artTrackBy" [itemHeight]="showImage ? 404 : 180">
-    <app-art (artClick)="click($event)" [showImage]="showImage" [art]="art" *liVirtualItem="let art" />
-  </li-virtual-scroll> -->
   </div>
 </ion-content>

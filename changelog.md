@@ -3,6 +3,7 @@
 ### 1.7
 - Show your current location on the map
 - Fix background on the more page for dark mode
+- Fix description on map in dark mode
 
 ### 1.6
 - Share Art

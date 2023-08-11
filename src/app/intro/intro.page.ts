@@ -16,6 +16,28 @@ import { StatusBar, Style } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
 import { ThemePrimaryColor, UiService } from '../ui.service';
 
+interface IntroState {
+  ready: boolean,
+  showMessage: boolean
+  downloading: boolean
+  yearSelectedAlready: boolean
+  cards: Dataset[];
+  selected: Dataset | undefined;
+  message: string;
+}
+
+function initialState(): IntroState {
+  return {
+    ready: true,
+    showMessage: false,
+    downloading: false,
+    yearSelectedAlready: true,
+    cards: [],
+    selected: undefined,
+    message: ''
+  }
+}
+
 @Component({
   selector: 'app-intro',
   templateUrl: './intro.page.html',
@@ -23,26 +45,24 @@ import { ThemePrimaryColor, UiService } from '../ui.service';
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, RouterModule, MessageComponent]
 })
-export class IntroPage implements OnInit {
-  ready = true;
-  showMessage = false;
-  downloading = false;
-  yearSelectedAlready = true;
-  cards: Dataset[] = [];
-  selected: Dataset | undefined;
-  message = '';
+export class IntroPage {
+  vm: IntroState = initialState();
 
   constructor(private db: DbService, private api: ApiService,
     private settingsService: SettingsService, private ui: UiService,
     private fav: FavoritesService, private router: Router) { }
 
-  async ngOnInit() {
+  async ionViewWillEnter() {
+    this.vm = initialState();
     // Whether the user has selected a year previously
-    this.yearSelectedAlready = !isWhiteSpace(this.settingsService.settings.dataset);
+    this.vm.yearSelectedAlready = !isWhiteSpace(this.settingsService.settings.dataset);
 
-    this.cards = await this.loadDatasets();
+    this.vm.cards = await this.loadDatasets();
+    // need to load
+    this.load();
+  }
 
-
+  async ionViewDidEnter() {
     this.ui.setNavigationBar(ThemePrimaryColor);
     await delay(500);
     if (Capacitor.isNativePlatform()) {
@@ -53,71 +73,62 @@ export class IntroPage implements OnInit {
       await this.ui.setStatusBarBackgroundColor();
     }
 
-    // need to load
-    this.load();
-    
     try {
-      this.downloading = true;
+      this.vm.downloading = true;
       await this.api.download();
     } finally {
-      this.downloading = false;
+      this.vm.downloading = false;
     }
-    if (this.yearSelectedAlready) {
+    if (this.vm.yearSelectedAlready) {
       this.go();
     }
   }
 
   private load() {
-    const idx = this.cards.findIndex((c) => datasetFilename(c) == this.settingsService.settings.dataset);
-
+    const idx = this.vm.cards.findIndex((c) => datasetFilename(c) == this.settingsService.settings.dataset);
     if (idx >= 0) {
-      this.selected = this.cards[idx];     
-      console.log('intro.load', this.selected); 
+      this.vm.selected = this.vm.cards[idx];
+      console.log('intro.load', this.vm.selected);
     } else {
       // First time in: select this year
-      this.selected = this.cards[0];
+      this.vm.selected = this.vm.cards[0];
       this.save();
     }
-    
-  }
-
-  ionViewWillEnter() {
-    this.showMessage = false;
   }
 
   async go() {
-    if (!this.selected) return;
-    const thisYear = this.selected.year == this.cards[0].year;
-    const start = new Date(this.cards[0].start);
+    if (!this.vm.selected) return;
+    const thisYear = this.vm.selected.year == this.vm.cards[0].year;
+    const start = new Date(this.vm.cards[0].start);
     const manBurns = addDays(start, 6);
     const x = daysBetween(now(), manBurns);
     const until = daysBetween(now(), start);
 
-
     const hideLocations = (thisYear && until > 1);
     this.db.setHideLocations(hideLocations);
-    //console.log(start, manBurns, x, until);
-    if (hideLocations && !this.yearSelectedAlready) {
-      this.message = `Locations for camps and art will be released in the app on Sunday 27th. There are ${x} days until the man burns.`;
-      this.showMessage = true;
+    if (hideLocations && !this.vm.yearSelectedAlready) {
+      this.vm.message = `Locations for camps and art will be released in the app on Sunday 27th. There are ${x} days until the man burns.`;
+      this.vm.showMessage = true;
     } else {
+      this.vm.showMessage = false;
       this.launch();
     }
   }
 
   async launch() {
     try {
-      if (!this.selected) return;
-      this.ready = false;
+      if (!this.vm.selected) return;
+      this.vm.ready = false;
+      this.vm.showMessage = false;
+
       await this.db.init(this.settingsService.settings.dataset);
       await this.api.sendDataToWorker();
       this.fav.init(this.settingsService.settings.dataset);
-      const title = (this.selected.year == this.cards[0].year) ? '' : this.selected.year;
+      const title = (this.vm.selected.year == this.vm.cards[0].year) ? '' : this.vm.selected.year;
       this.db.selectedYear.set(title);
       if (Capacitor.isNativePlatform()) {
         setTimeout(async () => {
           this.ui.setNavigationBar();
-          //this.ui.hideNavigationBar();
           StatusBar.setStyle({ style: this.ui.darkMode() ? Style.Dark : Style.Light });
           this.ui.setStatusBarBackgroundColor(this.ui.darkMode() ? '#000000' : '#FFFFFF');
         }, 100);
@@ -125,19 +136,19 @@ export class IntroPage implements OnInit {
       await this.router.navigateByUrl('/tabs/events');
     } finally {
       setTimeout(() => {
-        this.ready = true;
+        this.vm.ready = true;
       }, 2000);
     }
   }
 
   open(card: Dataset) {
-    this.selected = card;
+    this.vm.selected = card;
     this.save();
   }
 
   save() {
-    this.settingsService.settings.dataset = datasetFilename(this.selected!);
-    this.settingsService.settings.eventTitle = this.selected!.title;
+    this.settingsService.settings.dataset = datasetFilename(this.vm.selected!);
+    this.settingsService.settings.eventTitle = this.vm.selected!.title;
     this.settingsService.save();
   }
 

@@ -45,8 +45,7 @@ export class TabsPage implements OnInit {
     })
   }
 
-  async ngOnInit() {
-    await this.db.init(this.settingsService.settings.dataset);
+  async ngOnInit() {    
     this.ready = true;
   }
 

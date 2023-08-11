@@ -14,12 +14,14 @@ export class DbService {
   private worker!: Worker;
 
   public async init(dataset: string) {
-    if (this.initialized) return;
-    this.worker = new Worker(new URL('./app.worker', import.meta.url));
-    registerWorker(this.worker);
+    if (!this.initialized) {
+      this.worker = new Worker(new URL('./app.worker', import.meta.url));
+      registerWorker(this.worker);
+      this.initialized = true;
+    }
 
     await call(this.worker, DataMethods.Populate, dataset, this.hideLocations);
-    this.initialized = true;
+
   }
 
   public checkInit() {
@@ -67,7 +69,7 @@ export class DbService {
   public async getCampList(ids: string[]): Promise<Camp[]> {
     return await call(this.worker, DataMethods.GetCampList, ids);
   }
-  
+
   public async getArtList(ids: string[]): Promise<Art[]> {
     return await call(this.worker, DataMethods.GetArtList, ids);
   }
@@ -97,7 +99,7 @@ export class DbService {
   }
 
   public async getEvents(idx: number, count: number): Promise<Event[]> {
-    return await call(this.worker,DataMethods.GetEvents, idx, count);
+    return await call(this.worker, DataMethods.GetEvents, idx, count);
   }
 
   public async setDataset(dataset: string, events: Event[], camps: Camp[], art: Art[]): Promise<void> {

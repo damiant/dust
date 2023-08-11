@@ -18,13 +18,13 @@
         <app-search placeholder="Find Camps" (search)="search($event)" />
       </ion-toolbar>
     </ion-header>
-    <app-map-modal [title]="mapTitle" [subtitle]="mapSubtitle" [(show)]="showMap" [points]="mapPoints"></app-map-modal>
-    <div *ngIf="camps.length === 0" class="center pad-top">
-      <ion-text class="large" color="medium">{{noCampsMessage}}</ion-text>
+    <app-map-modal [title]="vm.mapTitle" [subtitle]="vm.mapSubtitle" [(show)]="vm.showMap" [points]="vm.mapPoints"></app-map-modal>
+    <div *ngIf="vm.camps.length === 0" class="center pad-top">
+      <ion-text class="large" color="medium">{{vm.noCampsMessage}}</ion-text>
     </div>
-    <cdk-virtual-scroll-viewport itemSize="180" [minBufferPx]="minBufferPx" maxBufferPx="1350">
+    <cdk-virtual-scroll-viewport itemSize="180" [minBufferPx]="vm.minBufferPx" maxBufferPx="1350">
       <app-camp [camp]="camp" title="Camps" (mapClick)="map($event)"
-        *cdkVirtualFor="let camp of camps; trackBy: campsTrackBy" />
+        *cdkVirtualFor="let camp of vm.camps; trackBy: campsTrackBy" />
     </cdk-virtual-scroll-viewport>
   </div>
 </ion-content>

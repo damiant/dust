@@ -1,5 +1,5 @@
 import { Component, ViewChild, effect } from '@angular/core';
-import { IonContent, IonicModule } from '@ionic/angular';
+import { IonicModule } from '@ionic/angular';
 import { Art } from '../models';
 import { DbService } from '../db.service';
 import { Router, RouterLink, Scroll } from '@angular/router';
@@ -12,6 +12,25 @@ import { SkeletonArtComponent } from '../skeleton-art/skeleton-art.component';
 import { isWhiteSpace } from '../utils';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 
+interface ArtState {
+  showImage: boolean,
+  busy: boolean,
+  noArtMessage: string,
+  arts: Art[],
+  minBufferPx: number
+}
+
+
+function initialState(): ArtState {
+  return {
+    showImage: false,
+    busy: true,
+    noArtMessage: 'No art was found',
+    arts: [],
+    minBufferPx: 1900
+  };
+}
+
 @Component({
   selector: 'app-arts',
   templateUrl: 'art.page.html',
@@ -21,40 +40,42 @@ import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrollin
     ArtComponent, SearchComponent, SkeletonArtComponent],
 })
 export class ArtPage {
-  showImage = false;
-  public busy = true;
-  public noArtMessage = 'No art was found';
-  arts: Art[] = [];
-  minBufferPx = 1900;
+  vm: ArtState = initialState();
+
   @ViewChild(CdkVirtualScrollViewport) virtualScroll!: CdkVirtualScrollViewport;
 
   constructor(public db: DbService, private ui: UiService, private router: Router) {
     effect(() => {
       this.ui.scrollUp('art', this.virtualScroll);
     });
+    effect(() => {
+      const year = this.db.selectedYear();
+      console.log(`ArtPage.yearChange ${year}`);
+      this.vm = initialState();
+      this.init();
+    });
   }
+
 
   home() {
     this.ui.home();
   }
 
-  async ionViewDidEnter() {
-    if (this.arts.length > 0) {
-      this.hack();
-      return;
-    }
-
-    this.busy = true;
+  init() {
+    this.vm.busy = true;
     setTimeout(async () => {
       try {
         const status = await Network.getStatus();
-        this.showImage = (status.connectionType == 'wifi');
+        this.vm.showImage = (status.connectionType == 'wifi');
         await this.update(undefined);
       } finally {
-        this.busy = false;
+        this.vm.busy = false;
       }
     }, 500);
+  }
 
+  async ionViewDidEnter() {
+    this.hack();
   }
 
   handleInput(event: any) {
@@ -64,14 +85,13 @@ export class ArtPage {
   search(val: string | undefined | null) {
     if (!val) return;
     this.virtualScroll.scrollToOffset(0, 'smooth');
-    console.log(`Search for art "${val}"`);
-    this.noArtMessage = isWhiteSpace(val) ? `No art were found.` : `No art were found matching "${val}"`;
+    this.vm.noArtMessage = isWhiteSpace(val) ? `No art were found.` : `No art were found matching "${val}"`;
     this.update(val.toLowerCase());
   }
 
   private hack() {
     // Hack to ensure tab view is updated on switch of tabs or when day is changed
-    this.minBufferPx = (this.minBufferPx == 1901) ? 1900 : 1901;
+    this.vm.minBufferPx = (this.vm.minBufferPx == 1901) ? 1900 : 1901;
   }
 
   artTrackBy(index: number, art: Art) {
@@ -79,7 +99,7 @@ export class ArtPage {
   }
 
   private async update(search: string | undefined) {
-    this.arts = await this.db.findArts(search);
+    this.vm.arts = await this.db.findArts(search);
   }
 
   click(art: Art) {

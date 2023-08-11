@@ -397,7 +397,6 @@ export class DataManager implements WorkerClass {
         const name = date.toLocaleDateString();
         const day = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
         if (!this.days.includes(day)) {
-            console.log(day);
             this.days.push(day);
         }
     }

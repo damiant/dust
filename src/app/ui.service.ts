@@ -1,12 +1,13 @@
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Injectable, signal } from '@angular/core';
-import { randomInt } from './utils';
-import { IonContent } from '@ionic/angular';
+import { delay, randomInt } from './utils';
+import { IonContent, NavController } from '@ionic/angular';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
 import { NavigationBar } from '@mauricewegner/capacitor-navigation-bar';
 import { Share, ShareOptions } from '@capacitor/share';
+import { Router } from '@angular/router';
 
 export const ThemePrimaryColor = '#F61067';
 
@@ -15,7 +16,7 @@ export const ThemePrimaryColor = '#F61067';
 })
 export class UiService {
   private clickedTab = signal('');
-  constructor() { }
+  constructor(private router: Router, public navCtrl: NavController) { }
 
   public scrollUp(name: string, virtualScroll: CdkVirtualScrollViewport) {
     const tab = this.clickedTab();
@@ -27,7 +28,7 @@ export class UiService {
 
   public async setNavigationBar(color?: string) {
     if (this.isAndroid()) {
-      let bcolor = color ? color : this.darkMode() ? '#000000': '#FFFFFF';
+      let bcolor = color ? color : this.darkMode() ? '#000000' : '#FFFFFF';
       await NavigationBar.setColor({ color: bcolor, darkButtons: !this.darkMode() });
     }
   }
@@ -56,16 +57,11 @@ export class UiService {
 
   public async home() {
     if (Capacitor.isNativePlatform()) {
-      await SplashScreen.show();
-      setTimeout(async () => {
-        await StatusBar.setStyle({ style: Style.Dark });
-        await this.setStatusBarBackgroundColor();
-      }, 500);
-
+      await StatusBar.setStyle({ style: Style.Dark });
+      await this.setStatusBarBackgroundColor();
     }
 
-
-    document.location.href = '/';
+    this.navCtrl.navigateRoot('/', { animated: false });
   }
 
   public async setStatusBarBackgroundColor(color?: string) {

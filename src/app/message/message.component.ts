@@ -9,8 +9,9 @@ import { IonicModule } from '@ionic/angular';
   imports: [IonicModule]
 })
 export class MessageComponent  implements OnInit {
+
   @Input() show = false;
-  @Output() showChange = new EventEmitter<boolean>();
+
   @Input() message = '';
   @Input() title = '';
   @Output() dismissed = new EventEmitter<void>();
@@ -19,8 +20,7 @@ export class MessageComponent  implements OnInit {
   ngOnInit() {}
 
   close() {    
-    this.show = false;
-    this.showChange.emit(false);    
+    this.show = false; 
   }
 
   dismiss() {
