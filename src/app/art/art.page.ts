@@ -7,9 +7,8 @@ import { CommonModule } from '@angular/common';
 import { ArtComponent } from './art.component';
 import { UiService } from '../ui.service';
 import { SearchComponent } from '../search/search.component';
-import { Network } from '@capacitor/network';
 import { SkeletonArtComponent } from '../skeleton-art/skeleton-art.component';
-import { isWhiteSpace } from '../utils';
+import { delay, isWhiteSpace } from '../utils';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 
 interface ArtState {
@@ -67,14 +66,13 @@ export class ArtPage {
   }
 
   async init() {
-    this.vm.busy = true;
-    // setTimeout(async () => {
-       try {
-        await this.update(undefined);
-      } finally {
-        this.vm.busy = false;
-      }
-    //}, 500);
+    try {
+      this.vm.busy = true;
+      await delay(100);
+      await this.update(undefined);
+    } finally {
+      this.vm.busy = false;
+    }
   }
 
   async ionViewDidEnter() {
