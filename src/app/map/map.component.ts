@@ -51,6 +51,9 @@ export class MapComponent implements OnInit, AfterViewInit {
     }
   }
 
+  ngAfterContentInit() {
+  }
+
   ngAfterViewInit() {
   }
 
@@ -97,7 +100,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     }
   }
   async update() {
-//    await delay(1500);
+    await delay(150);
     this.setMapInformation();
 
     for (let point of this.points) {

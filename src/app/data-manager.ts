@@ -1,6 +1,6 @@
 import { WorkerClass } from './worker-interface';
 import { Art, Camp, DataMethods, Day, Event, GeoRef, LocationName, MapSet, Pin, TimeString } from './models';
-import { getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from './utils';
+import { BurningManTimeZone, getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from './utils';
 
 interface TimeCache {
     [index: string]: TimeString | undefined;
@@ -153,18 +153,17 @@ export class DataManager implements WorkerClass {
                 const hrs = this.hoursBetween(start, end);
                 if (hrs > 24) {
                     //const old = occurrence.end_time;
-                    occurrence.end_time = new Date(start.getFullYear(), start.getMonth(), start.getDate(), end.getHours(), end.getMinutes()).toISOString();
+                    occurrence.end_time = new Date(start.getFullYear(), start.getMonth(), start.getDate(), end.getHours(), end.getMinutes()).toLocaleString('en-US', { timeZone: BurningManTimeZone })
                     //const newHrs = this.hoursBetween(new Date(occurrence.start_time), new Date(occurrence.end_time));
                     end = new Date(occurrence.end_time);
                     //console.log(`Fixed end time of ${event.title} from ${old}=>${occurrence.end_time} (starting ${occurrence.start_time}) because event was ${hrs} hours long. Now ${newHrs} hours long.`);
                 }
-                if (end.getHours() == 0 && end.getMinutes() == 0) {
-                    // Midnight is set to 11:59
-                    const prev = end;
 
-                    occurrence.end_time = new Date(start.getFullYear(), start.getMonth(), start.getDate(), 23, 59).toISOString();
+                // Change midnight to 11:49 so that it works with the sameday function
+                if (occurrence.end_time.endsWith('T00:00:00-07:00')) {
+                    const t = occurrence.start_time.split('T');
+                    occurrence.end_time = t[0]+'T23:59:00-07:00';
                     end = new Date(occurrence.end_time);
-                    //console.log(`Fixed midnight ${event.name} ${prev}=>${end}`);
                 }
                 const res = this.getOccurrenceTimeStringCached(start, end, undefined);
                 occurrence.longTimeString = res ? res.long : 'Unknown';

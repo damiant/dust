@@ -4,7 +4,6 @@ Analog Internet Installation
 Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
 
 - Favorites by distance
-- Ice and Medical broken
 - Hydration station may be "all day" or 24 hours
 - RSL tab
 
