@@ -61,6 +61,9 @@ export function call(worker: Worker, method: DataMethods, ...args: any[]): Promi
 
 
     calls.push(callPromise);
+    if (!worker) {
+        console.error('no worker defined');
+    }
     worker.postMessage({ method, id, arguments: args });
     return callPromise.promise;
 }
