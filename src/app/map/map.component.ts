@@ -45,7 +45,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   @ViewChild('mapc') mapc!: ElementRef;
   @Input() height: string = 'height: 100%';
   @Input('points') set setPoints(points: MapPoint[]) {
-    this.points = points;
+    this.points = points;    
     if (this.points.length > 0) {
       this.update();
     }
@@ -97,13 +97,14 @@ export class MapComponent implements OnInit, AfterViewInit {
     }
   }
   async update() {
-    await delay(150);
+//    await delay(1500);
     this.setMapInformation();
 
     for (let point of this.points) {
+      
       if (point.x && point.y) {
         this.plotXY(point.x, point.y, point.info);
-      } else if (point.street !== '' && compareStr(point.street, LocationName.Unavailable)) {
+      } else if (point.street !== '' && !compareStr(point.street, LocationName.Unavailable)) {        
         this.plot(toClock(point.clock), toStreetRadius(point.street), undefined, point.info);
       } else if (point.feet) {
         if (point.streetOffset && point.clockOffset) {
@@ -117,7 +118,7 @@ export class MapComponent implements OnInit, AfterViewInit {
         }
       }
     }
-    this.checkGeolocation();
+    await this.checkGeolocation();
   }
 
   private async checkGeolocation() {
@@ -169,8 +170,7 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   }
 
-  createPin(x: number, y: number, sz: number, info?: MapInfo, bgColor?: string) {
-    console.log(x, y, sz, info)
+  createPin(x: number, y: number, sz: number, info?: MapInfo, bgColor?: string) {    
     const d = document.createElement("div");
     d.style.left = `${x - (sz - 4)}px`;
     d.style.top = `${y - sz + 4}px`;
@@ -185,8 +185,6 @@ export class MapComponent implements OnInit, AfterViewInit {
     d.style.backgroundColor = bgColor ? bgColor : `var(--ion-color-primary)`;
     d.onclick = (e) => {
       this.info = info;
-
-      console.log(this.info);
       this.presentPopover(e);
     };
     const c: HTMLElement = this.mapc.nativeElement;
@@ -232,7 +230,6 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   store(x: number, y: number) {
     this.pins.push({ x, y });
-    console.log(JSON.stringify(this.pins));
   }
 }
 

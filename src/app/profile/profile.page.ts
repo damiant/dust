@@ -35,6 +35,7 @@ export class ProfilePage implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.db.checkInit();
     this.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
   }
 

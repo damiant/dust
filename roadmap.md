@@ -6,8 +6,6 @@ Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
 - Favorites by distance
 - Ice and Medical broken
 - Hydration station may be "all day" or 24 hours
-- Fix restart (reload can just spin)
-- Day fix
 - RSL tab
 
 - Show Date/Times in PST regardless of users timezone
