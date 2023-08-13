@@ -1,4 +1,6 @@
 ## Changes
+### 1.8
+- Fix timezone used when device timezone is not event timezone
 
 ### 1.7
 - Show your current location on the map
