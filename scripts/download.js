@@ -37,6 +37,25 @@ async function download(name, year, filename, folder, options) {
             }
         }
 
+        if (item.all_day == null) {
+            item.all_day = undefined;
+        }
+        if (item.located_at_art == null) {
+            item.located_at_art = undefined;
+        }
+        if (item.other_location == null) {
+            item.other_location = undefined;
+        }
+        if (item.other_location == '') {
+            item.other_location = undefined;
+        }
+        if (item.check_location == 0) {
+            item.check_location = undefined;
+        }
+        if (item.url == null) {
+            item.url = undefined;
+        }
+
         // Clear unneeded properties
         item.program = undefined;
         item.donation_link = undefined;
@@ -75,6 +94,7 @@ async function download(name, year, filename, folder, options) {
                 item.location.string = item.location.string.replace(' None None','');
                 console.warn(`Fixed location ${item.name} to ${item.location_string}`);
             }
+            item.location = undefined;
             if (item.location_string == 'None & None') {
                 if (!item.description) {
                     item.invalid = true;
