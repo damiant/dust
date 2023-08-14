@@ -173,9 +173,13 @@ export class DataManager implements WorkerClass {
                 const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
                 art.gpsCoords = gpsCoords;
             }
-            if (!art.location_string || hideLocations) {
+            if (!art.location_string) {
+                art.location_string = LocationName.Unplaced;
+            }
+            if (hideLocations) {
                 art.location_string = LocationName.Unavailable;
-            }        }
+            }
+        }
         this.days = [];
         this.categories = [];
         this.allEventsOld = !this.checkEvents();
@@ -437,11 +441,11 @@ export class DataManager implements WorkerClass {
         return `(${rounded}mi)`;
     }
 
-    public findArts(query: string | undefined, coords: GpsCoord | undefined): Art[] {       
+    public findArts(query: string | undefined, coords: GpsCoord | undefined): Art[] {
         const result: Art[] = [];
         for (let art of this.art) {
-            if (coords) {                
-                art.distance = distance(coords, art.gpsCoords);                
+            if (coords) {
+                art.distance = distance(coords, art.gpsCoords);
                 art.distanceInfo = this.formatDistance(art.distance);
             }
             if (!query || art.name.toLowerCase().includes(query.toLowerCase())) {

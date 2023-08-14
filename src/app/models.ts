@@ -31,7 +31,8 @@ export interface Event {
 }
 
 export enum LocationName {
-  Unavailable = 'Location Available Soon'
+  Unavailable = 'Location Available Soon',
+  Unplaced = 'Unplaced'
 }
 
 export interface Revision {
