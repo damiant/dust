@@ -87,6 +87,9 @@ export class EventsPage implements OnInit {
   ngOnInit() {
     App.addListener('resume', async () => {
       this.setToday(now());
+      const until = await this.db.daysUntilStarts();
+      console.log(`${until} days until event.`);
+      this.db.setHideLocations(until > 1);
       await this.db.checkEvents();
       this.update();
     });

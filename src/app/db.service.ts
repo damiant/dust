@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
-import { Event, Day, Camp, Art, Pin, DataMethods, MapSet, GeoRef } from './models';
+import { Event, Day, Camp, Art, Pin, DataMethods, MapSet, GeoRef, Dataset } from './models';
 import { call, registerWorker } from './worker-interface';
-import { noDate } from './utils';
+import { daysUntil, noDate, now } from './utils';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +41,22 @@ export class DbService {
 
   public async checkEvents(day?: Date): Promise<void> {
     return await call(this.worker, DataMethods.CheckEvents, day);
+  }
+
+  public async loadDatasets(): Promise<Dataset[]> {
+    const res = await fetch('assets/datasets/datasets.json');
+    return await res.json();
+  }
+
+  public async daysUntilStarts() {
+    const datasets = await this.loadDatasets();
+    console.log('daysUntilStarts', this.selectedYear());
+    const year = (this.selectedYear() == '') ? datasets[0].year : this.selectedYear();
+    const dataset = datasets.find((d) => d.year == year);
+
+    const start = new Date(dataset!.start);
+    const until = daysUntil(start,now());
+    return until;
   }
 
   public async findEvents(query: string, day: Date | undefined, category: string): Promise<Event[]> {

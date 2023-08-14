@@ -58,7 +58,7 @@ export class IntroPage {
     // Whether the user has selected a year previously
     this.vm.yearSelectedAlready = !isWhiteSpace(this.settingsService.settings.dataset);
 
-    this.vm.cards = await this.loadDatasets();
+    this.vm.cards = await this.db.loadDatasets();
     // need to load
     this.load();
   }
@@ -156,11 +156,6 @@ export class IntroPage {
     this.settingsService.settings.dataset = datasetFilename(this.vm.selected!);
     this.settingsService.settings.eventTitle = this.vm.selected!.title;
     this.settingsService.save();
-  }
-
-  private async loadDatasets(): Promise<Dataset[]> {
-    const res = await fetch('assets/datasets/datasets.json');
-    return await res.json();
   }
 
 }
