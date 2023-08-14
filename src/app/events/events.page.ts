@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, effect } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ToastController } from '@ionic/angular';
 import { DbService } from '../db.service';
 import { Day, Event, MapPoint } from '../models';
 import { CommonModule } from '@angular/common';
@@ -15,6 +15,8 @@ import { CategoryComponent } from '../category/category.component';
 import { SkeletonEventComponent } from '../skeleton-event/skeleton-event.component';
 import { SearchComponent } from '../search/search.component';
 import { toMapPoint } from '../map/map.utils';
+import { GpsCoord } from '../map/geo.utils';
+import { GeoService } from '../geo.service';
 
 interface EventsState {
   title: string,
@@ -32,7 +34,9 @@ interface EventsState {
   mapTitle: string,
   mapSubtitle: string,
   mapPoints: MapPoint[],
-  minBufferPx: number
+  minBufferPx: number,
+  byDist: boolean,
+  displayedDistMessage: boolean
 }
 
 function initialState(): EventsState {
@@ -52,6 +56,8 @@ function initialState(): EventsState {
     mapTitle: '',
     mapSubtitle: '',
     mapPoints: [],
+    byDist: false,
+    displayedDistMessage: false,
     minBufferPx: 1900
   };
 }
@@ -71,13 +77,19 @@ export class EventsPage implements OnInit {
 
   @ViewChild(CdkVirtualScrollViewport) virtualScroll!: CdkVirtualScrollViewport;
 
-  constructor(public db: DbService, private ui: UiService) {
+  constructor(
+    public db: DbService, 
+    private ui: UiService, 
+    private toastController: ToastController,
+    private geo: GeoService
+    ) {
     effect(() => {
       this.ui.scrollUp('events', this.virtualScroll);
     });
     effect(() => {
       const year = this.db.selectedYear();
       console.log(`EventsPage.yearChange ${year}`);
+      this.db.checkInit();
       this.vm = initialState();
       this.init();
     });
@@ -86,6 +98,9 @@ export class EventsPage implements OnInit {
   ngOnInit() {
     App.addListener('resume', async () => {
       this.setToday(now());
+      const until = await this.db.daysUntilStarts();
+      console.log(`${until} days until event.`);
+      this.db.setHideLocations(until > 1);
       await this.db.checkEvents();
       this.update();
     });
@@ -106,6 +121,15 @@ export class EventsPage implements OnInit {
   }
 
   public categoryChanged() {
+    this.update(true);
+  }
+
+  toggleByDist() {
+    this.vm.byDist = !this.vm.byDist;
+    if (this.vm.byDist && !this.vm.displayedDistMessage) {
+      this.ui.presentToast(`Displaying events sorted by distance`, this.toastController);
+      this.vm.displayedDistMessage = true;
+    }
     this.update(true);
   }
 
@@ -170,7 +194,11 @@ export class EventsPage implements OnInit {
   }
 
   async update(scrollToTop?: boolean) {    
-    this.vm.events = await this.db.findEvents(this.vm.search, this.vm.day, this.vm.category);
+    let coords: GpsCoord | undefined = undefined;
+    if (this.vm.byDist) {
+      coords = await this.geo.getPosition();
+    }
+    this.vm.events = await this.db.findEvents(this.vm.search, this.vm.day, this.vm.category, coords);
     this.vm.noEvents = this.vm.events.length == 0;
     this.vm.noEventsMessage = this.vm.search?.length > 0 ?
       `There are no events matching "${this.vm.search}".` :

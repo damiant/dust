@@ -30,9 +30,9 @@ export class CampPage implements OnInit {
   backText = 'Camps';
 
   constructor(
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
     private db: DbService,
-    private fav: FavoritesService, 
+    private fav: FavoritesService,
     private settings: SettingsService,
     private ui: UiService) {
   }
@@ -46,8 +46,9 @@ export class CampPage implements OnInit {
     this.camp = await this.db.findCamp(id);
     this.star = await this.fav.isFavCamp(this.camp.uid);
     this.events = await this.db.getCampEvents(id);
-    this.mapPoints = [toMapPoint(this.camp.location_string!, 
-      {title: this.camp.name, location: this.camp.location_string!, subtitle: ''})];
+    //this.mapPoints = [{x: this.camp.x, y: this.camp.y, street: '', clock: '', info: {title: this.camp.name, location: this.camp.location_string!, subtitle: ''}}];
+    this.mapPoints = [toMapPoint(this.camp.location_string!,
+      { title: this.camp.name, location: this.camp.location_string!, subtitle: '' })];
   }
 
   open(url: string) {
@@ -59,7 +60,7 @@ export class CampPage implements OnInit {
     this.showEvent = true;
   }
 
-  noop() {    
+  noop() {
   }
 
   share() {
@@ -68,7 +69,7 @@ export class CampPage implements OnInit {
       title: this.camp?.name,
       dialogTitle: this.camp?.name,
       text: `Check out ${this.camp?.name} at ${this.settings.eventTitle()} using the dust app.`,
-      url     
+      url
     });
   }
 

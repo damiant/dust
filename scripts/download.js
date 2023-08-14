@@ -37,6 +37,25 @@ async function download(name, year, filename, folder, options) {
             }
         }
 
+        if (item.all_day == null) {
+            item.all_day = undefined;
+        }
+        if (item.located_at_art == null) {
+            item.located_at_art = undefined;
+        }
+        if (item.other_location == null) {
+            item.other_location = undefined;
+        }
+        if (item.other_location == '') {
+            item.other_location = undefined;
+        }
+        if (item.check_location == 0) {
+            item.check_location = undefined;
+        }
+        if (item.url == null) {
+            item.url = undefined;
+        }
+
         // Clear unneeded properties
         item.program = undefined;
         item.donation_link = undefined;
@@ -67,6 +86,23 @@ async function download(name, year, filename, folder, options) {
             if (item.print_description[0].toUpperCase() != item.print_description[0]) {
                 item.print_description = item.print_description.charAt(0).toUpperCase()
                 + item.print_description.slice(1);
+            }
+        }
+        if (options?.fixLocation) {
+            if (item.location_string.endsWith(' None None')) {
+                item.location_string = item.location_string.replace(' None None','');
+                item.location.string = item.location.string.replace(' None None','');
+                console.warn(`Fixed location ${item.name} to ${item.location_string}`);
+            }
+            item.location = undefined;
+            if (item.location_string == 'None & None') {
+                if (!item.description) {
+                    item.invalid = true;
+                    console.warn(`Camp ${item.name} has no description or location and will be removed`);
+                }
+            } else if (!item.description) {
+                item.description = `This theme camp has no description.`;
+                console.warn(`Camp ${item.name} has no description`);
             }
         }
         if (options?.fixOccurrence) {
@@ -144,7 +180,7 @@ console.log(years);
 for (const year of years) {
     console.log(`Downloading ${year}`);
     const artChanged = await download('art', year, 'art', `ttitd-${year}`, { fixName: true });
-    const campsChanged = await download('camp', year, 'camps', `ttitd-${year}`, { fixName: true });
+    const campsChanged = await download('camp', year, 'camps', `ttitd-${year}`, { fixName: true, fixLocation: true });
     const eventsChanged = await download('event', year, 'events', `ttitd-${year}`, { fixOccurrence: true, fixTitle: true, fixUid: true });
     if (artChanged || campsChanged || eventsChanged) {
         saveRevision(`ttitd-${year}`);

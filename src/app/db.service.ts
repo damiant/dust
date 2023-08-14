@@ -1,7 +1,8 @@
 import { Injectable, signal } from '@angular/core';
-import { Event, Day, Camp, Art, Pin, DataMethods, MapSet, GeoRef } from './models';
+import { Event, Day, Camp, Art, Pin, DataMethods, MapSet, GeoRef, Dataset } from './models';
 import { call, registerWorker } from './worker-interface';
-import { noDate } from './utils';
+import { daysUntil, noDate, now } from './utils';
+import { GpsCoord, Point } from './map/geo.utils';
 
 @Injectable({
   providedIn: 'root'
@@ -14,14 +15,14 @@ export class DbService {
   private hideLocations = true;
   private worker!: Worker;
 
-  public async init(dataset: string) {
+  public async init(dataset: string): Promise<number> {
     if (!this.initialized) {
       this.worker = new Worker(new URL('./app.worker', import.meta.url));
       registerWorker(this.worker);
       this.initialized = true;
     }
 
-    await call(this.worker, DataMethods.Populate, dataset, this.hideLocations);
+    return await call(this.worker, DataMethods.Populate, dataset, this.hideLocations);
 
   }
 
@@ -43,8 +44,24 @@ export class DbService {
     return await call(this.worker, DataMethods.CheckEvents, day);
   }
 
-  public async findEvents(query: string, day: Date | undefined, category: string): Promise<Event[]> {
-    return await call(this.worker, DataMethods.FindEvents, query, day, category);
+  public async loadDatasets(): Promise<Dataset[]> {
+    const res = await fetch('assets/datasets/datasets.json');
+    return await res.json();
+  }
+
+  public async daysUntilStarts() {
+    const datasets = await this.loadDatasets();
+    console.log('daysUntilStarts', this.selectedYear());
+    const year = (this.selectedYear() == '') ? datasets[0].year : this.selectedYear();
+    const dataset = datasets.find((d) => d.year == year);
+
+    const start = new Date(dataset!.start);
+    const until = daysUntil(start,now());
+    return until;
+  }
+
+  public async findEvents(query: string, day: Date | undefined, category: string, coords: GpsCoord | undefined): Promise<Event[]> {
+    return await call(this.worker, DataMethods.FindEvents, query, day, category, coords);
   }
 
   public async getEventList(ids: string[]): Promise<Event[]> {
@@ -53,6 +70,10 @@ export class DbService {
 
   public async getGeoReferences(): Promise<GeoRef[]> {
     return await call(this.worker, DataMethods.GetGeoReferences);
+  }
+
+  public async gpsToPoint(gpsCoord: GpsCoord): Promise<Point> {
+    return await call(this.worker, DataMethods.GpsToPoint, gpsCoord);
   }
 
   public async getPotties(): Promise<Pin[]> {
@@ -75,12 +96,12 @@ export class DbService {
     return await call(this.worker, DataMethods.GetArtList, ids);
   }
 
-  public async findCamps(query: string): Promise<Camp[]> {
-    return await call(this.worker, DataMethods.FindCamps, query);
+  public async findCamps(query: string, near?: GpsCoord): Promise<Camp[]> {
+    return await call(this.worker, DataMethods.FindCamps, query, near);
   }
 
-  public async findArts(query: string | undefined): Promise<Art[]> {
-    return await call(this.worker, DataMethods.FindArts, query);
+  public async findArts(query: string | undefined, coords: GpsCoord | undefined): Promise<Art[]> {
+    return await call(this.worker, DataMethods.FindArts, query, coords);
   }
 
   public async findArt(uid: string): Promise<Art> {

@@ -1,3 +1,5 @@
+import { GpsCoord } from "./map/geo.utils";
+
 export interface Event {
   camp: string; // Calculated
   timeString: string; // Calculated
@@ -7,6 +9,9 @@ export interface Event {
   old: boolean; // Calculated (whether the event has already passed)
   happening: boolean; // Calculated (whether the event is happening now)
   group?: string; // Calculated (grouping for favorites)
+  distance: number; // Calculated
+  distanceInfo: string; // Calculated
+  gpsCoords: GpsCoord; // Calculated
   all_day: any
   check_location?: number
   description: string
@@ -26,7 +31,12 @@ export interface Event {
 }
 
 export enum LocationName {
-  Unavailable = 'Location Available Soon'
+  Unavailable = 'Location Available Soon',
+  Unplaced = 'Unplaced'
+}
+
+export interface Revision {
+  revision: number;
 }
 
 export interface EventType {
@@ -53,6 +63,10 @@ export interface Camp {
   name: string
   uid: string
   url?: string
+  gpsCoord: GpsCoord
+  pin: Pin
+  distance: number
+  distanceInfo: string
   year: number
 }
 
@@ -76,6 +90,9 @@ export interface Art {
   category?: string
   contact_email?: string
   description: string
+  distance: number; // Calculated
+  distanceInfo: string; // Calculated
+  gpsCoords: GpsCoord; // Calculated
   donation_link?: string
   guided_tours: number
   hometown: string
@@ -200,5 +217,6 @@ export enum DataMethods {
   FindCamp = 'findCamp',
   GetCampEvents = 'getCampEvents',
   GetCamps = 'getCamps',
-  GetGeoReferences = 'getGeoReferences'
+  GetGeoReferences = 'getGeoReferences',
+  GpsToPoint = 'gpsToPoint'
 }

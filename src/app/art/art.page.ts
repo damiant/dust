@@ -1,5 +1,5 @@
 import { Component, ViewChild, effect } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ToastController } from '@ionic/angular';
 import { Art } from '../models';
 import { DbService } from '../db.service';
 import { Router, RouterLink, Scroll } from '@angular/router';
@@ -10,13 +10,17 @@ import { SearchComponent } from '../search/search.component';
 import { SkeletonArtComponent } from '../skeleton-art/skeleton-art.component';
 import { delay, isWhiteSpace } from '../utils';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
+import { GpsCoord } from '../map/geo.utils';
+import { GeoService } from '../geo.service';
 
 interface ArtState {
   showImage: boolean,
   busy: boolean,
   noArtMessage: string,
   arts: Art[],
-  minBufferPx: number
+  minBufferPx: number,
+  byDist: boolean,
+  displayedDistMessage: boolean
 }
 
 
@@ -26,7 +30,9 @@ function initialState(): ArtState {
     busy: true,
     noArtMessage: 'No art was found',
     arts: [],
-    minBufferPx: 1900
+    minBufferPx: 1900,
+    byDist: false,
+    displayedDistMessage: false
   };
 }
 
@@ -43,13 +49,20 @@ export class ArtPage {
 
   @ViewChild(CdkVirtualScrollViewport) virtualScroll!: CdkVirtualScrollViewport;
 
-  constructor(public db: DbService, private ui: UiService, private router: Router) {
+  constructor(
+    public db: DbService,
+    private ui: UiService,
+    private router: Router,
+    private geo: GeoService,
+    private toastController: ToastController
+  ) {
     effect(() => {
       this.ui.scrollUp('art', this.virtualScroll);
     });
     effect(() => {
       const year = this.db.selectedYear();
       console.log(`ArtPage.yearChange ${year}`);
+      this.db.checkInit();
       this.vm = initialState();
       this.init();
     });
@@ -73,6 +86,16 @@ export class ArtPage {
     } finally {
       this.vm.busy = false;
     }
+  }
+
+  toggleByDist() {
+    this.vm.byDist = !this.vm.byDist;
+    if (this.vm.byDist && !this.vm.displayedDistMessage) {
+      this.ui.presentToast(`Displaying art sorted by distance`, this.toastController);
+      this.vm.displayedDistMessage = true;
+    }
+    this.ui.scrollUp('art', this.virtualScroll);
+    this.update(undefined);
   }
 
   async ionViewDidEnter() {
@@ -100,7 +123,12 @@ export class ArtPage {
   }
 
   private async update(search: string | undefined) {
-    this.vm.arts = await this.db.findArts(search);
+    let coords: GpsCoord | undefined = undefined;
+    if (this.vm.byDist) {
+      coords = await this.geo.getPosition();
+    }
+    console.log('art.page.update', coords);
+    this.vm.arts = await this.db.findArts(search, coords);
   }
 
   click(art: Art) {

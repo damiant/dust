@@ -15,6 +15,7 @@ import { ApiService } from '../api.service';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
 import { ThemePrimaryColor, UiService } from '../ui.service';
+import { environment } from 'src/environments/environment';
 
 interface IntroState {
   ready: boolean,
@@ -57,7 +58,7 @@ export class IntroPage {
     // Whether the user has selected a year previously
     this.vm.yearSelectedAlready = !isWhiteSpace(this.settingsService.settings.dataset);
 
-    this.vm.cards = await this.loadDatasets();
+    this.vm.cards = await this.db.loadDatasets();
     // need to load
     this.load();
   }
@@ -104,7 +105,11 @@ export class IntroPage {
     const x = daysUntil(manBurns, now());
     const until = daysUntil(start,now());
 
-    const hideLocations = (thisYear && until > 1);
+    let hideLocations = (thisYear && until > 1);
+    if (environment.overrideLocations) {
+      hideLocations = false;
+      console.error('Overriding hiding locations');
+    }
     console.log(`Event starts ${start}, today is ${now()} and there are ${until} days until then`);
     this.db.setHideLocations(hideLocations);
     if (hideLocations && !this.vm.yearSelectedAlready) {
@@ -122,8 +127,8 @@ export class IntroPage {
       this.vm.ready = false;
       this.vm.showMessage = false;
 
-      await this.db.init(this.settingsService.settings.dataset);
-      await this.api.sendDataToWorker();
+      const revision = await this.db.init(this.settingsService.settings.dataset);      
+      await this.api.sendDataToWorker(revision);
       this.fav.init(this.settingsService.settings.dataset);
       const title = (this.vm.selected.year == this.vm.cards[0].year) ? '' : this.vm.selected.year;
       this.db.selectedYear.set(title);
@@ -151,11 +156,6 @@ export class IntroPage {
     this.settingsService.settings.dataset = datasetFilename(this.vm.selected!);
     this.settingsService.settings.eventTitle = this.vm.selected!.title;
     this.settingsService.save();
-  }
-
-  private async loadDatasets(): Promise<Dataset[]> {
-    const res = await fetch('assets/datasets/datasets.json');
-    return await res.json();
   }
 
 }

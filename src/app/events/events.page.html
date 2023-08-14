@@ -13,6 +13,7 @@
       <ion-toolbar>
         <ion-title size="large">{{vm.title}}</ion-title>
         <ion-buttons class="b-pad-r" slot="end">
+          <ion-button (click)="toggleByDist()" fill="clear"><ion-icon [name]="vm.byDist ? 'compass' : 'compass-outline'"></ion-icon></ion-button>
           <app-category id="event-categories" allTitle="All Events" (change)="categoryChanged()" [(category)]="vm.category"
             [categories]="vm.categories" slot="end"></app-category>
         </ion-buttons>

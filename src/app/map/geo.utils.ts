@@ -1,69 +1,50 @@
+function affineTransformation(lat1: number, lat2: number, lat3: number, lon1: number, lon2: number, lon3: number, x1: number, x2: number, x3: number, y1: number, y2: number, y3: number) {
+    // Compute the coefficients for the affine transformation
+    let detT = (lat1 * lon2 + lat2 * lon3 + lat3 * lon1 - lat2 * lon1 - lat3 * lon2 - lat1 * lon3);
+
+    const A = ((x1 * lon2 + x2 * lon3 + x3 * lon1 - x2 * lon1 - x3 * lon2 - x1 * lon3) / detT);
+    const B = ((lat1 * x2 + lat2 * x3 + lat3 * x1 - lat2 * x1 - lat3 * x2 - lat1 * x3) / detT);
+    const C = ((lat1 * lon2 * x3 + lat2 * lon3 * x1 + lat3 * lon1 * x2 - lat2 * lon1 * x3 - lat3 * lon2 * x1 - lat1 * lon3 * x2) / detT);
+
+    const D = ((y1 * lon2 + y2 * lon3 + y3 * lon1 - y2 * lon1 - y3 * lon2 - y1 * lon3) / detT);
+    const E = ((lat1 * y2 + lat2 * y3 + lat3 * y1 - lat2 * y1 - lat3 * y2 - lat1 * y3) / detT);
+    const F = ((lat1 * lon2 * y3 + lat2 * lon3 * y1 + lat3 * lon1 * y2 - lat2 * lon1 * y3 - lat3 * lon2 * y1 - lat1 * lon3 * y2) / detT);
+
+    return {
+        toXY: function (gpsPoint: GpsCoord) {
+            let x = A * gpsPoint.lat + B * gpsPoint.lng + C;
+            let y = D * gpsPoint.lat + E * gpsPoint.lng + F;
+            return { x, y };
+        },
+        toGPS: function (x: number, y: number) {
+            let det = A * E - B * D;
+            let lat = (E * x - B * y + B * F - C * E) / det;
+            let lng = (-D * x + A * y + C * D - A * F) / det;
+            return { lat, lng };
+        }
+    };
+}
+
+let transform: any = undefined;
+
 export function setReferencePoints(coords: GpsCoord[], mapXY: Point[]) {
     if (!coords || coords.length < 3 || !mapXY || mapXY.length < 3) {
         console.error(`setReferencePoints requires at least 3 GPS points and map points`);
     }
-    gpsCoords = structuredClone(coords);
-    bitmapPoints = structuredClone(mapXY);
-    console.log('gpsCoords',gpsCoords);
-    console.log('bitmapPoints',bitmapPoints);
+    transform = affineTransformation(
+        coords[0].lat, coords[1].lat, coords[2].lat,
+        coords[0].lng, coords[1].lng, coords[2].lng,
+        mapXY[0].x, mapXY[1].x, mapXY[2].x,
+        mapXY[0].y, mapXY[1].y, mapXY[2].y
+    );
 }
 
 export function gpsToMap(gps: GpsCoord): Point {
-    const coefficients = solveForCoefficients(gpsCoords, bitmapPoints);    
-    return transformGPStoBitmap(gps, coefficients);
+    return transform.toXY(gps);
 }
 
 export function mapToGps(point: Point): GpsCoord {
-    let coefficients = solveForCoefficients(gpsCoords, bitmapPoints);
-    return transformBitmapToGPS(point, coefficients);
-}
-
-// Sample data (not actually used)
-let gpsCoords = [
-    { lat: 40.7128, lng: -74.0060 },
-    { lat: 34.0522, lng: -118.2437 },
-    { lat: 51.5074, lng: -0.1278 }
-];
-
-// Sample data that matches gpsCoords (not actually used)
-let bitmapPoints = [
-    { x: 100, y: 50 },
-    { x: 300, y: 150 },
-    { x: 500, y: 250 }
-];
-
-function determinant3x3(matrix: any) {
-    return matrix[0][0] * (matrix[1][1] * matrix[2][2] - matrix[1][2] * matrix[2][1])
-        - matrix[0][1] * (matrix[1][0] * matrix[2][2] - matrix[1][2] * matrix[2][0])
-        + matrix[0][2] * (matrix[1][0] * matrix[2][1] - matrix[1][1] * matrix[2][0]);
-}
-
-function solveLinearSystem3x3(matrix: any, results: any) {
-    let det = determinant3x3(matrix);
-
-    let detX = determinant3x3([
-        [results[0], matrix[0][1], matrix[0][2]],
-        [results[1], matrix[1][1], matrix[1][2]],
-        [results[2], matrix[2][1], matrix[2][2]]
-    ]);
-
-    let detY = determinant3x3([
-        [matrix[0][0], results[0], matrix[0][2]],
-        [matrix[1][0], results[1], matrix[1][2]],
-        [matrix[2][0], results[2], matrix[2][2]]
-    ]);
-
-    let detZ = determinant3x3([
-        [matrix[0][0], matrix[0][1], results[0]],
-        [matrix[1][0], matrix[1][1], results[1]],
-        [matrix[2][0], matrix[2][1], results[2]]
-    ]);
-
-    return {
-        x: detX / det,
-        y: detY / det,
-        z: detZ / det
-    };
+    return transform.toGPS(point.x, point.y);
 }
 
 export interface GpsCoord {
@@ -74,59 +55,6 @@ export interface GpsCoord {
 export interface Point {
     x: number;
     y: number;
-}
-
-function solveForCoefficients(gpsCoords: GpsCoord[], bitmapPoints: Point[]) {
-    // Solve for x coefficients
-    let matrixX = [
-        [gpsCoords[0].lat, gpsCoords[0].lng, 1],
-        [gpsCoords[1].lat, gpsCoords[1].lng, 1],
-        [gpsCoords[2].lat, gpsCoords[2].lng, 1]
-    ];
-    console.log('matrixX', matrixX);
-
-    let resultsX = [bitmapPoints[0].x, bitmapPoints[1].x, bitmapPoints[2].x];
-    console.log('resultsX', resultsX);
-
-    let coefficientsX = solveLinearSystem3x3(matrixX, resultsX);
-    console.log('coefficientsX', coefficientsX);
-
-    // Solve for y coefficients
-    let matrixY = matrixX;
-    let resultsY = [bitmapPoints[0].y, bitmapPoints[1].y, bitmapPoints[2].y];
-
-    let coefficientsY = solveLinearSystem3x3(matrixY, resultsY);
-
-    return {
-        a: coefficientsX.x,
-        b: coefficientsX.y,
-        c: coefficientsX.z,
-        d: coefficientsY.x,
-        e: coefficientsY.y,
-        f: coefficientsY.z
-    };
-}
-
-// Transform a GPS coordinate to a bitmap point
-function transformGPStoBitmap(gpsCoord: GpsCoord, coefficients: any) {
-    let x = coefficients.a * gpsCoord.lat + coefficients.b * gpsCoord.lng + coefficients.c;
-    let y = coefficients.d * gpsCoord.lat + coefficients.e * gpsCoord.lng + coefficients.f;
-    return { x: x, y: y };
-}
-
-function transformBitmapToGPS(bitmapCoord: Point, coefficients: any) {
-    let denominator = coefficients.a * coefficients.e - coefficients.b * coefficients.d;
-
-    if (denominator === 0) {
-        throw new Error("Transformation is singular and cannot be inverted.");
-    }
-
-    let lat = (coefficients.e * bitmapCoord.x - coefficients.b * bitmapCoord.y
-        + coefficients.b * coefficients.f - coefficients.c * coefficients.e) / denominator;
-    let lng = (coefficients.d * bitmapCoord.x - coefficients.a * bitmapCoord.y
-        + coefficients.c * coefficients.d - coefficients.a * coefficients.f) / denominator;
-
-    return { lat: lat, lng: lng };
 }
 
 

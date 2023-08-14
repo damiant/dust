@@ -1,6 +1,6 @@
 import { Component, ViewChild, effect } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ToastController } from '@ionic/angular';
 import { Camp, MapPoint } from '../models';
 import { DbService } from '../db.service';
 import { CommonModule } from '@angular/common';
@@ -11,6 +11,8 @@ import { UiService } from '../ui.service';
 import { SearchComponent } from '../search/search.component';
 import { isWhiteSpace } from '../utils';
 import { toMapPoint } from '../map/map.utils';
+import { GeoService } from '../geo.service';
+import { GpsCoord } from '../map/geo.utils';
 
 interface CampsState {
   camps: Camp[],
@@ -19,7 +21,9 @@ interface CampsState {
   mapSubtitle: string,
   noCampsMessage: string,
   mapPoints: MapPoint[],
-  minBufferPx: number
+  minBufferPx: number,
+  byDist: boolean,
+  displayedDistMessage: boolean
 }
 
 function initialState(): CampsState {
@@ -30,7 +34,9 @@ function initialState(): CampsState {
     mapSubtitle: '',
     noCampsMessage: 'No camps were found.',
     mapPoints: [],
-    minBufferPx: 900
+    minBufferPx: 900,
+    byDist: false,
+    displayedDistMessage: false
   };
 }
 
@@ -47,13 +53,18 @@ export class CampsPage {
 
   @ViewChild(CdkVirtualScrollViewport) virtualScroll!: CdkVirtualScrollViewport;
 
-  constructor(public db: DbService, private ui: UiService) {
+  constructor(
+    public db: DbService,
+    private ui: UiService,
+    private toastController: ToastController,
+    private geo: GeoService) {
     effect(() => {
       this.ui.scrollUp('camps', this.virtualScroll);
     });
     effect(() => {
       const year = this.db.selectedYear();
       console.log(`CampsPage.yearChange ${year}`);
+      this.db.checkInit();
       this.vm = initialState();
       this.update('');
     });
@@ -61,6 +72,16 @@ export class CampsPage {
 
   home() {
     this.ui.home();
+  }
+
+  toggleByDist() {
+    this.vm.byDist = !this.vm.byDist;
+    if (this.vm.byDist && !this.vm.displayedDistMessage) {
+      this.ui.presentToast(`Displaying camps sorted by distance`, this.toastController);
+      this.vm.displayedDistMessage = true;
+    }
+    this.ui.scrollUp('camps', this.virtualScroll);
+    this.update('');
   }
 
   async ionViewDidEnter() {
@@ -85,7 +106,11 @@ export class CampsPage {
   }
 
   async update(search: string) {
-    this.vm.camps = await this.db.findCamps(search);
+    let coords: GpsCoord | undefined = undefined;
+    if (this.vm.byDist) {
+      coords = await this.geo.getPosition();
+    }
+    this.vm.camps = await this.db.findCamps(search, coords);
     this.vm.noCampsMessage = isWhiteSpace(search) ? `No camps were found.` : `No camps were found matching "${search}"`;
   }
 }

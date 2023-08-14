@@ -5,12 +5,20 @@ export function sameDay(d1: Date, d2: Date) {
     return d1.getDate() === d2.getDate() && d1.getMonth() === d2.getMonth() && d1.getFullYear() === d2.getFullYear();
 }
 
+export const BurningManTimeZone = 'America/Los_Angeles';
+
 export function now(): Date {
     if (!environment.simulatedTime) {
-        return new Date();
+        console.log(nowPST());
+        return nowPST();
     }
     //console.log(`Simulating time ${environment.simulatedTime}`);
     return environment.simulatedTime;
+}
+
+function nowPST(): Date {
+    let str = new Date().toLocaleString("en-US", { timeZone: BurningManTimeZone });
+    return new Date(str);
 }
 
 
@@ -39,9 +47,9 @@ export function noDate(): Date {
 }
 
 export function dateMatches(d: Date, occurrence: OccurrenceSet): boolean {
-    const start = new Date(occurrence.start_time);
-    const end = new Date(occurrence.end_time);
-    return sameDay(d, start) || sameDay(d, end);
+    const day = d.toISOString();
+    const ds = day.split('T');
+    return (occurrence.start_time.startsWith(ds[0]) || occurrence.end_time.startsWith(ds[0]));
 }
 
 export function getDayName(dateStr: string) {
@@ -78,7 +86,7 @@ export function addDays(date: Date, days: number) {
 
 export function time(d: Date): string {
     // Burning Man is in PST timezone so report it that way in the UI (useful for people looking in other timezones)
-    const s = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'America/Los_Angeles' }).toLowerCase().replace(' ', '').replace(':00','');
+    const s = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: BurningManTimeZone }).toLowerCase().replace(' ', '').replace(':00', '');
     if (s == '12am') return 'Midnight';
     if (s == '12pm') return 'Noon';
     return s;
@@ -105,7 +113,7 @@ export function isWhiteSpace(s: string): boolean {
     if (!s) return true;
     if (s.trim() == '') return true;
     return false;
-  }
+}
 
 function timeBetween(d1: any, d2: any): string {
     const hrs = Math.ceil(Math.abs(d1 - d2) / 36e5);
