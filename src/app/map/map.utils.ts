@@ -47,7 +47,9 @@ export function toStreetRadius(street: string): number {
     try {
         const acode = 'a'.charCodeAt(0);
         const c = street.toLowerCase().charCodeAt(0) - acode;
-
+        if (street.toLowerCase() == 'airport road') {
+            return 0.8;
+        }
         if (street.toLowerCase() == 'esplanade') {
             return streets[0];
         }
@@ -99,6 +101,15 @@ export function mapPointToPin(point: MapPoint, mapRadius: number): Pin | undefin
         }
     }
     if (point.street !== '') {
+        if (!point.clock) {
+            if (point.street == 'airport road') {
+                point.clock = '5:00';
+            } else if (point.street == 'none') {
+                return undefined;
+            } else {
+                console.error('Invalid Point', point);
+            }
+        }
         return plot(toClock(point.clock), toStreetRadius(point.street), undefined, mapRadius);
     } else if (point.feet) {
         if (point.streetOffset && point.clockOffset) {
