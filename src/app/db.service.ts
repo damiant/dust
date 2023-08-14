@@ -100,8 +100,8 @@ export class DbService {
     return await call(this.worker, DataMethods.FindCamps, query, near);
   }
 
-  public async findArts(query: string | undefined): Promise<Art[]> {
-    return await call(this.worker, DataMethods.FindArts, query);
+  public async findArts(query: string | undefined, coords: GpsCoord | undefined): Promise<Art[]> {
+    return await call(this.worker, DataMethods.FindArts, query, coords);
   }
 
   public async findArt(uid: string): Promise<Art> {

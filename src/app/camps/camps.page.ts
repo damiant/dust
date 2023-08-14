@@ -80,6 +80,7 @@ export class CampsPage {
       this.ui.presentToast(`Displaying camps sorted by distance`, this.toastController);
       this.vm.displayedDistMessage = true;
     }
+    this.ui.scrollUp('camps', this.virtualScroll);
     this.update('');
   }
 

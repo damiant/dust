@@ -33,7 +33,7 @@ export class DataManager implements WorkerClass {
             case DataMethods.GetEventList: return this.getEventList(args[0]);
             case DataMethods.GetCampList: return this.getCampList(args[0]);
             case DataMethods.GetArtList: return this.getArtList(args[0]);
-            case DataMethods.FindArts: return this.findArts(args[0]);
+            case DataMethods.FindArts: return this.findArts(args[0], args[1]);
             case DataMethods.FindArt: return this.findArt(args[0]);
             case DataMethods.GpsToPoint: return this.gpsToPoint(args[0]);
             case DataMethods.GetMapPoints: return this.getMapPoints(args[0]);
@@ -63,6 +63,10 @@ export class DataManager implements WorkerClass {
 
     private sortArt(art: Art[]) {
         art.sort((a: Art, b: Art) => { return a.name.localeCompare(b.name); });
+    }
+
+    private sortArtByDistance(art: Art[]) {
+        art.sort((a: Art, b: Art) => { return a.distance - b.distance; });
     }
 
     private checkEvents(day?: Date): boolean {
@@ -163,10 +167,15 @@ export class DataManager implements WorkerClass {
         }
         for (let art of this.art) {
             artIndex[art.uid] = art.name;
+
+            const pin = locationStringToPin(art.location_string!, this.mapRadius);
+            if (pin) {
+                const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
+                art.gpsCoords = gpsCoords;
+            }
             if (!art.location_string || hideLocations) {
                 art.location_string = LocationName.Unavailable;
-            }
-        }
+            }        }
         this.days = [];
         this.categories = [];
         this.allEventsOld = !this.checkEvents();
@@ -177,7 +186,7 @@ export class DataManager implements WorkerClass {
             if (event.hosted_by_camp) {
                 event.camp = campIndex[event.hosted_by_camp];
                 event.location = locIndex[event.hosted_by_camp];
-                
+
                 const pin = locationStringToPin(event.location, this.mapRadius);
                 if (pin) {
                     const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
@@ -428,15 +437,21 @@ export class DataManager implements WorkerClass {
         return `(${rounded}mi)`;
     }
 
-    public findArts(query: string | undefined): Art[] {
-        if (!query) {
-            return this.art;
-        }
+    public findArts(query: string | undefined, coords: GpsCoord | undefined): Art[] {       
         const result: Art[] = [];
         for (let art of this.art) {
+            if (coords) {                
+                art.distance = distance(coords, art.gpsCoords);                
+                art.distanceInfo = this.formatDistance(art.distance);
+            }
             if (!query || art.name.toLowerCase().includes(query.toLowerCase())) {
                 result.push(art);
             }
+        }
+        if (coords) {
+            this.sortArtByDistance(result);
+        } else {
+            this.sortArt(result);
         }
         return result;
     }

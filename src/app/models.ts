@@ -89,6 +89,9 @@ export interface Art {
   category?: string
   contact_email?: string
   description: string
+  distance: number; // Calculated
+  distanceInfo: string; // Calculated
+  gpsCoords: GpsCoord; // Calculated
   donation_link?: string
   guided_tours: number
   hometown: string
