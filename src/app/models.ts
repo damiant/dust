@@ -9,6 +9,9 @@ export interface Event {
   old: boolean; // Calculated (whether the event has already passed)
   happening: boolean; // Calculated (whether the event is happening now)
   group?: string; // Calculated (grouping for favorites)
+  distance: number; // Calculated
+  distanceInfo: string; // Calculated
+  gpsCoords: GpsCoord; // Calculated
   all_day: any
   check_location?: number
   description: string

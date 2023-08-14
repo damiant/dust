@@ -86,6 +86,7 @@ export function toRadius(feet: number): number {
 // }
 
 export function distance(g1: GpsCoord, g2: GpsCoord) {
+    if (!g2 || !g1) { return 999; }
     if ((g1.lat == g2.lat) && (g1.lng == g2.lng)) {
         return 0;
     }
@@ -101,6 +102,9 @@ export function distance(g1: GpsCoord, g2: GpsCoord) {
         dist = Math.acos(dist);
         dist = dist * 180 / Math.PI;
         dist = dist * 60 * 1.1515;
+        if (isNaN(dist)) {
+            return 999;
+        }
         return dist;
     }
 }
@@ -127,7 +131,12 @@ export function mapPointToPin(point: MapPoint, mapRadius: number): Pin | undefin
     return undefined;
 }
 export function locationStringToPin(location: string, mapRadius: number): Pin | undefined {
-    return mapPointToPin(toMapPoint(location), mapRadius);
+    if (!location) return undefined;
+    const pin = mapPointToPin(toMapPoint(location), mapRadius);
+    if (pin == undefined) {
+        console.log(`Location "${location}" could not be found`);
+    }
+    return pin;
 }
 
 function plot(clock: number, rad: number, offset: any, radius: number) {

@@ -60,8 +60,8 @@ export class DbService {
     return until;
   }
 
-  public async findEvents(query: string, day: Date | undefined, category: string): Promise<Event[]> {
-    return await call(this.worker, DataMethods.FindEvents, query, day, category);
+  public async findEvents(query: string, day: Date | undefined, category: string, coords: GpsCoord | undefined): Promise<Event[]> {
+    return await call(this.worker, DataMethods.FindEvents, query, day, category, coords);
   }
 
   public async getEventList(ids: string[]): Promise<Event[]> {

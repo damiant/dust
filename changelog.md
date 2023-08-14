@@ -1,5 +1,7 @@
 ## Changes
 ### 1.8
+- Camps near me added
+- Events near me added
 - Fix timezone used when device timezone is not event timezone
 - Fix map for Ice and Medical
 

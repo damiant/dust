@@ -38,7 +38,7 @@ export class DataManager implements WorkerClass {
             case DataMethods.GpsToPoint: return this.gpsToPoint(args[0]);
             case DataMethods.GetMapPoints: return this.getMapPoints(args[0]);
             case DataMethods.CheckEvents: return this.checkEvents(args[0]);
-            case DataMethods.FindEvents: return this.findEvents(args[0], args[1], args[2]);
+            case DataMethods.FindEvents: return this.findEvents(args[0], args[1], args[2], args[3]);
             case DataMethods.FindCamps: return this.findCamps(args[0], args[1]);
             case DataMethods.FindEvent: return this.findEvent(args[0]);
             case DataMethods.FindCamp: return this.findCamp(args[0]);
@@ -155,11 +155,11 @@ export class DataManager implements WorkerClass {
                 camp.gpsCoord = gpsCoords;
                 camp.pin = pin;
             }
+            campIndex[camp.uid] = camp.name;
+            locIndex[camp.uid] = camp.location_string;
             if (!camp.location_string || hideLocations) {
                 camp.location_string = LocationName.Unavailable;
             }
-            campIndex[camp.uid] = camp.name;
-            locIndex[camp.uid] = camp.location_string;
         }
         for (let art of this.art) {
             artIndex[art.uid] = art.name;
@@ -177,6 +177,15 @@ export class DataManager implements WorkerClass {
             if (event.hosted_by_camp) {
                 event.camp = campIndex[event.hosted_by_camp];
                 event.location = locIndex[event.hosted_by_camp];
+                
+                const pin = locationStringToPin(event.location, this.mapRadius);
+                if (pin) {
+                    const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
+                    event.gpsCoords = gpsCoords;
+                }
+                if (hideLocations) {
+                    event.location = LocationName.Unavailable;
+                }
             } else if (event.other_location) {
                 event.camp = event.other_location;
             } else if (event.located_at_art) {
@@ -330,22 +339,34 @@ export class DataManager implements WorkerClass {
         return undefined;
     }
 
-    public findEvents(query: string, day: Date | undefined, category: string): Event[] {
+    public findEvents(query: string, day: Date | undefined, category: string, coords: GpsCoord | undefined): Event[] {
         const result: Event[] = [];
         for (let event of this.events) {
             if (this.eventContains(query, event) && this.eventIsCategory(category, event) && this.onDay(day, event)) {
                 const timeString = this.getTimeString(event, day);
                 event.timeString = timeString.short;
                 event.longTimeString = timeString.long;
+                event.distance = distance(coords!, event.gpsCoords);
+                event.distanceInfo = this.formatDistance(event.distance);
                 result.push(event);
             }
         }
-        this.sortEvents(result);
+        if (coords) {
+            this.sortEventsByDistance(result);
+        } else {
+            this.sortEvents(result);
+        }
         return result;
     }
 
     private sortEvents(events: Event[]) {
         events.sort((a: Event, b: Event) => { return a.start.getTime() - b.start.getTime() });
+    }
+
+    private sortEventsByDistance(events: Event[]) {
+        events.sort((a: Event, b: Event) => {
+            return (a.happening ? 0 : 1) - (b.happening ? 0 : 1) || a.distance - b.distance;
+        });
     }
 
     private sortCamps(camps: Camp[]) {
@@ -375,9 +396,6 @@ export class DataManager implements WorkerClass {
 
             if (coords) {
                 camp.distance = distance(coords, camp.gpsCoord);
-                if (isNaN(camp.distance)) {
-                    camp.distance = 999;
-                }
                 camp.distanceInfo = this.formatDistance(camp.distance);
 
 
@@ -404,6 +422,8 @@ export class DataManager implements WorkerClass {
         const rounded = Math.round(dist * 10) / 10
         if (rounded == 0.0) {
             return '(near)';
+        } else if (rounded > 100) {
+            return '(far)'
         }
         return `(${rounded}mi)`;
     }
