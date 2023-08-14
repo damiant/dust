@@ -944,22 +944,6 @@
     "location_string": "2:15 & G"
   },
   {
-    "uid": "a1X8X00000hVxIvUAK",
-    "year": 2023,
-    "name": "Le Café Gaulois",
-    "url": null,
-    "hometown": "Paris",
-    "description": null,
-    "location": {
-      "string": "None & None",
-      "frontage": null,
-      "intersection": null,
-      "intersection_type": "&",
-      "dimensions": "x"
-    },
-    "location_string": "None & None"
-  },
-  {
     "uid": "a1X8X00000hqww9UAA",
     "year": 2023,
     "name": "Camp Little Bitty",
@@ -9232,22 +9216,6 @@
     "location_string": "5:00 & B"
   },
   {
-    "uid": "a1X8X00000k1MyVUAU",
-    "year": 2023,
-    "name": "The Sign",
-    "url": null,
-    "hometown": "Yerevan",
-    "description": null,
-    "location": {
-      "string": "None & None",
-      "frontage": null,
-      "intersection": null,
-      "intersection_type": "&",
-      "dimensions": "x"
-    },
-    "location_string": "None & None"
-  },
-  {
     "uid": "a1X8X00000k1TXDUA2",
     "year": 2023,
     "name": "Black Rock Observatory Theme Camp",
@@ -9294,22 +9262,6 @@
       "dimensions": "x"
     },
     "location_string": "Esplanade & 3:00 Portal"
-  },
-  {
-    "uid": "a1X8X00000k1UCOUA2",
-    "year": 2023,
-    "name": "##Eternal morning",
-    "url": null,
-    "hometown": "Moscow",
-    "description": null,
-    "location": {
-      "string": "None & None",
-      "frontage": null,
-      "intersection": null,
-      "intersection_type": "&",
-      "dimensions": "x"
-    },
-    "location_string": "None & None"
   },
   {
     "uid": "a1X8X00000k1UwqUAE",
@@ -12512,22 +12464,6 @@
     "location_string": "E & 7:45"
   },
   {
-    "uid": "a1X8X00000k2JQjUAM",
-    "year": 2023,
-    "name": "Dirty Beetles",
-    "url": null,
-    "hometown": "Los Angeles",
-    "description": null,
-    "location": {
-      "string": "None & None",
-      "frontage": null,
-      "intersection": null,
-      "intersection_type": "&",
-      "dimensions": "x"
-    },
-    "location_string": "None & None"
-  },
-  {
     "uid": "a1X8X00000k2K2aUAE",
     "year": 2023,
     "name": "Deoxidized",
@@ -13600,22 +13536,6 @@
     "location_string": "9:30 & E"
   },
   {
-    "uid": "a1X8X00000k2UOKUA2",
-    "year": 2023,
-    "name": "MegaBounce",
-    "url": null,
-    "hometown": null,
-    "description": null,
-    "location": {
-      "string": "None & None",
-      "frontage": null,
-      "intersection": null,
-      "intersection_type": "&",
-      "dimensions": "x"
-    },
-    "location_string": "None & None"
-  },
-  {
     "uid": "a1X8X00000k2UP9UAM",
     "year": 2023,
     "name": "Southern Discomfort",
@@ -13776,22 +13696,6 @@
     "location_string": "Esplanade & 3:30"
   },
   {
-    "uid": "a1X8X00000k2V4SUAU",
-    "year": 2023,
-    "name": "Hellfire Society",
-    "url": null,
-    "hometown": null,
-    "description": null,
-    "location": {
-      "string": "None & None",
-      "frontage": null,
-      "intersection": null,
-      "intersection_type": "&",
-      "dimensions": "x"
-    },
-    "location_string": "None & None"
-  },
-  {
     "uid": "a1X8X00000k2V4XUAU",
     "year": 2023,
     "name": "Zen as Fuck",
@@ -13838,22 +13742,6 @@
       "dimensions": "x"
     },
     "location_string": "6:30 & E"
-  },
-  {
-    "uid": "a1X8X00000k2V8HUAU",
-    "year": 2023,
-    "name": "china hotspot",
-    "url": null,
-    "hometown": "Los Angeles",
-    "description": null,
-    "location": {
-      "string": "None & None",
-      "frontage": null,
-      "intersection": null,
-      "intersection_type": "&",
-      "dimensions": "x"
-    },
-    "location_string": "None & None"
   },
   {
     "uid": "a1X8X00000k2VBlUAM",
@@ -15406,22 +15294,6 @@
       "dimensions": "50 x 50"
     },
     "location_string": "E & 3:15"
-  },
-  {
-    "uid": "a1X8X00000k2a0uUAA",
-    "year": 2023,
-    "name": "I Ching Trigrams Mushroom Cloud",
-    "url": null,
-    "hometown": null,
-    "description": null,
-    "location": {
-      "string": "None & None",
-      "frontage": null,
-      "intersection": null,
-      "intersection_type": "&",
-      "dimensions": "x"
-    },
-    "location_string": "None & None"
   },
   {
     "uid": "a1X8X00000k2a1RUAQ",
@@ -21888,22 +21760,6 @@
     "location_string": "5:00 & B"
   },
   {
-    "uid": "a1X8X00000k3AIqUAM",
-    "year": 2023,
-    "name": "Camp Curio",
-    "url": null,
-    "hometown": "Portland",
-    "description": null,
-    "location": {
-      "string": "None & None",
-      "frontage": null,
-      "intersection": null,
-      "intersection_type": "&",
-      "dimensions": "x"
-    },
-    "location_string": "None & None"
-  },
-  {
     "uid": "a1X8X00000k3AJuUAM",
     "year": 2023,
     "name": "CornHub",
@@ -23294,22 +23150,6 @@
       "dimensions": "100 x 150"
     },
     "location_string": "5:30 & C"
-  },
-  {
-    "uid": "a1X8X00000k3J3mUAE",
-    "year": 2023,
-    "name": "Dusty Joe's",
-    "url": null,
-    "hometown": "Austin",
-    "description": null,
-    "location": {
-      "string": "None & None",
-      "frontage": null,
-      "intersection": null,
-      "intersection_type": "&",
-      "dimensions": "x"
-    },
-    "location_string": "None & None"
   },
   {
     "uid": "a1X8X00000k3JAhUAM",
@@ -24862,22 +24702,6 @@
       "dimensions": "100 x 100"
     },
     "location_string": "D & 9:45"
-  },
-  {
-    "uid": "a1X8X00000k3ML9UAM",
-    "year": 2023,
-    "name": "Nest of Dragon",
-    "url": null,
-    "hometown": null,
-    "description": null,
-    "location": {
-      "string": "None & None",
-      "frontage": null,
-      "intersection": null,
-      "intersection_type": "&",
-      "dimensions": "x"
-    },
-    "location_string": "None & None"
   },
   {
     "uid": "a1X8X00000k3MMyUAM",
@@ -26446,22 +26270,6 @@
       "dimensions": "60 x 50"
     },
     "location_string": "Rod's Ring Road @ 8:15"
-  },
-  {
-    "uid": "a1X8X00000knyBUUAY",
-    "year": 2023,
-    "name": "#Surikov",
-    "url": null,
-    "hometown": "Moscow",
-    "description": null,
-    "location": {
-      "string": "None & None",
-      "frontage": null,
-      "intersection": null,
-      "intersection_type": "&",
-      "dimensions": "x"
-    },
-    "location_string": "None & None"
   },
   {
     "uid": "a1X8X00000knyF2UAI",

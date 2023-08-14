@@ -75,6 +75,12 @@ async function download(name, year, filename, folder, options) {
                 item.location.string = item.location.string.replace(' None None','');
                 console.warn(`Fixed location ${item.name} to ${item.location_string}`);
             }
+            if (item.location_string == 'None & None') {
+                if (!item.description) {
+                    item.invalid = true;
+                    console.warn(`Camp ${item.name} has no description or location and will be removed`);
+                }
+            }
         }
         if (options?.fixOccurrence) {
             if (!item.occurrence_set) {
