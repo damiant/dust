@@ -65,28 +65,11 @@ export function toRadius(feet: number): number {
     return pixels;
 }
 
-// export function distance(g1: GpsCoord, g2: GpsCoord) {
-//     function degreesToRadians(degrees: number) {
-//         return degrees * Math.PI / 180;
-//     }
 
-//     const R = 3958.8; // Earth radius in miles
-
-//     let dLat = degreesToRadians(g2.lat - g1.lat);
-//     let dLon = degreesToRadians(g2.lng - g1.lng);
-
-//     let a =
-//         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-//         Math.cos(degreesToRadians(g1.lat)) * Math.cos(degreesToRadians(g2.lat)) *
-//         Math.sin(dLon / 2) * Math.sin(dLon / 2);
-
-//     let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-//     return R * c; // returns distance in miles
-// }
+export const maxDistance = 9999;
 
 export function distance(g1: GpsCoord, g2: GpsCoord) {
-    if (!g2 || !g1) { return 999; }
+    if (!g2 || !g1) { return maxDistance; }
     if ((g1.lat == g2.lat) && (g1.lng == g2.lng)) {
         return 0;
     }
@@ -103,7 +86,7 @@ export function distance(g1: GpsCoord, g2: GpsCoord) {
         dist = dist * 180 / Math.PI;
         dist = dist * 60 * 1.1515;
         if (isNaN(dist)) {
-            return 999;
+            return maxDistance;
         }
         return dist;
     }

@@ -1,7 +1,7 @@
 import { WorkerClass } from './worker-interface';
 import { Art, Camp, DataMethods, Day, Event, GeoRef, LocationName, MapPoint, MapSet, Pin, Revision, TimeString } from './models';
 import { BurningManTimeZone, getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from './utils';
-import { distance, getPoint, locationStringToPin, toClock, toMapPoint, toRadius, toStreetRadius } from './map/map.utils';
+import { distance, getPoint, locationStringToPin, maxDistance, toClock, toStreetRadius } from './map/map.utils';
 import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from './map/geo.utils';
 
 interface TimeCache {
@@ -111,8 +111,6 @@ export class DataManager implements WorkerClass {
         return hasLiveEvents;
     }
 
-
-
     private initGeoLocation() {
         const gpsCoords: GpsCoord[] = [];
         const points: Point[] = [];
@@ -150,7 +148,6 @@ export class DataManager implements WorkerClass {
         let locIndex: any = {};
         let artIndex: any = {};
         for (let camp of this.camps) {
-
             const pin = this.locateCamp(camp);
 
             if (pin) {
@@ -167,7 +164,6 @@ export class DataManager implements WorkerClass {
         }
         for (let art of this.art) {
             artIndex[art.uid] = art.name;
-
             const pin = locationStringToPin(art.location_string!, this.mapRadius);
             if (pin) {
                 const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
@@ -247,15 +243,6 @@ export class DataManager implements WorkerClass {
         if (!camp.location_string) return undefined;
         return locationStringToPin(camp.location_string, this.mapRadius);
     }
-
-    // private plot(clock: number, rad: number, offset: any, radius: number) {
-    //     const pt = getPoint(clock, rad, radius);
-    //     if (offset) {
-    //         pt.x += offset.x;
-    //         pt.y += offset.y;
-    //     }
-    //     return pt;
-    // }
 
     public setDataset(dataset: string, events: Event[], camps: Camp[], art: Art[], hideLocations: boolean) {
         this.dataset = dataset;
@@ -410,9 +397,6 @@ export class DataManager implements WorkerClass {
             if (coords) {
                 camp.distance = distance(coords, camp.gpsCoord);
                 camp.distanceInfo = this.formatDistance(camp.distance);
-
-
-                //console.log(`${camp.name} ${camp.distance}`);
             } else {
                 camp.distanceInfo = '';
             }
@@ -429,7 +413,7 @@ export class DataManager implements WorkerClass {
     }
 
     private formatDistance(dist: number): string {
-        if (dist == 999) {
+        if (dist == maxDistance) {
             return '';
         }
         const rounded = Math.round(dist * 10) / 10
