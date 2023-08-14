@@ -1,6 +1,8 @@
 import { WorkerClass } from './worker-interface';
-import { Art, Camp, DataMethods, Day, Event, GeoRef, LocationName, MapSet, Pin, Revision, TimeString } from './models';
+import { Art, Camp, DataMethods, Day, Event, GeoRef, LocationName, MapPoint, MapSet, Pin, Revision, TimeString } from './models';
 import { BurningManTimeZone, getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from './utils';
+import { distance, getPoint, locationStringToPin, toClock, toMapPoint, toRadius, toStreetRadius } from './map/map.utils';
+import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from './map/geo.utils';
 
 interface TimeCache {
     [index: string]: TimeString | undefined;
@@ -12,10 +14,12 @@ export class DataManager implements WorkerClass {
     private categories: string[] = [];
     private art: Art[] = [];
     private days: number[] = [];
+    private georeferences: GeoRef[] = [];
     private revision: Revision = { revision: 0 };
     private allEventsOld = false;
     private dataset: string = '';
     private cache: TimeCache = {};
+    private mapRadius = 5000;
 
     // This is required for a WorkerClass
     public async doWork(method: DataMethods, args: any[]): Promise<any> {
@@ -31,10 +35,11 @@ export class DataManager implements WorkerClass {
             case DataMethods.GetArtList: return this.getArtList(args[0]);
             case DataMethods.FindArts: return this.findArts(args[0]);
             case DataMethods.FindArt: return this.findArt(args[0]);
+            case DataMethods.GpsToPoint: return this.gpsToPoint(args[0]);
             case DataMethods.GetMapPoints: return this.getMapPoints(args[0]);
             case DataMethods.CheckEvents: return this.checkEvents(args[0]);
             case DataMethods.FindEvents: return this.findEvents(args[0], args[1], args[2]);
-            case DataMethods.FindCamps: return this.findCamps(args[0]);
+            case DataMethods.FindCamps: return this.findCamps(args[0], args[1]);
             case DataMethods.FindEvent: return this.findEvent(args[0]);
             case DataMethods.FindCamp: return this.findCamp(args[0]);
             case DataMethods.GetGeoReferences: return this.getGeoReferences();
@@ -50,7 +55,7 @@ export class DataManager implements WorkerClass {
         this.camps = await this.loadCamps();
         this.art = await this.loadArt();
         this.revision = await this.loadRevision();
-
+        this.georeferences = await this.getGeoReferences();
         console.log(`Revsion populated ${this.revision.revision} hide locations = ${hideLocations}`);
         this.init(hideLocations);
         return this.revision.revision;
@@ -102,6 +107,32 @@ export class DataManager implements WorkerClass {
         return hasLiveEvents;
     }
 
+
+
+    private initGeoLocation() {
+        const gpsCoords: GpsCoord[] = [];
+        const points: Point[] = [];
+        for (let ref of [this.georeferences[0], this.georeferences[1], this.georeferences[2]]) {
+            gpsCoords.push({ lat: ref.coordinates[0], lng: ref.coordinates[1] });
+            const mp: MapPoint = { clock: ref.clock, street: ref.street };
+            const pt = this.mapPointToPoint(mp, this.mapRadius);
+            points.push(pt);
+        }
+
+        setReferencePoints(gpsCoords, points);
+    }
+
+    private mapPointToPoint(mapPoint: MapPoint, circleRadius: number) {
+        const clock = toClock(mapPoint.clock);
+        const rad = toStreetRadius(mapPoint.street);
+        const circleRad = circleRadius;
+        return getPoint(clock, rad, circleRad);
+    }
+
+    private gpsToPoint(gpsCoord: GpsCoord): Point {
+        return gpsToMap(gpsCoord);
+    }
+
     private init(hideLocations: boolean) {
         console.time('init');
         this.cache = {};
@@ -109,16 +140,26 @@ export class DataManager implements WorkerClass {
         this.camps.sort((a: Camp, b: Camp) => { return a.name.localeCompare(b.name); });
         this.sortArt(this.art);
         this.allEventsOld = false;
+        this.initGeoLocation();
 
         let campIndex: any = {};
         let locIndex: any = {};
         let artIndex: any = {};
         for (let camp of this.camps) {
+
+            const pin = this.locateCamp(camp);
+
+            if (pin) {
+                const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
+                //console.log(`${camp.name} x=${pin.x} y=${pin.y} lat=${gpsCoords.lat} lng=${gpsCoords.lng}`)
+                camp.gpsCoord = gpsCoords;
+                camp.pin = pin;
+            }
             if (!camp.location_string || hideLocations) {
                 camp.location_string = LocationName.Unavailable;
             }
             campIndex[camp.uid] = camp.name;
-            locIndex[camp.uid] = camp.location_string;//notNull(camp.location.intersection) + camp.location.frontage!;
+            locIndex[camp.uid] = camp.location_string;
         }
         for (let art of this.art) {
             artIndex[art.uid] = art.name;
@@ -179,6 +220,20 @@ export class DataManager implements WorkerClass {
         this.cache = {};
         console.timeEnd('init');
     }
+
+    private locateCamp(camp: Camp): Pin | undefined {
+        if (!camp.location_string) return undefined;
+        return locationStringToPin(camp.location_string, this.mapRadius);
+    }
+
+    // private plot(clock: number, rad: number, offset: any, radius: number) {
+    //     const pt = getPoint(clock, rad, radius);
+    //     if (offset) {
+    //         pt.x += offset.x;
+    //         pt.y += offset.y;
+    //     }
+    //     return pt;
+    // }
 
     public setDataset(dataset: string, events: Event[], camps: Camp[], art: Art[], hideLocations: boolean) {
         this.dataset = dataset;
@@ -297,6 +352,10 @@ export class DataManager implements WorkerClass {
         camps.sort((a: Camp, b: Camp) => { return a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }) });
     }
 
+    private sortCampsByDistance(camps: Camp[]) {
+        camps.sort((a: Camp, b: Camp) => { return a.distance - b.distance });
+    }
+
     public getCampEvents(campId: string): Event[] {
         const result: Event[] = [];
 
@@ -309,16 +368,44 @@ export class DataManager implements WorkerClass {
         return result;
     }
 
-    public findCamps(query: string): Camp[] {
+    public findCamps(query: string, coords?: GpsCoord): Camp[] {
         const result: Camp[] = [];
         const qry = query.toLowerCase();
         for (let camp of this.camps) {
+
+            if (coords) {
+                camp.distance = distance(coords, camp.gpsCoord);
+                if (isNaN(camp.distance)) {
+                    camp.distance = 999;
+                }
+                camp.distanceInfo = this.formatDistance(camp.distance);
+
+
+                //console.log(`${camp.name} ${camp.distance}`);
+            } else {
+                camp.distanceInfo = '';
+            }
             if (camp.name.toLowerCase().includes(qry) || camp.location_string?.toLowerCase().includes(qry)) {
                 result.push(camp);
             }
         }
-        this.sortCamps(result);
+        if (coords) {
+            this.sortCampsByDistance(result);
+        } else {
+            this.sortCamps(result);
+        }
         return result;
+    }
+
+    private formatDistance(dist: number): string {
+        if (dist == 999) {
+            return '';
+        }
+        const rounded = Math.round(dist * 10) / 10
+        if (rounded == 0.0) {
+            return '(near)';
+        }
+        return `(${rounded}mi)`;
     }
 
     public findArts(query: string | undefined): Art[] {

@@ -50,32 +50,11 @@ export class GeoService {
 
     const position = await Geolocation.getCurrentPosition({ enableHighAccuracy: true });
     return { lat: position.coords.latitude, lng: position.coords.longitude };
-
   }
 
   public async placeOnMap(coord: GpsCoord, circleRadius: number): Promise<Point> {
-    const refs = await this.db.getGeoReferences();
-    console.log('placeOnMap.refs', refs)
-    const gpsCoords: GpsCoord[] = [];
-    const points: Point[] = [];
-    for (let ref of [refs[0], refs[1], refs[2]]) {
-      gpsCoords.push({ lat: ref.coordinates[0], lng: ref.coordinates[1] });
-      const mp: MapPoint = { clock: ref.clock, street: ref.street };
-      const pt = this.mapPointToPoint(mp, circleRadius);
-      points.push(pt);
-    }
-    setReferencePoints(gpsCoords, points);
-    const point = gpsToMap(coord);
-    console.log('placeOnMap.point', point);
-    return point;
-  }
+    const point = await this.db.gpsToPoint(coord);
 
-  private mapPointToPoint(mapPoint: MapPoint, circleRadius: number) {
-    console.log('mapPointToPoint', mapPoint);
-    const clock = toClock(mapPoint.clock);
-    const rad = toStreetRadius(mapPoint.street);
-    const circleRad = circleRadius;
-    console.log('checkGeolocation', mapPoint, clock, rad, circleRad);
-    return getPoint(clock, rad, circleRad);
+    return point;
   }
 }

@@ -1,3 +1,5 @@
+import { GpsCoord } from "./map/geo.utils";
+
 export interface Event {
   camp: string; // Calculated
   timeString: string; // Calculated
@@ -57,6 +59,10 @@ export interface Camp {
   name: string
   uid: string
   url?: string
+  gpsCoord: GpsCoord
+  pin: Pin
+  distance: number
+  distanceInfo: string
   year: number
 }
 
@@ -204,5 +210,6 @@ export enum DataMethods {
   FindCamp = 'findCamp',
   GetCampEvents = 'getCampEvents',
   GetCamps = 'getCamps',
-  GetGeoReferences = 'getGeoReferences'
+  GetGeoReferences = 'getGeoReferences',
+  GpsToPoint = 'gpsToPoint'
 }

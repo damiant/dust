@@ -2,6 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { Event, Day, Camp, Art, Pin, DataMethods, MapSet, GeoRef, Dataset } from './models';
 import { call, registerWorker } from './worker-interface';
 import { daysUntil, noDate, now } from './utils';
+import { GpsCoord, Point } from './map/geo.utils';
 
 @Injectable({
   providedIn: 'root'
@@ -71,6 +72,10 @@ export class DbService {
     return await call(this.worker, DataMethods.GetGeoReferences);
   }
 
+  public async gpsToPoint(gpsCoord: GpsCoord): Promise<Point> {
+    return await call(this.worker, DataMethods.GpsToPoint, gpsCoord);
+  }
+
   public async getPotties(): Promise<Pin[]> {
     return await call(this.worker, DataMethods.GetPotties);
   }
@@ -91,8 +96,8 @@ export class DbService {
     return await call(this.worker, DataMethods.GetArtList, ids);
   }
 
-  public async findCamps(query: string): Promise<Camp[]> {
-    return await call(this.worker, DataMethods.FindCamps, query);
+  public async findCamps(query: string, near?: GpsCoord): Promise<Camp[]> {
+    return await call(this.worker, DataMethods.FindCamps, query, near);
   }
 
   public async findArts(query: string | undefined): Promise<Art[]> {

@@ -1,7 +1,8 @@
-import { MapInfo, MapPoint } from "../models";
+import { MapInfo, MapPoint, Pin } from "../models";
+import { GpsCoord } from "./geo.utils";
 
 // Streets from Esplanade to K in relative values from center
-const streets = [0.285, 0.338, 0.369, 0.405, 0.435, 0.465, 0.525, 0.557, 0.590, 0.621, 0.649, 0.678];
+export const streets = [0.285, 0.338, 0.369, 0.405, 0.435, 0.465, 0.525, 0.557, 0.590, 0.621, 0.649, 0.678];
 
 export function toMapPoint(location: string | undefined, info?: MapInfo): MapPoint {
     if (!location) {
@@ -62,11 +63,83 @@ export function toRadius(feet: number): number {
     const toEspanade = streets[0];
     const pixels = feet / 2500.0 * toEspanade;
     return pixels;
-
 }
 
+// export function distance(g1: GpsCoord, g2: GpsCoord) {
+//     function degreesToRadians(degrees: number) {
+//         return degrees * Math.PI / 180;
+//     }
 
-export function getPoint(clock: number, rad: number, circleRadius: number) {
+//     const R = 3958.8; // Earth radius in miles
+
+//     let dLat = degreesToRadians(g2.lat - g1.lat);
+//     let dLon = degreesToRadians(g2.lng - g1.lng);
+
+//     let a =
+//         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+//         Math.cos(degreesToRadians(g1.lat)) * Math.cos(degreesToRadians(g2.lat)) *
+//         Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+//     let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+//     return R * c; // returns distance in miles
+// }
+
+export function distance(g1: GpsCoord, g2: GpsCoord) {
+    if ((g1.lat == g2.lat) && (g1.lng == g2.lng)) {
+        return 0;
+    }
+    else {
+        var radlat1 = Math.PI * g1.lat / 180;
+        var radlat2 = Math.PI * g2.lat / 180;
+        var theta = g1.lng - g2.lng;
+        var radtheta = Math.PI * theta / 180;
+        var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+        if (dist > 1) {
+            dist = 1;
+        }
+        dist = Math.acos(dist);
+        dist = dist * 180 / Math.PI;
+        dist = dist * 60 * 1.1515;
+        return dist;
+    }
+}
+export function mapPointToPin(point: MapPoint, mapRadius: number): Pin | undefined {
+    if (point.x && point.y) {
+        return {
+            x: point.x,
+            y: point.y
+        }
+    }
+    if (point.street !== '') {
+        return plot(toClock(point.clock), toStreetRadius(point.street), undefined, mapRadius);
+    } else if (point.feet) {
+        if (point.streetOffset && point.clockOffset) {
+            const offset = getPoint(toClock(point.clockOffset), toStreetRadius(point.streetOffset), mapRadius);
+            const center = getPoint(0, 0, mapRadius);
+            offset.x -= center.x;
+            offset.y -= center.y;
+            return plot(toClock(point.clock), toRadius(point.feet), offset, mapRadius);
+        } else {
+            return plot(toClock(point.clock), toRadius(point.feet), undefined, mapRadius);
+        }
+    }
+    return undefined;
+}
+export function locationStringToPin(location: string, mapRadius: number): Pin | undefined {
+    return mapPointToPin(toMapPoint(location), mapRadius);
+}
+
+function plot(clock: number, rad: number, offset: any, radius: number) {
+    const pt = getPoint(clock, rad, radius);
+    if (offset) {
+        pt.x += offset.x;
+        pt.y += offset.y;
+    }
+    return pt;
+}
+
+export function getPoint(clock: number, rad: number, circleRadius: number): Pin {
     const pt = getPointOnCircle(rad * circleRadius, clockToDegree(clock));
     pt.x += circleRadius;
     pt.y += circleRadius;
@@ -78,7 +151,7 @@ export function clockToDegree(c: number): number {
     return (c - 3 % 12) * r;
 }
 
-export function getPointOnCircle(radius: number, degree: number) {
+export function getPointOnCircle(radius: number, degree: number): Pin {
     const radian = degree * Math.PI / 180;
     const x = radius * Math.cos(radian);
     const y = radius * Math.sin(radian);

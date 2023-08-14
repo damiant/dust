@@ -1,7 +1,7 @@
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Injectable, signal } from '@angular/core';
 import { delay, randomInt } from './utils';
-import { IonContent, NavController } from '@ionic/angular';
+import { IonContent, NavController, ToastController } from '@ionic/angular';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
@@ -49,6 +49,17 @@ export class UiService {
       console.log(`${name}: scroll to top`);
       ionContent.scrollToTop(100);
     }
+  }
+
+  public async presentToast(message: string, toastController: ToastController) {
+    const toast = await toastController.create({
+      message,
+      color: 'primary',
+      duration: 1500,
+      position: 'top',
+    });
+
+    await toast.present();
   }
 
   public setTab(name: string) {

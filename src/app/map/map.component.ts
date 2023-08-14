@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { PinchZoomModule } from '@meddv/ngx-pinch-zoom';
-import { LocationEnabledStatus, LocationName, MapInfo, MapPoint, Pin } from '../models';
+import { LocationEnabledStatus, MapInfo, MapPoint, Pin } from '../models';
 import { IonicModule, PopoverController } from '@ionic/angular';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { getPoint, toClock, toRadius, toStreetRadius } from './map.utils';
-import { compareStr, delay } from '../utils';
+import { mapPointToPin } from './map.utils';
+import { delay } from '../utils';
 import { GeoService } from '../geo.service';
 import { SettingsService } from '../settings.service';
 import { MessageComponent } from '../message/message.component';
@@ -45,7 +45,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   @ViewChild('mapc') mapc!: ElementRef;
   @Input() height: string = 'height: 100%';
   @Input('points') set setPoints(points: MapPoint[]) {
-    this.points = points;    
+    this.points = points;
     if (this.points.length > 0) {
       this.update();
     }
@@ -80,10 +80,10 @@ export class MapComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     const darkMode = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
     this.src = darkMode ? 'assets/map-dark.svg' : 'assets/map.svg';
-    // Plots every point
+    //Plots every point
     // setTimeout(() => {
     //   for (let clock = 2; clock <= 10; clock += 0.25) {
-    //     for (const street of this.streets) {
+    //     for (const street of streets) {
     //       this.plot(clock, street);
     //     }
     //   }
@@ -98,30 +98,36 @@ export class MapComponent implements OnInit, AfterViewInit {
       height: rect.height,
       circleRadius: rect.width / 2
     }
+    console.log(this.mapInformation);
   }
   async update() {
     await delay(150);
     this.setMapInformation();
 
     for (let point of this.points) {
-      
-      if (point.x && point.y) {
-        this.plotXY(point.x, point.y, point.info);
-      } else if (point.street !== '' && !compareStr(point.street, LocationName.Unavailable)) {        
-        this.plot(toClock(point.clock), toStreetRadius(point.street), undefined, point.info);
-      } else if (point.feet) {
-        if (point.streetOffset && point.clockOffset) {
-          const offset = getPoint(toClock(point.clockOffset), toStreetRadius(point.streetOffset), this.mapInformation!.circleRadius);
-          const center = getPoint(0, 0, this.mapInformation!.circleRadius);
-          offset.x -= center.x;
-          offset.y -= center.y;          
-          this.plot(toClock(point.clock), toRadius(point.feet), offset, point.info);
-        } else {
-          this.plot(toClock(point.clock), toRadius(point.feet), undefined, point.info);
-        }
+      const pin = mapPointToPin(point, 5000);// this.mapInformation!.circleRadius);
+      console.log('map', pin, point);
+      if (pin) {
+        this.plotXY(pin.x, pin.y, point.info);
       }
+      // if (point.x && point.y) {
+      //   this.plotXY(point.x, point.y, point.info);
+      // } else if (point.street !== '' && !compareStr(point.street, LocationName.Unavailable)) {
+      //   this.plot(toClock(point.clock), toStreetRadius(point.street), undefined, point.info);
+      // } else if (point.feet) {
+      //   if (point.streetOffset && point.clockOffset) {
+      //     const offset = getPoint(toClock(point.clockOffset), toStreetRadius(point.streetOffset), this.mapInformation!.circleRadius);
+      //     const center = getPoint(0, 0, this.mapInformation!.circleRadius);
+      //     offset.x -= center.x;
+      //     offset.y -= center.y;
+      //     this.plot(toClock(point.clock), toRadius(point.feet), offset, point.info);
+      //   } else {
+      //     this.plot(toClock(point.clock), toRadius(point.feet), undefined, point.info);
+      //   }
+      // }
     }
     await this.checkGeolocation();
+
   }
 
   private async checkGeolocation() {
@@ -141,39 +147,40 @@ export class MapComponent implements OnInit, AfterViewInit {
       this.showMessage = true;
       return;
     }
-    
+
     try {
       const gpsCoord = await this.geo.getPosition();
       const pt = await this.geo.placeOnMap(gpsCoord, this.mapInformation!.circleRadius);
-      this.createPin(pt.x, pt.y, 10, undefined, 'var(--ion-color-secondary)');
+      this.plotXY(pt.x, pt.y, undefined, 'var(--ion-color-secondary)');
+      //this.createPin(pt.x, pt.y, 10, undefined, 'var(--ion-color-secondary)');
     } catch (err) {
       console.error('checkGeolocation.error', err);
     }
 
   }
 
-  private plotXY(x: number, y: number, info?: MapInfo) {
+  private plotXY(x: number, y: number, info?: MapInfo, bgColor?: string) {
     const px = x / 10000.0 * this.mapInformation!.width;
     const py = y / 10000.0 * this.mapInformation!.height;
-
-    this.createPin(px, py, 5, info);
-
-  }
-
-  private plot(clock: number, rad: number, offset?: any, info?: MapInfo) {
-    const pt = getPoint(clock, rad, this.mapInformation!.circleRadius);
-    if (offset) {
-      pt.x += offset.x;
-      pt.y += offset.y;
-    }
     if (info) {
-      this.placeLabel(pt.x, pt.y, info);
+      this.placeLabel(px, py, info);
     }
-    this.createPin(pt.x, pt.y, info ? 10 : 5, info);
-
+    this.createPin(px, py, (info || bgColor) ? 10 : 5, info, bgColor);
   }
 
-  createPin(x: number, y: number, sz: number, info?: MapInfo, bgColor?: string) {    
+  // private plot(clock: number, rad: number, offset?: any, info?: MapInfo) {
+  //   const pt = getPoint(clock, rad, this.mapInformation!.circleRadius);
+  //   if (offset) {
+  //     pt.x += offset.x;
+  //     pt.y += offset.y;
+  //   }
+  //   if (info) {
+  //     this.placeLabel(pt.x, pt.y, info);
+  //   }
+  //   this.createPin(pt.x, pt.y, info ? 10 : 5, info);
+  // }
+
+  createPin(x: number, y: number, sz: number, info?: MapInfo, bgColor?: string) {
     const d = document.createElement("div");
     d.style.left = `${x - (sz - 4)}px`;
     d.style.top = `${y - sz + 4}px`;
@@ -219,6 +226,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.isOpen = true;
   }
 
+  // This is used for clicking on the map and finding the corresponding x,y coordinates
   mapPoint(event: any) {
     const x = event.clientX;
     const y = event.clientY;

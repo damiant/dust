@@ -48,22 +48,13 @@ export class ProfilePage implements OnInit {
   async moreClick() {
     this.moreClicks++;
     if (this.moreClicks == 5) {
-      this.presentToast('Locations now enabled');
+      this.ui.presentToast('Locations now enabled', this.toastController);
       this.db.setHideLocations(false);
       await this.db.init(this.settings.settings.dataset);
     }
   }
 
-  async presentToast(message: string) {
-    const toast = await this.toastController.create({
-      message,
-      color: 'primary',
-      duration: 1500,
-      position: 'top',
-    });
 
-    await toast.present();
-  }
 
   home() {
     this.settings.clearSelectedEvent();
