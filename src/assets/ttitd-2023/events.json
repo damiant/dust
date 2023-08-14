@@ -59182,29 +59182,6 @@
     ]
   },
   {
-    "title": "Burning DAD",
-    "uid": "43310",
-    "description": "Burning DAD brings you awesome DAD (Disco After Dark) beats and funky jams. Groove till dawn, 'cause disco never dies\".",
-    "event_type": {
-      "label": "Live Music"
-    },
-    "year": 2023,
-    "print_description": "",
-    "hosted_by_camp": null,
-    "located_at_art": null,
-    "other_location": "Deep Playa",
-    "check_location": 1,
-    "url": null,
-    "all_day": null,
-    "contact": "tinytim@baaahs.org",
-    "occurrence_set": [
-      {
-        "start_time": "2023-09-01T21:00:00-07:00",
-        "end_time": "2023-09-02T04:00:00-07:00"
-      }
-    ]
-  },
-  {
     "title": "Ewe Betta Werk!",
     "uid": "43311",
     "description": "BAAAH's 'Ewe Betta Werk' - where sheep puns meet beats. Dance till dawn, and remember, no one outworks our flock!",

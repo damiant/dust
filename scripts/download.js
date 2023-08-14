@@ -80,6 +80,9 @@ async function download(name, year, filename, folder, options) {
                     item.invalid = true;
                     console.warn(`Camp ${item.name} has no description or location and will be removed`);
                 }
+            } else if (!item.description) {
+                item.description = `This theme camp has no description.`;
+                console.warn(`Camp ${item.name} has no description`);
             }
         }
         if (options?.fixOccurrence) {

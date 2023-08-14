@@ -165,7 +165,7 @@
     "name": "Rocket Pad",
     "url": null,
     "hometown": null,
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "6:30 & E",
       "frontage": "6:30",
@@ -501,7 +501,7 @@
     "name": "Playa's Ark",
     "url": null,
     "hometown": null,
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "E & 8:15",
       "frontage": "E",
@@ -677,7 +677,7 @@
     "name": "Black Rock Astronomical Society",
     "url": null,
     "hometown": "Reno",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "5:45 & H",
       "frontage": "5:45",
@@ -837,7 +837,7 @@
     "name": "Stay the Fuck at Home",
     "url": null,
     "hometown": "Eugene",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "E & 5:15",
       "frontage": "E",
@@ -949,7 +949,7 @@
     "name": "Camp Little Bitty",
     "url": null,
     "hometown": "Santa Cruz",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "6:00 & D",
       "frontage": "6:00",
@@ -981,7 +981,7 @@
     "name": "Frog Camp",
     "url": "https://www.frogscamp.com/",
     "hometown": "Las Vegas",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "Esplanade & 6:30",
       "frontage": "Esplanade",
@@ -1077,7 +1077,7 @@
     "name": "Congee Central",
     "url": null,
     "hometown": "Oakland",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "6:15 & F",
       "frontage": "6:15",
@@ -1157,7 +1157,7 @@
     "name": "Duty Free",
     "url": null,
     "hometown": "new york",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "None",
       "frontage": null,
@@ -1221,7 +1221,7 @@
     "name": "Barbie Death Camp",
     "url": null,
     "hometown": null,
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "6:30 & E",
       "frontage": "6:30",
@@ -1237,7 +1237,7 @@
     "name": "White Rabbit Army",
     "url": null,
     "hometown": "Ogden",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "7:30 & C",
       "frontage": "7:30",
@@ -1349,7 +1349,7 @@
     "name": "Fluffyville",
     "url": null,
     "hometown": null,
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "Esplanade & 3:00 Portal",
       "frontage": "Esplanade",
@@ -1445,7 +1445,7 @@
     "name": "That Bunch Of Pricks",
     "url": null,
     "hometown": "Marin County CA",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "G & 5:15",
       "frontage": "G",
@@ -1477,7 +1477,7 @@
     "name": "Journeys Hangover Remedies",
     "url": null,
     "hometown": "Winnemucca",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "F & 5:15",
       "frontage": "F",
@@ -1909,7 +1909,7 @@
     "name": "Chain Reaction",
     "url": "http://instgram.com/camp_chain_reaction?r=nametag",
     "hometown": "San Francisco",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "6:00 & D",
       "frontage": "6:00",
@@ -2021,7 +2021,7 @@
     "name": "Burro",
     "url": null,
     "hometown": "Reno",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "4:00 & E",
       "frontage": "4:00",
@@ -2245,7 +2245,7 @@
     "name": "Jellyfish",
     "url": null,
     "hometown": null,
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "4:00 & E",
       "frontage": "4:00",
@@ -2277,7 +2277,7 @@
     "name": "Suntrakker",
     "url": null,
     "hometown": "LA MESA",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "4:00 & E",
       "frontage": "4:00",
@@ -2661,7 +2661,7 @@
     "name": "The Island",
     "url": null,
     "hometown": "Papeete, french polynesia",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "B & 8:45",
       "frontage": "B",
@@ -2853,7 +2853,7 @@
     "name": "Camp Gitmo-Sun",
     "url": null,
     "hometown": null,
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "4:00 & E",
       "frontage": "4:00",
@@ -3093,7 +3093,7 @@
     "name": "Swept Together",
     "url": null,
     "hometown": "Denver",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "4:00 & E",
       "frontage": "4:00",
@@ -3221,7 +3221,7 @@
     "name": "Backup Camp",
     "url": null,
     "hometown": "Raleigh",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "4:00 & E",
       "frontage": "4:00",
@@ -3493,7 +3493,7 @@
     "name": "Cumboocha",
     "url": null,
     "hometown": "Seattle",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "G & 8:45",
       "frontage": "G",
@@ -3525,7 +3525,7 @@
     "name": "T.b.c.",
     "url": null,
     "hometown": null,
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "F & 7:15",
       "frontage": "F",
@@ -3573,7 +3573,7 @@
     "name": "Reception",
     "url": null,
     "hometown": "Seattle",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "D & 7:45",
       "frontage": "D",
@@ -3653,7 +3653,7 @@
     "name": "Camp One More",
     "url": null,
     "hometown": "Boston",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "F & 3:45",
       "frontage": "F",
@@ -3941,7 +3941,7 @@
     "name": "DangerNeutrinos!",
     "url": null,
     "hometown": "Hollywood",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "2:30 & E",
       "frontage": "2:30",
@@ -3989,7 +3989,7 @@
     "name": "Dust 2 Dawn",
     "url": null,
     "hometown": "Janesville",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "3:00 & E",
       "frontage": "3:00",
@@ -4341,7 +4341,7 @@
     "name": "Freak Akademy",
     "url": null,
     "hometown": "Tel - Aviv - Jaffa",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "6:30 & F",
       "frontage": "6:30",
@@ -4421,7 +4421,7 @@
     "name": "LolliCock Confessions",
     "url": null,
     "hometown": "Sacramento",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "F & 6:15",
       "frontage": "F",
@@ -4437,7 +4437,7 @@
     "name": "Camp Pekoe",
     "url": null,
     "hometown": "Reno",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "F & 9:15",
       "frontage": "F",
@@ -4533,7 +4533,7 @@
     "name": "Coco Velvet",
     "url": null,
     "hometown": "Seattle",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "4:00 & E",
       "frontage": "4:00",
@@ -4597,7 +4597,7 @@
     "name": "Popsicle Bahrrr",
     "url": null,
     "hometown": "Minneapolis",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "E & 4:15",
       "frontage": "E",
@@ -4693,7 +4693,7 @@
     "name": "Camp L'Attitude",
     "url": null,
     "hometown": "Petaluma",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "C & 3:15",
       "frontage": "C",
@@ -4741,7 +4741,7 @@
     "name": "Pedaling Dreams",
     "url": null,
     "hometown": null,
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "5:00 & E",
       "frontage": "5:00",
@@ -4981,7 +4981,7 @@
     "name": "Mostly Harmless",
     "url": null,
     "hometown": "New York City",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "D & 7:45",
       "frontage": "D",
@@ -5157,7 +5157,7 @@
     "name": "Fish Market",
     "url": null,
     "hometown": "Salt Lake City",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "B & 8:45",
       "frontage": "B",
@@ -5525,7 +5525,7 @@
     "name": "Playa Art Park Support",
     "url": null,
     "hometown": "SF Bay Area, Orange County, CA",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "D & 6:15",
       "frontage": "D",
@@ -5637,7 +5637,7 @@
     "name": "Space Punks",
     "url": null,
     "hometown": "Janesville",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "3:00 & E",
       "frontage": "3:00",
@@ -6453,7 +6453,7 @@
     "name": "Hotel California",
     "url": "https://www.facebook.com/HotelCaliforniaBM",
     "hometown": "San Francisco",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "4:00 & B",
       "frontage": "4:00",
@@ -7621,7 +7621,7 @@
     "name": "Avant Garden",
     "url": "https://avantgarden.camp/",
     "hometown": "San Francisco",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "I & 4:45",
       "frontage": "I",
@@ -7877,7 +7877,7 @@
     "name": "Edna's Oasis",
     "url": null,
     "hometown": "Truckee",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "2:15 & F",
       "frontage": "2:15",
@@ -8533,7 +8533,7 @@
     "name": "Camp Manatee",
     "url": null,
     "hometown": "Los Angeles",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "5:30 & C",
       "frontage": "5:30",
@@ -10021,7 +10021,7 @@
     "name": "ClusterDust",
     "url": null,
     "hometown": "Oakland",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "Esplanade & 3:00 Portal",
       "frontage": "Esplanade",
@@ -10133,7 +10133,7 @@
     "name": "Dusty Justice",
     "url": null,
     "hometown": null,
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "F & 6:45",
       "frontage": "F",
@@ -10149,7 +10149,7 @@
     "name": "Shady Waffle",
     "url": null,
     "hometown": "San Francisco",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "4:30 G Plaza",
       "frontage": "4:30 G Plaza",
@@ -10165,7 +10165,7 @@
     "name": "Piehole",
     "url": null,
     "hometown": "Portland",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "7:30 & E",
       "frontage": "7:30",
@@ -10805,7 +10805,7 @@
     "name": "Golden Guy Alley",
     "url": "https://goldenguyalley.com/",
     "hometown": "Oakland",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "D & 7:45",
       "frontage": "D",
@@ -11141,7 +11141,7 @@
     "name": "Whynauts",
     "url": null,
     "hometown": "San Francisco",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "F & 2:45",
       "frontage": "F",
@@ -11509,7 +11509,7 @@
     "name": "Black Rock Yacht Club",
     "url": null,
     "hometown": "Point Reyes",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "J & 8:45",
       "frontage": "J",
@@ -11765,7 +11765,7 @@
     "name": "Black Rock City Animal Control",
     "url": null,
     "hometown": null,
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "C & 8:15",
       "frontage": "C",
@@ -12053,7 +12053,7 @@
     "name": "Wufkat Village",
     "url": null,
     "hometown": "Black Rock",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "2:30 & F",
       "frontage": "2:30",
@@ -12405,7 +12405,7 @@
     "name": "Camp Ridiculicious",
     "url": null,
     "hometown": null,
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "5:45 & G",
       "frontage": "5:45",
@@ -12597,7 +12597,7 @@
     "name": "Dusty Daruma Dojo",
     "url": null,
     "hometown": "Los Angeles",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "E & 6:45",
       "frontage": "E",
@@ -12837,7 +12837,7 @@
     "name": "Camp Byus",
     "url": null,
     "hometown": "Reno San Diego San Fransisco",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "H & 7:15",
       "frontage": "H",
@@ -12869,7 +12869,7 @@
     "name": "PlayAground",
     "url": null,
     "hometown": "Healdsburg",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "F & 3:45",
       "frontage": "F",
@@ -13125,7 +13125,7 @@
     "name": "Camp Hapé",
     "url": null,
     "hometown": "Medellin, Colombia",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "D & 2:15",
       "frontage": "D",
@@ -13157,7 +13157,7 @@
     "name": "Space Hole: Mist Opportunity",
     "url": null,
     "hometown": "San Francisco",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "E & 4:45",
       "frontage": "E",
@@ -13349,7 +13349,7 @@
     "name": "The Parlour Room",
     "url": null,
     "hometown": "San Francisco",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "9:45 & I",
       "frontage": "9:45",
@@ -13541,7 +13541,7 @@
     "name": "Southern Discomfort",
     "url": null,
     "hometown": "Los Angeles and San Francisco",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "C & 9:15",
       "frontage": "C",
@@ -13733,7 +13733,7 @@
     "name": "The Bistro",
     "url": null,
     "hometown": "Martinez",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "6:30 & E",
       "frontage": "6:30",
@@ -13829,7 +13829,7 @@
     "name": "DayStar",
     "url": null,
     "hometown": null,
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "4:30 B Plaza",
       "frontage": "4:30 B Plaza",
@@ -13845,7 +13845,7 @@
     "name": "machinedom - the experience",
     "url": null,
     "hometown": "\"Reno\"",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "I & 5:45",
       "frontage": "I",
@@ -13973,7 +13973,7 @@
     "name": "Rumi's Tea House",
     "url": "https://www.facebook.com/RumisTeaHouse/",
     "hometown": "New York City",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "5:45 & G",
       "frontage": "5:45",
@@ -14501,7 +14501,7 @@
     "name": "Hardly",
     "url": null,
     "hometown": "Mountain View",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "Esplanade & 3:00 Portal",
       "frontage": "Esplanade",
@@ -14629,7 +14629,7 @@
     "name": "Gnome Sloth Gnome",
     "url": null,
     "hometown": "San Francisco",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "Esplanade & 3:00 Portal",
       "frontage": "Esplanade",
@@ -14725,7 +14725,7 @@
     "name": "Buddha Lounge",
     "url": null,
     "hometown": "Santa Fe",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "2:30 & F",
       "frontage": "2:30",
@@ -15013,7 +15013,7 @@
     "name": "Penguin Place",
     "url": null,
     "hometown": "LA, Seattle, Salem",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "7:15 & F",
       "frontage": "7:15",
@@ -15541,7 +15541,7 @@
     "name": "Darklits",
     "url": null,
     "hometown": "lONDON",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "B & 2:15",
       "frontage": "B",
@@ -15589,7 +15589,7 @@
     "name": "Assland",
     "url": null,
     "hometown": "Los Angeles",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "E & 8:15",
       "frontage": "E",
@@ -15653,7 +15653,7 @@
     "name": "Sixes&Sevens",
     "url": null,
     "hometown": "San Francisco",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "C & 9:45",
       "frontage": "C",
@@ -15829,7 +15829,7 @@
     "name": "Northern Lights",
     "url": "http://northernlights.camp",
     "hometown": "Oslo",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "5:30 & B",
       "frontage": "5:30",
@@ -16357,7 +16357,7 @@
     "name": "Monkey Business",
     "url": null,
     "hometown": "Washington DC",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "H & 4:45",
       "frontage": "H",
@@ -16485,7 +16485,7 @@
     "name": "camp north star",
     "url": null,
     "hometown": "denver",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "4:15 & F",
       "frontage": "4:15",
@@ -16565,7 +16565,7 @@
     "name": "It Was Better Last Year",
     "url": null,
     "hometown": "San Francisco",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "8:00 & B",
       "frontage": "8:00",
@@ -16885,7 +16885,7 @@
     "name": "Camp Safari",
     "url": "http://www.facebook.com/burningcampsafari",
     "hometown": "Berkeley",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "F & 4:45",
       "frontage": "F",
@@ -16981,7 +16981,7 @@
     "name": "Community Improvement Association",
     "url": null,
     "hometown": "San Francisco",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "H & 5:45",
       "frontage": "H",
@@ -17253,7 +17253,7 @@
     "name": "MiM0SA SUNRiSE",
     "url": "https://mimosasunrise.com/",
     "hometown": "Santa Cruz",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "9:30 & B",
       "frontage": "9:30",
@@ -17317,7 +17317,7 @@
     "name": "Hard as a Rock",
     "url": null,
     "hometown": "El Paso",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "3:30 & F",
       "frontage": "3:30",
@@ -17445,7 +17445,7 @@
     "name": "The Petting Zoo",
     "url": null,
     "hometown": "Evergreen",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "2:30 & A",
       "frontage": "2:30",
@@ -17685,7 +17685,7 @@
     "name": "Sparkadia",
     "url": null,
     "hometown": null,
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "4:00 & E",
       "frontage": "4:00",
@@ -17941,7 +17941,7 @@
     "name": "Turbaza Chayka",
     "url": null,
     "hometown": null,
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "G & 7:45",
       "frontage": "G",
@@ -18021,7 +18021,7 @@
     "name": "Byrd Law",
     "url": null,
     "hometown": "Los Angeles",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "F & 9:45",
       "frontage": "F",
@@ -18661,7 +18661,7 @@
     "name": "PsychOasis",
     "url": null,
     "hometown": "Vancouver",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "3:30 & F",
       "frontage": "3:30",
@@ -19045,7 +19045,7 @@
     "name": "Send Noods",
     "url": null,
     "hometown": "South Lake Tahoe",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "B & 3:45",
       "frontage": "B",
@@ -19173,7 +19173,7 @@
     "name": "Galactic Cruzaders",
     "url": null,
     "hometown": "Los Angeles",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "E & 6:15",
       "frontage": "E",
@@ -19509,7 +19509,7 @@
     "name": "HalloweenTown BRC",
     "url": null,
     "hometown": "Rosemead",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "J & 2:45",
       "frontage": "J",
@@ -19813,7 +19813,7 @@
     "name": "Oontz Pouch",
     "url": null,
     "hometown": "San Francisco",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "F & 8:45",
       "frontage": "F",
@@ -20565,7 +20565,7 @@
     "name": "Alight Market Village",
     "url": null,
     "hometown": "Oakland",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "6:30 & E",
       "frontage": "6:30",
@@ -20581,7 +20581,7 @@
     "name": "Desert Power",
     "url": null,
     "hometown": "San Francisco",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "E & 7:45",
       "frontage": "E",
@@ -21125,7 +21125,7 @@
     "name": "Sloth Dance Society",
     "url": null,
     "hometown": "San Francisco",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "6:30 & E",
       "frontage": "6:30",
@@ -22805,7 +22805,7 @@
     "name": "The Space Between",
     "url": null,
     "hometown": "Los Angeles",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "G & 7:15",
       "frontage": "G",
@@ -23237,7 +23237,7 @@
     "name": "Common Senses",
     "url": null,
     "hometown": null,
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "B & 2:45",
       "frontage": "B",
@@ -23397,7 +23397,7 @@
     "name": "Disconnect",
     "url": null,
     "hometown": "San Francisco",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "D & 7:45",
       "frontage": "D",
@@ -23429,7 +23429,7 @@
     "name": "Awake",
     "url": null,
     "hometown": "New York",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "6:30 & F",
       "frontage": "6:30",
@@ -23637,7 +23637,7 @@
     "name": "Veterans for Peace",
     "url": null,
     "hometown": "Clearlake",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "4:00 & E",
       "frontage": "4:00",
@@ -23717,7 +23717,7 @@
     "name": "Polegasm",
     "url": null,
     "hometown": "Seattle",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "7:00 & D",
       "frontage": "7:00",
@@ -23733,7 +23733,7 @@
     "name": "Dusty Bottoms",
     "url": null,
     "hometown": "San Francisco",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "G & 7:15",
       "frontage": "G",
@@ -23925,7 +23925,7 @@
     "name": "Fuck Yeah!",
     "url": null,
     "hometown": "Reno",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "9:30 & A",
       "frontage": "9:30",
@@ -24005,7 +24005,7 @@
     "name": "Missing Piece",
     "url": null,
     "hometown": "Oakland",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "D & 7:45",
       "frontage": "D",
@@ -24037,7 +24037,7 @@
     "name": "Ego Trip",
     "url": null,
     "hometown": "San Diego",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "Esplanade & 9:30",
       "frontage": "Esplanade",
@@ -24245,7 +24245,7 @@
     "name": "A Confederacy of Dunces",
     "url": null,
     "hometown": "New Orleans",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "Esplanade & 7:45",
       "frontage": "Esplanade",
@@ -24261,7 +24261,7 @@
     "name": "Camp Walter",
     "url": null,
     "hometown": "Phoenix",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "Esplanade & 9:15",
       "frontage": "Esplanade",
@@ -24453,7 +24453,7 @@
     "name": "KashyyyK",
     "url": null,
     "hometown": "New York City",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "G & 9:15",
       "frontage": "G",
@@ -24645,7 +24645,7 @@
     "name": "Soul Forge",
     "url": null,
     "hometown": "San Francisco",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "4:00 & E",
       "frontage": "4:00",
@@ -24693,7 +24693,7 @@
     "name": "Playa Agora",
     "url": "https://PlayaAgora.Love",
     "hometown": "Denver",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "D & 9:45",
       "frontage": "D",
@@ -24869,7 +24869,7 @@
     "name": "Decentral",
     "url": null,
     "hometown": null,
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "3:30 & E",
       "frontage": "3:30",
@@ -24901,7 +24901,7 @@
     "name": "Campoline",
     "url": "https://www.facebook.com/Campoline.Tribe/",
     "hometown": "Calistoga, Smartsville",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "9:00 & F",
       "frontage": "9:00",
@@ -24949,7 +24949,7 @@
     "name": "AEZ Music Hall",
     "url": null,
     "hometown": "Seattle",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "4:00 & E",
       "frontage": "4:00",
@@ -25109,7 +25109,7 @@
     "name": "Th Backscratchers",
     "url": null,
     "hometown": "New York",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "D & 6:15",
       "frontage": "D",
@@ -25317,7 +25317,7 @@
     "name": "So Far So Good",
     "url": "https://paulkarpenko.com/pages/bm/",
     "hometown": "Los Angeles",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "G & 7:45",
       "frontage": "G",
@@ -25573,7 +25573,7 @@
     "name": "Magic Tree House",
     "url": null,
     "hometown": "Berkeley",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "D & 7:45",
       "frontage": "D",
@@ -25637,7 +25637,7 @@
     "name": "Survivor Man Camp",
     "url": null,
     "hometown": "Reno",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "D & 8:15",
       "frontage": "D",
@@ -25685,7 +25685,7 @@
     "name": "Nannas Kitchen",
     "url": null,
     "hometown": "Lincoln",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "D & 7:45",
       "frontage": "D",
@@ -25845,7 +25845,7 @@
     "name": "Frybread and Friends",
     "url": null,
     "hometown": "Wadsworth",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "B & 7:15",
       "frontage": "B",
@@ -25861,7 +25861,7 @@
     "name": "Global Camp",
     "url": null,
     "hometown": "International",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "E & 6:45",
       "frontage": "E",
@@ -25893,7 +25893,7 @@
     "name": "Adult Novelty Shoppe",
     "url": null,
     "hometown": "Salt Lake City",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "B & 2:45",
       "frontage": "B",
@@ -26053,7 +26053,7 @@
     "name": "Electric Kool-Aid Vision Quest",
     "url": null,
     "hometown": "Boston",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "Esplanade & 3:30",
       "frontage": "Esplanade",
@@ -26069,7 +26069,7 @@
     "name": "Sensory Delights",
     "url": null,
     "hometown": "Los Angeles",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "4:00 & E",
       "frontage": "4:00",
@@ -26117,7 +26117,7 @@
     "name": "Grand Opening",
     "url": null,
     "hometown": "San Francisco",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "4:00 & E",
       "frontage": "4:00",
@@ -26293,7 +26293,7 @@
     "name": "Camp Circle J",
     "url": null,
     "hometown": null,
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "4:00 & E",
       "frontage": "4:00",
@@ -26373,7 +26373,7 @@
     "name": "DC Container",
     "url": null,
     "hometown": "Washington, DC",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "D & 5:15",
       "frontage": "D",
@@ -26469,7 +26469,7 @@
     "name": "The DPW Ghetto",
     "url": null,
     "hometown": null,
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "5:30 & D",
       "frontage": "5:30",
@@ -26517,7 +26517,7 @@
     "name": "Diptown",
     "url": "https://shminke.art/diptown",
     "hometown": "Reno",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "G & 4:15",
       "frontage": "G",
@@ -26741,7 +26741,7 @@
     "name": "Camp Gifting Zephyr",
     "url": null,
     "hometown": null,
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "E & 6:45",
       "frontage": "E",
@@ -26789,7 +26789,7 @@
     "name": "Synonymous Camp",
     "url": null,
     "hometown": null,
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "5:30 & F",
       "frontage": "5:30",
@@ -27269,7 +27269,7 @@
     "name": "Temple Build Camp",
     "url": "https://temple2023.com",
     "hometown": null,
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "B & 3:45",
       "frontage": "B",
@@ -27493,7 +27493,7 @@
     "name": "Rise Camp",
     "url": null,
     "hometown": "Amsterdam",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "I & 9:15",
       "frontage": "I",
@@ -27557,7 +27557,7 @@
     "name": "Theoretical Artists",
     "url": null,
     "hometown": null,
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "F & 2:15",
       "frontage": "F",
@@ -27589,7 +27589,7 @@
     "name": "Chromosomatic",
     "url": "https://chromosomatic.com",
     "hometown": "Nevada City",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "D & 6:15",
       "frontage": "D",
@@ -27621,7 +27621,7 @@
     "name": "Epiffany & Co",
     "url": null,
     "hometown": "San Francisco",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "C & 6:45",
       "frontage": "C",
@@ -28037,7 +28037,7 @@
     "name": "Burner Express Bus Depot",
     "url": null,
     "hometown": null,
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "6:00 & I",
       "frontage": "6:00",
@@ -28181,7 +28181,7 @@
     "name": "Placement HQ",
     "url": null,
     "hometown": null,
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "Esplanade & 6:00 Portal",
       "frontage": "Esplanade",
@@ -28197,7 +28197,7 @@
     "name": "The Clowder",
     "url": null,
     "hometown": null,
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "Esplanade & 6:00 Portal",
       "frontage": "Esplanade",
@@ -28213,7 +28213,7 @@
     "name": "Arctica Ice Sales - Ice Nine",
     "url": null,
     "hometown": null,
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "9:00 G Plaza",
       "frontage": "9:00 G Plaza",
@@ -28229,7 +28229,7 @@
     "name": "Arctica Ice Sales - Ice Cubed",
     "url": null,
     "hometown": null,
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "3:00 G Plaza",
       "frontage": "3:00 G Plaza",
@@ -28245,7 +28245,7 @@
     "name": "Arctica Ice Sales",
     "url": null,
     "hometown": null,
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "Center Camp Plaza @ 9:00",
       "frontage": "Center Camp Plaza",
@@ -28293,7 +28293,7 @@
     "name": "Greeters Camp",
     "url": null,
     "hometown": null,
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "5:00 & B",
       "frontage": "5:00",
@@ -28469,7 +28469,7 @@
     "name": "Nope On A Rope",
     "url": null,
     "hometown": "Los Angeles, Chicago",
-    "description": null,
+    "description": "This theme camp has no description.",
     "location": {
       "string": "2:30 & E",
       "frontage": "2:30",
