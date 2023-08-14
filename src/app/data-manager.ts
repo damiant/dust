@@ -147,12 +147,13 @@ export class DataManager implements WorkerClass {
         let campIndex: any = {};
         let locIndex: any = {};
         let artIndex: any = {};
+        let artGPS: any = {};
+        let artLocationNames: any = {};
         for (let camp of this.camps) {
             const pin = this.locateCamp(camp);
 
             if (pin) {
                 const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
-                //console.log(`${camp.name} x=${pin.x} y=${pin.y} lat=${gpsCoords.lat} lng=${gpsCoords.lng}`)
                 camp.gpsCoord = gpsCoords;
                 camp.pin = pin;
             }
@@ -164,10 +165,12 @@ export class DataManager implements WorkerClass {
         }
         for (let art of this.art) {
             artIndex[art.uid] = art.name;
+            artLocationNames[art.uid] = art.location_string;
             const pin = locationStringToPin(art.location_string!, this.mapRadius);
             if (pin) {
                 const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
                 art.gpsCoords = gpsCoords;
+                artGPS[art.uid] = art.gpsCoords;
             }
             if (!art.location_string) {
                 art.location_string = LocationName.Unplaced;
@@ -191,16 +194,33 @@ export class DataManager implements WorkerClass {
                 if (pin) {
                     const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
                     event.gpsCoords = gpsCoords;
+                } else {
+                    console.error(`Unable to find camp ${event.hosted_by_camp} for event ${event.title}`);
                 }
                 if (hideLocations) {
                     event.location = LocationName.Unavailable;
                 }
             } else if (event.other_location) {
                 event.camp = event.other_location;
+                if (event.camp.toLowerCase().includes('center camp')) {
+                    event.location = '6:00 & A';
+                    const pin = locationStringToPin(event.location, this.mapRadius);
+                    const gpsCoords = mapToGps({ x: pin!.x, y: pin!.y });
+                    event.gpsCoords = gpsCoords;
+                } else {
+                    // If its a hand crafted name then we're out of luck finding an address
+                    //console.warn(`${event.title} hosted at ${event.camp}`);
+                }
             } else if (event.located_at_art) {
                 event.camp = artIndex[event.located_at_art];
+                try {
+                    event.gpsCoords = artGPS[event.located_at_art];
+                    event.location = artLocationNames[event.located_at_art];
+                } catch (err) {
+                    console.error(`Failed GPS: ${event.title} hosted at art ${event.located_at_art}`);
+                }
             } else {
-                console.log('no location', event);
+                console.error('no location', event);
             }
             if (event.print_description === '') {
                 // Happens before events go to the WWW guide
