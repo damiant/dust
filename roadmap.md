@@ -2,7 +2,8 @@
 
 Analog Internet Installation
 Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
-
+- Audio Guide https://soundcloud.com/burningman/sets/2023-art-audio-guide.
+- RSL https://s3.amazonaws.com/rslmusicguide.com/guides/FinalRSL2022.pdf
 - Favorites by distance
 - Hydration station may be "all day" or 24 hours
 - RSL tab

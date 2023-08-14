@@ -1,6 +1,6 @@
 import { WorkerClass } from './worker-interface';
-import { Art, Camp, DataMethods, Day, Event, GeoRef, LocationName, MapPoint, MapSet, Pin, Revision, TimeString } from './models';
-import { BurningManTimeZone, getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from './utils';
+import { Art, Camp, DataMethods, Day, Event, GeoRef, LocationName, MapPoint, MapSet, Pin, RSLEvent, Revision, TimeString } from './models';
+import { BurningManTimeZone, compareStr, getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from './utils';
 import { distance, getPoint, locationStringToPin, maxDistance, toClock, toStreetRadius } from './map/map.utils';
 import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from './map/geo.utils';
 
@@ -37,6 +37,7 @@ export class DataManager implements WorkerClass {
             case DataMethods.FindArt: return this.findArt(args[0]);
             case DataMethods.GpsToPoint: return this.gpsToPoint(args[0]);
             case DataMethods.GetMapPoints: return this.getMapPoints(args[0]);
+            case DataMethods.GetRSLEvents: return await this.getRSLEvents(args[0], args[1], args[2]);
             case DataMethods.CheckEvents: return this.checkEvents(args[0]);
             case DataMethods.FindEvents: return this.findEvents(args[0], args[1], args[2], args[3]);
             case DataMethods.FindCamps: return this.findCamps(args[0], args[1]);
@@ -357,6 +358,35 @@ export class DataManager implements WorkerClass {
             }
         }
         return undefined;
+    }
+
+    public async getRSLEvents(query: string, day: Date | undefined, coords: GpsCoord | undefined): Promise<RSLEvent[]> {
+        const res = await fetch(this.path('rsl'));
+        const events: RSLEvent[] = await res.json();
+        const result: RSLEvent[] = [];
+        query = query.toLowerCase();
+        const fDay = day ? day.toISOString().split('T')[0] : undefined;
+        
+        console.log('getRSLEvents', fDay);
+        for (let event of events) {
+            for (let occurrence of event.occurrences) {
+                occurrence.timeRange = occurrence.time;
+                occurrence.timeRange = (occurrence.end) ? `${occurrence.time}-${occurrence.end}` : `${occurrence.time}`;
+            }
+            if (this.rslEventContains(event, query) && event.day == fDay) {
+                result.push(event);
+            }
+        }
+        return result;
+    }
+
+    private rslEventContains(event: RSLEvent, query: string): boolean {
+        if (query == '') return true;
+        if (event.camp.toLowerCase().includes(query)) return true;
+        for (let occurrence of event.occurrences) {
+            if (occurrence.who.toLowerCase().includes(query)) return true;
+        }
+        return false;
     }
 
     public findEvents(query: string, day: Date | undefined, category: string, coords: GpsCoord | undefined): Event[] {

@@ -22,13 +22,18 @@ export const routes: Routes = [
       },
       {
         path: 'favs/map',
-        loadComponent: () => import('../fav-map/fav-map.page').then( m => m.FavMapPage)
+        loadComponent: () => import('../fav-map/fav-map.page').then(m => m.FavMapPage)
       },
       {
         path: 'art',
         loadComponent: () =>
           import('../art/art.page').then((m) => m.ArtPage),
-      },      
+      },
+
+      {
+        path: 'rsl',
+        loadComponent: () => import('../rsl/rsl.page').then(m => m.RslPage)
+      },
       {
         path: 'profile',
         loadComponent: () => import('../profile/profile.page').then(m => m.ProfilePage)

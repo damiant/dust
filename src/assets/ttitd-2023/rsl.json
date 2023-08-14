@@ -1,0 +1,42 @@
+[
+    {
+        "camp": "Airpusher",
+        "title": "Jazz That Doesn't Suck",
+        "location": "H & 9:45",
+        "day": "2023-08-29",
+        "occurrences": [
+            {
+                "time": "8:00PM",            
+                "who": "Salinger"
+            },
+            {
+                "time": "10:00PM",
+                "who": "techmonkey"
+            },
+            {
+                "time": "11:00PM",
+                "end": "1:00AM",
+                "who": "Special Guest"
+            }
+        ]
+    },
+    {
+        "camp": "Distrikt",
+        "location": "4:15 & Cocteau",
+        "day": "2023-08-30",
+        "occurrences": [
+            {
+                "time": "11:00AM",
+                "who": "Diplo"
+            },
+            {
+                "time": "1:00PM",
+                "who": "Open Decks"
+            },
+            {
+                "time": "3:00PM",                
+                "who": "B2B Friends"
+            }
+        ]
+    }
+]
