@@ -29,6 +29,10 @@ export enum LocationName {
   Unavailable = 'Location Available Soon'
 }
 
+export interface Revision {
+  revision: number;
+}
+
 export interface EventType {
   abbr: string
   id: number

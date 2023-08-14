@@ -14,14 +14,14 @@ export class DbService {
   private hideLocations = true;
   private worker!: Worker;
 
-  public async init(dataset: string) {
+  public async init(dataset: string): Promise<number> {
     if (!this.initialized) {
       this.worker = new Worker(new URL('./app.worker', import.meta.url));
       registerWorker(this.worker);
       this.initialized = true;
     }
 
-    await call(this.worker, DataMethods.Populate, dataset, this.hideLocations);
+    return await call(this.worker, DataMethods.Populate, dataset, this.hideLocations);
 
   }
 

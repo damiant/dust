@@ -48,7 +48,6 @@ export function noDate(): Date {
 
 export function dateMatches(d: Date, occurrence: OccurrenceSet): boolean {
     const day = d.toISOString();
-    console.log(day);
     const ds = day.split('T');
     return (occurrence.start_time.startsWith(ds[0]) || occurrence.end_time.startsWith(ds[0]));
 }

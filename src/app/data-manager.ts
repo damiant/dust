@@ -1,5 +1,5 @@
 import { WorkerClass } from './worker-interface';
-import { Art, Camp, DataMethods, Day, Event, GeoRef, LocationName, MapSet, Pin, TimeString } from './models';
+import { Art, Camp, DataMethods, Day, Event, GeoRef, LocationName, MapSet, Pin, Revision, TimeString } from './models';
 import { BurningManTimeZone, getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from './utils';
 
 interface TimeCache {
@@ -12,6 +12,7 @@ export class DataManager implements WorkerClass {
     private categories: string[] = [];
     private art: Art[] = [];
     private days: number[] = [];
+    private revision: Revision = { revision: 0 };
     private allEventsOld = false;
     private dataset: string = '';
     private cache: TimeCache = {};
@@ -48,9 +49,11 @@ export class DataManager implements WorkerClass {
         this.events = await this.loadEvents();
         this.camps = await this.loadCamps();
         this.art = await this.loadArt();
+        this.revision = await this.loadRevision();
 
+        console.log(`Revsion populated ${this.revision.revision} hide locations = ${hideLocations}`);
         this.init(hideLocations);
-        return this.events.length + this.camps.length;
+        return this.revision.revision;
     }
 
     private sortArt(art: Art[]) {
@@ -162,7 +165,7 @@ export class DataManager implements WorkerClass {
                 // Change midnight to 11:49 so that it works with the sameday function
                 if (occurrence.end_time.endsWith('T00:00:00-07:00')) {
                     const t = occurrence.start_time.split('T');
-                    occurrence.end_time = t[0]+'T23:59:00-07:00';
+                    occurrence.end_time = t[0] + 'T23:59:00-07:00';
                     end = new Date(occurrence.end_time);
                 }
                 const res = this.getOccurrenceTimeStringCached(start, end, undefined);
@@ -272,7 +275,7 @@ export class DataManager implements WorkerClass {
         return undefined;
     }
 
-    public findEvents(query: string, day: Date | undefined, category: string): Event[] {        
+    public findEvents(query: string, day: Date | undefined, category: string): Event[] {
         const result: Event[] = [];
         for (let event of this.events) {
             if (this.eventContains(query, event) && this.eventIsCategory(category, event) && this.onDay(day, event)) {
@@ -428,6 +431,11 @@ export class DataManager implements WorkerClass {
 
     private async loadArt(): Promise<Art[]> {
         const res = await fetch(this.path('art'));
+        return await res.json();
+    }
+
+    private async loadRevision(): Promise<Revision> {
+        const res = await fetch(this.path('revision'));
         return await res.json();
     }
 }

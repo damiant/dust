@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Art, Camp, Dataset } from './models';
+import { Art, Camp, Dataset, Revision } from './models';
 import { datasetFilename, getLive } from './api';
 import { SettingsService } from './settings.service';
 import { minutesBetween, now } from './utils';
@@ -14,9 +14,7 @@ enum Names {
   revision = 'revision'
 }
 
-interface Revision {
-  revision: number;
-}
+
 
 @Injectable({
   providedIn: 'root'
@@ -25,11 +23,21 @@ export class ApiService {
   constructor(private settingsService: SettingsService, private dbService: DbService) {
   }
 
-  public async sendDataToWorker() {
+  public async sendDataToWorker(defaultRevision: number) {
     const ds = this.settingsService.settings.dataset;
+    const revision: Revision = await this.read(ds, Names.revision);
+    if (!revision) {
+      console.warn(`Read from app storage`);
+      return;
+    }
+    if (revision.revision <= defaultRevision) {
+       console.warn(`Did not read data from storage as it is at revision ${revision.revision} but current is ${defaultRevision}`);
+       return;
+    }
     const events = await this.read(ds, Names.events);
     const art = await this.read(ds, Names.art);
     const camps = await this.read(ds, Names.camps);
+    console.log(`Saved revision is ${revision.revision}`);
     if (this.badData(events, art, camps)) {
       // Download failed
       console.error('Bad data in app. Reverting to default install.');

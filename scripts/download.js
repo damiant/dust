@@ -69,6 +69,13 @@ async function download(name, year, filename, folder, options) {
                 + item.print_description.slice(1);
             }
         }
+        if (options?.fixLocation) {
+            if (item.location_string.endsWith(' None None')) {
+                item.location_string = item.location_string.replace(' None None','');
+                item.location.string = item.location.string.replace(' None None','');
+                console.warn(`Fixed location ${item.name} to ${item.location_string}`);
+            }
+        }
         if (options?.fixOccurrence) {
             if (!item.occurrence_set) {
                 console.warn(`${item.title} has invalid occurrence_set and event was removed.`);
@@ -144,7 +151,7 @@ console.log(years);
 for (const year of years) {
     console.log(`Downloading ${year}`);
     const artChanged = await download('art', year, 'art', `ttitd-${year}`, { fixName: true });
-    const campsChanged = await download('camp', year, 'camps', `ttitd-${year}`, { fixName: true });
+    const campsChanged = await download('camp', year, 'camps', `ttitd-${year}`, { fixName: true, fixLocation: true });
     const eventsChanged = await download('event', year, 'events', `ttitd-${year}`, { fixOccurrence: true, fixTitle: true, fixUid: true });
     if (artChanged || campsChanged || eventsChanged) {
         saveRevision(`ttitd-${year}`);
