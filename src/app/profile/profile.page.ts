@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AlertController, IonicModule } from '@ionic/angular';
+import { AlertController, IonicModule, ToastController } from '@ionic/angular';
 import { UiService } from '../ui.service';
 import { Share } from '@capacitor/share';
 import { Router, RouterModule } from '@angular/router';
@@ -24,6 +24,7 @@ import { LocationEnabledStatus } from '../models';
 })
 export class ProfilePage implements OnInit {
 
+  moreClicks = 0;
   locationEnabled = false;
 
   constructor(
@@ -31,6 +32,7 @@ export class ProfilePage implements OnInit {
     private settings: SettingsService,
     private map: MapService,
     private geo: GeoService,
+    private toastController: ToastController,
     public db: DbService
   ) { }
 
@@ -40,7 +42,27 @@ export class ProfilePage implements OnInit {
   }
 
   ionViewDidEnter() {
-    
+
+  }
+
+  async moreClick() {
+    this.moreClicks++;
+    if (this.moreClicks == 5) {
+      this.presentToast('Locations now enabled');
+      this.db.setHideLocations(false);
+      await this.db.init(this.settings.settings.dataset);
+    }
+  }
+
+  async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message,
+      color: 'primary',
+      duration: 1500,
+      position: 'top',
+    });
+
+    await toast.present();
   }
 
   home() {
@@ -62,7 +84,7 @@ export class ProfilePage implements OnInit {
     if (turnedOn) {
       const success = await this.geo.getPermission();
       if (success) {
-        this.locationEnabled = turnedOn;        
+        this.locationEnabled = turnedOn;
       }
     } else {
       this.locationEnabled = false;

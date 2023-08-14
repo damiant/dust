@@ -54,6 +54,7 @@ export class CampsPage {
     effect(() => {
       const year = this.db.selectedYear();
       console.log(`CampsPage.yearChange ${year}`);
+      this.db.checkInit();
       this.vm = initialState();
       this.update('');
     });
