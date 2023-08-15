@@ -366,7 +366,7 @@ export class DataManager implements WorkerClass {
         const result: RSLEvent[] = [];
         query = query.toLowerCase();
         const fDay = day ? day.toISOString().split('T')[0] : undefined;
-        
+
         console.log('getRSLEvents', fDay);
         for (let event of events) {
             for (let occurrence of event.occurrences) {
@@ -450,7 +450,7 @@ export class DataManager implements WorkerClass {
             } else {
                 camp.distanceInfo = '';
             }
-            if (camp.name.toLowerCase().includes(qry) || camp.location_string?.toLowerCase().includes(qry)) {
+            if (this.campMatches(query, camp)) {
                 result.push(camp);
             }
         }
@@ -460,6 +460,12 @@ export class DataManager implements WorkerClass {
             this.sortCamps(result);
         }
         return result;
+    }
+
+    private campMatches(query: string, camp: Camp): boolean {
+        return camp.name.toLowerCase().includes(query) || camp.location_string?.toLowerCase().includes(query)
+            || camp.description?.toLowerCase().includes(query) || false;
+
     }
 
     private formatDistance(dist: number): string {
@@ -537,6 +543,8 @@ export class DataManager implements WorkerClass {
     private eventContains(terms: string, event: Event): boolean {
         return (terms == '') ||
             (event.title.toLowerCase().includes(terms) ||
+                event.camp?.toLowerCase().includes(terms) ||
+                event.location?.toLowerCase().includes(terms) ||
                 event.description.toLowerCase().includes(terms));
     }
 

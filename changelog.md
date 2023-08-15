@@ -1,4 +1,10 @@
 ## Changes
+
+### 1.9
+- Fix search for camp names in events
+- Fix search for locations in events
+- Fix search in description for camps
+
 ### 1.8
 - Camps near me added
 - Events near me added
