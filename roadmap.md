@@ -15,19 +15,15 @@ Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
 - Robin - Camps filter by clock (eg Near 7:00 which would be 6:30-7:30)
 
 ## Priority 1
-- Center Camp State - Add to list of camps but show in profile
-- If day selected then show that day first and other days grouped smaller below
-- If not PST then show timezone with times
+x Center Camp State - Add to list of camps but show in profile
+x If day selected then show that day first and other days grouped smaller below
 - After adding a favorite show the badge count on the fav tab increase (and disappear after opening it)
-- If you choose a day filter events for a camp to that day
 - If an event has a long durations (>3hrs) then let user choose notification hour
 - Pressing the tab again should clear search
 
 ## Priority 2
 - Filter by a-z for camps and art
 - If day is burn night show animation of burn
-- Verify times using a phone not in PST
-- Verify notification times are PST
 - Show/collapse fav group
 - Notification for gates open
 - Notification for week before (daily) ^these give chance to download data

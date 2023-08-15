@@ -1,4 +1,6 @@
 ## Changes
+### 1.10
+- Alphabetic Camp selection
 
 ### 1.9
 - Fix search for camp names in events
