@@ -6,7 +6,7 @@
 
   <ion-card-content>
     <div *ngFor="let occurrence of event.occurrences">
-      <ion-text class="one-line">
+      <ion-text [class.old]="occurrence.old" class="one-line">
         {{occurrence.timeRange}} {{occurrence.who}}
       </ion-text>
     </div>

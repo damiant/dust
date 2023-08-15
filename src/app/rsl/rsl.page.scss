@@ -16,3 +16,8 @@ ion-segment::-webkit-scrollbar {
     opacity: 0.5;
     text-align: center;
 }
+
+ion-toolbar.long {
+   height: 100px;
+   border: 1px solid red;
+}

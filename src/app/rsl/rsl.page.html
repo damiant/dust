@@ -5,9 +5,12 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="app-page">  
-    <ion-header collapse="condense">
+    <ion-header  collapse="condense">
       <ion-toolbar>
-        <ion-title size="large">{{vm.title}}</ion-title>
+        <ion-item lines="none">
+          <img src="assets/icon/rsl-logo.svg" style="height: 80px" />
+        </ion-item>        
+        <!-- <ion-title size="large">{{vm.title}}</ion-title> -->
         <!-- <ion-buttons class="b-pad-r" slot="end">
           <ion-button (click)="toggleByDist()" fill="clear"><ion-icon
               [name]="vm.byDist ? 'compass' : 'compass-outline'"></ion-icon></ion-button>
@@ -33,5 +36,5 @@
       <app-skeleton-event></app-skeleton-event>
     </div>
     <div *ngIf="vm.noEvents" class="message large"><ion-text>{{vm.noEventsMessage}}</ion-text></div>
-    <app-rsl-event [event]="event" (mapClick)="map($event)" *ngFor="let event of vm.events"></app-rsl-event>
+    <app-rsl-event [event]="event" (mapClick)="map($event)" *ngFor="let event of vm.events; trackBy: eventsTrackBy"></app-rsl-event>
 </ion-content>

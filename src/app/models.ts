@@ -190,6 +190,7 @@ export interface MapSet {
   points: MapPoint[];
 }
 export interface RSLEvent {
+  id: string;
   camp: string;
   title?: string;
   location: string;
@@ -198,9 +199,12 @@ export interface RSLEvent {
 }
 
 export interface RSLOccurrence {
-  time: string;
-  end?: string;
+  time: string; // Display format
+  end?: string; // Display format for end time (if it exists)
   timeRange: string; // Calculated
+  startTime: string; // Local format Date
+  endTime: string; // Local format Date
+  old?: boolean; // Calculated: has the event passed
   who: string;
 }
 

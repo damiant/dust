@@ -368,13 +368,23 @@ export class DataManager implements WorkerClass {
         const fDay = day ? day.toISOString().split('T')[0] : undefined;
 
         console.log('getRSLEvents', fDay);
+        const today = now();
         for (let event of events) {
-            for (let occurrence of event.occurrences) {
-                occurrence.timeRange = occurrence.time;
-                occurrence.timeRange = (occurrence.end) ? `${occurrence.time}-${occurrence.end}` : `${occurrence.time}`;
-            }
+
             if (this.rslEventContains(event, query) && event.day == fDay) {
-                result.push(event);
+                let allOld = true;
+                for (let occurrence of event.occurrences) {
+                    occurrence.timeRange = occurrence.time;
+                    occurrence.timeRange = (occurrence.end) ? `${occurrence.time}-${occurrence.end}` : `${occurrence.time}`;
+                    occurrence.old = (new Date(occurrence.endTime).getTime() - today.getTime() < 0);
+                    if (!occurrence.old) {
+                        allOld = false;
+                    }
+                }
+                if (!allOld) {
+                    // If all times have ended
+                    result.push(event);
+                }
             }
         }
         return result;
