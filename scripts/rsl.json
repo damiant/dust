@@ -1,0 +1,16 @@
+[
+  {
+    "camp": "camp name",
+    "title": "title",
+    "location": "location",
+    "day": "day",
+    "occurrences": []
+  },
+  {
+    "camp": "row2",
+    "title": "blar",
+    "location": "blar",
+    "day": "blar",
+    "occurrences": []
+  }
+]
