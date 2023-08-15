@@ -1,0 +1,37 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>{{vm.title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="app-page">  
+    <ion-header collapse="condense">
+      <ion-toolbar>
+        <ion-title size="large">{{vm.title}}</ion-title>
+        <!-- <ion-buttons class="b-pad-r" slot="end">
+          <ion-button (click)="toggleByDist()" fill="clear"><ion-icon
+              [name]="vm.byDist ? 'compass' : 'compass-outline'"></ion-icon></ion-button>
+        </ion-buttons> -->
+      </ion-toolbar>
+      <ion-toolbar>
+        <app-search placeholder="Find Events" (search)="searchEvents($event)" />
+      </ion-toolbar>
+      <ion-toolbar>
+        <ion-segment (ionChange)="dayChange($event)" [(ngModel)]="vm.defaultDay" [scrollable]="true">
+          <ion-segment-button [class.bold]="day.today" *ngFor="let day of vm.days" [value]="day.date">
+            {{day.name}}<br />{{day.dayName}}
+          </ion-segment-button>
+        </ion-segment>
+      </ion-toolbar>
+    </ion-header>
+    <app-map-modal [title]="vm.mapTitle" [subtitle]="vm.mapSubtitle" [(show)]="vm.showMap"
+      [points]="vm.mapPoints"></app-map-modal>
+    <div *ngIf="!vm.noEvents && this.vm.events.length === 0">
+      <app-skeleton-event></app-skeleton-event>
+      <app-skeleton-event></app-skeleton-event>
+      <app-skeleton-event></app-skeleton-event>
+      <app-skeleton-event></app-skeleton-event>
+    </div>
+    <div *ngIf="vm.noEvents" class="message large"><ion-text>{{vm.noEventsMessage}}</ion-text></div>
+    <app-rsl-event [event]="event" (mapClick)="map($event)" *ngFor="let event of vm.events"></app-rsl-event>
+</ion-content>

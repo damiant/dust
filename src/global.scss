@@ -98,6 +98,14 @@ ion-text.one-line {
     text-overflow: ellipsis;
 }
 
+
+.selectable {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+  }
+
 h2,
 ion-card-title {
     font-family: 'Gelion Semi Bold';

@@ -189,6 +189,20 @@ export interface MapSet {
   description: string;
   points: MapPoint[];
 }
+export interface RSLEvent {
+  camp: string;
+  title?: string;
+  location: string;
+  day: string; // Format yyyy-mm-dd
+  occurrences: RSLOccurrence[];
+}
+
+export interface RSLOccurrence {
+  time: string;
+  end?: string;
+  timeRange: string; // Calculated
+  who: string;
+}
 
 export interface GeoRef {
   title: string;
@@ -218,5 +232,6 @@ export enum DataMethods {
   GetCampEvents = 'getCampEvents',
   GetCamps = 'getCamps',
   GetGeoReferences = 'getGeoReferences',
-  GpsToPoint = 'gpsToPoint'
+  GpsToPoint = 'gpsToPoint',
+  GetRSLEvents = 'getRSLEvents'
 }
