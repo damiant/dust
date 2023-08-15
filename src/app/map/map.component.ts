@@ -98,7 +98,6 @@ export class MapComponent implements OnInit, AfterViewInit {
       height: rect.height,
       circleRadius: rect.width / 2
     }
-    console.log(this.mapInformation);
   }
   async update() {
     await delay(150);
@@ -110,21 +109,6 @@ export class MapComponent implements OnInit, AfterViewInit {
       if (pin) {
         this.plotXY(pin.x, pin.y, point.info);
       }
-      // if (point.x && point.y) {
-      //   this.plotXY(point.x, point.y, point.info);
-      // } else if (point.street !== '' && !compareStr(point.street, LocationName.Unavailable)) {
-      //   this.plot(toClock(point.clock), toStreetRadius(point.street), undefined, point.info);
-      // } else if (point.feet) {
-      //   if (point.streetOffset && point.clockOffset) {
-      //     const offset = getPoint(toClock(point.clockOffset), toStreetRadius(point.streetOffset), this.mapInformation!.circleRadius);
-      //     const center = getPoint(0, 0, this.mapInformation!.circleRadius);
-      //     offset.x -= center.x;
-      //     offset.y -= center.y;
-      //     this.plot(toClock(point.clock), toRadius(point.feet), offset, point.info);
-      //   } else {
-      //     this.plot(toClock(point.clock), toRadius(point.feet), undefined, point.info);
-      //   }
-      // }
     }
     await this.checkGeolocation();
 
@@ -152,7 +136,6 @@ export class MapComponent implements OnInit, AfterViewInit {
       const gpsCoord = await this.geo.getPosition();
       const pt = await this.geo.placeOnMap(gpsCoord, this.mapInformation!.circleRadius);
       this.plotXY(pt.x, pt.y, undefined, 'var(--ion-color-secondary)');
-      //this.createPin(pt.x, pt.y, 10, undefined, 'var(--ion-color-secondary)');
     } catch (err) {
       console.error('checkGeolocation.error', err);
     }
@@ -167,18 +150,6 @@ export class MapComponent implements OnInit, AfterViewInit {
     }
     this.createPin(px, py, (info || bgColor) ? 10 : 5, info, bgColor);
   }
-
-  // private plot(clock: number, rad: number, offset?: any, info?: MapInfo) {
-  //   const pt = getPoint(clock, rad, this.mapInformation!.circleRadius);
-  //   if (offset) {
-  //     pt.x += offset.x;
-  //     pt.y += offset.y;
-  //   }
-  //   if (info) {
-  //     this.placeLabel(pt.x, pt.y, info);
-  //   }
-  //   this.createPin(pt.x, pt.y, info ? 10 : 5, info);
-  // }
 
   createPin(x: number, y: number, sz: number, info?: MapInfo, bgColor?: string) {
     const d = document.createElement("div");
@@ -234,7 +205,6 @@ export class MapComponent implements OnInit, AfterViewInit {
     const r = el.getBoundingClientRect();
     const rx = (x - r.x) * 10000 / r.width;
     const ry = (y - r.y) * 10000 / r.height;
-    //console.log('mappoint', rx, ry);
     this.store(Math.ceil(rx), Math.ceil(ry));
     return false;
   }

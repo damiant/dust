@@ -57,7 +57,7 @@ export class DataManager implements WorkerClass {
         this.art = await this.loadArt();
         this.revision = await this.loadRevision();
         this.georeferences = await this.getGeoReferences();
-        console.log(`Revsion populated ${this.revision.revision} hide locations = ${hideLocations}`);
+        console.log(`At revision ${this.revision.revision}. Hide locations is ${hideLocations}.`);
         this.init(hideLocations);
         return this.revision.revision;
     }
@@ -359,8 +359,6 @@ export class DataManager implements WorkerClass {
         const result: RSLEvent[] = [];
         query = query.toLowerCase();
         const fDay = day ? day.toISOString().split('T')[0] : undefined;
-
-        console.log('getRSLEvents', fDay);
         const today = now();
         for (let event of events) {
 
@@ -378,7 +376,6 @@ export class DataManager implements WorkerClass {
                     // If all times have ended
                     event.distance = distance(coords!, event.gpsCoords!);
                     event.distanceInfo = this.formatDistance(event.distance);
-                    console.log(event);
                     result.push(event);
                 }
             }

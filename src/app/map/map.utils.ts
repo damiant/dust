@@ -138,8 +138,8 @@ export function locationStringToPin(location: string, mapRadius: number): Pin | 
         location = '6:00 & A';
     }
     const pin = mapPointToPin(toMapPoint(location), mapRadius);
-    if (pin == undefined) {
-        console.log(`Location "${location}" could not be found`);
+    if (pin == undefined && location !== 'None') {
+        console.warn(`Location "${location}" could not be found`);
     }
     return pin;
 }
