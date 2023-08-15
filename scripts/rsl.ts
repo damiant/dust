@@ -1,14 +1,9 @@
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { exit } from 'process';
 import { RSLEvent, RSLOccurrence } from 'src/app/models';
-import { BurningManTimeZone } from 'src/app/utils';
+import { initGeoLocation, setGeolocation } from './geo';
 
-const filename = './scripts/rsl.csv';
-const outputFilename = './scripts/rsl.json';
-if (!existsSync(filename)) {
-  console.error(`${filename} is missing`);
-  exit(1);
-}
+
 
 function clean(s: string): string {
   s = s.trim();
@@ -20,6 +15,7 @@ function clean(s: string): string {
   }
   return s;
 }
+
 
 function importLine(txt: string): RSLEvent {
   // 0 - camp name
@@ -47,6 +43,8 @@ function importLine(txt: string): RSLEvent {
     title: clean(cols[1]),
     location: clean(cols[2]),
     day: clean(cols[3]),
+    distance: 9999,
+    distanceInfo: '',
     occurrences
   };
 }
@@ -107,14 +105,25 @@ function getDateTime(day: string, time: string, startTime?: string): string {
   }
 }
 
-function loadRSL(filename: string) {
+function loadRSL(filename: string, geoPath: string) {
+  if (!existsSync(filename)) {
+    console.error(`${filename} is missing`);
+    exit(1);
+  }
   let csv = readFileSync(filename, 'utf-8');
+  initGeoLocation(geoPath);
   const data = [];
   const lines = csv.split('\n');
   for (const line of lines) {
-    data.push(importLine(line));
+    const event = importLine(line);
+    setGeolocation(event);
+    data.push(event);
   }
   writeFileSync(outputFilename, JSON.stringify(data, undefined, 2));
 }
 
-loadRSL(filename);
+const geoPath = `src/assets/ttitd-2023/geo.json`;
+const filename = './scripts/rsl.csv';
+const outputFilename = 'src/assets/ttitd-2023//rsl.json';
+
+loadRSL(filename, geoPath);

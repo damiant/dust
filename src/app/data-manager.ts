@@ -1,7 +1,7 @@
 import { WorkerClass } from './worker-interface';
 import { Art, Camp, DataMethods, Day, Event, GeoRef, LocationName, MapPoint, MapSet, Pin, RSLEvent, Revision, TimeString } from './models';
-import { BurningManTimeZone, compareStr, getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from './utils';
-import { distance, getPoint, locationStringToPin, maxDistance, toClock, toStreetRadius } from './map/map.utils';
+import { BurningManTimeZone, getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from './utils';
+import { distance, locationStringToPin, mapPointToPoint, maxDistance, toClock, toStreetRadius } from './map/map.utils';
 import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from './map/geo.utils';
 
 interface TimeCache {
@@ -118,18 +118,11 @@ export class DataManager implements WorkerClass {
         for (let ref of [this.georeferences[0], this.georeferences[1], this.georeferences[2]]) {
             gpsCoords.push({ lat: ref.coordinates[0], lng: ref.coordinates[1] });
             const mp: MapPoint = { clock: ref.clock, street: ref.street };
-            const pt = this.mapPointToPoint(mp, this.mapRadius);
+            const pt = mapPointToPoint(mp, this.mapRadius);
             points.push(pt);
         }
 
         setReferencePoints(gpsCoords, points);
-    }
-
-    private mapPointToPoint(mapPoint: MapPoint, circleRadius: number) {
-        const clock = toClock(mapPoint.clock);
-        const rad = toStreetRadius(mapPoint.street);
-        const circleRad = circleRadius;
-        return getPoint(clock, rad, circleRad);
     }
 
     private gpsToPoint(gpsCoord: GpsCoord): Point {
@@ -383,11 +376,26 @@ export class DataManager implements WorkerClass {
                 }
                 if (!allOld) {
                     // If all times have ended
+                    event.distance = distance(coords!, event.gpsCoords!);
+                    event.distanceInfo = this.formatDistance(event.distance);
+                    console.log(event);
                     result.push(event);
                 }
             }
         }
+        if (coords) {
+            this.sortRSLEventsByDistance(result);
+        } else {
+            this.sortRSLEventsByName(result);
+        }
         return result;
+    }
+
+    private sortRSLEventsByName(events: RSLEvent[]) {
+        events.sort((a: RSLEvent, b: RSLEvent) => { return a.camp.localeCompare(b.camp); });
+    }
+    private sortRSLEventsByDistance(events: RSLEvent[]) {
+        events.sort((a: RSLEvent, b: RSLEvent) => { return a.distance - b.distance; });
     }
 
     private rslEventContains(event: RSLEvent, query: string): boolean {

@@ -5,6 +5,8 @@
     "title": "",
     "location": "8:30 & K",
     "day": "2023-08-28",
+    "distance": 9999,
+    "distanceInfo": "",
     "occurrences": [
       {
         "time": "10:00AM",
@@ -14,7 +16,11 @@
         "end": "",
         "endTime": "2023-08-28T11:00:00-07:00"
       }
-    ]
+    ],
+    "gpsCoords": {
+      "lat": -119.2220985348035,
+      "lng": 40.79450994386566
+    }
   },
   {
     "id": "1014683796",
@@ -22,6 +28,8 @@
     "title": "Jazz Awesome",
     "location": "Center Camp",
     "day": "2023-08-28",
+    "distance": 9999,
+    "distanceInfo": "",
     "occurrences": [
       {
         "time": "2:00AM",
@@ -31,6 +39,10 @@
         "end": "3:30AM",
         "endTime": "2023-08-28T03:30-07:00"
       }
-    ]
+    ],
+    "gpsCoords": {
+      "lat": -119.2110493110311,
+      "lng": 40.78063002136541
+    }
   }
 ]

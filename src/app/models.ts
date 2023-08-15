@@ -195,6 +195,9 @@ export interface RSLEvent {
   title?: string;
   location: string;
   day: string; // Format yyyy-mm-dd
+  gpsCoords?: GpsCoord,
+  distance: number,
+  distanceInfo: string,
   occurrences: RSLOccurrence[];
 }
 
