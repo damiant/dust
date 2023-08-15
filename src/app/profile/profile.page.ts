@@ -13,6 +13,7 @@ import { TileContainerComponent } from '../tile-container/tile-container.compone
 import { TileComponent } from '../tile/tile.component';
 import { GeoService } from '../geo.service';
 import { LocationEnabledStatus } from '../models';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-profile',
@@ -49,6 +50,7 @@ export class ProfilePage implements OnInit {
     this.moreClicks++;
     if (this.moreClicks == 5) {
       this.ui.presentToast('Locations now enabled', this.toastController);
+      environment.overrideLocations = true;
       this.db.setHideLocations(false);
       await this.db.init(this.settings.settings.dataset);
     }

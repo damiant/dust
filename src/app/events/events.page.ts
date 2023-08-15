@@ -17,6 +17,7 @@ import { SearchComponent } from '../search/search.component';
 import { toMapPoint } from '../map/map.utils';
 import { GpsCoord } from '../map/geo.utils';
 import { GeoService } from '../geo.service';
+import { environment } from 'src/environments/environment';
 
 interface EventsState {
   title: string,
@@ -100,7 +101,7 @@ export class EventsPage implements OnInit {
       this.setToday(now());
       const until = await this.db.daysUntilStarts();
       console.log(`${until} days until event.`);
-      this.db.setHideLocations(until > 1);
+      this.db.setHideLocations(until > 1 && !environment.overrideLocations);
       await this.db.checkEvents();
       this.update();
     });
