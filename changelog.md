@@ -4,6 +4,7 @@
 - Fix search for camp names in events
 - Fix search for locations in events
 - Fix search in description for camps
+- Descriptions of art, events, and camps are now copyable
 
 ### 1.8
 - Camps near me added
