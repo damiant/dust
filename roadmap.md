@@ -18,12 +18,10 @@ Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
 - After adding a favorite show the badge count on the fav tab increase (and disappear after opening it)
 - If an event has a long durations (>3hrs) then let user choose notification hour
 - Pressing the tab again should clear search
-- RSL Dark Mode logo fix
 - Favorites by distance
 - Offline images
 - Use AllowWhileIdle true for notifications
 - Sounds for notifications
-- Haptics on favorite add
 - Use motion to rotate your "here" pin
 - "Not Interested" button for Events
 

@@ -5,6 +5,7 @@ import { Preferences } from '@capacitor/preferences';
 import { SettingsService } from './settings.service';
 import { DbService } from './db.service';
 import { getDayName, getOccurrenceTimeString, now } from './utils';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
 
 
 enum DbId {
@@ -99,7 +100,7 @@ export class FavoritesService {
     console.log('starEvent', star, JSON.stringify(this.favorites));
     await this.saveFavorites();
 
-    if (star) {
+    if (star) {      
       const title = event.location ? `${event.location}: ${event.title}` : event.title;
       const result = await this.notificationService.scheduleAll(
         {
@@ -109,6 +110,7 @@ export class FavoritesService {
         },
         occurrence ? [occurrence] : event.occurrence_set,
         selectedDay);
+      await Haptics.impact({ style: ImpactStyle.Heavy });
       return (result.error) ? result.error : result.message;
     } else {
       // Remove notifications
@@ -128,6 +130,9 @@ export class FavoritesService {
   public async starArt(star: boolean, artId: string) {
     this.favorites.art = this.include(star, artId, this.favorites.art);
     await this.saveFavorites();
+    if (star) {
+      await Haptics.impact({ style: ImpactStyle.Heavy });
+    }
   }
 
   public async addFriend(friend: Friend) {
@@ -149,6 +154,9 @@ export class FavoritesService {
   public async starCamp(star: boolean, campId: string) {
     this.favorites.camps = this.include(star, campId, this.favorites.camps);
     await this.saveFavorites();
+    if (star) {
+      await Haptics.impact({ style: ImpactStyle.Heavy });
+    }
   }
 
   public async getEventList(ids: string[], historical: boolean): Promise<Event[]> {

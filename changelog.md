@@ -1,4 +1,7 @@
 ## Changes
+### 1.11
+- Haptics when favoriting
+
 ### 1.10
 - Alphabetic Camp selection
 - Fix for locations of Medical
