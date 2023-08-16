@@ -121,7 +121,7 @@ export class EventsPage implements OnInit {
     await this.update();
   }
 
-  public categoryChanged() {
+  public categoryChanged(category: string) {
     this.update(true);
   }
 

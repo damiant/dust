@@ -8,6 +8,9 @@
         <ion-icon *ngIf="star" name="star"></ion-icon>
         <ion-icon *ngIf="!star" name="star-outline"></ion-icon>
       </ion-button>
+      <ion-button (click)="share()">
+        <ion-icon color="primary" name="share-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -16,7 +19,7 @@
   <app-map-modal [title]="mapTitle" [subtitle]="mapSubtitle" [(show)]="showMap" [points]="mapPoints"></app-map-modal>
   <ion-list *ngIf="art" lines="none">
     <ion-item>
-      <h1>{{art.name}}&nbsp;<ion-icon color="primary" size="small" name="share-outline" (click)="share()"></ion-icon></h1>
+      <h1>{{art.name}}</h1>
     </ion-item>
     <ion-item>
       <ion-icon slot="start" name="person-outline"></ion-icon>
@@ -36,6 +39,5 @@
         <img *ngIf="image.thumbnail_url" (load)="ready(image)" [src]="image.thumbnail_url" [alt]="art.name" />
       </div>
     </ion-item>
-
   </ion-list>
 </ion-content>
