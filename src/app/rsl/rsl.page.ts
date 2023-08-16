@@ -13,6 +13,7 @@ import { MapModalComponent } from '../map-modal/map-modal.component';
 import { SkeletonEventComponent } from '../skeleton-event/skeleton-event.component';
 import { RslEventComponent } from '../rsl-event/rsl-event.component';
 import { toMapPoint } from '../map/map.utils';
+import { FavoritesService } from '../favs/favorites.service';
 
 interface RSLState {
   byDist: boolean,
@@ -66,6 +67,7 @@ export class RslPage implements OnInit {
     private ui: UiService,
     private db: DbService,
     private geo: GeoService,
+    private fav: FavoritesService,
     private toastController: ToastController) {
     effect(() => {
       this.ui.scrollUpContent('rsl', this.ionContent);
@@ -99,7 +101,10 @@ export class RslPage implements OnInit {
     if (this.vm.byDist) {
       coords = await this.geo.getPosition();
     }
-    this.vm.events = await this.db.getRSL(this.vm.search, this.vm.day, coords);
+    const favs = await this.fav.getFavorites();
+    const events = await this.db.getRSL(this.vm.search, this.vm.day, coords);
+    this.setFavorites(events, favs.rslEvents);
+    this.vm.events = events;
     this.vm.noEvents = this.vm.events.length == 0;
     this.vm.noEventsMessage = this.vm.search?.length > 0 ?
       `There are no events matching "${this.vm.search}".` :
@@ -154,6 +159,15 @@ export class RslPage implements OnInit {
     }
     this.vm.day = this.vm.days[0].date;
     return this.vm.days[0].date;
+  }
+
+  private setFavorites(events: RSLEvent[], favs: string[]) {
+    for (let event of events) {
+      for (let occurrence of event.occurrences) {
+        occurrence.star = (favs.includes(this.fav.rslId(event, occurrence)));
+      }
+    }
+    return events;   
   }
 
   ngOnInit() {

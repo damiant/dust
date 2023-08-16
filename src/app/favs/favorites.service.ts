@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
-import { Event, Favorites, Friend, MapPoint, OccurrenceSet } from '../data/models';
-import { NotificationService } from '../notifications/notification.service';
+import { Event, Favorites, Friend, MapPoint, OccurrenceSet, RSLEvent, RSLOccurrence } from '../data/models';
+import { NotificationService, ScheduleResult } from '../notifications/notification.service';
 import { Preferences } from '@capacitor/preferences';
 import { SettingsService } from '../data/settings.service';
 import { DbService } from '../data/db.service';
@@ -23,7 +23,7 @@ export class FavoritesService {
   private mapPointsTitle: string = '';
   private mapPoints: MapPoint[] = [];
 
-  private favorites: Favorites = { art: [], events: [], camps: [], friends: [] };
+  private favorites: Favorites = { art: [], events: [], camps: [], friends: [], rslEvents: [] };
 
   constructor(private notificationService: NotificationService, private settingsService: SettingsService, private db: DbService) {
     this.init(this.settingsService.settings.dataset);
@@ -52,12 +52,32 @@ export class FavoritesService {
   }
 
   private noData(): Favorites {
-    return { art: [], events: [], camps: [], friends: [] };
+    return { art: [], events: [], camps: [], friends: [], rslEvents: [] };
   }
 
   public async getFavorites(): Promise<Favorites> {
     await this.ready;
+    this.scrub();
     return this.favorites;
+  }
+
+  // This is required because during upgrading an app new fields need to be initialized
+  private scrub() {
+    if (!this.favorites.rslEvents) {
+      this.favorites.rslEvents = [];
+    }
+    if (!this.favorites.friends) {
+      this.favorites.friends = [];
+    }
+    if (!this.favorites.events) {
+      this.favorites.events = [];
+    }
+    if (!this.favorites.art) {
+      this.favorites.art = [];
+    }
+    if (!this.favorites.camps) {
+      this.favorites.camps = [];
+    }
   }
 
   public async isFavEventOccurrence(id: string, occurrence: OccurrenceSet): Promise<boolean> {
@@ -100,7 +120,7 @@ export class FavoritesService {
     console.log('starEvent', star, JSON.stringify(this.favorites));
     await this.saveFavorites();
 
-    if (star) {      
+    if (star) {
       const title = event.location ? `${event.location}: ${event.title}` : event.title;
       const result = await this.notificationService.scheduleAll(
         {
@@ -117,6 +137,32 @@ export class FavoritesService {
       this.notificationService.unscheduleAll(event.uid);
       return undefined;
     }
+  }
+
+  public async starRSLEvent(star: boolean, event: RSLEvent, occurrence: RSLOccurrence): Promise<string | undefined> {
+    const id = this.rslId(event, occurrence);
+    this.favorites.rslEvents = this.include(star, id, this.favorites.rslEvents);
+    await this.saveFavorites();
+    const when: OccurrenceSet = { start_time: occurrence.startTime, end_time: occurrence.endTime, old: false, happening: true, longTimeString: '' };
+    if (star) {
+      const title = `${occurrence.who} @ ${event.camp} (${event.location}) is starting soon`;
+      const result: ScheduleResult = await this.notificationService.scheduleAll(
+        {
+          id,
+          title,
+          body: `${occurrence.who} starts ${occurrence.timeRange} at ${event.camp} - ${event.title ? event.title : ''}`
+        },
+        [when]);
+      await Haptics.impact({ style: ImpactStyle.Heavy });
+      return (result.error) ? result.error : result.message;
+    } else {
+      this.notificationService.unscheduleAll(id);
+      return undefined;
+    }
+  }
+
+  public rslId(event: RSLEvent, occurrence: RSLOccurrence): string {
+    return `${event.id}-${occurrence.who}`;
   }
 
   private eventId(event: Event, occurrence?: OccurrenceSet): string {
@@ -243,6 +289,9 @@ export class FavoritesService {
   }
 
   private include(add: boolean, value: string, items: string[]): string[] {
+    if (!items) {
+      items = [];
+    }
     if (add && !items.includes(value)) {
       items.push(value);
     }

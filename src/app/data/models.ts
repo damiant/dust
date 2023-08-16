@@ -124,10 +124,11 @@ export interface ArtLocation {
 }
 
 export interface Favorites {
-  events: string[];
-  camps: string[];
-  art: string[];
-  friends: Friend[];
+  events: string[]
+  camps: string[]
+  art: string[]
+  friends: Friend[]
+  rslEvents: string[]
 }
 
 export enum LocationEnabledStatus {
@@ -208,6 +209,7 @@ export interface RSLOccurrence {
   startTime: string; // Local format Date
   endTime: string; // Local format Date
   old?: boolean; // Calculated: has the event passed
+  star?: boolean; // Calculated
   who: string;
 }
 

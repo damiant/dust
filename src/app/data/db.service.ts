@@ -57,7 +57,7 @@ export class DbService {
     const dataset = datasets.find((d) => d.year == year);
 
     const start = new Date(dataset!.start);
-    const until = daysUntil(start,now());
+    const until = daysUntil(start, now());
     return until;
   }
 

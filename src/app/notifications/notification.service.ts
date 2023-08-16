@@ -32,7 +32,7 @@ export class NotificationService {
     }));
   }
 
-  public async scheduleAll(reminder: Reminder, occurrence_set: OccurrenceSet[], selectedDay: Date): Promise<ScheduleResult> {
+  public async scheduleAll(reminder: Reminder, occurrence_set: OccurrenceSet[], selectedDay?: Date): Promise<ScheduleResult> {
     const error = await this.verifyPermissions();
     if (error) {
       return { notifications: 0, error };
