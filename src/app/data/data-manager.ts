@@ -1,8 +1,8 @@
 import { WorkerClass } from './worker-interface';
 import { Art, Camp, DataMethods, Day, Event, GeoRef, LocationName, MapPoint, MapSet, Pin, RSLEvent, Revision, TimeString } from './models';
-import { BurningManTimeZone, getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from './utils';
-import { distance, locationStringToPin, mapPointToPoint, maxDistance, toClock, toStreetRadius } from './map/map.utils';
-import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from './map/geo.utils';
+import { BurningManTimeZone, getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from '../utils/utils';
+import { distance, locationStringToPin, mapPointToPoint, maxDistance, toClock, toStreetRadius } from '../map/map.utils';
+import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from '../map/geo.utils';
 
 interface TimeCache {
     [index: string]: TimeString | undefined;

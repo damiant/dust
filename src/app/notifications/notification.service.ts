@@ -1,8 +1,8 @@
-import { Injectable, NgZone, signal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { LocalNotificationDescriptor, LocalNotifications } from '@capacitor/local-notifications';
-import { OccurrenceSet } from './models';
-import { getDayName, noDate, now, randomInt, time } from './utils';
+import { OccurrenceSet } from '../data/models';
+import { getDayName, noDate, now, randomInt, time } from '../utils/utils';
 
 export interface Reminder {
   title: string,
@@ -22,7 +22,7 @@ export interface ScheduleResult {
 })
 export class NotificationService {
   public hasNotification = signal('');
-  constructor(private ngZone: NgZone, public router: Router) {
+  constructor(public router: Router) {
 
   }
 
@@ -126,8 +126,8 @@ export class NotificationService {
         {
           id: randomInt(1, 1000000),
           title: reminder.title,
-          body: reminder.body,
-          schedule: { at: reminder.when },
+          body: reminder.body,          
+          schedule: { at: reminder.when, allowWhileIdle: true },
           extra: {
             eventId: reminder.id // Assume it is an event
           }

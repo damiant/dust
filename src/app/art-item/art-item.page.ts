@@ -2,16 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { Art, Image, MapPoint } from '../models';
+import { Art, Image, MapPoint } from '../data/models';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { DbService } from '../db.service';
+import { DbService } from '../data/db.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MapComponent } from '../map/map.component';
 import { MapModalComponent } from '../map-modal/map-modal.component';
-import { FavoritesService } from '../favorites.service';
-import { UiService } from '../ui.service';
-import { SettingsService } from '../settings.service';
-import { ShareInfoType } from '../share.service';
+import { FavoritesService } from '../favs/favorites.service';
+import { UiService } from '../ui/ui.service';
+import { SettingsService } from '../data/settings.service';
+import { ShareInfoType } from '../share/share.service';
 import { toMapPoint } from '../map/map.utils';
 
 @Component({

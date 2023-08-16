@@ -1,17 +1,17 @@
 import { Component, ViewChild, effect } from '@angular/core';
 import { IonicModule, ToastController } from '@ionic/angular';
-import { Art } from '../models';
-import { DbService } from '../db.service';
+import { Art } from '../data/models';
+import { DbService } from '../data/db.service';
 import { Router, RouterLink, Scroll } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ArtComponent } from './art.component';
-import { UiService } from '../ui.service';
+import { UiService } from '../ui/ui.service';
 import { SearchComponent } from '../search/search.component';
 import { SkeletonArtComponent } from '../skeleton-art/skeleton-art.component';
-import { delay, isWhiteSpace } from '../utils';
+import { delay, isWhiteSpace } from '../utils/utils';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { GpsCoord } from '../map/geo.utils';
-import { GeoService } from '../geo.service';
+import { GeoService } from '../geolocation/geo.service';
 import { AlphabeticalScrollBarComponent } from '../alpha/alpha.component';
 
 interface ArtState {

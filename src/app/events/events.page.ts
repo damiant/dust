@@ -1,22 +1,22 @@
 import { Component, OnInit, ViewChild, effect } from '@angular/core';
 import { IonicModule, ToastController } from '@ionic/angular';
-import { DbService } from '../db.service';
-import { Day, Event, MapPoint } from '../models';
+import { DbService } from '../data/db.service';
+import { Day, Event, MapPoint } from '../data/models';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { FormsModule } from '@angular/forms';
-import { noDate, now, sameDay } from '../utils';
+import { noDate, now, sameDay } from '../utils/utils';
 import { App } from '@capacitor/app';
 import { EventComponent } from '../event/event.component';
-import { UiService } from '../ui.service';
+import { UiService } from '../ui/ui.service';
 import { CategoryComponent } from '../category/category.component';
 import { SkeletonEventComponent } from '../skeleton-event/skeleton-event.component';
 import { SearchComponent } from '../search/search.component';
 import { toMapPoint } from '../map/map.utils';
 import { GpsCoord } from '../map/geo.utils';
-import { GeoService } from '../geo.service';
+import { GeoService } from '../geolocation/geo.service';
 import { environment } from 'src/environments/environment';
 
 interface EventsState {

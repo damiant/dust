@@ -3,14 +3,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
-import { DbService } from '../db.service';
-import { Camp, Event, MapPoint } from '../models';
+import { DbService } from '../data/db.service';
+import { Camp, Event, MapPoint } from '../data/models';
 import { MapComponent } from '../map/map.component';
 import { EventPage } from '../event/event.page';
-import { FavoritesService } from '../favorites.service';
-import { UiService } from '../ui.service';
-import { SettingsService } from '../settings.service';
-import { ShareInfoType } from '../share.service';
+import { FavoritesService } from '../favs/favorites.service';
+import { UiService } from '../ui/ui.service';
+import { SettingsService } from '../data/settings.service';
+import { ShareInfoType } from '../share/share.service';
 import { toMapPoint } from '../map/map.utils';
 
 @Component({

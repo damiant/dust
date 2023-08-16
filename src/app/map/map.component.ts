@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { PinchZoomModule } from '@meddv/ngx-pinch-zoom';
-import { LocationEnabledStatus, MapInfo, MapPoint, Pin } from '../models';
+import { LocationEnabledStatus, MapInfo, MapPoint, Pin } from '../data/models';
 import { IonicModule, PopoverController } from '@ionic/angular';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { mapPointToPin } from './map.utils';
-import { delay } from '../utils';
-import { GeoService } from '../geo.service';
-import { SettingsService } from '../settings.service';
+import { delay } from '../utils/utils';
+import { GeoService } from '../geolocation/geo.service';
+import { SettingsService } from '../data/settings.service';
 import { MessageComponent } from '../message/message.component';
 
 interface MapInformation {

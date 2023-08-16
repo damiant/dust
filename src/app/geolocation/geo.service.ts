@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Geolocation } from '@capacitor/geolocation';
-import { GpsCoord, Point, gpsToMap, setReferencePoints } from './map/geo.utils';
-import { DbService } from './db.service';
-import { MapPoint } from './models';
-import { getPoint, toClock, toStreetRadius } from './map/map.utils';
+import { GpsCoord, Point, gpsToMap, setReferencePoints } from '../map/geo.utils';
+import { DbService } from '../data/db.service';
+import { MapPoint } from '../data/models';
+import { getPoint, toClock, toStreetRadius } from '../map/map.utils';
 import { environment } from 'src/environments/environment';
 import { Capacitor } from '@capacitor/core';
 

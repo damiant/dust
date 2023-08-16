@@ -2,17 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AlertController, IonicModule, ToastController } from '@ionic/angular';
-import { UiService } from '../ui.service';
+import { UiService } from '../ui/ui.service';
 import { Share } from '@capacitor/share';
 import { Router, RouterModule } from '@angular/router';
 import { FriendsComponent } from '../friends/friends.component';
-import { SettingsService } from '../settings.service';
-import { MapService } from '../map.service';
-import { DbService } from '../db.service';
+import { SettingsService } from '../data/settings.service';
+import { MapService } from '../map/map.service';
+import { DbService } from '../data/db.service';
 import { TileContainerComponent } from '../tile-container/tile-container.component';
 import { TileComponent } from '../tile/tile.component';
-import { GeoService } from '../geo.service';
-import { LocationEnabledStatus } from '../models';
+import { GeoService } from '../geolocation/geo.service';
+import { LocationEnabledStatus } from '../data/models';
 import { environment } from 'src/environments/environment';
 
 @Component({

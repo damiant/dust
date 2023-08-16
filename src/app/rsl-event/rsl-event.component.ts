@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-import { RSLEvent } from '../models';
+import { RSLEvent } from '../data/models';
 import { CommonModule } from '@angular/common';
 
 @Component({

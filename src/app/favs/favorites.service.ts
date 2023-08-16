@@ -1,10 +1,10 @@
 import { Injectable, signal } from '@angular/core';
-import { Event, Favorites, Friend, MapPoint, OccurrenceSet } from './models';
-import { NotificationService } from './notification.service';
+import { Event, Favorites, Friend, MapPoint, OccurrenceSet } from '../data/models';
+import { NotificationService } from '../notifications/notification.service';
 import { Preferences } from '@capacitor/preferences';
-import { SettingsService } from './settings.service';
-import { DbService } from './db.service';
-import { getDayName, getOccurrenceTimeString, now } from './utils';
+import { SettingsService } from '../data/settings.service';
+import { DbService } from '../data/db.service';
+import { getDayName, getOccurrenceTimeString, now } from '../utils/utils';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 
 

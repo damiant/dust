@@ -1,4 +1,4 @@
-import { GpsCoord } from "./map/geo.utils";
+import { GpsCoord } from "../map/geo.utils";
 
 export interface Event {
   camp: string; // Calculated

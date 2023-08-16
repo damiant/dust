@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
-import { Event } from '../models';
+import { Event } from '../data/models';
 import { CommonModule } from '@angular/common';
 
 @Component({

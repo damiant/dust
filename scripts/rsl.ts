@@ -1,6 +1,6 @@
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { exit } from 'process';
-import { RSLEvent, RSLOccurrence } from 'src/app/models';
+import { RSLEvent, RSLOccurrence } from 'src/app/data/models';
 import { initGeoLocation, setGeolocation } from './geo';
 
 

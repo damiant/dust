@@ -1,4 +1,4 @@
-import { MapInfo, MapPoint, Pin } from "../models";
+import { MapInfo, MapPoint, Pin } from "../data/models";
 import { GpsCoord } from "./geo.utils";
 
 // Streets from Esplanade to K in relative values from center

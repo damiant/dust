@@ -3,16 +3,16 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonPopover, IonicModule, ToastController } from '@ionic/angular';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { DbService } from '../db.service';
-import { Event, MapPoint, OccurrenceSet } from '../models';
+import { DbService } from '../data/db.service';
+import { Event, MapPoint, OccurrenceSet } from '../data/models';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { MapComponent } from '../map/map.component';
-import { FavoritesService } from '../favorites.service';
-import { ShareInfoType } from '../share.service';
-import { SettingsService } from '../settings.service';
-import { UiService } from '../ui.service';
+import { FavoritesService } from '../favs/favorites.service';
+import { ShareInfoType } from '../share/share.service';
+import { SettingsService } from '../data/settings.service';
+import { UiService } from '../ui/ui.service';
 import { toMapPoint } from '../map/map.utils';
-import { dateMatches, noDate, sameDay } from '../utils';
+import { dateMatches, noDate, sameDay } from '../utils/utils';
 
 @Component({
   selector: 'app-event',
