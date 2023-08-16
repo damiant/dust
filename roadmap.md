@@ -9,6 +9,7 @@ Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
 - RSL tab
 
 - Show Date/Times in PST regardless of users timezone
+- Reminder times configurable (5 mins is too early - reviewer)
 - Art page is still slow (try WebP)
 - Understanding how to get back to home
 - JD Tabs for favorites
@@ -20,7 +21,6 @@ Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
 - Pressing the tab again should clear search
 - Favorites by distance
 - Offline images
-- Use AllowWhileIdle true for notifications
 - Sounds for notifications
 - Use motion to rotate your "here" pin
 - "Not Interested" button for Events

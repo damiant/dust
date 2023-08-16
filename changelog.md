@@ -1,5 +1,6 @@
 ## Changes
 ### 1.11
+- Show compass direction on map
 - Haptics when favoriting
 
 ### 1.10
