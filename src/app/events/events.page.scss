@@ -35,10 +35,6 @@ ion-segment::-webkit-scrollbar {
     padding-bottom: 19px;
 }
 
-ion-buttons {
-    margin-top: -12px;
-}
-
 // Fix the prevent it creating a larger than screen width
 ::ng-deep .cdk-virtual-scroll-content-wrapper {
     max-width: 100%;

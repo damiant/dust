@@ -13,6 +13,7 @@ import { isWhiteSpace } from '../utils';
 import { toMapPoint } from '../map/map.utils';
 import { GeoService } from '../geo.service';
 import { GpsCoord } from '../map/geo.utils';
+import { AlphabeticalScrollBarComponent } from '../alpha/alpha.component';
 
 interface CampsState {
   camps: Camp[],
@@ -22,6 +23,8 @@ interface CampsState {
   noCampsMessage: string,
   mapPoints: MapPoint[],
   minBufferPx: number,
+  alphaIndex: number[],
+  alphaValues: string[]
   byDist: boolean,
   displayedDistMessage: boolean
 }
@@ -35,6 +38,8 @@ function initialState(): CampsState {
     noCampsMessage: 'No camps were found.',
     mapPoints: [],
     minBufferPx: 900,
+    alphaIndex: [],
+    alphaValues: [],
     byDist: false,
     displayedDistMessage: false
   };
@@ -46,11 +51,11 @@ function initialState(): CampsState {
   styleUrls: ['camps.page.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule, RouterModule, ScrollingModule, MapModalComponent,
-    CampComponent, SearchComponent]
+    CampComponent, SearchComponent, AlphabeticalScrollBarComponent]
 })
 export class CampsPage {
   vm: CampsState = initialState();
-
+  isScrollDisabled = false;
   @ViewChild(CdkVirtualScrollViewport) virtualScroll!: CdkVirtualScrollViewport;
 
   constructor(
@@ -72,6 +77,17 @@ export class CampsPage {
 
   home() {
     this.ui.home();
+  }
+
+  enableScroll() {
+    this.isScrollDisabled = false;
+  }
+
+  goToLetterGroup(e: string) {    
+    const idx = this.vm.alphaValues.indexOf(e);
+    if (idx >= 0) {
+      this.virtualScroll.scrollToIndex(this.vm.alphaIndex[idx]);      
+    }
   }
 
   toggleByDist() {
@@ -111,6 +127,22 @@ export class CampsPage {
       coords = await this.geo.getPosition();
     }
     this.vm.camps = await this.db.findCamps(search, coords);
+    this.updateAlphaIndex();
     this.vm.noCampsMessage = isWhiteSpace(search) ? `No camps were found.` : `No camps were found matching "${search}"`;
+  }
+
+  private updateAlphaIndex() {
+    let lastChar = '';
+    let idx = 0;
+    this.vm.alphaIndex = [];
+    this.vm.alphaValues = [];
+    for (let camp of this.vm.camps) {
+      if (camp.name.charAt(0) != lastChar) {
+        lastChar = camp.name.charAt(0);
+        this.vm.alphaIndex.push(idx);
+        this.vm.alphaValues.push(lastChar);
+      }
+      idx++;
+    }
   }
 }

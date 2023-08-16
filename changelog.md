@@ -1,4 +1,7 @@
 ## Changes
+### 1.10
+- Alphabetic Camp selection
+- Fix for locations of Medical
 
 ### 1.9
 - Fix search for camp names in events

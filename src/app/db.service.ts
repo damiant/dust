@@ -11,6 +11,7 @@ export class DbService {
   public selectedDay = signal(noDate());
   public selectedYear = signal('');
   public networkStatus = signal('');
+  public resume = signal('');
   private initialized = false;
   private hideLocations = true;
   private worker!: Worker;

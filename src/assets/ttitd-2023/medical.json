@@ -12,21 +12,21 @@
             }
         },
         {
-            "street": "G",
+            "street": "C",
             "clock": "9:00",
             "info": {
-                "title": "Emergency Services Department - 9 & G",
+                "title": "Emergency Services Department - 9 & C",
                 "subtitle": "Personnel wear year 'Emergency Services' shirts featuring the ESD logo on their uniform and vehicles.",
-                "location": "9:00 G Plaza"
+                "location": "9:00 C Plaza"
             }
         },
         {
-            "street": "G",
+            "street": "C",
             "clock": "3:00",
             "info": {
-                "title": "Emergency Services Department - 3 & G",
+                "title": "Emergency Services Department - 3 & C",
                 "subtitle": "Personnel wear year 'Emergency Services' shirts featuring the ESD logo on their uniform and vehicles.",
-                "location": "3:00 G Plaza"
+                "location": "3:00 C Plaza"
             }
         }
     ]

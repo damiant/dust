@@ -9,6 +9,7 @@ import { UiService } from '../ui.service';
 import { SettingsService } from '../settings.service';
 import { ShareInfoType, ShareService } from '../share.service';
 import { Network } from '@capacitor/network';
+import { App } from '@capacitor/app';
 
 @Component({
   selector: 'app-tabs',
@@ -22,7 +23,7 @@ export class TabsPage implements OnInit {
   currentTab = '';
   public environmentInjector = inject(EnvironmentInjector);
   constructor(
-    private db: DbService, private ui: UiService,
+    public db: DbService, private ui: UiService,
     private notificationService: NotificationService,
     private shareService: ShareService,
     private router: Router, private settingsService: SettingsService) {
@@ -48,6 +49,12 @@ export class TabsPage implements OnInit {
 
   async ngOnInit() {    
     this.ready = true;
+    
+    // Whenever app is resumed set signal called resume
+    App.addListener('resume', async () => {
+      this.db.resume.set(new Date().toISOString());
+    });
+
     Network.addListener('networkStatusChange', status => {
       this.db.networkStatus.set(status.connectionType);
     });

@@ -3,9 +3,21 @@ ion-segment {
     margin-right: 12px;
 }
 
+.header-collapse-condense ion-toolbar:first-of-type {
+    padding-top: 0;
+}
+
+ion-toolbar {
+    --padding-top: 0;
+}
+
 // Hides the scroll bar without affecting scrolling
 ion-segment::-webkit-scrollbar {
     display: none;
+}
+
+.b-pad-r {
+    padding-right: 0.5rem;
 }
 
 .message {

@@ -12,6 +12,7 @@ import { delay, isWhiteSpace } from '../utils';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { GpsCoord } from '../map/geo.utils';
 import { GeoService } from '../geo.service';
+import { AlphabeticalScrollBarComponent } from '../alpha/alpha.component';
 
 interface ArtState {
   showImage: boolean,
@@ -20,6 +21,8 @@ interface ArtState {
   arts: Art[],
   minBufferPx: number,
   byDist: boolean,
+  alphaIndex: number[],
+  alphaValues: string[],
   displayedDistMessage: boolean
 }
 
@@ -30,6 +33,8 @@ function initialState(): ArtState {
     busy: true,
     noArtMessage: 'No art was found',
     arts: [],
+    alphaIndex: [],
+    alphaValues: [],
     minBufferPx: 1900,
     byDist: false,
     displayedDistMessage: false
@@ -42,11 +47,12 @@ function initialState(): ArtState {
   styleUrls: ['art.page.scss'],
   standalone: true,
   imports: [IonicModule, RouterLink, CommonModule, ScrollingModule,
+    AlphabeticalScrollBarComponent,
     ArtComponent, SearchComponent, SkeletonArtComponent],
 })
 export class ArtPage {
   vm: ArtState = initialState();
-
+  isScrollDisabled = false;
   @ViewChild(CdkVirtualScrollViewport) virtualScroll!: CdkVirtualScrollViewport;
 
   constructor(
@@ -78,6 +84,13 @@ export class ArtPage {
     this.ui.home();
   }
 
+  goToLetterGroup(e: string) { 
+    const idx = this.vm.alphaValues.indexOf(e);
+    if (idx >= 0) {
+      this.virtualScroll.scrollToIndex(this.vm.alphaIndex[idx]);      
+    }
+  }
+
   async init() {
     try {
       this.vm.busy = true;
@@ -86,6 +99,10 @@ export class ArtPage {
     } finally {
       this.vm.busy = false;
     }
+  }
+
+  enableScroll() {
+    this.isScrollDisabled = false;
   }
 
   toggleByDist() {
@@ -129,9 +146,25 @@ export class ArtPage {
     }
     console.log('art.page.update', coords);
     this.vm.arts = await this.db.findArts(search, coords);
+    this.updateAlphaIndex();
   }
 
   click(art: Art) {
     this.router.navigate(['/art/' + art.uid + '+Art']);
+  }
+
+  private updateAlphaIndex() {
+    let lastChar = '';
+    let idx = 0;
+    this.vm.alphaIndex = [];
+    this.vm.alphaValues = [];
+    for (let art of this.vm.arts) {
+      if (art.name.charAt(0) != lastChar) {
+        lastChar = art.name.charAt(0);
+        this.vm.alphaIndex.push(idx);
+        this.vm.alphaValues.push(lastChar);
+      }
+      idx++;
+    }
   }
 }

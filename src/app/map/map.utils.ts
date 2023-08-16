@@ -43,6 +43,13 @@ export function toMapPoint(location: string | undefined, info?: MapInfo): MapPoi
     }
 }
 
+export function mapPointToPoint(mapPoint: MapPoint, circleRadius: number) {
+    const clock = toClock(mapPoint.clock);
+    const rad = toStreetRadius(mapPoint.street);
+    const circleRad = circleRadius;
+    return getPoint(clock, rad, circleRad);
+}
+
 export function toStreetRadius(street: string): number {
     try {
         const acode = 'a'.charCodeAt(0);
@@ -108,6 +115,7 @@ export function mapPointToPin(point: MapPoint, mapRadius: number): Pin | undefin
                 return undefined;
             } else {
                 console.error('Invalid Point', point);
+                return undefined;
             }
         }
         return plot(toClock(point.clock), toStreetRadius(point.street), undefined, mapRadius);
@@ -126,9 +134,12 @@ export function mapPointToPin(point: MapPoint, mapRadius: number): Pin | undefin
 }
 export function locationStringToPin(location: string, mapRadius: number): Pin | undefined {
     if (!location) return undefined;
+    if (location.toLowerCase().includes('center camp')) {
+        location = '6:00 & A';
+    }
     const pin = mapPointToPin(toMapPoint(location), mapRadius);
-    if (pin == undefined) {
-        console.log(`Location "${location}" could not be found`);
+    if (pin == undefined && location !== 'None') {
+        console.warn(`Location "${location}" could not be found`);
     }
     return pin;
 }

@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonicModule, ToastController } from '@ionic/angular';
 import { UiService } from '../ui.service';
-import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { DbService } from '../db.service';
 import { noDate, now, sameDay } from '../utils';
 import { Day, MapPoint, RSLEvent } from '../models';
@@ -39,7 +38,7 @@ function initialState(): RSLState {
     events: [],
     search: '',
     title: 'Rock Star Librarian',
-    mapTitle: '',    
+    mapTitle: '',
     mapSubtitle: '',
     mapPoints: [],
     showMap: false,
@@ -55,41 +54,47 @@ function initialState(): RSLState {
   templateUrl: './rsl.page.html',
   styleUrls: ['./rsl.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, 
-    ScrollingModule, RslEventComponent,
+  imports: [IonicModule, CommonModule, FormsModule,
+    RslEventComponent,
     SearchComponent, MapModalComponent, SkeletonEventComponent]
 })
 export class RslPage implements OnInit {
 
-  vm: RSLState = initialState();  
+  vm: RSLState = initialState();
   @ViewChild(IonContent) ionContent!: IonContent;
   constructor(
     private ui: UiService,
     private db: DbService,
     private geo: GeoService,
     private toastController: ToastController) {
-      effect(() => {
-        this.ui.scrollUpContent('rsl', this.ionContent);
-      });
-      effect(() => {
-        const year = this.db.selectedYear();
-        console.log(`RSLPage.yearChange ${year}`);
-        this.db.checkInit();
-        this.vm = initialState();
-        this.init();
-      });
+    effect(() => {
+      this.ui.scrollUpContent('rsl', this.ionContent);
+    });
+    effect(() => {
+      const year = this.db.selectedYear();
+      console.log(`RSLPage.yearChange ${year}`);
+      this.db.checkInit();
+      this.vm = initialState();
+      this.init();
+    });
+    effect(async () => {
+      const resumed = this.db.resume();
+      if (resumed.length > 0) {
+        await this.update();
+      }
+    })
   }
 
   private async init() {
     const today = now();
     this.setToday(today);
-    
-    this.vm.days = await this.db.getDays();    
+
+    this.vm.days = await this.db.getDays();
     this.vm.defaultDay = this.chooseDefaultDay(now());
     await this.update();
   }
 
-  private async update(scrollToTop?: boolean) {    
+  private async update(scrollToTop?: boolean) {
     let coords: GpsCoord | undefined = undefined;
     if (this.vm.byDist) {
       coords = await this.geo.getPosition();
@@ -99,8 +104,8 @@ export class RslPage implements OnInit {
     this.vm.noEventsMessage = this.vm.search?.length > 0 ?
       `There are no events matching "${this.vm.search}".` :
       'All the events for this day have concluded.';
-    if (scrollToTop) {      
-      this.ui.scrollUpContent('rsl', this.ionContent);      
+    if (scrollToTop) {
+      this.ui.scrollUpContent('rsl', this.ionContent);
     }
   }
 
@@ -113,7 +118,7 @@ export class RslPage implements OnInit {
   }
 
   public async dayChange(event: any) {
-      this.vm.day = new Date(event.target.value);
+    this.vm.day = new Date(event.target.value);
     console.log(`Day Change ${this.vm.day}`);
 
     this.updateTitle();
@@ -122,13 +127,17 @@ export class RslPage implements OnInit {
 
   private updateTitle() {
     const day = this.vm.day;
-    this.vm.title = (!sameDay(day,noDate())) ? day.toLocaleDateString('en-US', { weekday: 'long' }) : 'Rock Star Librarian';
+    this.vm.title = (!sameDay(day, noDate())) ? day.toLocaleDateString('en-US', { weekday: 'long' }) : 'Rock Star Librarian';
   }
 
   private setToday(today: Date) {
-    for (const day of this.vm.days) {      
+    for (const day of this.vm.days) {
       day.today = sameDay(day.date, today);
     }
+  }
+
+  public eventsTrackBy(index: number, event: RSLEvent) {
+    return event.id;
   }
 
   public searchEvents(value: string) {
@@ -137,13 +146,13 @@ export class RslPage implements OnInit {
   }
 
   private chooseDefaultDay(today: Date): Date | string {
-    for (const day of this.vm.days) {      
+    for (const day of this.vm.days) {
       if (day.date && sameDay(day.date, today)) {
         this.vm.day = day.date;
         return day.date;
       }
     }
-    this.vm.day = this.vm.days[0].date;    
+    this.vm.day = this.vm.days[0].date;
     return this.vm.days[0].date;
   }
 
