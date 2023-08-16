@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { PinchZoomModule } from '@meddv/ngx-pinch-zoom';
 import { LocationEnabledStatus, MapInfo, MapPoint, Pin } from '../data/models';
-import { IonicModule, PopoverController } from '@ionic/angular';
+import { IonicModule } from '@ionic/angular';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { mapPointToPin } from './map.utils';
 import { delay } from '../utils/utils';
@@ -73,7 +73,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   constructor(
-    private popoverController: PopoverController,
     private geo: GeoService,
     private settings: SettingsService) {
     this.points = [];
