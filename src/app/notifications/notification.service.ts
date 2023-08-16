@@ -8,7 +8,8 @@ export interface Reminder {
   title: string,
   body: string,
   id: string,
-  when?: Date
+  when?: Date,
+  comment: string
 }
 
 export interface ScheduleResult {
@@ -53,7 +54,7 @@ export class NotificationService {
           reminder.when = this.reminderTime(start);
           if (!this.sameDate(last, reminder.when)) {
             await this.schedule(reminder);
-            message = `You'll be notified of this event on ${getDayName(reminder.when.toString())} at ${time(reminder.when)}`;
+            message = `You'll be notified ${reminder.comment} on ${getDayName(reminder.when.toString())} at ${time(reminder.when)}`;
             count++;
           }
           last = reminder.when;

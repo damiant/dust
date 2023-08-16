@@ -116,17 +116,20 @@ export class FavoritesService {
   }
 
   public async starEvent(star: boolean, event: Event, selectedDay: Date, occurrence?: OccurrenceSet): Promise<string | undefined> {
-    this.favorites.events = this.include(star, this.eventId(event, occurrence), this.favorites.events);
+    const id = this.eventId(event, occurrence);
+    this.favorites.events = this.include(star, id, this.favorites.events);
     console.log('starEvent', star, JSON.stringify(this.favorites));
     await this.saveFavorites();
 
     if (star) {
       const title = event.location ? `${event.location}: ${event.title}` : event.title;
+      const comment = `when ${event.title} starts`;
       const result = await this.notificationService.scheduleAll(
         {
           id: event.uid,
           title,
-          body: event.description
+          body: event.description,
+          comment
         },
         occurrence ? [occurrence] : event.occurrence_set,
         selectedDay);
@@ -146,11 +149,13 @@ export class FavoritesService {
     const when: OccurrenceSet = { start_time: occurrence.startTime, end_time: occurrence.endTime, old: false, happening: true, longTimeString: '' };
     if (star) {
       const title = `${occurrence.who} @ ${event.camp} (${event.location}) is starting soon`;
+      const comment = `when ${occurrence.who} starts`;
       const result: ScheduleResult = await this.notificationService.scheduleAll(
         {
           id,
           title,
-          body: `${occurrence.who} starts ${occurrence.timeRange} at ${event.camp} - ${event.title ? event.title : ''}`
+          body: `${occurrence.who} starts ${occurrence.timeRange} at ${event.camp} - ${event.title ? event.title : ''}`,
+          comment
         },
         [when]);
       await Haptics.impact({ style: ImpactStyle.Heavy });

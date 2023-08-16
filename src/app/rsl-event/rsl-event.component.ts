@@ -37,7 +37,7 @@ export class RslEventComponent implements OnInit {
     const toast = await this.toast.create({
       message,
       color: 'primary',
-      duration: 1500,
+      duration: 3000,
       position: 'bottom',
     });
     await toast.present();
