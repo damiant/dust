@@ -9,17 +9,24 @@ Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
 - RSL tab
 
 - Show Date/Times in PST regardless of users timezone
-- Art page is still slow
+- Art page is still slow (try WebP)
 - Understanding how to get back to home
 - JD Tabs for favorites
 - Robin - Camps filter by clock (eg Near 7:00 which would be 6:30-7:30)
 
 ## Priority 1
-x Center Camp State - Add to list of camps but show in profile
-x If day selected then show that day first and other days grouped smaller below
 - After adding a favorite show the badge count on the fav tab increase (and disappear after opening it)
 - If an event has a long durations (>3hrs) then let user choose notification hour
 - Pressing the tab again should clear search
+- RSL Dark Mode logo fix
+- Favorites by distance
+- Offline images
+- Use AllowWhileIdle true for notifications
+- Sounds for notifications
+- Haptics on favorite add
+- Use motion to rotate your "here" pin
+- "Not Interested" button for Events
+
 
 ## Priority 2
 - Filter by a-z for camps and art
@@ -53,14 +60,9 @@ x If day selected then show that day first and other days grouped smaller below
 - Show QR Code for a camp
 
 ## Marketing
-- Facebook posts to bm groups
 - Soundcloud link
-- Mastodon
 - Instagram
-- Twitter post from official
-- Twitter post for ionic/cap
 - SEO for metadata
 - Twitter metadata image and app link
 - Linked In Post
 - Page Info about the app on dust.events
-- Burning Mondays
