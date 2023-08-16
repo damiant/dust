@@ -23,7 +23,7 @@ export class TabsPage implements OnInit {
   currentTab = '';
   public environmentInjector = inject(EnvironmentInjector);
   constructor(
-    private db: DbService, private ui: UiService,
+    public db: DbService, private ui: UiService,
     private notificationService: NotificationService,
     private shareService: ShareService,
     private router: Router, private settingsService: SettingsService) {
