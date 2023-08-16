@@ -83,9 +83,7 @@ export class CampsPage {
     this.isScrollDisabled = false;
   }
 
-  goToLetterGroup(e: string) {
-    console.log('goToLetterGroup', e);
-
+  goToLetterGroup(e: string) {    
     const idx = this.vm.alphaValues.indexOf(e);
     if (idx >= 0) {
       this.virtualScroll.scrollToIndex(this.vm.alphaIndex[idx]);      
@@ -134,7 +132,6 @@ export class CampsPage {
   }
 
   private updateAlphaIndex() {
-    const a = {};
     let lastChar = '';
     let idx = 0;
     this.vm.alphaIndex = [];

@@ -9,7 +9,12 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="app-page">
-  <div class="virtual-scroll-container ion-content-scroll-host" cdkVirtualScrollingElement>
+  <alphabetical-scroll-bar [hidden]="vm.byDist" [alphabet]="'#ABCDEFGHIJKLMNOPQRSTUVWXYZ'"
+    [disableInvalidLetters]="false" [prioritizeHidingInvalidLetters]="true" [letterMagnification]="true"
+    [magnifyDividers]="true" [magnificationMultiplier]="2" [magnificationCurve]="[1, .7, .6, .4, .2, 0]"
+    [exactX]="false" [navigateOnHover]="true" [letterSpacing]="'0.5%'" [offsetSizeCheckInterval]="100"
+    (letterChange)="goToLetterGroup($event)" (isActive)="!$event && enableScroll()"></alphabetical-scroll-bar>
+  <div [class.disable-scroll]="isScrollDisabled" [class.side]="!vm.byDist" class="virtual-scroll-container ion-content-scroll-host" cdkVirtualScrollingElement>
     <ion-header collapse="condense">
       <ion-toolbar>
         <ion-title size="large">Art</ion-title>
@@ -30,7 +35,7 @@
       <app-skeleton-art />
       <app-skeleton-art />
     </div>
-    <cdk-virtual-scroll-viewport [minBufferPx]="vm.minBufferPx" itemSize="180" maxBufferPx="2350">
+    <cdk-virtual-scroll-viewport [minBufferPx]="vm.minBufferPx" [itemSize]="vm.showImage ? 390 : 180" maxBufferPx="2350">
       <app-art *ngFor="let art of vm.arts; trackBy: artTrackBy" (artClick)="click($event)" [showImage]="vm.showImage"
         [art]="art" />
     </cdk-virtual-scroll-viewport>
