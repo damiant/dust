@@ -54,6 +54,11 @@ export interface OccurrenceSet {
   star?: boolean;
 }
 
+export interface TimeRange {
+  start: Date
+  end: Date  
+}
+
 export interface Camp {
   contact_email?: string
   description?: string

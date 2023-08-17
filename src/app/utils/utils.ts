@@ -1,5 +1,5 @@
 import { environment } from "src/environments/environment";
-import { OccurrenceSet, TimeString } from "../data/models";
+import { OccurrenceSet, TimeRange, TimeString } from "../data/models";
 
 export function sameDay(d1: Date, d2: Date) {
     return d1.getDate() === d2.getDate() && d1.getMonth() === d2.getMonth() && d1.getFullYear() === d2.getFullYear();
@@ -13,12 +13,29 @@ export function now(): Date {
         return nowPST();
     }
     //console.log(`Simulating time ${environment.simulatedTime}`);
-    return environment.simulatedTime;
+    return structuredClone(environment.simulatedTime);
 }
 
 function nowPST(): Date {
     let str = new Date().toLocaleString("en-US", { timeZone: BurningManTimeZone });
     return new Date(str);
+}
+
+export function nowRange(): TimeRange {
+    const start = now();
+    const end = now();
+    const minute = 1000 * 60;
+    start.setTime(start.getTime() - 20 * minute);
+    end.setTime(end.getTime() + 60 * minute);
+    console.log(start, end)
+    return { start, end };
+}
+
+export function timeRangeToString(timeRange: TimeRange | undefined): string {
+    if (!timeRange) {
+        return '';
+    }
+    return `${time(timeRange.start)}-${time(timeRange.end)}`;
 }
 
 

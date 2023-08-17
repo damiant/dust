@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { Event, Day, Camp, Art, Pin, DataMethods, MapSet, GeoRef, Dataset, RSLEvent } from './models';
+import { Event, Day, Camp, Art, Pin, DataMethods, MapSet, GeoRef, Dataset, RSLEvent, TimeRange } from './models';
 import { call, registerWorker } from './worker-interface';
 import { daysUntil, noDate, now } from '../utils/utils';
 import { GpsCoord, Point } from '../map/geo.utils';
@@ -61,8 +61,8 @@ export class DbService {
     return until;
   }
 
-  public async findEvents(query: string, day: Date | undefined, category: string, coords: GpsCoord | undefined): Promise<Event[]> {
-    return await call(this.worker, DataMethods.FindEvents, query, day, category, coords);
+  public async findEvents(query: string, day: Date | undefined, category: string, coords: GpsCoord | undefined, timeRange: TimeRange | undefined): Promise<Event[]> {
+    return await call(this.worker, DataMethods.FindEvents, query, day, category, coords, timeRange);
   }
 
   public async getEventList(ids: string[]): Promise<Event[]> {

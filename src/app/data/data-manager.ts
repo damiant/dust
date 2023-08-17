@@ -1,5 +1,5 @@
 import { WorkerClass } from './worker-interface';
-import { Art, Camp, DataMethods, Day, Event, GeoRef, LocationName, MapPoint, MapSet, Pin, RSLEvent, Revision, TimeString } from './models';
+import { Art, Camp, DataMethods, Day, Event, GeoRef, LocationName, MapPoint, MapSet, Pin, RSLEvent, Revision, TimeRange, TimeString } from './models';
 import { BurningManTimeZone, getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from '../utils/utils';
 import { distance, locationStringToPin, mapPointToPoint, maxDistance, toClock, toStreetRadius } from '../map/map.utils';
 import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from '../map/geo.utils';
@@ -39,7 +39,7 @@ export class DataManager implements WorkerClass {
             case DataMethods.GetMapPoints: return this.getMapPoints(args[0]);
             case DataMethods.GetRSLEvents: return await this.getRSLEvents(args[0], args[1], args[2]);
             case DataMethods.CheckEvents: return this.checkEvents(args[0]);
-            case DataMethods.FindEvents: return this.findEvents(args[0], args[1], args[2], args[3]);
+            case DataMethods.FindEvents: return this.findEvents(args[0], args[1], args[2], args[3], args[4]);
             case DataMethods.FindCamps: return this.findCamps(args[0], args[1]);
             case DataMethods.FindEvent: return this.findEvent(args[0]);
             case DataMethods.FindCamp: return this.findCamp(args[0]);
@@ -411,13 +411,13 @@ export class DataManager implements WorkerClass {
         return false;
     }
 
-    public findEvents(query: string, day: Date | undefined, category: string, coords: GpsCoord | undefined): Event[] {
+    public findEvents(query: string, day: Date | undefined, category: string, coords: GpsCoord | undefined, timeRange: TimeRange | undefined): Event[] {
         const result: Event[] = [];
         if (query) {
             query = this.scrubQuery(query);
         }
         for (let event of this.events) {
-            if (this.eventContains(query, event) && this.eventIsCategory(category, event) && this.onDay(day, event)) {
+            if (this.eventContains(query, event) && this.eventIsCategory(category, event) && this.onDay(day, event, timeRange)) {
                 const timeString = this.getTimeString(event, day);
                 event.timeString = timeString.short;
                 event.longTimeString = timeString.long;
@@ -578,14 +578,20 @@ export class DataManager implements WorkerClass {
                 event.description.toLowerCase().includes(terms));
     }
 
-    private onDay(day: Date | undefined, event: Event): boolean {
-        if (!day) return true;
+    private onDay(day: Date | undefined, event: Event, timeRange: TimeRange | undefined): boolean {
+        if (!day && !timeRange) return true;
         for (let occurrence of event.occurrence_set) {
             const start = new Date(occurrence.start_time);
             const end = new Date(occurrence.end_time);
 
-            if (!occurrence.old && ((sameDay(start, day) || sameDay(end, day)))) {
-                return true;
+            if (day) {
+                if (!occurrence.old && ((sameDay(start, day) || sameDay(end, day)))) {
+                    return true;
+                }
+            } else if (timeRange) {
+                if (start > timeRange.start && start < timeRange.end) {
+                    return true;
+                }
             }
         }
         return false;

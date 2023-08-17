@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { FormsModule } from '@angular/forms';
-import { noDate, now, sameDay } from '../utils/utils';
+import { noDate, now, nowRange, sameDay, timeRangeToString } from '../utils/utils';
 import { App } from '@capacitor/app';
 import { EventComponent } from '../event/event.component';
 import { UiService } from '../ui/ui.service';
@@ -37,6 +37,8 @@ interface EventsState {
   mapPoints: MapPoint[],
   minBufferPx: number,
   byDist: boolean,
+  isNow: boolean,
+  timeRange: string,
   displayedDistMessage: boolean
 }
 
@@ -58,6 +60,8 @@ function initialState(): EventsState {
     mapSubtitle: '',
     mapPoints: [],
     byDist: false,
+    isNow: false,
+    timeRange: '',
     displayedDistMessage: false,
     minBufferPx: 1900
   };
@@ -169,9 +173,14 @@ export class EventsPage implements OnInit {
   }
 
   async dayChange(event: any) {
+    this.vm.isNow = false;
     if (event.target.value == 'all') {
       this.db.selectedDay.set(noDate());
       this.vm.day = undefined;
+    } else if (event.target.value == 'now') {
+      this.db.selectedDay.set(noDate());
+      this.vm.day = undefined;
+      this.vm.isNow = true;
     } else {
       this.db.selectedDay.set(new Date(event.target.value));
       this.vm.day = this.db.selectedDay();
@@ -184,6 +193,10 @@ export class EventsPage implements OnInit {
 
   private updateTitle() {
     const day = this.db.selectedDay();
+    if (this.vm.isNow) {
+      this.vm.title = 'Now';
+      return;
+    }
     this.vm.title = (!sameDay(day,noDate())) ? day.toLocaleDateString('en-US', { weekday: 'long' }) : 'Events';
   }
 
@@ -199,14 +212,31 @@ export class EventsPage implements OnInit {
     if (this.vm.byDist) {
       coords = await this.geo.getPosition();
     }
-    this.vm.events = await this.db.findEvents(this.vm.search, this.vm.day, this.vm.category, coords);
+
+    const timeRange = this.vm.isNow ? nowRange() : undefined;
+    this.vm.timeRange = timeRangeToString(timeRange);
+    
+    this.vm.events = await this.db.findEvents(
+      this.vm.search, // Search terms
+      this.vm.day, // Selected day
+      this.vm.category, // Filtered category
+      coords, // Geolocation
+      timeRange // Time Range
+      );
     this.vm.noEvents = this.vm.events.length == 0;
-    this.vm.noEventsMessage = this.vm.search?.length > 0 ?
-      `There are no events matching "${this.vm.search}".` :
-      'All the events for this day have concluded.';
+    this.vm.noEventsMessage = this.noEventsMessage();
     if (scrollToTop) {
       this.hack();
       this.virtualScroll.scrollToOffset(0, 'smooth');
     }
+  }
+
+  private noEventsMessage(): string {
+    if (this.vm.search?.length > 0) {
+      return `There are no events matching "${this.vm.search}".`;
+    } else if (this.vm.isNow) {
+      return `There are no events starting ${this.vm.timeRange}`;
+    }
+    return  'All the events for this day have concluded.';
   }
 }
