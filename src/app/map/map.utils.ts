@@ -4,6 +4,8 @@ import { GpsCoord } from "./geo.utils";
 // Streets from Esplanade to K in relative values from center
 export const streets = [0.285, 0.338, 0.369, 0.405, 0.435, 0.465, 0.525, 0.557, 0.590, 0.621, 0.649, 0.678];
 
+export const defaultMapRadius = 5000;
+
 export function toMapPoint(location: string | undefined, info?: MapInfo): MapPoint {
     if (!location) {
         return { street: '', clock: '' };
@@ -100,6 +102,28 @@ export function distance(g1: GpsCoord, g2: GpsCoord) {
         return dist;
     }
 }
+
+export function formatDistance(dist: number): string {
+    if (dist == maxDistance) {
+        return '';
+    }
+    const rounded = Math.round(dist * 10) / 10
+    if (rounded == 0.0) {
+        return '(near)';
+    } else if (rounded > 100) {
+        return '(far)'
+    }
+    return `(${rounded}mi)`;
+}
+
+export function formatDistanceMiles(dist: number): string {
+    if (dist == maxDistance) {
+        return '';
+    }
+    const rounded = Math.round(dist * 10) / 10
+    return `${rounded}`;
+}
+
 export function mapPointToPin(point: MapPoint, mapRadius: number): Pin | undefined {
     if (point.x && point.y) {
         return {

@@ -1,7 +1,7 @@
 
 # Roadmap
 
-- Use art gps_latitude, gps_longitude instead of location strings
+- Display distance to art
 - RockStar Librarian - import data (Waiting on data)
 - Favorites by distance
 - Art page is still slow (try WebP)

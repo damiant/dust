@@ -24,7 +24,9 @@ export class PinMapPage implements OnInit {
   points: MapPoint[] = [];
   title = '';
   description = '';
-  constructor(private db: DbService) { }
+  constructor(private db: DbService) {
+    this.db.checkInit();
+   }
 
   ngOnInit() {
   }

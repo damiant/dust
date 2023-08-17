@@ -180,6 +180,7 @@ export interface MapPoint {
   clockOffset?: string,
   x?: number,
   y?: number,
+  gps?: GpsCoord, // Used as additional info when displaying the map
   info?: MapInfo
 }
 
@@ -255,5 +256,7 @@ export enum DataMethods {
   GetCamps = 'getCamps',
   GetGeoReferences = 'getGeoReferences',
   GpsToPoint = 'gpsToPoint',
-  GetRSLEvents = 'getRSLEvents'
+  GetRSLEvents = 'getRSLEvents',
+  GetMapPointGPS = 'getMapPointGPS',
+  SetMapPointsGPS = 'setMapPointsGPS'
 }

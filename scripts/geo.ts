@@ -1,9 +1,9 @@
 import { readFileSync } from "fs";
 import { GpsCoord, Point, mapToGps, setReferencePoints } from "src/app/map/geo.utils";
-import { locationStringToPin, mapPointToPoint } from "src/app/map/map.utils";
+import { defaultMapRadius, locationStringToPin, mapPointToPoint } from "src/app/map/map.utils";
 import { GeoRef, MapPoint, RSLEvent } from "src/app/data/models";
 
-const mapRadius = 5000;
+const mapRadius = defaultMapRadius;
 export function setGeolocation(event: RSLEvent) {
     const pin = locationStringToPin(event.location, mapRadius);
     if (pin) {

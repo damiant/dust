@@ -79,7 +79,7 @@ export class DbService {
 
   public async gpsToMapPoint(gpsCoord: GpsCoord, title: string): Promise<MapPoint> {
     const point = await this.gpsToPoint(gpsCoord);
-    return { street: '', clock: '', x: point.x, y: point.y, info: { title, location: '', subtitle: '' } }
+    return { street: '', clock: '', x: point.x, y: point.y, gps: structuredClone(gpsCoord), info: { title, location: '', subtitle: '' } }
   }
 
   public async getPotties(): Promise<Pin[]> {
@@ -124,6 +124,14 @@ export class DbService {
 
   public async findEvent(uid: string): Promise<Event> {
     return await call(this.worker, DataMethods.FindEvent, uid);
+  }
+
+  public async getMapPointGPS(mapPoint: MapPoint): Promise<GpsCoord> {
+    return await call(this.worker, DataMethods.GetMapPointGPS, mapPoint);
+  }
+
+  public async setMapPointsGPS(mapPoints: MapPoint[]): Promise<MapPoint[]> {
+    return await call(this.worker, DataMethods.SetMapPointsGPS, mapPoints);
   }
 
   public async findCamp(uid: string): Promise<Camp> {

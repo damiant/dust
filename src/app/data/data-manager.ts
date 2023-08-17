@@ -1,7 +1,7 @@
 import { WorkerClass } from './worker-interface';
 import { Art, Camp, DataMethods, Day, Event, GPSSet, GeoRef, LocationName, MapPoint, MapSet, Pin, RSLEvent, Revision, TimeRange, TimeString } from './models';
 import { BurningManTimeZone, getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from '../utils/utils';
-import { distance, locationStringToPin, mapPointToPoint, maxDistance, toClock, toStreetRadius } from '../map/map.utils';
+import { defaultMapRadius, distance, formatDistance, locationStringToPin, mapPointToPoint, maxDistance, toClock, toStreetRadius } from '../map/map.utils';
 import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from '../map/geo.utils';
 
 interface TimeCache {
@@ -36,6 +36,8 @@ export class DataManager implements WorkerClass {
             case DataMethods.FindArts: return this.findArts(args[0], args[1]);
             case DataMethods.FindArt: return this.findArt(args[0]);
             case DataMethods.GpsToPoint: return this.gpsToPoint(args[0]);
+            case DataMethods.GetMapPointGPS: return this.getMapPointGPS(args[0]);
+            case DataMethods.SetMapPointsGPS: return this.setMapPointsGPS(args[0]);
             case DataMethods.GetMapPoints: return this.getMapPoints(args[0]);
             case DataMethods.GetGPSPoints: return this.getGPSPoints(args[0], args[1]);
             case DataMethods.GetRSLEvents: return await this.getRSLEvents(args[0], args[1], args[2]);
@@ -128,6 +130,22 @@ export class DataManager implements WorkerClass {
 
     private gpsToPoint(gpsCoord: GpsCoord): Point {
         return gpsToMap(gpsCoord);
+    }
+
+    private getMapPointGPS(mapPoint: MapPoint): GpsCoord {
+        const pin = mapPointToPoint(mapPoint, defaultMapRadius);
+        return mapToGps(pin);
+    }
+
+    private setMapPointsGPS(mapPoints: MapPoint[]): MapPoint[] {
+        for (let mapPoint of mapPoints) {
+            const pin = mapPointToPoint(mapPoint, defaultMapRadius);
+            if (!isNaN(pin.x)) {
+                mapPoint.gps = mapToGps(pin);
+            }
+            console.log('setMapPointsGPS', pin, mapPoint.gps);
+        }
+        return mapPoints;
     }
 
     private init(hideLocations: boolean) {
@@ -376,7 +394,7 @@ export class DataManager implements WorkerClass {
                 if (!allOld) {
                     // If all times have ended
                     event.distance = distance(coords!, event.gpsCoords!);
-                    event.distanceInfo = this.formatDistance(event.distance);
+                    event.distanceInfo = formatDistance(event.distance);
                     result.push(event);
                 }
             }
@@ -423,7 +441,7 @@ export class DataManager implements WorkerClass {
                 event.timeString = timeString.short;
                 event.longTimeString = timeString.long;
                 event.distance = distance(coords!, event.gpsCoords);
-                event.distanceInfo = this.formatDistance(event.distance);
+                event.distanceInfo = formatDistance(event.distance);
                 result.push(event);
             }
         }
@@ -474,7 +492,7 @@ export class DataManager implements WorkerClass {
 
             if (coords) {
                 camp.distance = distance(coords, camp.gpsCoord);
-                camp.distanceInfo = this.formatDistance(camp.distance);
+                camp.distanceInfo = formatDistance(camp.distance);
             } else {
                 camp.distanceInfo = '';
             }
@@ -496,18 +514,7 @@ export class DataManager implements WorkerClass {
 
     }
 
-    private formatDistance(dist: number): string {
-        if (dist == maxDistance) {
-            return '';
-        }
-        const rounded = Math.round(dist * 10) / 10
-        if (rounded == 0.0) {
-            return '(near)';
-        } else if (rounded > 100) {
-            return '(far)'
-        }
-        return `(${rounded}mi)`;
-    }
+
 
     public findArts(query: string | undefined, coords: GpsCoord | undefined): Art[] {
         const result: Art[] = [];
@@ -517,7 +524,7 @@ export class DataManager implements WorkerClass {
         for (let art of this.art) {
             if (coords) {
                 art.distance = distance(coords, art.gpsCoords);
-                art.distanceInfo = this.formatDistance(art.distance);
+                art.distanceInfo = formatDistance(art.distance);
             }
             if (!query || art.name.toLowerCase().includes(query.toLowerCase())) {
                 result.push(art);
@@ -622,10 +629,10 @@ export class DataManager implements WorkerClass {
     public async getGPSPoints(name: string, title: string): Promise<MapSet> {
         const res = await fetch(this.path(name));
         const data: GPSSet = await res.json();
-        const result: MapSet = { title: data.title, description: data.description, points: []};
+        const result: MapSet = { title: data.title, description: data.description, points: [] };
         for (let gps of data.points) {
             const point = gpsToMap(gps);
-            const mapPoint: MapPoint = { street: '', clock: '', x: point.x, y: point.y, info: { title, location: '', subtitle: '' } }
+            const mapPoint: MapPoint = { street: '', clock: '', x: point.x, y: point.y, gps: structuredClone(gps), info: { title, location: '', subtitle: '' } }
             result.points.push(mapPoint);
         }
         return result;
@@ -633,7 +640,11 @@ export class DataManager implements WorkerClass {
 
     public async getMapPoints(name: string): Promise<MapSet> {
         const res = await fetch(this.path(name));
-        return await res.json();
+        const mapSet: MapSet = await res.json();
+        for (let point of mapSet.points) {
+            point.gps = this.getMapPointGPS(point);
+        }
+        return mapSet;
     }
 
     public async getGeoReferences(): Promise<GeoRef[]> {

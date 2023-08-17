@@ -104,7 +104,7 @@ ion-text.one-line {
     -moz-user-select: text;
     -ms-user-select: text;
     user-select: text;
-  }
+}
 
 h2,
 ion-card-title {
@@ -183,7 +183,7 @@ ion-back-button {
     align-items: center;
     flex-direction: column;
     width: 100%;
-    height: 100vh;    
+    height: 100vh;
 }
 
 .text {
@@ -226,6 +226,20 @@ cdk-virtual-scroll-viewport {
 
     100% {
         transform: scale(1.0);
+    }
+}
+
+@keyframes pin {
+    0% {
+        background-color: var(--ion-color-primary);
+    }
+
+    50% {
+        background-color: var(--ion-color-light);
+    }
+
+    100% {
+        background-color: var(--ion-color-primary);
     }
 }
 

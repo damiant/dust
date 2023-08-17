@@ -23,6 +23,10 @@ export const routes: Routes = [
     loadComponent: () => import('./art-item/art-item.page').then( m => m.ArtItemPage)
   },
   {
+    path: 'map/:mapType',
+    loadComponent: () => import('./pin-map/pin-map.page').then(m => m.PinMapPage)
+  },
+  {
     path: 'intro',
     loadComponent: () => import('./intro/intro.page').then( m => m.IntroPage)
   }

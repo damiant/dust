@@ -4,12 +4,13 @@ import { PinchZoomModule } from '@meddv/ngx-pinch-zoom';
 import { LocationEnabledStatus, MapInfo, MapPoint, Pin } from '../data/models';
 import { IonicModule } from '@ionic/angular';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { mapPointToPin } from './map.utils';
+import { defaultMapRadius, distance, formatDistance, formatDistanceMiles, mapPointToPin } from './map.utils';
 import { delay } from '../utils/utils';
 import { GeoService } from '../geolocation/geo.service';
 import { SettingsService } from '../data/settings.service';
 import { MessageComponent } from '../message/message.component';
 import { CompassError, CompassHeading } from './compass';
+import { GpsCoord } from './geo.utils';
 
 interface MapInformation {
   width: number; // Width of the map
@@ -35,6 +36,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   points: MapPoint[];
   isOpen = false;
   imageReady = false;
+  footer: string | undefined;
   @ViewChild('popover') popover: any;
   info: MapInfo | undefined;
   src = 'assets/map.svg';
@@ -46,6 +48,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('map') map!: ElementRef;
   @ViewChild('mapc') mapc!: ElementRef;
   @Input() height: string = 'height: 100%';
+  @Input() footerPadding: number = 0;
   @Input('points') set setPoints(points: MapPoint[]) {
     this.points = points;
     if (this.points.length > 0) {
@@ -105,10 +108,10 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.setMapInformation();
 
     for (let point of this.points) {
-      const pin = mapPointToPin(point, 5000);// this.mapInformation!.circleRadius);
-      console.log('map', pin, point);
+      const pin = mapPointToPin(point, defaultMapRadius);// this.mapInformation!.circleRadius);      
       if (pin) {
-        this.plotXY(pin.x, pin.y, point.info);
+        const div = this.plotXY(pin.x, pin.y, point.info);
+        (point.info as any).div = div;
       }
     }
     await this.checkGeolocation();
@@ -135,11 +138,42 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
     try {
       const gpsCoord = await this.geo.getPosition();
-        const pt = await this.geo.placeOnMap(gpsCoord, this.mapInformation!.circleRadius);        
-        const div = this.plotXY(pt.x, pt.y, undefined, 'var(--ion-color-secondary)');
-        this.checkCompass(div);
+      const pt = await this.geo.placeOnMap(gpsCoord, this.mapInformation!.circleRadius);
+      const div = this.plotXY(pt.x, pt.y, undefined, 'var(--ion-color-secondary)');
+      this.calculateNearest(gpsCoord);
+      this.checkCompass(div);
     } catch (err) {
       console.error('checkGeolocation.error', err);
+    }
+  }
+
+  private calculateNearest(you: GpsCoord) {
+    let least = 999999;
+    let closest: MapPoint | undefined;
+    for (let point of this.points) {
+      if (!point.gps || !point.gps.lat) {
+        console.error(`MapPoint is missing gps coordinate: ${JSON.stringify(point)}`);
+      } else {
+        const dist = distance(you, point.gps);
+        if (dist < least) {
+          least = dist;
+          closest = point;
+          console.log('*** found dist', dist, closest);
+        }
+      }
+    }
+    if (closest) {
+      const div: HTMLDivElement = (closest.info as any).div;
+      div.style.animationName = `pin`;
+      div.style.animationDuration = '2s';
+      const prefix = this.points.length > 1 ? 'The closest' : closest.info?.title;
+      const dist = formatDistanceMiles(least);
+      if (dist != '') {
+        this.footer = `${prefix} is ${dist} miles away.`;
+      } else {
+        this.footer = ``;
+        console.error(`Unable to find a close point`);
+      }
     }
   }
 
@@ -204,7 +238,9 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     d.style.border = '1px solid var(--ion-color-dark)';
     d.style.borderRadius = `${sz}px`;
     d.style.animationName = info ? '' : 'pulse';
-    d.style.animationDuration = '3s';
+    if (!info) {
+      d.style.animationDuration = '3s';
+    }
     d.style.animationIterationCount = 'infinite';
     d.style.position = 'absolute';
     d.style.backgroundColor = bgColor ? bgColor : `var(--ion-color-primary)`;

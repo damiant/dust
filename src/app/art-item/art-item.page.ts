@@ -56,7 +56,8 @@ export class ArtItemPage implements OnInit {
     this.mapSubtitle = this.art.location_string!;
     let point = toMapPoint(this.art.location_string!);
     if (this.art.location.gps_latitude && this.art.location.gps_longitude) {
-      point = await this.db.gpsToMapPoint({ lng: this.art.location.gps_longitude, lat: this.art.location.gps_latitude }, this.art.location_string!);
+      const gps = { lng: this.art.location.gps_longitude, lat: this.art.location.gps_latitude };
+      point = await this.db.gpsToMapPoint(gps, this.art.location_string!);
       console.log('map init', point, this.art.location.gps_latitude, this.art.location.gps_longitude);
     }
     this.mapPoints.push(point);
