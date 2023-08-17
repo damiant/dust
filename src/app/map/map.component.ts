@@ -189,7 +189,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   private plotXY(x: number, y: number, info?: MapInfo, bgColor?: string): HTMLDivElement {
     const px = x / 10000.0 * this.mapInformation!.width;
     const py = y / 10000.0 * this.mapInformation!.height;
-    if (info) {
+    if (info && info.location) {
       this.placeLabel(px, py, info);
     }
     return this.createPin(px, py, (info || bgColor) ? 10 : 5, info, bgColor);
