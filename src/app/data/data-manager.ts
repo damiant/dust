@@ -357,7 +357,7 @@ export class DataManager implements WorkerClass {
         const res = await fetch(this.path('rsl'));
         const events: RSLEvent[] = await res.json();
         const result: RSLEvent[] = [];
-        query = query.toLowerCase();
+        query = this.scrubQuery(query);
         const fDay = day ? day.toISOString().split('T')[0] : undefined;
         const today = now();
         for (let event of events) {
@@ -388,6 +388,13 @@ export class DataManager implements WorkerClass {
         return result;
     }
 
+    private scrubQuery(query: string): string {
+        if (query) {
+            query = query.toLowerCase().trim();
+        }
+        return query;
+    }
+
     private sortRSLEventsByName(events: RSLEvent[]) {
         events.sort((a: RSLEvent, b: RSLEvent) => { return a.camp.localeCompare(b.camp); });
     }
@@ -406,6 +413,9 @@ export class DataManager implements WorkerClass {
 
     public findEvents(query: string, day: Date | undefined, category: string, coords: GpsCoord | undefined): Event[] {
         const result: Event[] = [];
+        if (query) {
+            query = this.scrubQuery(query);
+        }
         for (let event of this.events) {
             if (this.eventContains(query, event) && this.eventIsCategory(category, event) && this.onDay(day, event)) {
                 const timeString = this.getTimeString(event, day);
@@ -456,7 +466,9 @@ export class DataManager implements WorkerClass {
 
     public findCamps(query: string, coords?: GpsCoord): Camp[] {
         const result: Camp[] = [];
-        const qry = query.toLowerCase();
+        if (query) {
+            query = this.scrubQuery(query);
+        }
         for (let camp of this.camps) {
 
             if (coords) {
@@ -498,6 +510,9 @@ export class DataManager implements WorkerClass {
 
     public findArts(query: string | undefined, coords: GpsCoord | undefined): Art[] {
         const result: Art[] = [];
+        if (query) {
+            query = this.scrubQuery(query);
+        }
         for (let art of this.art) {
             if (coords) {
                 art.distance = distance(coords, art.gpsCoords);

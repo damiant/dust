@@ -2,6 +2,8 @@
 
 Analog Internet Installation
 Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
+- Translate restroom locations via https://bm-innovate.s3.amazonaws.com/2023/GIS/Portable_Toilets.json
+- Use art gps_latitude, gps_longitude instead of location strings
 - Audio Guide https://soundcloud.com/burningman/sets/2023-art-audio-guide.
 - RSL https://s3.amazonaws.com/rslmusicguide.com/guides/FinalRSL2022.pdf
 - Favorites by distance
