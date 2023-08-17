@@ -1,5 +1,5 @@
 import { WorkerClass } from './worker-interface';
-import { Art, Camp, DataMethods, Day, Event, GeoRef, LocationName, MapPoint, MapSet, Pin, RSLEvent, Revision, TimeRange, TimeString } from './models';
+import { Art, Camp, DataMethods, Day, Event, GPSSet, GeoRef, LocationName, MapPoint, MapSet, Pin, RSLEvent, Revision, TimeRange, TimeString } from './models';
 import { BurningManTimeZone, getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from '../utils/utils';
 import { distance, locationStringToPin, mapPointToPoint, maxDistance, toClock, toStreetRadius } from '../map/map.utils';
 import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from '../map/geo.utils';
@@ -37,6 +37,7 @@ export class DataManager implements WorkerClass {
             case DataMethods.FindArt: return this.findArt(args[0]);
             case DataMethods.GpsToPoint: return this.gpsToPoint(args[0]);
             case DataMethods.GetMapPoints: return this.getMapPoints(args[0]);
+            case DataMethods.GetGPSPoints: return this.getGPSPoints(args[0], args[1]);
             case DataMethods.GetRSLEvents: return await this.getRSLEvents(args[0], args[1], args[2]);
             case DataMethods.CheckEvents: return this.checkEvents(args[0]);
             case DataMethods.FindEvents: return this.findEvents(args[0], args[1], args[2], args[3], args[4]);
@@ -616,6 +617,18 @@ export class DataManager implements WorkerClass {
     public async getPotties(): Promise<Pin[]> {
         const res = await fetch(this.path('potties'));
         return await res.json();
+    }
+
+    public async getGPSPoints(name: string, title: string): Promise<MapSet> {
+        const res = await fetch(this.path(name));
+        const data: GPSSet = await res.json();
+        const result: MapSet = { title: data.title, description: data.description, points: []};
+        for (let gps of data.points) {
+            const point = gpsToMap(gps);
+            const mapPoint: MapPoint = { street: '', clock: '', x: point.x, y: point.y, info: { title, location: '', subtitle: '' } }
+            result.points.push(mapPoint);
+        }
+        return result;
     }
 
     public async getMapPoints(name: string): Promise<MapSet> {

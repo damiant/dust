@@ -1,6 +1,7 @@
 ## Changes
 ### 1.12
 - Added "now" to events to show events starting in the next hour (or running for up to 20 mins)
+- Use GPS coords for restrooms
 
 ### 1.11
 - Show compass direction on map

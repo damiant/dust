@@ -1,21 +1,21 @@
+
 # Roadmap
 
-Analog Internet Installation
-Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
-- Translate restroom locations via https://bm-innovate.s3.amazonaws.com/2023/GIS/Portable_Toilets.json
 - Use art gps_latitude, gps_longitude instead of location strings
-- Audio Guide https://soundcloud.com/burningman/sets/2023-art-audio-guide.
-- RSL https://s3.amazonaws.com/rslmusicguide.com/guides/FinalRSL2022.pdf
+- RockStar Librarian - import data (Waiting on data)
 - Favorites by distance
-- Hydration station may be "all day" or 24 hours
-- RSL tab
-
-- Show Date/Times in PST regardless of users timezone
-- Reminder times configurable (5 mins is too early - reviewer)
 - Art page is still slow (try WebP)
-- Understanding how to get back to home
-- JD Tabs for favorites
-- Robin - Camps filter by clock (eg Near 7:00 which would be 6:30-7:30)
+- Share my location - Capture map image and share with GPS coords.
+- Check In - For events, add to check in history on the more tab.
+
+## Feedback
+- Reminder times configurable - 5 mins is too early (Google App Reviewer)
+- Camps filter by clock (eg Near 7:00 which would be 6:30-7:30) (Robin)
+- Tabs for favorites (JD)
+- Google nearby plugin - use for bluetooth chat feature
+- Create lock screen image: use name, location, email, camp, emergency name, emergency phone. Save to photos
+
+
 
 ## Priority 1
 - After adding a favorite show the badge count on the fav tab increase (and disappear after opening it)
@@ -66,3 +66,7 @@ Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
 - Twitter metadata image and app link
 - Linked In Post
 - Page Info about the app on dust.events
+
+## Info
+- Audio Guide https://soundcloud.com/burningman/sets/2023-art-audio-guide.
+- RSL https://s3.amazonaws.com/rslmusicguide.com/guides/FinalRSL2022.pdf

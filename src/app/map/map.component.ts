@@ -145,6 +145,10 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private checkCompass(div: HTMLDivElement) {
     const compass = this.createCompass(div);
+    
+    // Plugin is undefined on web
+    if (!(navigator as any).compass) return;
+
     this.watchId = (navigator as any).compass.watchHeading(
       (heading: CompassHeading) => {
         // The 45 degrees here is based on the BM map that has North at 45 degrees.

@@ -195,6 +195,13 @@ export interface MapSet {
   description: string;
   points: MapPoint[];
 }
+
+export interface GPSSet {
+  title: string;
+  description: string;
+  points: GpsCoord[];
+}
+
 export interface RSLEvent {
   id: string;
   camp: string;
@@ -230,6 +237,7 @@ export enum DataMethods {
   GetDays = 'getDays',
   GetPotties = 'getPotties',
   GetMapPoints = 'getMapPoints',
+  GetGPSPoints = 'getGPSPoints',
   GetCategories = 'getCategories',
   SetDataset = 'setDataset',
   GetEvents = 'getEvents',
