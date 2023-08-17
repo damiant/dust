@@ -16,8 +16,8 @@ async function importPotties() {
     const result: GPSSet = { title: 'Restrooms', description: 'Tip: At night, look for the blue light on poles marking porta potty banks.', points: [] };
     for (let feature of data.features) {
         const location = feature.geometry.coordinates[0][0];
-        const lat = location[0];
-        const lng = location[1];
+        const lat = location[1];
+        const lng = location[0];
         result.points.push({ lat, lng });
     }
     writeFileSync(filename, JSON.stringify(result, undefined, 2), 'utf8');

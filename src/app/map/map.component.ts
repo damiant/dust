@@ -135,9 +135,9 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
     try {
       const gpsCoord = await this.geo.getPosition();
-      const pt = await this.geo.placeOnMap(gpsCoord, this.mapInformation!.circleRadius);
-      const div = this.plotXY(pt.x, pt.y, undefined, 'var(--ion-color-secondary)');
-      this.checkCompass(div);
+        const pt = await this.geo.placeOnMap(gpsCoord, this.mapInformation!.circleRadius);        
+        const div = this.plotXY(pt.x, pt.y, undefined, 'var(--ion-color-secondary)');
+        this.checkCompass(div);
     } catch (err) {
       console.error('checkGeolocation.error', err);
     }
@@ -145,7 +145,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private checkCompass(div: HTMLDivElement) {
     const compass = this.createCompass(div);
-    
+
     // Plugin is undefined on web
     if (!(navigator as any).compass) return;
 
@@ -157,8 +157,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
           degree += 360;
         }
         compass.style.transform = `rotate(${degree}deg)`;
-        compass.style.visibility = 'visible';    
-      },      
+        compass.style.visibility = 'visible';
+      },
       this.compassError, { frequency: 1000 });
   }
 
@@ -175,8 +175,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     img.width = 10;
     img.style.position = 'absolute';
     img.style.padding = '1px';
-    img.style.visibility = 'hidden';  
-    img.style.transition = '300ms linear all';  
+    img.style.visibility = 'hidden';
+    img.style.transition = '300ms linear all';
     div.appendChild(img);
     return img;
   }

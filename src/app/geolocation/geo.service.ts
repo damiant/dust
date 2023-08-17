@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Geolocation } from '@capacitor/geolocation';
-import { GpsCoord, Point, gpsToMap, setReferencePoints } from '../map/geo.utils';
+import { GpsCoord, Point } from '../map/geo.utils';
 import { DbService } from '../data/db.service';
-import { MapPoint } from '../data/models';
-import { getPoint, toClock, toStreetRadius } from '../map/map.utils';
 import { environment } from 'src/environments/environment';
 import { Capacitor } from '@capacitor/core';
 
@@ -35,7 +33,7 @@ export class GeoService {
   public async getPosition(): Promise<GpsCoord> {
     if (!Capacitor.isNativePlatform()) {
       console.error(`On web we return the coord of center camp`)
-      return { lat: -119.21121456711064, lng: 40.780501492435846 };
+      return { lng: -119.21121456711064, lat: 40.780501492435846 };
     }
 
     if (!await this.checkPermissions()) {
@@ -45,16 +43,22 @@ export class GeoService {
       }
     }
     if (environment.gps) {
+      console.error(`Fake GPS position was returned ${environment.gps}`);
       return environment.gps; // Return a fake location
     }
 
-    const position = await Geolocation.getCurrentPosition({ enableHighAccuracy: true });
-    return { lat: position.coords.latitude, lng: position.coords.longitude };
+    const position = await Geolocation.getCurrentPosition({ enableHighAccuracy: true });    
+    let gps = { lat: position.coords.latitude, lng: position.coords.longitude };
+    if (environment.latitudeOffset && environment.longitudeOffset) {
+      const before = structuredClone(gps);
+      const after = { lat: gps.lat + environment.latitudeOffset, lng: gps.lng + environment.longitudeOffset };
+      gps = after;
+      console.error(`GPS Position was modified ${JSON.stringify(before)} to ${JSON.stringify(after)}`);
+    }
+    return gps;
   }
 
   public async placeOnMap(coord: GpsCoord, circleRadius: number): Promise<Point> {
-    const point = await this.db.gpsToPoint(coord);
-
-    return point;
+    return await this.db.gpsToPoint(coord);
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { Event, Day, Camp, Art, Pin, DataMethods, MapSet, GeoRef, Dataset, RSLEvent, TimeRange, GPSSet } from './models';
+import { Event, Day, Camp, Art, Pin, DataMethods, MapSet, GeoRef, Dataset, RSLEvent, TimeRange, GPSSet, MapPoint } from './models';
 import { call, registerWorker } from './worker-interface';
 import { daysUntil, noDate, now } from '../utils/utils';
 import { GpsCoord, Point } from '../map/geo.utils';
@@ -75,6 +75,11 @@ export class DbService {
 
   public async gpsToPoint(gpsCoord: GpsCoord): Promise<Point> {
     return await call(this.worker, DataMethods.GpsToPoint, gpsCoord);
+  }
+
+  public async gpsToMapPoint(gpsCoord: GpsCoord, title: string): Promise<MapPoint> {
+    const point = await this.gpsToPoint(gpsCoord);
+    return { street: '', clock: '', x: point.x, y: point.y, info: { title, location: '', subtitle: '' } }
   }
 
   public async getPotties(): Promise<Pin[]> {

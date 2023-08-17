@@ -117,7 +117,7 @@ export class DataManager implements WorkerClass {
         const gpsCoords: GpsCoord[] = [];
         const points: Point[] = [];
         for (let ref of [this.georeferences[0], this.georeferences[1], this.georeferences[2]]) {
-            gpsCoords.push({ lat: ref.coordinates[0], lng: ref.coordinates[1] });
+            gpsCoords.push({ lng: ref.coordinates[0], lat: ref.coordinates[1] });
             const mp: MapPoint = { clock: ref.clock, street: ref.street };
             const pt = mapPointToPoint(mp, this.mapRadius);
             points.push(pt);
@@ -655,8 +655,4 @@ export class DataManager implements WorkerClass {
         const res = await fetch(this.path('revision'));
         return await res.json();
     }
-}
-
-function notNull(v: string | undefined): string {
-    return (!v) ? '' : v;
 }
