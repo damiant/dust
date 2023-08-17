@@ -1,6 +1,6 @@
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Injectable, signal } from '@angular/core';
-import { delay, randomInt } from './utils';
+import { delay, randomInt } from '../utils/utils';
 import { IonContent, NavController, ToastController } from '@ionic/angular';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { StatusBar, Style } from '@capacitor/status-bar';

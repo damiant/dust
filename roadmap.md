@@ -2,6 +2,8 @@
 
 Analog Internet Installation
 Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
+- Translate restroom locations via https://bm-innovate.s3.amazonaws.com/2023/GIS/Portable_Toilets.json
+- Use art gps_latitude, gps_longitude instead of location strings
 - Audio Guide https://soundcloud.com/burningman/sets/2023-art-audio-guide.
 - RSL https://s3.amazonaws.com/rslmusicguide.com/guides/FinalRSL2022.pdf
 - Favorites by distance
@@ -9,6 +11,7 @@ Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
 - RSL tab
 
 - Show Date/Times in PST regardless of users timezone
+- Reminder times configurable (5 mins is too early - reviewer)
 - Art page is still slow (try WebP)
 - Understanding how to get back to home
 - JD Tabs for favorites
@@ -18,12 +21,9 @@ Sun-Sat, 6pm-10pm (seems to show date and times correct with different timezone)
 - After adding a favorite show the badge count on the fav tab increase (and disappear after opening it)
 - If an event has a long durations (>3hrs) then let user choose notification hour
 - Pressing the tab again should clear search
-- RSL Dark Mode logo fix
 - Favorites by distance
 - Offline images
-- Use AllowWhileIdle true for notifications
 - Sounds for notifications
-- Haptics on favorite add
 - Use motion to rotate your "here" pin
 - "Not Interested" button for Events
 

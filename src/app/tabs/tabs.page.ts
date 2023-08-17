@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, EnvironmentInjector, OnInit, effect, inject } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-import { DbService } from '../db.service';
-import { NotificationService } from '../notification.service';
+import { DbService } from '../data/db.service';
+import { NotificationService } from '../notifications/notification.service';
 import { Router } from '@angular/router';
-import { delay } from '../utils';
-import { UiService } from '../ui.service';
-import { SettingsService } from '../settings.service';
-import { ShareInfoType, ShareService } from '../share.service';
+import { delay } from '../utils/utils';
+import { UiService } from '../ui/ui.service';
+import { SettingsService } from '../data/settings.service';
+import { ShareInfoType, ShareService } from '../share/share.service';
 import { Network } from '@capacitor/network';
 import { App } from '@capacitor/app';
 

@@ -1,14 +1,15 @@
-import { Injectable, NgZone, signal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { LocalNotificationDescriptor, LocalNotifications } from '@capacitor/local-notifications';
-import { OccurrenceSet } from './models';
-import { getDayName, noDate, now, randomInt, time } from './utils';
+import { OccurrenceSet } from '../data/models';
+import { getDayName, noDate, now, randomInt, time } from '../utils/utils';
 
 export interface Reminder {
   title: string,
   body: string,
   id: string,
-  when?: Date
+  when?: Date,
+  comment: string
 }
 
 export interface ScheduleResult {
@@ -22,7 +23,7 @@ export interface ScheduleResult {
 })
 export class NotificationService {
   public hasNotification = signal('');
-  constructor(private ngZone: NgZone, public router: Router) {
+  constructor(public router: Router) {
 
   }
 
@@ -32,7 +33,7 @@ export class NotificationService {
     }));
   }
 
-  public async scheduleAll(reminder: Reminder, occurrence_set: OccurrenceSet[], selectedDay: Date): Promise<ScheduleResult> {
+  public async scheduleAll(reminder: Reminder, occurrence_set: OccurrenceSet[], selectedDay?: Date): Promise<ScheduleResult> {
     const error = await this.verifyPermissions();
     if (error) {
       return { notifications: 0, error };
@@ -53,7 +54,7 @@ export class NotificationService {
           reminder.when = this.reminderTime(start);
           if (!this.sameDate(last, reminder.when)) {
             await this.schedule(reminder);
-            message = `You'll be notified of this event on ${getDayName(reminder.when.toString())} at ${time(reminder.when)}`;
+            message = `You'll be notified ${reminder.comment} on ${getDayName(reminder.when.toString())} at ${time(reminder.when)}`;
             count++;
           }
           last = reminder.when;
@@ -126,8 +127,8 @@ export class NotificationService {
         {
           id: randomInt(1, 1000000),
           title: reminder.title,
-          body: reminder.body,
-          schedule: { at: reminder.when },
+          body: reminder.body,          
+          schedule: { at: reminder.when, allowWhileIdle: true },
           extra: {
             eventId: reminder.id // Assume it is an event
           }

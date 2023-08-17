@@ -1,4 +1,9 @@
 ## Changes
+### 1.11
+- Show compass direction on map
+- Fix for searching when capitals or whitespace are in search terms
+- Haptics when favoriting
+
 ### 1.10
 - Alphabetic Camp selection
 - Fix for locations of Medical

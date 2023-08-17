@@ -11,6 +11,12 @@ ion-toolbar {
     --padding-top: 0;
 }
 
+@media (prefers-color-scheme: dark) {
+    .rslLogo {
+        filter: invert(75%);
+    }
+}
+
 // Hides the scroll bar without affecting scrolling
 ion-segment::-webkit-scrollbar {
     display: none;

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { FriendComponent, FriendResult } from '../friend/friend.component';
-import { FavoritesService } from '../favorites.service';
-import { Friend } from '../models';
+import { FavoritesService } from '../favs/favorites.service';
+import { Friend } from '../data/models';
 import { CommonModule } from '@angular/common';
-import { delay } from '../utils';
+import { delay } from '../utils/utils';
 
 
 @Component({

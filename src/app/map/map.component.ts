@@ -1,14 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { PinchZoomModule } from '@meddv/ngx-pinch-zoom';
-import { LocationEnabledStatus, MapInfo, MapPoint, Pin } from '../models';
-import { IonicModule, PopoverController } from '@ionic/angular';
+import { LocationEnabledStatus, MapInfo, MapPoint, Pin } from '../data/models';
+import { IonicModule } from '@ionic/angular';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { mapPointToPin } from './map.utils';
-import { delay } from '../utils';
-import { GeoService } from '../geo.service';
-import { SettingsService } from '../settings.service';
+import { delay } from '../utils/utils';
+import { GeoService } from '../geolocation/geo.service';
+import { SettingsService } from '../data/settings.service';
 import { MessageComponent } from '../message/message.component';
+import { CompassError, CompassHeading } from './compass';
 
 interface MapInformation {
   width: number; // Width of the map
@@ -30,7 +31,7 @@ interface MapInformation {
     ])
   ]
 })
-export class MapComponent implements OnInit, AfterViewInit {
+export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   points: MapPoint[];
   isOpen = false;
   imageReady = false;
@@ -39,6 +40,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   src = 'assets/map.svg';
   showMessage = false;
   pins: Pin[] = [];
+  private watchId: any;
   private mapInformation: MapInformation | undefined;
   @ViewChild('zoom') zoom!: ElementRef;
   @ViewChild('map') map!: ElementRef;
@@ -71,7 +73,6 @@ export class MapComponent implements OnInit, AfterViewInit {
 
 
   constructor(
-    private popoverController: PopoverController,
     private geo: GeoService,
     private settings: SettingsService) {
     this.points = [];
@@ -135,23 +136,62 @@ export class MapComponent implements OnInit, AfterViewInit {
     try {
       const gpsCoord = await this.geo.getPosition();
       const pt = await this.geo.placeOnMap(gpsCoord, this.mapInformation!.circleRadius);
-      this.plotXY(pt.x, pt.y, undefined, 'var(--ion-color-secondary)');
+      const div = this.plotXY(pt.x, pt.y, undefined, 'var(--ion-color-secondary)');
+      this.checkCompass(div);
     } catch (err) {
       console.error('checkGeolocation.error', err);
     }
+  }
+
+  private checkCompass(div: HTMLDivElement) {
+    const compass = this.createCompass(div);
+    this.watchId = (navigator as any).compass.watchHeading(
+      (heading: CompassHeading) => {
+        // The 45 degrees here is based on the BM map that has North at 45 degrees.
+        let degree = Math.trunc(heading.trueHeading) - 45;
+        if (degree < 0) {
+          degree += 360;
+        }
+        compass.style.transform = `rotate(${degree}deg)`;
+        compass.style.visibility = 'visible';    
+      },      
+      this.compassError, { frequency: 1000 });
+  }
+
+  ngOnDestroy(): void {
+    if (this.watchId) {
+      (navigator as any).compass.clearWatch(this.watchId);
+      this.watchId = undefined;
+    }
+  }
+
+  private createCompass(div: HTMLDivElement) {
+    let img = document.createElement('img');
+    img.src = 'assets/icon/compass.svg';
+    img.width = 10;
+    img.style.position = 'absolute';
+    img.style.padding = '1px';
+    img.style.visibility = 'hidden';  
+    img.style.transition = '300ms linear all';  
+    div.appendChild(img);
+    return img;
+  }
+
+  private compassError(error: CompassError) {
+    console.error(error);
 
   }
 
-  private plotXY(x: number, y: number, info?: MapInfo, bgColor?: string) {
+  private plotXY(x: number, y: number, info?: MapInfo, bgColor?: string): HTMLDivElement {
     const px = x / 10000.0 * this.mapInformation!.width;
     const py = y / 10000.0 * this.mapInformation!.height;
     if (info) {
       this.placeLabel(px, py, info);
     }
-    this.createPin(px, py, (info || bgColor) ? 10 : 5, info, bgColor);
+    return this.createPin(px, py, (info || bgColor) ? 10 : 5, info, bgColor);
   }
 
-  createPin(x: number, y: number, sz: number, info?: MapInfo, bgColor?: string) {
+  createPin(x: number, y: number, sz: number, info?: MapInfo, bgColor?: string): HTMLDivElement {
     const d = document.createElement("div");
     d.style.left = `${x - (sz - 4)}px`;
     d.style.top = `${y - sz + 4}px`;
@@ -160,7 +200,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     d.style.border = '1px solid var(--ion-color-dark)';
     d.style.borderRadius = `${sz}px`;
     d.style.animationName = info ? '' : 'pulse';
-    d.style.animationDuration = '1s';
+    d.style.animationDuration = '3s';
     d.style.animationIterationCount = 'infinite';
     d.style.position = 'absolute';
     d.style.backgroundColor = bgColor ? bgColor : `var(--ion-color-primary)`;
@@ -170,6 +210,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     };
     const c: HTMLElement = this.mapc.nativeElement;
     c.insertBefore(d, c.firstChild);
+    return d;
   }
 
   private placeLabel(x: number, y: number, info?: MapInfo) {

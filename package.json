@@ -43,6 +43,7 @@
     "@ionic/angular": "7.2.3",
     "@mauricewegner/capacitor-navigation-bar": "2.0.3",
     "@meddv/ngx-pinch-zoom": "16.0.0",
+    "cordova-plugin-device-orientation": "2.0.1",
     "ionicons": "^7.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

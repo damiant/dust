@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Art, Camp, Dataset, Revision } from './models';
 import { datasetFilename, getLive } from './api';
 import { SettingsService } from './settings.service';
-import { minutesBetween, now } from './utils';
+import { minutesBetween, now } from '../utils/utils';
 import { DbService } from './db.service';
 import { Preferences } from '@capacitor/preferences';
 

@@ -3,7 +3,7 @@
     <ion-content *ngIf="info" class="ion-padding">
       <b>{{info.title}}</b><br />{{info.location}}<br />{{info.subtitle}}
       <div [@fade]="imageReady ? 'visible' : 'hidden'" class="center">
-        <img *ngIf="info.imageUrl" (load)="ready()" [src]="info.imageUrl" [alt]="info.title" />
+        <img class="pop" *ngIf="info.imageUrl" (load)="ready()" [src]="info.imageUrl" [alt]="info.title" />
       </div>
     </ion-content>
   </ng-template>

@@ -1,17 +1,17 @@
 import { Component, ViewChild, effect } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { IonicModule, ToastController } from '@ionic/angular';
-import { Camp, MapPoint } from '../models';
-import { DbService } from '../db.service';
+import { Camp, MapPoint } from '../data/models';
+import { DbService } from '../data/db.service';
 import { CommonModule } from '@angular/common';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { CampComponent } from '../camp/camp.component';
-import { UiService } from '../ui.service';
+import { UiService } from '../ui/ui.service';
 import { SearchComponent } from '../search/search.component';
-import { isWhiteSpace } from '../utils';
+import { isWhiteSpace } from '../utils/utils';
 import { toMapPoint } from '../map/map.utils';
-import { GeoService } from '../geo.service';
+import { GeoService } from '../geolocation/geo.service';
 import { GpsCoord } from '../map/geo.utils';
 import { AlphabeticalScrollBarComponent } from '../alpha/alpha.component';
 

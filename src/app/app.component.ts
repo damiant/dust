@@ -1,9 +1,9 @@
 import { Component, EnvironmentInjector, NgZone, OnInit, inject } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
-import { NotificationService } from './notification.service';
+import { NotificationService } from './notifications/notification.service';
 import { App, URLOpenListenerEvent } from '@capacitor/app';
-import { ShareInfoType, ShareService } from './share.service';
+import { ShareInfoType, ShareService } from './share/share.service';
 
 @Component({
   selector: 'app-root',

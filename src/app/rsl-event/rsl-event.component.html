@@ -1,14 +1,22 @@
 <ion-card class="item">
   <ion-card-header>
     <ion-card-title>{{event.camp}}</ion-card-title>
-    <ion-card-subtitle color="primary" (click)="map(event)">{{event.location}} {{event.distanceInfo}}<span>{{event.title}}</span></ion-card-subtitle>
+    <ion-card-subtitle color="primary" (click)="map(event)">{{event.location}}
+      {{event.distanceInfo}}<span>{{event.title}}</span></ion-card-subtitle>
   </ion-card-header>
 
   <ion-card-content>
-    <div *ngFor="let occurrence of event.occurrences">
-      <ion-text [class.old]="occurrence.old" class="one-line">
-        {{occurrence.timeRange}} {{occurrence.who}}
-      </ion-text>
+    <div class="rsl-container">
+      <div class="rsl-item" (click)="toggleStar(occurrence)" *ngFor="let occurrence of event.occurrences">
+        <!-- <ion-button size="small" fill="clear" (click)="toggleStar(occurrence)" slot="icon"> -->
+          <!-- <ion-icon *ngIf="!occurrence.star" name="star-outline"></ion-icon> -->
+        <!-- </ion-button> -->
+        <ion-text [class.old]="occurrence.old" class="one-line">
+          {{occurrence.timeRange}} {{occurrence.who}}
+          <ion-icon class="star" color="primary" [hidden]="!occurrence.star" name="star"></ion-icon>
+        </ion-text>
+
+      </div>
     </div>
   </ion-card-content>
 </ion-card>

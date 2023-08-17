@@ -3,18 +3,18 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Router, RouterModule } from '@angular/router';
-import { DbService } from '../db.service';
+import { DbService } from '../data/db.service';
 import { SplashScreen } from '@capacitor/splash-screen';
-import { SettingsService } from '../settings.service';
-import { FavoritesService } from '../favorites.service';
+import { SettingsService } from '../data/settings.service';
+import { FavoritesService } from '../favs/favorites.service';
 import { MessageComponent } from '../message/message.component';
-import { addDays, daysUntil, delay, isWhiteSpace, now } from '../utils';
-import { Dataset } from '../models';
-import { datasetFilename } from '../api';
-import { ApiService } from '../api.service';
+import { addDays, daysUntil, delay, isWhiteSpace, now } from '../utils/utils';
+import { Dataset } from '../data/models';
+import { datasetFilename } from '../data/api';
+import { ApiService } from '../data/api.service';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
-import { ThemePrimaryColor, UiService } from '../ui.service';
+import { ThemePrimaryColor, UiService } from '../ui/ui.service';
 import { environment } from 'src/environments/environment';
 
 interface IntroState {

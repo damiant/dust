@@ -1,8 +1,8 @@
 import { Injectable, signal } from '@angular/core';
 import { Event, Day, Camp, Art, Pin, DataMethods, MapSet, GeoRef, Dataset, RSLEvent } from './models';
 import { call, registerWorker } from './worker-interface';
-import { daysUntil, noDate, now } from './utils';
-import { GpsCoord, Point } from './map/geo.utils';
+import { daysUntil, noDate, now } from '../utils/utils';
+import { GpsCoord, Point } from '../map/geo.utils';
 
 @Injectable({
   providedIn: 'root'
@@ -57,7 +57,7 @@ export class DbService {
     const dataset = datasets.find((d) => d.year == year);
 
     const start = new Date(dataset!.start);
-    const until = daysUntil(start,now());
+    const until = daysUntil(start, now());
     return until;
   }
 
