@@ -5,6 +5,7 @@
 - Optimization of data format
 - Links for art added
 - Links open in browser
+- Show if outside of BRC
 
 ### 1.12
 - Added "now" to events to show events starting in the next hour (or running for up to 20 mins)

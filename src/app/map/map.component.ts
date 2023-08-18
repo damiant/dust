@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild, effect } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { PinchZoomModule } from '@meddv/ngx-pinch-zoom';
 import { LocationEnabledStatus, MapInfo, MapPoint, Pin } from '../data/models';
 import { IonicModule } from '@ionic/angular';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { defaultMapRadius, distance, formatDistanceMiles, mapPointToPin } from './map.utils';
+import { defaultMapRadius, distance, formatDistanceMiles, mapPointToPin, toMapPoint } from './map.utils';
 import { delay } from '../utils/utils';
 import { GeoService } from '../geolocation/geo.service';
 import { SettingsService } from '../data/settings.service';
@@ -99,10 +99,16 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private async displayYouAreHere() {
     this.gpsCoord = await this.geo.getPosition();
-    const pt = await this.geo.gpsToPoint(this.gpsCoord, this.mapInformation!.circleRadius);
+    const pt = await this.geo.gpsToPoint(this.gpsCoord);
     if (!this.you) {
+      // First time setup
       this.you = this.plotXY(pt.x, pt.y, undefined, 'var(--ion-color-secondary)');
       this.setupCompass(this.you);
+      const centerOfMap = await this.geo.getCenterOfMap();
+      const dist = distance(this.gpsCoord, centerOfMap);
+      if (dist > 50) {
+        this.footer = 'You are outside of BRC';
+      }
     } else {
       const sz = parseInt(this.you.style.width.replace('px', ''));
 
@@ -124,6 +130,9 @@ export class MapComponent implements OnInit, OnDestroy {
     await delay(150);
     this.setMapInformation();
 
+    
+
+
     for (let point of this.points) {
       const pin = mapPointToPin(point, defaultMapRadius);
       if (pin) {
@@ -132,8 +141,9 @@ export class MapComponent implements OnInit, OnDestroy {
       }
     }
     await this.checkGeolocation();
-
   }
+
+  
 
   private async checkGeolocation() {
     if (this.settings.settings.locationEnabled === LocationEnabledStatus.Unknown) {

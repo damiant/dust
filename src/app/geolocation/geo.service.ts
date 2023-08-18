@@ -5,6 +5,7 @@ import { DbService } from '../data/db.service';
 import { environment } from 'src/environments/environment';
 import { Capacitor } from '@capacitor/core';
 import { noDate, secondsBetween } from '../utils/utils';
+import { defaultMapRadius, mapPointToPin, toMapPoint } from '../map/map.utils';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class GeoService {
   private gpsPosition = signal(NoGPSCoord());
   private lastGpsUpdate: Date = noDate();
   private hasPermission = false;
+  private centerOfMap: GpsCoord | undefined;
 
   constructor(private db: DbService) { }
 
@@ -32,6 +34,14 @@ export class GeoService {
     }
     const status = await Geolocation.requestPermissions({ permissions: ['location'] });
     return (status.location == 'granted');
+  }
+
+  public async getCenterOfMap(): Promise<GpsCoord> {
+    if (!this.centerOfMap) {
+      const center = toMapPoint(`10:25 0', Open Playa`);
+      this.centerOfMap = await this.db.getMapPointGPS(center);
+    }
+    return this.centerOfMap;
   }
 
   public async getPosition(): Promise<GpsCoord> {
@@ -77,7 +87,7 @@ export class GeoService {
     return gps;
   }
 
-  public async gpsToPoint(coord: GpsCoord, circleRadius: number): Promise<Point> {
+  public async gpsToPoint(coord: GpsCoord): Promise<Point> {
     return await this.db.gpsToPoint(coord);
   }
 }
