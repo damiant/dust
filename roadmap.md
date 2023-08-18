@@ -3,7 +3,6 @@
 
 - Art popup has little info
 - Popup map shouldnt show popover
-- Fav day - map should have title
 - popup info for art should show
 - Fav art map should hide labels
 - Favorites are does not show map

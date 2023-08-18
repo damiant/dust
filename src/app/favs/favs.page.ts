@@ -156,7 +156,7 @@ export class FavsPage implements OnInit {
       }
     }
 
-    this.displayPoints(points, gevent.group!);
+    this.displayPoints(points, `${gevent.group} Events`);
   }
 
   mapCamps() {
