@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild, effect } from '@angular/core';
 import { PinchZoomModule } from '@meddv/ngx-pinch-zoom';
 import { LocationEnabledStatus, MapInfo, MapPoint, Pin } from '../data/models';
 import { IonicModule } from '@ionic/angular';
@@ -10,13 +10,20 @@ import { GeoService } from '../geolocation/geo.service';
 import { SettingsService } from '../data/settings.service';
 import { MessageComponent } from '../message/message.component';
 import { CompassError, CompassHeading } from './compass';
-import { GpsCoord } from './geo.utils';
+import { GpsCoord, NoGPSCoord } from './geo.utils';
 
 interface MapInformation {
   width: number; // Width of the map
   height: number; // Height of the map
   circleRadius: number; // Half width
 }
+
+// How often is the map updated with a new location
+const geolocateInterval = 10000;
+
+// Offset x,y in pixel of the "you are here" pin
+const youOffsetX = - 4;
+const youOffsetY = 4;
 
 @Component({
   selector: 'app-map',
@@ -32,7 +39,7 @@ interface MapInformation {
     ])
   ]
 })
-export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
+export class MapComponent implements OnInit, OnDestroy {
   points: MapPoint[];
   isOpen = false;
   imageReady = false;
@@ -42,8 +49,11 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   src = 'assets/map.svg';
   showMessage = false;
   pins: Pin[] = [];
+  private geoInterval: any;
+  private gpsCoord: GpsCoord = NoGPSCoord();
+  private you: HTMLDivElement | undefined;
   private watchId: any;
-  private mapInformation: MapInformation | undefined;
+  private mapInformation: MapInformation | undefined;  
   @ViewChild('zoom') zoom!: ElementRef;
   @ViewChild('map') map!: ElementRef;
   @ViewChild('mapc') mapc!: ElementRef;
@@ -54,12 +64,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.points.length > 0) {
       this.update();
     }
-  }
-
-  ngAfterContentInit() {
-  }
-
-  ngAfterViewInit() {
   }
 
   ready() {
@@ -74,11 +78,23 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-
   constructor(
     private geo: GeoService,
     private settings: SettingsService) {
     this.points = [];
+    effect(async () => {
+      this.gpsCoord = this.geo.gpsPosition();
+      console.log(`GPS Position changed ${JSON.stringify(this.gpsCoord)}`);
+      const pt = await this.geo.gpsToPoint(this.gpsCoord, this.mapInformation!.circleRadius);
+      if (!this.you) {
+        this.you = this.plotXY(pt.x, pt.y, undefined, 'var(--ion-color-secondary)');
+        this.setupCompass(this.you);
+      } else {
+        const sz = parseInt(this.you.style.width.replace('px', ''));
+        this.movePoint(this.you, pt.x, pt.y, sz, youOffsetX, youOffsetY);        
+      }
+      this.calculateNearest(this.gpsCoord);
+    });
   }
 
   ngOnInit() {
@@ -137,11 +153,17 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     try {
-      const gpsCoord = await this.geo.getPosition();
-      const pt = await this.geo.placeOnMap(gpsCoord, this.mapInformation!.circleRadius);
-      const div = this.plotXY(pt.x, pt.y, undefined, 'var(--ion-color-secondary)');
-      this.calculateNearest(gpsCoord);
-      this.checkCompass(div);
+      console.warn('1');
+        await this.geo.getPosition();
+        this.geoInterval = setInterval(async() => {
+          console.warn('2');
+          await this.geo.getPosition();
+        }, geolocateInterval);
+      //
+      // const pt = await this.geo.placeOnMap(gpsCoord, this.mapInformation!.circleRadius);
+      // const div = this.plotXY(pt.x, pt.y, undefined, 'var(--ion-color-secondary)');
+      // this.calculateNearest(gpsCoord);
+      // this.checkCompass(div);
     } catch (err) {
       console.error('checkGeolocation.error', err);
     }
@@ -177,7 +199,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  private checkCompass(div: HTMLDivElement) {
+  private setupCompass(div: HTMLDivElement) {
     const compass = this.createCompass(div);
 
     // Plugin is undefined on web
@@ -197,9 +219,13 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    console.log('map component destroy')
     if (this.watchId) {
       (navigator as any).compass.clearWatch(this.watchId);
       this.watchId = undefined;
+    }
+    if (this.geoInterval) {
+      clearInterval(this.geoInterval);
     }
   }
 
@@ -220,19 +246,33 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
-  private plotXY(x: number, y: number, info?: MapInfo, bgColor?: string): HTMLDivElement {
+  private movePoint(div: HTMLDivElement, x: number, y: number, sz: number, ox: number, oy: number) {
     const px = x / 10000.0 * this.mapInformation!.width;
     const py = y / 10000.0 * this.mapInformation!.height;
-    if (info && info.location) {
-      this.placeLabel(px, py, info);
-    }
-    return this.createPin(px, py, (info || bgColor) ? 10 : 5, info, bgColor);
+    //const sz = parseInt(div.style.width.replace('px',''));
+    div.style.left = `${px - sz + ox}px`;
+    div.style.top = `${py - sz + oy}px`;
   }
 
-  createPin(x: number, y: number, sz: number, info?: MapInfo, bgColor?: string): HTMLDivElement {
+  private plotXY(x: number, y: number, info?: MapInfo, bgColor?: string): HTMLDivElement {
+    // const px = x / 10000.0 * this.mapInformation!.width;
+    // const py = y / 10000.0 * this.mapInformation!.height;
+    const sz = (info || bgColor) ? 10 : 5;
+    if (info && info.location) {
+      const lb = this.placeLabel(info);
+      this.movePoint(lb, x, y, 0, 0, 7);
+    }
+    const div = this.createPin(sz, info, bgColor);    
+    this.movePoint(div, x, y, sz, youOffsetX, youOffsetY);
+    return div;
+  }
+
+
+
+  createPin(sz: number, info?: MapInfo, bgColor?: string): HTMLDivElement {
     const d = document.createElement("div");
-    d.style.left = `${x - (sz - 4)}px`;
-    d.style.top = `${y - sz + 4}px`;
+    // d.style.left = `${x - (sz - 4)}px`;
+    // d.style.top = `${y - sz + 4}px`;
     d.style.width = `${sz}px`;
     d.style.height = `${sz}px`;
     d.style.border = '1px solid var(--ion-color-dark)';
@@ -253,12 +293,12 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     return d;
   }
 
-  private placeLabel(x: number, y: number, info?: MapInfo) {
+  private placeLabel(info?: MapInfo): HTMLDivElement {
     const d = document.createElement('p');
     const node = document.createTextNode(info!.location);
     d.appendChild(node);
-    d.style.left = `${x}px`;
-    d.style.top = `${y - 7}px`;
+    // d.style.left = `${x}px`;
+    // d.style.top = `${y - 7}px`;
     d.style.position = 'absolute';
     d.style.fontSize = '3px';
     d.style.padding = '1px';
@@ -271,6 +311,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     };
     const c: HTMLElement = this.mapc.nativeElement;
     c.insertBefore(d, c.firstChild);
+    return d;
   }
 
   async presentPopover(e: Event) {

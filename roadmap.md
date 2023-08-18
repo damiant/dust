@@ -1,7 +1,7 @@
 
 # Roadmap
 
-- Display distance to art
+- Update GPS for "by dist" only on the signal effect and not after awaiting (events, etc)
 - RockStar Librarian - import data (Waiting on data)
 - Favorites by distance
 - Art page is still slow (try WebP)

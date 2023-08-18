@@ -47,6 +47,10 @@ export function mapToGps(point: Point): GpsCoord {
     return transform.toGPS(point.x, point.y);
 }
 
+export function NoGPSCoord(): GpsCoord {
+    return { lat: 0, lng: 0};
+}
+
 export interface GpsCoord {
     lat: number,
     lng: number
