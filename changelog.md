@@ -1,4 +1,9 @@
 ## Changes
+### 1.13
+- Images are now offline and optimized in webp format
+- Fixes for missing data for previous years
+- Optimization of data format
+
 ### 1.12
 - Added "now" to events to show events starting in the next hour (or running for up to 20 mins)
 - Use GPS coords for restrooms

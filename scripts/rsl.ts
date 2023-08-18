@@ -119,7 +119,7 @@ function loadRSL(filename: string, geoPath: string) {
     setGeolocation(event);
     data.push(event);
   }
-  writeFileSync(outputFilename, JSON.stringify(data, undefined, 2));
+  writeFileSync(outputFilename, JSON.stringify(data, undefined, 2), 'utf8');
 }
 
 const geoPath = `src/assets/ttitd-2023/geo.json`;

@@ -70,13 +70,17 @@ export class ArtPage {
       console.log(`ArtPage.yearChange ${year}`);
       this.db.checkInit();
       this.vm = initialState();
+      this.vm.showImage = this.isThisYear();      
       this.init();
     });
     effect(() => {
-      const status = this.db.networkStatus();
-      console.log(`Network status ${status}`);
-      this.vm.showImage = (status == 'wifi');
+      const status = this.db.networkStatus();      
+      this.vm.showImage = this.isThisYear() || (status == 'wifi');
     });
+  }
+
+  isThisYear(): boolean {
+    return this.db.selectedYear() == '';
   }
 
 
@@ -143,8 +147,7 @@ export class ArtPage {
     let coords: GpsCoord | undefined = undefined;
     if (this.vm.byDist) {
       coords = await this.geo.getPosition();
-    }
-    console.log('art.page.update', coords);
+    }    
     this.vm.arts = await this.db.findArts(search, coords);
     this.updateAlphaIndex();
   }
