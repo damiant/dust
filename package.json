@@ -10,8 +10,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "download": "node scripts/download.js 2017 2018 2019 2022",
-    "download-this-year": "node scripts/download.js 2023",
+    "download": "npx tsx scripts/download.ts 2017 2018 2019 2022",
+    "download-this-year": "npx tsx scripts/download.ts 2023",
     "rsl": "npx tsx scripts/rsl.ts",
     "restrooms": "npx tsx scripts/restrooms.ts",
     "lint": "ng lint"

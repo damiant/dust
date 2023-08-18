@@ -2,20 +2,28 @@ import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { basename, join } from 'path';
 import fetch from 'node-fetch';
 
-const key = process.env.DUST_KEY;
+const key = process.env['DUST_KEY'];
 
 if (!key) {
     console.error('DUST_KEY is not set');
-    exit(1);
+    process.exit(1);
 }
 
-async function download(name, year, filename, folder, options) {
+interface Options {
+    fixName?: boolean;
+    fixUid?: boolean;
+    fixTitle?: boolean;
+    fixLocation?: boolean;
+    fixOccurrence?: boolean;
+}
+
+async function download(name: string, year: string, filename: string, folder: string, options: Options): Promise<boolean> {
     const url = getUrl(name, year);
     console.log(`Downloading ${url}...`);
     const res = await fetch(url, {
-        method: 'Get', headers: { 'Authorization': `Basic ${btoa(key)}` }
+        method: 'Get', headers: { 'Authorization': `Basic ${btoa(key!)}` }
     });
-    let json = await res.json();
+    let json = (await res.json()) as any[];
 
     for (let item of json) {
         if (options?.fixName) {
@@ -130,7 +138,7 @@ async function download(name, year, filename, folder, options) {
     return changed;
 }
 
-function toTitleCase(str) {
+function toTitleCase(str: string) {
     return str.replace(
         /\w\S*/g,
         function (txt) {
@@ -138,18 +146,18 @@ function toTitleCase(str) {
         });
 }
 
-function saveRevision(folder) {
+function saveRevision(folder: string) {
     const f = `./src/assets/${folder}/revision.json`;
     let revision = 0;
     if (existsSync(f)) {
-        const r = JSON.parse(readFileSync(f));
+        const r = JSON.parse(readFileSync(f,'utf8'));
         revision = r.revision;
     }
     const json = { revision: revision + 1 };
     save(f, folder, JSON.stringify(json, undefined, 2));
 }
 
-function save(path, folder, data) {
+function save(path: string, folder: string, data: string) {
     const filename = basename(path);
     writeFileSync(path, data);
     console.log(`Wrote "${path}"`);
@@ -163,7 +171,7 @@ function save(path, folder, data) {
     console.log(`Wrote "${otherPath}"`);
 }
 
-function compare(path, folder, data) {
+function compare(path: string, folder: string, data: string) {
     const filename = basename(path);
     if (!existsSync(path)) {
         console.log(`${path} is missing.`);
@@ -173,20 +181,22 @@ function compare(path, folder, data) {
     return read !== data;
 }
 
-function getUrl(name, year) {
+function getUrl(name: string, year: string) {
     return `https://api.burningman.org/api/v1/${name}?year=${year}`;
 }
 
-
-const years = process.argv.splice(2);
-console.log(years);
-for (const year of years) {
-    console.log(`Downloading ${year}`);
-    const artChanged = await download('art', year, 'art', `ttitd-${year}`, { fixName: true });
-    const campsChanged = await download('camp', year, 'camps', `ttitd-${year}`, { fixName: true, fixLocation: true });
-    const eventsChanged = await download('event', year, 'events', `ttitd-${year}`, { fixOccurrence: true, fixTitle: true, fixUid: true });
-    if (artChanged || campsChanged || eventsChanged) {
-        saveRevision(`ttitd-${year}`);
+async function processYears(years: string[]) {
+    console.log(years);
+    for (const year of years) {
+        console.log(`Downloading ${year}`);
+        const artChanged = await download('art', year, 'art', `ttitd-${year}`, { fixName: true });
+        const campsChanged = await download('camp', year, 'camps', `ttitd-${year}`, { fixName: true, fixLocation: true });
+        const eventsChanged = await download('event', year, 'events', `ttitd-${year}`, { fixOccurrence: true, fixTitle: true, fixUid: true });
+        if (artChanged || campsChanged || eventsChanged) {
+            saveRevision(`ttitd-${year}`);
+        }
     }
 }
+processYears(process.argv.splice(2));
+
 
