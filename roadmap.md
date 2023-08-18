@@ -1,19 +1,25 @@
 
 # Roadmap
 
-- Art popup has little info
-- Popup map shouldnt show popover
-- popup info for art should show
-- Fav art map should hide labels
-- Favorites are does not show map
-- Popup maps do not show your location
-- Do hack on events page when returning back from event detail
 - Keyword - Burning Man - Guide, Map, Art, Camps and Events
-- RockStar Librarian - import data (Waiting on data)
-- Favorites by distance
-- Art page is still slow (try WebP)
+- Art has url property to link to browser etc
+
+## Check In
+- Check In Button - For events, add to check in history on the more tab
+- Only show check in if distance = near and event is between start and end
+- Checked in events show with a tick next to them
+
+## Share My Location
 - Share my location - Capture map image and share with GPS coords.
-- Check In - For events, add to check in history on the more tab.
+
+## Distance Fixes
+- Art popup map should show distance to art
+- RockStar Librarian - import data (Waiting on data)
+- Art page - map option to show all close art
+- Favorites by distance
+- Distance - use km and meters if region (or setting)
+- Camp detail map - Show distance to camp
+- Art detail - show distance with location
 
 ## Feedback
 - Reminder times configurable - 5 mins is too early (Google App Reviewer)
