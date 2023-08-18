@@ -74,7 +74,6 @@ export class RslPage implements OnInit {
     });
     effect(() => {
       const year = this.db.selectedYear();
-      console.log(`RSLPage.yearChange ${year}`);
       this.db.checkInit();
       this.vm = initialState();
       this.init();

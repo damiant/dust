@@ -22,7 +22,7 @@ interface MapInformation {
 const geolocateInterval = 10000;
 
 // Offset x,y in pixel of the "you are here" pin
-const youOffsetX = - 4;
+const youOffsetX = 6;
 const youOffsetY = 4;
 
 @Component({
@@ -172,8 +172,7 @@ export class MapComponent implements OnInit, OnDestroy {
         const dist = distance(you, point.gps);
         if (dist < least) {
           least = dist;
-          closest = point;
-          console.log('*** found dist', dist, closest);
+          closest = point;          
         }
       }
     }
@@ -212,7 +211,6 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('map component destroy')
     if (this.watchId) {
       (navigator as any).compass.clearWatch(this.watchId);
       this.watchId = undefined;
@@ -253,7 +251,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private plotXY(x: number, y: number, info?: MapInfo, bgColor?: string): HTMLDivElement {
     const sz = (info || bgColor) ? 10 : 5;
     if (info && info.location) {
-      this.placeLabel(this.pointShift(x, y, 0, -7, -7), info);
+      this.placeLabel(this.pointShift(x, y, 0, 0, -7), info);
     }
     return this.createPin(sz, this.pointShift(x, y, sz, youOffsetX, youOffsetY), info, bgColor);
   }

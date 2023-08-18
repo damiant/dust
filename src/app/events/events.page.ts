@@ -93,7 +93,6 @@ export class EventsPage implements OnInit {
     });
     effect(() => {
       const year = this.db.selectedYear();
-      console.log(`EventsPage.yearChange ${year}`);
       this.db.checkInit();
       this.vm = initialState();
       this.init();

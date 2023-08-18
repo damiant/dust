@@ -67,7 +67,6 @@ export class ArtPage {
     });
     effect(() => {
       const year = this.db.selectedYear();
-      console.log(`ArtPage.yearChange ${year}`);
       this.db.checkInit();
       this.vm = initialState();
       this.vm.showImage = this.isThisYear();      
