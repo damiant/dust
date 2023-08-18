@@ -14,6 +14,7 @@ import { UiService } from '../ui/ui.service';
 import { toMapPoint } from '../map/map.utils';
 import { dateMatches, noDate, sameDay } from '../utils/utils';
 
+
 @Component({
   selector: 'app-event',
   templateUrl: './event.page.html',
@@ -58,8 +59,10 @@ export class EventPage implements OnInit {
       this.event = await this.db.findEvent(id);
       this.mapTitle = this.event.camp;
       this.mapSubtitle = this.event.location;
-      this.mapPoints.push(toMapPoint(this.event.location,
-        { title: this.event.title, location: this.event.location, subtitle: this.event.camp }));
+      const mapPoint = toMapPoint(this.event.location,
+        { title: this.event.title, location: this.event.location, subtitle: this.event.camp });
+      mapPoint.gps = await this.db.getMapPointGPS(mapPoint);
+      this.mapPoints.push(mapPoint);
         const selectedDay = this.db.selectedDay();            
       this.event.occurrence_set = this.event.occurrence_set.filter((o) => {
         if (!sameDay(selectedDay,noDate()) && !dateMatches(selectedDay, o)) {

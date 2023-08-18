@@ -124,6 +124,6 @@ function loadRSL(filename: string, geoPath: string) {
 
 const geoPath = `src/assets/ttitd-2023/geo.json`;
 const filename = './scripts/rsl.csv';
-const outputFilename = 'src/assets/ttitd-2023//rsl.json';
+const outputFilename = 'src/assets/ttitd-2023/rsl.json';
 
 loadRSL(filename, geoPath);

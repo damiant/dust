@@ -39,10 +39,6 @@ export const routes: Routes = [
         loadComponent: () => import('../profile/profile.page').then(m => m.ProfilePage)
       },
       {
-        path: 'profile/:mapType',
-        loadComponent: () => import('../pin-map/pin-map.page').then(m => m.PinMapPage)
-      },
-      {
         path: 'profile/ice',
         loadComponent: () => import('../pin-map/pin-map.page').then(m => m.PinMapPage)
       },

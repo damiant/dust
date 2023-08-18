@@ -13,7 +13,8 @@ import { ArtComponent } from '../art/art.component';
 import { UiService } from '../ui/ui.service';
 import { CategoryComponent } from '../category/category.component';
 import { SearchComponent } from '../search/search.component';
-import { toMapPoint } from '../map/map.utils';
+import { distance, formatDistanceMiles, toMapPoint } from '../map/map.utils';
+import { GeoService } from '../geolocation/geo.service';
 
 enum Filter {
   All = '',
@@ -67,7 +68,11 @@ export class FavsPage implements OnInit {
 
   @ViewChild(IonContent) ionContent!: IonContent;
 
-  constructor(private fav: FavoritesService, private ui: UiService, public db: DbService,
+  constructor(
+    private fav: FavoritesService, 
+    private ui: UiService, 
+    private geo: GeoService,
+    public db: DbService,
     private router: Router) {
     effect(() => {
       console.log('update favorite');
@@ -109,7 +114,7 @@ export class FavsPage implements OnInit {
     const favs = await this.fav.getFavorites();
     const events = this.filterItems(Filter.Events, await this.fav.getEventList(favs.events, this.db.selectedYear() !== ''));
     const camps = this.filterItems(Filter.Camps, await this.db.getCampList(favs.camps));
-    const art = this.filterItems(Filter.Art, await this.db.getArtList(favs.art));    
+    const art = this.filterItems(Filter.Art, await this.db.getArtList(favs.art));
     this.vm.events = events;
     this.vm.camps = camps;
     this.vm.art = art;
@@ -152,10 +157,11 @@ export class FavsPage implements OnInit {
       if (thisGroup) {
         points.push(toMapPoint(event.location,
           { title: event.title, location: event.location, subtitle: event.longTimeString }));
+
       }
     }
 
-    this.displayPoints(points, gevent.group!);
+    this.displayPoints(points, `${gevent.group} Events`);
   }
 
   mapCamps() {
@@ -167,19 +173,27 @@ export class FavsPage implements OnInit {
     this.displayPoints(points, 'Favorite Camps');
   }
 
-  mapArt() {
+  async mapArt() {
     const points: MapPoint[] = [];
+    const gps = await this.geo.getPosition();
     for (const art of this.vm.art) {
       const imageUrl: string = art.images?.length > 0 ? art.images[0].thumbnail_url! : '';
-      points.push(toMapPoint(art.location_string,
-        { title: art.name, location: art.location_string!, subtitle: '', imageUrl: imageUrl }));
+      const mp = toMapPoint(art.location_string,
+        { title: art.name, location: '', subtitle: '', imageUrl: imageUrl });
+      if (art.location.gps_latitude && art.location.gps_longitude) {
+        mp.gps = { lat: art.location.gps_latitude, lng: art.location.gps_longitude };
+        const dist = distance(gps, mp.gps);
+        mp.info!.subtitle = formatDistanceMiles(dist);
+      }
+      points.push(mp);
     }
     this.displayPoints(points, 'Favorite Art');
   }
 
-  private displayPoints(points: MapPoint[], title: string) {
+  private async displayPoints(points: MapPoint[], title: string) {
+    const gpsPoints = await this.db.setMapPointsGPS(points);
     this.fav.setMapPointsTitle(title);
-    this.fav.setMapPoints(points);
+    this.fav.setMapPoints(gpsPoints);
     this.router.navigate(['tabs/favs/map']);
   }
 
@@ -202,18 +216,22 @@ export class FavsPage implements OnInit {
   //   this.router.navigate(['tabs/favs/map']);
   // }
   ngOnInit() {
-
+    this.db.checkInit();
   }
 
-  mapEvent(event: Event) {
-    this.vm.mapPoints = [toMapPoint(event.location)];
+  async mapEvent(event: Event) {
+    const mp = toMapPoint(event.location);
+    mp.gps = await this.db.getMapPointGPS(mp);
+    this.vm.mapPoints = [mp];
     this.vm.mapTitle = event.title;
     this.vm.mapSubtitle = event.location;
     this.vm.showMap = true;
   }
 
-  mapCamp(camp: Camp) {
-    this.vm.mapPoints = [toMapPoint(camp.location_string!)];
+  async mapCamp(camp: Camp) {
+    const mp = toMapPoint(camp.location_string!);
+    mp.gps = await this.db.getMapPointGPS(mp);
+    this.vm.mapPoints = [mp];
     this.vm.mapTitle = camp.name;
     this.vm.mapSubtitle = camp.location_string!;
     this.vm.showMap = true;

@@ -40,7 +40,7 @@ export class ArtItemPage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private ui: UiService,
-    private db: DbService, 
+    private db: DbService,
     private settings: SettingsService,
     private fav: FavoritesService) {
   }
@@ -54,7 +54,12 @@ export class ArtItemPage implements OnInit {
     this.art = await this.db.findArt(id);
     this.mapTitle = this.art.name;
     this.mapSubtitle = this.art.location_string!;
-    this.mapPoints.push(toMapPoint(this.art.location_string!));
+    let point = toMapPoint(this.art.location_string!);
+    if (this.art.location.gps_latitude && this.art.location.gps_longitude) {
+      const gps = { lng: this.art.location.gps_longitude, lat: this.art.location.gps_latitude };
+      point = await this.db.gpsToMapPoint(gps, undefined);
+    }
+    this.mapPoints.push(point);
     this.star = await this.fav.isFavArt(this.art.uid);
   }
 

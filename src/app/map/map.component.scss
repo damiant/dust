@@ -6,3 +6,11 @@ pinch-zoom {
 .pop {
     border-radius: 0.5rem;
 }
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: calc(env(safe-area-inset-bottom, 0.5vh) + 0.5rem);
+    width: 100%;
+    text-align: center;
+}

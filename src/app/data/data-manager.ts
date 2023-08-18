@@ -1,7 +1,7 @@
 import { WorkerClass } from './worker-interface';
-import { Art, Camp, DataMethods, Day, Event, GeoRef, LocationName, MapPoint, MapSet, Pin, RSLEvent, Revision, TimeString } from './models';
+import { Art, Camp, DataMethods, Day, Event, GPSSet, GeoRef, LocationName, MapPoint, MapSet, Pin, RSLEvent, Revision, TimeRange, TimeString } from './models';
 import { BurningManTimeZone, getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from '../utils/utils';
-import { distance, locationStringToPin, mapPointToPoint, maxDistance, toClock, toStreetRadius } from '../map/map.utils';
+import { defaultMapRadius, distance, formatDistance, locationStringToPin, mapPointToPoint, maxDistance, toClock, toStreetRadius } from '../map/map.utils';
 import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from '../map/geo.utils';
 
 interface TimeCache {
@@ -36,10 +36,13 @@ export class DataManager implements WorkerClass {
             case DataMethods.FindArts: return this.findArts(args[0], args[1]);
             case DataMethods.FindArt: return this.findArt(args[0]);
             case DataMethods.GpsToPoint: return this.gpsToPoint(args[0]);
+            case DataMethods.GetMapPointGPS: return this.getMapPointGPS(args[0]);
+            case DataMethods.SetMapPointsGPS: return this.setMapPointsGPS(args[0]);
             case DataMethods.GetMapPoints: return this.getMapPoints(args[0]);
+            case DataMethods.GetGPSPoints: return this.getGPSPoints(args[0], args[1]);
             case DataMethods.GetRSLEvents: return await this.getRSLEvents(args[0], args[1], args[2]);
             case DataMethods.CheckEvents: return this.checkEvents(args[0]);
-            case DataMethods.FindEvents: return this.findEvents(args[0], args[1], args[2], args[3]);
+            case DataMethods.FindEvents: return this.findEvents(args[0], args[1], args[2], args[3], args[4]);
             case DataMethods.FindCamps: return this.findCamps(args[0], args[1]);
             case DataMethods.FindEvent: return this.findEvent(args[0]);
             case DataMethods.FindCamp: return this.findCamp(args[0]);
@@ -116,7 +119,7 @@ export class DataManager implements WorkerClass {
         const gpsCoords: GpsCoord[] = [];
         const points: Point[] = [];
         for (let ref of [this.georeferences[0], this.georeferences[1], this.georeferences[2]]) {
-            gpsCoords.push({ lat: ref.coordinates[0], lng: ref.coordinates[1] });
+            gpsCoords.push({ lng: ref.coordinates[0], lat: ref.coordinates[1] });
             const mp: MapPoint = { clock: ref.clock, street: ref.street };
             const pt = mapPointToPoint(mp, this.mapRadius);
             points.push(pt);
@@ -127,6 +130,22 @@ export class DataManager implements WorkerClass {
 
     private gpsToPoint(gpsCoord: GpsCoord): Point {
         return gpsToMap(gpsCoord);
+    }
+
+    private getMapPointGPS(mapPoint: MapPoint): GpsCoord {
+        const pin = mapPointToPoint(mapPoint, defaultMapRadius);
+        return mapToGps(pin);
+    }
+
+    private setMapPointsGPS(mapPoints: MapPoint[]): MapPoint[] {
+        for (let mapPoint of mapPoints) {
+            const pin = mapPointToPoint(mapPoint, defaultMapRadius);
+            if (!isNaN(pin.x)) {
+                mapPoint.gps = mapToGps(pin);
+            }
+            console.log('setMapPointsGPS', pin, mapPoint.gps);
+        }
+        return mapPoints;
     }
 
     private init(hideLocations: boolean) {
@@ -375,7 +394,7 @@ export class DataManager implements WorkerClass {
                 if (!allOld) {
                     // If all times have ended
                     event.distance = distance(coords!, event.gpsCoords!);
-                    event.distanceInfo = this.formatDistance(event.distance);
+                    event.distanceInfo = formatDistance(event.distance);
                     result.push(event);
                 }
             }
@@ -411,18 +430,18 @@ export class DataManager implements WorkerClass {
         return false;
     }
 
-    public findEvents(query: string, day: Date | undefined, category: string, coords: GpsCoord | undefined): Event[] {
+    public findEvents(query: string, day: Date | undefined, category: string, coords: GpsCoord | undefined, timeRange: TimeRange | undefined): Event[] {
         const result: Event[] = [];
         if (query) {
             query = this.scrubQuery(query);
         }
         for (let event of this.events) {
-            if (this.eventContains(query, event) && this.eventIsCategory(category, event) && this.onDay(day, event)) {
+            if (this.eventContains(query, event) && this.eventIsCategory(category, event) && this.onDay(day, event, timeRange)) {
                 const timeString = this.getTimeString(event, day);
                 event.timeString = timeString.short;
                 event.longTimeString = timeString.long;
                 event.distance = distance(coords!, event.gpsCoords);
-                event.distanceInfo = this.formatDistance(event.distance);
+                event.distanceInfo = formatDistance(event.distance);
                 result.push(event);
             }
         }
@@ -473,7 +492,7 @@ export class DataManager implements WorkerClass {
 
             if (coords) {
                 camp.distance = distance(coords, camp.gpsCoord);
-                camp.distanceInfo = this.formatDistance(camp.distance);
+                camp.distanceInfo = formatDistance(camp.distance);
             } else {
                 camp.distanceInfo = '';
             }
@@ -495,18 +514,7 @@ export class DataManager implements WorkerClass {
 
     }
 
-    private formatDistance(dist: number): string {
-        if (dist == maxDistance) {
-            return '';
-        }
-        const rounded = Math.round(dist * 10) / 10
-        if (rounded == 0.0) {
-            return '(near)';
-        } else if (rounded > 100) {
-            return '(far)'
-        }
-        return `(${rounded}mi)`;
-    }
+
 
     public findArts(query: string | undefined, coords: GpsCoord | undefined): Art[] {
         const result: Art[] = [];
@@ -516,7 +524,7 @@ export class DataManager implements WorkerClass {
         for (let art of this.art) {
             if (coords) {
                 art.distance = distance(coords, art.gpsCoords);
-                art.distanceInfo = this.formatDistance(art.distance);
+                art.distanceInfo = formatDistance(art.distance);
             }
             if (!query || art.name.toLowerCase().includes(query.toLowerCase())) {
                 result.push(art);
@@ -578,14 +586,20 @@ export class DataManager implements WorkerClass {
                 event.description.toLowerCase().includes(terms));
     }
 
-    private onDay(day: Date | undefined, event: Event): boolean {
-        if (!day) return true;
+    private onDay(day: Date | undefined, event: Event, timeRange: TimeRange | undefined): boolean {
+        if (!day && !timeRange) return true;
         for (let occurrence of event.occurrence_set) {
             const start = new Date(occurrence.start_time);
             const end = new Date(occurrence.end_time);
 
-            if (!occurrence.old && ((sameDay(start, day) || sameDay(end, day)))) {
-                return true;
+            if (day) {
+                if (!occurrence.old && ((sameDay(start, day) || sameDay(end, day)))) {
+                    return true;
+                }
+            } else if (timeRange) {
+                if (start > timeRange.start && start < timeRange.end) {
+                    return true;
+                }
             }
         }
         return false;
@@ -612,9 +626,25 @@ export class DataManager implements WorkerClass {
         return await res.json();
     }
 
+    public async getGPSPoints(name: string, title: string): Promise<MapSet> {
+        const res = await fetch(this.path(name));
+        const data: GPSSet = await res.json();
+        const result: MapSet = { title: data.title, description: data.description, points: [] };
+        for (let gps of data.points) {
+            const point = gpsToMap(gps);
+            const mapPoint: MapPoint = { street: '', clock: '', x: point.x, y: point.y, gps: structuredClone(gps), info: { title, location: '', subtitle: '' } }
+            result.points.push(mapPoint);
+        }
+        return result;
+    }
+
     public async getMapPoints(name: string): Promise<MapSet> {
         const res = await fetch(this.path(name));
-        return await res.json();
+        const mapSet: MapSet = await res.json();
+        for (let point of mapSet.points) {
+            point.gps = this.getMapPointGPS(point);
+        }
+        return mapSet;
     }
 
     public async getGeoReferences(): Promise<GeoRef[]> {
@@ -636,8 +666,4 @@ export class DataManager implements WorkerClass {
         const res = await fetch(this.path('revision'));
         return await res.json();
     }
-}
-
-function notNull(v: string | undefined): string {
-    return (!v) ? '' : v;
 }

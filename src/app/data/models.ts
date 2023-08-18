@@ -54,6 +54,11 @@ export interface OccurrenceSet {
   star?: boolean;
 }
 
+export interface TimeRange {
+  start: Date
+  end: Date  
+}
+
 export interface Camp {
   contact_email?: string
   description?: string
@@ -175,6 +180,7 @@ export interface MapPoint {
   clockOffset?: string,
   x?: number,
   y?: number,
+  gps?: GpsCoord, // Used as additional info when displaying the map
   info?: MapInfo
 }
 
@@ -190,6 +196,13 @@ export interface MapSet {
   description: string;
   points: MapPoint[];
 }
+
+export interface GPSSet {
+  title: string;
+  description: string;
+  points: GpsCoord[];
+}
+
 export interface RSLEvent {
   id: string;
   camp: string;
@@ -225,6 +238,7 @@ export enum DataMethods {
   GetDays = 'getDays',
   GetPotties = 'getPotties',
   GetMapPoints = 'getMapPoints',
+  GetGPSPoints = 'getGPSPoints',
   GetCategories = 'getCategories',
   SetDataset = 'setDataset',
   GetEvents = 'getEvents',
@@ -242,5 +256,7 @@ export enum DataMethods {
   GetCamps = 'getCamps',
   GetGeoReferences = 'getGeoReferences',
   GpsToPoint = 'gpsToPoint',
-  GetRSLEvents = 'getRSLEvents'
+  GetRSLEvents = 'getRSLEvents',
+  GetMapPointGPS = 'getMapPointGPS',
+  SetMapPointsGPS = 'setMapPointsGPS'
 }

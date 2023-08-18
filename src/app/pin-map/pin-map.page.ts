@@ -24,7 +24,9 @@ export class PinMapPage implements OnInit {
   points: MapPoint[] = [];
   title = '';
   description = '';
-  constructor(private db: DbService) { }
+  constructor(private db: DbService) {
+    this.db.checkInit();
+   }
 
   ngOnInit() {
   }
@@ -40,22 +42,11 @@ export class PinMapPage implements OnInit {
 
   private async mapFor(mapType: string): Promise<MapSet> {
     switch (mapType) {
-      case MapType.Restrooms: {
-        const pins = await this.db.getPotties();
-        return { title: 'Restrooms', description: 'Tip: At night, look for the blue light on poles marking porta potty banks.', points: this.pinsToMapPoints(pins) };
-      }
+      case MapType.Restrooms: return await this.db.getGPSPoints('restrooms', 'Block of restrooms');      
       case MapType.Ice: return await this.db.getMapPoints('ice');
       case MapType.Medical: return await this.db.getMapPoints('medical');
       default: return { title: '', description: '', points: [] };
     }
-  }
-
-  private pinsToMapPoints(pins: Pin[]): MapPoint[] {
-    const points: MapPoint[] = [];
-    for (const pin of pins) {
-      points.push({ street: '', clock: '', x: pin.x, y: pin.y, info: { title: 'Restroom', location: '', subtitle: '' } });
-    }
-    return points;
   }
 
 }

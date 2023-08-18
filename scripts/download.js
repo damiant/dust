@@ -89,6 +89,9 @@ async function download(name, year, filename, folder, options) {
             }
         }
         if (options?.fixLocation) {
+            if (!item.location_string) {
+                item.location_string = '';
+            }
             if (item.location_string.endsWith(' None None')) {
                 item.location_string = item.location_string.replace(' None None','');
                 item.location.string = item.location.string.replace(' None None','');

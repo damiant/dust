@@ -1,4 +1,9 @@
 ## Changes
+### 1.12
+- Added "now" to events to show events starting in the next hour (or running for up to 20 mins)
+- Use GPS coords for restrooms
+- Use GPS coordinates for Art rather than radial location
+
 ### 1.11
 - Show compass direction on map
 - Fix for searching when capitals or whitespace are in search terms
