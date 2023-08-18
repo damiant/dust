@@ -82,19 +82,6 @@ export class MapComponent implements OnInit, OnDestroy {
     private geo: GeoService,
     private settings: SettingsService) {
     this.points = [];
-    effect(async () => {
-      this.gpsCoord = this.geo.gpsPosition();
-      console.log(`GPS Position changed ${JSON.stringify(this.gpsCoord)}`);
-      const pt = await this.geo.gpsToPoint(this.gpsCoord, this.mapInformation!.circleRadius);
-      if (!this.you) {
-        this.you = this.plotXY(pt.x, pt.y, undefined, 'var(--ion-color-secondary)');
-        this.setupCompass(this.you);
-      } else {
-        const sz = parseInt(this.you.style.width.replace('px', ''));
-        this.movePoint(this.you, pt.x, pt.y, sz, youOffsetX, youOffsetY);        
-      }
-      this.calculateNearest(this.gpsCoord);
-    });
   }
 
   ngOnInit() {
@@ -108,6 +95,19 @@ export class MapComponent implements OnInit, OnDestroy {
     //     }
     //   }
     // }, 2000);
+  }
+
+  private async displayYouAreHere() {
+    this.gpsCoord = await this.geo.getPosition();
+    const pt = await this.geo.gpsToPoint(this.gpsCoord, this.mapInformation!.circleRadius);
+    if (!this.you) {
+      this.you = this.plotXY(pt.x, pt.y, undefined, 'var(--ion-color-secondary)');
+      this.setupCompass(this.you);
+    } else {
+      const sz = parseInt(this.you.style.width.replace('px', ''));
+      this.movePoint(this.you, pt.x, pt.y, sz, youOffsetX, youOffsetY);        
+    }
+    this.calculateNearest(this.gpsCoord);
   }
 
   private setMapInformation() {
@@ -153,11 +153,10 @@ export class MapComponent implements OnInit, OnDestroy {
     }
 
     try {
-      console.warn('1');
-        await this.geo.getPosition();
+      await this.displayYouAreHere();
+        
         this.geoInterval = setInterval(async() => {
-          console.warn('2');
-          await this.geo.getPosition();
+          await this.displayYouAreHere();
         }, geolocateInterval);
       //
       // const pt = await this.geo.placeOnMap(gpsCoord, this.mapInformation!.circleRadius);

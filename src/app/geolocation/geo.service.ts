@@ -4,12 +4,15 @@ import { GpsCoord, NoGPSCoord, Point } from '../map/geo.utils';
 import { DbService } from '../data/db.service';
 import { environment } from 'src/environments/environment';
 import { Capacitor } from '@capacitor/core';
+import { noDate, secondsBetween } from '../utils/utils';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GeoService {
-  public gpsPosition = signal(NoGPSCoord());
+  private gpsPosition = signal(NoGPSCoord());
+  private lastGpsUpdate: Date = noDate();
+  private hasPermission = false;
 
   constructor(private db: DbService) { }
 
@@ -35,17 +38,20 @@ export class GeoService {
     if (!Capacitor.isNativePlatform()) {
       console.error(`On web we return the coord of center camp`);
       this.gpsPosition.set({ lng: -119.21121456711064, lat: 40.780501492435846 });
-      return this.getPosition();
+      return this.gpsPosition();
     }
 
     console.time('geo.permissions');
-    if (!await this.checkPermissions()) {
-      if (!await this.getPermission()) {
-        console.error(`User geolocation permission denied.`);
-        this.gpsPosition.set(NoGPSCoord());
-        return NoGPSCoord();
+    if (!this.hasPermission) {
+      if (!await this.checkPermissions()) {
+        if (!await this.getPermission()) {
+          console.error(`User geolocation permission denied.`);
+          this.gpsPosition.set(NoGPSCoord());
+          return NoGPSCoord();
+        }
       }
     }
+
     console.timeEnd('geo.permissions');
     if (environment.gps) {
       console.error(`Fake GPS position was returned ${environment.gps}`);
@@ -53,7 +59,11 @@ export class GeoService {
       return environment.gps; // Return a fake location
     }
 
-    const position = await Geolocation.getCurrentPosition({ enableHighAccuracy: true });        
+    if (secondsBetween(this.lastGpsUpdate, new Date()) < 10) {
+      return this.gpsPosition();
+    }
+    const position = await Geolocation.getCurrentPosition({ enableHighAccuracy: true });
+
     let gps = { lat: position.coords.latitude, lng: position.coords.longitude };
     if (environment.latitudeOffset && environment.longitudeOffset) {
       const before = structuredClone(gps);
@@ -61,7 +71,9 @@ export class GeoService {
       gps = after;
       console.error(`GPS Position was modified ${JSON.stringify(before)} to ${JSON.stringify(after)}`);
     }
-    this.gpsPosition.set(gps);    
+    this.lastGpsUpdate = new Date();
+    this.gpsPosition.set(gps);
+    this.hasPermission = true;
     return gps;
   }
 

@@ -137,3 +137,7 @@ function timeBetween(d1: any, d2: any): string {
     const mins = Math.floor((Math.abs(d1 - d2) / 1000) / 60);
     return (mins < 60) ? `${mins}mins` : `${hrs}hrs`;
 }
+
+export function secondsBetween(d1: any, d2: any): number {
+    return Math.floor(Math.abs(d1 - d2) / 1000.0);
+}

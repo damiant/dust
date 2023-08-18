@@ -1,7 +1,15 @@
 
 # Roadmap
 
-- Update GPS for "by dist" only on the signal effect and not after awaiting (events, etc)
+- Art popup has little info
+- Popup map shouldnt show popover
+- Fav day - map should have title
+- popup info for art should show
+- Fav art map should hide labels
+- Favorites are does not show map
+- Popup maps do not show your location
+- Do hack on events page when returning back from event detail
+- Keyword - Burning Man - Guide, Map, Art, Camps and Events
 - RockStar Librarian - import data (Waiting on data)
 - Favorites by distance
 - Art page is still slow (try WebP)
