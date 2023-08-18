@@ -1,9 +1,6 @@
 
 # Roadmap
 
-- Keyword - Burning Man - Guide, Map, Art, Camps and Events
-- Art has url property to link to browser etc
-
 ## Check In
 - Check In Button - For events, add to check in history on the more tab
 - Only show check in if distance = near and event is between start and end
@@ -28,21 +25,14 @@
 - Google nearby plugin - use for bluetooth chat feature
 - Create lock screen image: use name, location, email, camp, emergency name, emergency phone. Save to photos
 
-
-
 ## Priority 1
 - After adding a favorite show the badge count on the fav tab increase (and disappear after opening it)
 - If an event has a long durations (>3hrs) then let user choose notification hour
 - Pressing the tab again should clear search
-- Favorites by distance
-- Offline images
 - Sounds for notifications
-- Use motion to rotate your "here" pin
 - "Not Interested" button for Events
 
-
 ## Priority 2
-- Filter by a-z for camps and art
 - If day is burn night show animation of burn
 - Show/collapse fav group
 - Notification for gates open
@@ -56,9 +46,6 @@
 - Notes page with items as checkboxes (ie check list)
 - Censor toggle for "Mature Audiences"
 - Show days until event
-- camps near here
-- events near here
-- find gps: direction arrow + distance
 - Show QR Code for profile
 
 ## Priority 4
