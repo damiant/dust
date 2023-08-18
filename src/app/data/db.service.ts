@@ -77,9 +77,9 @@ export class DbService {
     return await call(this.worker, DataMethods.GpsToPoint, gpsCoord);
   }
 
-  public async gpsToMapPoint(gpsCoord: GpsCoord, title: string): Promise<MapPoint> {
+  public async gpsToMapPoint(gpsCoord: GpsCoord, title: string | undefined): Promise<MapPoint> {
     const point = await this.gpsToPoint(gpsCoord);
-    return { street: '', clock: '', x: point.x, y: point.y, gps: structuredClone(gpsCoord), info: { title, location: '', subtitle: '' } }
+    return { street: '', clock: '', x: point.x, y: point.y, gps: structuredClone(gpsCoord), info: (title) ? { title, location: '', subtitle: '' } : undefined }
   }
 
   public async getPotties(): Promise<Pin[]> {

@@ -13,7 +13,8 @@ import { ArtComponent } from '../art/art.component';
 import { UiService } from '../ui/ui.service';
 import { CategoryComponent } from '../category/category.component';
 import { SearchComponent } from '../search/search.component';
-import { toMapPoint } from '../map/map.utils';
+import { distance, formatDistanceMiles, toMapPoint } from '../map/map.utils';
+import { GeoService } from '../geolocation/geo.service';
 
 enum Filter {
   All = '',
@@ -67,7 +68,11 @@ export class FavsPage implements OnInit {
 
   @ViewChild(IonContent) ionContent!: IonContent;
 
-  constructor(private fav: FavoritesService, private ui: UiService, public db: DbService,
+  constructor(
+    private fav: FavoritesService, 
+    private ui: UiService, 
+    private geo: GeoService,
+    public db: DbService,
     private router: Router) {
     effect(() => {
       console.log('update favorite');
@@ -170,12 +175,15 @@ export class FavsPage implements OnInit {
 
   async mapArt() {
     const points: MapPoint[] = [];
+    const gps = await this.geo.getPosition();
     for (const art of this.vm.art) {
       const imageUrl: string = art.images?.length > 0 ? art.images[0].thumbnail_url! : '';
       const mp = toMapPoint(art.location_string,
-        { title: art.name, location: art.location_string!, subtitle: '', imageUrl: imageUrl });
+        { title: art.name, location: '', subtitle: '', imageUrl: imageUrl });
       if (art.location.gps_latitude && art.location.gps_longitude) {
         mp.gps = { lat: art.location.gps_latitude, lng: art.location.gps_longitude };
+        const dist = distance(gps, mp.gps);
+        mp.info!.subtitle = formatDistanceMiles(dist);
       }
       points.push(mp);
     }

@@ -4,13 +4,13 @@ import { PinchZoomModule } from '@meddv/ngx-pinch-zoom';
 import { LocationEnabledStatus, MapInfo, MapPoint, Pin } from '../data/models';
 import { IonicModule } from '@ionic/angular';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { defaultMapRadius, distance, formatDistance, formatDistanceMiles, mapPointToPin } from './map.utils';
+import { defaultMapRadius, distance, formatDistanceMiles, mapPointToPin } from './map.utils';
 import { delay } from '../utils/utils';
 import { GeoService } from '../geolocation/geo.service';
 import { SettingsService } from '../data/settings.service';
 import { MessageComponent } from '../message/message.component';
 import { CompassError, CompassHeading } from './compass';
-import { GpsCoord, NoGPSCoord } from './geo.utils';
+import { GpsCoord, NoGPSCoord, Point } from './geo.utils';
 
 interface MapInformation {
   width: number; // Width of the map
@@ -53,7 +53,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private gpsCoord: GpsCoord = NoGPSCoord();
   private you: HTMLDivElement | undefined;
   private watchId: any;
-  private mapInformation: MapInformation | undefined;  
+  private mapInformation: MapInformation | undefined;
   @ViewChild('zoom') zoom!: ElementRef;
   @ViewChild('map') map!: ElementRef;
   @ViewChild('mapc') mapc!: ElementRef;
@@ -105,7 +105,8 @@ export class MapComponent implements OnInit, OnDestroy {
       this.setupCompass(this.you);
     } else {
       const sz = parseInt(this.you.style.width.replace('px', ''));
-      this.movePoint(this.you, pt.x, pt.y, sz, youOffsetX, youOffsetY);        
+
+      this.movePoint(this.you, this.pointShift(pt.x, pt.y, sz, youOffsetX, youOffsetY));
     }
     this.calculateNearest(this.gpsCoord);
   }
@@ -124,10 +125,10 @@ export class MapComponent implements OnInit, OnDestroy {
     this.setMapInformation();
 
     for (let point of this.points) {
-      const pin = mapPointToPin(point, defaultMapRadius);// this.mapInformation!.circleRadius);      
+      const pin = mapPointToPin(point, defaultMapRadius);
       if (pin) {
         const div = this.plotXY(pin.x, pin.y, point.info);
-        (point.info as any).div = div;
+        (point as any).div = div;
       }
     }
     await this.checkGeolocation();
@@ -136,7 +137,6 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private async checkGeolocation() {
     if (this.settings.settings.locationEnabled === LocationEnabledStatus.Unknown) {
-      console.log('Show geolocation message');
       this.showMessage = true;
       return;
     }
@@ -147,22 +147,16 @@ export class MapComponent implements OnInit, OnDestroy {
 
     const hasGeo = await this.geo.checkPermissions();
     if (!hasGeo) {
-      console.log('Show geolocation message');
       this.showMessage = true;
       return;
     }
 
     try {
       await this.displayYouAreHere();
-        
-        this.geoInterval = setInterval(async() => {
-          await this.displayYouAreHere();
-        }, geolocateInterval);
-      //
-      // const pt = await this.geo.placeOnMap(gpsCoord, this.mapInformation!.circleRadius);
-      // const div = this.plotXY(pt.x, pt.y, undefined, 'var(--ion-color-secondary)');
-      // this.calculateNearest(gpsCoord);
-      // this.checkCompass(div);
+
+      this.geoInterval = setInterval(async () => {
+        await this.displayYouAreHere();
+      }, geolocateInterval);
     } catch (err) {
       console.error('checkGeolocation.error', err);
     }
@@ -184,13 +178,13 @@ export class MapComponent implements OnInit, OnDestroy {
       }
     }
     if (closest) {
-      const div: HTMLDivElement = (closest.info as any).div;
+      const div: HTMLDivElement = (closest as any).div;
       div.style.animationName = `pin`;
       div.style.animationDuration = '2s';
       const prefix = this.points.length > 1 ? 'The closest' : closest.info?.title;
       const dist = formatDistanceMiles(least);
       if (dist != '') {
-        this.footer = `${prefix} is ${dist} miles away.`;
+        this.footer = `${prefix} is ${dist} away.`;
       } else {
         this.footer = ``;
         console.error(`Unable to find a close point`);
@@ -245,33 +239,31 @@ export class MapComponent implements OnInit, OnDestroy {
 
   }
 
-  private movePoint(div: HTMLDivElement, x: number, y: number, sz: number, ox: number, oy: number) {
+  private pointShift(x: number, y: number, sz: number, ox: number, oy: number): Point {
     const px = x / 10000.0 * this.mapInformation!.width;
     const py = y / 10000.0 * this.mapInformation!.height;
-    //const sz = parseInt(div.style.width.replace('px',''));
-    div.style.left = `${px - sz + ox}px`;
-    div.style.top = `${py - sz + oy}px`;
+    return { x: px - sz + ox, y: py - sz + oy };
+  }
+
+  private movePoint(div: HTMLDivElement, pt: Point) {
+    div.style.left = `${pt.x}px`;
+    div.style.top = `${pt.y}px`;
   }
 
   private plotXY(x: number, y: number, info?: MapInfo, bgColor?: string): HTMLDivElement {
-    // const px = x / 10000.0 * this.mapInformation!.width;
-    // const py = y / 10000.0 * this.mapInformation!.height;
     const sz = (info || bgColor) ? 10 : 5;
     if (info && info.location) {
-      const lb = this.placeLabel(info);
-      this.movePoint(lb, x, y, 0, 0, 7);
+      this.placeLabel(this.pointShift(x, y, 0, -7, -7), info);
     }
-    const div = this.createPin(sz, info, bgColor);    
-    this.movePoint(div, x, y, sz, youOffsetX, youOffsetY);
-    return div;
+    return this.createPin(sz, this.pointShift(x, y, sz, youOffsetX, youOffsetY), info, bgColor);
   }
 
 
 
-  createPin(sz: number, info?: MapInfo, bgColor?: string): HTMLDivElement {
+  createPin(sz: number, pt: Point, info?: MapInfo, bgColor?: string): HTMLDivElement {
     const d = document.createElement("div");
-    // d.style.left = `${x - (sz - 4)}px`;
-    // d.style.top = `${y - sz + 4}px`;
+    d.style.left = `${pt.x}px`;
+    d.style.top = `${pt.y}px`;
     d.style.width = `${sz}px`;
     d.style.height = `${sz}px`;
     d.style.border = '1px solid var(--ion-color-dark)';
@@ -283,21 +275,23 @@ export class MapComponent implements OnInit, OnDestroy {
     d.style.animationIterationCount = 'infinite';
     d.style.position = 'absolute';
     d.style.backgroundColor = bgColor ? bgColor : `var(--ion-color-primary)`;
-    d.onclick = (e) => {
-      this.info = info;
-      this.presentPopover(e);
-    };
+    if (info) {
+      d.onclick = (e) => {
+        this.info = info;
+        this.presentPopover(e);
+      };
+    }
     const c: HTMLElement = this.mapc.nativeElement;
     c.insertBefore(d, c.firstChild);
     return d;
   }
 
-  private placeLabel(info?: MapInfo): HTMLDivElement {
+  private placeLabel(pt: Point, info?: MapInfo): HTMLDivElement {
     const d = document.createElement('p');
     const node = document.createTextNode(info!.location);
     d.appendChild(node);
-    // d.style.left = `${x}px`;
-    // d.style.top = `${y - 7}px`;
+    d.style.left = `${pt.x}px`;
+    d.style.top = `${pt.y}px`;
     d.style.position = 'absolute';
     d.style.fontSize = '3px';
     d.style.padding = '1px';

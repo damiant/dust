@@ -121,7 +121,7 @@ export function formatDistanceMiles(dist: number): string {
         return '';
     }
     const rounded = Math.round(dist * 10) / 10
-    return `${rounded}`;
+    return `${rounded} miles`;
 }
 
 export function mapPointToPin(point: MapPoint, mapRadius: number): Pin | undefined {
