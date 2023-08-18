@@ -63,6 +63,10 @@ export class ArtItemPage implements OnInit {
     this.star = await this.fav.isFavArt(this.art.uid);
   }
 
+  open(url: string) {
+    this.ui.openUrl(url);
+  }
+
   map() {
     this.showMap = true;
   }

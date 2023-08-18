@@ -52,7 +52,7 @@ export class CampPage implements OnInit {
   }
 
   open(url: string) {
-    window.open(url, '_system', 'location=yes');
+    this.ui.openUrl(url);
   }
 
   show(event: Event) {
