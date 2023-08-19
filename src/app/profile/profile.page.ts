@@ -14,6 +14,7 @@ import { TileComponent } from '../tile/tile.component';
 import { GeoService } from '../geolocation/geo.service';
 import { LocationEnabledStatus } from '../data/models';
 import { environment } from 'src/environments/environment';
+import { RateApp } from 'capacitor-rate-app';
 
 @Component({
   selector: 'app-profile',
@@ -63,6 +64,10 @@ export class ProfilePage implements OnInit {
     this.ui.home();
   }
 
+  public rate() {
+    RateApp.requestReview();
+  }
+  
   async share() {
     await Share.share({
       title: 'Dust in Curious Places',

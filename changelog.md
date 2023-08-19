@@ -3,6 +3,7 @@
 ### 1.14
 - Search in RSL for art cars, titles & times
 - Editting a friend was not showing the right address
+- Feature to Rate app
 
 ### 1.13
 - Images are now offline and optimized in webp format
