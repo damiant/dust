@@ -24,6 +24,13 @@ span {
     opacity: 0.5;
 }
 
+.image {
+    height: 200px;
+    width: 100%;
+    object-fit: cover;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
 .rsl-container {
 
 }
