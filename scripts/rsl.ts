@@ -2,6 +2,10 @@ import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { exit } from 'process';
 import { RSLEvent, RSLOccurrence } from 'src/app/data/models';
 import { initGeoLocation, setGeolocation } from './geo';
+import { join } from 'path';
+import { getTSV, scheduleFilesIn } from './tsv';
+import { hashCode, importSchedule, toDay, toIsoString } from './rsl-utils';
+import { RSLImportCamp } from './rsl-models';
 
 
 
@@ -49,41 +53,16 @@ function importLine(txt: string): RSLEvent {
   };
 }
 
-function toIsoString(date: Date) {
-  var tzo = -date.getTimezoneOffset(),
-      dif = tzo >= 0 ? '+' : '-',
-      pad = function(num: number) {
-          return (num < 10 ? '0' : '') + num;
-      };
 
-  return date.getFullYear() +
-      '-' + pad(date.getMonth() + 1) +
-      '-' + pad(date.getDate()) +
-      'T' + pad(date.getHours()) +
-      ':' + pad(date.getMinutes()) +
-      ':' + pad(date.getSeconds()) +
-      dif + pad(Math.floor(Math.abs(tzo) / 60)) +
-      ':' + pad(Math.abs(tzo) % 60);
-}
 
-function hashCode(s : string): number {
-  var hash = 0,
-    i, chr;
-  if (s.length === 0) return hash;
-  for (i = 0; i < s.length; i++) {
-    chr = s.charCodeAt(i);
-    hash = ((hash << 5) - hash) + chr;
-    hash |= 0; // Convert to 32bit integer
-  }
-  return Math.abs(hash);
-}
+
 
 function getDateTime(day: string, time: string, startTime?: string): string {
   if (!time) {
-     // Assume end time is 1 hour after start
-     const s = new Date(startTime!);
-     s.setHours(s.getHours() + 1);
-     return toIsoString(s);
+    // Assume end time is 1 hour after start
+    const s = new Date(startTime!);
+    s.setHours(s.getHours() + 1);
+    return toIsoString(s);
   }
   // Day: yyyy-mm-dd
   // time: 10:00AM
@@ -122,8 +101,31 @@ function loadRSL(filename: string, geoPath: string) {
   writeFileSync(outputFilename, JSON.stringify(data, undefined, 2), 'utf8');
 }
 
-const geoPath = `src/assets/ttitd-2023/geo.json`;
-const filename = './scripts/rsl.csv';
-const outputFilename = 'src/assets/ttitd-2023/rsl.json';
 
-loadRSL(filename, geoPath);
+
+const yearFolder = 'ttitd-2023';
+const geoPath = `src/assets/${yearFolder}/geo.json`;
+const filename = './scripts/rsl.csv';
+const folder = `./src/assets/${yearFolder}`;
+const outputFilename = join(folder, 'rsl.json');
+const rslPath = './scripts/rsl';
+
+async function importRSL() {
+  const camps: RSLImportCamp[] = getTSV(join(rslPath, 'Camp Info-Table 1.tsv'));
+  const rslEvents: RSLEvent[] = [];
+  for (let scheduleFilename of scheduleFilesIn(rslPath)) {
+    const day = toDay(scheduleFilename);
+    const schedules = getTSV(join(rslPath, scheduleFilename));
+    console.log(`Importing ${day}`);
+    for (let schedule of schedules) {
+      //console.log(JSON.stringify(schedule));
+      await importSchedule(rslEvents, day, schedule, camps, yearFolder, folder);
+    }
+    //console.log(rslEvents);
+    break;
+  }
+  writeFileSync(outputFilename, JSON.stringify(rslEvents, undefined, 2), 'utf8');
+}
+
+importRSL();
+//loadRSL(filename, geoPath);

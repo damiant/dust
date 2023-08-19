@@ -424,6 +424,8 @@ export class DataManager implements WorkerClass {
     private rslEventContains(event: RSLEvent, query: string): boolean {
         if (query == '') return true;
         if (event.camp.toLowerCase().includes(query)) return true;
+        if (event.artCar && event.artCar.toLowerCase().includes(query)) return true;
+        
         for (let occurrence of event.occurrences) {
             if (occurrence.who.toLowerCase().includes(query)) return true;
         }

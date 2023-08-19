@@ -4,6 +4,11 @@ import { RSLEvent, RSLOccurrence } from '../data/models';
 import { CommonModule } from '@angular/common';
 import { FavoritesService } from '../favs/favorites.service';
 
+export interface ArtCarEvent {
+  event: Event,
+  artCar: string
+}
+
 @Component({
   selector: 'app-rsl-event',
   templateUrl: './rsl-event.component.html',
@@ -16,6 +21,7 @@ export class RslEventComponent implements OnInit {
 
   @Input() event!: RSLEvent;
   @Output() mapClick = new EventEmitter<RSLEvent>();
+  @Output() artCarClick = new EventEmitter<ArtCarEvent>();
 
   constructor(private fav: FavoritesService, private toast: ToastController) { }
 
@@ -31,6 +37,10 @@ export class RslEventComponent implements OnInit {
     if (message) {
       this.presentToast(message);
     }
+  }
+
+  public carClick(e: Event) {    
+    this.artCarClick.emit({event: e, artCar: this.event.artCar!});
   }
 
   private async presentToast(message: string) {

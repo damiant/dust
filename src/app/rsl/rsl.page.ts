@@ -11,7 +11,7 @@ import { GeoService } from '../geolocation/geo.service';
 import { SearchComponent } from '../search/search.component';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { SkeletonEventComponent } from '../skeleton-event/skeleton-event.component';
-import { RslEventComponent } from '../rsl-event/rsl-event.component';
+import { ArtCarEvent, RslEventComponent } from '../rsl-event/rsl-event.component';
 import { toMapPoint } from '../map/map.utils';
 import { FavoritesService } from '../favs/favorites.service';
 
@@ -29,6 +29,8 @@ interface RSLState {
   noEventsMessage: string,
   mapPoints: MapPoint[],
   day: Date,
+  isOpen: boolean,
+  message: string,
   displayedDistMessage: boolean
 }
 
@@ -46,6 +48,8 @@ function initialState(): RSLState {
     noEvents: false,
     noEventsMessage: '',
     day: noDate(),
+    isOpen: false,
+    message: '',
     defaultDay: 'all',
     displayedDistMessage: false
   }
@@ -63,6 +67,7 @@ export class RslPage implements OnInit {
 
   vm: RSLState = initialState();
   @ViewChild(IonContent) ionContent!: IonContent;
+  @ViewChild('popover') popover: any;
   constructor(
     private ui: UiService,
     private db: DbService,
@@ -111,6 +116,17 @@ export class RslPage implements OnInit {
     if (scrollToTop) {
       this.ui.scrollUpContent('rsl', this.ionContent);
     }
+  }
+
+  public artCar(e: ArtCarEvent) { 
+this.presentPopover(e.event, `This event is located at the ${e.artCar} art car.`);
+  }
+
+
+  async presentPopover(e: Event, message: string) {
+    this.popover.event = e;
+    this.vm.message = message;
+    this.vm.isOpen = true;
   }
 
 

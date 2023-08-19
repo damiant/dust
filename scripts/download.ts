@@ -2,6 +2,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { basename, join } from 'path';
 import fetch from 'node-fetch';
 import sharp from 'sharp';
+import { downloadImageAndConvertToWebP } from './image-utils';
 
 const key = process.env['DUST_KEY'];
 
@@ -19,32 +20,7 @@ interface Options {
     convertImage?: boolean;
 }
 
-async function downloadImageAndConvertToWebP(url: string, outputPath: string): Promise<void> {
-    try {
-        if (existsSync(outputPath)) {
-            console.log(`${basename(outputPath)} exists already`);
-            return;
-        }
-        // Download image from the provided URL
-        const response = await fetch(url);
 
-        const imageBuffer = await response.buffer();
-
-        // Convert and save to WebP format
-        await sharp(imageBuffer)
-            .webp({ quality: 70 })
-            .toFile(outputPath, (err, info) => {
-                if (err) {
-                    throw err;
-                }
-                const ratio = imageBuffer.length / info.size;
-                console.log(`Wrote ${basename(outputPath)} at ${info.size} bytes (${Math.trunc(ratio * 100)}%)`);
-            });
-
-    } catch (error) {
-        console.error('Error processing image:', error);
-    }
-}
 
 async function download(name: string, year: string, filename: string, folder: string, options: Options): Promise<boolean> {
     const url = getUrl(name, year);

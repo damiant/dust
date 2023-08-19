@@ -26,6 +26,13 @@
       </ion-segment>
     </ion-toolbar>
   </ion-header>
+  <ion-popover #popover [isOpen]="vm.isOpen" (didDismiss)="vm.isOpen = false">
+    <ng-template>
+      <ion-content class="ion-padding">
+        {{vm.message}}
+      </ion-content>
+    </ng-template>
+  </ion-popover>
   <app-map-modal [title]="vm.mapTitle" [subtitle]="vm.mapSubtitle" [(show)]="vm.showMap"
     [points]="vm.mapPoints"></app-map-modal>
   <div *ngIf="!vm.noEvents && this.vm.events.length === 0">
@@ -35,6 +42,6 @@
     <app-skeleton-event></app-skeleton-event>
   </div>
   <div *ngIf="vm.noEvents" class="message large"><ion-text>{{vm.noEventsMessage}}</ion-text></div>
-  <app-rsl-event [event]="event" (mapClick)="map($event)"
+  <app-rsl-event [event]="event" (mapClick)="map($event)" (artCarClick)="artCar($event)"
     *ngFor="let event of vm.events; trackBy: eventsTrackBy"></app-rsl-event>
 </ion-content>

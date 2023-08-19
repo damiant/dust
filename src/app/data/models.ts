@@ -208,10 +208,13 @@ export interface RSLEvent {
   camp: string;
   title?: string;
   location: string;
+  campUID?: string;
   day: string; // Format yyyy-mm-dd
   gpsCoords?: GpsCoord,
   distance: number,
   distanceInfo: string,
+  artCar?: string;
+  imageUrl?: string;
   occurrences: RSLOccurrence[];
 }
 
