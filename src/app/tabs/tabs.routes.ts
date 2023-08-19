@@ -43,6 +43,10 @@ export const routes: Routes = [
         loadComponent: () => import('../pin-map/pin-map.page').then(m => m.PinMapPage)
       },
       {
+        path: 'profile/about',
+        loadComponent: () => import('../about/about.page').then( m => m.AboutPage)
+      },
+      {
         path: '',
         redirectTo: '/tabs/events',
         pathMatch: 'full',
