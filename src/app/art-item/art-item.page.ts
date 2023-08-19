@@ -59,6 +59,7 @@ export class ArtItemPage implements OnInit {
       const gps = { lng: this.art.location.gps_longitude, lat: this.art.location.gps_latitude };
       point = await this.db.gpsToMapPoint(gps, undefined);
     }
+    point.info = { title: this.art.name, subtitle: '', location: '' }
     this.mapPoints.push(point);
     this.star = await this.fav.isFavArt(this.art.uid);
   }

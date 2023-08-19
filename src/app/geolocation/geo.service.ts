@@ -1,20 +1,24 @@
 import { Injectable, signal } from '@angular/core';
 import { Geolocation } from '@capacitor/geolocation';
-import { GpsCoord, NoGPSCoord, Point } from '../map/geo.utils';
+import { GpsCoord, NoGPSCoord, Point, timeStampGPS } from '../map/geo.utils';
 import { DbService } from '../data/db.service';
 import { environment } from 'src/environments/environment';
 import { Capacitor } from '@capacitor/core';
 import { noDate, secondsBetween } from '../utils/utils';
-import { defaultMapRadius, mapPointToPin, toMapPoint } from '../map/map.utils';
+import {  toMapPoint } from '../map/map.utils';
+import { CompassHeading } from '../map/compass';
+import { MapPoint } from '../data/models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GeoService {
-  private gpsPosition = signal(NoGPSCoord());
+  public gpsPosition = signal(NoGPSCoord());
+  public heading = signal(this.noCompassHeading());
   private lastGpsUpdate: Date = noDate();
   private hasPermission = false;
   private centerOfMap: GpsCoord | undefined;
+
 
   constructor(private db: DbService) { }
 
@@ -39,15 +43,28 @@ export class GeoService {
   public async getCenterOfMap(): Promise<GpsCoord> {
     if (!this.centerOfMap) {
       const center = toMapPoint(`10:25 0', Open Playa`);
-      this.centerOfMap = await this.db.getMapPointGPS(center);
+      this.centerOfMap = await this.db.getMapPointGPS(center);      
     }
     return this.centerOfMap;
+  }  
+
+  private noCompassHeading(): CompassHeading {
+    return {
+      magneticHeading: 0,
+      trueHeading: 0,
+      timestamp: new Date().getTime(),
+      headingAccuracy: 0
+    }
+  }
+
+  public async getMapPointToGPS(mp: MapPoint): Promise<GpsCoord> {
+    return await this.db.getMapPointGPS(mp);
   }
 
   public async getPosition(): Promise<GpsCoord> {
     if (!Capacitor.isNativePlatform()) {
       console.error(`On web we return the coord of center camp`);
-      this.gpsPosition.set({ lng: -119.21121456711064, lat: 40.780501492435846 });
+      this.gpsPosition.set({ lng: -119.21121456711064, lat: 40.780501492435846, timeStamp: new Date().getTime() });
       return this.gpsPosition();
     }
 
@@ -65,7 +82,7 @@ export class GeoService {
     console.timeEnd('geo.permissions');
     if (environment.gps) {
       console.error(`Fake GPS position was returned ${environment.gps}`);
-      this.gpsPosition.set(environment.gps);
+      this.gpsPosition.set(timeStampGPS(environment.gps));
       return environment.gps; // Return a fake location
     }
 
@@ -75,14 +92,9 @@ export class GeoService {
     const position = await Geolocation.getCurrentPosition({ enableHighAccuracy: true });
 
     let gps = { lat: position.coords.latitude, lng: position.coords.longitude };
-    if (environment.latitudeOffset && environment.longitudeOffset) {
-      const before = structuredClone(gps);
-      const after = { lat: gps.lat + environment.latitudeOffset, lng: gps.lng + environment.longitudeOffset };
-      gps = after;
-      console.error(`GPS Position was modified ${JSON.stringify(before)} to ${JSON.stringify(after)}`);
-    }
+    gps = this.db.offsetGPS(gps);
     this.lastGpsUpdate = new Date();
-    this.gpsPosition.set(gps);
+    this.gpsPosition.set(timeStampGPS(gps));
     this.hasPermission = true;
     return gps;
   }

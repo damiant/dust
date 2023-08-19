@@ -3,6 +3,7 @@ import { Event, Day, Camp, Art, Pin, DataMethods, MapSet, GeoRef, Dataset, RSLEv
 import { call, registerWorker } from './worker-interface';
 import { daysUntil, noDate, now } from '../utils/utils';
 import { GpsCoord, Point } from '../map/geo.utils';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -133,7 +134,17 @@ export class DbService {
   }
 
   public async getMapPointGPS(mapPoint: MapPoint): Promise<GpsCoord> {
-    return await call(this.worker, DataMethods.GetMapPointGPS, mapPoint);
+    return await call(this.worker, DataMethods.GetMapPointGPS, mapPoint);    
+  }
+
+  public offsetGPS(gpsCoord: GpsCoord): GpsCoord {
+    if (environment.latitudeOffset && environment.longitudeOffset) {
+      const before = structuredClone(gpsCoord);
+      const after = { lat: gpsCoord.lat + environment.latitudeOffset, lng: gpsCoord.lng + environment.longitudeOffset };
+      gpsCoord = after;
+      console.error(`GPS Position was modified ${JSON.stringify(before)} to ${JSON.stringify(after)}`);
+    }
+    return gpsCoord;
   }
 
   public async setMapPointsGPS(mapPoints: MapPoint[]): Promise<MapPoint[]> {
