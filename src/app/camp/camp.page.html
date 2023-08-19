@@ -51,5 +51,20 @@
     </ion-item>
   </div>
   </ion-list>
+
+  <ion-list *ngIf="rslEvents.length > 0" lines="none">
+    <ion-item>
+      <h1>Parties</h1>
+    </ion-item>
+    <div *ngFor="let event of rslEvents">
+    <ion-item class="event">
+      <ion-icon class="event-icon" slot="start" name="calendar-outline"></ion-icon>
+      <ion-label class="bold" color="primary">{{event.camp}} - {{event.title}}</ion-label>
+    </ion-item>
+    <ion-item class="small" *ngFor="let occurrence of event.occurrences">
+      <ion-label class="pad-left text">{{occurrence.timeRange}} - {{occurrence.who}}</ion-label>
+    </ion-item>
+  </div>
+  </ion-list>
   <app-map [points]="mapPoints"></app-map>
 </ion-content>

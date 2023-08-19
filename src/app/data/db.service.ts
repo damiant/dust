@@ -174,6 +174,10 @@ export class DbService {
     return await call(this.worker, DataMethods.GetCampEvents, campId);
   }
 
+  public async getCampRSLEvents(campId: string): Promise<RSLEvent[]> {
+    return await call(this.worker, DataMethods.GetCampRSLEvents, campId);
+  }
+
   public async getCamps(idx: number, count: number): Promise<Camp[]> {
     return await call(this.worker, DataMethods.GetCamps, idx, count);
   }

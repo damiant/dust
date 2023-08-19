@@ -259,6 +259,7 @@ export enum DataMethods {
   FindEvent = 'findEvent',
   FindCamp = 'findCamp',
   GetCampEvents = 'getCampEvents',
+  GetCampRSLEvents = 'getCampRSLEvents',
   GetCamps = 'getCamps',
   GetGeoReferences = 'getGeoReferences',
   GpsToPoint = 'gpsToPoint',

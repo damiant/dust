@@ -41,7 +41,7 @@ export class DataManager implements WorkerClass {
             case DataMethods.SetMapPointsGPS: return this.setMapPointsGPS(args[0]);
             case DataMethods.GetMapPoints: return this.getMapPoints(args[0]);
             case DataMethods.GetGPSPoints: return this.getGPSPoints(args[0], args[1]);
-            case DataMethods.GetRSLEvents: return await this.getRSLEvents(args[0], args[1], args[2]);
+            case DataMethods.GetRSLEvents: return await this.getRSLEvents(args[0], args[1], args[2], undefined, undefined);
             case DataMethods.CheckEvents: return this.checkEvents(args[0]);
             case DataMethods.FindEvents: return this.findEvents(args[0], args[1], args[2], args[3], args[4], args[5]);
             case DataMethods.FindCamps: return this.findCamps(args[0], args[1]);
@@ -49,6 +49,7 @@ export class DataManager implements WorkerClass {
             case DataMethods.FindCamp: return this.findCamp(args[0]);
             case DataMethods.GetGeoReferences: return this.getGeoReferences();
             case DataMethods.GetCampEvents: return this.getCampEvents(args[0]);
+            case DataMethods.GetCampRSLEvents: return await this.getRSLEvents('', undefined, undefined, undefined, args[0]);
             case DataMethods.GetCamps: return this.getCamps(args[0], args[1]);
             default: console.error(`Unknown method ${method}`);
         }
@@ -318,7 +319,7 @@ export class DataManager implements WorkerClass {
 
     public async getRSLEventList(ids: string[]): Promise<RSLEvent[]> {
         console.log('getRSLEventList', ids)
-        return await this.getRSLEvents('', undefined, undefined, ids);
+        return await this.getRSLEvents('', undefined, undefined, ids, undefined);
     }
 
     public getCampList(ids: string[]): Camp[] {
@@ -387,7 +388,7 @@ export class DataManager implements WorkerClass {
         return undefined;
     }
 
-    public async getRSLEvents(query: string, day: Date | undefined, coords: GpsCoord | undefined, ids?: string[] | undefined): Promise<RSLEvent[]> {
+    public async getRSLEvents(query: string, day: Date | undefined, coords: GpsCoord | undefined, ids?: string[] | undefined, campId?: string | undefined): Promise<RSLEvent[]> {
         const res = await fetch(this.path('rsl'));
         const events: RSLEvent[] = await res.json();
         const result: RSLEvent[] = [];
@@ -395,7 +396,14 @@ export class DataManager implements WorkerClass {
         const fDay = day ? day.toISOString().split('T')[0] : undefined;
         const today = now();
         for (let event of events) {
-            if (this.rslEventContains(event, query) && (event.day == fDay || ids)) {
+            let match = false;
+            if (campId) {
+                match = (event.campUID == campId);
+            } else {
+                match = (this.rslEventContains(event, query) && (event.day == fDay || !!ids));
+            }
+            
+            if (match) {
                 let allOld = true;
                 for (let occurrence of event.occurrences) {
                     occurrence.old = (new Date(occurrence.endTime).getTime() - today.getTime() < 0);
@@ -422,6 +430,8 @@ export class DataManager implements WorkerClass {
         }
         if (coords) {
             this.sortRSLEventsByDistance(result);
+        } else if (campId) {
+            this.sortRSLEventsByDay(result);
         } else {
             this.sortRSLEventsByName(result);
         }
@@ -435,6 +445,9 @@ export class DataManager implements WorkerClass {
         return query;
     }
 
+    private sortRSLEventsByDay(events: RSLEvent[]) {
+        events.sort((a: RSLEvent, b: RSLEvent) => { return new Date(a.day).getTime() - new Date(b.day).getTime(); });
+    }
     private sortRSLEventsByName(events: RSLEvent[]) {
         events.sort((a: RSLEvent, b: RSLEvent) => { return a.camp.localeCompare(b.camp); });
     }

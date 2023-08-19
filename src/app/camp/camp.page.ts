@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { DbService } from '../data/db.service';
-import { Camp, Event, MapPoint } from '../data/models';
+import { Camp, Event, MapPoint, RSLEvent } from '../data/models';
 import { MapComponent } from '../map/map.component';
 import { EventPage } from '../event/event.page';
 import { FavoritesService } from '../favs/favorites.service';
@@ -26,6 +26,7 @@ export class CampPage implements OnInit {
   mapPoints: MapPoint[] = [];
   events: Event[] = [];
   eventId: string | undefined;
+  rslEvents: RSLEvent[] = [];
   star = false;
   backText = 'Camps';
 
@@ -46,8 +47,24 @@ export class CampPage implements OnInit {
     this.camp = await this.db.findCamp(id);
     this.star = await this.fav.isFavCamp(this.camp.uid);
     this.events = await this.db.getCampEvents(id);
+    this.rslEvents = await this.db.getCampRSLEvents(id);
+    for (let rsl of this.rslEvents) {
+      rsl.camp =  this.toDate(rsl.day);
+    }
+    console.log(id, this.rslEvents)
     const mp = toMapPoint(this.camp.location_string!, { title: this.camp.name, location: this.camp.location_string!, subtitle: '' });
     this.mapPoints = [mp];
+  }
+
+  toDate(d: string): string {
+    const t = d.split('-');
+    const day = parseInt(t[2]);
+    const date =  new Date(`${d}T00:00:00`);
+    return date.toLocaleDateString('en-US', { weekday: 'long',timeZone: 'UTC' }) + ` ${this.getOrdinalNum(day)}`;
+  }
+
+  private getOrdinalNum(n: number) {
+    return n + (n > 0 ? ['th', 'st', 'nd', 'rd'][(n > 3 && n < 21) || n % 10 > 3 ? 0 : n % 10] : '');
   }
 
   open(url: string) {
