@@ -5,6 +5,7 @@
 - Editting a friend was not showing the right address
 - Feature to Rate app
 - Added about page
+- Filter added for long events
 
 ### 1.13
 - Images are now offline and optimized in webp format

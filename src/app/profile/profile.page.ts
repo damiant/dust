@@ -29,6 +29,7 @@ export class ProfilePage implements OnInit {
   moreClicks = 0;
   rated = false;
   locationEnabled = false;
+  longEvents = false;
 
   constructor(
     private ui: UiService,
@@ -41,6 +42,7 @@ export class ProfilePage implements OnInit {
 
   ngOnInit() {
     this.db.checkInit();
+    this.longEvents = this.settings.settings.longEvents;
     this.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
   }
 
@@ -80,6 +82,11 @@ export class ProfilePage implements OnInit {
     });
   }
 
+  async toggleLongEvents(e: any) {
+    this.longEvents = e.detail.checked;
+    this.settings.settings.longEvents = this.longEvents;
+    this.settings.save();
+  }
   async toggleLocation(e: any) {
     const turnedOn = e.detail.checked;
     if (turnedOn) {

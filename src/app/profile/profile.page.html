@@ -60,9 +60,15 @@
     </ion-card-content>
   </ion-card>
   <div class="pad-top"></div>
-  <ion-item lines="none" style="padding: 2rem">
+  <div style="padding: 2rem">
+  <ion-item lines="none">
+    <ion-icon slot="start" name="time-outline"></ion-icon>
+    <ion-toggle (ionChange)="toggleLongEvents($event)" [checked]="longEvents">Long Events In Search</ion-toggle>
+  </ion-item>
+  <ion-item lines="none" >
     <ion-icon slot="start" name="locate-outline"></ion-icon>
     <ion-toggle (ionChange)="toggleLocation($event)" [checked]="locationEnabled">Show My Location</ion-toggle>
   </ion-item>
+</div>
   <div class="pad-top"></div>
 </ion-content>

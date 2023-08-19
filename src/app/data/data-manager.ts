@@ -43,7 +43,7 @@ export class DataManager implements WorkerClass {
             case DataMethods.GetGPSPoints: return this.getGPSPoints(args[0], args[1]);
             case DataMethods.GetRSLEvents: return await this.getRSLEvents(args[0], args[1], args[2]);
             case DataMethods.CheckEvents: return this.checkEvents(args[0]);
-            case DataMethods.FindEvents: return this.findEvents(args[0], args[1], args[2], args[3], args[4]);
+            case DataMethods.FindEvents: return this.findEvents(args[0], args[1], args[2], args[3], args[4], args[5]);
             case DataMethods.FindCamps: return this.findCamps(args[0], args[1]);
             case DataMethods.FindEvent: return this.findEvent(args[0]);
             case DataMethods.FindCamp: return this.findCamp(args[0]);
@@ -197,6 +197,7 @@ export class DataManager implements WorkerClass {
         this.categories = [];
         this.allEventsOld = !this.checkEvents();
         for (let event of this.events) {
+            let allLong = true;
             if (!this.categories.includes(event.event_type.label)) {
                 this.categories.push(event.event_type.label);
             }
@@ -241,18 +242,25 @@ export class DataManager implements WorkerClass {
                 event.print_description = event.description;
             }
 
-            for (let occurrence of event.occurrence_set) {
+            // Events over 6 hours are no worth it
+            // event.occurrence_set = event.occurrence_set.filter(o => {
+            //     let start: Date = new Date(o.start_time);
+            //     let end: Date = new Date(o.end_time);
+            //     const hrs = this.hoursBetween(start, end);
+            //     return hrs <= 6;
+            // });
 
+            for (let occurrence of event.occurrence_set) {
                 let start: Date = new Date(occurrence.start_time);
                 let end: Date = new Date(occurrence.end_time);
                 this.addDay(start);
                 const hrs = this.hoursBetween(start, end);
                 if (hrs > 24) {
-                    //const old = occurrence.end_time;
                     occurrence.end_time = new Date(start.getFullYear(), start.getMonth(), start.getDate(), end.getHours(), end.getMinutes()).toLocaleString('en-US', { timeZone: BurningManTimeZone })
-                    //const newHrs = this.hoursBetween(new Date(occurrence.start_time), new Date(occurrence.end_time));
                     end = new Date(occurrence.end_time);
-                    //console.log(`Fixed end time of ${event.title} from ${old}=>${occurrence.end_time} (starting ${occurrence.start_time}) because event was ${hrs} hours long. Now ${newHrs} hours long.`);
+                }
+                if (hrs <= 6) {
+                    allLong = false;
                 }
 
                 // Change midnight to 11:49 so that it works with the sameday function
@@ -267,6 +275,7 @@ export class DataManager implements WorkerClass {
             const timeString = this.getTimeString(event, undefined);
             event.timeString = timeString.short;
             event.longTimeString = timeString.long;
+            event.all_day = allLong;
         }
         this.categories.sort();
         this.cache = {};
@@ -451,13 +460,13 @@ export class DataManager implements WorkerClass {
         return false;
     }
 
-    public findEvents(query: string, day: Date | undefined, category: string, coords: GpsCoord | undefined, timeRange: TimeRange | undefined): Event[] {
+    public findEvents(query: string, day: Date | undefined, category: string, coords: GpsCoord | undefined, timeRange: TimeRange | undefined, allDay: boolean): Event[] {
         const result: Event[] = [];
         if (query) {
             query = this.scrubQuery(query);
         }
         for (let event of this.events) {
-            if (this.eventContains(query, event) && this.eventIsCategory(category, event) && this.onDay(day, event, timeRange)) {
+            if (this.eventContains(query, event, allDay) && this.eventIsCategory(category, event) && this.onDay(day, event, timeRange)) {
                 const timeString = this.getTimeString(event, day);
                 event.timeString = timeString.short;
                 event.longTimeString = timeString.long;
@@ -599,7 +608,10 @@ export class DataManager implements WorkerClass {
         return result;
     }
 
-    private eventContains(terms: string, event: Event): boolean {
+    private eventContains(terms: string, event: Event, allDay: boolean): boolean {
+        if (!allDay) {
+            if (event.all_day) return false;
+        }
         return (terms == '') ||
             (event.title.toLowerCase().includes(terms) ||
                 event.camp?.toLowerCase().includes(terms) ||

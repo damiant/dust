@@ -17,7 +17,7 @@ import { SearchComponent } from '../search/search.component';
 import { toMapPoint } from '../map/map.utils';
 import { GpsCoord } from '../map/geo.utils';
 import { GeoService } from '../geolocation/geo.service';
-import { environment } from 'src/environments/environment';
+import { SettingsService } from '../data/settings.service';
 
 interface EventsState {
   title: string,
@@ -85,6 +85,7 @@ export class EventsPage implements OnInit {
   constructor(
     public db: DbService,
     private ui: UiService,
+    private settings: SettingsService,
     private toastController: ToastController,
     private geo: GeoService
   ) {
@@ -218,7 +219,8 @@ export class EventsPage implements OnInit {
       this.vm.day, // Selected day
       this.vm.category, // Filtered category
       coords, // Geolocation
-      timeRange // Time Range
+      timeRange, // Time Range
+      this.settings.settings.longEvents // Filter events > 6 hrs
     );
     this.vm.noEvents = this.vm.events.length == 0;
     this.vm.noEventsMessage = this.noEventsMessage();
