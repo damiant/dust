@@ -29,35 +29,40 @@
 
     <ion-card-content>
       <ion-list>
-        <ion-item>
+        <!-- <ion-item>
           <ion-icon slot="start" name="locate-outline"></ion-icon>
           <ion-toggle (ionChange)="toggleLocation($event)" [checked]="locationEnabled">Show My Location</ion-toggle>
-        </ion-item>
+        </ion-item> -->
         <ion-item href="mailto:damian@dust.events?subject=dust" detail="true">
           <ion-icon slot="start" name="mail-unread-outline"></ion-icon>
-          Send Feedback
+         Feedback
         </ion-item>
         <ion-item (click)="share()" detail="true">
           <ion-icon slot="start" name="share-outline"></ion-icon>
-          Share App
+          Share
         </ion-item>
 
         <ion-item (click)="rate()" detail="true">
           <ion-icon slot="start" name="star-half-outline"></ion-icon>
-          Rate App
+          Rate
         </ion-item>
 
         <ion-item routerLink="./about" detail="true">
           <ion-icon slot="start" name="information-circle-outline"></ion-icon>
-          About dust
+          About
         </ion-item>
 
         <ion-item (click)="home()" detail="true">
           <ion-icon slot="start" name="exit-outline"></ion-icon>
-          Select a Different Year
+          Select Year
         </ion-item>
       </ion-list>
     </ion-card-content>
   </ion-card>
+  <div class="pad-top"></div>
+  <ion-item lines="none" style="padding: 2rem">
+    <ion-icon slot="start" name="locate-outline"></ion-icon>
+    <ion-toggle (ionChange)="toggleLocation($event)" [checked]="locationEnabled">Show My Location</ion-toggle>
+  </ion-item>
   <div class="pad-top"></div>
 </ion-content>
