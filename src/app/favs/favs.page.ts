@@ -90,10 +90,10 @@ export class FavsPage implements OnInit {
   }
 
   async ionViewWillEnter() {
-    if (this.vm.events.length == 0) {
-      console.log('ionViewWillEnter.update');
-      this.update();
-    }
+    // if (this.vm.events.length == 0) {
+    //   console.log('ionViewWillEnter.update');
+    //   this.update();
+    // }
   }
 
   home() {
@@ -112,7 +112,8 @@ export class FavsPage implements OnInit {
 
   private async update() {
     const favs = await this.fav.getFavorites();
-    const events = this.filterItems(Filter.Events, await this.fav.getEventList(favs.events, this.db.selectedYear() !== ''));
+    const rslEvents = this.filterItems(Filter.Events, await this.fav.getRSLEventList(favs.rslEvents));
+    const events = this.filterItems(Filter.Events, await this.fav.getEventList(favs.events, this.db.selectedYear() !== '', rslEvents));
     const camps = this.filterItems(Filter.Camps, await this.db.getCampList(favs.camps));
     const art = this.filterItems(Filter.Art, await this.db.getArtList(favs.art));
     this.vm.events = events;
@@ -219,8 +220,8 @@ export class FavsPage implements OnInit {
     this.db.checkInit();
   }
 
-  async mapEvent(event: Event) {
-    const mp = toMapPoint(event.location);
+  async mapEvent(event: Event) {    
+    const mp = toMapPoint(event.location);    
     mp.gps = await this.db.getMapPointGPS(mp);
     this.vm.mapPoints = [mp];
     this.vm.mapTitle = event.title;

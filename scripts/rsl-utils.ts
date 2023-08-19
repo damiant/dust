@@ -118,7 +118,7 @@ function cleanLocation(location: string): string {
     return `${clock} & ${street}`;
 }
 
-function toOccurrence(day: string, schedule: RSLImportSchedule): RSLOccurrence {
+function toOccurrence(day: string, schedule: RSLImportSchedule, id: number): RSLOccurrence {
     const startTime = toTime(day, schedule.starttime);
     const endTime = toTime(day, schedule.endtime, startTime);
     const startDateTime = new Date(startTime);
@@ -135,7 +135,8 @@ function toOccurrence(day: string, schedule: RSLImportSchedule): RSLOccurrence {
         endTime,
         timeRange,
         time,
-        end
+        end,
+        id: id.toString()
     }
 }
 
@@ -167,7 +168,8 @@ export async function importSchedule(rslEvents: RSLEvent[], day: string, schedul
             event.imageUrl = `./assets/${yearFolder}/images/${found}`;
             }
         }
-        event.occurrences.push(toOccurrence(day, schedule));
+
+        event.occurrences.push(toOccurrence(day, schedule, event.occurrences.length));
     } else {
         console.error(`Unable to find camp ${schedule.campname}`);
     }

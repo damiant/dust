@@ -219,6 +219,7 @@ export interface RSLEvent {
 }
 
 export interface RSLOccurrence {
+  id: string;
   time: string; // Display format
   end?: string; // Display format for end time (if it exists)
   timeRange: string; // Calculated
@@ -246,6 +247,7 @@ export enum DataMethods {
   SetDataset = 'setDataset',
   GetEvents = 'getEvents',
   GetEventList = 'getEventList',
+  GetRSLEventList = 'getRSLEventList',
   GetCampList = 'getCampList',
   GetArtList = 'getArtList',
   FindArts = 'findArts',

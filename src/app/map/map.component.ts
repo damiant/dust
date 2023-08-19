@@ -62,6 +62,7 @@ export class MapComponent implements OnInit, OnDestroy {
   @Input('points') set setPoints(points: MapPoint[]) {
     this.points = points;
     if (this.points.length > 0) {
+      console.log('points changed')
       this.update();
     }
   }
@@ -102,7 +103,7 @@ export class MapComponent implements OnInit, OnDestroy {
     const pt = await this.geo.gpsToPoint(this.gpsCoord);
     if (!this.you) {
       // First time setup
-      this.you = this.plotXY(pt.x, pt.y, undefined, 'var(--ion-color-secondary)');
+      this.you = this.plotXY(pt.x, pt.y, youOffsetX, youOffsetY, undefined, 'var(--ion-color-secondary)');
       this.setupCompass(this.you);
       const centerOfMap = await this.geo.getCenterOfMap();
       const dist = distance(this.gpsCoord, centerOfMap);
@@ -136,7 +137,8 @@ export class MapComponent implements OnInit, OnDestroy {
     for (let point of this.points) {
       const pin = mapPointToPin(point, defaultMapRadius);
       if (pin) {
-        const div = this.plotXY(pin.x, pin.y, point.info);
+        const div = this.plotXY(pin.x, pin.y, 6,0, point.info, undefined);
+        console.log('div created ', div.style.left, div.style.top);
         (point as any).div = div;
       }
     }
@@ -258,12 +260,12 @@ export class MapComponent implements OnInit, OnDestroy {
     div.style.top = `${pt.y}px`;
   }
 
-  private plotXY(x: number, y: number, info?: MapInfo, bgColor?: string): HTMLDivElement {
-    const sz = (info || bgColor) ? 10 : 5;
+  private plotXY(x: number, y: number, ox: number, oy: number, info?: MapInfo, bgColor?: string): HTMLDivElement {
+    const sz = (info || bgColor) ? 10 : 8;
     if (info && info.location) {
       this.placeLabel(this.pointShift(x, y, 0, 0, -7), info);
     }
-    return this.createPin(sz, this.pointShift(x, y, sz, youOffsetX, youOffsetY), info, bgColor);
+    return this.createPin(sz, this.pointShift(x, y, sz, ox, oy), info, bgColor);
   }
 
 

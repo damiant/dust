@@ -69,6 +69,12 @@ export class DbService {
     return await call(this.worker, DataMethods.GetEventList, ids);
   }
 
+  public async getRSLEvents(ids: string[]): Promise<RSLEvent[]> {
+    return await call(this.worker, DataMethods.GetRSLEventList, ids);
+  }
+
+  
+
   public async getGeoReferences(): Promise<GeoRef[]> {
     return await call(this.worker, DataMethods.GetGeoReferences);
   }

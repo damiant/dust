@@ -31,6 +31,7 @@ export class DataManager implements WorkerClass {
             case DataMethods.SetDataset: return this.setDataset(args[0], args[1], args[2], args[3], args[4]);
             case DataMethods.GetEvents: return this.getEvents(args[0], args[1]);
             case DataMethods.GetEventList: return this.getEventList(args[0]);
+            case DataMethods.GetRSLEventList: return this.getRSLEventList(args[0]);
             case DataMethods.GetCampList: return this.getCampList(args[0]);
             case DataMethods.GetArtList: return this.getArtList(args[0]);
             case DataMethods.FindArts: return this.findArts(args[0], args[1]);
@@ -306,6 +307,11 @@ export class DataManager implements WorkerClass {
         return result;
     }
 
+    public async getRSLEventList(ids: string[]): Promise<RSLEvent[]> {
+        console.log('getRSLEventList', ids)
+        return await this.getRSLEvents('', undefined, undefined, ids);
+    }
+
     public getCampList(ids: string[]): Camp[] {
         const result: Camp[] = [];
         for (let camp of this.camps) {
@@ -372,7 +378,7 @@ export class DataManager implements WorkerClass {
         return undefined;
     }
 
-    public async getRSLEvents(query: string, day: Date | undefined, coords: GpsCoord | undefined): Promise<RSLEvent[]> {
+    public async getRSLEvents(query: string, day: Date | undefined, coords: GpsCoord | undefined, ids?: string[] | undefined): Promise<RSLEvent[]> {
         const res = await fetch(this.path('rsl'));
         const events: RSLEvent[] = await res.json();
         const result: RSLEvent[] = [];
@@ -380,12 +386,21 @@ export class DataManager implements WorkerClass {
         const fDay = day ? day.toISOString().split('T')[0] : undefined;
         const today = now();
         for (let event of events) {
-            if (this.rslEventContains(event, query) && event.day == fDay) {
+            if (this.rslEventContains(event, query) && (event.day == fDay || ids)) {
                 let allOld = true;
                 for (let occurrence of event.occurrences) {
                     occurrence.old = (new Date(occurrence.endTime).getTime() - today.getTime() < 0);
                     if (!occurrence.old) {
                         allOld = false;
+                    }
+                }
+                if (ids) {
+                    event.occurrences = event.occurrences.filter(o => {
+                        const id = `${event.id}-${o.id}`;
+                        return ids.includes(id);
+                    });
+                    if (event.occurrences.length == 0) {
+                        allOld = true; // Don't include
                     }
                 }
                 if (!allOld) {
