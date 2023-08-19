@@ -23,12 +23,15 @@ export enum FriendResult {
   imports: [IonicModule, CommonModule, FormsModule],
   standalone: true
 })
-export class FriendComponent {
+export class FriendComponent implements OnInit {
   noAddress = 'Choose Address';
   friend: Friend = { name: '', notes: '', address: this.noAddress };
   isEdit: boolean = false;
 
   public addresses: any;
+  private allStreets = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'Esplanade'];
+  private allHours = ['2', '3', '4', '5', '6', '7', '8', '9', '10'];
+  private allMinutes = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55'];
 
   public pickerButtons = [
     {
@@ -45,27 +48,27 @@ export class FriendComponent {
 
   constructor(private modalCtrl: ModalController, private toastController: ToastController) {
     const streets: Array<PickerItem> = [];
-    for (let street of ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'Esplanade']) {
+    for (let street of this.allStreets) {
 
       streets.push({ text: street, value: street });
     }
 
     const hours: Array<PickerItem> = [];
-    for (let hour of ['2', '3', '4', '5', '6', '7', '8', '9', '10']) {
+    for (let hour of this.allHours) {
 
       hours.push({ text: hour, value: hour });
     }
 
     const minutes: Array<PickerItem> = [];
-    for (let minute of ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55']) {
+    for (let minute of this.allMinutes) {
 
       minutes.push({ text: minute, value: minute });
     }
-
+    
     this.addresses = [
       { name: 'hour', options: hours },
-      { name: 'minute', options: minutes },
-      { name: 'street', options: streets },
+      { name: 'minute', options: minutes, value: '20' },
+      { name: 'street', options: streets, value: 'Esplanade' },
     ];
   }
 
@@ -96,8 +99,20 @@ export class FriendComponent {
     await toast.present();
   }
 
+  ngOnInit(): void {
+    const t = this.friend.address.split('&');
+    const street = t[1].trim();
+    const t2 = t[0].split(':');
+    const hour = t2[0];
+    const minutes = t2[1];    
+    this.addresses[0].selectedIndex = this.allHours.indexOf(hour);
+    this.addresses[1].selectedIndex = this.allMinutes.indexOf(minutes);
+    this.addresses[2].selectedIndex = this.allStreets.indexOf(street);
+  }
+
   deleteFriend() {
     return this.modalCtrl.dismiss(this.friend, FriendResult.delete);
+    
   }
 
 }
