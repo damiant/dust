@@ -22,9 +22,7 @@ async function importRSL() {
     for (let schedule of schedules) {
       //console.log(JSON.stringify(schedule));
       await importSchedule(rslEvents, day, schedule, camps, yearFolder, folder);
-    }
-    //console.log(rslEvents);
-    break;
+    }        
   }
   writeFileSync(outputFilename, JSON.stringify(rslEvents, undefined, 2), 'utf8');
 }

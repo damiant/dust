@@ -71,7 +71,7 @@ export function dateMatches(d: Date, occurrence: OccurrenceSet): boolean {
 
 export function getDayName(dateStr: string) {
     var date = new Date(dateStr);
-    return date.toLocaleDateString([], { weekday: 'long' });
+    return date.toLocaleDateString([], { weekday: 'long' }) + ` ${date.getDate()}`;
 }
 
 export function getDayNameFromDate(date: Date): string {

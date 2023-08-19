@@ -217,6 +217,7 @@ export class FavoritesService {
     for (let rslEvent of rslEvents) {
       this.toEvent(rslEvent, eventItems);
     }
+    this.sortByStartTime(eventItems);
     this.groupEvents(eventItems);
     return eventItems;
   }
@@ -286,8 +287,11 @@ export class FavoritesService {
         }
       }
     }
-    eventItems.sort((a, b) => { return Date.parse(a.occurrence_set[0].start_time) - Date.parse(b.occurrence_set[0].start_time); });
     return eventItems;
+  }
+
+  public sortByStartTime(eventItems: Event[]) {
+    eventItems.sort((a, b) => { return Date.parse(a.occurrence_set[0].start_time) - Date.parse(b.occurrence_set[0].start_time); });
   }
 
   private groupEvents(events: Event[]) {
