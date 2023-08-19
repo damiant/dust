@@ -13,8 +13,6 @@
 - Group multiple parties into the one card
 - Show RSL events in favorites page
 - Show RSL events in the camp detail page
-- Search should work for titles
-- Search should work for times
 
 
 ## Check In

@@ -380,12 +380,9 @@ export class DataManager implements WorkerClass {
         const fDay = day ? day.toISOString().split('T')[0] : undefined;
         const today = now();
         for (let event of events) {
-
             if (this.rslEventContains(event, query) && event.day == fDay) {
                 let allOld = true;
                 for (let occurrence of event.occurrences) {
-                    occurrence.timeRange = occurrence.time;
-                    occurrence.timeRange = (occurrence.end) ? `${occurrence.time}-${occurrence.end}` : `${occurrence.time}`;
                     occurrence.old = (new Date(occurrence.endTime).getTime() - today.getTime() < 0);
                     if (!occurrence.old) {
                         allOld = false;
@@ -425,9 +422,16 @@ export class DataManager implements WorkerClass {
         if (query == '') return true;
         if (event.camp.toLowerCase().includes(query)) return true;
         if (event.artCar && event.artCar.toLowerCase().includes(query)) return true;
-        
+        if (event.title && event.title.toLowerCase().includes(query)) return true;
         for (let occurrence of event.occurrences) {
-            if (occurrence.who.toLowerCase().includes(query)) return true;
+            if (occurrence.who.toLowerCase().includes(query)) {
+                event.occurrences = event.occurrences.filter(o => o.who.toLowerCase().includes(query));
+                return true;
+            }
+            if (occurrence.timeRange.toLowerCase().includes(query)) {
+                event.occurrences = event.occurrences.filter(o => o.timeRange.toLowerCase().includes(query));
+                return true;
+            }
         }
         return false;
     }

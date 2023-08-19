@@ -1,4 +1,8 @@
 ## Changes
+
+### 1.14
+- Search in RSL for art cars, titles & times
+
 ### 1.13
 - Images are now offline and optimized in webp format
 - Fixes for missing data for previous years

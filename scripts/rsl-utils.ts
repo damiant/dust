@@ -127,11 +127,13 @@ function toOccurrence(day: string, schedule: RSLImportSchedule): RSLOccurrence {
     if (schedule.endtime != '') {
         end = new Date(endTime).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }).replace(' ', '');
     }
+    const timeRange = (end) ? `${time}-${end}` : `${time}`;
+
     return {
         who: schedule.djname,
         startTime,
         endTime,
-        timeRange: '',
+        timeRange,
         time,
         end
     }
