@@ -1,6 +1,22 @@
 
 # Roadmap
 
+- Edit friend shows the wrong address
+- Show a message when map is shown for the first time "Use 2 fingers or double tap to zoom into the map"
+- Favorites should show time highlighted (day is less important because it is grouped)
+- Rate app
+- About Dust - me, info and address
+- Black list event 44098 (Gretchen says its not supposed to be there)
+
+## RSL
+- Now tab for the next 2ish hours - filter out items
+- Group multiple parties into the one card
+- Show RSL events in favorites page
+- Show RSL events in the camp detail page
+- Search should work for titles
+- Search should work for times
+
+
 ## Check In
 - Check In Button - For events, add to check in history on the more tab
 - Only show check in if distance = near and event is between start and end
