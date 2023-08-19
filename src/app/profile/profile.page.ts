@@ -27,6 +27,7 @@ import { RateApp } from 'capacitor-rate-app';
 export class ProfilePage implements OnInit {
 
   moreClicks = 0;
+  rated = false;
   locationEnabled = false;
 
   constructor(
@@ -52,8 +53,9 @@ export class ProfilePage implements OnInit {
     if (this.moreClicks == 5) {
       this.ui.presentToast('Locations now enabled', this.toastController);
       environment.overrideLocations = true;
-      this.db.setHideLocations(false);
+      this.db.setHideLocations(false);      
       await this.db.init(this.settings.settings.dataset);
+      this.db.resume.set(new Date().toString());
     }
   }
 
@@ -65,6 +67,7 @@ export class ProfilePage implements OnInit {
   }
 
   public rate() {
+    this.rated = true;
     RateApp.requestReview();
   }
   

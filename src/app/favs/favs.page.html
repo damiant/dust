@@ -45,6 +45,6 @@
       </ion-button>
     </ion-buttons>
   </h1>
-  <app-art (artClick)="artClick($event)" [showImage]="vm.showImages" title="Favorites" [art]="art" *ngFor="let art of vm.art; trackBy: artTrackBy" />
+  <app-art (artClick)="artClick($event)" [showImage]="true" title="Favorites" [art]="art" *ngFor="let art of vm.art; trackBy: artTrackBy" />
   <div style="padding:2.5rem"></div>
 </ion-content>

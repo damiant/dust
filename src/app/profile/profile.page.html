@@ -42,7 +42,7 @@
           Share
         </ion-item>
 
-        <ion-item (click)="rate()" detail="true">
+        <ion-item [disabled]="rated" (click)="rate()" detail="true">
           <ion-icon slot="start" name="star-half-outline"></ion-icon>
           Rate
         </ion-item>

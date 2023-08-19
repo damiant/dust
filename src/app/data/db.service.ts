@@ -50,7 +50,7 @@ export class DbService {
     return await res.json();
   }
 
-  public async daysUntilStarts() {
+  public async daysUntilStarts(): Promise<number> {
     const datasets = await this.loadDatasets();
     console.log('daysUntilStarts', this.selectedYear());
     const year = (this.selectedYear() == '') ? datasets[0].year : this.selectedYear();

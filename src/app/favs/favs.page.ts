@@ -28,7 +28,6 @@ interface FavsState {
   events: Event[],
   camps: Camp[],
   art: Art[],
-  showImages: boolean,
   filters: Filter[],
   showMap: boolean,
   noFavorites: boolean,
@@ -44,7 +43,6 @@ function intitialState(): FavsState {
     events: [],
     camps: [],
     art: [],
-    showImages: true,
     filters: [Filter.Events, Filter.Camps, Filter.Art],
     showMap: false,
     noFavorites: false,
@@ -69,8 +67,8 @@ export class FavsPage implements OnInit {
   @ViewChild(IonContent) ionContent!: IonContent;
 
   constructor(
-    private fav: FavoritesService, 
-    private ui: UiService, 
+    private fav: FavoritesService,
+    private ui: UiService,
     private geo: GeoService,
     public db: DbService,
     private router: Router) {
@@ -79,13 +77,16 @@ export class FavsPage implements OnInit {
       this.fav.changed();
       this.update();
     });
+    effect(() => {
+      this.db.resume();
+      this.update();
+    });
 
     effect(() => {
       this.ui.scrollUpContent('favs', this.ionContent);
     });
     effect(() => {
       const status = this.db.networkStatus();
-      this.vm.showImages = (status == 'wifi');
     });
   }
 
@@ -220,8 +221,8 @@ export class FavsPage implements OnInit {
     this.db.checkInit();
   }
 
-  async mapEvent(event: Event) {    
-    const mp = toMapPoint(event.location);    
+  async mapEvent(event: Event) {
+    const mp = toMapPoint(event.location);
     mp.gps = await this.db.getMapPointGPS(mp);
     this.vm.mapPoints = [mp];
     this.vm.mapTitle = event.title;
