@@ -1,4 +1,6 @@
 ## Changes
+### 1.15
+- Performance improvements on art and RSL lists
 
 ### 1.14
 - RockStar Librarian events added
