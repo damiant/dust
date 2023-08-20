@@ -53,7 +53,6 @@ function initialState(): ArtState {
 export class ArtPage {
   vm: ArtState = initialState();
   private allArt: Art[] = [];
-  isScrollDisabled = false;
   @ViewChild(CdkVirtualScrollViewport) virtualScroll!: CdkVirtualScrollViewport;
 
   constructor(
@@ -110,10 +109,6 @@ export class ArtPage {
     }
   }
 
-  enableScroll() {
-    this.isScrollDisabled = false;
-  }
-
   toggleByDist() {
     this.vm.byDist = !this.vm.byDist;
     if (this.vm.byDist && !this.vm.displayedDistMessage) {
@@ -132,7 +127,7 @@ export class ArtPage {
     this.addArt(10);
     setTimeout(() => {
       (ev as InfiniteScrollCustomEvent).target.complete();
-    }, 500);
+    }, 10);
   }
 
   handleInput(event: any) {
@@ -161,6 +156,7 @@ export class ArtPage {
       coords = await this.geo.getPosition();
     }
     this.allArt = await this.db.findArts(search, coords);
+    this.vm.arts = [];
     this.addArt(10);
     this.updateAlphaIndex();
   }
