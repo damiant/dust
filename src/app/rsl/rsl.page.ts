@@ -107,7 +107,7 @@ export class RslPage implements OnInit {
     }
     const favs = await this.fav.getFavorites();
     const events = await this.db.getRSL(this.vm.search, this.vm.day, coords);
-    this.setFavorites(events, favs.rslEvents);
+    this.fav.setFavorites(events, favs.rslEvents);
     this.vm.events = events;
     this.vm.noEvents = this.vm.events.length == 0;
     this.vm.noEventsMessage = this.vm.search?.length > 0 ?
@@ -174,15 +174,6 @@ this.presentPopover(e.event, `This event is located at the ${e.artCar} art car.`
     }
     this.vm.day = this.vm.days[0].date;
     return this.vm.days[0].date;
-  }
-
-  private setFavorites(events: RSLEvent[], favs: string[]) {
-    for (let event of events) {
-      for (let occurrence of event.occurrences) {
-        occurrence.star = (favs.includes(this.fav.rslId(event, occurrence)));
-      }
-    }
-    return events;   
   }
 
   ngOnInit() {

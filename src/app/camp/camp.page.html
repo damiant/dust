@@ -61,8 +61,8 @@
       <ion-icon class="event-icon" slot="start" name="calendar-outline"></ion-icon>
       <ion-label class="bold" color="primary">{{event.camp}} - {{event.title}}</ion-label>
     </ion-item>
-    <ion-item class="small" *ngFor="let occurrence of event.occurrences">
-      <ion-label class="pad-left text">{{occurrence.timeRange}} - {{occurrence.who}}</ion-label>
+    <ion-item class="small" *ngFor="let occurrence of event.occurrences" (click)="toggleRSLStar(occurrence, event)">
+      <ion-label class="pad-left text">{{occurrence.timeRange}} - {{occurrence.who}}<ion-icon class="star" color="primary" [hidden]="!occurrence.star" name="star"></ion-icon></ion-label>
     </ion-item>
   </div>
   </ion-list>

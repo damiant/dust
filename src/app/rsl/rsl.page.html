@@ -44,4 +44,5 @@
   <div *ngIf="vm.noEvents" class="message large"><ion-text>{{vm.noEventsMessage}}</ion-text></div>
   <app-rsl-event [event]="event" (mapClick)="map($event)" (artCarClick)="artCar($event)"
     *ngFor="let event of vm.events; trackBy: eventsTrackBy"></app-rsl-event>
+    <div class="pad-top"></div>
 </ion-content>

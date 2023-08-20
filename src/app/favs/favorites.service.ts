@@ -80,6 +80,15 @@ export class FavoritesService {
     }
   }
 
+  public setFavorites(events: RSLEvent[], favs: string[]) {
+    for (let event of events) {
+      for (let occurrence of event.occurrences) {
+        occurrence.star = (favs.includes(this.rslId(event, occurrence)));
+      }
+    }
+    return events;   
+  }
+
   public async isFavEventOccurrence(id: string, occurrence: OccurrenceSet): Promise<boolean> {
     await this.ready;
     return this.starredEvent(id, occurrence);
@@ -245,11 +254,11 @@ export class FavoritesService {
         event_type: { abbr: '', label: '', id: 0},
         gpsCoords: {lat: 0, lng: 0},
         description: '',
-        slug: '',
+        slug: '',        
         print_description: `${o.who} is playing ${party}${rslEvent.artCar ? 'on the '+rslEvent.artCar+' mutant vehicle' : 'at '+rslEvent.camp}.`,
         occurrence_set: [{ start_time: o.startTime, end_time: o.endTime, star: true, old: false, happening: false, longTimeString: o.timeRange }],
         title: o.who,
-        uid: rslEvent.campUID!,
+        uid: '',// rslEvent.campUID!,
         url: undefined,
         year: 2000
       }

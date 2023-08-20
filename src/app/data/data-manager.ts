@@ -460,6 +460,7 @@ export class DataManager implements WorkerClass {
         if (event.camp.toLowerCase().includes(query)) return true;
         if (event.artCar && event.artCar.toLowerCase().includes(query)) return true;
         if (event.title && event.title.toLowerCase().includes(query)) return true;
+        if (event.location.toLowerCase().includes(query)) return true;
         for (let occurrence of event.occurrences) {
             if (occurrence.who.toLowerCase().includes(query)) {
                 event.occurrences = event.occurrences.filter(o => o.who.toLowerCase().includes(query));

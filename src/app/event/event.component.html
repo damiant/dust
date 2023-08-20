@@ -18,7 +18,7 @@
     </ion-card-subtitle>
   </ion-card-header>
   
-  <ion-card-content [routerLink]="'/event/'+ event.uid + '+' + title">
+  <ion-card-content [routerLink]="(event.uid === '') ? '.' : '/event/'+ event.uid + '+' + title">
     <ion-text class="clamp">{{event.print_description}}</ion-text>
     <ion-text class="one-line">      
       {{longTime ? event.longTimeString : event.timeString}} {{event.event_type.label}}</ion-text>

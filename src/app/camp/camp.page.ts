@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ToastController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { DbService } from '../data/db.service';
-import { Camp, Event, MapPoint, RSLEvent } from '../data/models';
+import { Camp, Event, MapPoint, RSLEvent, RSLOccurrence } from '../data/models';
 import { MapComponent } from '../map/map.component';
 import { EventPage } from '../event/event.page';
 import { FavoritesService } from '../favs/favorites.service';
@@ -35,6 +35,7 @@ export class CampPage implements OnInit {
     private db: DbService,
     private fav: FavoritesService,
     private settings: SettingsService,
+    private toastController: ToastController,
     private ui: UiService) {
   }
 
@@ -47,16 +48,27 @@ export class CampPage implements OnInit {
     this.camp = await this.db.findCamp(id);
     this.star = await this.fav.isFavCamp(this.camp.uid);
     this.events = await this.db.getCampEvents(id);
-    this.rslEvents = await this.db.getCampRSLEvents(id);
-    for (let rsl of this.rslEvents) {
+    const rslEvents = await this.db.getCampRSLEvents(id);
+    const favs = await this.fav.getFavorites();
+    
+    this.fav.setFavorites(rslEvents, favs.rslEvents);
+    for (let rsl of rslEvents) {
       rsl.camp =  this.toDate(rsl.day);
     }
-    console.log(id, this.rslEvents)
+    this.rslEvents = rslEvents;
     const mp = toMapPoint(this.camp.location_string!, { title: this.camp.name, location: this.camp.location_string!, subtitle: '' });
     this.mapPoints = [mp];
   }
 
-  toDate(d: string): string {
+  public async toggleRSLStar(occurrence: RSLOccurrence, rslEvent: RSLEvent) {
+    occurrence.star = !occurrence.star;
+    const message = await this.fav.starRSLEvent(occurrence.star, rslEvent, occurrence);
+    if (message) {
+      this.ui.presentToast(message, this.toastController);      
+    }
+  }
+
+  private toDate(d: string): string {
     const t = d.split('-');
     const day = parseInt(t[2]);
     const date =  new Date(`${d}T00:00:00`);
