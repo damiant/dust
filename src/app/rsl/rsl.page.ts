@@ -103,7 +103,7 @@ export class RslPage implements OnInit {
   }
 
   onIonInfinite(ev: any) {
-    this.addEvents(20);
+    this.addEvents(50);
     setTimeout(() => {
       (ev as InfiniteScrollCustomEvent).target.complete();
     }, 10);
@@ -121,7 +121,7 @@ export class RslPage implements OnInit {
     this.allEvents = events;
     console.timeEnd('rslEvents get');
     this.vm.events = [];
-    this.addEvents(20);
+    this.addEvents(50);
     this.vm.noEvents = this.vm.events.length == 0;
     this.vm.noEventsMessage = this.vm.search?.length > 0 ?
       `There are no events matching "${this.vm.search}".` :
