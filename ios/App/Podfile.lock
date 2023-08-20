@@ -1,11 +1,13 @@
 PODS:
-  - Capacitor (5.2.2):
+  - Capacitor (5.2.3):
     - CapacitorCordova
   - CapacitorApp (5.0.6):
     - Capacitor
   - CapacitorAppLauncher (5.0.6):
     - Capacitor
-  - CapacitorCordova (5.2.2)
+  - CapacitorBrowser (5.0.6):
+    - Capacitor
+  - CapacitorCordova (5.2.3)
   - CapacitorGeolocation (5.0.6):
     - Capacitor
   - CapacitorHaptics (5.0.6):
@@ -18,13 +20,15 @@ PODS:
     - Capacitor
   - CapacitorPreferences (5.0.6):
     - Capacitor
+  - CapacitorRateApp (4.0.3):
+    - Capacitor
   - CapacitorShare (5.0.6):
     - Capacitor
   - CapacitorSplashScreen (5.0.6):
     - Capacitor
   - CapacitorStatusBar (5.0.6):
     - Capacitor
-  - CordovaPlugins (5.2.2):
+  - CordovaPlugins (5.2.3):
     - CapacitorCordova
   - MauricewegnerCapacitorNavigationBar (2.0.3):
     - Capacitor
@@ -33,6 +37,7 @@ DEPENDENCIES:
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorApp (from `../../node_modules/@capacitor/app`)"
   - "CapacitorAppLauncher (from `../../node_modules/@capacitor/app-launcher`)"
+  - "CapacitorBrowser (from `../../node_modules/@capacitor/browser`)"
   - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorGeolocation (from `../../node_modules/@capacitor/geolocation`)"
   - "CapacitorHaptics (from `../../node_modules/@capacitor/haptics`)"
@@ -40,6 +45,7 @@ DEPENDENCIES:
   - "CapacitorLocalNotifications (from `../../node_modules/@capacitor/local-notifications`)"
   - "CapacitorNetwork (from `../../node_modules/@capacitor/network`)"
   - "CapacitorPreferences (from `../../node_modules/@capacitor/preferences`)"
+  - CapacitorRateApp (from `../../node_modules/capacitor-rate-app`)
   - "CapacitorShare (from `../../node_modules/@capacitor/share`)"
   - "CapacitorSplashScreen (from `../../node_modules/@capacitor/splash-screen`)"
   - "CapacitorStatusBar (from `../../node_modules/@capacitor/status-bar`)"
@@ -53,6 +59,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/app"
   CapacitorAppLauncher:
     :path: "../../node_modules/@capacitor/app-launcher"
+  CapacitorBrowser:
+    :path: "../../node_modules/@capacitor/browser"
   CapacitorCordova:
     :path: "../../node_modules/@capacitor/ios"
   CapacitorGeolocation:
@@ -67,6 +75,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/network"
   CapacitorPreferences:
     :path: "../../node_modules/@capacitor/preferences"
+  CapacitorRateApp:
+    :path: "../../node_modules/capacitor-rate-app"
   CapacitorShare:
     :path: "../../node_modules/@capacitor/share"
   CapacitorSplashScreen:
@@ -79,22 +89,24 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@mauricewegner/capacitor-navigation-bar"
 
 SPEC CHECKSUMS:
-  Capacitor: 070b18988e0f566728ae9a5eb3a7a974595f1626
+  Capacitor: 6f44cbc33839b8a4202b8eac97041fe584083417
   CapacitorApp: 024e1b1bea5f883d79f6330d309bc441c88ad04a
   CapacitorAppLauncher: 5a9f06c13c6b4f5d65b550a07128ef04f3a216b3
-  CapacitorCordova: 3773395d5331add072300ff6041ca2cf7b93cb0b
+  CapacitorBrowser: 6192948e0ce804fd72aaf77f4114a3ad2e08c760
+  CapacitorCordova: 35def3ebfdef491f0a7b652816eb873ff4b20bbf
   CapacitorGeolocation: 7be5f77abc205c0efe319fff8587a7183e7b0240
   CapacitorHaptics: 1fffc1217c7e64a472d7845be50fb0c2f7d4204c
   CapacitorKeyboard: b978154b024a5f65e044908e37d15b7de58b9d12
   CapacitorLocalNotifications: c2d8b14794064fd4814b1d6c4ddbac8029afa295
   CapacitorNetwork: d80b3e79bef6ec37640ee2806c19771f07ff2d0c
   CapacitorPreferences: f03954bcb0ff09c792909e46bff88e3183c16b10
+  CapacitorRateApp: 896df7ec6a237fea72d1955e0cb26394654b00db
   CapacitorShare: cd41743331cb71d217c029de54b681cbd91e0fcc
   CapacitorSplashScreen: 5fa2ab5e46cf5cc530cf16a51c80c7a986579ccd
   CapacitorStatusBar: 565c0a1ebd79bb40d797606a8992b4a105885309
-  CordovaPlugins: b86abb254538453761757afb6cdfa7c2da318e88
+  CordovaPlugins: db28ad9ca9f3a8fa7e6c95824913c0e53c9274fd
   MauricewegnerCapacitorNavigationBar: 37f1308a961a8d8cd00f6362e30bad03a73728f7
 
-PODFILE CHECKSUM: 2140fe0c064748db8f983129888bb07d267d6092
+PODFILE CHECKSUM: 21a17cd1014790b0c7b06dccfa110517de7bbc29
 
 COCOAPODS: 1.12.1

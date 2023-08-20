@@ -8,8 +8,10 @@
     </ion-content>
   </ng-template>
 </ion-popover>
-<app-message (dismissed)="enableGeoLocation()" [show]="showMessage" [title]="'Geolocation'" message="By enabling geolocation you can see where you are on the map."></app-message>
-<div [style.paddingBottom.px]="footerPadding" *ngIf="footer" class="footer"><ion-text>{{footer}}</ion-text></div>
+<app-message (dismissed)="enableGeoLocation()" [show]="showMessage" [title]="'Geolocation'"
+  message="By enabling geolocation you can see where you are on the map."></app-message>
+<div [style.paddingBottom.px]="footerPadding" *ngIf="footer" [ngClass]="isHeader ? 'header': 'footer'">
+  <ion-text>{{footer}}</ion-text></div>
 <pinch-zoom [backgroundColor]="'var(--ion-background-color)'" #zoom [style]="height" [limit-zoom]="30"
   [double-tap-scale]="4">
   <div #mapc style="height: 100%">

@@ -19,11 +19,12 @@
   <app-map-modal [title]="mapTitle" [subtitle]="mapSubtitle" [(show)]="showMap" [points]="mapPoints"></app-map-modal>
   <ion-list *ngIf="art" lines="none">
     <ion-item>
-      <h1>{{art.name}}</h1>
+      <h1 *ngIf="!art.url">{{art.name}}</h1>
+      <h1 style="color: var(--ion-color-primary)" *ngIf="art.url" (click)="open(art.url)">{{art.name}}</h1>      
     </ion-item>
     <ion-item>
       <ion-icon slot="start" name="person-outline"></ion-icon>
-      <ion-label>{{art.artist}} ({{art.hometown}})</ion-label>
+      <ion-label [color]="art.contact_email ? 'primary': ''" (click)="mailArtist()">{{art.artist}} ({{art.hometown}})</ion-label>
     </ion-item>
     <ion-item>
       <ion-icon slot="start" name="location-outline"></ion-icon>

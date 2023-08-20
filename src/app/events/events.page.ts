@@ -17,7 +17,7 @@ import { SearchComponent } from '../search/search.component';
 import { toMapPoint } from '../map/map.utils';
 import { GpsCoord } from '../map/geo.utils';
 import { GeoService } from '../geolocation/geo.service';
-import { environment } from 'src/environments/environment';
+import { SettingsService } from '../data/settings.service';
 
 interface EventsState {
   title: string,
@@ -83,32 +83,30 @@ export class EventsPage implements OnInit {
   @ViewChild(CdkVirtualScrollViewport) virtualScroll!: CdkVirtualScrollViewport;
 
   constructor(
-    public db: DbService, 
-    private ui: UiService, 
+    public db: DbService,
+    private ui: UiService,
+    private settings: SettingsService,
     private toastController: ToastController,
     private geo: GeoService
-    ) {
+  ) {
     effect(() => {
       this.ui.scrollUp('events', this.virtualScroll);
     });
     effect(() => {
       const year = this.db.selectedYear();
-      console.log(`EventsPage.yearChange ${year}`);
       this.db.checkInit();
       this.vm = initialState();
       this.init();
     });
-  }
-
-  ngOnInit() {
-    App.addListener('resume', async () => {
+    effect(async () => {
+      const r = this.db.resume();
       this.setToday(now());
-      const until = await this.db.daysUntilStarts();
-      console.log(`${until} days until event.`);
-      this.db.setHideLocations(until > 1 && !environment.overrideLocations);
       await this.db.checkEvents();
       this.update();
     });
+  }
+
+  ngOnInit() {
   }
 
   ionViewDidEnter() {
@@ -145,7 +143,7 @@ export class EventsPage implements OnInit {
   }
 
   private chooseDefaultDay(today: Date): Date | string {
-    for (const day of this.vm.days) {      
+    for (const day of this.vm.days) {
       if (day.date && sameDay(day.date, today)) {
         this.vm.day = day.date;
         this.db.selectedDay.set(this.vm.day);
@@ -158,7 +156,7 @@ export class EventsPage implements OnInit {
   }
 
   setToday(today: Date) {
-    for (const day of this.vm.days) {      
+    for (const day of this.vm.days) {
       day.today = sameDay(day.date, today);
     }
   }
@@ -197,7 +195,7 @@ export class EventsPage implements OnInit {
       this.vm.title = 'Now';
       return;
     }
-    this.vm.title = (!sameDay(day,noDate())) ? day.toLocaleDateString('en-US', { weekday: 'long' }) : 'Events';
+    this.vm.title = (!sameDay(day, noDate())) ? day.toLocaleDateString('en-US', { weekday: 'long' }) : 'Events';
   }
 
   map(event: Event) {
@@ -207,7 +205,7 @@ export class EventsPage implements OnInit {
     this.vm.showMap = true;
   }
 
-  async update(scrollToTop?: boolean) {    
+  async update(scrollToTop?: boolean) {
     let coords: GpsCoord | undefined = undefined;
     if (this.vm.byDist) {
       coords = await this.geo.getPosition();
@@ -215,14 +213,15 @@ export class EventsPage implements OnInit {
 
     const timeRange = this.vm.isNow ? nowRange() : undefined;
     this.vm.timeRange = timeRangeToString(timeRange);
-    
+
     this.vm.events = await this.db.findEvents(
       this.vm.search, // Search terms
       this.vm.day, // Selected day
       this.vm.category, // Filtered category
       coords, // Geolocation
-      timeRange // Time Range
-      );
+      timeRange, // Time Range
+      this.settings.settings.longEvents // Filter events > 6 hrs
+    );
     this.vm.noEvents = this.vm.events.length == 0;
     this.vm.noEventsMessage = this.noEventsMessage();
     if (scrollToTop) {
@@ -237,6 +236,6 @@ export class EventsPage implements OnInit {
     } else if (this.vm.isNow) {
       return `There are no events starting ${this.vm.timeRange}`;
     }
-    return  'All the events for this day have concluded.';
+    return 'All the events for this day have concluded.';
   }
 }

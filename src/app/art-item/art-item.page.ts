@@ -59,8 +59,13 @@ export class ArtItemPage implements OnInit {
       const gps = { lng: this.art.location.gps_longitude, lat: this.art.location.gps_latitude };
       point = await this.db.gpsToMapPoint(gps, undefined);
     }
+    point.info = { title: this.art.name, subtitle: '', location: '' }
     this.mapPoints.push(point);
     this.star = await this.fav.isFavArt(this.art.uid);
+  }
+
+  open(url: string) {
+    this.ui.openUrl(url);
   }
 
   map() {
@@ -75,6 +80,11 @@ export class ArtItemPage implements OnInit {
     if (!this.art) return;
     this.star = !this.star;
     await this.fav.starArt(this.star, this.art.uid);
+  }
+
+  mailArtist() {
+    if (!this.art?.contact_email) return;
+    window.open('mailto:'+this.art?.contact_email);
   }
 
   share() {

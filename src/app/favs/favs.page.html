@@ -22,12 +22,18 @@
       <app-search placeholder="Find Favorites" (search)="searchFavs($event)" />
     </ion-toolbar>
   </ion-header>
+  <ion-action-sheet
+  [isOpen]="vm.isActionSheetOpen"
+  header="Actions"
+  [buttons]="actionSheetButtons"
+  (didDismiss)="sheetAction($event)"
+></ion-action-sheet>
   <app-map-modal [title]="vm.mapTitle" [subtitle]="vm.mapSubtitle" [(show)]="vm.showMap" [points]="vm.mapPoints"></app-map-modal>
   <div *ngIf="vm.noFavorites" class="center pad-top pad-sides">
     <ion-text class="large" color="medium">Press the <ion-icon [src]="'assets/icon/star.svg'"></ion-icon> icon on Events, Theme Camps and
       Art to add them here.</ion-text>
   </div>
-  <app-event (groupClick)="groupClick($event)" title="Favorites" (mapClick)="mapEvent($event)" [event]="event" [longTime]="true"
+  <app-event (rslClick)="rslClick($event)" (groupClick)="groupClick($event)" title="Favorites" (mapClick)="mapEvent($event)" [event]="event" [longTime]="true"
     *ngFor="let event of vm.events; trackBy: eventsTrackBy" />
   <h1 class="flex" *ngIf="vm.camps.length > 0">Camps
     <ion-buttons slot="end">
@@ -45,6 +51,6 @@
       </ion-button>
     </ion-buttons>
   </h1>
-  <app-art (artClick)="artClick($event)" [showImage]="vm.showImages" title="Favorites" [art]="art" *ngFor="let art of vm.art; trackBy: artTrackBy" />
+  <app-art (artClick)="artClick($event)" [showImage]="true" title="Favorites" [art]="art" *ngFor="let art of vm.art; trackBy: artTrackBy" />
   <div style="padding:2.5rem"></div>
 </ion-content>

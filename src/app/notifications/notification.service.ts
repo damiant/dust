@@ -2,7 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { LocalNotificationDescriptor, LocalNotifications } from '@capacitor/local-notifications';
 import { OccurrenceSet } from '../data/models';
-import { getDayName, noDate, now, randomInt, time } from '../utils/utils';
+import { BurningManTimeZone, getDayName, noDate, now, randomInt, time } from '../utils/utils';
 
 export interface Reminder {
   title: string,
@@ -54,7 +54,7 @@ export class NotificationService {
           reminder.when = this.reminderTime(start);
           if (!this.sameDate(last, reminder.when)) {
             await this.schedule(reminder);
-            message = `You'll be notified ${reminder.comment} on ${getDayName(reminder.when.toString())} at ${time(reminder.when)}`;
+            message = `You'll be notified ${reminder.comment} on ${getDayName(reminder.when.toLocaleString("en-US", { timeZone: BurningManTimeZone }))} at ${time(reminder.when)}`;
             count++;
           }
           last = reminder.when;
@@ -87,7 +87,7 @@ export class NotificationService {
 
   private reminderTime(d: Date): Date {
     let when = d;
-    when.setMinutes(when.getMinutes() - 5);
+    when.setMinutes(when.getMinutes() - 15);
     if (this.hasHappened(when)) {
       const soon = now();
       soon.setMinutes(soon.getMinutes() + 1);

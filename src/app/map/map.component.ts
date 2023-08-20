@@ -4,13 +4,13 @@ import { PinchZoomModule } from '@meddv/ngx-pinch-zoom';
 import { LocationEnabledStatus, MapInfo, MapPoint, Pin } from '../data/models';
 import { IonicModule } from '@ionic/angular';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { defaultMapRadius, distance, formatDistanceMiles, mapPointToPin } from './map.utils';
+import { defaultMapRadius, distance, formatDistanceMiles, mapPointToPin, toMapPoint } from './map.utils';
 import { delay } from '../utils/utils';
 import { GeoService } from '../geolocation/geo.service';
 import { SettingsService } from '../data/settings.service';
 import { MessageComponent } from '../message/message.component';
 import { CompassError, CompassHeading } from './compass';
-import { GpsCoord, NoGPSCoord, Point } from './geo.utils';
+import { GpsCoord, Point } from './geo.utils';
 
 interface MapInformation {
   width: number; // Width of the map
@@ -22,7 +22,7 @@ interface MapInformation {
 const geolocateInterval = 10000;
 
 // Offset x,y in pixel of the "you are here" pin
-const youOffsetX = - 4;
+const youOffsetX = 6;
 const youOffsetY = 4;
 
 @Component({
@@ -49,21 +49,39 @@ export class MapComponent implements OnInit, OnDestroy {
   src = 'assets/map.svg';
   showMessage = false;
   pins: Pin[] = [];
+  divs: HTMLDivElement[] = [];
   private geoInterval: any;
-  private gpsCoord: GpsCoord = NoGPSCoord();
+  private nearestPoint: number | undefined;
+  //private gpsCoord: GpsCoord = NoGPSCoord();
   private you: HTMLDivElement | undefined;
   private watchId: any;
   private mapInformation: MapInformation | undefined;
+  private compass: HTMLImageElement | undefined;
+  private _viewReady = false;
+
   @ViewChild('zoom') zoom!: ElementRef;
   @ViewChild('map') map!: ElementRef;
   @ViewChild('mapc') mapc!: ElementRef;
   @Input() height: string = 'height: 100%';
   @Input() footerPadding: number = 0;
+  @Input() isHeader: boolean = false;
   @Input('points') set setPoints(points: MapPoint[]) {
     this.points = points;
     if (this.points.length > 0) {
-      this.update();
+      console.log('points changed');
+      this.fixGPSAndUpdate();
     }
+  }
+
+  private async fixGPSAndUpdate() {
+    for (let point of this.points) {
+      if (!point.gps) {
+        point.gps = await this.geo.getMapPointToGPS(point);
+        console.warn(`GPS point found for point`, point.gps);
+      }
+    }
+    await delay(150);
+    this.update();
   }
 
   ready() {
@@ -82,33 +100,63 @@ export class MapComponent implements OnInit, OnDestroy {
     private geo: GeoService,
     private settings: SettingsService) {
     this.points = [];
+    effect(async () => {
+      const gpsPos = this.geo.gpsPosition();
+      console.warn(`GPS Signal changed`, gpsPos);
+      await this.viewReady();
+      await this.displayYourLocation(gpsPos);
+    });
+    effect(async () => {
+      const heading = this.geo.heading();
+      await this.viewReady();
+      this.displayCompass(heading);
+    });
+  }
+
+  private async viewReady(): Promise<void> {
+     while (!this._viewReady) {
+      await delay(50);
+     }
   }
 
   ngOnInit() {
     const darkMode = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
     this.src = darkMode ? 'assets/map-dark.svg' : 'assets/map.svg';
-    //Plots every point
-    // setTimeout(() => {
-    //   for (let clock = 2; clock <= 10; clock += 0.25) {
-    //     for (const street of streets) {
-    //       this.plot(clock, street);
-    //     }
-    //   }
-    // }, 2000);
   }
 
-  private async displayYouAreHere() {
-    this.gpsCoord = await this.geo.getPosition();
-    const pt = await this.geo.gpsToPoint(this.gpsCoord, this.mapInformation!.circleRadius);
+  private async updateLocation() {
+    await this.geo.getPosition();
+  }
+
+  private displayCompass(heading: CompassHeading) {
+    if (!this.compass) {
+      console.error(`Got compass heading but compass element is not defined`);
+      return;
+    }
+    // The 45 degrees here is based on the BM map that has North at 45 degrees.
+    let degree = Math.trunc(heading.trueHeading) - 45;
+    if (degree < 0) {
+      degree += 360;
+    }
+    this.compass.style.transform = `rotate(${degree}deg)`;
+    this.compass.style.visibility = 'visible';
+
+  };
+
+  private async displayYourLocation(gpsCoord: GpsCoord) {
+    //this.gpsCoord = await this.geo.getPosition();
+    const pt = await this.geo.gpsToPoint(gpsCoord);
     if (!this.you) {
-      this.you = this.plotXY(pt.x, pt.y, undefined, 'var(--ion-color-secondary)');
+      // First time setup
+      this.you = this.plotXY(pt.x, pt.y, youOffsetX, youOffsetY, undefined, 'var(--ion-color-secondary)');
       this.setupCompass(this.you);
+      // Displays using cached value if available
+      this.displayCompass(this.geo.heading());
     } else {
       const sz = parseInt(this.you.style.width.replace('px', ''));
-
       this.movePoint(this.you, this.pointShift(pt.x, pt.y, sz, youOffsetX, youOffsetY));
-    }
-    this.calculateNearest(this.gpsCoord);
+    }    
+    await this.calculateNearest(gpsCoord);
   }
 
   private setMapInformation() {
@@ -121,19 +169,24 @@ export class MapComponent implements OnInit, OnDestroy {
     }
   }
   async update() {
-    await delay(150);
     this.setMapInformation();
-
+    let idx = 0;
+    this.divs = [];
     for (let point of this.points) {
       const pin = mapPointToPin(point, defaultMapRadius);
       if (pin) {
-        const div = this.plotXY(pin.x, pin.y, point.info);
-        (point as any).div = div;
+        const div = this.plotXY(pin.x, pin.y, 6, 0, point.info, undefined);
+        this.divs.push(div);
+      } else {
+        console.error(`Point could not be converted to pin`);
       }
+      idx++;
     }
+    this._viewReady = true;
     await this.checkGeolocation();
-
   }
+
+
 
   private async checkGeolocation() {
     if (this.settings.settings.locationEnabled === LocationEnabledStatus.Unknown) {
@@ -152,67 +205,78 @@ export class MapComponent implements OnInit, OnDestroy {
     }
 
     try {
-      await this.displayYouAreHere();
+      // Used the cached location if available
+      this.displayYourLocation(this.geo.gpsPosition());
+      // This doesnt call await so that it will show immediately
+      this.updateLocation();
 
       this.geoInterval = setInterval(async () => {
-        await this.displayYouAreHere();
+        await this.updateLocation();
       }, geolocateInterval);
     } catch (err) {
       console.error('checkGeolocation.error', err);
     }
   }
 
-  private calculateNearest(you: GpsCoord) {
+  private async calculateNearest(you: GpsCoord) {
     let least = 999999;
     let closest: MapPoint | undefined;
+    let closestIdx = 0;
+    let idx = 0;
     for (let point of this.points) {
+      
       if (!point.gps || !point.gps.lat) {
         console.error(`MapPoint is missing gps coordinate: ${JSON.stringify(point)}`);
-      } else {
+      }
+      if (point.gps) {
         const dist = distance(you, point.gps);
         if (dist < least) {
           least = dist;
           closest = point;
-          console.log('*** found dist', dist, closest);
+          closestIdx = idx;
         }
       }
+      idx++;
     }
     if (closest) {
-      const div: HTMLDivElement = (closest as any).div;
-      div.style.animationName = `pin`;
-      div.style.animationDuration = '2s';
-      const prefix = this.points.length > 1 ? 'The closest' : closest.info?.title;
+      this.nearestPoint = closestIdx;
+
+      if (this.nearestPoint) {
+        const div = this.divs[this.nearestPoint];
+        console.log('Found nearest pin and animated');
+        div.style.animationName = `pin`;
+        div.style.animationDuration = '2s';
+      }
+
+      const prefix = this.points.length > 1 ? 'The closest is ' : '';
       const dist = formatDistanceMiles(least);
-      if (dist != '') {
-        this.footer = `${prefix} is ${dist} away.`;
+      if (least > 50) {
+        this.footer = 'You are outside of BRC';
       } else {
-        this.footer = ``;
-        console.error(`Unable to find a close point`);
+        if (dist != '') {
+          this.footer = `${prefix}${dist} away.`;
+        } else {
+          this.footer = ``;
+          console.error(`Unable to find a close point`);
+        }
       }
     }
   }
 
   private setupCompass(div: HTMLDivElement) {
-    const compass = this.createCompass(div);
+    this.compass = this.createCompass(div);
 
     // Plugin is undefined on web
     if (!(navigator as any).compass) return;
 
     this.watchId = (navigator as any).compass.watchHeading(
       (heading: CompassHeading) => {
-        // The 45 degrees here is based on the BM map that has North at 45 degrees.
-        let degree = Math.trunc(heading.trueHeading) - 45;
-        if (degree < 0) {
-          degree += 360;
-        }
-        compass.style.transform = `rotate(${degree}deg)`;
-        compass.style.visibility = 'visible';
+        this.geo.heading.set(heading);
       },
       this.compassError, { frequency: 1000 });
   }
 
   ngOnDestroy(): void {
-    console.log('map component destroy')
     if (this.watchId) {
       (navigator as any).compass.clearWatch(this.watchId);
       this.watchId = undefined;
@@ -250,12 +314,12 @@ export class MapComponent implements OnInit, OnDestroy {
     div.style.top = `${pt.y}px`;
   }
 
-  private plotXY(x: number, y: number, info?: MapInfo, bgColor?: string): HTMLDivElement {
-    const sz = (info || bgColor) ? 10 : 5;
+  private plotXY(x: number, y: number, ox: number, oy: number, info?: MapInfo, bgColor?: string): HTMLDivElement {
+    const sz = (info || bgColor) ? 10 : 8;
     if (info && info.location) {
-      this.placeLabel(this.pointShift(x, y, 0, -7, -7), info);
+      this.placeLabel(this.pointShift(x, y, 0, 0, -7), info);
     }
-    return this.createPin(sz, this.pointShift(x, y, sz, youOffsetX, youOffsetY), info, bgColor);
+    return this.createPin(sz, this.pointShift(x, y, sz, ox, oy), info, bgColor);
   }
 
 

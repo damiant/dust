@@ -15,7 +15,7 @@ export class SettingsService {
     try {
       return JSON.parse(localStorage['settings']);
     } catch {
-      return { dataset: '', lastDownload: '', eventTitle: '', locationEnabled: LocationEnabledStatus.Unknown };
+      return { dataset: '', lastDownload: '', eventTitle: '', locationEnabled: LocationEnabledStatus.Unknown, longEvents: false };
     }
   }
 

@@ -1,4 +1,21 @@
 ## Changes
+
+### 1.14
+- RockStar Librarian events added
+- Editting a friend was not showing the right address
+- Feature to Rate app
+- Added about page
+- Reminders are now 15 minutes before event
+- Filter added for long events
+
+### 1.13
+- Images are now offline and optimized in webp format
+- Fixes for missing data for previous years
+- Optimization of data format
+- Links for art added
+- Links open in browser
+- Show if outside of BRC
+
 ### 1.12
 - Added "now" to events to show events starting in the next hour (or running for up to 20 mins)
 - Use GPS coords for restrooms

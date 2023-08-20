@@ -1,6 +1,6 @@
 <ion-modal [isOpen]="show" (didDismiss)="close()"  [initialBreakpoint]="0.60" [breakpoints]="[0, 0.60, 0.75]">
   <ng-template>
-    <app-map [points]="points"></app-map>
+    <app-map [isHeader]="true" [points]="points"></app-map>
     <div class="float">
       <h2>{{title}}</h2>
       <ion-text>{{subtitle}}</ion-text>

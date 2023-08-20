@@ -11,7 +11,7 @@ import { GeoService } from '../geolocation/geo.service';
 import { SearchComponent } from '../search/search.component';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { SkeletonEventComponent } from '../skeleton-event/skeleton-event.component';
-import { RslEventComponent } from '../rsl-event/rsl-event.component';
+import { ArtCarEvent, RslEventComponent } from '../rsl-event/rsl-event.component';
 import { toMapPoint } from '../map/map.utils';
 import { FavoritesService } from '../favs/favorites.service';
 
@@ -29,6 +29,8 @@ interface RSLState {
   noEventsMessage: string,
   mapPoints: MapPoint[],
   day: Date,
+  isOpen: boolean,
+  message: string,
   displayedDistMessage: boolean
 }
 
@@ -46,6 +48,8 @@ function initialState(): RSLState {
     noEvents: false,
     noEventsMessage: '',
     day: noDate(),
+    isOpen: false,
+    message: '',
     defaultDay: 'all',
     displayedDistMessage: false
   }
@@ -63,6 +67,7 @@ export class RslPage implements OnInit {
 
   vm: RSLState = initialState();
   @ViewChild(IonContent) ionContent!: IonContent;
+  @ViewChild('popover') popover: any;
   constructor(
     private ui: UiService,
     private db: DbService,
@@ -74,7 +79,6 @@ export class RslPage implements OnInit {
     });
     effect(() => {
       const year = this.db.selectedYear();
-      console.log(`RSLPage.yearChange ${year}`);
       this.db.checkInit();
       this.vm = initialState();
       this.init();
@@ -93,6 +97,7 @@ export class RslPage implements OnInit {
 
     this.vm.days = await this.db.getDays();
     this.vm.defaultDay = this.chooseDefaultDay(now());
+    this.updateTitle();
     await this.update();
   }
 
@@ -103,7 +108,7 @@ export class RslPage implements OnInit {
     }
     const favs = await this.fav.getFavorites();
     const events = await this.db.getRSL(this.vm.search, this.vm.day, coords);
-    this.setFavorites(events, favs.rslEvents);
+    this.fav.setFavorites(events, favs.rslEvents);
     this.vm.events = events;
     this.vm.noEvents = this.vm.events.length == 0;
     this.vm.noEventsMessage = this.vm.search?.length > 0 ?
@@ -112,6 +117,20 @@ export class RslPage implements OnInit {
     if (scrollToTop) {
       this.ui.scrollUpContent('rsl', this.ionContent);
     }
+  }
+
+  public artCar(e: ArtCarEvent) {
+    this.presentPopover(e.event, `This event is located at the ${e.artCar} art car.`);
+  }
+
+  public rslLogo() {
+    this.ui.openUrl('https://www.rockstarlibrarian.com/');
+  }
+
+  async presentPopover(e: Event, message: string) {
+    this.popover.event = e;
+    this.vm.message = message;
+    this.vm.isOpen = true;
   }
 
 
@@ -159,15 +178,6 @@ export class RslPage implements OnInit {
     }
     this.vm.day = this.vm.days[0].date;
     return this.vm.days[0].date;
-  }
-
-  private setFavorites(events: RSLEvent[], favs: string[]) {
-    for (let event of events) {
-      for (let occurrence of event.occurrences) {
-        occurrence.star = (favs.includes(this.fav.rslId(event, occurrence)));
-      }
-    }
-    return events;   
   }
 
   ngOnInit() {

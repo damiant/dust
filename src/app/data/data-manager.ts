@@ -1,7 +1,7 @@
 import { WorkerClass } from './worker-interface';
 import { Art, Camp, DataMethods, Day, Event, GPSSet, GeoRef, LocationName, MapPoint, MapSet, Pin, RSLEvent, Revision, TimeRange, TimeString } from './models';
-import { BurningManTimeZone, getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from '../utils/utils';
-import { defaultMapRadius, distance, formatDistance, locationStringToPin, mapPointToPoint, maxDistance, toClock, toStreetRadius } from '../map/map.utils';
+import { BurningManTimeZone, CurrentYear, getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from '../utils/utils';
+import { defaultMapRadius, distance, formatDistance, locationStringToPin, mapPointToPoint } from '../map/map.utils';
 import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from '../map/geo.utils';
 
 interface TimeCache {
@@ -31,6 +31,7 @@ export class DataManager implements WorkerClass {
             case DataMethods.SetDataset: return this.setDataset(args[0], args[1], args[2], args[3], args[4]);
             case DataMethods.GetEvents: return this.getEvents(args[0], args[1]);
             case DataMethods.GetEventList: return this.getEventList(args[0]);
+            case DataMethods.GetRSLEventList: return this.getRSLEventList(args[0]);
             case DataMethods.GetCampList: return this.getCampList(args[0]);
             case DataMethods.GetArtList: return this.getArtList(args[0]);
             case DataMethods.FindArts: return this.findArts(args[0], args[1]);
@@ -40,14 +41,15 @@ export class DataManager implements WorkerClass {
             case DataMethods.SetMapPointsGPS: return this.setMapPointsGPS(args[0]);
             case DataMethods.GetMapPoints: return this.getMapPoints(args[0]);
             case DataMethods.GetGPSPoints: return this.getGPSPoints(args[0], args[1]);
-            case DataMethods.GetRSLEvents: return await this.getRSLEvents(args[0], args[1], args[2]);
+            case DataMethods.GetRSLEvents: return await this.getRSLEvents(args[0], args[1], args[2], undefined, undefined);
             case DataMethods.CheckEvents: return this.checkEvents(args[0]);
-            case DataMethods.FindEvents: return this.findEvents(args[0], args[1], args[2], args[3], args[4]);
+            case DataMethods.FindEvents: return this.findEvents(args[0], args[1], args[2], args[3], args[4], args[5]);
             case DataMethods.FindCamps: return this.findCamps(args[0], args[1]);
             case DataMethods.FindEvent: return this.findEvent(args[0]);
             case DataMethods.FindCamp: return this.findCamp(args[0]);
             case DataMethods.GetGeoReferences: return this.getGeoReferences();
             case DataMethods.GetCampEvents: return this.getCampEvents(args[0]);
+            case DataMethods.GetCampRSLEvents: return await this.getRSLEvents('', undefined, undefined, undefined, args[0]);
             case DataMethods.GetCamps: return this.getCamps(args[0], args[1]);
             default: console.error(`Unknown method ${method}`);
         }
@@ -196,6 +198,7 @@ export class DataManager implements WorkerClass {
         this.categories = [];
         this.allEventsOld = !this.checkEvents();
         for (let event of this.events) {
+            let allLong = true;
             if (!this.categories.includes(event.event_type.label)) {
                 this.categories.push(event.event_type.label);
             }
@@ -240,18 +243,25 @@ export class DataManager implements WorkerClass {
                 event.print_description = event.description;
             }
 
-            for (let occurrence of event.occurrence_set) {
+            // Events over 6 hours are no worth it
+            // event.occurrence_set = event.occurrence_set.filter(o => {
+            //     let start: Date = new Date(o.start_time);
+            //     let end: Date = new Date(o.end_time);
+            //     const hrs = this.hoursBetween(start, end);
+            //     return hrs <= 6;
+            // });
 
+            for (let occurrence of event.occurrence_set) {
                 let start: Date = new Date(occurrence.start_time);
                 let end: Date = new Date(occurrence.end_time);
                 this.addDay(start);
                 const hrs = this.hoursBetween(start, end);
                 if (hrs > 24) {
-                    //const old = occurrence.end_time;
                     occurrence.end_time = new Date(start.getFullYear(), start.getMonth(), start.getDate(), end.getHours(), end.getMinutes()).toLocaleString('en-US', { timeZone: BurningManTimeZone })
-                    //const newHrs = this.hoursBetween(new Date(occurrence.start_time), new Date(occurrence.end_time));
                     end = new Date(occurrence.end_time);
-                    //console.log(`Fixed end time of ${event.title} from ${old}=>${occurrence.end_time} (starting ${occurrence.start_time}) because event was ${hrs} hours long. Now ${newHrs} hours long.`);
+                }
+                if (hrs <= 6) {
+                    allLong = false;
                 }
 
                 // Change midnight to 11:49 so that it works with the sameday function
@@ -266,6 +276,7 @@ export class DataManager implements WorkerClass {
             const timeString = this.getTimeString(event, undefined);
             event.timeString = timeString.short;
             event.longTimeString = timeString.long;
+            event.all_day = allLong;
         }
         this.categories.sort();
         this.cache = {};
@@ -304,6 +315,11 @@ export class DataManager implements WorkerClass {
         }
         this.sortEvents(result);
         return result;
+    }
+
+    public async getRSLEventList(ids: string[]): Promise<RSLEvent[]> {
+        console.log('getRSLEventList', ids)
+        return await this.getRSLEvents('', undefined, undefined, ids, undefined);
     }
 
     public getCampList(ids: string[]): Camp[] {
@@ -372,7 +388,11 @@ export class DataManager implements WorkerClass {
         return undefined;
     }
 
-    public async getRSLEvents(query: string, day: Date | undefined, coords: GpsCoord | undefined): Promise<RSLEvent[]> {
+    private nullOrEmpty(s: string | undefined): boolean {
+        return (s == undefined || s == '');
+    }
+
+    public async getRSLEvents(query: string, day: Date | undefined, coords: GpsCoord | undefined, ids?: string[] | undefined, campId?: string | undefined): Promise<RSLEvent[]> {
         const res = await fetch(this.path('rsl'));
         const events: RSLEvent[] = await res.json();
         const result: RSLEvent[] = [];
@@ -380,15 +400,28 @@ export class DataManager implements WorkerClass {
         const fDay = day ? day.toISOString().split('T')[0] : undefined;
         const today = now();
         for (let event of events) {
-
-            if (this.rslEventContains(event, query) && event.day == fDay) {
+            let match = false;
+            if (campId) {
+                match = (event.campUID == campId && this.nullOrEmpty(event.artCar));
+            } else {
+                match = (this.rslEventContains(event, query) && (event.day == fDay || !!ids));
+            }
+            
+            if (match) {
                 let allOld = true;
                 for (let occurrence of event.occurrences) {
-                    occurrence.timeRange = occurrence.time;
-                    occurrence.timeRange = (occurrence.end) ? `${occurrence.time}-${occurrence.end}` : `${occurrence.time}`;
                     occurrence.old = (new Date(occurrence.endTime).getTime() - today.getTime() < 0);
                     if (!occurrence.old) {
                         allOld = false;
+                    }
+                }
+                if (ids) {
+                    event.occurrences = event.occurrences.filter(o => {
+                        const id = `${event.id}-${o.id}`;
+                        return ids.includes(id);
+                    });
+                    if (event.occurrences.length == 0) {
+                        allOld = true; // Don't include
                     }
                 }
                 if (!allOld) {
@@ -401,6 +434,8 @@ export class DataManager implements WorkerClass {
         }
         if (coords) {
             this.sortRSLEventsByDistance(result);
+        } else if (campId) {
+            this.sortRSLEventsByDay(result);
         } else {
             this.sortRSLEventsByName(result);
         }
@@ -414,6 +449,9 @@ export class DataManager implements WorkerClass {
         return query;
     }
 
+    private sortRSLEventsByDay(events: RSLEvent[]) {
+        events.sort((a: RSLEvent, b: RSLEvent) => { return new Date(a.day).getTime() - new Date(b.day).getTime(); });
+    }
     private sortRSLEventsByName(events: RSLEvent[]) {
         events.sort((a: RSLEvent, b: RSLEvent) => { return a.camp.localeCompare(b.camp); });
     }
@@ -424,19 +462,29 @@ export class DataManager implements WorkerClass {
     private rslEventContains(event: RSLEvent, query: string): boolean {
         if (query == '') return true;
         if (event.camp.toLowerCase().includes(query)) return true;
+        if (event.artCar && event.artCar.toLowerCase().includes(query)) return true;
+        if (event.title && event.title.toLowerCase().includes(query)) return true;
+        if (event.location.toLowerCase().includes(query)) return true;
         for (let occurrence of event.occurrences) {
-            if (occurrence.who.toLowerCase().includes(query)) return true;
+            if (occurrence.who.toLowerCase().includes(query)) {
+                event.occurrences = event.occurrences.filter(o => o.who.toLowerCase().includes(query));
+                return true;
+            }
+            if (occurrence.timeRange.toLowerCase().includes(query)) {
+                event.occurrences = event.occurrences.filter(o => o.timeRange.toLowerCase().includes(query));
+                return true;
+            }
         }
         return false;
     }
 
-    public findEvents(query: string, day: Date | undefined, category: string, coords: GpsCoord | undefined, timeRange: TimeRange | undefined): Event[] {
+    public findEvents(query: string, day: Date | undefined, category: string, coords: GpsCoord | undefined, timeRange: TimeRange | undefined, allDay: boolean): Event[] {
         const result: Event[] = [];
         if (query) {
             query = this.scrubQuery(query);
         }
         for (let event of this.events) {
-            if (this.eventContains(query, event) && this.eventIsCategory(category, event) && this.onDay(day, event, timeRange)) {
+            if (this.eventContains(query, event, allDay) && this.eventIsCategory(category, event) && this.onDay(day, event, timeRange)) {
                 const timeString = this.getTimeString(event, day);
                 event.timeString = timeString.short;
                 event.longTimeString = timeString.long;
@@ -578,7 +626,10 @@ export class DataManager implements WorkerClass {
         return result;
     }
 
-    private eventContains(terms: string, event: Event): boolean {
+    private eventContains(terms: string, event: Event, allDay: boolean): boolean {
+        if (!allDay) {
+            if (event.all_day) return false;
+        }
         return (terms == '') ||
             (event.title.toLowerCase().includes(terms) ||
                 event.camp?.toLowerCase().includes(terms) ||
@@ -605,19 +656,22 @@ export class DataManager implements WorkerClass {
         return false;
     }
 
-    private addDay(date: Date) {
-        const name = date.toLocaleDateString();
+    private addDay(date: Date) {        
         const day = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
         if (!this.days.includes(day)) {
             this.days.push(day);
         }
     }
 
-    private path(name: string): string {
+    private path(name: string, online?: boolean): string {
+        console.log(this.dataset);
+        if (this.dataset !== CurrentYear && online) {
+           return `https://dust.events/assets/data/${this.dataset}/${name}.json`;
+        }
         return `assets/${this.dataset}/${name}.json`;
     }
     private async loadEvents(): Promise<Event[]> {
-        const res = await fetch(this.path('events'));
+        const res = await fetch(this.path('events', true));
         return await res.json();
     }
 
@@ -653,12 +707,12 @@ export class DataManager implements WorkerClass {
     }
 
     private async loadCamps(): Promise<Camp[]> {
-        const res = await fetch(this.path('camps'));
+        const res = await fetch(this.path('camps', true));
         return await res.json();
     }
 
     private async loadArt(): Promise<Art[]> {
-        const res = await fetch(this.path('art'));
+        const res = await fetch(this.path('art', true));
         return await res.json();
     }
 

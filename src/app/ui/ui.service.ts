@@ -1,13 +1,13 @@
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Injectable, signal } from '@angular/core';
-import { delay, randomInt } from '../utils/utils';
+import { randomInt } from '../utils/utils';
 import { IonContent, NavController, ToastController } from '@ionic/angular';
-import { SplashScreen } from '@capacitor/splash-screen';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
 import { NavigationBar } from '@mauricewegner/capacitor-navigation-bar';
 import { Share, ShareOptions } from '@capacitor/share';
 import { Router } from '@angular/router';
+import { Browser } from '@capacitor/browser';
 
 export const ThemePrimaryColor = '#F61067';
 
@@ -51,12 +51,27 @@ export class UiService {
     }
   }
 
-  public async presentToast(message: string, toastController: ToastController) {
+  public async openUrl(url: string) {
+    await Browser.open({ url, presentationStyle: 'popover' });
+  }
+
+  public async presentToast(message: string, toastController: ToastController, position?: any) {
     const toast = await toastController.create({
       message,
       color: 'primary',
       duration: 1500,
-      position: 'top',
+      position: position ? position : 'top',
+    });
+
+    await toast.present();
+  }
+
+  public async presentDarkToast(message: string, toastController: ToastController) {
+    const toast = await toastController.create({
+      message,
+      color: 'dark',
+      duration: 2500,
+      position: 'middle',
     });
 
     await toast.present();

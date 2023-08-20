@@ -6,6 +6,7 @@ export function sameDay(d1: Date, d2: Date) {
 }
 
 export const BurningManTimeZone = 'America/Los_Angeles';
+export const CurrentYear = 'ttitd-2023';
 
 export function now(): Date {
     if (!environment.simulatedTime) {
@@ -71,12 +72,16 @@ export function dateMatches(d: Date, occurrence: OccurrenceSet): boolean {
 
 export function getDayName(dateStr: string) {
     var date = new Date(dateStr);
-    return date.toLocaleDateString([], { weekday: 'long' });
+    return date.toLocaleDateString([], { weekday: 'long' }) + ` ${getOrdinalNum(date.getDate())}`;
 }
 
 export function getDayNameFromDate(date: Date): string {
     return date.toLocaleDateString([], { weekday: 'long' });
 }
+
+export function getOrdinalNum(n: number) {
+    return n + (n > 0 ? ['th', 'st', 'nd', 'rd'][(n > 3 && n < 21) || n % 10 > 3 ? 0 : n % 10] : '');
+  }
 
 export function daysUntil(date1: any, date2: any) {
     // The number of milliseconds in one day

@@ -28,13 +28,14 @@ interface FavsState {
   events: Event[],
   camps: Camp[],
   art: Art[],
-  showImages: boolean,
   filters: Filter[],
   showMap: boolean,
   noFavorites: boolean,
   mapTitle: string,
   search: string,
   mapSubtitle: string,
+  rslId: string | undefined,
+  isActionSheetOpen: boolean,
   mapPoints: MapPoint[]
 }
 
@@ -44,13 +45,14 @@ function intitialState(): FavsState {
     events: [],
     camps: [],
     art: [],
-    showImages: true,
     filters: [Filter.Events, Filter.Camps, Filter.Art],
     showMap: false,
     noFavorites: false,
     mapTitle: '',
     search: '',
     mapSubtitle: '',
+    rslId: undefined,
+    isActionSheetOpen: false,
     mapPoints: []
   }
 }
@@ -69,8 +71,8 @@ export class FavsPage implements OnInit {
   @ViewChild(IonContent) ionContent!: IonContent;
 
   constructor(
-    private fav: FavoritesService, 
-    private ui: UiService, 
+    private fav: FavoritesService,
+    private ui: UiService,
     private geo: GeoService,
     public db: DbService,
     private router: Router) {
@@ -79,21 +81,42 @@ export class FavsPage implements OnInit {
       this.fav.changed();
       this.update();
     });
+    effect(() => {
+      this.db.resume();
+      this.update();
+    });
 
     effect(() => {
       this.ui.scrollUpContent('favs', this.ionContent);
     });
     effect(() => {
       const status = this.db.networkStatus();
-      this.vm.showImages = (status == 'wifi');
     });
   }
 
+  public actionSheetButtons = [
+    {
+      text: 'Remove From Favorites',
+      role: 'destructive',
+      data: {
+        action: 'delete',
+      },
+    },
+    {
+      text: 'Cancel',
+      role: 'cancel',
+      data: {
+        action: 'cancel',
+      },
+    },
+  ];
+
+
   async ionViewWillEnter() {
-    if (this.vm.events.length == 0) {
-      console.log('ionViewWillEnter.update');
-      this.update();
-    }
+    // if (this.vm.events.length == 0) {
+    //   console.log('ionViewWillEnter.update');
+    //   this.update();
+    // }
   }
 
   home() {
@@ -110,9 +133,19 @@ export class FavsPage implements OnInit {
     this.update();
   }
 
+  async sheetAction(ev: any) {
+    this.vm.isActionSheetOpen = false;
+    if (ev.detail.role == 'cancel') return;
+    if (ev.detail.role == 'destructive') {
+      await this.fav.unstarRSLId(this.vm.rslId!);
+      await this.update();
+    }
+  }
+
   private async update() {
     const favs = await this.fav.getFavorites();
-    const events = this.filterItems(Filter.Events, await this.fav.getEventList(favs.events, this.db.selectedYear() !== ''));
+    const rslEvents = this.filterItems(Filter.Events, await this.fav.getRSLEventList(favs.rslEvents));
+    const events = this.filterItems(Filter.Events, await this.fav.getEventList(favs.events, this.db.selectedYear() !== '', rslEvents));
     const camps = this.filterItems(Filter.Camps, await this.db.getCampList(favs.camps));
     const art = this.filterItems(Filter.Art, await this.db.getArtList(favs.art));
     this.vm.events = events;
@@ -143,6 +176,13 @@ export class FavsPage implements OnInit {
     if (item.location_string && item.location_string.toLowerCase().includes(search)) return true;
     return false;
   }
+
+  rslClick(rslId: string) {
+    this.vm.isActionSheetOpen = true;
+    this.vm.rslId = rslId;
+  }
+
+
 
   groupClick(gevent: Event) {
     console.log(gevent);

@@ -80,6 +80,15 @@ export class FavoritesService {
     }
   }
 
+  public setFavorites(events: RSLEvent[], favs: string[]) {
+    for (let event of events) {
+      for (let occurrence of event.occurrences) {
+        occurrence.star = (favs.includes(this.rslId(event, occurrence)));
+      }
+    }
+    return events;   
+  }
+
   public async isFavEventOccurrence(id: string, occurrence: OccurrenceSet): Promise<boolean> {
     await this.ready;
     return this.starredEvent(id, occurrence);
@@ -142,6 +151,12 @@ export class FavoritesService {
     }
   }
 
+  public async unstarRSLId(id: string) {
+    this.favorites.rslEvents = this.include(false, id, this.favorites.rslEvents);
+    await this.saveFavorites();
+    await this.notificationService.unscheduleAll(id);
+  }
+
   public async starRSLEvent(star: boolean, event: RSLEvent, occurrence: RSLOccurrence): Promise<string | undefined> {
     const id = this.rslId(event, occurrence);
     this.favorites.rslEvents = this.include(star, id, this.favorites.rslEvents);
@@ -167,7 +182,7 @@ export class FavoritesService {
   }
 
   public rslId(event: RSLEvent, occurrence: RSLOccurrence): string {
-    return `${event.id}-${occurrence.who}`;
+    return `${event.id}-${occurrence.id}`;
   }
 
   private eventId(event: Event, occurrence?: OccurrenceSet): string {
@@ -210,12 +225,51 @@ export class FavoritesService {
     }
   }
 
-  public async getEventList(ids: string[], historical: boolean): Promise<Event[]> {
+  public async getEventList(ids: string[], historical: boolean, rslEvents: RSLEvent[]): Promise<Event[]> {
     const events = await this.db.getEventList(this.eventsFrom(ids));
     // Group events and Set event time string to favorited event occurrence
     const eventItems = await this.splitEvents(events, historical);
+    for (let rslEvent of rslEvents) {
+      this.toEvent(rslEvent, eventItems);
+    }
+    this.sortByStartTime(eventItems);
     this.groupEvents(eventItems);
     return eventItems;
+  }
+
+  public async getRSLEventList(ids: string[]): Promise<RSLEvent[]> {
+    const events = await this.db.getRSLEvents(ids);
+    return events;
+  }
+
+  private toEvent(rslEvent: RSLEvent, items: Event[]) {
+    for (let o of rslEvent.occurrences) {
+      const party = rslEvent.title ? `the ${rslEvent.title} party `: '';
+      const newEvent: Event = {
+        camp: rslEvent.artCar ? `${rslEvent.artCar} mutant vehicle` : rslEvent.camp,
+        timeString: o.timeRange,
+        start: new Date(o.startTime),
+        location: rslEvent.artCar ? 'playa' : rslEvent.location,
+        longTimeString: o.timeRange,
+        old: false,
+        happening: false,
+        all_day: undefined,
+        event_id: 0,
+        distance: 0,
+        distanceInfo: '',
+        event_type: { abbr: '', label: '', id: 0},
+        gpsCoords: {lat: 0, lng: 0},
+        description: '',
+        slug: this.rslId(rslEvent,o),        
+        print_description: `${o.who} is playing ${party}${rslEvent.artCar ? 'on the '+rslEvent.artCar+' mutant vehicle' : 'at '+rslEvent.camp}.`,
+        occurrence_set: [{ start_time: o.startTime, end_time: o.endTime, star: true, old: false, happening: false, longTimeString: o.timeRange }],
+        title: o.who,
+        uid: '',// rslEvent.campUID!,
+        url: undefined,
+        year: 2000
+      }
+      items.push(newEvent);
+    }
   }
 
   private async splitEvents(events: Event[], historical: boolean): Promise<Event[]> {
@@ -248,8 +302,11 @@ export class FavoritesService {
         }
       }
     }
-    eventItems.sort((a, b) => { return Date.parse(a.occurrence_set[0].start_time) - Date.parse(b.occurrence_set[0].start_time); });
     return eventItems;
+  }
+
+  public sortByStartTime(eventItems: Event[]) {
+    eventItems.sort((a, b) => { return Date.parse(a.occurrence_set[0].start_time) - Date.parse(b.occurrence_set[0].start_time); });
   }
 
   private groupEvents(events: Event[]) {

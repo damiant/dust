@@ -147,6 +147,7 @@ export interface Settings {
   eventTitle: string;
   lastDownload: string;
   locationEnabled: LocationEnabledStatus;
+  longEvents: boolean;
 }
 
 export interface Dataset {
@@ -208,14 +209,20 @@ export interface RSLEvent {
   camp: string;
   title?: string;
   location: string;
+  campUID?: string;
   day: string; // Format yyyy-mm-dd
   gpsCoords?: GpsCoord,
+  wa: boolean; // Wheelchair accessible
+  waNotes: string;
   distance: number,
   distanceInfo: string,
+  artCar?: string;
+  imageUrl?: string;
   occurrences: RSLOccurrence[];
 }
 
 export interface RSLOccurrence {
+  id: string;
   time: string; // Display format
   end?: string; // Display format for end time (if it exists)
   timeRange: string; // Calculated
@@ -243,6 +250,7 @@ export enum DataMethods {
   SetDataset = 'setDataset',
   GetEvents = 'getEvents',
   GetEventList = 'getEventList',
+  GetRSLEventList = 'getRSLEventList',
   GetCampList = 'getCampList',
   GetArtList = 'getArtList',
   FindArts = 'findArts',
@@ -253,6 +261,7 @@ export enum DataMethods {
   FindEvent = 'findEvent',
   FindCamp = 'findCamp',
   GetCampEvents = 'getCampEvents',
+  GetCampRSLEvents = 'getCampRSLEvents',
   GetCamps = 'getCamps',
   GetGeoReferences = 'getGeoReferences',
   GpsToPoint = 'gpsToPoint',

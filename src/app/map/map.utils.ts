@@ -15,6 +15,13 @@ export function toMapPoint(location: string | undefined, info?: MapInfo): MapPoi
         // eg rod's ring road @ 7:45
         return convertRods(l, info);
     }
+    if (l.includes(`rod's road`)) {
+        // eg 6:00 & rod's road
+        if (l.includes('&')) {
+            l = `rod's ring road @ ${l.split('&')[0].trim()}`;
+        }
+        return convertRods(l, info);
+    }
     if (l.includes('open playa') || l.includes(`'`)) {
         return convertArt(l, info);
     }
@@ -26,8 +33,9 @@ export function toMapPoint(location: string | undefined, info?: MapInfo): MapPoi
     } else if (l.includes('plaza')) {
         // 9:00 B Plaza
         l = l.replace('plaza', '');
-        l = l.replace(' ', ' & ');
-
+        if (!l.includes('&')) {
+            l = l.replace(' ', ' & ');
+        }
     }
     const tmp = l.split('&');
     if (tmp[0].includes(':')) {

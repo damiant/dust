@@ -14,6 +14,7 @@ import { TileComponent } from '../tile/tile.component';
 import { GeoService } from '../geolocation/geo.service';
 import { LocationEnabledStatus } from '../data/models';
 import { environment } from 'src/environments/environment';
+import { RateApp } from 'capacitor-rate-app';
 
 @Component({
   selector: 'app-profile',
@@ -26,7 +27,9 @@ import { environment } from 'src/environments/environment';
 export class ProfilePage implements OnInit {
 
   moreClicks = 0;
+  rated = false;
   locationEnabled = false;
+  longEvents = false;
 
   constructor(
     private ui: UiService,
@@ -39,6 +42,7 @@ export class ProfilePage implements OnInit {
 
   ngOnInit() {
     this.db.checkInit();
+    this.longEvents = this.settings.settings.longEvents;
     this.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
   }
 
@@ -51,8 +55,9 @@ export class ProfilePage implements OnInit {
     if (this.moreClicks == 5) {
       this.ui.presentToast('Locations now enabled', this.toastController);
       environment.overrideLocations = true;
-      this.db.setHideLocations(false);
+      this.db.setHideLocations(false);      
       await this.db.init(this.settings.settings.dataset);
+      this.db.resume.set(new Date().toString());
     }
   }
 
@@ -63,6 +68,11 @@ export class ProfilePage implements OnInit {
     this.ui.home();
   }
 
+  public rate() {
+    this.rated = true;
+    RateApp.requestReview();
+  }
+  
   async share() {
     await Share.share({
       title: 'Dust in Curious Places',
@@ -72,6 +82,11 @@ export class ProfilePage implements OnInit {
     });
   }
 
+  async toggleLongEvents(e: any) {
+    this.longEvents = e.detail.checked;
+    this.settings.settings.longEvents = this.longEvents;
+    this.settings.save();
+  }
   async toggleLocation(e: any) {
     const turnedOn = e.detail.checked;
     if (turnedOn) {

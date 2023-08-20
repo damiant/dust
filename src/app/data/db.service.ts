@@ -3,6 +3,7 @@ import { Event, Day, Camp, Art, Pin, DataMethods, MapSet, GeoRef, Dataset, RSLEv
 import { call, registerWorker } from './worker-interface';
 import { daysUntil, noDate, now } from '../utils/utils';
 import { GpsCoord, Point } from '../map/geo.utils';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -50,7 +51,7 @@ export class DbService {
     return await res.json();
   }
 
-  public async daysUntilStarts() {
+  public async daysUntilStarts(): Promise<number> {
     const datasets = await this.loadDatasets();
     console.log('daysUntilStarts', this.selectedYear());
     const year = (this.selectedYear() == '') ? datasets[0].year : this.selectedYear();
@@ -61,13 +62,19 @@ export class DbService {
     return until;
   }
 
-  public async findEvents(query: string, day: Date | undefined, category: string, coords: GpsCoord | undefined, timeRange: TimeRange | undefined): Promise<Event[]> {
-    return await call(this.worker, DataMethods.FindEvents, query, day, category, coords, timeRange);
+  public async findEvents(query: string, day: Date | undefined, category: string, coords: GpsCoord | undefined, timeRange: TimeRange | undefined, allDay: boolean): Promise<Event[]> {
+    return await call(this.worker, DataMethods.FindEvents, query, day, category, coords, timeRange, allDay);
   }
 
   public async getEventList(ids: string[]): Promise<Event[]> {
     return await call(this.worker, DataMethods.GetEventList, ids);
   }
+
+  public async getRSLEvents(ids: string[]): Promise<RSLEvent[]> {
+    return await call(this.worker, DataMethods.GetRSLEventList, ids);
+  }
+
+  
 
   public async getGeoReferences(): Promise<GeoRef[]> {
     return await call(this.worker, DataMethods.GetGeoReferences);
@@ -127,7 +134,17 @@ export class DbService {
   }
 
   public async getMapPointGPS(mapPoint: MapPoint): Promise<GpsCoord> {
-    return await call(this.worker, DataMethods.GetMapPointGPS, mapPoint);
+    return await call(this.worker, DataMethods.GetMapPointGPS, mapPoint);    
+  }
+
+  public offsetGPS(gpsCoord: GpsCoord): GpsCoord {
+    if (environment.latitudeOffset && environment.longitudeOffset) {
+      const before = structuredClone(gpsCoord);
+      const after = { lat: gpsCoord.lat + environment.latitudeOffset, lng: gpsCoord.lng + environment.longitudeOffset };
+      gpsCoord = after;
+      console.error(`GPS Position was modified ${JSON.stringify(before)} to ${JSON.stringify(after)}`);
+    }
+    return gpsCoord;
   }
 
   public async setMapPointsGPS(mapPoints: MapPoint[]): Promise<MapPoint[]> {
@@ -155,6 +172,10 @@ export class DbService {
 
   public async getCampEvents(campId: string): Promise<Event[]> {
     return await call(this.worker, DataMethods.GetCampEvents, campId);
+  }
+
+  public async getCampRSLEvents(campId: string): Promise<RSLEvent[]> {
+    return await call(this.worker, DataMethods.GetCampRSLEvents, campId);
   }
 
   public async getCamps(idx: number, count: number): Promise<Camp[]> {

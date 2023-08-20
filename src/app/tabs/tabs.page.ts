@@ -10,6 +10,7 @@ import { SettingsService } from '../data/settings.service';
 import { ShareInfoType, ShareService } from '../share/share.service';
 import { Network } from '@capacitor/network';
 import { App } from '@capacitor/app';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-tabs',
@@ -26,6 +27,7 @@ export class TabsPage implements OnInit {
     public db: DbService, private ui: UiService,
     private notificationService: NotificationService,
     private shareService: ShareService,
+    private settings: SettingsService,
     private router: Router, private settingsService: SettingsService) {
     effect(() => {
       const eventId = this.notificationService.hasNotification();
@@ -47,11 +49,22 @@ export class TabsPage implements OnInit {
     })
   }
 
-  async ngOnInit() {    
+  async ngOnInit() {
     this.ready = true;
-    
+
     // Whenever app is resumed set signal called resume
     App.addListener('resume', async () => {
+      const until = await this.db.daysUntilStarts();
+      console.log(`${until} days until event.`);
+      let hide = until > 1;
+      if (environment.overrideLocations) {
+        hide = false;
+      }
+      if (this.db.locationsHidden() && !hide) {
+        // Locations were unlocked
+        this.db.setHideLocations(hide);
+        await this.db.init(this.settings.settings.dataset);
+      }
       this.db.resume.set(new Date().toISOString());
     });
 
@@ -65,7 +78,7 @@ export class TabsPage implements OnInit {
   private async navTo(page: string, id: string) {
     while (!this.ready) {
       await delay(500);
-    }    
+    }
     setTimeout(() => {
       this.router.navigateByUrl(`/${page}/${id}`);
     }, 100);
