@@ -39,5 +39,8 @@
       <app-art *ngFor="let art of vm.arts; trackBy: artTrackBy" (artClick)="click($event)" [showImage]="vm.showImage"
         [art]="art" />
     </cdk-virtual-scroll-viewport>
+    <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
   </div>
 </ion-content>

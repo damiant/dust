@@ -44,5 +44,8 @@
   <div *ngIf="vm.noEvents" class="message large"><ion-text>{{vm.noEventsMessage}}</ion-text></div>
   <app-rsl-event [event]="event" (mapClick)="map($event)" (artCarClick)="artCar($event)"
     *ngFor="let event of vm.events; trackBy: eventsTrackBy"></app-rsl-event>
+    <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
     <div class="pad-top"></div>
 </ion-content>

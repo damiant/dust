@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonicModule, ToastController } from '@ionic/angular';
+import { InfiniteScrollCustomEvent, IonContent, IonicModule, ToastController } from '@ionic/angular';
 import { UiService } from '../ui/ui.service';
 import { DbService } from '../data/db.service';
 import { noDate, now, sameDay } from '../utils/utils';
@@ -66,6 +66,7 @@ function initialState(): RSLState {
 export class RslPage implements OnInit {
 
   vm: RSLState = initialState();
+  allEvents: RSLEvent[] = [];
   @ViewChild(IonContent) ionContent!: IonContent;
   @ViewChild('popover') popover: any;
   constructor(
@@ -101,21 +102,48 @@ export class RslPage implements OnInit {
     await this.update();
   }
 
+  onIonInfinite(ev: any) {
+    this.addEvents(10);
+    setTimeout(() => {
+      (ev as InfiniteScrollCustomEvent).target.complete();
+    }, 500);
+  }
+
   private async update(scrollToTop?: boolean) {
     let coords: GpsCoord | undefined = undefined;
     if (this.vm.byDist) {
       coords = await this.geo.getPosition();
     }
     const favs = await this.fav.getFavorites();
+    console.time('rslEvents get');
     const events = await this.db.getRSL(this.vm.search, this.vm.day, coords);
     this.fav.setFavorites(events, favs.rslEvents);
-    this.vm.events = events;
+    this.allEvents = events;
+    console.timeEnd('rslEvents get');
+    this.vm.events = [];
+    this.addEvents(10);
     this.vm.noEvents = this.vm.events.length == 0;
     this.vm.noEventsMessage = this.vm.search?.length > 0 ?
       `There are no events matching "${this.vm.search}".` :
       'All the events for this day have concluded.';
     if (scrollToTop) {
       this.ui.scrollUpContent('rsl', this.ionContent);
+    }
+  }
+
+  private addEvents(count: number) {
+    const chunk = this.allEvents.slice(this.vm.events.length, this.vm.events.length + count);
+    let lastItem = undefined;
+    let hidingImage: string | undefined;
+    for (let item of chunk) {
+      if (hidingImage == item.imageUrl) {
+        item.imageUrl = undefined; // This ensures that 2 events with the same image do not appear
+      }
+      lastItem = item;
+      if (item.imageUrl) {
+        hidingImage = item.imageUrl;
+      }
+      this.vm.events.push(item);
     }
   }
 
