@@ -10,10 +10,6 @@ h3 {
     padding-bottom:0;
 }
 
-ion-card-content {
-    padding-left: 2rem;
-}
-
 span {
     padding-left: 0.5rem;
     opacity: 0.5;
@@ -31,12 +27,11 @@ span {
     background-color: rgba(0, 0, 0, 0.1);
 }
 
-.rsl-container {
-
-}
-
-.rsl-item {
-    
+.time {
+    display:inline-block;
+    width: 65px;
+    text-align: right;
+    opacity: 0.9;
 }
 
 .star {

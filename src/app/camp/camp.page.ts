@@ -12,6 +12,7 @@ import { UiService } from '../ui/ui.service';
 import { SettingsService } from '../data/settings.service';
 import { ShareInfoType } from '../share/share.service';
 import { toMapPoint } from '../map/map.utils';
+import { getOrdinalNum } from '../utils/utils';
 
 @Component({
   selector: 'app-camp',
@@ -72,11 +73,7 @@ export class CampPage implements OnInit {
     const t = d.split('-');
     const day = parseInt(t[2]);
     const date =  new Date(`${d}T00:00:00`);
-    return date.toLocaleDateString('en-US', { weekday: 'long',timeZone: 'UTC' }) + ` ${this.getOrdinalNum(day)}`;
-  }
-
-  private getOrdinalNum(n: number) {
-    return n + (n > 0 ? ['th', 'st', 'nd', 'rd'][(n > 3 && n < 21) || n % 10 > 3 ? 0 : n % 10] : '');
+    return date.toLocaleDateString('en-US', { weekday: 'long',timeZone: 'UTC' }) + ` ${getOrdinalNum(day)}`;
   }
 
   open(url: string) {

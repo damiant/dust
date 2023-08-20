@@ -388,6 +388,10 @@ export class DataManager implements WorkerClass {
         return undefined;
     }
 
+    private nullOrEmpty(s: string | undefined): boolean {
+        return (s == undefined || s == '');
+    }
+
     public async getRSLEvents(query: string, day: Date | undefined, coords: GpsCoord | undefined, ids?: string[] | undefined, campId?: string | undefined): Promise<RSLEvent[]> {
         const res = await fetch(this.path('rsl'));
         const events: RSLEvent[] = await res.json();
@@ -398,7 +402,7 @@ export class DataManager implements WorkerClass {
         for (let event of events) {
             let match = false;
             if (campId) {
-                match = (event.campUID == campId);
+                match = (event.campUID == campId && this.nullOrEmpty(event.artCar));
             } else {
                 match = (this.rslEventContains(event, query) && (event.day == fDay || !!ids));
             }
