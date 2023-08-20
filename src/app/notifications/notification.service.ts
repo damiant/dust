@@ -87,7 +87,7 @@ export class NotificationService {
 
   private reminderTime(d: Date): Date {
     let when = d;
-    when.setMinutes(when.getMinutes() - 5);
+    when.setMinutes(when.getMinutes() - 15);
     if (this.hasHappened(when)) {
       const soon = now();
       soon.setMinutes(soon.getMinutes() + 1);
