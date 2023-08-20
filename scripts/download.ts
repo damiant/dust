@@ -18,6 +18,7 @@ interface Options {
     fixLocation?: boolean;
     fixOccurrence?: boolean;
     convertImage?: boolean;
+    removeEmail?: boolean;
 }
 
 
@@ -71,6 +72,12 @@ async function download(name: string, year: string, filename: string, folder: st
         }
         if (item.url == null) {
             item.url = undefined;
+        }
+        if (options?.removeEmail) {
+            item.contact_email = undefined;
+        }
+        if (item.contact_email == null) {
+            item.contact_email = undefined;
         }
 
         // Clear unneeded properties
@@ -216,7 +223,7 @@ async function processYears(years: string[]) {
     for (const year of years) {
         console.log(`Downloading ${year}`);
         const convertImage = (year == '2023');
-        const campsChanged = await download('camp', year, 'camps', `ttitd-${year}`, { fixName: true, fixLocation: true });
+        const campsChanged = await download('camp', year, 'camps', `ttitd-${year}`, { fixName: true, fixLocation: true, removeEmail: true });
         const eventsChanged = await download('event', year, 'events', `ttitd-${year}`, { fixOccurrence: true, fixTitle: true, fixUid: true });
         const artChanged = await download('art', year, 'art', `ttitd-${year}`, { fixName: true, convertImage });
         if (artChanged || campsChanged || eventsChanged) {

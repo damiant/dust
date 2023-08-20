@@ -1,7 +1,7 @@
 import { WorkerClass } from './worker-interface';
 import { Art, Camp, DataMethods, Day, Event, GPSSet, GeoRef, LocationName, MapPoint, MapSet, Pin, RSLEvent, Revision, TimeRange, TimeString } from './models';
-import { BurningManTimeZone, getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from '../utils/utils';
-import { defaultMapRadius, distance, formatDistance, locationStringToPin, mapPointToPoint, maxDistance, toClock, toStreetRadius } from '../map/map.utils';
+import { BurningManTimeZone, CurrentYear, getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from '../utils/utils';
+import { defaultMapRadius, distance, formatDistance, locationStringToPin, mapPointToPoint } from '../map/map.utils';
 import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from '../map/geo.utils';
 
 interface TimeCache {
@@ -663,11 +663,15 @@ export class DataManager implements WorkerClass {
         }
     }
 
-    private path(name: string): string {
+    private path(name: string, online?: boolean): string {
+        console.log(this.dataset);
+        if (this.dataset !== CurrentYear && online) {
+           return `https://dust.events/assets/data/${this.dataset}/${name}.json`;
+        }
         return `assets/${this.dataset}/${name}.json`;
     }
     private async loadEvents(): Promise<Event[]> {
-        const res = await fetch(this.path('events'));
+        const res = await fetch(this.path('events', true));
         return await res.json();
     }
 
@@ -703,12 +707,12 @@ export class DataManager implements WorkerClass {
     }
 
     private async loadCamps(): Promise<Camp[]> {
-        const res = await fetch(this.path('camps'));
+        const res = await fetch(this.path('camps', true));
         return await res.json();
     }
 
     private async loadArt(): Promise<Art[]> {
-        const res = await fetch(this.path('art'));
+        const res = await fetch(this.path('art', true));
         return await res.json();
     }
 

@@ -6,6 +6,7 @@ export function sameDay(d1: Date, d2: Date) {
 }
 
 export const BurningManTimeZone = 'America/Los_Angeles';
+export const CurrentYear = 'ttitd-2023';
 
 export function now(): Date {
     if (!environment.simulatedTime) {
