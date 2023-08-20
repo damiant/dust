@@ -97,6 +97,7 @@ export class RslPage implements OnInit {
 
     this.vm.days = await this.db.getDays();
     this.vm.defaultDay = this.chooseDefaultDay(now());
+    this.updateTitle();
     await this.update();
   }
 
