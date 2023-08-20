@@ -71,5 +71,4 @@
 - Page Info about the app on dust.events
 
 ## Info
-- Audio Guide https://soundcloud.com/burningman/sets/2023-art-audio-guide.
-- RSL https://s3.amazonaws.com/rslmusicguide.com/guides/FinalRSL2022.pdf
+- Audio Guide https://soundcloud.com/burningman/sets/2023-art-audio-guide
