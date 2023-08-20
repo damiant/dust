@@ -119,10 +119,13 @@ export class RslPage implements OnInit {
     }
   }
 
-  public artCar(e: ArtCarEvent) { 
-this.presentPopover(e.event, `This event is located at the ${e.artCar} art car.`);
+  public artCar(e: ArtCarEvent) {
+    this.presentPopover(e.event, `This event is located at the ${e.artCar} art car.`);
   }
 
+  public rslLogo() {
+    this.ui.openUrl('https://www.rockstarlibrarian.com/');
+  }
 
   async presentPopover(e: Event, message: string) {
     this.popover.event = e;

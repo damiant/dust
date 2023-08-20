@@ -70,6 +70,8 @@ function findRSLEvent(rslEvents: RSLEvent[], day: string, camp: RSLImportCamp, p
         campUID: camp.uid,
         distance: 0,
         title: party,
+        wa: (camp.wheelchairfriendly.toLowerCase() == 'yes'),
+        waNotes: camp.mobilitynotes,
         distanceInfo: '',
         occurrences: []
     };

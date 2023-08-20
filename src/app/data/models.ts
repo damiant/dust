@@ -212,6 +212,8 @@ export interface RSLEvent {
   campUID?: string;
   day: string; // Format yyyy-mm-dd
   gpsCoords?: GpsCoord,
+  wa: boolean; // Wheelchair accessible
+  waNotes: string;
   distance: number,
   distanceInfo: string,
   artCar?: string;

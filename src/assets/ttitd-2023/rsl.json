@@ -7,6 +7,8 @@
     "campUID": "RSLCx8219",
     "distance": 0,
     "title": "KAEZ 96.3 Alt Energy Zone (Fri)",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -59,6 +61,8 @@
     "campUID": "a1X8X00000lXDmUUAW",
     "distance": 0,
     "title": "BMIR 94.5 FM (Fri)",
+    "wa": false,
+    "waNotes": "Lounge and burn barrel are easy access to wheelchairs. DJ and production studios are in raised containers with steps.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -167,6 +171,8 @@
     "campUID": "a1X8X00000hsxCeUAI",
     "distance": 0,
     "title": "HEX Collective (Fri)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -219,6 +225,8 @@
     "campUID": "a1X8X00000k2q0HUAQ",
     "distance": 0,
     "title": "Zoological Dance Party",
+    "wa": true,
+    "waNotes": "Flat - no stairs",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -255,6 +263,8 @@
     "campUID": "a1X8X00000k31E5UAI",
     "distance": 0,
     "title": "Sangria!",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -283,6 +293,8 @@
     "campUID": "a1X8X00000k33hlUAA",
     "distance": 0,
     "title": "Cha Cha Bitch!",
+    "wa": true,
+    "waNotes": "N/A",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -303,6 +315,8 @@
     "campUID": "a1X8X00000k2yjQUAQ",
     "distance": 0,
     "title": "PG Squirt House (Fri)",
+    "wa": true,
+    "waNotes": "Our camp is 100% accessible and offers a floor full of carpet for your comfort.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -323,6 +337,8 @@
     "campUID": "a1X8X00000jK2XrUAK",
     "distance": 0,
     "title": "\"It's Britney, Beach! Party\"",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -343,6 +359,8 @@
     "campUID": "a1X8X00000hsxNKUAY",
     "distance": 0,
     "title": "Jazz Jam Session",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -363,6 +381,8 @@
     "campUID": "a1X8X00000lZiLWUA0",
     "distance": 0,
     "title": "Morning PainJoy Radio",
+    "wa": true,
+    "waNotes": "\"Camp is wheel chair friendly, but not the art car.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -383,6 +403,8 @@
     "campUID": "a1X8X00000lZiLWUA0",
     "distance": 0,
     "title": "Spankys Day/Sunset Party!!",
+    "wa": true,
+    "waNotes": "\"Camp is wheel chair friendly, but not the art car.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -427,6 +449,8 @@
     "campUID": "a1X8X00000lZiLWUA0",
     "distance": 0,
     "title": "Freaky Furries Party",
+    "wa": true,
+    "waNotes": "\"Camp is wheel chair friendly, but not the art car.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -455,6 +479,8 @@
     "campUID": "a1X8X00000k3KB8UAM",
     "distance": 0,
     "title": "Bootie BRC",
+    "wa": true,
+    "waNotes": "\"The main event is on the ground floor, and the bar and dancefloor are wheelchair accessible. The netting is not.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -491,6 +517,8 @@
     "campUID": "a1X8X00000k3B2hUAE",
     "distance": 0,
     "title": "Dusty Barbie Coup",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -529,6 +557,8 @@
     "campUID": "a1X8X00000k2a1RUAQ",
     "distance": 0,
     "title": "Sunrise set",
+    "wa": true,
+    "waNotes": "Camp is wheelchair friendly",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -551,6 +581,8 @@
     "campUID": "a1X8X00000k3KDeUAM",
     "distance": 0,
     "title": "Twilight Language (Fri)",
+    "wa": true,
+    "waNotes": "\"flat ground, no stairs or ramps\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -595,6 +627,8 @@
     "campUID": "a1X8X00000jJBWvUAO",
     "distance": 0,
     "title": "Deaf Granny's Kitchen (Fri)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -647,6 +681,8 @@
     "campUID": "a1X8X00000k3FJYUA2",
     "distance": 0,
     "title": "FUego (Fri)",
+    "wa": true,
+    "waNotes": "All on one level. No stairs.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -731,6 +767,8 @@
     "campUID": "a1X8X00000jK5uAUAS",
     "distance": 0,
     "title": "HIP-HOP BRUNCH",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -751,6 +789,8 @@
     "campUID": "a1X8X00000jK5uAUAS",
     "distance": 0,
     "title": "I Need An Adult (Fri)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -811,6 +851,8 @@
     "campUID": "a1X8X00000k30i8UAA",
     "distance": 0,
     "title": "Techno Meditation",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -831,6 +873,8 @@
     "campUID": "a1X8X00000k2ygaUAA",
     "distance": 0,
     "title": "Purple Disco Party",
+    "wa": true,
+    "waNotes": "\"Our main Arrival Stage is outdoors and our Dune Lounge has large opening, all on flat ground with no steps\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -867,6 +911,8 @@
     "campUID": "a1X8X00000k2ygaUAA",
     "distance": 0,
     "title": "Playground (Fri)",
+    "wa": true,
+    "waNotes": "\"Our main Arrival Stage is outdoors and our Dune Lounge has large opening, all on flat ground with no steps\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -943,6 +989,8 @@
     "campUID": "a1X8X00000hVl42UAC",
     "distance": 0,
     "title": "Afro-house Takeover",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -971,6 +1019,8 @@
     "campUID": "a1X8X00000k1azmUAA",
     "distance": 0,
     "title": "Fri. Store Hours",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -1007,6 +1057,8 @@
     "campUID": "a1X8X00000knZqBUAU",
     "distance": 0,
     "title": "Double Touch & Friends",
+    "wa": false,
+    "waNotes": "we have had people in Wheelchair play on our car and people that cant walk we get our crew and we carry them to the top of the bridge",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -1045,6 +1097,8 @@
     "campUID": "a1X8X00000k32t9UAA",
     "distance": 0,
     "title": "Hyphy Brunch",
+    "wa": true,
+    "waNotes": "\"The majority of our camp is wheel chair accessible, including our big day-time stage, dance floor and bar. The only things that are not accessible are our roof deck, which only has a stair case, and \"\"\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -1065,6 +1119,8 @@
     "campUID": "a1X8X00000jJfDCUA0",
     "distance": 0,
     "title": "Nonsense Man- genre-bending Ent",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -1085,6 +1141,8 @@
     "campUID": "a1X8X00000jJfDCUA0",
     "distance": 0,
     "title": "Original(s) made up on the spot!",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -1105,6 +1163,8 @@
     "campUID": "a1X8X00000hs7ZVUAY",
     "distance": 0,
     "title": "The Holy Grad Bash",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -1149,6 +1209,8 @@
     "campUID": "a1X8X00000k3263UAA",
     "distance": 0,
     "title": "Dragon Style",
+    "wa": true,
+    "waNotes": "Our camp is all flat and there are no stairs to go up.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -1185,6 +1247,8 @@
     "campUID": "a1X8X00000hrKlZUAU",
     "distance": 0,
     "title": "POP-Tart Brunch w/ DJs & drinks",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -1229,6 +1293,8 @@
     "campUID": "a1X8X00000k2PmtUAE",
     "distance": 0,
     "title": "Cosmic journey into ambient sound",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -1265,6 +1331,8 @@
     "campUID": "a1X8X00000k3JSOUA2",
     "distance": 0,
     "title": "Burning DAD",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -1343,6 +1411,8 @@
     "campUID": "a1X8X00000k21zXUAQ",
     "distance": 0,
     "title": "TechnoGecko Grotto (Fri)",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -1397,6 +1467,8 @@
     "campUID": "a1X8X00000k3FycUAE",
     "distance": 0,
     "title": "Hot Dogs & Beer & Honey Jun",
+    "wa": true,
+    "waNotes": "Some elevated areas have stairs with no wheel chair access",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -1417,6 +1489,8 @@
     "campUID": "a1X8X00000k3FycUAE",
     "distance": 0,
     "title": "Pathogen Party Plus Special Guests",
+    "wa": true,
+    "waNotes": "Some elevated areas have stairs with no wheel chair access",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -1461,6 +1535,8 @@
     "campUID": "a1X8X00000k1qDWUAY",
     "distance": 0,
     "title": "Get Funked",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -1481,6 +1557,8 @@
     "campUID": "a1X8X00000k1qDWUAY",
     "distance": 0,
     "title": "Funky Fridaze",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -1557,6 +1635,8 @@
     "campUID": "a1X8X00000k2K2aUAE",
     "distance": 0,
     "title": "Sunrise at Deoxidized",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -1593,6 +1673,8 @@
     "campUID": "a1X8X00000k3LdVUAU",
     "distance": 0,
     "title": "Crimson Royale",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -1669,6 +1751,8 @@
     "campUID": "RSLCx9633",
     "distance": 0,
     "title": "Titanic's End (Fri)",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -1691,6 +1775,8 @@
     "campUID": "a1X8X00000k3GZ6UAM",
     "distance": 0,
     "title": "Everybody Together",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -1751,6 +1837,8 @@
     "campUID": "a1X8X00000jJqPrUAK",
     "distance": 0,
     "title": "Fallen Angels",
+    "wa": true,
+    "waNotes": "\"Party is open to all, going up into cloud would be hard, but there's no party up there!\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -1829,6 +1917,8 @@
     "campUID": "a1X8X00000k2RqDUAU",
     "distance": 0,
     "title": "Bass Lounge",
+    "wa": true,
+    "waNotes": "Flat ground covered in low pile rugs with open access to shaded space and wide passages",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -1857,6 +1947,8 @@
     "campUID": "a1X8X00000k30HwUAI",
     "distance": 0,
     "title": "Cowfolx Cool Off",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -1909,6 +2001,8 @@
     "campUID": "RSLCx9815",
     "distance": 0,
     "title": "Radio Equinox 99.5 FM (Fri)",
+    "wa": false,
+    "waNotes": "Patio open for visitors. Studio is inside large tent.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -1961,6 +2055,8 @@
     "campUID": "a1X8X00000k5CDJUA2",
     "distance": 0,
     "title": "808s & Drum Breaks",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -1997,6 +2093,8 @@
     "campUID": "a1X8X00000kmZQTUA2",
     "distance": 0,
     "title": "Exploration",
+    "wa": true,
+    "waNotes": "\"Our camp is wc friendly, our art car isn't yet\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -2035,6 +2133,8 @@
     "campUID": "a1X8X00000k3K4jUAE",
     "distance": 0,
     "title": "Lay In The Clouds (Downtempo)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -2071,6 +2171,8 @@
     "campUID": "a1X8X00000k23UbUAI",
     "distance": 0,
     "title": "Hot Stuff (Fri)",
+    "wa": false,
+    "waNotes": "our camp is largely flat there are no ramps",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -2099,6 +2201,8 @@
     "campUID": "a1X8X00000k2tWnUAI",
     "distance": 0,
     "title": "Straight Outta BRC!",
+    "wa": true,
+    "waNotes": "Our lounge is a 30'x30' flat open area",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -2119,6 +2223,8 @@
     "campUID": "a1X8X00000k3M9IUAU",
     "distance": 0,
     "title": "Melodic",
+    "wa": false,
+    "waNotes": "N/A",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -2211,6 +2317,8 @@
     "campUID": "a1X8X00000k32veUAA",
     "distance": 0,
     "title": "BUTTERflies & BUTTER-Udders (cows)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -2271,6 +2379,8 @@
     "campUID": "a1X8X00000jIl7AUAS",
     "distance": 0,
     "title": "Treble Makers (Fri)",
+    "wa": false,
+    "waNotes": "\"The camp is flat and no steps, camp is open and wide.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -2315,6 +2425,8 @@
     "campUID": "RSLCx10297",
     "distance": 0,
     "title": "Another art car party",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -2361,6 +2473,8 @@
     "campUID": "a1X8X00000k30J9UAI",
     "distance": 0,
     "title": "Disco Duckie Rave",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -2389,6 +2503,8 @@
     "campUID": "a1X8X00000jIsz1UAC",
     "distance": 0,
     "title": "DISTRIKT (Fri)",
+    "wa": true,
+    "waNotes": "its an open dancefloor on the playa",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -2449,6 +2565,8 @@
     "campUID": "a1X8X00000kmo2BUAQ",
     "distance": 0,
     "title": "Astradanza Wizards",
+    "wa": false,
+    "waNotes": "we are a school bus with ladder access to a roofdeck.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -2495,6 +2613,8 @@
     "campUID": "a1X8X00000k4bcZUAQ",
     "distance": 0,
     "title": "WHOMP like there's no tomorrow",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -2541,6 +2661,8 @@
     "campUID": "a1X8X00000k2z90UAA",
     "distance": 0,
     "title": "Pink Mammoth (Fri)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -2609,6 +2731,8 @@
     "campUID": "a1X8X00000k2atTUAQ",
     "distance": 0,
     "title": "Caldera Collective Takeover 5-11",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -2733,6 +2857,8 @@
     "campUID": "a1X8X00000k39KQUAY",
     "distance": 0,
     "title": "Lumi-Dance (Fri)",
+    "wa": false,
+    "waNotes": "\"We do not have a raised platform for handicapped attendees, but our entire camp frontage including the Bar, Tea Lounge and Stage are ground level.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -2841,6 +2967,8 @@
     "campUID": "a1X8X00000k31CJUAY",
     "distance": 0,
     "title": "Chupacabra Carnaval",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -2877,6 +3005,8 @@
     "campUID": "a1X8X00000k3MFfUAM",
     "distance": 0,
     "title": "\"\"\"Four legs good, two legs better\"\"\"",
+    "wa": true,
+    "waNotes": "Passages wide for wheelchairs to pass through. No bumps!",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -2929,6 +3059,8 @@
     "campUID": "a1X8X00000k2z6cUAA",
     "distance": 0,
     "title": "Bubbles and Bass (Fri)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -2981,6 +3113,8 @@
     "campUID": "a1X8X00000k30i3UAA",
     "distance": 0,
     "title": "Pink Bunny Art Car Link Up",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -3009,6 +3143,8 @@
     "campUID": "a1X8X00000k3KQOUA2",
     "distance": 0,
     "title": "Queerest Lil Cocktail Party!",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -3029,6 +3165,8 @@
     "campUID": "a1X8X00000jK8I2UAK",
     "distance": 0,
     "title": "Cosmic Kiki",
+    "wa": true,
+    "waNotes": "Flat camp with dancefloor",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -3137,6 +3275,8 @@
     "campUID": "a1X8X00000k3KMqUAM",
     "distance": 0,
     "title": "Freestyle Palace (Fri)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -3197,6 +3337,8 @@
     "campUID": "a1X8X00000k3KQOUA2",
     "distance": 0,
     "title": "The Crescendo - A Dance Odyssey",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -3249,6 +3391,8 @@
     "campUID": "a1X8X00000k2whDUAQ",
     "distance": 0,
     "title": "Mimosa Brunch",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -3277,6 +3421,8 @@
     "campUID": "a1X8X00000k2whDUAQ",
     "distance": 0,
     "title": "Awards Ceremony!",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -3305,6 +3451,8 @@
     "campUID": "a1X8X00000jL8OWUA0",
     "distance": 0,
     "title": "Legendary Playground of the Gods (Fri)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -3333,6 +3481,8 @@
     "campUID": "a1X8X00000k32ynUAA",
     "distance": 0,
     "title": "Kostume Kult Gifting & Runway Show",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -3377,6 +3527,8 @@
     "campUID": "a1X8X00000k32ynUAA",
     "distance": 0,
     "title": "Circo Infierno",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -3421,6 +3573,8 @@
     "campUID": "a1X8X00000k207uUAA",
     "distance": 0,
     "title": "DJ's on a 30 foot Snail slide!!",
+    "wa": true,
+    "waNotes": "\"DJ stage is on top of snail slide. Snail slide is not wheelchair friendly, but the dancefloor/viewing area is ground level and accessible via wheelchair\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -3449,6 +3603,8 @@
     "campUID": "a1X8X00000k209ZUAQ",
     "distance": 0,
     "title": "Euro-Trash Takeover",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -3502,6 +3658,8 @@
     "campUID": "a1X8X00000k32wcUAA",
     "distance": 0,
     "title": "Venice Red Light (Fri)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -3586,6 +3744,8 @@
     "campUID": "a1X8X00000jLAewUAG",
     "distance": 0,
     "title": "Reggae Brunch",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -3606,6 +3766,8 @@
     "campUID": "a1X8X00000k2zEFUAY",
     "distance": 0,
     "title": "Strangelove (Fri)",
+    "wa": true,
+    "waNotes": "We are a bar that is flat and has just rugs on playa and we feel we can accommodate a person with disabilities (and certainly would like to).",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -3650,6 +3812,8 @@
     "campUID": "a1X8X00000k3BcPUAU",
     "distance": 0,
     "title": "Oasis and Chill",
+    "wa": true,
+    "waNotes": "It's as wheelchair friendly as playa gets I think ...",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -3686,6 +3850,8 @@
     "campUID": "a1X8X00000jK8p7UAC",
     "distance": 0,
     "title": "Cuddle Oasis (Fri)",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -3714,6 +3880,8 @@
     "campUID": "a1X8X00000iWheAUAS",
     "distance": 0,
     "title": "Afterglow 20th Anniversary",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -3734,6 +3902,8 @@
     "campUID": "a1X8X00000jJNkdUAG",
     "distance": 0,
     "title": "PSYcasualFriday",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -3810,6 +3980,8 @@
     "campUID": "a1X8X00000jK8p7UAC",
     "distance": 0,
     "title": "Deep Society (SF) Takeover",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -3854,6 +4026,8 @@
     "campUID": "a1X8X00000jKSKIUA4",
     "distance": 0,
     "title": "Waffles & House (Music)",
+    "wa": true,
+    "waNotes": "flat entrance and surface throughout and easy tables to reach and seat on to eat",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -3882,6 +4056,8 @@
     "campUID": "a1X8X00000k1xnaUAA",
     "distance": 0,
     "title": "Sonic Opulence",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -3974,6 +4150,8 @@
     "campUID": "a1X8X00000k3BcPUAU",
     "distance": 0,
     "title": "Hookahdome Players- Live Music Jam",
+    "wa": true,
+    "waNotes": "It's as wheelchair friendly as playa gets I think ...",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -3994,6 +4172,8 @@
     "campUID": "a1X8X00000k3BcPUAU",
     "distance": 0,
     "title": "Global Dance Party",
+    "wa": true,
+    "waNotes": "It's as wheelchair friendly as playa gets I think ...",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -4094,6 +4274,8 @@
     "campUID": "RSLCx9565",
     "distance": 0,
     "title": "Sunrise Set with Dj Anonymous",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -4116,6 +4298,8 @@
     "campUID": "RSLCx9565",
     "distance": 0,
     "title": "Nova Lua - Brazilian takeover!",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -4170,6 +4354,8 @@
     "campUID": "a1X8X00000kmo2BUAQ",
     "distance": 0,
     "title": "Axo + Friends / Riotvan Fam",
+    "wa": false,
+    "waNotes": "we are a school bus with ladder access to a roofdeck.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -4208,6 +4394,8 @@
     "campUID": "a1X8X00000kmo2BUAQ",
     "distance": 0,
     "title": "Daybreaker + Axolotl Takeover",
+    "wa": false,
+    "waNotes": "we are a school bus with ladder access to a roofdeck.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -4238,6 +4426,8 @@
     "campUID": "a1X8X00000kmo2BUAQ",
     "distance": 0,
     "title": "Chapelcorp",
+    "wa": false,
+    "waNotes": "we are a school bus with ladder access to a roofdeck.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -4260,6 +4450,8 @@
     "campUID": "a1X8X00000k3PXLUA2",
     "distance": 0,
     "title": "Reggae Dub Camp",
+    "wa": true,
+    "waNotes": "\"applies to camp. no art car involved. our camp has zero step or ledges, super easy to access doorway that wide af.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -4288,6 +4480,8 @@
     "campUID": "a1X8X00000iWUY0UAO",
     "distance": 0,
     "title": "INSIDE THE PYRAMID",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -4348,6 +4542,8 @@
     "campUID": "a1X8X00000kmo2BUAQ",
     "distance": 0,
     "title": "La Calaca Village Live Music + DJs",
+    "wa": false,
+    "waNotes": "we are a school bus with ladder access to a roofdeck.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -4386,6 +4582,8 @@
     "campUID": "a1X8X00000kmOIXUA2",
     "distance": 0,
     "title": "Musical Dharma Vibez",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -4486,6 +4684,8 @@
     "campUID": "a1X8X00000kmo2BUAQ",
     "distance": 0,
     "title": "Búho + Axolotol Takeover",
+    "wa": false,
+    "waNotes": "we are a school bus with ladder access to a roofdeck.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -4508,6 +4708,8 @@
     "campUID": "a1X8X00000jKGIAUA4",
     "distance": 0,
     "title": "Reverbia (Fri)",
+    "wa": true,
+    "waNotes": "We do not have stairs and have a ramp which goes up our stage for artists.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -4560,6 +4762,8 @@
     "campUID": "RSLCx8219",
     "distance": 0,
     "title": "KAEZ 96.3 Alt Energy Zone (Mon)",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -4612,6 +4816,8 @@
     "campUID": "a1X8X00000lXDmUUAW",
     "distance": 0,
     "title": "BMIR 94.5 FM (Mon)",
+    "wa": false,
+    "waNotes": "Lounge and burn barrel are easy access to wheelchairs. DJ and production studios are in raised containers with steps.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -4744,6 +4950,8 @@
     "campUID": "a1X8X00000hsxCeUAI",
     "distance": 0,
     "title": "HEX Collective (Mon)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -4796,6 +5004,8 @@
     "campUID": "a1X8X00000k2q0HUAQ",
     "distance": 0,
     "title": "Disco Dance Party",
+    "wa": true,
+    "waNotes": "Flat - no stairs",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -4832,6 +5042,8 @@
     "campUID": "a1X8X00000k31E5UAI",
     "distance": 0,
     "title": "Mojitos & Margs!",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -4860,6 +5072,8 @@
     "campUID": "a1X8X00000k33hlUAA",
     "distance": 0,
     "title": "Loincloth Party!",
+    "wa": true,
+    "waNotes": "N/A",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -4880,6 +5094,8 @@
     "campUID": "a1X8X00000k2yjQUAQ",
     "distance": 0,
     "title": "Renegade the Renegade",
+    "wa": true,
+    "waNotes": "Our camp is 100% accessible and offers a floor full of carpet for your comfort.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -4948,6 +5164,8 @@
     "campUID": "a1X8X00000rDX4hUAG",
     "distance": 0,
     "title": "Bees and Bass!",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -5002,6 +5220,8 @@
     "campUID": "a1X8X00000hsxNKUAY",
     "distance": 0,
     "title": "Jazz Jam Session",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -5022,6 +5242,8 @@
     "campUID": "a1X8X00000lZiLWUA0",
     "distance": 0,
     "title": "Morning PainJoy Radio",
+    "wa": true,
+    "waNotes": "\"Camp is wheel chair friendly, but not the art car.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -5042,6 +5264,8 @@
     "campUID": "a1X8X00000lZiLWUA0",
     "distance": 0,
     "title": "Spanky's Camp djs",
+    "wa": true,
+    "waNotes": "\"Camp is wheel chair friendly, but not the art car.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -5062,6 +5286,8 @@
     "campUID": "a1X8X00000lZiLWUA0",
     "distance": 0,
     "title": "Spanky's Warm Up DJs",
+    "wa": true,
+    "waNotes": "\"Camp is wheel chair friendly, but not the art car.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -5090,6 +5316,8 @@
     "campUID": "a1X8X00000lZiLWUA0",
     "distance": 0,
     "title": "\"Faster PussyCat! Kill, Kill Party\"",
+    "wa": true,
+    "waNotes": "\"Camp is wheel chair friendly, but not the art car.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -5118,6 +5346,8 @@
     "campUID": "a1X8X00000k3B2hUAE",
     "distance": 0,
     "title": "Seth Schwarz Takeover",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -5180,6 +5410,8 @@
     "campUID": "a1X8X00000k3FJYUA2",
     "distance": 0,
     "title": "FUego (Mon)",
+    "wa": true,
+    "waNotes": "All on one level. No stairs.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -5264,6 +5496,8 @@
     "campUID": "a1X8X00000k1qDWUAY",
     "distance": 0,
     "title": "Made in Montana",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -5316,6 +5550,8 @@
     "campUID": "a1X8X00000k30i8UAA",
     "distance": 0,
     "title": "Michelada Mixer",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -5376,6 +5612,8 @@
     "campUID": "a1X8X00000jK5uAUAS",
     "distance": 0,
     "title": "MEATLOAF METAL M0NDAY",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -5396,6 +5634,8 @@
     "campUID": "a1X8X00000jK5uAUAS",
     "distance": 0,
     "title": "I Need An Adult (Mon)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -5440,6 +5680,8 @@
     "campUID": "a1X8X00000k2ygaUAA",
     "distance": 0,
     "title": "Playground (Mon)",
+    "wa": true,
+    "waNotes": "\"Our main Arrival Stage is outdoors and our Dune Lounge has large opening, all on flat ground with no steps\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -5492,6 +5734,8 @@
     "campUID": "a1X8X00000huuMXUAY",
     "distance": 0,
     "title": "Our annual blowout (w/ Red Hot Bev)",
+    "wa": false,
+    "waNotes": "Camp is friendly but art car is not.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -5592,6 +5836,8 @@
     "campUID": "a1X8X00000hVl42UAC",
     "distance": 0,
     "title": "Afro-House Takeover",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -5612,6 +5858,8 @@
     "campUID": "a1X8X00000k1azmUAA",
     "distance": 0,
     "title": "Mon. Store Hours",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -5640,6 +5888,8 @@
     "campUID": "a1X8X00000k1azmUAA",
     "distance": 0,
     "title": "Staff Soiree",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -5660,6 +5910,8 @@
     "campUID": "a1X8X00000k32t9UAA",
     "distance": 0,
     "title": "Glory Hole Manicures & Picklebacks",
+    "wa": true,
+    "waNotes": "\"The majority of our camp is wheel chair accessible, including our big day-time stage, dance floor and bar. The only things that are not accessible are our roof deck, which only has a stair case, and \"\"\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -5704,6 +5956,8 @@
     "campUID": "a1X8X00000k32t9UAA",
     "distance": 0,
     "title": "Zero Fucks (Mon)",
+    "wa": true,
+    "waNotes": "\"The majority of our camp is wheel chair accessible, including our big day-time stage, dance floor and bar. The only things that are not accessible are our roof deck, which only has a stair case, and \"\"\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -5748,6 +6002,8 @@
     "campUID": "a1X8X00000jJfDCUA0",
     "distance": 0,
     "title": "\"Rex's Annual Fiddle \"\"Jam\"\"\"",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -5768,6 +6024,8 @@
     "campUID": "RSLCx9219",
     "distance": 0,
     "title": "Gnoasis",
+    "wa": false,
+    "waNotes": "Our event will be in deep playa",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -5798,6 +6056,8 @@
     "campUID": "a1X8X00000k3263UAA",
     "distance": 0,
     "title": "Celebration of Gifting",
+    "wa": true,
+    "waNotes": "Our camp is all flat and there are no stairs to go up.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -5842,6 +6102,8 @@
     "campUID": "a1X8X00000k3LdVUAU",
     "distance": 0,
     "title": "Fang Bang",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -5950,6 +6212,8 @@
     "campUID": "a1X8X00000k3JSOUA2",
     "distance": 0,
     "title": "Drag Bingo!!!",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -5970,6 +6234,8 @@
     "campUID": "a1X8X00000k3JSOUA2",
     "distance": 0,
     "title": "Playa's Annual LGBTQ+ Meet & Greet",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -6008,6 +6274,8 @@
     "campUID": "a1X8X00000k3JSOUA2",
     "distance": 0,
     "title": "How HARE EWE!",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -6054,6 +6322,8 @@
     "campUID": "a1X8X00000k21zXUAQ",
     "distance": 0,
     "title": "Holi High Takeover",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -6100,6 +6370,8 @@
     "campUID": "a1X8X00000k1KtvUAE",
     "distance": 0,
     "title": "Daydream Brunch Party",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -6136,6 +6408,8 @@
     "campUID": "a1X8X00000jIl7AUAS",
     "distance": 0,
     "title": "Treble Makers (Mon)",
+    "wa": false,
+    "waNotes": "\"The camp is flat and no steps, camp is open and wide.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -6180,6 +6454,8 @@
     "campUID": "RSLCx9633",
     "distance": 0,
     "title": "Titanic's End (Mon)",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -6242,6 +6518,8 @@
     "campUID": "a1X8X00000k3GZ6UAM",
     "distance": 0,
     "title": "Mystopia Disco Take Over",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -6278,6 +6556,8 @@
     "campUID": "a1X8X00000k3GZ6UAM",
     "distance": 0,
     "title": "\"Motion of the Ocean, Pt. 3.\"",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -6314,6 +6594,8 @@
     "campUID": "a1X8X00000jJqPrUAK",
     "distance": 0,
     "title": "Department of Erections in Concert",
+    "wa": true,
+    "waNotes": "\"Party is open to all, going up into cloud would be hard, but there's no party up there!\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -6336,6 +6618,8 @@
     "campUID": "RSLCx9815",
     "distance": 0,
     "title": "Radio Equinox 99.5 FM (Mon)",
+    "wa": false,
+    "waNotes": "Patio open for visitors. Studio is inside large tent.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -6396,6 +6680,8 @@
     "campUID": "a1X8X00000kmo2BUAQ",
     "distance": 0,
     "title": "Day of the Dead @ The Temple",
+    "wa": false,
+    "waNotes": "we are a school bus with ladder access to a roofdeck.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -6426,6 +6712,8 @@
     "campUID": "a1X8X00000k3JSOUA2",
     "distance": 0,
     "title": "Pink Party",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -6472,6 +6760,8 @@
     "campUID": "a1X8X00000kmZQTUA2",
     "distance": 0,
     "title": "Exploration",
+    "wa": true,
+    "waNotes": "\"Our camp is wc friendly, our art car isn't yet\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -6518,6 +6808,8 @@
     "campUID": "a1X8X00000k23UbUAI",
     "distance": 0,
     "title": "Hot Stuff (Mon)",
+    "wa": false,
+    "waNotes": "our camp is largely flat there are no ramps",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -6554,6 +6846,8 @@
     "campUID": "RSLCx10224",
     "distance": 0,
     "title": "\"Sound Healing, Disco, & Indie Dance\"",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -6624,6 +6918,8 @@
     "campUID": "a1X8X00000k3M9IUAU",
     "distance": 0,
     "title": "Welcome Home PARTY!",
+    "wa": false,
+    "waNotes": "N/A",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -6716,6 +7012,8 @@
     "campUID": "a1X8X00000k1xnaUAA",
     "distance": 0,
     "title": "\"Our Tribe ,Crew night BIG PARTY!!\"",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -6800,6 +7098,8 @@
     "campUID": "RSLCx10297",
     "distance": 0,
     "title": "Homecoming",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -6854,6 +7154,8 @@
     "campUID": "a1X8X00000hs7ZVUAY",
     "distance": 0,
     "title": "Devils Disco",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -6874,6 +7176,8 @@
     "campUID": "a1X8X00000jIsz1UAC",
     "distance": 0,
     "title": "DISTRIKT (Mon)",
+    "wa": true,
+    "waNotes": "its an open dancefloor on the playa",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -6934,6 +7238,8 @@
     "campUID": "a1X8X00000k2atTUAQ",
     "distance": 0,
     "title": "OG Family Opener",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -7026,6 +7332,8 @@
     "campUID": "a1X8X00000k2z90UAA",
     "distance": 0,
     "title": "Opening Day",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -7086,6 +7394,8 @@
     "campUID": "a1X8X00000jKrXoUAK",
     "distance": 0,
     "title": "17 Virgins (Mon)",
+    "wa": false,
+    "waNotes": "\"Art Car yes wheel chair friendly. Camp mostly, but one tight doorway\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -7130,6 +7440,8 @@
     "campUID": "a1X8X00000k39KQUAY",
     "distance": 0,
     "title": "Lumi-Dance (Mon)",
+    "wa": false,
+    "waNotes": "\"We do not have a raised platform for handicapped attendees, but our entire camp frontage including the Bar, Tea Lounge and Stage are ground level.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -7174,6 +7486,8 @@
     "campUID": "a1X8X00000k3MFfUAM",
     "distance": 0,
     "title": "Seven Commandments of Animalism",
+    "wa": true,
+    "waNotes": "Passages wide for wheelchairs to pass through. No bumps!",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -7210,6 +7524,8 @@
     "campUID": "a1X8X00000k1sGDUAY",
     "distance": 0,
     "title": "Hot Mix Welcome",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -7230,6 +7546,8 @@
     "campUID": "a1X8X00000k31CJUAY",
     "distance": 0,
     "title": "Mirkat's Menagerie",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -7274,6 +7592,8 @@
     "campUID": "a1X8X00000k1sGDUAY",
     "distance": 0,
     "title": "Hot Mess Camp (Mon)",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -7295,6 +7615,8 @@
     "campUID": "a1X8X00000k30i3UAA",
     "distance": 0,
     "title": "Coconut Cold Brew",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -7315,6 +7637,8 @@
     "campUID": "a1X8X00000k3KxdUAE",
     "distance": 0,
     "title": "Welcome Home",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -7391,6 +7715,8 @@
     "campUID": "a1X8X00000k3KQOUA2",
     "distance": 0,
     "title": "Queerest Lil Cocktail Party!",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -7411,6 +7737,8 @@
     "campUID": "a1X8X00000k30i3UAA",
     "distance": 0,
     "title": "Salon Secréte",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -7439,6 +7767,8 @@
     "campUID": "a1X8X00000k3KQOUA2",
     "distance": 0,
     "title": "Welcome to the Dust Dance Party!",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -7483,6 +7813,8 @@
     "campUID": "a1X8X00000k2whDUAQ",
     "distance": 0,
     "title": "Season Opener",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -7511,6 +7843,8 @@
     "campUID": "a1X8X00000k390AUAQ",
     "distance": 0,
     "title": "Involuntary Sound Healing",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -7555,6 +7889,8 @@
     "campUID": "a1X8X00000k2whDUAQ",
     "distance": 0,
     "title": "Mimosa Sunset?",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -7583,6 +7919,8 @@
     "campUID": "a1X8X00000jK8I2UAK",
     "distance": 0,
     "title": "Martian Sandstorm",
+    "wa": true,
+    "waNotes": "Flat camp with dancefloor",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -7691,6 +8029,8 @@
     "campUID": "a1X8X00000k32ynUAA",
     "distance": 0,
     "title": "Kostume Kult Gifting & Runway Show",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -7735,6 +8075,8 @@
     "campUID": "a1X8X00000k3KMqUAM",
     "distance": 0,
     "title": "Welcome Home Party",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -7755,6 +8097,8 @@
     "campUID": "a1X8X00000jK8I2UAK",
     "distance": 0,
     "title": "Crawling the Universe",
+    "wa": true,
+    "waNotes": "Flat camp with dancefloor",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -7784,6 +8128,8 @@
     "campUID": "a1X8X00000k32ynUAA",
     "distance": 0,
     "title": "Horny Ball",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -7820,6 +8166,8 @@
     "campUID": "a1X8X00000k207uUAA",
     "distance": 0,
     "title": "DJ's on a 30 foot Snail slide!!",
+    "wa": true,
+    "waNotes": "\"DJ stage is on top of snail slide. Snail slide is not wheelchair friendly, but the dancefloor/viewing area is ground level and accessible via wheelchair\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -7856,6 +8204,8 @@
     "campUID": "a1X8X00000k32wcUAA",
     "distance": 0,
     "title": "Venice Red Light (Mon)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -7924,6 +8274,8 @@
     "campUID": "a1X8X00000jK8p7UAC",
     "distance": 0,
     "title": "Cuddle Oasis (Mon)",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -7984,6 +8336,8 @@
     "campUID": "a1X8X00000k2zEFUAY",
     "distance": 0,
     "title": "Strangelove (Mon)",
+    "wa": true,
+    "waNotes": "We are a bar that is flat and has just rugs on playa and we feel we can accommodate a person with disabilities (and certainly would like to).",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -8028,6 +8382,8 @@
     "campUID": "a1X8X00000jKSKIUA4",
     "distance": 0,
     "title": "Waffles & House (Music)",
+    "wa": true,
+    "waNotes": "flat entrance and surface throughout and easy tables to reach and seat on to eat",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -8064,6 +8420,8 @@
     "campUID": "a1X8X00000iWheAUAS",
     "distance": 0,
     "title": "Gaze into our crystal balls",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -8084,6 +8442,8 @@
     "campUID": "a1X8X00000kmOIXUA2",
     "distance": 0,
     "title": "Opulent Chill Opening",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -8136,6 +8496,8 @@
     "campUID": "a1X8X00000k2zGtUAI",
     "distance": 0,
     "title": "Kickoff Block Party",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -8164,6 +8526,8 @@
     "campUID": "a1X8X00000k3K4jUAE",
     "distance": 0,
     "title": "Welcome Home Party",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -8232,6 +8596,8 @@
     "campUID": "a1X8X00000k4bcZUAQ",
     "distance": 0,
     "title": "It's brought to you by a sunset.",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -8270,6 +8636,8 @@
     "campUID": "a1X8X00000k4bcZUAQ",
     "distance": 0,
     "title": "The Coolest Party Ever",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -8316,6 +8684,8 @@
     "campUID": "a1X8X00000jKGIAUA4",
     "distance": 0,
     "title": "Reverbia (Mon)",
+    "wa": true,
+    "waNotes": "We do not have stairs and have a ramp which goes up our stage for artists.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -8392,6 +8762,8 @@
     "campUID": "a1X8X00000k3LdVUAU",
     "distance": 0,
     "title": "Learn to mix Rominal music",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -8412,6 +8784,8 @@
     "campUID": "a1X8X00000jKGIAUA4",
     "distance": 0,
     "title": "Song Dust Sing Open Mic",
+    "wa": true,
+    "waNotes": "We do not have stairs and have a ramp which goes up our stage for artists.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -8472,6 +8846,8 @@
     "campUID": "a1X8X00000k1Y7gUAE",
     "distance": 0,
     "title": "Fire in the Sky: Sunrise Set",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -8492,6 +8868,8 @@
     "campUID": "RSLCx8219",
     "distance": 0,
     "title": "KAEZ 96.3 Alt Energy Zone (Sat)",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -8528,6 +8906,8 @@
     "campUID": "a1X8X00000lXDmUUAW",
     "distance": 0,
     "title": "BMIR 94.5 FM (Sat)",
+    "wa": false,
+    "waNotes": "Lounge and burn barrel are easy access to wheelchairs. DJ and production studios are in raised containers with steps.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -8644,6 +9024,8 @@
     "campUID": "a1X8X00000k31E5UAI",
     "distance": 0,
     "title": "Speed Suit Send Off!",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -8672,6 +9054,8 @@
     "campUID": "a1X8X00000k33hlUAA",
     "distance": 0,
     "title": "Disco Portal",
+    "wa": true,
+    "waNotes": "N/A",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -8692,6 +9076,8 @@
     "campUID": "a1X8X00000hsxNKUAY",
     "distance": 0,
     "title": "Mingus and Mimosas Concert",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -8712,6 +9098,8 @@
     "campUID": "a1X8X00000hsxNKUAY",
     "distance": 0,
     "title": "Jazz Jam Session",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -8732,6 +9120,8 @@
     "campUID": "a1X8X00000k3FJYUA2",
     "distance": 0,
     "title": "FUego (Sat)",
+    "wa": true,
+    "waNotes": "All on one level. No stairs.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -8784,6 +9174,8 @@
     "campUID": "a1X8X00000lZiLWUA0",
     "distance": 0,
     "title": "Celtic Chaos Take Over!!!",
+    "wa": true,
+    "waNotes": "\"Camp is wheel chair friendly, but not the art car.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -8804,6 +9196,8 @@
     "campUID": "a1X8X00000lZiLWUA0",
     "distance": 0,
     "title": "Spanky's Burn Night Blow-out",
+    "wa": true,
+    "waNotes": "\"Camp is wheel chair friendly, but not the art car.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -8840,6 +9234,8 @@
     "campUID": "a1X8X00000k2ygaUAA",
     "distance": 0,
     "title": "Playground (Sat)",
+    "wa": true,
+    "waNotes": "\"Our main Arrival Stage is outdoors and our Dune Lounge has large opening, all on flat ground with no steps\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -8900,6 +9296,8 @@
     "campUID": "a1X8X00000hVl42UAC",
     "distance": 0,
     "title": "Reggae House",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -8928,6 +9326,8 @@
     "campUID": "a1X8X00000k1azmUAA",
     "distance": 0,
     "title": "Sat. Store Hours",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -8964,6 +9364,8 @@
     "campUID": "a1X8X00000jKctwUAC",
     "distance": 0,
     "title": ")'( Burn Night )'(",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -8994,6 +9396,8 @@
     "campUID": "a1X8X00000k3JSOUA2",
     "distance": 0,
     "title": "Deca-dent Wool: A Burnthday Porty",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -9096,6 +9500,8 @@
     "campUID": "a1X8X00000k21zXUAQ",
     "distance": 0,
     "title": "TechnoGecko Grotto (Sat)",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -9158,6 +9564,8 @@
     "campUID": "a1X8X00000knZqBUAU",
     "distance": 0,
     "title": "Sunrise",
+    "wa": false,
+    "waNotes": "we have had people in Wheelchair play on our car and people that cant walk we get our crew and we carry them to the top of the bridge",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -9188,6 +9596,8 @@
     "campUID": "a1X8X00000k1qDWUAY",
     "distance": 0,
     "title": "Down Under Over",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -9208,6 +9618,8 @@
     "campUID": "RSLCx9633",
     "distance": 0,
     "title": "Titanic's End (Sat)",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -9246,6 +9658,8 @@
     "campUID": "a1X8X00000k3LdVUAU",
     "distance": 0,
     "title": "The Burning Brood",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -9322,6 +9736,8 @@
     "campUID": "a1X8X00000jJqPrUAK",
     "distance": 0,
     "title": "Fluffy Rollin' to the Man",
+    "wa": true,
+    "waNotes": "\"Party is open to all, going up into cloud would be hard, but there's no party up there!\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -9392,6 +9808,8 @@
     "campUID": "RSLCx9815",
     "distance": 0,
     "title": "Radio Equinox 99.5 FM (Sat)",
+    "wa": false,
+    "waNotes": "Patio open for visitors. Studio is inside large tent.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -9436,6 +9854,8 @@
     "campUID": "a1X8X00000kmZQTUA2",
     "distance": 0,
     "title": "Burn Night Back in Black",
+    "wa": true,
+    "waNotes": "\"Our camp is wc friendly, our art car isn't yet\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -9458,6 +9878,8 @@
     "campUID": "a1X8X00000k23UbUAI",
     "distance": 0,
     "title": "Hot Stuff (Sat)",
+    "wa": false,
+    "waNotes": "our camp is largely flat there are no ramps",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -9486,6 +9908,8 @@
     "campUID": "a1X8X00000k3M9IUAU",
     "distance": 0,
     "title": "Yoruba Family Takeover",
+    "wa": false,
+    "waNotes": "N/A",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -9506,6 +9930,8 @@
     "campUID": "a1X8X00000k32veUAA",
     "distance": 0,
     "title": "Dusty Disco Afters (ISO: All-Stars)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -9574,6 +10000,8 @@
     "campUID": "a1X8X00000jIl7AUAS",
     "distance": 0,
     "title": "Treble Makers (Sat)",
+    "wa": false,
+    "waNotes": "\"The camp is flat and no steps, camp is open and wide.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -9602,6 +10030,8 @@
     "campUID": "RSLCx10297",
     "distance": 0,
     "title": "Post-man-burn party",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -9632,6 +10062,8 @@
     "campUID": "a1X8X00000jIsz1UAC",
     "distance": 0,
     "title": "DISTRIKT (Sat)",
+    "wa": true,
+    "waNotes": "its an open dancefloor on the playa",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -9668,6 +10100,8 @@
     "campUID": "a1X8X00000k2z90UAA",
     "distance": 0,
     "title": "Pink Mammoth (Sat)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -9704,6 +10138,8 @@
     "campUID": "a1X8X00000k2atTUAQ",
     "distance": 0,
     "title": "F!#%k It.. Lets Burn",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -9748,6 +10184,8 @@
     "campUID": "a1X8X00000k39KQUAY",
     "distance": 0,
     "title": "Lumi-Dance (Sat)",
+    "wa": false,
+    "waNotes": "\"We do not have a raised platform for handicapped attendees, but our entire camp frontage including the Bar, Tea Lounge and Stage are ground level.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -9808,6 +10246,8 @@
     "campUID": "a1X8X00000k1sGDUAY",
     "distance": 0,
     "title": "Hot Mess Camp (Sat)",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -9829,6 +10269,8 @@
     "campUID": "a1X8X00000k31CJUAY",
     "distance": 0,
     "title": "Gator Rip Down",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -9849,6 +10291,8 @@
     "campUID": "a1X8X00000k2z6cUAA",
     "distance": 0,
     "title": "Bubbles and Bass (Sat)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -9909,6 +10353,8 @@
     "campUID": "a1X8X00000k30i3UAA",
     "distance": 0,
     "title": "Salon Secréte",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -9937,6 +10383,8 @@
     "campUID": "a1X8X00000k3KxdUAE",
     "distance": 0,
     "title": "Fuck Yer Burn",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -9989,6 +10437,8 @@
     "campUID": "a1X8X00000jImd2UAC",
     "distance": 0,
     "title": "Banana Burnarama",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -10026,6 +10476,8 @@
     "campUID": "a1X8X00000jK8I2UAK",
     "distance": 0,
     "title": "Raging Rockets",
+    "wa": true,
+    "waNotes": "Flat camp with dancefloor",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -10102,6 +10554,8 @@
     "campUID": "a1X8X00000k2whDUAQ",
     "distance": 0,
     "title": "the final sunrise",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -10138,6 +10592,8 @@
     "campUID": "a1X8X00000k2whDUAQ",
     "distance": 0,
     "title": "Strike party",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -10158,6 +10614,8 @@
     "campUID": "a1X8X00000k3KQOUA2",
     "distance": 0,
     "title": "Last Night a DJ Saved My Life",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -10194,6 +10652,8 @@
     "campUID": "a1X8X00000jL8OWUA0",
     "distance": 0,
     "title": "Legendary Playground of the Gods (Sat)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -10222,6 +10682,8 @@
     "campUID": "a1X8X00000k3LsAUAU",
     "distance": 0,
     "title": "Ladies Night",
+    "wa": true,
+    "waNotes": "Our camp is largely open space with multiple extra wide entry points",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -10242,6 +10704,8 @@
     "campUID": "a1X8X00000k3KMqUAM",
     "distance": 0,
     "title": "Burn Night Party",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -10262,6 +10726,8 @@
     "campUID": "a1X8X00000k3BcPUAU",
     "distance": 0,
     "title": "Oasis and Chill",
+    "wa": true,
+    "waNotes": "It's as wheelchair friendly as playa gets I think ...",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -10298,6 +10764,8 @@
     "campUID": "a1X8X00000jK8I2UAK",
     "distance": 0,
     "title": "Burn Party",
+    "wa": true,
+    "waNotes": "Flat camp with dancefloor",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -10319,6 +10787,8 @@
     "campUID": "a1X8X00000jLAewUAG",
     "distance": 0,
     "title": "Uncle Gary's Slam Down Come Down",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -10339,6 +10809,8 @@
     "campUID": "a1X8X00000jJNkdUAG",
     "distance": 0,
     "title": "Afterburn Blast",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -10407,6 +10879,8 @@
     "campUID": "a1X8X00000jKSKIUA4",
     "distance": 0,
     "title": "Waffles & House (Music)",
+    "wa": true,
+    "waNotes": "flat entrance and surface throughout and easy tables to reach and seat on to eat",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -10435,6 +10909,8 @@
     "campUID": "a1X8X00000jK8p7UAC",
     "distance": 0,
     "title": "Cuddle Oasis (Sat)",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -10455,6 +10931,8 @@
     "campUID": "a1X8X00000k1xnaUAA",
     "distance": 0,
     "title": "Burn Out",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -10499,6 +10977,8 @@
     "campUID": "a1X8X00000k3BcPUAU",
     "distance": 0,
     "title": "Global Dance Party",
+    "wa": true,
+    "waNotes": "It's as wheelchair friendly as playa gets I think ...",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -10583,6 +11063,8 @@
     "campUID": "a1X8X00000jKctwUAC",
     "distance": 0,
     "title": "Final Bass Journey: A Playa Odyssey",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -10605,6 +11087,8 @@
     "campUID": "RSLCx9565",
     "distance": 0,
     "title": "Burn Night on the Flyer!",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -10635,6 +11119,8 @@
     "campUID": "a1X8X00000k5CDJUA2",
     "distance": 0,
     "title": "Tribe",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -10687,6 +11173,8 @@
     "campUID": "a1X8X00000k3PXLUA2",
     "distance": 0,
     "title": "Reggae Dub Camp",
+    "wa": true,
+    "waNotes": "\"applies to camp. no art car involved. our camp has zero step or ledges, super easy to access doorway that wide af.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -10731,6 +11219,8 @@
     "campUID": "a1X8X00000kmo2BUAQ",
     "distance": 0,
     "title": "SH Magic Karpet Ride",
+    "wa": false,
+    "waNotes": "we are a school bus with ladder access to a roofdeck.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -10761,6 +11251,8 @@
     "campUID": "a1X8X00000iWUY0UAO",
     "distance": 0,
     "title": "INSIDE THE PYRAMID",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -10813,6 +11305,8 @@
     "campUID": "a1X8X00000kmo2BUAQ",
     "distance": 0,
     "title": "Axo DJs",
+    "wa": false,
+    "waNotes": "we are a school bus with ladder access to a roofdeck.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -10859,6 +11353,8 @@
     "campUID": "a1X8X00000kmOIXUA2",
     "distance": 0,
     "title": "Burning Animalia",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -10903,6 +11399,8 @@
     "campUID": "a1X8X00000jKGIAUA4",
     "distance": 0,
     "title": "Reverbia Children's Hour",
+    "wa": true,
+    "waNotes": "We do not have stairs and have a ramp which goes up our stage for artists.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -10947,6 +11445,8 @@
     "campUID": "a1X8X00000jKGIAUA4",
     "distance": 0,
     "title": "Reverbia Singer Songwriters 3 x 3",
+    "wa": true,
+    "waNotes": "We do not have stairs and have a ramp which goes up our stage for artists.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -10967,6 +11467,8 @@
     "campUID": "a1X8X00000lXDmUUAW",
     "distance": 0,
     "title": "BMIR 94.5 FM (Sun)",
+    "wa": false,
+    "waNotes": "Lounge and burn barrel are easy access to wheelchairs. DJ and production studios are in raised containers with steps.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -11107,6 +11609,8 @@
     "campUID": "a1X8X00000k31E5UAI",
     "distance": 0,
     "title": "Thalassophobia!",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -11135,6 +11639,8 @@
     "campUID": "a1X8X00000k3FJYUA2",
     "distance": 0,
     "title": "FUego (Sun)",
+    "wa": true,
+    "waNotes": "All on one level. No stairs.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -11227,6 +11733,8 @@
     "campUID": "a1X8X00000hsxNKUAY",
     "distance": 0,
     "title": "Jazz Jam Session",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -11247,6 +11755,8 @@
     "campUID": "a1X8X00000lZiLWUA0",
     "distance": 0,
     "title": "Morning PainJoy Radio",
+    "wa": true,
+    "waNotes": "\"Camp is wheel chair friendly, but not the art car.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -11267,6 +11777,8 @@
     "campUID": "a1X8X00000lZiLWUA0",
     "distance": 0,
     "title": "Spanky's Opening Party",
+    "wa": true,
+    "waNotes": "\"Camp is wheel chair friendly, but not the art car.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -11295,6 +11807,8 @@
     "campUID": "a1X8X00000jJBWvUAO",
     "distance": 0,
     "title": "Welcome Home Party",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -11339,6 +11853,8 @@
     "campUID": "a1X8X00000k1qDWUAY",
     "distance": 0,
     "title": "Shake the Dust On",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -11359,6 +11875,8 @@
     "campUID": "a1X8X00000k31CTUAY",
     "distance": 0,
     "title": "Frosty's Bunny Slope Pounder",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -11395,6 +11913,8 @@
     "campUID": "a1X8X00000k3JSOUA2",
     "distance": 0,
     "title": "BAAAHS Ass Bitches: Welcome Home!",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -11449,6 +11969,8 @@
     "campUID": "a1X8X00000k21zXUAQ",
     "distance": 0,
     "title": "TechnoGecko Grotto (Sun)",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -11487,6 +12009,8 @@
     "campUID": "a1X8X00000k3GZ6UAM",
     "distance": 0,
     "title": "Early Bird Special!",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -11563,6 +12087,8 @@
     "campUID": "a1X8X00000k2K2aUAE",
     "distance": 0,
     "title": "Deoxidized Welcome Home Party",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -11639,6 +12165,8 @@
     "campUID": "a1X8X00000jK8p7UAC",
     "distance": 0,
     "title": "Opening Party",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -11691,6 +12219,8 @@
     "campUID": "RSLCx9815",
     "distance": 0,
     "title": "Radio Equinox 99.5 FM (Sun)",
+    "wa": false,
+    "waNotes": "Patio open for visitors. Studio is inside large tent.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -11775,6 +12305,8 @@
     "campUID": "a1X8X00000k3M9IUAU",
     "distance": 0,
     "title": "Celtic Chaos Family Night",
+    "wa": false,
+    "waNotes": "N/A",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -11795,6 +12327,8 @@
     "campUID": "a1X8X00000k2z90UAA",
     "distance": 0,
     "title": "Pink Mammoth & Friends",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -11831,6 +12365,8 @@
     "campUID": "a1X8X00000k31CJUAY",
     "distance": 0,
     "title": "The YES Spectacular!",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -11867,6 +12403,8 @@
     "campUID": "a1X8X00000k390AUAQ",
     "distance": 0,
     "title": "Artists Appreciation Night",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -11903,6 +12441,8 @@
     "campUID": "a1X8X00000jK8I2UAK",
     "distance": 0,
     "title": "High Noon to Late Night Liftoff",
+    "wa": true,
+    "waNotes": "Flat camp with dancefloor",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -12019,6 +12559,8 @@
     "campUID": "a1X8X00000jImd2UAC",
     "distance": 0,
     "title": "Buttnanarama - Welcome home party!",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -12064,6 +12606,8 @@
     "campUID": "a1X8X00000k207uUAA",
     "distance": 0,
     "title": "DJ's on a 30 foot Snail slide!!",
+    "wa": true,
+    "waNotes": "\"DJ stage is on top of snail slide. Snail slide is not wheelchair friendly, but the dancefloor/viewing area is ground level and accessible via wheelchair\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -12100,6 +12644,8 @@
     "campUID": "a1X8X00000k3M9IUAU",
     "distance": 0,
     "title": "Celtic Chaos Family & Friends",
+    "wa": false,
+    "waNotes": "N/A",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -12120,6 +12666,8 @@
     "campUID": "a1X8X00000lZiLWUA0",
     "distance": 0,
     "title": "The Wine-Down Party",
+    "wa": true,
+    "waNotes": "\"Camp is wheel chair friendly, but not the art car.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -12148,6 +12696,8 @@
     "campUID": "a1X8X00000hVl42UAC",
     "distance": 0,
     "title": "SUNSHINE FEEL GOODS",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -12176,6 +12726,8 @@
     "campUID": "a1X8X00000k3LdVUAU",
     "distance": 0,
     "title": "The Last Vampire",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -12220,6 +12772,8 @@
     "campUID": "a1X8X00000k2z90UAA",
     "distance": 0,
     "title": "\"The Last \"\"Pink\"\" Hurrah\"",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -12264,6 +12818,8 @@
     "campUID": "a1X8X00000k2atTUAQ",
     "distance": 0,
     "title": "The Ark Party Farewell",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -12292,6 +12848,8 @@
     "campUID": "a1X8X00000k39KQUAY",
     "distance": 0,
     "title": "D&B Bloody Maria Brunch",
+    "wa": false,
+    "waNotes": "\"We do not have a raised platform for handicapped attendees, but our entire camp frontage including the Bar, Tea Lounge and Stage are ground level.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -12320,6 +12878,8 @@
     "campUID": "a1X8X00000k2z6cUAA",
     "distance": 0,
     "title": "Bubbles and Bass (Sun)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -12372,6 +12932,8 @@
     "campUID": "a1X8X00000jKctwUAC",
     "distance": 0,
     "title": "Violinist Hypnotic SUNRISE",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -12394,6 +12956,8 @@
     "campUID": "a1X8X00000jJNkdUAG",
     "distance": 0,
     "title": "Vaporwave n' Chill",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -12438,6 +13002,8 @@
     "campUID": "a1X8X00000k3PXLUA2",
     "distance": 0,
     "title": "Jah Sundays",
+    "wa": true,
+    "waNotes": "\"applies to camp. no art car involved. our camp has zero step or ledges, super easy to access doorway that wide af.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -12466,6 +13032,8 @@
     "campUID": "a1X8X00000k1Y7gUAE",
     "distance": 0,
     "title": "Colton Schavietello Marathon Set",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -12486,6 +13054,8 @@
     "campUID": "RSLCx8219",
     "distance": 0,
     "title": "KAEZ 96.3 Alt Energy Zone (Thu)",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -12546,6 +13116,8 @@
     "campUID": "a1X8X00000lXDmUUAW",
     "distance": 0,
     "title": "BMIR 94.5 FM (Thu)",
+    "wa": false,
+    "waNotes": "Lounge and burn barrel are easy access to wheelchairs. DJ and production studios are in raised containers with steps.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -12678,6 +13250,8 @@
     "campUID": "a1X8X00000hsxCeUAI",
     "distance": 0,
     "title": "HEX Collective (Thu)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -12738,6 +13312,8 @@
     "campUID": "a1X8X00000k2zojUAA",
     "distance": 0,
     "title": "Kaftan Discotheque",
+    "wa": true,
+    "waNotes": "Our camp is completely flat and has a wide entry to our bar and party area",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -12790,6 +13366,8 @@
     "campUID": "a1X8X00000k1VKqUAM",
     "distance": 0,
     "title": "Daytime Queerness",
+    "wa": true,
+    "waNotes": "\"The entrance doorway is 36\"\" wide\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -12826,6 +13404,8 @@
     "campUID": "a1X8X00000k33hlUAA",
     "distance": 0,
     "title": "Loincloth Party!",
+    "wa": true,
+    "waNotes": "N/A",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -12846,6 +13426,8 @@
     "campUID": "a1X8X00000jK2XrUAK",
     "distance": 0,
     "title": "Ei Ei Glow",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -12874,6 +13456,8 @@
     "campUID": "a1X8X00000jK2XrUAK",
     "distance": 0,
     "title": "BAAAHS Pearl Takeover Deep Playa",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -12894,6 +13478,8 @@
     "campUID": "a1X8X00000hsxNKUAY",
     "distance": 0,
     "title": "Jazz Jam Session",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -12914,6 +13500,8 @@
     "campUID": "a1X8X00000k3KDeUAM",
     "distance": 0,
     "title": "Twilight Language (Thu)",
+    "wa": true,
+    "waNotes": "\"flat ground, no stairs or ramps\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -12942,6 +13530,8 @@
     "campUID": "a1X8X00000jJBWvUAO",
     "distance": 0,
     "title": "Deaf Granny's Kitchen (Thu)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -12986,6 +13576,8 @@
     "campUID": "a1X8X00000k3FJYUA2",
     "distance": 0,
     "title": "FUego (Thu)",
+    "wa": true,
+    "waNotes": "All on one level. No stairs.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -13078,6 +13670,8 @@
     "campUID": "a1X8X00000k1qDWUAY",
     "distance": 0,
     "title": "Colors in the Sky",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -13130,6 +13724,8 @@
     "campUID": "a1X8X00000k30i8UAA",
     "distance": 0,
     "title": "Après-Ski Party",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -13198,6 +13794,8 @@
     "campUID": "a1X8X00000k2ygaUAA",
     "distance": 0,
     "title": "Playground (Thu)",
+    "wa": true,
+    "waNotes": "\"Our main Arrival Stage is outdoors and our Dune Lounge has large opening, all on flat ground with no steps\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -13282,6 +13880,8 @@
     "campUID": "a1X8X00000hVl42UAC",
     "distance": 0,
     "title": "PUMPKIN TRIBUTE SET",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -13302,6 +13902,8 @@
     "campUID": "a1X8X00000hVl42UAC",
     "distance": 0,
     "title": "Turquoise Twerk Party!",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -13322,6 +13924,8 @@
     "campUID": "a1X8X00000k3B2hUAE",
     "distance": 0,
     "title": "Sounds Over Sunrise",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -13352,6 +13956,8 @@
     "campUID": "a1X8X00000k1azmUAA",
     "distance": 0,
     "title": "Thurs. Store Hours",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -13388,6 +13994,8 @@
     "campUID": "a1X8X00000k2xNjUAI",
     "distance": 0,
     "title": "Electric New Years Eve party",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -13416,6 +14024,8 @@
     "campUID": "a1X8X00000k32t9UAA",
     "distance": 0,
     "title": "Black Rock KlubNot",
+    "wa": true,
+    "waNotes": "\"The majority of our camp is wheel chair accessible, including our big day-time stage, dance floor and bar. The only things that are not accessible are our roof deck, which only has a stair case, and \"\"\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -13508,6 +14118,8 @@
     "campUID": "a1X8X00000jJfDCUA0",
     "distance": 0,
     "title": "Time traveller with a 12 string",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -13528,6 +14140,8 @@
     "campUID": "a1X8X00000jJfDCUA0",
     "distance": 0,
     "title": "3 (or more) chords and the Truth!!!",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -13548,6 +14162,8 @@
     "campUID": "a1X8X00000hs7ZVUAY",
     "distance": 0,
     "title": "Sinners Soiree",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -13568,6 +14184,8 @@
     "campUID": "a1X8X00000k3263UAA",
     "distance": 0,
     "title": "Crane Style",
+    "wa": true,
+    "waNotes": "Our camp is all flat and there are no stairs to go up.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -13620,6 +14238,8 @@
     "campUID": "a1X8X00000k2PmtUAE",
     "distance": 0,
     "title": "1001 Nights Family&Friends",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -13680,6 +14300,8 @@
     "campUID": "a1X8X00000jKctwUAC",
     "distance": 0,
     "title": "Midnight Poutine Party",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -13702,6 +14324,8 @@
     "campUID": "a1X8X00000k3JSOUA2",
     "distance": 0,
     "title": "Love is Love: Canadian Takeover",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -13764,6 +14388,8 @@
     "campUID": "a1X8X00000k3JSOUA2",
     "distance": 0,
     "title": "Celestial Sheep",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -13802,6 +14428,8 @@
     "campUID": "a1X8X00000k3JSOUA2",
     "distance": 0,
     "title": "Lust in The Wild",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -13832,6 +14460,8 @@
     "campUID": "a1X8X00000k3JSOUA2",
     "distance": 0,
     "title": "Thunderdome Queer Takeover",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -13862,6 +14492,8 @@
     "campUID": "a1X8X00000k3JSOUA2",
     "distance": 0,
     "title": "Ewe-niverse in Glam",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -13924,6 +14556,8 @@
     "campUID": "a1X8X00000k21zXUAQ",
     "distance": 0,
     "title": "Entheos Takeover",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -13978,6 +14612,8 @@
     "campUID": "a1X8X00000jK5uAUAS",
     "distance": 0,
     "title": "I Need An Adult (Thu)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -14022,6 +14658,8 @@
     "campUID": "a1X8X00000jK5uAUAS",
     "distance": 0,
     "title": "SANDSTORM THURSD4Y (EURODANCE HITS)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -14042,6 +14680,8 @@
     "campUID": "a1X8X00000knZqBUAU",
     "distance": 0,
     "title": "The Rihno's 20th Burn Party Sunrise",
+    "wa": false,
+    "waNotes": "we have had people in Wheelchair play on our car and people that cant walk we get our crew and we carry them to the top of the bridge",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -14080,6 +14720,8 @@
     "campUID": "a1X8X00000k3FycUAE",
     "distance": 0,
     "title": "Hot Dogs & Beer & Honey Jun",
+    "wa": true,
+    "waNotes": "Some elevated areas have stairs with no wheel chair access",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -14100,6 +14742,8 @@
     "campUID": "a1X8X00000k1KtvUAE",
     "distance": 0,
     "title": "Inflight Entertainment",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -14160,6 +14804,8 @@
     "campUID": "a1X8X00000k2K2aUAE",
     "distance": 0,
     "title": "Deoxidized Happy Hour",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -14204,6 +14850,8 @@
     "campUID": "a1X8X00000k3LdVUAU",
     "distance": 0,
     "title": "K-nights of the Empire",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -14280,6 +14928,8 @@
     "campUID": "RSLCx9633",
     "distance": 0,
     "title": "Arctic Night",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -14342,6 +14992,8 @@
     "campUID": "a1X8X00000k3GZ6UAM",
     "distance": 0,
     "title": "Soul Sunrise",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -14362,6 +15014,8 @@
     "campUID": "a1X8X00000k3GZ6UAM",
     "distance": 0,
     "title": "Heavy Metal Wake-up",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -14382,6 +15036,8 @@
     "campUID": "a1X8X00000k3GZ6UAM",
     "distance": 0,
     "title": "Beauty in Duckness",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -14402,6 +15058,8 @@
     "campUID": "a1X8X00000k3GZ6UAM",
     "distance": 0,
     "title": "GOD: Goddesses of Duckpond",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -14446,6 +15104,8 @@
     "campUID": "a1X8X00000k3GZ6UAM",
     "distance": 0,
     "title": "GOD: Gavin on Deck",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -14466,6 +15126,8 @@
     "campUID": "a1X8X00000k31BpUAI",
     "distance": 0,
     "title": "Live Symphony Orchestra",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -14487,6 +15149,8 @@
     "campUID": "a1X8X00000k2RqDUAU",
     "distance": 0,
     "title": "Spa Day!",
+    "wa": true,
+    "waNotes": "Flat ground covered in low pile rugs with open access to shaded space and wide passages",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -14523,6 +15187,8 @@
     "campUID": "a1X8X00000k30HwUAI",
     "distance": 0,
     "title": "Twerk-n-Perk",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -14543,6 +15209,8 @@
     "campUID": "a1X8X00000k30HwUAI",
     "distance": 0,
     "title": "Hoedown Throwdown",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -14611,6 +15279,8 @@
     "campUID": "RSLCx9815",
     "distance": 0,
     "title": "Radio Equinox 99.5 FM (Thu)",
+    "wa": false,
+    "waNotes": "Patio open for visitors. Studio is inside large tent.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -14655,6 +15325,8 @@
     "campUID": "a1X8X00000k3Es4UAE",
     "distance": 0,
     "title": "Afterglow Lounge & Spa (Thu)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -14731,6 +15403,8 @@
     "campUID": "a1X8X00000k5CDJUA2",
     "distance": 0,
     "title": "White Gas Party",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -14767,6 +15441,8 @@
     "campUID": "a1X8X00000kmZQTUA2",
     "distance": 0,
     "title": "Polarian House Party",
+    "wa": true,
+    "waNotes": "\"Our camp is wc friendly, our art car isn't yet\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -14803,6 +15479,8 @@
     "campUID": "a1X8X00000kmZQTUA2",
     "distance": 0,
     "title": "Fonduenauts: A Space Cheese Odyssey",
+    "wa": true,
+    "waNotes": "\"Our camp is wc friendly, our art car isn't yet\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -14833,6 +15511,8 @@
     "campUID": "a1X8X00000k2UH1UAM",
     "distance": 0,
     "title": "Tycho Sunrise - Dusty Rhino Collab",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -14863,6 +15543,8 @@
     "campUID": "a1X8X00000kmo2BUAQ",
     "distance": 0,
     "title": "Tycho Sunrise - Dusty Rhino Collab",
+    "wa": false,
+    "waNotes": "we are a school bus with ladder access to a roofdeck.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -14893,6 +15575,8 @@
     "campUID": "a1X8X00000k23UbUAI",
     "distance": 0,
     "title": "Hot Stuff (Thu)",
+    "wa": false,
+    "waNotes": "our camp is largely flat there are no ramps",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -14937,6 +15621,8 @@
     "campUID": "a1X8X00000k2tWnUAI",
     "distance": 0,
     "title": "Reverb Rebellion",
+    "wa": true,
+    "waNotes": "Our lounge is a 30'x30' flat open area",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -14965,6 +15651,8 @@
     "campUID": "a1X8X00000k3M9IUAU",
     "distance": 0,
     "title": "Paddy's Day on the Playa!",
+    "wa": false,
+    "waNotes": "N/A",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -15049,6 +15737,8 @@
     "campUID": "a1X8X00000jIl7AUAS",
     "distance": 0,
     "title": "Treble Makers (Thu)",
+    "wa": false,
+    "waNotes": "\"The camp is flat and no steps, camp is open and wide.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -15093,6 +15783,8 @@
     "campUID": "RSLCx10297",
     "distance": 0,
     "title": "TROPO - sunset violin set",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -15115,6 +15807,8 @@
     "campUID": "RSLCx10297",
     "distance": 0,
     "title": "An art car party",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -15169,6 +15863,8 @@
     "campUID": "a1X8X00000k30J9UAI",
     "distance": 0,
     "title": "Fiery Pirate Playa Brouhaha",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -15205,6 +15901,8 @@
     "campUID": "a1X8X00000jIsz1UAC",
     "distance": 0,
     "title": "DISTRIKT (Thu)",
+    "wa": true,
+    "waNotes": "its an open dancefloor on the playa",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -15289,6 +15987,8 @@
     "campUID": "a1X8X00000k2z90UAA",
     "distance": 0,
     "title": "Pink Mammoth (Thu)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -15349,6 +16049,8 @@
     "campUID": "a1X8X00000k2atTUAQ",
     "distance": 0,
     "title": "Lookin Good/ Fresh Juice Sunrise",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -15497,6 +16199,8 @@
     "campUID": "a1X8X00000jKrXoUAK",
     "distance": 0,
     "title": "17 Virgins (Thu)",
+    "wa": false,
+    "waNotes": "\"Art Car yes wheel chair friendly. Camp mostly, but one tight doorway\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -15533,6 +16237,8 @@
     "campUID": "a1X8X00000k39KQUAY",
     "distance": 0,
     "title": "Lumi-Dance (Thu)",
+    "wa": false,
+    "waNotes": "\"We do not have a raised platform for handicapped attendees, but our entire camp frontage including the Bar, Tea Lounge and Stage are ground level.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -15617,6 +16323,8 @@
     "campUID": "a1X8X00000k39KQUAY",
     "distance": 0,
     "title": "Nipple Pie - Takeover",
+    "wa": false,
+    "waNotes": "\"We do not have a raised platform for handicapped attendees, but our entire camp frontage including the Bar, Tea Lounge and Stage are ground level.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -15653,6 +16361,8 @@
     "campUID": "a1X8X00000k2rxNUAQ",
     "distance": 0,
     "title": "A Willy Wonka Sunrise",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -15673,6 +16383,8 @@
     "campUID": "a1X8X00000k1sGDUAY",
     "distance": 0,
     "title": "Hot Mess Camp (Thu)",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -15702,6 +16414,8 @@
     "campUID": "a1X8X00000k3MFfUAM",
     "distance": 0,
     "title": "Pigs committee Party",
+    "wa": true,
+    "waNotes": "Passages wide for wheelchairs to pass through. No bumps!",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -15754,6 +16468,8 @@
     "campUID": "a1X8X00000k31CJUAY",
     "distance": 0,
     "title": "Summer Snakedown",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -15798,6 +16514,8 @@
     "campUID": "a1X8X00000k2z6cUAA",
     "distance": 0,
     "title": "Bubbles and Bass (Thu)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -15842,6 +16560,8 @@
     "campUID": "a1X8X00000k32wrUAA",
     "distance": 0,
     "title": "Middle Eastern Dance Party",
+    "wa": false,
+    "waNotes": "Art Car is not wheelchair accessible but event can be viewed by anyone on the playa near by.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -15896,6 +16616,8 @@
     "campUID": "a1X8X00000k3KQOUA2",
     "distance": 0,
     "title": "Queerest Lil Cocktail Party!",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -15924,6 +16646,8 @@
     "campUID": "a1X8X00000k30i3UAA",
     "distance": 0,
     "title": "Salon Secréte",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -15952,6 +16676,8 @@
     "campUID": "a1X8X00000k3KxdUAE",
     "distance": 0,
     "title": "Ego Trip (Thu)",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -16028,6 +16754,8 @@
     "campUID": "a1X8X00000k3KMqUAM",
     "distance": 0,
     "title": "Dowdy Brothers Takeover",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -16128,6 +16856,8 @@
     "campUID": "a1X8X00000k390AUAQ",
     "distance": 0,
     "title": "World's Best House Party",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -16196,6 +16926,8 @@
     "campUID": "a1X8X00000k3LsAUAU",
     "distance": 0,
     "title": "Brooklyn Takeover",
+    "wa": true,
+    "waNotes": "Our camp is largely open space with multiple extra wide entry points",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -16232,6 +16964,8 @@
     "campUID": "RSLCx10224",
     "distance": 0,
     "title": "Tycho Sunrise - Dusty Rhino Collab",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -16262,6 +16996,8 @@
     "campUID": "a1X8X00000k3KQOUA2",
     "distance": 0,
     "title": "Boogie Wonderland!",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -16298,6 +17034,8 @@
     "campUID": "a1X8X00000jK8I2UAK",
     "distance": 0,
     "title": "Astro Extragavanza",
+    "wa": true,
+    "waNotes": "Flat camp with dancefloor",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -16374,6 +17112,8 @@
     "campUID": "a1X8X00000k2whDUAQ",
     "distance": 0,
     "title": "DIRTY DISCO",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -16402,6 +17142,8 @@
     "campUID": "a1X8X00000jImd2UAC",
     "distance": 0,
     "title": "PandaMOONium",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -16431,6 +17173,8 @@
     "campUID": "a1X8X00000iWUY0UAO",
     "distance": 0,
     "title": "Gold Alchemist Ball",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -16499,6 +17243,8 @@
     "campUID": "a1X8X00000k2whDUAQ",
     "distance": 0,
     "title": "TOKYO SECTOR LINK UP",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -16527,6 +17273,8 @@
     "campUID": "RSLCx10224",
     "distance": 0,
     "title": "Animal Art Car Menagerie w/ Maxa",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -16581,6 +17329,8 @@
     "campUID": "RSLCx11462",
     "distance": 0,
     "title": "It's a nocturnal wonderland!",
+    "wa": false,
+    "waNotes": "\"Our camp is all flat, and has no bumps or anything, so should be wheelchair friendly to get in\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -16601,6 +17351,8 @@
     "campUID": "a1X8X00000jK8I2UAK",
     "distance": 0,
     "title": "Daft Punk at the Trash Fence",
+    "wa": true,
+    "waNotes": "Flat camp with dancefloor",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -16630,6 +17382,8 @@
     "campUID": "a1X8X00000k32ynUAA",
     "distance": 0,
     "title": "Kostume Kult Gifting & Runway Show",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -16674,6 +17428,8 @@
     "campUID": "a1X8X00000k32ynUAA",
     "distance": 0,
     "title": "Thong Badassery Party",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -16710,6 +17466,8 @@
     "campUID": "a1X8X00000k207uUAA",
     "distance": 0,
     "title": "The Girls Room SF Takeover!",
+    "wa": true,
+    "waNotes": "\"DJ stage is on top of snail slide. Snail slide is not wheelchair friendly, but the dancefloor/viewing area is ground level and accessible via wheelchair\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -16730,6 +17488,8 @@
     "campUID": "a1X8X00000k1xnaUAA",
     "distance": 0,
     "title": "Opulent Temple",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -16790,6 +17550,8 @@
     "campUID": "a1X8X00000k3M9IUAU",
     "distance": 0,
     "title": "Breakfast of Champions w/ Kocktails",
+    "wa": false,
+    "waNotes": "N/A",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -16810,6 +17572,8 @@
     "campUID": "a1X8X00000k2zEFUAY",
     "distance": 0,
     "title": "Strangelove (Thu)",
+    "wa": true,
+    "waNotes": "We are a bar that is flat and has just rugs on playa and we feel we can accommodate a person with disabilities (and certainly would like to).",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -16854,6 +17618,8 @@
     "campUID": "a1X8X00000jJNkdUAG",
     "distance": 0,
     "title": "TENCHO",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -16930,6 +17696,8 @@
     "campUID": "a1X8X00000k3BcPUAU",
     "distance": 0,
     "title": "Oasis and Chill",
+    "wa": true,
+    "waNotes": "It's as wheelchair friendly as playa gets I think ...",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -16966,6 +17734,8 @@
     "campUID": "a1X8X00000jK8I2UAK",
     "distance": 0,
     "title": "Cruising Crawler",
+    "wa": true,
+    "waNotes": "Flat camp with dancefloor",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -17011,6 +17781,8 @@
     "campUID": "a1X8X00000jK8p7UAC",
     "distance": 0,
     "title": "Cuddle Oasis (Thu)",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -17071,6 +17843,8 @@
     "campUID": "a1X8X00000iWheAUAS",
     "distance": 0,
     "title": "BAAAHS Collaboration",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -17091,6 +17865,8 @@
     "campUID": "a1X8X00000jKSKIUA4",
     "distance": 0,
     "title": "Waffles & House (Music)",
+    "wa": true,
+    "waNotes": "flat entrance and surface throughout and easy tables to reach and seat on to eat",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -17119,6 +17895,8 @@
     "campUID": "a1X8X00000k3BcPUAU",
     "distance": 0,
     "title": "Hookahdome Players- Live Music Jam",
+    "wa": true,
+    "waNotes": "It's as wheelchair friendly as playa gets I think ...",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -17139,6 +17917,8 @@
     "campUID": "a1X8X00000k3BcPUAU",
     "distance": 0,
     "title": "Global Dance Party",
+    "wa": true,
+    "waNotes": "It's as wheelchair friendly as playa gets I think ...",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -17231,6 +18011,8 @@
     "campUID": "RSLCx9565",
     "distance": 0,
     "title": "Mystic Merkaba Flow on the Flyer",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -17277,6 +18059,8 @@
     "campUID": "a1X8X00000k3K4jUAE",
     "distance": 0,
     "title": "Lost In The Clouds",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -17353,6 +18137,8 @@
     "campUID": "a1X8X00000kmOIXUA2",
     "distance": 0,
     "title": "Desert Tech Zone",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -17437,6 +18223,8 @@
     "campUID": "a1X8X00000k3PXLUA2",
     "distance": 0,
     "title": "Island Uprising",
+    "wa": true,
+    "waNotes": "\"applies to camp. no art car involved. our camp has zero step or ledges, super easy to access doorway that wide af.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -17481,6 +18269,8 @@
     "campUID": "a1X8X00000kmo2BUAQ",
     "distance": 0,
     "title": "Tierra Bomba + Axolotl Takeover",
+    "wa": false,
+    "waNotes": "we are a school bus with ladder access to a roofdeck.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -17511,6 +18301,8 @@
     "campUID": "a1X8X00000kmo2BUAQ",
     "distance": 0,
     "title": "Animal Art Car Menagerie",
+    "wa": false,
+    "waNotes": "we are a school bus with ladder access to a roofdeck.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -17541,6 +18333,8 @@
     "campUID": "a1X8X00000k3900UAA",
     "distance": 0,
     "title": "Synaesthesia + LoveTech Showcase",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -17641,6 +18435,8 @@
     "campUID": "a1X8X00000k3M6UUAU",
     "distance": 0,
     "title": "Immersive Audio...Disco?",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -17693,6 +18489,8 @@
     "campUID": "a1X8X00000jKGIAUA4",
     "distance": 0,
     "title": "Reverbia (Thu)",
+    "wa": true,
+    "waNotes": "We do not have stairs and have a ramp which goes up our stage for artists.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -17753,6 +18551,8 @@
     "campUID": "a1X8X00000jKGIAUA4",
     "distance": 0,
     "title": "Reverbia Children's Hour",
+    "wa": true,
+    "waNotes": "We do not have stairs and have a ramp which goes up our stage for artists.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -17797,6 +18597,8 @@
     "campUID": "a1X8X00000k1Y7gUAE",
     "distance": 0,
     "title": "Taylor Swift-Ageddon: Bootie Mashup",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -17817,6 +18619,8 @@
     "campUID": "RSLCx8219",
     "distance": 0,
     "title": "KAEZ 96.3 Alt Energy Zone (Tue)",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -17877,6 +18681,8 @@
     "campUID": "a1X8X00000lXDmUUAW",
     "distance": 0,
     "title": "BMIR 94.5 FM (Tue)",
+    "wa": false,
+    "waNotes": "Lounge and burn barrel are easy access to wheelchairs. DJ and production studios are in raised containers with steps.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -18025,6 +18831,8 @@
     "campUID": "a1X8X00000hsxCeUAI",
     "distance": 0,
     "title": "HEX Collective (Tue)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -18085,6 +18893,8 @@
     "campUID": "a1X8X00000k31E5UAI",
     "distance": 0,
     "title": "Disco Key Party!",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -18113,6 +18923,8 @@
     "campUID": "a1X8X00000k1VKqUAM",
     "distance": 0,
     "title": "Daytime Queerness",
+    "wa": true,
+    "waNotes": "\"The entrance doorway is 36\"\" wide\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -18149,6 +18961,8 @@
     "campUID": "a1X8X00000k33hlUAA",
     "distance": 0,
     "title": "Detox/Retox",
+    "wa": true,
+    "waNotes": "N/A",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -18169,6 +18983,8 @@
     "campUID": "a1X8X00000jK2XrUAK",
     "distance": 0,
     "title": "Catpocalypse Meow!",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -18197,6 +19013,8 @@
     "campUID": "a1X8X00000hsxNKUAY",
     "distance": 0,
     "title": "Jazz Jam Session",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -18217,6 +19035,8 @@
     "campUID": "a1X8X00000k3FJYUA2",
     "distance": 0,
     "title": "FUego (Tue)",
+    "wa": true,
+    "waNotes": "All on one level. No stairs.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -18301,6 +19121,8 @@
     "campUID": "a1X8X00000k3KDeUAM",
     "distance": 0,
     "title": "Twilight Language (Tue)",
+    "wa": true,
+    "waNotes": "\"flat ground, no stairs or ramps\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -18329,6 +19151,8 @@
     "campUID": "a1X8X00000jJBWvUAO",
     "distance": 0,
     "title": "Deaf Granny's Kitchen (Tue)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -18373,6 +19197,8 @@
     "campUID": "a1X8X00000k2PmtUAE",
     "distance": 0,
     "title": "1001 Nights x ¡AXOLOTL! Tie Up",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -18433,6 +19259,8 @@
     "campUID": "a1X8X00000k1qDWUAY",
     "distance": 0,
     "title": "Made in Montana x2",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -18469,6 +19297,8 @@
     "campUID": "a1X8X00000k30i8UAA",
     "distance": 0,
     "title": "TSA Party - Dairy Air",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -18529,6 +19359,8 @@
     "campUID": "a1X8X00000k2ygaUAA",
     "distance": 0,
     "title": "Playground (Tue)",
+    "wa": true,
+    "waNotes": "\"Our main Arrival Stage is outdoors and our Dune Lounge has large opening, all on flat ground with no steps\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -18613,6 +19445,8 @@
     "campUID": "a1X8X00000hVl42UAC",
     "distance": 0,
     "title": "Hip Hop Takeover",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -18633,6 +19467,8 @@
     "campUID": "a1X8X00000hVl42UAC",
     "distance": 0,
     "title": "Lo-Fi Psychedelic Rhythms",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -18653,6 +19489,8 @@
     "campUID": "a1X8X00000k1azmUAA",
     "distance": 0,
     "title": "Teus. Store Hours",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -18689,6 +19527,8 @@
     "campUID": "a1X8X00000k2xNjUAI",
     "distance": 0,
     "title": "Bring/wear your best LEDs",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -18717,6 +19557,8 @@
     "campUID": "a1X8X00000k32t9UAA",
     "distance": 0,
     "title": "Zero Fucks (Tue)",
+    "wa": true,
+    "waNotes": "\"The majority of our camp is wheel chair accessible, including our big day-time stage, dance floor and bar. The only things that are not accessible are our roof deck, which only has a stair case, and \"\"\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -18761,6 +19603,8 @@
     "campUID": "a1X8X00000jJfDCUA0",
     "distance": 0,
     "title": "Kirtan",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -18781,6 +19625,8 @@
     "campUID": "a1X8X00000jJfDCUA0",
     "distance": 0,
     "title": "Improv & Original Piano",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -18801,6 +19647,8 @@
     "campUID": "a1X8X00000jJfDCUA0",
     "distance": 0,
     "title": "\"singer/keyboardist-originals, jazz\"",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -18821,6 +19669,8 @@
     "campUID": "a1X8X00000k3263UAA",
     "distance": 0,
     "title": "Tiger Style",
+    "wa": true,
+    "waNotes": "Our camp is all flat and there are no stairs to go up.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -18865,6 +19715,8 @@
     "campUID": "a1X8X00000hs7ZVUAY",
     "distance": 0,
     "title": "Sinful Shindig",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -18885,6 +19737,8 @@
     "campUID": "a1X8X00000k3LdVUAU",
     "distance": 0,
     "title": "No Fckn Werewolves !!!",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -18953,6 +19807,8 @@
     "campUID": "a1X8X00000k3JSOUA2",
     "distance": 0,
     "title": "Noble Beast",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -18975,6 +19831,8 @@
     "campUID": "a1X8X00000k3JSOUA2",
     "distance": 0,
     "title": "Bootie Mashup Takeover",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -18997,6 +19855,8 @@
     "campUID": "a1X8X00000k3JSOUA2",
     "distance": 0,
     "title": "Ewe Betta Werq!",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -19043,6 +19903,8 @@
     "campUID": "a1X8X00000k21zXUAQ",
     "distance": 0,
     "title": "All Women's Night!",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -19089,6 +19951,8 @@
     "campUID": "a1X8X00000jK5uAUAS",
     "distance": 0,
     "title": "TECHNO TACO TU3SDAY",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -19109,6 +19973,8 @@
     "campUID": "a1X8X00000jK5uAUAS",
     "distance": 0,
     "title": "I Need An Adult (Tue)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -19145,6 +20011,8 @@
     "campUID": "a1X8X00000k1qDWUAY",
     "distance": 0,
     "title": "Marathon Dance-a-thon",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -19173,6 +20041,8 @@
     "campUID": "a1X8X00000k1KtvUAE",
     "distance": 0,
     "title": "Homecoming",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -19209,6 +20079,8 @@
     "campUID": "a1X8X00000k30HwUAI",
     "distance": 0,
     "title": "Second Rodeo's Second Rodeo",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -19269,6 +20141,8 @@
     "campUID": "a1X8X00000knZqBUAU",
     "distance": 0,
     "title": "Sunrise",
+    "wa": false,
+    "waNotes": "we have had people in Wheelchair play on our car and people that cant walk we get our crew and we carry them to the top of the bridge",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -19299,6 +20173,8 @@
     "campUID": "a1X8X00000k2K2aUAE",
     "distance": 0,
     "title": "Deoxidized Happy Hour",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -19343,6 +20219,8 @@
     "campUID": "a1X8X00000k3Ik8UAE",
     "distance": 0,
     "title": "Noble Beast ballet @ NOSOTRES",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -19365,6 +20243,8 @@
     "campUID": "RSLCx9633",
     "distance": 0,
     "title": "Titanic's End (Tue)",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -19411,6 +20291,8 @@
     "campUID": "a1X8X00000k3GZ6UAM",
     "distance": 0,
     "title": "Mozart & Mimosas",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -19431,6 +20313,8 @@
     "campUID": "a1X8X00000k2RqDUAU",
     "distance": 0,
     "title": "Spa Day!",
+    "wa": true,
+    "waNotes": "Flat ground covered in low pile rugs with open access to shaded space and wide passages",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -19467,6 +20351,8 @@
     "campUID": "a1X8X00000k2RqDUAU",
     "distance": 0,
     "title": "Bass Lounge",
+    "wa": true,
+    "waNotes": "Flat ground covered in low pile rugs with open access to shaded space and wide passages",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -19495,6 +20381,8 @@
     "campUID": "RSLCx9815",
     "distance": 0,
     "title": "Radio Equinox 99.5 FM (Tue)",
+    "wa": false,
+    "waNotes": "Patio open for visitors. Studio is inside large tent.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -19579,6 +20467,8 @@
     "campUID": "a1X8X00000kmo2BUAQ",
     "distance": 0,
     "title": "1001 Nights + Axolotl Takeover",
+    "wa": false,
+    "waNotes": "we are a school bus with ladder access to a roofdeck.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -19633,6 +20523,8 @@
     "campUID": "a1X8X00000k3Es4UAE",
     "distance": 0,
     "title": "Afterglow Lounge & Spa (Tue)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -19709,6 +20601,8 @@
     "campUID": "a1X8X00000k5CDJUA2",
     "distance": 0,
     "title": "Welcome Home",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -19753,6 +20647,8 @@
     "campUID": "a1X8X00000kmZQTUA2",
     "distance": 0,
     "title": "Control Center x Aliens Mixer",
+    "wa": true,
+    "waNotes": "\"Our camp is wc friendly, our art car isn't yet\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -19797,6 +20693,8 @@
     "campUID": "a1X8X00000k23UbUAI",
     "distance": 0,
     "title": "Hot Stuff (Tue)",
+    "wa": false,
+    "waNotes": "our camp is largely flat there are no ramps",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -19825,6 +20723,8 @@
     "campUID": "a1X8X00000k2tWnUAI",
     "distance": 0,
     "title": "Reverb Rebellion",
+    "wa": true,
+    "waNotes": "Our lounge is a 30'x30' flat open area",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -19853,6 +20753,8 @@
     "campUID": "a1X8X00000iUguxUAC",
     "distance": 0,
     "title": "Tripps on the Bird",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -19874,6 +20776,8 @@
     "campUID": "a1X8X00000k3M9IUAU",
     "distance": 0,
     "title": "The Playa Party Marathon",
+    "wa": false,
+    "waNotes": "N/A",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -19950,6 +20854,8 @@
     "campUID": "a1X8X00000jIl7AUAS",
     "distance": 0,
     "title": "Treble Makers (Tue)",
+    "wa": false,
+    "waNotes": "\"The camp is flat and no steps, camp is open and wide.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -19994,6 +20900,8 @@
     "campUID": "RSLCx10297",
     "distance": 0,
     "title": "Art car day party!",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -20024,6 +20932,8 @@
     "campUID": "RSLCx10297",
     "distance": 0,
     "title": "Art car deep playa party",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -20062,6 +20972,8 @@
     "campUID": "a1X8X00000k30J9UAI",
     "distance": 0,
     "title": "Kitty Kat Night Market Block Party",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -20114,6 +21026,8 @@
     "campUID": "a1X8X00000jIsz1UAC",
     "distance": 0,
     "title": "DISTRIKT (Tue)",
+    "wa": true,
+    "waNotes": "its an open dancefloor on the playa",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -20182,6 +21096,8 @@
     "campUID": "a1X8X00000k4bcZUAQ",
     "distance": 0,
     "title": "THE WHOMPIN NEVER ENDS",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -20260,6 +21176,8 @@
     "campUID": "a1X8X00000k2atTUAQ",
     "distance": 0,
     "title": "TORIE'S TAKEOVER",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -20400,6 +21318,8 @@
     "campUID": "a1X8X00000k2z90UAA",
     "distance": 0,
     "title": "Tutu Tues",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -20476,6 +21396,8 @@
     "campUID": "a1X8X00000jKrXoUAK",
     "distance": 0,
     "title": "Renegade Party!",
+    "wa": false,
+    "waNotes": "\"Art Car yes wheel chair friendly. Camp mostly, but one tight doorway\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -20537,6 +21459,8 @@
     "campUID": "a1X8X00000k39KQUAY",
     "distance": 0,
     "title": "Lumi-Dance (Tue)",
+    "wa": false,
+    "waNotes": "\"We do not have a raised platform for handicapped attendees, but our entire camp frontage including the Bar, Tea Lounge and Stage are ground level.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -20589,6 +21513,8 @@
     "campUID": "a1X8X00000k3MFfUAM",
     "distance": 0,
     "title": "\"\"\"All animals are equal\"\"\"",
+    "wa": true,
+    "waNotes": "Passages wide for wheelchairs to pass through. No bumps!",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -20641,6 +21567,8 @@
     "campUID": "a1X8X00000k1sGDUAY",
     "distance": 0,
     "title": "Hot Mess Camp (Tue)",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -20661,6 +21589,8 @@
     "campUID": "a1X8X00000k31CJUAY",
     "distance": 0,
     "title": "Afro Dino Wig Out",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -20705,6 +21635,8 @@
     "campUID": "a1X8X00000k2z6cUAA",
     "distance": 0,
     "title": "Bubbles and Bass (Tue)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -20757,6 +21689,8 @@
     "campUID": "a1X8X00000hrKlZUAU",
     "distance": 0,
     "title": "Dragula's Drag Race Party",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -20785,6 +21719,8 @@
     "campUID": "a1X8X00000k1xnaUAA",
     "distance": 0,
     "title": "Deep in the House",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -20861,6 +21797,8 @@
     "campUID": "a1X8X00000k3KQOUA2",
     "distance": 0,
     "title": "Queerest Lil Cocktail Party!",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -20881,6 +21819,8 @@
     "campUID": "a1X8X00000k3KMqUAM",
     "distance": 0,
     "title": "Freestyle Palace (Tue)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -20901,6 +21841,8 @@
     "campUID": "a1X8X00000k3KQOUA2",
     "distance": 0,
     "title": "No Disco at the Disco Dance Party!",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -20937,6 +21879,8 @@
     "campUID": "a1X8X00000k390AUAQ",
     "distance": 0,
     "title": "Whose House? Your House",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -20989,6 +21933,8 @@
     "campUID": "a1X8X00000k2whDUAQ",
     "distance": 0,
     "title": "Welcome to Pauls house",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -21017,6 +21963,8 @@
     "campUID": "a1X8X00000jK8I2UAK",
     "distance": 0,
     "title": "Spunknik Soirée",
+    "wa": true,
+    "waNotes": "Flat camp with dancefloor",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -21069,6 +22017,8 @@
     "campUID": "a1X8X00000k2whDUAQ",
     "distance": 0,
     "title": "Space Cowboy Takeover",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -21097,6 +22047,8 @@
     "campUID": "RSLCx10224",
     "distance": 0,
     "title": "Noble Beast",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -21159,6 +22111,8 @@
     "campUID": "RSLCx11462",
     "distance": 0,
     "title": "It's a nocturnal wonderland!",
+    "wa": false,
+    "waNotes": "\"Our camp is all flat, and has no bumps or anything, so should be wheelchair friendly to get in\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -21179,6 +22133,8 @@
     "campUID": "a1X8X00000k32ynUAA",
     "distance": 0,
     "title": "Kostume Kult Gifting & Runway Show",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -21223,6 +22179,8 @@
     "campUID": "a1X8X00000jL8OWUA0",
     "distance": 0,
     "title": "Legendary Playground of the Gods (Tue)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -21251,6 +22209,8 @@
     "campUID": "a1X8X00000k3KMqUAM",
     "distance": 0,
     "title": "Tahomie Takeover",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -21271,6 +22231,8 @@
     "campUID": "a1X8X00000k32ynUAA",
     "distance": 0,
     "title": "Psytrance Tutu Party",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -21291,6 +22253,8 @@
     "campUID": "a1X8X00000k32ynUAA",
     "distance": 0,
     "title": "KK KIDS Costume Gifting & Runway",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -21311,6 +22275,8 @@
     "campUID": "a1X8X00000k207uUAA",
     "distance": 0,
     "title": "DJ's on a 30 foot Snail slide!!",
+    "wa": true,
+    "waNotes": "\"DJ stage is on top of snail slide. Snail slide is not wheelchair friendly, but the dancefloor/viewing area is ground level and accessible via wheelchair\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -21347,6 +22313,8 @@
     "campUID": "a1X8X00000k2zEFUAY",
     "distance": 0,
     "title": "Strangelove (Tue)",
+    "wa": true,
+    "waNotes": "We are a bar that is flat and has just rugs on playa and we feel we can accommodate a person with disabilities (and certainly would like to).",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -21391,6 +22359,8 @@
     "campUID": "a1X8X00000jK8p7UAC",
     "distance": 0,
     "title": "Cuddle Oasis (Tue)",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -21451,6 +22421,8 @@
     "campUID": "a1X8X00000jJNkdUAG",
     "distance": 0,
     "title": "IDM n' Breaks",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -21495,6 +22467,8 @@
     "campUID": "a1X8X00000k3BcPUAU",
     "distance": 0,
     "title": "Oasis and Chill",
+    "wa": true,
+    "waNotes": "It's as wheelchair friendly as playa gets I think ...",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -21531,6 +22505,8 @@
     "campUID": "a1X8X00000jKSKIUA4",
     "distance": 0,
     "title": "Waffles & House (Music)",
+    "wa": true,
+    "waNotes": "flat entrance and surface throughout and easy tables to reach and seat on to eat",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -21567,6 +22543,8 @@
     "campUID": "a1X8X00000jLAewUAG",
     "distance": 0,
     "title": "Split Second Takeover",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -21587,6 +22565,8 @@
     "campUID": "a1X8X00000k3BcPUAU",
     "distance": 0,
     "title": "Hookahdome Players- Live Music Jam",
+    "wa": true,
+    "waNotes": "It's as wheelchair friendly as playa gets I think ...",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -21607,6 +22587,8 @@
     "campUID": "a1X8X00000k3BcPUAU",
     "distance": 0,
     "title": "Global Dance Party",
+    "wa": true,
+    "waNotes": "It's as wheelchair friendly as playa gets I think ...",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -21707,6 +22689,8 @@
     "campUID": "a1X8X00000k2zGtUAI",
     "distance": 0,
     "title": "Adopt a spirit animal!",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -21735,6 +22719,8 @@
     "campUID": "a1X8X00000jLAewUAG",
     "distance": 0,
     "title": "Organic Fruits & Veggies Camp (Tue)",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -21755,6 +22741,8 @@
     "campUID": "RSLCx9565",
     "distance": 0,
     "title": "Mystic Flyer Lift Off Party",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -21793,6 +22781,8 @@
     "campUID": "a1X8X00000kmOIXUA2",
     "distance": 0,
     "title": "Opulent -Not So Chill- Night",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -21861,6 +22851,8 @@
     "campUID": "a1X8X00000iWUY0UAO",
     "distance": 0,
     "title": "INSIDE THE PYRAMID",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -21905,6 +22897,8 @@
     "campUID": "a1X8X00000k3M6UUAU",
     "distance": 0,
     "title": "Immersive Audio...Disco?",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -21965,6 +22959,8 @@
     "campUID": "a1X8X00000jKGIAUA4",
     "distance": 0,
     "title": "Reverbia (Tue)",
+    "wa": true,
+    "waNotes": "We do not have stairs and have a ramp which goes up our stage for artists.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -22073,6 +23069,8 @@
     "campUID": "a1X8X00000jKGIAUA4",
     "distance": 0,
     "title": "Underground Shade",
+    "wa": true,
+    "waNotes": "We do not have stairs and have a ramp which goes up our stage for artists.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -22101,6 +23099,8 @@
     "campUID": "a1X8X00000jKGIAUA4",
     "distance": 0,
     "title": "Concerts in the Shade",
+    "wa": true,
+    "waNotes": "We do not have stairs and have a ramp which goes up our stage for artists.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -22137,6 +23137,8 @@
     "campUID": "a1X8X00000k1Y7gUAE",
     "distance": 0,
     "title": "Dark Encounters: Goth & Industrial",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -22157,6 +23159,8 @@
     "campUID": "RSLCx8219",
     "distance": 0,
     "title": "KAEZ 96.3 Alt Energy Zone (Wed)",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -22217,6 +23221,8 @@
     "campUID": "a1X8X00000lXDmUUAW",
     "distance": 0,
     "title": "BMIR 94.5 FM (Wed)",
+    "wa": false,
+    "waNotes": "Lounge and burn barrel are easy access to wheelchairs. DJ and production studios are in raised containers with steps.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -22333,6 +23339,8 @@
     "campUID": "a1X8X00000hsxCeUAI",
     "distance": 0,
     "title": "HEX Collective (Wed)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -22385,6 +23393,8 @@
     "campUID": "a1X8X00000k2q0HUAQ",
     "distance": 0,
     "title": "Dusty House Party",
+    "wa": true,
+    "waNotes": "Flat - no stairs",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -22421,6 +23431,8 @@
     "campUID": "a1X8X00000k31E5UAI",
     "distance": 0,
     "title": "Murray Happy Hour!",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -22449,6 +23461,8 @@
     "campUID": "a1X8X00000k2zojUAA",
     "distance": 0,
     "title": "Baewatch",
+    "wa": true,
+    "waNotes": "Our camp is completely flat and has a wide entry to our bar and party area",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -22501,6 +23515,8 @@
     "campUID": "a1X8X00000k33hlUAA",
     "distance": 0,
     "title": "Naked Pub Crawl",
+    "wa": true,
+    "waNotes": "N/A",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -22521,6 +23537,8 @@
     "campUID": "a1X8X00000k2yjQUAQ",
     "distance": 0,
     "title": "White Tiger Pregame",
+    "wa": true,
+    "waNotes": "Our camp is 100% accessible and offers a floor full of carpet for your comfort.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -22573,6 +23591,8 @@
     "campUID": "a1X8X00000hsxNKUAY",
     "distance": 0,
     "title": "Jazz Jam Session",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -22593,6 +23613,8 @@
     "campUID": "a1X8X00000lZiLWUA0",
     "distance": 0,
     "title": "Morning PainJoy Radio",
+    "wa": true,
+    "waNotes": "\"Camp is wheel chair friendly, but not the art car.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -22613,6 +23635,8 @@
     "campUID": "a1X8X00000lZiLWUA0",
     "distance": 0,
     "title": "Spankys Day Party!!",
+    "wa": true,
+    "waNotes": "\"Camp is wheel chair friendly, but not the art car.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -22657,6 +23681,8 @@
     "campUID": "a1X8X00000lZiLWUA0",
     "distance": 0,
     "title": "Sacrilege Goth and DarkWave Party",
+    "wa": true,
+    "waNotes": "\"Camp is wheel chair friendly, but not the art car.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -22677,6 +23703,8 @@
     "campUID": "a1X8X00000lZiLWUA0",
     "distance": 0,
     "title": "Spank Dat Bootie!",
+    "wa": true,
+    "waNotes": "\"Camp is wheel chair friendly, but not the art car.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -22697,6 +23725,8 @@
     "campUID": "a1X8X00000k3B2hUAE",
     "distance": 0,
     "title": "Sunset Safari",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -22727,6 +23757,8 @@
     "campUID": "a1X8X00000k2a1RUAQ",
     "distance": 0,
     "title": "Happy Campers in the Hood",
+    "wa": true,
+    "waNotes": "Camp is wheelchair friendly",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -22749,6 +23781,8 @@
     "campUID": "a1X8X00000k3FJYUA2",
     "distance": 0,
     "title": "FUego (Wed)",
+    "wa": true,
+    "waNotes": "All on one level. No stairs.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -22841,6 +23875,8 @@
     "campUID": "a1X8X00000k3KDeUAM",
     "distance": 0,
     "title": "Twilight Language (Wed)",
+    "wa": true,
+    "waNotes": "\"flat ground, no stairs or ramps\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -22869,6 +23905,8 @@
     "campUID": "a1X8X00000k1qDWUAY",
     "distance": 0,
     "title": "Buckaroo Rodeo",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -22937,6 +23975,8 @@
     "campUID": "a1X8X00000k2uf8UAA",
     "distance": 0,
     "title": "Bubbly @ The BubLo - Champagne",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -22957,6 +23997,8 @@
     "campUID": "a1X8X00000k30i8UAA",
     "distance": 0,
     "title": "Techno Meditation",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -22977,6 +24019,8 @@
     "campUID": "a1X8X00000k2ygaUAA",
     "distance": 0,
     "title": "Playground (Wed)",
+    "wa": true,
+    "waNotes": "\"Our main Arrival Stage is outdoors and our Dune Lounge has large opening, all on flat ground with no steps\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -23021,6 +24065,8 @@
     "campUID": "a1X8X00000k2ygaUAA",
     "distance": 0,
     "title": "Opulent Temple / White Party",
+    "wa": true,
+    "waNotes": "\"Our main Arrival Stage is outdoors and our Dune Lounge has large opening, all on flat ground with no steps\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -23081,6 +24127,8 @@
     "campUID": "a1X8X00000hVl42UAC",
     "distance": 0,
     "title": "FORBIDDEN FRUIT-Tropical House Vibe",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -23101,6 +24149,8 @@
     "campUID": "a1X8X00000hVl42UAC",
     "distance": 0,
     "title": "MEDICINE BASS NIGHT",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -23121,6 +24171,8 @@
     "campUID": "a1X8X00000k1azmUAA",
     "distance": 0,
     "title": "Wed. Store Hours",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -23157,6 +24209,8 @@
     "campUID": "a1X8X00000k1azmUAA",
     "distance": 0,
     "title": "White Out",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -23193,6 +24247,8 @@
     "campUID": "a1X8X00000k32t9UAA",
     "distance": 0,
     "title": "DnB & GnTs",
+    "wa": true,
+    "waNotes": "\"The majority of our camp is wheel chair accessible, including our big day-time stage, dance floor and bar. The only things that are not accessible are our roof deck, which only has a stair case, and \"\"\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -23245,6 +24301,8 @@
     "campUID": "a1X8X00000jJfDCUA0",
     "distance": 0,
     "title": "Belly Dances",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -23265,6 +24323,8 @@
     "campUID": "a1X8X00000jJfDCUA0",
     "distance": 0,
     "title": "Drums!",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -23285,6 +24345,8 @@
     "campUID": "RSLCx9219",
     "distance": 0,
     "title": "Gnoasis",
+    "wa": false,
+    "waNotes": "Our event will be in deep playa",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -23315,6 +24377,8 @@
     "campUID": "a1X8X00000k31CTUAY",
     "distance": 0,
     "title": "2nd Annual Discoball",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -23375,6 +24439,8 @@
     "campUID": "a1X8X00000hsbL7UAI",
     "distance": 0,
     "title": "Hump Day with Beats and Bubbly",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -23403,6 +24469,8 @@
     "campUID": "a1X8X00000k31CTUAY",
     "distance": 0,
     "title": "Aprês Crepes Party",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -23431,6 +24499,8 @@
     "campUID": "a1X8X00000hs7ZVUAY",
     "distance": 0,
     "title": "Confessional Club",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -23451,6 +24521,8 @@
     "campUID": "a1X8X00000hrKlZUAU",
     "distance": 0,
     "title": "Witches & Hoes Techno Dance Party",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -23479,6 +24551,8 @@
     "campUID": "a1X8X00000k3JSOUA2",
     "distance": 0,
     "title": "Pyramid Social Club",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -23525,6 +24599,8 @@
     "campUID": "a1X8X00000k3JSOUA2",
     "distance": 0,
     "title": "Cunting Sheep! ???",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -23563,6 +24639,8 @@
     "campUID": "a1X8X00000k3JSOUA2",
     "distance": 0,
     "title": "Pasture Bedtime",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -23601,6 +24679,8 @@
     "campUID": "a1X8X00000k21zXUAQ",
     "distance": 0,
     "title": "Camp Exclamation Mark Takeover",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -23655,6 +24735,8 @@
     "campUID": "a1X8X00000jK5uAUAS",
     "distance": 0,
     "title": "I Need An Adult (Wed)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -23691,6 +24773,8 @@
     "campUID": "a1X8X00000jK5uAUAS",
     "distance": 0,
     "title": "WOBBLE WING WEDN3SDAY",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -23711,6 +24795,8 @@
     "campUID": "a1X8X00000k3FycUAE",
     "distance": 0,
     "title": "Hot Dogs & Beer & Honey Jun",
+    "wa": true,
+    "waNotes": "Some elevated areas have stairs with no wheel chair access",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -23731,6 +24817,8 @@
     "campUID": "a1X8X00000k1qDWUAY",
     "distance": 0,
     "title": "Neighbor HUBrise",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -23759,6 +24847,8 @@
     "campUID": "a1X8X00000k1KtvUAE",
     "distance": 0,
     "title": "Take A Trip Psychedelic AfterParty",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -23779,6 +24869,8 @@
     "campUID": "a1X8X00000k324qUAA",
     "distance": 0,
     "title": "Bunrise with the Beverly",
+    "wa": false,
+    "waNotes": "Our art car is not wheelchair accessible. Our camp is not making specific wheelchair accommodations but we anticipate having enough space for a wheel chair to access our stage area",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -23809,6 +24901,8 @@
     "campUID": "a1X8X00000k3LdVUAU",
     "distance": 0,
     "title": "Vampiros Discos",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -23901,6 +24995,8 @@
     "campUID": "RSLCx9633",
     "distance": 0,
     "title": "Titanic's End (Wed)",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -23947,6 +25043,8 @@
     "campUID": "a1X8X00000k3GZ6UAM",
     "distance": 0,
     "title": "Sunrise Music fo Late Risers",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -23967,6 +25065,8 @@
     "campUID": "a1X8X00000k3GZ6UAM",
     "distance": 0,
     "title": "Phish Pond!",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -23987,6 +25087,8 @@
     "campUID": "a1X8X00000k3GZ6UAM",
     "distance": 0,
     "title": "Atmospheric Techno",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -24015,6 +25117,8 @@
     "campUID": "a1X8X00000k1WsrUAE",
     "distance": 0,
     "title": "Transmission of Truth and Beauty",
+    "wa": true,
+    "waNotes": "The Mystic Theater has a large open dance floor on the ground level with a very wide main entrance",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -24107,6 +25211,8 @@
     "campUID": "a1X8X00000k3GZ6UAM",
     "distance": 0,
     "title": "Hip Hop Happy Hour",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -24127,6 +25233,8 @@
     "campUID": "a1X8X00000jJqPrUAK",
     "distance": 0,
     "title": "Angels",
+    "wa": true,
+    "waNotes": "\"Party is open to all, going up into cloud would be hard, but there's no party up there!\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -24213,6 +25321,8 @@
     "campUID": "a1X8X00000k2RqDUAU",
     "distance": 0,
     "title": "Fire Jam!",
+    "wa": true,
+    "waNotes": "Flat ground covered in low pile rugs with open access to shaded space and wide passages",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -24273,6 +25383,8 @@
     "campUID": "a1X8X00000k30HwUAI",
     "distance": 0,
     "title": "Tribal House Yoga",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -24293,6 +25405,8 @@
     "campUID": "a1X8X00000k3JSOUA2",
     "distance": 0,
     "title": "Naked Pub Crawl Afterparty",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -24339,6 +25453,8 @@
     "campUID": "a1X8X00000k5CDJUA2",
     "distance": 0,
     "title": "BRC Burn Club",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -24391,6 +25507,8 @@
     "campUID": "a1X8X00000kmZQTUA2",
     "distance": 0,
     "title": "Ascending: The Guiding Star",
+    "wa": true,
+    "waNotes": "\"Our camp is wc friendly, our art car isn't yet\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -24437,6 +25555,8 @@
     "campUID": "a1X8X00000k23UbUAI",
     "distance": 0,
     "title": "Hot Stuff (Wed)",
+    "wa": false,
+    "waNotes": "our camp is largely flat there are no ramps",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -24465,6 +25585,8 @@
     "campUID": "a1X8X00000k2tWnUAI",
     "distance": 0,
     "title": "Bloody 80's Bash!",
+    "wa": true,
+    "waNotes": "Our lounge is a 30'x30' flat open area",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -24485,6 +25607,8 @@
     "campUID": "a1X8X00000k32veUAA",
     "distance": 0,
     "title": "Yellow Monochrome ButterBallz!",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -24545,6 +25669,8 @@
     "campUID": "a1X8X00000k32veUAA",
     "distance": 0,
     "title": "Snow Chalet",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -24565,6 +25691,8 @@
     "campUID": "a1X8X00000jIl7AUAS",
     "distance": 0,
     "title": "Treble Makers (Wed)",
+    "wa": false,
+    "waNotes": "\"The camp is flat and no steps, camp is open and wide.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -24617,6 +25745,8 @@
     "campUID": "RSLCx10297",
     "distance": 0,
     "title": "Moontribe Collective 30th Full Moon",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -24639,6 +25769,8 @@
     "campUID": "a1X8X00000k30J9UAI",
     "distance": 0,
     "title": "Lost + Found Village (Wed)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -24691,6 +25823,8 @@
     "campUID": "a1X8X00000jIsz1UAC",
     "distance": 0,
     "title": "DISTRIKT (Wed)",
+    "wa": true,
+    "waNotes": "its an open dancefloor on the playa",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -24751,6 +25885,8 @@
     "campUID": "a1X8X00000k2z90UAA",
     "distance": 0,
     "title": "Pink Mammoth (Wed)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -24819,6 +25955,8 @@
     "campUID": "a1X8X00000k4bcZUAQ",
     "distance": 0,
     "title": "Bridge That Gap With Whomp.",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -24865,6 +26003,8 @@
     "campUID": "a1X8X00000k2ziXUAQ",
     "distance": 0,
     "title": "Eclectic house/tech/disco",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -24909,6 +26049,8 @@
     "campUID": "a1X8X00000k39KQUAY",
     "distance": 0,
     "title": "Lumi-Dance (Wed)",
+    "wa": false,
+    "waNotes": "\"We do not have a raised platform for handicapped attendees, but our entire camp frontage including the Bar, Tea Lounge and Stage are ground level.\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -24977,6 +26119,8 @@
     "campUID": "a1X8X00000k2atTUAQ",
     "distance": 0,
     "title": "OG BASS NIGHT",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -25101,6 +26245,8 @@
     "campUID": "a1X8X00000k1sGDUAY",
     "distance": 0,
     "title": "Mayan Hot Warrior Mess",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -25121,6 +26267,8 @@
     "campUID": "a1X8X00000jLAewUAG",
     "distance": 0,
     "title": "Bad Asstronauts Takeover",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -25149,6 +26297,8 @@
     "campUID": "a1X8X00000k3MFfUAM",
     "distance": 0,
     "title": "\"\"\"Four legs good, two legs bad\"\"\"",
+    "wa": true,
+    "waNotes": "Passages wide for wheelchairs to pass through. No bumps!",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -25201,6 +26351,8 @@
     "campUID": "a1X8X00000k31CJUAY",
     "distance": 0,
     "title": "White Walrus Wiggles",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -25237,6 +26389,8 @@
     "campUID": "a1X8X00000k2z6cUAA",
     "distance": 0,
     "title": "Bubbles and Bass (Wed)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -25281,6 +26435,8 @@
     "campUID": "a1X8X00000jKctwUAC",
     "distance": 0,
     "title": "Sunset / Full Blue Moon Rise oooahh",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -25303,6 +26459,8 @@
     "campUID": "a1X8X00000k30i3UAA",
     "distance": 0,
     "title": "Coconut Cold Brew",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -25331,6 +26489,8 @@
     "campUID": "a1X8X00000k3KQOUA2",
     "distance": 0,
     "title": "Queerest Lil Cocktail Party!",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -25351,6 +26511,8 @@
     "campUID": "a1X8X00000k3KxdUAE",
     "distance": 0,
     "title": "Ego Trip (Wed)",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -25427,6 +26589,8 @@
     "campUID": "RSLCx10224",
     "distance": 0,
     "title": "Indie Dance & Special Breaks Set",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -25473,6 +26637,8 @@
     "campUID": "a1X8X00000k3KQOUA2",
     "distance": 0,
     "title": "Dancy Dance with the Glamcocks!",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -25509,6 +26675,8 @@
     "campUID": "a1X8X00000k390AUAQ",
     "distance": 0,
     "title": "Electro Funky Toast Crunch",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -25569,6 +26737,8 @@
     "campUID": "a1X8X00000jK8I2UAK",
     "distance": 0,
     "title": "Stellar Seduction",
+    "wa": true,
+    "waNotes": "Flat camp with dancefloor",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -25637,6 +26807,8 @@
     "campUID": "a1X8X00000k2whDUAQ",
     "distance": 0,
     "title": "Opulent Takeover",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -25665,6 +26837,8 @@
     "campUID": "a1X8X00000k2whDUAQ",
     "distance": 0,
     "title": "Fuck Yer Burn",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -25693,6 +26867,8 @@
     "campUID": "a1X8X00000jImd2UAC",
     "distance": 0,
     "title": "Bananas & Bandanas",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -25738,6 +26914,8 @@
     "campUID": "a1X8X00000jImd2UAC",
     "distance": 0,
     "title": "Disco Reveille",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -25759,6 +26937,8 @@
     "campUID": "RSLCx11462",
     "distance": 0,
     "title": "It's a nocturnal wonderland!",
+    "wa": false,
+    "waNotes": "\"Our camp is all flat, and has no bumps or anything, so should be wheelchair friendly to get in\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -25779,6 +26959,8 @@
     "campUID": "a1X8X00000k32ynUAA",
     "distance": 0,
     "title": "Kostume Kult Gifting & Runway Show",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -25823,6 +27005,8 @@
     "campUID": "a1X8X00000jL8OWUA0",
     "distance": 0,
     "title": "Legendary Playground of the Gods (Wed)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -25851,6 +27035,8 @@
     "campUID": "a1X8X00000jK8I2UAK",
     "distance": 0,
     "title": "Trash Fence Karaoke",
+    "wa": true,
+    "waNotes": "Flat camp with dancefloor",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -25888,6 +27074,8 @@
     "campUID": "a1X8X00000iWUY0UAO",
     "distance": 0,
     "title": "PlayAlchemist (Wed)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -25908,6 +27096,8 @@
     "campUID": "a1X8X00000k1xnaUAA",
     "distance": 0,
     "title": "Excursions in Bass",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -25992,6 +27182,8 @@
     "campUID": "a1X8X00000k32ynUAA",
     "distance": 0,
     "title": "Brooklyn Block Party",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -26012,6 +27204,8 @@
     "campUID": "a1X8X00000k207uUAA",
     "distance": 0,
     "title": "Techno on a 30 foot Snail slide!!",
+    "wa": true,
+    "waNotes": "\"DJ stage is on top of snail slide. Snail slide is not wheelchair friendly, but the dancefloor/viewing area is ground level and accessible via wheelchair\"",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -26048,6 +27242,8 @@
     "campUID": "a1X8X00000k209ZUAQ",
     "distance": 0,
     "title": "Euro-Pop Takeover",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -26101,6 +27297,8 @@
     "campUID": "a1X8X00000k32wcUAA",
     "distance": 0,
     "title": "Venice Red Light (Wed)",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -26177,6 +27375,8 @@
     "campUID": "a1X8X00000iWheAUAS",
     "distance": 0,
     "title": "Naked Pub Crawl Afterparty",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -26205,6 +27405,8 @@
     "campUID": "a1X8X00000k2zEFUAY",
     "distance": 0,
     "title": "Strangelove (Wed)",
+    "wa": true,
+    "waNotes": "We are a bar that is flat and has just rugs on playa and we feel we can accommodate a person with disabilities (and certainly would like to).",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -26257,6 +27459,8 @@
     "campUID": "a1X8X00000jK8p7UAC",
     "distance": 0,
     "title": "Disco Day Party",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -26277,6 +27481,8 @@
     "campUID": "a1X8X00000k3BcPUAU",
     "distance": 0,
     "title": "Oasis and Chill",
+    "wa": true,
+    "waNotes": "It's as wheelchair friendly as playa gets I think ...",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -26313,6 +27519,8 @@
     "campUID": "a1X8X00000jK8p7UAC",
     "distance": 0,
     "title": "Acoustic Sunset",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -26341,6 +27549,8 @@
     "campUID": "a1X8X00000jK8p7UAC",
     "distance": 0,
     "title": "Cuddle Oasis (Wed)",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -26377,6 +27587,8 @@
     "campUID": "a1X8X00000k3M9IUAU",
     "distance": 0,
     "title": "Sunset Soirée",
+    "wa": false,
+    "waNotes": "N/A",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -26397,6 +27609,8 @@
     "campUID": "a1X8X00000jKSKIUA4",
     "distance": 0,
     "title": "Waffles & House (Music)",
+    "wa": true,
+    "waNotes": "flat entrance and surface throughout and easy tables to reach and seat on to eat",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -26433,6 +27647,8 @@
     "campUID": "a1X8X00000k324qUAA",
     "distance": 0,
     "title": "\"Birds, Bees and Beats!\"",
+    "wa": false,
+    "waNotes": "Our art car is not wheelchair accessible. Our camp is not making specific wheelchair accommodations but we anticipate having enough space for a wheel chair to access our stage area",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -26469,6 +27685,8 @@
     "campUID": "a1X8X00000k3BcPUAU",
     "distance": 0,
     "title": "Hookahdome Players- Live Music Jam",
+    "wa": true,
+    "waNotes": "It's as wheelchair friendly as playa gets I think ...",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -26489,6 +27707,8 @@
     "campUID": "a1X8X00000k3BcPUAU",
     "distance": 0,
     "title": "Global Dance Party",
+    "wa": true,
+    "waNotes": "It's as wheelchair friendly as playa gets I think ...",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -26589,6 +27809,8 @@
     "campUID": "a1X8X00000k2zGtUAI",
     "distance": 0,
     "title": "Adopt a spirit animal!",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -26617,6 +27839,8 @@
     "campUID": "RSLCx12340",
     "distance": 0,
     "title": "Once In A Blue Super Moon Party",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -26654,6 +27878,8 @@
     "campUID": "a1X8X00000k3K4jUAE",
     "distance": 0,
     "title": "\"Garage Mahal - \"\"Found It\"\" Takeover\"",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -26706,6 +27932,8 @@
     "campUID": "RSLCx9565",
     "distance": 0,
     "title": "Sunrise with Dj Zip Disk",
+    "wa": false,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -26728,6 +27956,8 @@
     "campUID": "a1X8X00000kmOIXUA2",
     "distance": 0,
     "title": "Satellite Sacred",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -26820,6 +28050,8 @@
     "campUID": "a1X8X00000kmo2BUAQ",
     "distance": 0,
     "title": "La Calaca Village Live Music + DJs",
+    "wa": false,
+    "waNotes": "we are a school bus with ladder access to a roofdeck.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -26874,6 +28106,8 @@
     "campUID": "a1X8X00000iWUY0UAO",
     "distance": 0,
     "title": "INSIDE THE PYRAMID",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -26926,6 +28160,8 @@
     "campUID": "a1X8X00000k3900UAA",
     "distance": 0,
     "title": "Need a Minute Showcase",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -27018,6 +28254,8 @@
     "campUID": "a1X8X00000k3M6UUAU",
     "distance": 0,
     "title": "Immersive Audio...Disco?",
+    "wa": true,
+    "waNotes": "",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -27078,6 +28316,8 @@
     "campUID": "a1X8X00000k2rFoUAI",
     "distance": 0,
     "title": "Playa Piano + Wine Tasting",
+    "wa": true,
+    "waNotes": "No stairs at our camp!",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -27098,6 +28338,8 @@
     "campUID": "a1X8X00000jKGIAUA4",
     "distance": 0,
     "title": "Reverbia (Wed)",
+    "wa": true,
+    "waNotes": "We do not have stairs and have a ramp which goes up our stage for artists.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -27166,6 +28408,8 @@
     "campUID": "a1X8X00000jKGIAUA4",
     "distance": 0,
     "title": "Concerts In the Shade",
+    "wa": true,
+    "waNotes": "We do not have stairs and have a ramp which goes up our stage for artists.",
     "distanceInfo": "",
     "occurrences": [
       {
@@ -27186,6 +28430,8 @@
     "campUID": "a1X8X00000jKGIAUA4",
     "distance": 0,
     "title": "Concerts in the Shade",
+    "wa": true,
+    "waNotes": "We do not have stairs and have a ramp which goes up our stage for artists.",
     "distanceInfo": "",
     "occurrences": [
       {

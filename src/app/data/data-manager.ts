@@ -656,8 +656,7 @@ export class DataManager implements WorkerClass {
         return false;
     }
 
-    private addDay(date: Date) {
-        const name = date.toLocaleDateString();
+    private addDay(date: Date) {        
         const day = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
         if (!this.days.includes(day)) {
             this.days.push(day);

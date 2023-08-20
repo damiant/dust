@@ -2,7 +2,7 @@
   <img *ngIf="event.imageUrl" loading="lazy" class="image" alt="{{event.artCar}}"  [src]="event.imageUrl" />
   <ion-card-header>
     <ng-template [ngIf]="!event.artCar" [ngIfElse]="artCar">
-      <ion-card-title>{{event.camp}}</ion-card-title>
+      <ion-card-title>{{event.camp}} <ion-icon [color]="event.wa ? 'primary' : 'medium'" (click)="wheelchair()" class="wheelchair" size="small" [src]="'assets/icon/wheelchair.svg'"></ion-icon></ion-card-title>
       <ion-card-subtitle color="primary" (click)="map(event)">{{event.location}}
         {{event.distanceInfo}}<span>{{event.title}}</span></ion-card-subtitle>
     </ng-template>
