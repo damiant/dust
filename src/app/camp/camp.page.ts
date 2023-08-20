@@ -98,6 +98,10 @@ export class CampPage implements OnInit {
     });
   }
 
+  rslInfo() {
+    this.ui.presentToast(`To favorite these events press a name below.`, this.toastController);
+  }
+
   async toggleStar() {
     if (!this.camp) return;
     this.star = !this.star;
