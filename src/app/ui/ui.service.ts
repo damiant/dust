@@ -55,12 +55,23 @@ export class UiService {
     await Browser.open({ url, presentationStyle: 'popover' });
   }
 
-  public async presentToast(message: string, toastController: ToastController) {
+  public async presentToast(message: string, toastController: ToastController, position?: any) {
     const toast = await toastController.create({
       message,
       color: 'primary',
       duration: 1500,
-      position: 'top',
+      position: position ? position : 'top',
+    });
+
+    await toast.present();
+  }
+
+  public async presentDarkToast(message: string, toastController: ToastController) {
+    const toast = await toastController.create({
+      message,
+      color: 'dark',
+      duration: 1500,
+      position: 'middle',
     });
 
     await toast.present();

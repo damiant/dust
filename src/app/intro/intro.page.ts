@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ToastController } from '@ionic/angular';
 import { Router, RouterModule } from '@angular/router';
 import { DbService } from '../data/db.service';
 import { SplashScreen } from '@capacitor/splash-screen';
@@ -16,6 +16,7 @@ import { StatusBar, Style } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
 import { ThemePrimaryColor, UiService } from '../ui/ui.service';
 import { environment } from 'src/environments/environment';
+import { Network } from '@capacitor/network';
 
 interface IntroState {
   ready: boolean,
@@ -51,7 +52,7 @@ export class IntroPage {
 
   constructor(private db: DbService, private api: ApiService,
     private settingsService: SettingsService, private ui: UiService,
-    private fav: FavoritesService, private router: Router) { }
+    private fav: FavoritesService, private router: Router, private toastController: ToastController) { }
 
   async ionViewWillEnter() {
     this.vm = initialState();
@@ -103,7 +104,7 @@ export class IntroPage {
     const start = new Date(this.vm.cards[0].start);
     const manBurns = addDays(start, 6);
     const x = daysUntil(manBurns, now());
-    const until = daysUntil(start,now());
+    const until = daysUntil(start, now());
 
     let hideLocations = (thisYear && until > 1);
     if (environment.overrideLocations) {
@@ -121,16 +122,30 @@ export class IntroPage {
     }
   }
 
+  isCurrentYear() {
+    return this.vm.selected && this.vm.selected.year == this.vm.cards[0].year;
+  }
+
   async launch() {
     try {
       if (!this.vm.selected) return;
+
+      if (!this.isCurrentYear()) {
+        const status = await Network.getStatus();
+        if (!status.connected) {
+          this.ui.presentDarkToast('You are offline: Previous years require network access. Try this year instead.', this.toastController);
+          return;
+        }
+
+      }
       this.vm.ready = false;
       this.vm.showMessage = false;
 
-      const revision = await this.db.init(this.settingsService.settings.dataset);      
+
+      const revision = await this.db.init(this.settingsService.settings.dataset);
       await this.api.sendDataToWorker(revision);
       this.fav.init(this.settingsService.settings.dataset);
-      const title = (this.vm.selected.year == this.vm.cards[0].year) ? '' : this.vm.selected.year;
+      const title = (this.isCurrentYear()) ? '' : this.vm.selected.year;
       this.db.selectedYear.set(title);
       if (Capacitor.isNativePlatform()) {
         setTimeout(async () => {
