@@ -70,7 +70,7 @@ export class UiService {
     const toast = await toastController.create({
       message,
       color: 'dark',
-      duration: 1500,
+      duration: 2500,
       position: 'middle',
     });
 
