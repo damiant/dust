@@ -24,7 +24,7 @@
     </ion-item>
     <ion-item>
       <ion-icon slot="start" name="person-outline"></ion-icon>
-      <ion-label>{{art.artist}} ({{art.hometown}})</ion-label>
+      <ion-label [color]="art.contact_email ? 'primary': ''" (click)="mailArtist()">{{art.artist}} ({{art.hometown}})</ion-label>
     </ion-item>
     <ion-item>
       <ion-icon slot="start" name="location-outline"></ion-icon>

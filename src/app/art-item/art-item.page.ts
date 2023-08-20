@@ -82,6 +82,11 @@ export class ArtItemPage implements OnInit {
     await this.fav.starArt(this.star, this.art.uid);
   }
 
+  mailArtist() {
+    if (!this.art?.contact_email) return;
+    window.open('mailto:'+this.art?.contact_email);
+  }
+
   share() {
     const url = `https://dust.events?${ShareInfoType.art}=${this.art?.uid}`;
     this.ui.share({

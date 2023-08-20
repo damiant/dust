@@ -78,7 +78,6 @@ async function download(name: string, year: string, filename: string, folder: st
         item.donation_link = undefined;
         item.guided_tours = undefined;
         item.self_guided_tour_map = undefined;
-        item.contact_email = undefined;
         item.year = undefined;
         if (item.location) {
             item.location.hour = undefined;
