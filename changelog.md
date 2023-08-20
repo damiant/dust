@@ -1,10 +1,11 @@
 ## Changes
 
 ### 1.14
-- Search in RSL for art cars, titles & times
+- RockStar Librarian events added
 - Editting a friend was not showing the right address
 - Feature to Rate app
 - Added about page
+- Reminders are now 15 minutes before event
 - Filter added for long events
 
 ### 1.13
