@@ -8,9 +8,6 @@
 ## RSL
 - Now tab for the next 2ish hours - filter out items
 - Group multiple parties into the one card
-- Show RSL events in favorites page
-- Show RSL events in the camp detail page
-
 
 ## Check In
 - Check In Button - For events, add to check in history on the more tab
@@ -20,14 +17,9 @@
 ## Share My Location
 - Share my location - Capture map image and share with GPS coords.
 
-## Distance Fixes
-- Art popup map should show distance to art
-- RockStar Librarian - import data (Waiting on data)
 - Art page - map option to show all close art
 - Favorites by distance
 - Distance - use km and meters if region (or setting)
-- Camp detail map - Show distance to camp
-- Art detail - show distance with location
 
 ## Feedback
 - Reminder times configurable - 5 mins is too early (Google App Reviewer)

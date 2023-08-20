@@ -34,6 +34,8 @@ interface FavsState {
   mapTitle: string,
   search: string,
   mapSubtitle: string,
+  rslId: string | undefined,
+  isActionSheetOpen: boolean,
   mapPoints: MapPoint[]
 }
 
@@ -49,6 +51,8 @@ function intitialState(): FavsState {
     mapTitle: '',
     search: '',
     mapSubtitle: '',
+    rslId: undefined,
+    isActionSheetOpen: false,
     mapPoints: []
   }
 }
@@ -90,6 +94,24 @@ export class FavsPage implements OnInit {
     });
   }
 
+  public actionSheetButtons = [
+    {
+      text: 'Remove From Favorites',
+      role: 'destructive',
+      data: {
+        action: 'delete',
+      },
+    },
+    {
+      text: 'Cancel',
+      role: 'cancel',
+      data: {
+        action: 'cancel',
+      },
+    },
+  ];
+
+
   async ionViewWillEnter() {
     // if (this.vm.events.length == 0) {
     //   console.log('ionViewWillEnter.update');
@@ -109,6 +131,15 @@ export class FavsPage implements OnInit {
     this.vm.search = value;
     console.log('searchFavs.update');
     this.update();
+  }
+
+  async sheetAction(ev: any) {
+    this.vm.isActionSheetOpen = false;
+    if (ev.detail.role == 'cancel') return;
+    if (ev.detail.role == 'destructive') {
+      await this.fav.unstarRSLId(this.vm.rslId!);
+      await this.update();
+    }
   }
 
   private async update() {
@@ -145,6 +176,13 @@ export class FavsPage implements OnInit {
     if (item.location_string && item.location_string.toLowerCase().includes(search)) return true;
     return false;
   }
+
+  rslClick(rslId: string) {
+    this.vm.isActionSheetOpen = true;
+    this.vm.rslId = rslId;
+  }
+
+
 
   groupClick(gevent: Event) {
     console.log(gevent);

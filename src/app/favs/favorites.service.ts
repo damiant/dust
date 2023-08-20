@@ -151,6 +151,12 @@ export class FavoritesService {
     }
   }
 
+  public async unstarRSLId(id: string) {
+    this.favorites.rslEvents = this.include(false, id, this.favorites.rslEvents);
+    await this.saveFavorites();
+    await this.notificationService.unscheduleAll(id);
+  }
+
   public async starRSLEvent(star: boolean, event: RSLEvent, occurrence: RSLOccurrence): Promise<string | undefined> {
     const id = this.rslId(event, occurrence);
     this.favorites.rslEvents = this.include(star, id, this.favorites.rslEvents);
@@ -254,7 +260,7 @@ export class FavoritesService {
         event_type: { abbr: '', label: '', id: 0},
         gpsCoords: {lat: 0, lng: 0},
         description: '',
-        slug: '',        
+        slug: this.rslId(rslEvent,o),        
         print_description: `${o.who} is playing ${party}${rslEvent.artCar ? 'on the '+rslEvent.artCar+' mutant vehicle' : 'at '+rslEvent.camp}.`,
         occurrence_set: [{ start_time: o.startTime, end_time: o.endTime, star: true, old: false, happening: false, longTimeString: o.timeRange }],
         title: o.who,

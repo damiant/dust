@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { Event } from '../data/models';
 import { CommonModule } from '@angular/common';
@@ -20,8 +20,9 @@ export class EventComponent  implements OnInit {
   @Input() longTime = false;
   @Output() mapClick = new EventEmitter<any>();
   @Output() groupClick = new EventEmitter<Event>();
+  @Output() rslClick = new EventEmitter<string>();
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {}
 
@@ -35,6 +36,14 @@ export class EventComponent  implements OnInit {
 
   getDay() {
     return this.day;
+  }
+
+  detail() {
+    if (this.event.uid === '') {
+      this.rslClick.emit(this.event.slug);
+      return;
+    }
+    this.router.navigateByUrl('/event/'+ this.event.uid + '+' + this.title);
   }
 
 }
