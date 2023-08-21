@@ -1,4 +1,7 @@
 ## Changes
+### 1.16
+- Fix for art search
+
 ### 1.15
 - Performance improvements on art and RSL lists
 

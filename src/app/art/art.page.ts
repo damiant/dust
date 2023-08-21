@@ -134,8 +134,7 @@ export class ArtPage {
     this.search(event.target.value);
   }
 
-  search(val: string | undefined | null) {
-    if (!val) return;
+  search(val: string) {    
     this.virtualScroll.scrollToOffset(0, 'smooth');
     this.vm.noArtMessage = isWhiteSpace(val) ? `No art were found.` : `No art were found matching "${val}"`;
     this.update(val.toLowerCase());
