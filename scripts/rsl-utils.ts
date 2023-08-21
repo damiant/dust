@@ -81,15 +81,15 @@ function findRSLEvent(rslEvents: RSLEvent[], day: string, camp: RSLImportCamp, p
 // Day - yyyy-mm-dd
 // Time - '15:00:00.000000' or ''
 // Return 2023-08-29T14:00:00-07:00
-function toTime(day: string, time: string, startTime?: string): string {
+function toTime(day: string, time: string, startTime?: string, shift?: number): string {
     if (time == '') {
         // Assume end time is 1 hour after start
         const s = new Date(startTime!);
-        s.setHours(s.getHours() + 1);
+        s.setHours(s.getHours() + 1 + shift!);
         return toIsoString(s);
     }
     const t = time.split('.');
-    return `${day}T${t[0]}-07:00`;
+    return `${day}T${t[0]}-0${7 + shift!}:00`;
 }
 
 function cleanLocation(location: string): string {
@@ -121,8 +121,8 @@ function cleanLocation(location: string): string {
 }
 
 function toOccurrence(day: string, schedule: RSLImportSchedule, id: number): RSLOccurrence {
-    const startTime = toTime(day, schedule.starttime);
-    const endTime = toTime(day, schedule.endtime, startTime);
+    const startTime = toTime(day, schedule.starttime,undefined, 2);
+    const endTime = toTime(day, schedule.endtime, startTime,2);
     const startDateTime = new Date(startTime);
     let time = startDateTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }).replace(' ', '');
     let end = undefined;
