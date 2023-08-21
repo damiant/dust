@@ -163,10 +163,11 @@ async function download(name: string, year: string, filename: string, folder: st
         }
     }
     json.sort((a, b) => a.uid - b.uid);
+    json = dedup(json);    
     json = json.filter((item) => !item.invalid);
 
     const f = `./src/assets/${folder}/${filename}.json`;
-    const data = JSON.stringify(json);
+    const data = JSON.stringify(json, undefined, 2);
     const changed = compare(f, folder, data);
     if (changed) {
         save(f, folder, data);
@@ -174,6 +175,26 @@ async function download(name: string, year: string, filename: string, folder: st
         console.log(`No changes in ${folder} ${filename}`);
     }
     return changed;
+}
+
+function dedup(items: any[]): any[] {
+    const list = [];
+    for (let item of items) {
+        const copy = structuredClone(item);
+        copy.uid = '';
+        list.push(copy);
+    }
+    let idx = 0;
+    for (let item of list) {
+        const dup = list.findIndex((i) => JSON.stringify(i) == JSON.stringify(item));
+        if (dup != idx) {
+            console.error(`ERROR: Found duplicate: ${dup} ${idx} ${item.title}`);
+            items[idx].invalid = true;
+        }
+
+        idx++;
+    }
+    return items;
 }
 
 function toTitleCase(str: string) {

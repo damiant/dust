@@ -11,6 +11,7 @@ enum Names {
   events = 'events',
   art = 'art',
   camps = 'camps',
+  rsl = 'rsl',
   revision = 'revision'
 }
 
@@ -37,6 +38,7 @@ export class ApiService {
     const events = await this.read(ds, Names.events);
     const art = await this.read(ds, Names.art);
     const camps = await this.read(ds, Names.camps);
+    const rsl = await this.read(ds, Names.rsl);
     console.log(`Saved revision is ${revision.revision}`);
     if (this.badData(events, art, camps)) {
       // Download failed
@@ -79,6 +81,7 @@ export class ApiService {
     const events = await getLive(latest, Names.events);
     const art = await getLive(latest, Names.art);
     const camps = await getLive(latest, Names.camps);
+    const rsl = await getLive(latest, Names.rsl);
     if (this.badData(events, art, camps)) {
       console.error(`Download failed`);
       return;
@@ -86,6 +89,7 @@ export class ApiService {
     await this.save(this.getId(latest, Names.events), events);
     await this.save(this.getId(latest, Names.camps), camps);
     await this.save(this.getId(latest, Names.art), art);
+    await this.save(this.getId(latest, Names.rsl), rsl);
     await this.save(this.getId(latest, Names.revision), revision);
     this.rememberLastDownload();
   }

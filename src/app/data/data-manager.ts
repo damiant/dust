@@ -406,7 +406,7 @@ export class DataManager implements WorkerClass {
             } else {
                 match = (this.rslEventContains(event, query) && (event.day == fDay || !!ids));
             }
-            
+
             if (match) {
                 let allOld = true;
                 for (let occurrence of event.occurrences) {
@@ -656,7 +656,7 @@ export class DataManager implements WorkerClass {
         return false;
     }
 
-    private addDay(date: Date) {        
+    private addDay(date: Date) {
         const day = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
         if (!this.days.includes(day)) {
             this.days.push(day);
@@ -666,7 +666,7 @@ export class DataManager implements WorkerClass {
     private path(name: string, online?: boolean): string {
         console.log(this.dataset);
         if (this.dataset !== CurrentYear && online) {
-           return `https://dust.events/assets/data/${this.dataset}/${name}.json`;
+            return `https://dust.events/assets/data/${this.dataset}/${name}.json`;
         }
         return `assets/${this.dataset}/${name}.json`;
     }
