@@ -1,4 +1,7 @@
 ## Changes
+### 1.17
+- Fix issue when pausing the app while the keyboard is showing which causes the tab bar to appear when resumed
+
 ### 1.16
 - Fix for art search
 
