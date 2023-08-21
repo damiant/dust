@@ -129,6 +129,11 @@ async function download(name: string, year: string, filename: string, folder: st
                     + item.print_description.slice(1);
             }
         }
+        if (item.uid == '44098') {
+            if (item.title == 'Bike wash') {
+                item.invalid = true;
+            }
+        }
         if (options?.fixLocation) {
             if (!item.location_string) {
                 item.location_string = '';
@@ -221,7 +226,7 @@ function writeComparison(before: string, after: string) {
     for (let item of b) {
         if (item.uid) {
             const aItem = a.find((x: any) => x.uid == item.uid);
-            if (!aItem)  {
+            if (!aItem) {
                 console.log('Removed item', item);
             } else if (JSON.stringify(item) !== JSON.stringify(aItem)) {
                 console.log('change found in ', aItem);
