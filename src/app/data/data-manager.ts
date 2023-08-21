@@ -1,5 +1,5 @@
 import { WorkerClass } from './worker-interface';
-import { Art, Camp, DataMethods, Day, Event, GPSSet, GeoRef, LocationName, MapPoint, MapSet, Pin, RSLEvent, Revision, TimeRange, TimeString } from './models';
+import { Art, Camp, DataMethods, Day, Event, FullDataset, GPSSet, GeoRef, LocationName, MapPoint, MapSet, Pin, RSLEvent, Revision, TimeRange, TimeString } from './models';
 import { BurningManTimeZone, CurrentYear, getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from '../utils/utils';
 import { defaultMapRadius, distance, formatDistance, locationStringToPin, mapPointToPoint } from '../map/map.utils';
 import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from '../map/geo.utils';
@@ -28,7 +28,7 @@ export class DataManager implements WorkerClass {
             case DataMethods.GetDays: return this.getDays();
             case DataMethods.GetPotties: return this.getPotties();
             case DataMethods.GetCategories: return this.categories;
-            case DataMethods.SetDataset: return this.setDataset(args[0], args[1], args[2], args[3], args[4]);
+            case DataMethods.SetDataset: return await this.setDataset(args[0]);
             case DataMethods.GetEvents: return this.getEvents(args[0], args[1]);
             case DataMethods.GetEventList: return this.getEventList(args[0]);
             case DataMethods.GetRSLEventList: return this.getRSLEventList(args[0]);
@@ -59,7 +59,7 @@ export class DataManager implements WorkerClass {
         this.dataset = dataset;
         this.events = await this.loadEvents();
         this.camps = await this.loadCamps();
-        this.art = await this.loadArt();
+        this.art = await this.loadArt();        
         this.revision = await this.loadRevision();
         this.georeferences = await this.getGeoReferences();
         console.log(`At revision ${this.revision.revision}. Hide locations is ${hideLocations}.`);
@@ -288,12 +288,19 @@ export class DataManager implements WorkerClass {
         return locationStringToPin(camp.location_string, this.mapRadius);
     }
 
-    public setDataset(dataset: string, events: Event[], camps: Camp[], art: Art[], hideLocations: boolean) {
-        this.dataset = dataset;
-        this.events = events;
-        this.camps = camps;
-        this.art = art;
-        this.init(hideLocations);
+    public async setDataset(ds: FullDataset) {        
+        try {
+            console.log('setDataset started')
+            this.dataset = ds.dataset;
+            this.events = await this.loadData(ds.events);
+            this.camps = await this.loadData(ds.camps);
+            this.art = await this.loadData(ds.art);
+            const rslData = await this.loadData(ds.rsl);
+            console.log(`Setting dataset in worker: ${this.events.length} events, ${this.camps.length} camps, ${this.art.length} art, ${rslData.length} rsl`);
+            this.init(ds.hideLocations);
+        } catch (err) {
+            console.error(`Failed to setDataset`, err);
+        }
     }
 
     public getEvents(idx: number, count: number): Event[] {
@@ -664,14 +671,19 @@ export class DataManager implements WorkerClass {
     }
 
     private path(name: string, online?: boolean): string {
-        console.log(this.dataset);
         if (this.dataset !== CurrentYear && online) {
-            return `https://dust.events/assets/data/${this.dataset}/${name}.json`;
+            return `https://dust.events/assets/data-v2/${this.dataset}/${name}.json`;
         }
         return `assets/${this.dataset}/${name}.json`;
     }
     private async loadEvents(): Promise<Event[]> {
         const res = await fetch(this.path('events', true));
+        return await res.json();
+    }
+
+    private async loadData(uri: string): Promise<any> {
+        console.log(`loadData`, uri);
+        const res = await fetch(uri);
         return await res.json();
     }
 
@@ -716,8 +728,8 @@ export class DataManager implements WorkerClass {
         return await res.json();
     }
 
-    private async loadRevision(): Promise<Revision> {
-        const res = await fetch(this.path('revision'));
+    private async loadRevision(): Promise<Revision> {        
+        const res = await fetch(this.path('revision', true));
         return await res.json();
     }
 }

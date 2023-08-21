@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { Event, Day, Camp, Art, Pin, DataMethods, MapSet, GeoRef, Dataset, RSLEvent, TimeRange, GPSSet, MapPoint } from './models';
+import { Event, Day, Camp, Art, Pin, DataMethods, MapSet, GeoRef, Dataset, RSLEvent, TimeRange, GPSSet, MapPoint, FullDataset } from './models';
 import { call, registerWorker } from './worker-interface';
 import { daysUntil, noDate, now } from '../utils/utils';
 import { GpsCoord, Point } from '../map/geo.utils';
@@ -163,11 +163,8 @@ export class DbService {
     return await call(this.worker, DataMethods.GetEvents, idx, count);
   }
 
-  public async setDataset(dataset: string, events: Event[], camps: Camp[], art: Art[]): Promise<void> {
-    if (!events || events.length == 0) {
-      return;
-    }
-    return await call(this.worker, DataMethods.SetDataset, dataset, events, camps, art, this.hideLocations);
+  public async setDataset(fullDataset: FullDataset): Promise<void> {
+    return await call(this.worker, DataMethods.SetDataset, fullDataset);
   }
 
   public async getCampEvents(campId: string): Promise<Event[]> {

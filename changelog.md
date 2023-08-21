@@ -1,6 +1,7 @@
 ## Changes
 ### 1.18
 - Deduplicate events
+- Live load datasets
 
 ### 1.17
 - Fix imported Rock Star Librarian events - shift by 2 hours

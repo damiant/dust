@@ -27,7 +27,7 @@ async function importRSL() {
   writeFileSync(outputFilename, JSON.stringify(rslEvents, undefined, 2), 'utf8');
 
   // Save to the web site too
-  const p = `../dust-web/src/assets/data/${yearFolder}/rsl.json`;
+  const p = `../dust-web/src/assets/data-v2/${yearFolder}/rsl.json`;
   writeFileSync(p, JSON.stringify(rslEvents), 'utf8');
 }
 

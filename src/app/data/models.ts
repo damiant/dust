@@ -221,6 +221,15 @@ export interface RSLEvent {
   occurrences: RSLOccurrence[];
 }
 
+export interface FullDataset {
+  dataset: string;
+  events: string;
+  camps: string;
+  art: string;
+  rsl: string;
+  hideLocations: boolean
+}
+
 export interface RSLOccurrence {
   id: string;
   time: string; // Display format
