@@ -1,5 +1,5 @@
 import { Component, ViewChild, effect } from '@angular/core';
-import { IonicModule, ToastController } from '@ionic/angular';
+import { InfiniteScrollCustomEvent, IonicModule, ToastController } from '@ionic/angular';
 import { Art } from '../data/models';
 import { DbService } from '../data/db.service';
 import { Router, RouterLink, Scroll } from '@angular/router';
@@ -52,7 +52,7 @@ function initialState(): ArtState {
 })
 export class ArtPage {
   vm: ArtState = initialState();
-  isScrollDisabled = false;
+  private allArt: Art[] = [];
   @ViewChild(CdkVirtualScrollViewport) virtualScroll!: CdkVirtualScrollViewport;
 
   constructor(
@@ -69,11 +69,11 @@ export class ArtPage {
       const year = this.db.selectedYear();
       this.db.checkInit();
       this.vm = initialState();
-      this.vm.showImage = this.isThisYear();      
+      this.vm.showImage = this.isThisYear();
       this.init();
     });
     effect(() => {
-      const status = this.db.networkStatus();      
+      const status = this.db.networkStatus();
       this.vm.showImage = this.isThisYear() || (status == 'wifi');
     });
   }
@@ -87,11 +87,16 @@ export class ArtPage {
     this.ui.home();
   }
 
-  goToLetterGroup(e: string) { 
-    const idx = this.vm.alphaValues.indexOf(e);
-    if (idx >= 0) {
-      this.virtualScroll.scrollToIndex(this.vm.alphaIndex[idx]);      
+  goToLetterGroup(e: string) {
+    if (this.vm.arts.length < this.allArt.length) {
+      this.addArt(this.allArt.length - this.vm.arts.length);
     }
+    setTimeout(() => {
+      const idx = this.vm.alphaValues.indexOf(e);
+      if (idx >= 0) {
+        this.virtualScroll.scrollToIndex(this.vm.alphaIndex[idx]);
+      }
+    }, 1);
   }
 
   async init() {
@@ -102,10 +107,6 @@ export class ArtPage {
     } finally {
       this.vm.busy = false;
     }
-  }
-
-  enableScroll() {
-    this.isScrollDisabled = false;
   }
 
   toggleByDist() {
@@ -120,6 +121,13 @@ export class ArtPage {
 
   async ionViewDidEnter() {
     this.hack();
+  }
+
+  onIonInfinite(ev: any) {
+    this.addArt(10);
+    setTimeout(() => {
+      (ev as InfiniteScrollCustomEvent).target.complete();
+    }, 10);
   }
 
   handleInput(event: any) {
@@ -146,8 +154,10 @@ export class ArtPage {
     let coords: GpsCoord | undefined = undefined;
     if (this.vm.byDist) {
       coords = await this.geo.getPosition();
-    }    
-    this.vm.arts = await this.db.findArts(search, coords);
+    }
+    this.allArt = await this.db.findArts(search, coords);
+    this.vm.arts = [];
+    this.addArt(10);
     this.updateAlphaIndex();
   }
 
@@ -155,12 +165,19 @@ export class ArtPage {
     this.router.navigate(['/art/' + art.uid + '+Art']);
   }
 
+  private addArt(count: number) {
+    const chunk = this.allArt.slice(this.vm.arts.length, this.vm.arts.length + count);
+    for (let item of chunk) {
+      this.vm.arts.push(item);
+    }
+  }
+
   private updateAlphaIndex() {
     let lastChar = '';
     let idx = 0;
     this.vm.alphaIndex = [];
     this.vm.alphaValues = [];
-    for (let art of this.vm.arts) {
+    for (let art of this.allArt) {
       if (art.name.charAt(0) != lastChar) {
         lastChar = art.name.charAt(0);
         this.vm.alphaIndex.push(idx);

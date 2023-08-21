@@ -12,7 +12,8 @@
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-item lines="none">
-        <img class="rslLogo" alt="Rockstar Librarian Logo" src="assets/icon/rsl-logo.svg" style="height: 80px" (click)="rslLogo()" />
+        <img class="rslLogo" alt="Rockstar Librarian Logo" src="assets/icon/rsl-logo.svg" style="height: 80px"
+          (click)="rslLogo()" />
       </ion-item>
     </ion-toolbar>
     <ion-toolbar>
@@ -44,5 +45,8 @@
   <div *ngIf="vm.noEvents" class="message large"><ion-text>{{vm.noEventsMessage}}</ion-text></div>
   <app-rsl-event [event]="event" (mapClick)="map($event)" (artCarClick)="artCar($event)"
     *ngFor="let event of vm.events; trackBy: eventsTrackBy"></app-rsl-event>
-    <div class="pad-top"></div>
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <div class="pad-top"></div>
 </ion-content>
