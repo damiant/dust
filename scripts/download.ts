@@ -211,7 +211,33 @@ function compare(path: string, folder: string, data: string) {
         return true;
     }
     const read = readFileSync(path, 'utf-8');
+    writeComparison(read, data);
     return read !== data;
+}
+
+function writeComparison(before: string, after: string) {
+    const b = JSON.parse(before);
+    const a = JSON.parse(after);
+    for (let item of b) {
+        if (item.uid) {
+            const aItem = a.find((x: any) => x.uid == item.uid);
+            if (!aItem)  {
+                console.log('Removed item', item);
+            } else if (JSON.stringify(item) !== JSON.stringify(aItem)) {
+                console.log('change found in ', aItem);
+            }
+        }
+    }
+    for (let item of a) {
+        if (item.uid) {
+            const bItem = b.find((x: any) => x.uid == item.uid);
+            if (!bItem) {
+                console.log('Added item', item);
+            } else if (JSON.stringify(item) != JSON.stringify(bItem)) {
+                console.log('change found in ', item);
+            }
+        }
+    }
 }
 
 function getUrl(name: string, year: string) {
