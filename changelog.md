@@ -1,5 +1,6 @@
 ## Changes
 ### 1.17
+- Fix imported Rock Star Librarian events - shift by 2 hours
 - Fix issue when pausing the app while the keyboard is showing which causes the tab bar to appear when resumed
 
 ### 1.16
