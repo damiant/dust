@@ -162,10 +162,10 @@ async function download(name: string, year: string, filename: string, folder: st
             }
         }
     }
-    json.sort((a, b) => a.uid - b.uid);
-    json = dedup(json);    
+    json = dedup(filename, json);
     json = json.filter((item) => !item.invalid);
-
+    //json.sort((a, b) => a.uid - b.uid);
+    json.sort((a,b) => (a.uid > b.uid) ? 1 : ((b.uid > a.uid) ? -1 : 0))
     const f = `./src/assets/${folder}/${filename}.json`;
     const data = JSON.stringify(json, undefined, 2);
     const changed = compare(f, folder, data);
@@ -177,7 +177,8 @@ async function download(name: string, year: string, filename: string, folder: st
     return changed;
 }
 
-function dedup(items: any[]): any[] {
+function dedup(name: string, items: any[]): any[] {
+    console.log(`de-duplicating ${name}...`);
     const list = [];
     for (let item of items) {
         const copy = structuredClone(item);
@@ -220,7 +221,7 @@ function save(path: string, folder: string, data: string) {
     const filename = basename(path);
     writeFileSync(path, data, 'utf8');
     console.log(`Wrote "${path}"`);
-    const p = `../dust-web/src/assets/data/${folder}`;
+    const p = `../dust-web/src/assets/data-v2/${folder}`;
     if (!existsSync(p)) {
         throw new Error(`Path must exist: ${p}`);
     }

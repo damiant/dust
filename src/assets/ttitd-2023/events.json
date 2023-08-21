@@ -22721,23 +22721,6 @@
     ]
   },
   {
-    "title": "BIPOC Flame Starter(pack)",
-    "uid": "42096",
-    "description": "First time at BMan as a Person of Color? Join our support circle/discussion for Integration & commUNITY.",
-    "event_type": {
-      "label": "Diversity & Inclusion"
-    },
-    "print_description": "",
-    "hosted_by_camp": "a1X8X00000k32v0UAA",
-    "check_location": 1,
-    "occurrence_set": [
-      {
-        "start_time": "2023-08-29T18:00:00-07:00",
-        "end_time": "2023-08-29T20:00:00-07:00"
-      }
-    ]
-  },
-  {
     "title": "Flavor Tripping Experience",
     "uid": "42097",
     "description": "Flip your tastebuds with miracle berries! Sour is sweet. Up is down. Pickles are candy. Music served by ATypical Forest!",
@@ -26333,7 +26316,7 @@
   },
   {
     "title": "From Whine to Fine. Reset Your Perspective",
-    "uid": "42277",
+    "uid": "42278",
     "description": "Research says gratitude works. Let’s reset our week and minds.",
     "event_type": {
       "label": "Class/Workshop"
