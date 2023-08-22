@@ -3468,27 +3468,6 @@
     ]
   },
   {
-    "uid": "a2I8X00000hDLOSUA4",
-    "name": "WPCF ( why people can't fly)",
-    "contact_email": "artcamp2023@mail.com",
-    "hometown": "Miami, FL",
-    "description": "Why People Can't Fly,  We often see people holding balloons—they walk around the streets while keeping them from flying away—but what we have in this sculpture is the opposite: the balloons aren't letting the man fly. The weight of the balloons acts as a metaphor for our daily problems and anxieties, as well as the waste we produce. Today's negative actions prevent us from realizing future goals.",
-    "artist": "Zurab Ermilov",
-    "category": "Open Playa",
-    "location": {
-      "string": "1:32 3700', Open Playa",
-      "category": "Open Playa",
-      "gps_latitude": 40.786221505058,
-      "gps_longitude": -119.19012186799
-    },
-    "location_string": "1:32 3700', Open Playa",
-    "images": [
-      {
-        "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00000hDLOSUA4.webp"
-      }
-    ]
-  },
-  {
     "uid": "a2I8X00000hDLP6UAO",
     "name": "Big Spinning Wheels",
     "url": "https://pdabk.com/",
@@ -5626,7 +5605,7 @@
     "url": "http://www.simone-engelen.com",
     "contact_email": "hello@simone-engelen.com",
     "hometown": "Amsterdam, The Netherlands",
-    "description": "Yaza is a project by Simone Engelen, who lived in a zen buddhist mountain monastery earlier this year to experience life as a monk.\r\n“Every morning at 4AM we would start singing sutra’s followed by long meditations throughout the entire day. We would end the day with 'yaza', the final meditation done outside. Even though I was exhausted, Yaza was my favorite part of day. Lit by moonlight I would wrap myself in a sleeping bag, sometimes hearing a fellow monk snore in the background or 'tanuki's' (a kind of racoon) trashing the graveyard, and it was in that very moment I would realize.... wow, how incredibly grateful am I to be alive. Ever since I've been eager to share this experience with others!\r\n\r\nTo try it by yourself, please sit here at night. Straighten your spine. Focus on the breath. And take it all in.\r\n\r\nTo experience it with me, please join me on Wednesday August 30, on a fullmoon night at 3 AM, for a guided silent meditation at Moonlight Collective’s ‘Prairie of Possibilities’.",
+    "description": "Yaza is a project by Simone Engelen, who lived in a zen buddhist mountain monastery earlier this year to experience life as a monk.\r\n“Every morning at 12AM we would start singing sutra’s followed by long meditations throughout the entire day. We would end the day with 'yaza', the final meditation done outside. Even though I was exhausted, Yaza was my favorite part of day. Lit by moonlight I would wrap myself in a sleeping bag, sometimes hearing a fellow monk snore in the background or 'tanuki's' (a kind of racoon) trashing the graveyard, and it was in that very moment I would realize.... wow, how incredibly grateful am I to be alive. Ever since I've been eager to share this experience with others!\r\n\r\nTo try it by yourself, please sit here at night. Straighten your spine. Focus on the breath. And take it all in.\r\n\r\nTo experience it with me, please join me on Wednesday August 30, on a fullmoon night at 3 AM, for a guided silent meditation at Moonlight Collective’s ‘Prairie of Possibilities’.",
     "artist": "Simone Engelen",
     "category": "Open Playa",
     "location": {
