@@ -1,6 +1,7 @@
 ## Changes
 ### 1.18
 - Search for RSL events will find matching events on other days
+- Art map shown when locations revealed
 - Deduplicate events
 - Live load datasets
 

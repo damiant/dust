@@ -17,7 +17,8 @@
     <app-tile title="Restrooms" routerLink="/map/restrooms" imgSrc="assets/icon/toilet.svg"></app-tile>
     <app-tile title="Ice" routerLink="/map/ice" imgSrc="assets/icon/ice.svg"></app-tile>
     <app-tile title="Medical" routerLink="/map/medical" imgSrc="assets/icon/medical.svg"></app-tile>
-    <app-tile title="Directions" (click)="directions()" iconName="compass-outline"></app-tile>
+    <app-tile *ngIf="!db.locationsHidden()" title="Art" routerLink="/map/art" imgSrc="assets/icon/art.svg"></app-tile>
+    <app-tile title="Directions" (click)="directions()" iconName="compass-outline"></app-tile>    
   </app-tile-container>
 
   <app-friends />

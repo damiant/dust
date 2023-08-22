@@ -64,6 +64,7 @@ export class MapComponent implements OnInit, OnDestroy {
   @ViewChild('mapc') mapc!: ElementRef;
   @Input() height: string = 'height: 100%';
   @Input() footerPadding: number = 0;
+  @Input() smallPins: boolean = false;
   @Input() isHeader: boolean = false;
   @Input('points') set setPoints(points: MapPoint[]) {
     this.points = points;
@@ -315,11 +316,11 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   private plotXY(x: number, y: number, ox: number, oy: number, info?: MapInfo, bgColor?: string): HTMLDivElement {
-    const sz = (info || bgColor) ? 10 : 8;
+    const sz = (info || bgColor) ? this.smallPins ? 5 : 10 : 8;
     if (info && info.location) {
       this.placeLabel(this.pointShift(x, y, 0, 0, -7), info);
     }
-    return this.createPin(sz, this.pointShift(x, y, sz, ox, oy), info, bgColor);
+    return this.createPin(sz, this.pointShift(x, y, sz, ox + (this.smallPins ? -2 : 0), oy), info, bgColor);
   }
 
 
