@@ -62,7 +62,7 @@ export class DbService {
     return until;
   }
 
-  public async findEvents(query: string, day: Date | undefined, category: string, coords: GpsCoord | undefined, timeRange: TimeRange | undefined, allDay: boolean): Promise<Event[]> {
+  public async findEvents(query: string, day: Date | undefined, category: string, coords: GpsCoord | undefined, timeRange: TimeRange | undefined, allDay: boolean): Promise<Event[]> {    
     return await call(this.worker, DataMethods.FindEvents, query, day, category, coords, timeRange, allDay);
   }
 

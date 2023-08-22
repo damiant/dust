@@ -18,6 +18,7 @@
     <app-tile title="Ice" routerLink="/map/ice" imgSrc="assets/icon/ice.svg"></app-tile>
     <app-tile title="Medical" routerLink="/map/medical" imgSrc="assets/icon/medical.svg"></app-tile>
     <app-tile *ngIf="!db.locationsHidden()" title="Art" routerLink="/map/art" imgSrc="assets/icon/art.svg"></app-tile>
+    <app-tile *ngIf="!db.locationsHidden()" title="Now" routerLink="/map/now" imgSrc="assets/icon/calendar.svg"></app-tile>
     <app-tile title="Directions" (click)="directions()" iconName="compass-outline"></app-tile>    
   </app-tile-container>
 
@@ -30,10 +31,6 @@
 
     <ion-card-content>
       <ion-list>
-        <!-- <ion-item>
-          <ion-icon slot="start" name="locate-outline"></ion-icon>
-          <ion-toggle (ionChange)="toggleLocation($event)" [checked]="locationEnabled">Show My Location</ion-toggle>
-        </ion-item> -->
         <ion-item href="mailto:damian@dust.events?subject=dust" detail="true">
           <ion-icon slot="start" name="mail-unread-outline"></ion-icon>
          Feedback

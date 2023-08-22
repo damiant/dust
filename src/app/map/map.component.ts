@@ -11,6 +11,7 @@ import { SettingsService } from '../data/settings.service';
 import { MessageComponent } from '../message/message.component';
 import { CompassError, CompassHeading } from './compass';
 import { GpsCoord, Point } from './geo.utils';
+import { Router, RouterModule } from '@angular/router';
 
 interface MapInformation {
   width: number; // Width of the map
@@ -29,7 +30,7 @@ const youOffsetY = 4;
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
-  imports: [IonicModule, PinchZoomModule, CommonModule, MessageComponent],
+  imports: [IonicModule, PinchZoomModule, RouterModule, CommonModule, MessageComponent],
   standalone: true,
   animations: [
     trigger('fade', [
@@ -99,6 +100,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   constructor(
     private geo: GeoService,
+    private router: Router,
     private settings: SettingsService) {
     this.points = [];
     effect(async () => {
@@ -115,9 +117,9 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   private async viewReady(): Promise<void> {
-     while (!this._viewReady) {
+    while (!this._viewReady) {
       await delay(50);
-     }
+    }
   }
 
   ngOnInit() {
@@ -156,7 +158,7 @@ export class MapComponent implements OnInit, OnDestroy {
     } else {
       const sz = parseInt(this.you.style.width.replace('px', ''));
       this.movePoint(this.you, this.pointShift(pt.x, pt.y, sz, youOffsetX, youOffsetY));
-    }    
+    }
     await this.calculateNearest(gpsCoord);
   }
 
@@ -225,7 +227,7 @@ export class MapComponent implements OnInit, OnDestroy {
     let closestIdx = 0;
     let idx = 0;
     for (let point of this.points) {
-      
+
       if (!point.gps || !point.gps.lat) {
         console.error(`MapPoint is missing gps coordinate: ${JSON.stringify(point)}`);
       }
@@ -317,7 +319,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private plotXY(x: number, y: number, ox: number, oy: number, info?: MapInfo, bgColor?: string): HTMLDivElement {
     const sz = (info || bgColor) ? this.smallPins ? 5 : 10 : 8;
-    if (info && info.location) {
+    if (info && info.location && !this.smallPins) {
       this.placeLabel(this.pointShift(x, y, 0, 0, -7), info);
     }
     return this.createPin(sz, this.pointShift(x, y, sz, ox + (this.smallPins ? -2 : 0), oy), info, bgColor);
@@ -387,6 +389,13 @@ export class MapComponent implements OnInit, OnDestroy {
     const ry = (y - r.y) * 10000 / r.height;
     this.store(Math.ceil(rx), Math.ceil(ry));
     return false;
+  }
+
+  link(url: string) {
+    this.isOpen = false;
+    setTimeout(() => {
+      this.router.navigateByUrl(url);
+    }, 500);
   }
 
   store(x: number, y: number) {

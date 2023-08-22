@@ -190,6 +190,7 @@ export interface MapInfo {
   location: string;
   subtitle: string;
   imageUrl?: string;
+  href?: string;
 }
 
 export interface MapSet {

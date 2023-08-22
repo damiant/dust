@@ -5,6 +5,9 @@
       <div [@fade]="imageReady ? 'visible' : 'hidden'" class="center">
         <img class="pop" *ngIf="info.imageUrl" (load)="ready()" [src]="info.imageUrl" [alt]="info.title" />
       </div>
+      <div class="center">
+      <ion-button [disabled]="!isOpen" (click)="link(info.href)" size="small" shape="round" *ngIf="info.href">View</ion-button>
+    </div>
     </ion-content>
   </ng-template>
 </ion-popover>

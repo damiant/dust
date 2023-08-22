@@ -8,10 +8,12 @@ import { Art, MapPoint, MapSet, Pin } from '../data/models';
 import { GpsCoord } from '../map/geo.utils';
 import { GeoService } from '../geolocation/geo.service';
 import { toMapPoint } from '../map/map.utils';
+import { noDate, nowRange, timeRangeToString } from '../utils/utils';
 
 enum MapType {
   Restrooms = 'restrooms',
   Ice = 'ice',
+  Now = 'now',
   Art = 'art',
   Medical = 'medical'
 }
@@ -48,6 +50,7 @@ export class PinMapPage implements OnInit {
   private async mapFor(mapType: string): Promise<MapSet> {
     switch (mapType) {
       case MapType.Art: return await this.getArt();
+      case MapType.Now: return await this.getEventsNow();
       case MapType.Restrooms: return await this.db.getGPSPoints('restrooms', 'Block of restrooms');
       case MapType.Ice: return await this.db.getMapPoints('ice');
       case MapType.Medical: return await this.db.getMapPoints('medical');
@@ -84,6 +87,29 @@ export class PinMapPage implements OnInit {
     }
     point.info = { title: art.name, subtitle: '', location: '', imageUrl: art.images[0].thumbnail_url }
     return point;
+  }
+
+  private async getEventsNow(): Promise<MapSet> {
+    const timeRange = nowRange();
+    this.smallPins = true;
+    const points = [];
+    const allEvents = await this.db.findEvents('', undefined, '', undefined, timeRange, false);
+    for (let event of allEvents) {
+      const mapPoint = toMapPoint(event.location,
+        {
+          title: event.title,
+          location: event.location,
+          subtitle: event.camp,
+          href: `event/${event.uid}+Now`
+        });
+      mapPoint.gps = await this.db.getMapPointGPS(mapPoint);
+      points.push(mapPoint);
+    }
+    return {
+      title: 'Happening Now',
+      description: `Map of ${allEvents.length} events happening ${timeRangeToString(timeRange)}`,
+      points
+    }
   }
 
 }
