@@ -108,7 +108,6 @@ async function download(name: string, year: string, filename: string, folder: st
             for (let image of item.images) {
                 image.gallery_ref = undefined;
                 if (options?.convertImage) {
-                    console.log(image.thumbnail_url);
                     await downloadImageAndConvertToWebP(image.thumbnail_url, `${imageFolder}/${item.uid}.webp`);
                     image.thumbnail_url = `./assets/${folder}/images/${item.uid}.webp`;
                 }

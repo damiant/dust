@@ -275,6 +275,7 @@ export enum DataMethods {
   GetGeoReferences = 'getGeoReferences',
   GpsToPoint = 'gpsToPoint',
   GetRSLEvents = 'getRSLEvents',
+  SearchRSLEvents = 'searchRSLEvents',
   GetMapPointGPS = 'getMapPointGPS',
   SetMapPointsGPS = 'setMapPointsGPS'
 }

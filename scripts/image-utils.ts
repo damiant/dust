@@ -5,8 +5,7 @@ import sharp from "sharp";
 
 export async function downloadImageAndConvertToWebP(url: string, outputPath: string): Promise<void> {
     try {
-        if (existsSync(outputPath)) {
-            console.log(`${basename(outputPath)} exists already`);
+        if (existsSync(outputPath)) {            
             return;
         }
         // Download image from the provided URL

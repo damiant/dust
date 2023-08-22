@@ -122,13 +122,33 @@ export class RslPage implements OnInit {
     console.timeEnd('rslEvents get');
     this.vm.events = [];
     this.addEvents(50);
-    this.vm.noEvents = this.vm.events.length == 0;
-    this.vm.noEventsMessage = this.vm.search?.length > 0 ?
-      `There are no events matching "${this.vm.search}".` :
-      'All the events for this day have concluded.';
+    await this.handleNoEvents();
     if (scrollToTop) {
       this.ui.scrollUpContent('rsl', this.ionContent);
     }
+  }
+
+  private async handleNoEvents() {
+    if (this.vm.events.length > 0) {
+      this.vm.noEvents = false;
+      return;
+    }
+    const wasSearch = this.vm.search?.length > 0;
+    const days = await this.db.searchRSL(this.vm.search);
+    console.log('got', days)
+    if (days.length == 0) {
+      this.vm.noEvents = this.vm.events.length == 0;
+      this.vm.noEventsMessage = wasSearch ?
+        `There are no events matching "${this.vm.search}".` :
+        'All the events for this day have concluded.';
+    } else {
+      const otherDays = days.map(d => `${d.name}`).join(', ');
+      this.vm.noEvents = true;
+      this.vm.noEventsMessage = wasSearch ?
+        `There are no events matching "${this.vm.search}" for this day but there are on ${otherDays}.` :
+        'There are no events on this day.';
+    }
+
   }
 
   private addEvents(count: number) {

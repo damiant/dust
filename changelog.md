@@ -1,5 +1,6 @@
 ## Changes
 ### 1.18
+- Search for RSL events will find matching events on other days
 - Deduplicate events
 - Live load datasets
 

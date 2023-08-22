@@ -105,6 +105,10 @@ export class DbService {
     return await call(this.worker, DataMethods.GetRSLEvents, terms, day, gpsCoord);
   }
 
+  public async searchRSL(terms: string): Promise<Day[]> {
+    return await call(this.worker, DataMethods.SearchRSLEvents, terms);
+  }
+
   public async getCategories(): Promise<string[]> {
     return await call(this.worker, DataMethods.GetCategories);
   }
