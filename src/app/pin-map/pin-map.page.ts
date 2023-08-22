@@ -4,11 +4,17 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { MapComponent } from '../map/map.component';
 import { DbService } from '../data/db.service';
-import { MapPoint, MapSet, Pin } from '../data/models';
+import { Art, MapPoint, MapSet, Pin } from '../data/models';
+import { GpsCoord } from '../map/geo.utils';
+import { GeoService } from '../geolocation/geo.service';
+import { toMapPoint } from '../map/map.utils';
+import { noDate, nowRange, timeRangeToString } from '../utils/utils';
 
 enum MapType {
   Restrooms = 'restrooms',
   Ice = 'ice',
+  Now = 'now',
+  Art = 'art',
   Medical = 'medical'
 }
 
@@ -22,11 +28,12 @@ enum MapType {
 export class PinMapPage implements OnInit {
   @Input() mapType = '';
   points: MapPoint[] = [];
+  smallPins: boolean = false;
   title = '';
   description = '';
-  constructor(private db: DbService) {
+  constructor(private db: DbService, private geo: GeoService) {
     this.db.checkInit();
-   }
+  }
 
   ngOnInit() {
   }
@@ -42,10 +49,66 @@ export class PinMapPage implements OnInit {
 
   private async mapFor(mapType: string): Promise<MapSet> {
     switch (mapType) {
-      case MapType.Restrooms: return await this.db.getGPSPoints('restrooms', 'Block of restrooms');      
+      case MapType.Art: return await this.getArt();
+      case MapType.Now: return await this.getEventsNow();
+      case MapType.Restrooms: return await this.db.getGPSPoints('restrooms', 'Block of restrooms');
       case MapType.Ice: return await this.db.getMapPoints('ice');
       case MapType.Medical: return await this.db.getMapPoints('medical');
       default: return { title: '', description: '', points: [] };
+    }
+  }
+
+  private async getArt(): Promise<MapSet> {
+    let coords: GpsCoord | undefined = undefined;
+    this.smallPins = true;
+    coords = await this.geo.getPosition();
+
+    const allArt = await this.db.findArts(undefined, coords);
+    const points = [];
+    for (let art of allArt) {
+      if (art.location_string) {
+        const point = await this.convertToPoint(art);
+        if (point) points.push(point);
+      }
+    }
+    return {
+      title: 'Art',
+      description: '',
+      points
+    }
+  }
+
+  private async convertToPoint(art: Art): Promise<MapPoint | undefined> {
+    let point = toMapPoint(art.location_string!);
+    if (point.street == 'unplaced') return undefined;
+    if (art.location.gps_latitude && art.location.gps_longitude) {
+      const gps = { lng: art.location.gps_longitude, lat: art.location.gps_latitude };
+      point = await this.db.gpsToMapPoint(gps, undefined);
+    }
+    point.info = { title: art.name, subtitle: '', location: '', imageUrl: art.images[0].thumbnail_url }
+    return point;
+  }
+
+  private async getEventsNow(): Promise<MapSet> {
+    const timeRange = nowRange();
+    this.smallPins = true;
+    const points = [];
+    const allEvents = await this.db.findEvents('', undefined, '', undefined, timeRange, false);
+    for (let event of allEvents) {
+      const mapPoint = toMapPoint(event.location,
+        {
+          title: event.title,
+          location: event.location,
+          subtitle: event.camp,
+          href: `event/${event.uid}+Now`
+        });
+      mapPoint.gps = await this.db.getMapPointGPS(mapPoint);
+      points.push(mapPoint);
+    }
+    return {
+      title: 'Happening Now',
+      description: `Map of ${allEvents.length} events happening ${timeRangeToString(timeRange)}`,
+      points
     }
   }
 

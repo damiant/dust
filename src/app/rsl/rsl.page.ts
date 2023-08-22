@@ -115,20 +115,38 @@ export class RslPage implements OnInit {
       coords = await this.geo.getPosition();
     }
     const favs = await this.fav.getFavorites();
-    console.time('rslEvents get');
     const events = await this.db.getRSL(this.vm.search, this.vm.day, coords);
     this.fav.setFavorites(events, favs.rslEvents);
     this.allEvents = events;
-    console.timeEnd('rslEvents get');
     this.vm.events = [];
     this.addEvents(50);
-    this.vm.noEvents = this.vm.events.length == 0;
-    this.vm.noEventsMessage = this.vm.search?.length > 0 ?
-      `There are no events matching "${this.vm.search}".` :
-      'All the events for this day have concluded.';
+    await this.handleNoEvents();
     if (scrollToTop) {
       this.ui.scrollUpContent('rsl', this.ionContent);
     }
+  }
+
+  private async handleNoEvents() {
+    if (this.vm.events.length > 0) {
+      this.vm.noEvents = false;
+      this.vm.noEventsMessage = '';
+      return;
+    }
+    const wasSearch = this.vm.search?.length > 0;
+    const days = await this.db.searchRSL(this.vm.search);    
+    if (days.length == 0) {
+      this.vm.noEvents = this.vm.events.length == 0;
+      this.vm.noEventsMessage = wasSearch ?
+        `There are no events matching "${this.vm.search}".` :
+        'All the events for this day have concluded.';
+    } else {
+      const otherDays = days.map(d => `${d.name}`).join(', ');
+      this.vm.noEvents = true;
+      this.vm.noEventsMessage = wasSearch ?
+        `There are no events matching "${this.vm.search}" for this day but there are on ${otherDays}.` :
+        'There are no events on this day.';
+    }
+
   }
 
   private addEvents(count: number) {

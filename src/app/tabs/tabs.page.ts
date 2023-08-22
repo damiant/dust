@@ -11,6 +11,7 @@ import { ShareInfoType, ShareService } from '../share/share.service';
 import { Network } from '@capacitor/network';
 import { App } from '@capacitor/app';
 import { environment } from 'src/environments/environment';
+import { Keyboard } from '@capacitor/keyboard';
 
 @Component({
   selector: 'app-tabs',
@@ -66,6 +67,11 @@ export class TabsPage implements OnInit {
         await this.db.init(this.settings.settings.dataset);
       }
       this.db.resume.set(new Date().toISOString());
+    });
+
+    // When app is paused hide the keyboard
+    App.addListener('pause', async() => {
+      await Keyboard.hide();
     });
 
     Network.addListener('networkStatusChange', status => {

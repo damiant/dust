@@ -1,8 +1,9 @@
 import { WorkerClass } from './worker-interface';
-import { Art, Camp, DataMethods, Day, Event, GPSSet, GeoRef, LocationName, MapPoint, MapSet, Pin, RSLEvent, Revision, TimeRange, TimeString } from './models';
+import { Art, Camp, DataMethods, Day, Event, FullDataset, GPSSet, GeoRef, LocationName, MapPoint, MapSet, Pin, RSLEvent, Revision, TimeRange, TimeString } from './models';
 import { BurningManTimeZone, CurrentYear, getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from '../utils/utils';
 import { defaultMapRadius, distance, formatDistance, locationStringToPin, mapPointToPoint } from '../map/map.utils';
 import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from '../map/geo.utils';
+import { environment } from 'src/environments/environment';
 
 interface TimeCache {
     [index: string]: TimeString | undefined;
@@ -28,10 +29,11 @@ export class DataManager implements WorkerClass {
             case DataMethods.GetDays: return this.getDays();
             case DataMethods.GetPotties: return this.getPotties();
             case DataMethods.GetCategories: return this.categories;
-            case DataMethods.SetDataset: return this.setDataset(args[0], args[1], args[2], args[3], args[4]);
+            case DataMethods.SetDataset: return await this.setDataset(args[0]);
             case DataMethods.GetEvents: return this.getEvents(args[0], args[1]);
             case DataMethods.GetEventList: return this.getEventList(args[0]);
             case DataMethods.GetRSLEventList: return this.getRSLEventList(args[0]);
+            case DataMethods.SearchRSLEvents: return this.searchRSLEvents(args[0]);
             case DataMethods.GetCampList: return this.getCampList(args[0]);
             case DataMethods.GetArtList: return this.getArtList(args[0]);
             case DataMethods.FindArts: return this.findArts(args[0], args[1]);
@@ -62,7 +64,6 @@ export class DataManager implements WorkerClass {
         this.art = await this.loadArt();
         this.revision = await this.loadRevision();
         this.georeferences = await this.getGeoReferences();
-        console.log(`At revision ${this.revision.revision}. Hide locations is ${hideLocations}.`);
         this.init(hideLocations);
         return this.revision.revision;
     }
@@ -211,7 +212,9 @@ export class DataManager implements WorkerClass {
                     const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
                     event.gpsCoords = gpsCoords;
                 } else {
-                    console.error(`Unable to find camp ${event.hosted_by_camp} for event ${event.title}`);
+                    if (!environment.production) {
+                        console.error(`Unable to find camp ${event.hosted_by_camp} for event ${event.title}`);
+                    }
                 }
                 if (hideLocations) {
                     event.location = LocationName.Unavailable;
@@ -288,12 +291,18 @@ export class DataManager implements WorkerClass {
         return locationStringToPin(camp.location_string, this.mapRadius);
     }
 
-    public setDataset(dataset: string, events: Event[], camps: Camp[], art: Art[], hideLocations: boolean) {
-        this.dataset = dataset;
-        this.events = events;
-        this.camps = camps;
-        this.art = art;
-        this.init(hideLocations);
+    public async setDataset(ds: FullDataset) {
+        try {
+            this.dataset = ds.dataset;
+            this.events = await this.loadData(ds.events);
+            this.camps = await this.loadData(ds.camps);
+            this.art = await this.loadData(ds.art);
+            const rslData = await this.loadData(ds.rsl);
+            console.log(`Setting dataset in worker: ${this.events.length} events, ${this.camps.length} camps, ${this.art.length} art, ${rslData.length} rsl`);
+            this.init(ds.hideLocations);
+        } catch (err) {
+            console.error(`Failed to setDataset`, err);
+        }
     }
 
     public getEvents(idx: number, count: number): Event[] {
@@ -318,7 +327,6 @@ export class DataManager implements WorkerClass {
     }
 
     public async getRSLEventList(ids: string[]): Promise<RSLEvent[]> {
-        console.log('getRSLEventList', ids)
         return await this.getRSLEvents('', undefined, undefined, ids, undefined);
     }
 
@@ -392,12 +400,37 @@ export class DataManager implements WorkerClass {
         return (s == undefined || s == '');
     }
 
+    public async searchRSLEvents(query: string): Promise<Day[]> {
+
+        function unique(value: string, index: number, data: string[]) {
+            return data.indexOf(value) === index;
+        }
+
+        const events = await this.getRSLEvents(query, undefined, undefined, [], undefined);
+        const found = events.map(e => e.day).filter(unique);
+        const days = this.getDays();
+        const result: Day[] = [];
+        for (let day of days) {
+            const d = new Date(day.date);
+            if (found.includes(this.toRSLDateFormat(d))) {
+                result.push(day);
+            }
+        }
+        return result;
+    }
+
+    private toRSLDateFormat(day: Date): string {
+        const offset = day.getTimezoneOffset()
+        day = new Date(day.getTime() - (offset * 60 * 1000))
+        return day.toISOString().split('T')[0]
+    }
+
     public async getRSLEvents(query: string, day: Date | undefined, coords: GpsCoord | undefined, ids?: string[] | undefined, campId?: string | undefined): Promise<RSLEvent[]> {
         const res = await fetch(this.path('rsl'));
         const events: RSLEvent[] = await res.json();
         const result: RSLEvent[] = [];
         query = this.scrubQuery(query);
-        const fDay = day ? day.toISOString().split('T')[0] : undefined;
+        const fDay = day ? this.toRSLDateFormat(day) : undefined;
         const today = now();
         for (let event of events) {
             let match = false;
@@ -406,7 +439,7 @@ export class DataManager implements WorkerClass {
             } else {
                 match = (this.rslEventContains(event, query) && (event.day == fDay || !!ids));
             }
-            
+
             if (match) {
                 let allOld = true;
                 for (let occurrence of event.occurrences) {
@@ -415,7 +448,7 @@ export class DataManager implements WorkerClass {
                         allOld = false;
                     }
                 }
-                if (ids) {
+                if (ids && ids.length > 0) {
                     event.occurrences = event.occurrences.filter(o => {
                         const id = `${event.id}-${o.id}`;
                         return ids.includes(id);
@@ -656,7 +689,7 @@ export class DataManager implements WorkerClass {
         return false;
     }
 
-    private addDay(date: Date) {        
+    private addDay(date: Date) {
         const day = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
         if (!this.days.includes(day)) {
             this.days.push(day);
@@ -664,14 +697,19 @@ export class DataManager implements WorkerClass {
     }
 
     private path(name: string, online?: boolean): string {
-        console.log(this.dataset);
         if (this.dataset !== CurrentYear && online) {
-           return `https://dust.events/assets/data/${this.dataset}/${name}.json`;
+            return `https://dust.events/assets/data-v2/${this.dataset}/${name}.json`;
         }
         return `assets/${this.dataset}/${name}.json`;
     }
     private async loadEvents(): Promise<Event[]> {
         const res = await fetch(this.path('events', true));
+        return await res.json();
+    }
+
+    private async loadData(uri: string): Promise<any> {
+        console.log(`loadData`, uri);
+        const res = await fetch(uri);
         return await res.json();
     }
 
@@ -717,7 +755,7 @@ export class DataManager implements WorkerClass {
     }
 
     private async loadRevision(): Promise<Revision> {
-        const res = await fetch(this.path('revision'));
+        const res = await fetch(this.path('revision', true));
         return await res.json();
     }
 }

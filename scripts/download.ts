@@ -19,6 +19,7 @@ interface Options {
     fixOccurrence?: boolean;
     convertImage?: boolean;
     removeEmail?: boolean;
+    localWrite?: boolean;
 }
 
 
@@ -31,7 +32,12 @@ async function download(name: string, year: string, filename: string, folder: st
     });
     let json = (await res.json()) as any[];
 
-    const imageFolder = `./src/assets/${folder}/images`;
+    const yearFolder = `./src/assets/${folder}`;
+    if (!existsSync(yearFolder)) {
+        mkdirSync(yearFolder);
+    }
+    const imageFolder = join(yearFolder, `images`);
+
     if (!existsSync(imageFolder)) {
         mkdirSync(imageFolder);
     }
@@ -102,7 +108,6 @@ async function download(name: string, year: string, filename: string, folder: st
             for (let image of item.images) {
                 image.gallery_ref = undefined;
                 if (options?.convertImage) {
-                    console.log(image.thumbnail_url);
                     await downloadImageAndConvertToWebP(image.thumbnail_url, `${imageFolder}/${item.uid}.webp`);
                     image.thumbnail_url = `./assets/${folder}/images/${item.uid}.webp`;
                 }
@@ -162,18 +167,40 @@ async function download(name: string, year: string, filename: string, folder: st
             }
         }
     }
-    json.sort((a, b) => a.uid - b.uid);
+    json = dedup(filename, json);
     json = json.filter((item) => !item.invalid);
-
+    //json.sort((a, b) => a.uid - b.uid);
+    json.sort((a, b) => (a.uid > b.uid) ? 1 : ((b.uid > a.uid) ? -1 : 0))
     const f = `./src/assets/${folder}/${filename}.json`;
-    const data = JSON.stringify(json);
+    const data = JSON.stringify(json, undefined, 2);
     const changed = compare(f, folder, data);
     if (changed) {
-        save(f, folder, data);
+        save(f, folder, data, options.localWrite!);
     } else {
         console.log(`No changes in ${folder} ${filename}`);
     }
     return changed;
+}
+
+function dedup(name: string, items: any[]): any[] {
+    console.log(`de-duplicating ${name}...`);
+    const list = [];
+    for (let item of items) {
+        const copy = structuredClone(item);
+        copy.uid = '';
+        list.push(copy);
+    }
+    let idx = 0;
+    for (let item of list) {
+        const dup = list.findIndex((i) => JSON.stringify(i) == JSON.stringify(item));
+        if (dup != idx) {
+            console.error(`ERROR: Found duplicate: ${dup} ${idx} ${item.title}`);
+            items[idx].invalid = true;
+        }
+
+        idx++;        
+    }
+    return items;
 }
 
 function toTitleCase(str: string) {
@@ -184,7 +211,7 @@ function toTitleCase(str: string) {
         });
 }
 
-function saveRevision(folder: string) {
+function saveRevision(folder: string, localWrite: boolean) {
     const f = `./src/assets/${folder}/revision.json`;
     let revision = 0;
     if (existsSync(f)) {
@@ -192,14 +219,16 @@ function saveRevision(folder: string) {
         revision = r.revision;
     }
     const json = { revision: revision + 1 };
-    save(f, folder, JSON.stringify(json, undefined, 2));
+    save(f, folder, JSON.stringify(json, undefined, 2), localWrite);
 }
 
-function save(path: string, folder: string, data: string) {
+function save(path: string, folder: string, data: string, writeLocalToApp: boolean) {
     const filename = basename(path);
-    writeFileSync(path, data, 'utf8');
-    console.log(`Wrote "${path}"`);
-    const p = `../dust-web/src/assets/data/${folder}`;
+    if (writeLocalToApp) {
+        writeFileSync(path, data, 'utf8');
+        console.log(`Wrote "${path}"`);
+    }
+    const p = `../dust-web/src/assets/data-v2/${folder}`;
     if (!existsSync(p)) {
         throw new Error(`Path must exist: ${p}`);
     }
@@ -249,19 +278,19 @@ function getUrl(name: string, year: string) {
     return `https://api.burningman.org/api/v1/${name}?year=${year}`;
 }
 
-async function processYears(years: string[]) {
+async function processYears(localWrite: boolean, years: string[]) {
     console.log(years);
     for (const year of years) {
         console.log(`Downloading ${year}`);
         const convertImage = (year == '2023');
-        const campsChanged = await download('camp', year, 'camps', `ttitd-${year}`, { fixName: true, fixLocation: true, removeEmail: true });
-        const eventsChanged = await download('event', year, 'events', `ttitd-${year}`, { fixOccurrence: true, fixTitle: true, fixUid: true });
-        const artChanged = await download('art', year, 'art', `ttitd-${year}`, { fixName: true, convertImage });
+        const campsChanged = await download('camp', year, 'camps', `ttitd-${year}`, { fixName: true, fixLocation: true, removeEmail: true, localWrite });
+        const eventsChanged = await download('event', year, 'events', `ttitd-${year}`, { fixOccurrence: true, fixTitle: true, fixUid: true, localWrite });
+        const artChanged = await download('art', year, 'art', `ttitd-${year}`, { fixName: true, convertImage, localWrite });
         if (artChanged || campsChanged || eventsChanged) {
-            saveRevision(`ttitd-${year}`);
+            saveRevision(`ttitd-${year}`, localWrite);
         }
     }
 }
-processYears(process.argv.splice(2));
+processYears(process.argv[2] == 'yes', process.argv.splice(3));
 
 

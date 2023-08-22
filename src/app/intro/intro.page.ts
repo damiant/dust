@@ -90,7 +90,6 @@ export class IntroPage {
     const idx = this.vm.cards.findIndex((c) => datasetFilename(c) == this.settingsService.settings.dataset);
     if (idx >= 0) {
       this.vm.selected = this.vm.cards[idx];
-      console.log('intro.load', this.vm.selected);
     } else {
       // First time in: select this year
       this.vm.selected = this.vm.cards[0];
@@ -141,9 +140,8 @@ export class IntroPage {
       this.vm.ready = false;
       this.vm.showMessage = false;
 
-
       const revision = await this.db.init(this.settingsService.settings.dataset);
-      await this.api.sendDataToWorker(revision);
+      await this.api.sendDataToWorker(revision, this.db.locationsHidden());
       this.fav.init(this.settingsService.settings.dataset);
       const title = (this.isCurrentYear()) ? '' : this.vm.selected.year;
       this.db.selectedYear.set(title);

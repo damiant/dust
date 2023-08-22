@@ -190,6 +190,7 @@ export interface MapInfo {
   location: string;
   subtitle: string;
   imageUrl?: string;
+  href?: string;
 }
 
 export interface MapSet {
@@ -219,6 +220,15 @@ export interface RSLEvent {
   artCar?: string;
   imageUrl?: string;
   occurrences: RSLOccurrence[];
+}
+
+export interface FullDataset {
+  dataset: string;
+  events: string;
+  camps: string;
+  art: string;
+  rsl: string;
+  hideLocations: boolean
 }
 
 export interface RSLOccurrence {
@@ -266,6 +276,7 @@ export enum DataMethods {
   GetGeoReferences = 'getGeoReferences',
   GpsToPoint = 'gpsToPoint',
   GetRSLEvents = 'getRSLEvents',
+  SearchRSLEvents = 'searchRSLEvents',
   GetMapPointGPS = 'getMapPointGPS',
   SetMapPointsGPS = 'setMapPointsGPS'
 }
