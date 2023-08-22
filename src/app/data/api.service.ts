@@ -45,8 +45,7 @@ export class ApiService {
     const events = await this.getUri(ds, Names.events);
     const art = await this.getUri(ds, Names.art);
     const camps = await this.getUri(ds, Names.camps);
-    const rsl = await this.getUri(ds, Names.rsl);
-    console.log(`Saved revision.`);
+    const rsl = await this.getUri(ds, Names.rsl);    
     await this.dbService.setDataset({
       dataset: ds,
       events,
@@ -55,7 +54,6 @@ export class ApiService {
       rsl,
       hideLocations
     });
-    console.log(`setDataset was called.`);
   }
 
   private async read(dataset: string, name: Names): Promise<any> {

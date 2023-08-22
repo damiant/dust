@@ -90,7 +90,6 @@ export class IntroPage {
     const idx = this.vm.cards.findIndex((c) => datasetFilename(c) == this.settingsService.settings.dataset);
     if (idx >= 0) {
       this.vm.selected = this.vm.cards[idx];
-      console.log('intro.load', this.vm.selected);
     } else {
       // First time in: select this year
       this.vm.selected = this.vm.cards[0];

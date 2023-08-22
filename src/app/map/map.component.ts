@@ -12,6 +12,7 @@ import { MessageComponent } from '../message/message.component';
 import { CompassError, CompassHeading } from './compass';
 import { GpsCoord, Point } from './geo.utils';
 import { Router, RouterModule } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 interface MapInformation {
   width: number; // Width of the map
@@ -70,7 +71,6 @@ export class MapComponent implements OnInit, OnDestroy {
   @Input('points') set setPoints(points: MapPoint[]) {
     this.points = points;
     if (this.points.length > 0) {
-      console.log('points changed');
       this.fixGPSAndUpdate();
     }
   }
@@ -79,7 +79,6 @@ export class MapComponent implements OnInit, OnDestroy {
     for (let point of this.points) {
       if (!point.gps) {
         point.gps = await this.geo.getMapPointToGPS(point);
-        console.warn(`GPS point found for point`, point.gps);
       }
     }
     await delay(150);
@@ -105,7 +104,6 @@ export class MapComponent implements OnInit, OnDestroy {
     this.points = [];
     effect(async () => {
       const gpsPos = this.geo.gpsPosition();
-      console.warn(`GPS Signal changed`, gpsPos);
       await this.viewReady();
       await this.displayYourLocation(gpsPos);
     });
@@ -229,7 +227,9 @@ export class MapComponent implements OnInit, OnDestroy {
     for (let point of this.points) {
 
       if (!point.gps || !point.gps.lat) {
-        console.error(`MapPoint is missing gps coordinate: ${JSON.stringify(point)}`);
+        if (!environment.production) {
+          console.error(`MapPoint is missing gps coordinate: ${JSON.stringify(point)}`);
+        }
       }
       if (point.gps) {
         const dist = distance(you, point.gps);
@@ -246,7 +246,6 @@ export class MapComponent implements OnInit, OnDestroy {
 
       if (this.nearestPoint) {
         const div = this.divs[this.nearestPoint];
-        console.log('Found nearest pin and animated');
         div.style.animationName = `pin`;
         div.style.animationDuration = '2s';
       }

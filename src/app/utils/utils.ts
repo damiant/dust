@@ -10,7 +10,6 @@ export const CurrentYear = 'ttitd-2023';
 
 export function now(): Date {
     if (!environment.simulatedTime) {
-        console.log(nowPST());
         return nowPST();
     }
     //console.log(`Simulating time ${environment.simulatedTime}`);

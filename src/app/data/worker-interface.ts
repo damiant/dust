@@ -1,3 +1,4 @@
+import { environment } from "src/environments/environment";
 import { DataMethods } from "./models";
 
 export interface Call {
@@ -25,9 +26,13 @@ export function registerWorkerClass(workerClass: WorkerClass) {
     addEventListener('message', async ({ data }) => {
         const call: Call = data;
         const response: Response = { id: call.id, data: undefined };
-        console.time(call.method);
+        if (!environment.production) {
+            console.time(call.method);
+        }
         response.data = await workerClass.doWork(call.method, call.arguments);
-        console.timeEnd(call.method);
+        if (!environment.production) {
+            console.timeEnd(call.method);
+        }
         postMessage(response);
     });
 }

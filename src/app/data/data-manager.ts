@@ -3,6 +3,7 @@ import { Art, Camp, DataMethods, Day, Event, FullDataset, GPSSet, GeoRef, Locati
 import { BurningManTimeZone, CurrentYear, getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from '../utils/utils';
 import { defaultMapRadius, distance, formatDistance, locationStringToPin, mapPointToPoint } from '../map/map.utils';
 import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from '../map/geo.utils';
+import { environment } from 'src/environments/environment';
 
 interface TimeCache {
     [index: string]: TimeString | undefined;
@@ -63,7 +64,6 @@ export class DataManager implements WorkerClass {
         this.art = await this.loadArt();
         this.revision = await this.loadRevision();
         this.georeferences = await this.getGeoReferences();
-        console.log(`At revision ${this.revision.revision}. Hide locations is ${hideLocations}.`);
         this.init(hideLocations);
         return this.revision.revision;
     }
@@ -212,7 +212,9 @@ export class DataManager implements WorkerClass {
                     const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
                     event.gpsCoords = gpsCoords;
                 } else {
-                    console.error(`Unable to find camp ${event.hosted_by_camp} for event ${event.title}`);
+                    if (!environment.production) {
+                        console.error(`Unable to find camp ${event.hosted_by_camp} for event ${event.title}`);
+                    }
                 }
                 if (hideLocations) {
                     event.location = LocationName.Unavailable;
@@ -291,7 +293,6 @@ export class DataManager implements WorkerClass {
 
     public async setDataset(ds: FullDataset) {
         try {
-            console.log('setDataset started')
             this.dataset = ds.dataset;
             this.events = await this.loadData(ds.events);
             this.camps = await this.loadData(ds.camps);
@@ -326,7 +327,6 @@ export class DataManager implements WorkerClass {
     }
 
     public async getRSLEventList(ids: string[]): Promise<RSLEvent[]> {
-        console.log('getRSLEventList', ids)
         return await this.getRSLEvents('', undefined, undefined, ids, undefined);
     }
 
@@ -410,11 +410,11 @@ export class DataManager implements WorkerClass {
         const found = events.map(e => e.day).filter(unique);
         const days = this.getDays();
         const result: Day[] = [];
-        for (let day of days) {            
+        for (let day of days) {
             const d = new Date(day.date);
             if (found.includes(this.toRSLDateFormat(d))) {
                 result.push(day);
-            }            
+            }
         }
         return result;
     }
