@@ -131,6 +131,7 @@ export class RslPage implements OnInit {
   private async handleNoEvents() {
     if (this.vm.events.length > 0) {
       this.vm.noEvents = false;
+      this.vm.noEventsMessage = '';
       return;
     }
     const wasSearch = this.vm.search?.length > 0;
