@@ -21,9 +21,10 @@ export enum PrivateEventResult {
 })
 export class PrivateEventComponent implements OnInit {
   noAddress = 'Choose Address';
+  initialTime = now().toISOString();
   public addresses: PickerColumn[];
   public isEdit = false;
-  @Input() event: PrivateEvent = { title: '', id: uniqueId('pe'), start: now().toISOString(), address: this.noAddress, notes: '' }
+  @Input() event: PrivateEvent = { title: '', id: uniqueId('pe'), start: this.initialTime, address: this.noAddress, notes: '' }
   constructor(
     private streetService: StreetService, 
     private modalCtrl: ModalController,
@@ -59,6 +60,10 @@ export class PrivateEventComponent implements OnInit {
     }
     if (this.event.address == this.noAddress) {
       this.presentToast(`Select an address`);
+      return;
+    }
+    if (this.event.start == this.initialTime) {
+      this.presentToast(`Select a date and time when the event starts`)
       return;
     }
     return this.modalCtrl.dismiss(this.event, PrivateEventResult.confirm);
