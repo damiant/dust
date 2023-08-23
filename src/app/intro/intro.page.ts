@@ -133,6 +133,8 @@ export class IntroPage {
         const status = await Network.getStatus();
         if (!status.connected) {
           this.ui.presentDarkToast('You are offline: Previous years require network access. Try this year instead.', this.toastController);
+          this.vm.yearSelectedAlready = false;
+          this.vm.selected = this.vm.cards[0];
           return;
         }
 
