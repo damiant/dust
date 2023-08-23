@@ -4211,23 +4211,6 @@
     ]
   },
   {
-    "title": "Authentic Drum Circle",
-    "uid": "41184",
-    "description": "A drum circle is a great way to bring people together and make meaningful music and authentic rhythm. (20+drums in camp).",
-    "event_type": {
-      "label": "Live Music"
-    },
-    "print_description": "",
-    "hosted_by_camp": "a1X8X00000k1tcpUAA",
-    "check_location": 1,
-    "occurrence_set": [
-      {
-        "start_time": "2023-08-28T19:00:00-07:00",
-        "end_time": "2023-08-28T20:30:00-07:00"
-      }
-    ]
-  },
-  {
     "title": "Half Beard Barber Shop",
     "uid": "41185",
     "description": "Get half of your beard shaved by a professional barber. No beard? We've got half beard kits. Get pampered and stylish.",
@@ -4582,6 +4565,23 @@
       {
         "start_time": "2023-09-02T14:00:00-07:00",
         "end_time": "2023-09-02T16:30:00-07:00"
+      }
+    ]
+  },
+  {
+    "title": "tai chi for beginners",
+    "uid": "41202",
+    "description": "Discover balance thru body movement while learning a few tai chi moves.",
+    "event_type": {
+      "label": "Yoga/Movement/Fitness"
+    },
+    "print_description": "",
+    "hosted_by_camp": null,
+    "other_location": "dodgeball addiction at 530 - J (ish)",
+    "occurrence_set": [
+      {
+        "start_time": "2023-08-30T08:00:00-07:00",
+        "end_time": "2023-08-30T08:45:00-07:00"
       }
     ]
   },
@@ -5342,23 +5342,6 @@
       {
         "start_time": "2023-08-29T10:00:00-07:00",
         "end_time": "2023-08-29T13:00:00-07:00"
-      }
-    ]
-  },
-  {
-    "title": "Sadhu Board Practice",
-    "uid": "41241",
-    "description": "Practitioners have even used this board as a method of personal growth and spiritual awakening. Please come to learn!",
-    "event_type": {
-      "label": "Class/Workshop"
-    },
-    "print_description": "",
-    "hosted_by_camp": "a1X8X00000k1tcpUAA",
-    "check_location": 1,
-    "occurrence_set": [
-      {
-        "start_time": "2023-08-31T15:00:00-07:00",
-        "end_time": "2023-08-31T17:00:00-07:00"
       }
     ]
   },
@@ -8682,23 +8665,6 @@
     ]
   },
   {
-    "title": "Discussion Panel - Sustainable Earth",
-    "uid": "41408",
-    "description": "Great Speakers, Researches, Innovative Solutions, Wisdom that promote and educate on a sustainable lifestyle.",
-    "event_type": {
-      "label": "Class/Workshop"
-    },
-    "print_description": "",
-    "hosted_by_camp": "a1X8X00000k1tcpUAA",
-    "check_location": 1,
-    "occurrence_set": [
-      {
-        "start_time": "2023-08-31T16:00:00-07:00",
-        "end_time": "2023-08-31T17:00:00-07:00"
-      }
-    ]
-  },
-  {
     "title": "Inipi (Sweatlodge)",
     "uid": "41409",
     "description": "Traditional ceremony to purify our bodies and minds through sweat lodge symbolizing the womb of Mother Earth.",
@@ -9875,23 +9841,6 @@
       {
         "start_time": "2023-09-01T12:00:00-07:00",
         "end_time": "2023-09-01T13:30:00-07:00"
-      }
-    ]
-  },
-  {
-    "title": "Discussion Panel - Mind, Body and Spirit",
-    "uid": "41464",
-    "description": "Speakers will share their stories and expertises in terms of how to maintain your Mind, Body and Spirit.",
-    "event_type": {
-      "label": "Class/Workshop"
-    },
-    "print_description": "",
-    "hosted_by_camp": "a1X8X00000k1tcpUAA",
-    "check_location": 1,
-    "occurrence_set": [
-      {
-        "start_time": "2023-09-02T16:00:00-07:00",
-        "end_time": "2023-09-02T18:00:00-07:00"
       }
     ]
   },
@@ -68592,23 +68541,6 @@
     ]
   },
   {
-    "title": "Age of Aquarius Activation Ceremony",
-    "uid": "44419",
-    "description": "Indigenous from different parts of the world are coming together to share wisdom and prayers for peace & sustainability.",
-    "event_type": {
-      "label": "Ritual/Ceremony"
-    },
-    "print_description": "",
-    "hosted_by_camp": null,
-    "other_location": "The Temple",
-    "occurrence_set": [
-      {
-        "start_time": "2023-08-27T19:00:00-07:00",
-        "end_time": "2023-08-27T20:30:00-07:00"
-      }
-    ]
-  },
-  {
     "title": "Bird Watching",
     "uid": "44420",
     "description": "Bird Watching with the Black Rock Audubon Society. Find us on the container roof.",
@@ -93288,10 +93220,6 @@
       {
         "start_time": "2023-08-31T21:30:00-07:00",
         "end_time": "2023-08-31T23:00:00-07:00"
-      },
-      {
-        "start_time": "2023-09-01T21:30:00-07:00",
-        "end_time": "2023-09-01T23:00:00-07:00"
       }
     ]
   },

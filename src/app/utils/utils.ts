@@ -69,6 +69,10 @@ export function dateMatches(d: Date, occurrence: OccurrenceSet): boolean {
     return (occurrence.start_time.startsWith(ds[0]) || occurrence.end_time.startsWith(ds[0]));
 }
 
+export function uniqueId(prefix: string): string {
+    return `${prefix}${Math.floor(Math.random() * 9999999)}`;
+}
+
 export function getDayName(dateStr: string) {
     var date = new Date(dateStr);
     return date.toLocaleDateString([], { weekday: 'long' }) + ` ${getOrdinalNum(date.getDate())}`;
@@ -80,7 +84,7 @@ export function getDayNameFromDate(date: Date): string {
 
 export function getOrdinalNum(n: number) {
     return n + (n > 0 ? ['th', 'st', 'nd', 'rd'][(n > 3 && n < 21) || n % 10 > 3 ? 0 : n % 10] : '');
-  }
+}
 
 export function daysUntil(date1: any, date2: any) {
     // The number of milliseconds in one day
