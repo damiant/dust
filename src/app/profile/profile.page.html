@@ -18,8 +18,9 @@
     <app-tile title="Ice" routerLink="/map/ice" imgSrc="assets/icon/ice.svg"></app-tile>
     <app-tile title="Medical" routerLink="/map/medical" imgSrc="assets/icon/medical.svg"></app-tile>
     <app-tile *ngIf="!db.locationsHidden()" title="Art" routerLink="/map/art" imgSrc="assets/icon/art.svg"></app-tile>
-    <app-tile *ngIf="!db.locationsHidden()" title="Now" routerLink="/map/now" imgSrc="assets/icon/calendar.svg"></app-tile>
-    <app-tile title="Directions" (click)="directions()" iconName="compass-outline"></app-tile>    
+    <app-tile *ngIf="!db.locationsHidden()" title="Now" routerLink="/map/now"
+      imgSrc="assets/icon/calendar.svg"></app-tile>
+    <app-tile title="Directions" (click)="directions()" iconName="compass-outline"></app-tile>
   </app-tile-container>
 
   <app-friends />
@@ -35,7 +36,7 @@
       <ion-list>
         <ion-item href="mailto:damian@dust.events?subject=dust" detail="true">
           <ion-icon slot="start" name="mail-unread-outline"></ion-icon>
-         Feedback
+          Feedback
         </ion-item>
         <ion-item (click)="share()" detail="true">
           <ion-icon slot="start" name="share-outline"></ion-icon>
@@ -59,16 +60,16 @@
       </ion-list>
     </ion-card-content>
   </ion-card>
-  <div class="pad-top"></div>
+  <div class="pad-top" (click)="hiddenPanel = !hiddenPanel"></div>
   <div style="padding: 2rem">
-  <ion-item lines="none">
-    <ion-icon slot="start" name="time-outline"></ion-icon>
-    <ion-toggle (ionChange)="toggleLongEvents($event)" [checked]="longEvents">Long Events In Search</ion-toggle>
-  </ion-item>
-  <ion-item lines="none" >
-    <ion-icon slot="start" name="locate-outline"></ion-icon>
-    <ion-toggle (ionChange)="toggleLocation($event)" [checked]="locationEnabled">Show My Location</ion-toggle>
-  </ion-item>
-</div>
+    <ion-item [hidden]="!hiddenPanel" lines="none">
+      <ion-icon slot="start" name="time-outline"></ion-icon>
+      <ion-toggle (ionChange)="toggleLongEvents($event)" [checked]="longEvents">Long Events In Search</ion-toggle>
+    </ion-item>
+    <ion-item [hidden]="!hiddenPanel" lines="none">
+      <ion-icon slot="start" name="locate-outline"></ion-icon>
+      <ion-toggle (ionChange)="toggleLocation($event)" [checked]="locationEnabled">Show My Location</ion-toggle>
+    </ion-item>
+  </div>
   <div class="pad-top"></div>
 </ion-content>

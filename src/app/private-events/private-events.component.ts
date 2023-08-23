@@ -28,7 +28,7 @@ export class PrivateEventsComponent implements OnInit {
   }
 
   async addPrivateEvent(event?: PrivateEvent) {
-    const e: any = document.querySelector('.ion-page');
+    const e: any = document.getElementById('my-outlet');
     const modal = await this.modalCtrl.create({
       component: PrivateEventComponent,
       presentingElement: e,

@@ -31,6 +31,7 @@ export class ProfilePage implements OnInit {
   rated = false;
   locationEnabled = false;
   longEvents = false;
+  hiddenPanel = false;
 
   constructor(
     private ui: UiService,
