@@ -1,0 +1,14 @@
+ion-item:last-child {
+  --inner-border-width: 0;
+}
+
+ion-list {
+  --ion-item-background: transparent;
+}
+
+.cal-title {
+  position: absolute;
+  margin-top: 40px;
+  font-size: 0.8rem;
+  float: left;
+}

@@ -134,6 +134,7 @@ export interface Favorites {
   art: string[]
   friends: Friend[]
   rslEvents: string[]
+  privateEvents: PrivateEvent[]
 }
 
 export enum LocationEnabledStatus {
@@ -191,6 +192,16 @@ export interface MapInfo {
   subtitle: string;
   imageUrl?: string;
   href?: string;
+}
+
+export interface PrivateEvent {
+  id: string;
+  title: string;
+  start: string;
+  startDay?: string;
+  startTime?: string;
+  address: string;
+  notes: string;
 }
 
 export interface MapSet {

@@ -26,7 +26,7 @@ export class FriendsComponent implements OnInit {
   }
 
   async addFriend(friend?: Friend) {
-    const e: any = document.querySelector('.ion-page');
+    const e: any = document.getElementById('my-outlet');
     const modal = await this.modalCtrl.create({
       component: FriendComponent,
       presentingElement: e,

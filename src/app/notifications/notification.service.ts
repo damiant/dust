@@ -45,8 +45,8 @@ export class NotificationService {
       try {
         let isValid = true;
         if (!this.sameDate(selectedDay, noDate())) {
-           // User has selected a particular day
-           isValid = true;// dateMatches(selectedDay, occurrence);
+          // User has selected a particular day
+          isValid = true;// dateMatches(selectedDay, occurrence);
         }
         console.log(`for this day=${isValid} selected=${selectedDay} start=${occurrence.start_time} end=${occurrence.end_time}`);
         if (isValid) {
@@ -127,7 +127,8 @@ export class NotificationService {
         {
           id: randomInt(1, 1000000),
           title: reminder.title,
-          body: reminder.body,          
+          body: reminder.body,
+          sound: 'blazing2.wav',
           schedule: { at: reminder.when, allowWhileIdle: true },
           extra: {
             eventId: reminder.id // Assume it is an event

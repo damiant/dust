@@ -120,7 +120,7 @@ export class ApiService {
       console.log(`Reading ${id}`);
       const contents = await Filesystem.readFile({
         path: `${id}.txt`,
-        directory: Directory.Data,
+        directory: this.getDirectory(),
         encoding: Encoding.UTF8,
       });
       return JSON.parse(contents.data as any);
@@ -134,8 +134,20 @@ export class ApiService {
     await Filesystem.writeFile({
       path: `${id}.txt`,
       data: JSON.stringify(data),
-      directory: Directory.Documents,
+      directory: this.getDirectory(),
       encoding: Encoding.UTF8,
     });
+  }
+
+  private getDirectory(): Directory {
+    if (this.isAndroid()) {
+      return Directory.Data;
+    } else {
+      return Directory.Documents;
+    }
+  }
+
+  private isAndroid(): boolean {
+    return (Capacitor.getPlatform() == 'android');
   }
 }

@@ -327,6 +327,7 @@ export class DataManager implements WorkerClass {
     }
 
     public async getRSLEventList(ids: string[]): Promise<RSLEvent[]> {
+        if (ids.length == 0) return [];
         return await this.getRSLEvents('', undefined, undefined, ids, undefined);
     }
 

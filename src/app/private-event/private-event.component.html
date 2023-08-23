@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+    </ion-buttons>
+    <ion-title>Private Event</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="confirm()" [strong]="true">Save</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-input autocapitalize="words" name="Title" id="Title" label="Title" [(ngModel)]="event.title"
+      placeholder="The events title"></ion-input>
+  </ion-item>
+
+  <ion-item id="pick-address">
+    <ion-label>Address</ion-label>
+    <ion-button size="small" [class.button]="(event.address === noAddress)" class="slim" slot="end" color="light">{{event.address}}</ion-button>
+  </ion-item>
+  <ion-item>    
+    <ion-label>Time</ion-label>
+    <ion-datetime-button datetime="datetime"></ion-datetime-button>
+  </ion-item>
+  <ion-modal [keepContentsMounted]="true">
+    <ng-template>
+      <ion-datetime [showDefaultButtons]="true" [min]="startEvent" [max]="endEvent" minuteValues="0,15,30,45" [(ngModel)]="event.start" id="datetime"></ion-datetime>
+    </ng-template>
+  </ion-modal>
+  <ion-item>
+    <ion-input label="Notes" [(ngModel)]="event.notes" placeholder=""></ion-input>
+  </ion-item>
+
+  <div class="center" *ngIf="isEdit">
+    <ion-button (click)="deleteEvent()" shape="round">Delete</ion-button>
+  </div>
+  <ion-picker trigger="pick-address" [columns]="addresses" [buttons]="pickerButtons"></ion-picker>
+</ion-content>

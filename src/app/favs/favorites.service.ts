@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { Event, Favorites, Friend, MapPoint, OccurrenceSet, RSLEvent, RSLOccurrence } from '../data/models';
+import { Event, Favorites, Friend, MapPoint, OccurrenceSet, PrivateEvent, RSLEvent, RSLOccurrence } from '../data/models';
 import { NotificationService, ScheduleResult } from '../notifications/notification.service';
 import { Preferences } from '@capacitor/preferences';
 import { SettingsService } from '../data/settings.service';
@@ -23,7 +23,7 @@ export class FavoritesService {
   private mapPointsTitle: string = '';
   private mapPoints: MapPoint[] = [];
 
-  private favorites: Favorites = { art: [], events: [], camps: [], friends: [], rslEvents: [] };
+  private favorites: Favorites = { art: [], events: [], camps: [], friends: [], rslEvents: [], privateEvents: [] };
 
   constructor(private notificationService: NotificationService, private settingsService: SettingsService, private db: DbService) {
     this.init(this.settingsService.settings.dataset);
@@ -52,7 +52,7 @@ export class FavoritesService {
   }
 
   private noData(): Favorites {
-    return { art: [], events: [], camps: [], friends: [], rslEvents: [] };
+    return { art: [], events: [], camps: [], friends: [], rslEvents: [], privateEvents: [] };
   }
 
   public async getFavorites(): Promise<Favorites> {
@@ -78,6 +78,9 @@ export class FavoritesService {
     if (!this.favorites.camps) {
       this.favorites.camps = [];
     }
+    if (!this.favorites.privateEvents) {
+      this.favorites.privateEvents = [];
+    }
   }
 
   public setFavorites(events: RSLEvent[], favs: string[]) {
@@ -86,7 +89,7 @@ export class FavoritesService {
         occurrence.star = (favs.includes(this.rslId(event, occurrence)));
       }
     }
-    return events;   
+    return events;
   }
 
   public async isFavEventOccurrence(id: string, occurrence: OccurrenceSet): Promise<boolean> {
@@ -206,15 +209,58 @@ export class FavoritesService {
     await this.saveFavorites();
   }
 
+  public async addPrivateEvent(event: PrivateEvent): Promise<string | undefined> {
+    this.favorites.privateEvents.push(event);
+    const result = await this.notifyPrivateEvent(event);
+    this.sortPrivateEvents();
+    await this.saveFavorites();
+    return result;
+  }
+
+  private async notifyPrivateEvent(event: PrivateEvent): Promise<string | undefined> {
+    const occurrenceSet: OccurrenceSet = { start_time: event.start, end_time: event.start, old: false, happening: false, longTimeString: '' };
+    const result = await this.notificationService.scheduleAll(
+      {
+        id: event.id,
+        title: event.title + ' @ ' + event.address,
+        body: event.title + ' will start soon. ',
+        comment: event.notes
+      },
+      [occurrenceSet],
+      undefined);
+
+    await Haptics.impact({ style: ImpactStyle.Heavy });
+    return (result.error) ? result.error : result.message;
+  }
+
   public async updateFriend(friend: Friend, old: Friend) {
     const idx = this.favorites.friends.findIndex((f) => f.name == old.name && f.address == old.address);
     this.favorites.friends[idx] = friend;
     await this.saveFavorites();
   }
 
+  public async updatePrivateEvent(event: PrivateEvent, old: PrivateEvent) {
+    const idx = this.favorites.privateEvents.findIndex((f) => f.title == old.title && f.address == old.address);
+    this.favorites.privateEvents[idx] = event;
+    this.sortPrivateEvents();
+    await this.notificationService.unscheduleAll(event.id);
+    await this.notifyPrivateEvent(event);
+    await this.saveFavorites();
+  }
+
+  private sortPrivateEvents() {
+    this.favorites.privateEvents.sort((a, b) => Number(new Date(a.start)) - Number(new Date(b.start)));
+  }
+
   public async deleteFriend(toDelete: Friend) {
     this.favorites.friends = this.favorites.friends.filter((friend) => friend.name !== toDelete.name || friend.address !== toDelete.address);
     await this.saveFavorites();
+  }
+
+  public async deletePrivateEvent(toDelete: PrivateEvent) {
+    this.favorites.privateEvents = this.favorites.privateEvents.filter((event) => event.title !== toDelete.title || event.address !== toDelete.address);
+    await this.saveFavorites();
+    await this.notificationService.unscheduleAll(toDelete.id);
   }
 
   public async starCamp(star: boolean, campId: string) {
@@ -244,7 +290,7 @@ export class FavoritesService {
 
   private toEvent(rslEvent: RSLEvent, items: Event[]) {
     for (let o of rslEvent.occurrences) {
-      const party = rslEvent.title ? `the ${rslEvent.title} party `: '';
+      const party = rslEvent.title ? `the ${rslEvent.title} party ` : '';
       const newEvent: Event = {
         camp: rslEvent.artCar ? `${rslEvent.artCar} mutant vehicle` : rslEvent.camp,
         timeString: o.timeRange,
@@ -257,11 +303,11 @@ export class FavoritesService {
         event_id: 0,
         distance: 0,
         distanceInfo: '',
-        event_type: { abbr: '', label: '', id: 0},
-        gpsCoords: {lat: 0, lng: 0},
+        event_type: { abbr: '', label: '', id: 0 },
+        gpsCoords: { lat: 0, lng: 0 },
         description: '',
-        slug: this.rslId(rslEvent,o),        
-        print_description: `${o.who} is playing ${party}${rslEvent.artCar ? 'on the '+rslEvent.artCar+' mutant vehicle' : 'at '+rslEvent.camp}.`,
+        slug: this.rslId(rslEvent, o),
+        print_description: `${o.who} is playing ${party}${rslEvent.artCar ? 'on the ' + rslEvent.artCar + ' mutant vehicle' : 'at ' + rslEvent.camp}.`,
         occurrence_set: [{ start_time: o.startTime, end_time: o.endTime, star: true, old: false, happening: false, longTimeString: o.timeRange }],
         title: o.who,
         uid: '',// rslEvent.campUID!,

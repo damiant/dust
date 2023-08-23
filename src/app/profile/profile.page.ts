@@ -15,6 +15,7 @@ import { GeoService } from '../geolocation/geo.service';
 import { LocationEnabledStatus } from '../data/models';
 import { environment } from 'src/environments/environment';
 import { RateApp } from 'capacitor-rate-app';
+import { PrivateEventsComponent } from '../private-events/private-events.component';
 
 @Component({
   selector: 'app-profile',
@@ -22,7 +23,7 @@ import { RateApp } from 'capacitor-rate-app';
   styleUrls: ['./profile.page.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, RouterModule, FriendsComponent,
-    TileContainerComponent, TileComponent]
+    TileContainerComponent, TileComponent, PrivateEventsComponent]
 })
 export class ProfilePage implements OnInit {
 
@@ -30,6 +31,7 @@ export class ProfilePage implements OnInit {
   rated = false;
   locationEnabled = false;
   longEvents = false;
+  hiddenPanel = false;
 
   constructor(
     private ui: UiService,
