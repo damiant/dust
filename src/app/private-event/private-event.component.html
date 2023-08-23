@@ -25,7 +25,7 @@
   </ion-item>
   <ion-modal [keepContentsMounted]="true">
     <ng-template>
-      <ion-datetime minuteValues="0,15,30,45" [(ngModel)]="event.start" id="datetime"></ion-datetime>
+      <ion-datetime [showDefaultButtons]="true" [min]="startEvent" [max]="endEvent" minuteValues="0,15,30,45" [(ngModel)]="event.start" id="datetime"></ion-datetime>
     </ng-template>
   </ion-modal>
   <ion-item>

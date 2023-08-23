@@ -24,11 +24,14 @@ export class PrivateEventComponent implements OnInit {
   initialTime = now().toISOString();
   public addresses: PickerColumn[];
   public isEdit = false;
+  public startEvent = new Date(new Date().getFullYear(), 7, 20).toISOString();
+  public endEvent = new Date(new Date().getFullYear(), 8, 10).toISOString();
+
   @Input() event: PrivateEvent = { title: '', id: uniqueId('pe'), start: this.initialTime, address: this.noAddress, notes: '' }
   constructor(
-    private streetService: StreetService, 
+    private streetService: StreetService,
     private modalCtrl: ModalController,
-    private toastController: ToastController) { 
+    private toastController: ToastController) {
     this.addresses = this.streetService.getAddresses();
   }
 
@@ -45,7 +48,7 @@ export class PrivateEventComponent implements OnInit {
     },
   ];
 
-  ngOnInit() { 
+  ngOnInit() {
     this.streetService.setAddress(this.event.address, this.addresses);
   }
 
