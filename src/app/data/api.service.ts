@@ -25,22 +25,22 @@ export class ApiService {
   constructor(private settingsService: SettingsService, private dbService: DbService) {
   }
 
-  public async sendDataToWorker(defaultRevision: number, hideLocations: boolean) {
+  public async sendDataToWorker(defaultRevision: number, hideLocations: boolean): Promise<boolean> {
 
     const ds = this.settingsService.settings.dataset;
     try {
       const revision: Revision = await this.read(ds, Names.revision);
       if (!revision) {
         console.warn(`Read from app storage`);
-        return;
+        return false;
       }
       if (revision.revision <= defaultRevision) {
         console.warn(`Did not read data from storage as it is at revision ${revision.revision} but current is ${defaultRevision}`);
-        return;
+        return false;
       }
     } catch (err) {
       console.error(`Unable read revision`, err);
-      return;
+      return false;
     }
     const events = await this.getUri(ds, Names.events);
     const art = await this.getUri(ds, Names.art);
@@ -54,6 +54,7 @@ export class ApiService {
       rsl,
       hideLocations
     });
+    return true;
   }
 
   private async read(dataset: string, name: Names): Promise<any> {

@@ -13,6 +13,11 @@ const config: CapacitorConfig = {
       splashFullScreen: false,
       splashImmersive: false,
       launchAutoHide: false,
+    },
+    LocalNotifications: {
+      smallIcon: 'icon',
+      iconColor: '#F61067',
+      sound: 'blazing2.wav'
     }
   },
   android: {
