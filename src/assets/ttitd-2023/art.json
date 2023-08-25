@@ -6696,12 +6696,12 @@
     "artist": "Mark Mennie + Charlie Petrik",
     "category": "Open Playa",
     "location": {
-      "string": "7:30 1600', Open Playa",
+      "string": "8:07 700', Open Playa",
       "category": "Open Playa",
-      "gps_latitude": 40.786400251194,
-      "gps_longitude": -119.20928604408
+      "gps_latitude": 40.787008299843,
+      "gps_longitude": -119.20590053051
     },
-    "location_string": "7:30 1600', Open Playa",
+    "location_string": "8:07 700', Open Playa",
     "images": [
       {
         "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00000hDfBoUAK.webp"
@@ -7065,5 +7065,37 @@
         "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00001h9v34UAA.webp"
       }
     ]
+  },
+  {
+    "uid": "a2I8X00001hA5PiUAK",
+    "name": "Moomba Poomba",
+    "contact_email": "csguerrero0120@gmail.com",
+    "hometown": "Oakland",
+    "description": "Moomba Poomba is the offspring of Cannibal Crane another Art Installation, whom Cannibal Crane has not eaten yet. He flies and walk. His favorite meal is worms. He likes to play all day. He usually stays in a house, and he is here because he like to pulta a doomdoom. \n\nMoomba Poomba was created by the hand of 3 year old.",
+    "artist": "Aria Shiraz",
+    "category": null,
+    "location": {
+      "string": "8:02 2301'",
+      "category": null,
+      "gps_latitude": 40.788136865484,
+      "gps_longitude": -119.21149871311
+    },
+    "location_string": "8:02 2301'"
+  },
+  {
+    "uid": "a2I8X00001hA5PnUAK",
+    "name": "Wildlight Trail",
+    "contact_email": "qhelgren@gmail.com",
+    "hometown": "Oakland, California",
+    "description": "A Mile of Lights Along the Trash Fence.",
+    "artist": "Quentin Helgren",
+    "category": null,
+    "location": {
+      "string": null,
+      "category": null,
+      "gps_latitude": null,
+      "gps_longitude": null
+    },
+    "location_string": null
   }
 ]
