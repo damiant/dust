@@ -1,4 +1,10 @@
 ## Changes
+### 1.21
+- Fix for android push notification sound
+
+### 1.20
+- Update for data
+
 ### 1.19
 - Private events added
 

@@ -144,7 +144,8 @@ export class IntroPage {
       this.vm.showMessage = false;
 
       const revision = await this.db.init(this.settingsService.settings.dataset);
-      await this.api.sendDataToWorker(revision, this.db.locationsHidden());
+      const useData = await this.api.sendDataToWorker(revision, this.db.locationsHidden());
+
       this.fav.init(this.settingsService.settings.dataset);
       const title = (this.isCurrentYear()) ? '' : this.vm.selected.year;
       this.db.selectedYear.set(title);

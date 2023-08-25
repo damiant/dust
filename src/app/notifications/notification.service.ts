@@ -1,8 +1,9 @@
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { LocalNotificationDescriptor, LocalNotifications } from '@capacitor/local-notifications';
+import { Channel, LocalNotificationDescriptor, LocalNotifications, NotificationChannel } from '@capacitor/local-notifications';
 import { OccurrenceSet } from '../data/models';
 import { BurningManTimeZone, getDayName, noDate, now, randomInt, time } from '../utils/utils';
+import { Capacitor } from '@capacitor/core';
 
 export interface Reminder {
   title: string,
@@ -121,6 +122,19 @@ export class NotificationService {
       return;
     }
 
+    const isAndroid = (Capacitor.getPlatform() == 'android');
+    const sound = 'blazing2.wav';
+    const channelId = 'dust';
+    if (Capacitor.getPlatform() == 'android') {
+      const channel: Channel = {
+        id: channelId,
+        name: 'dust',
+        importance: 5,
+        sound: sound,
+        visibility: 1,
+      }
+      await LocalNotifications.createChannel(channel);
+    }
     // Schedule reminder
     await LocalNotifications.schedule({
       notifications: [
@@ -128,7 +142,8 @@ export class NotificationService {
           id: randomInt(1, 1000000),
           title: reminder.title,
           body: reminder.body,
-          sound: 'blazing2.wav',
+          channelId,
+          sound: isAndroid ? undefined : sound,
           schedule: { at: reminder.when, allowWhileIdle: true },
           extra: {
             eventId: reminder.id // Assume it is an event
