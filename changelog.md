@@ -1,4 +1,11 @@
 ## Changes
+### 1.23
+- Fixed issue with art button
+- Fixed timeout with slow networks
+
+### 1.22
+- Unplaced theme camps have been removed
+
 ### 1.21
 - Fix for android push notification sound
 

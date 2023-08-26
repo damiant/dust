@@ -148,12 +148,19 @@ async function download(name: string, year: string, filename: string, folder: st
                 item.location.string = item.location.string.replace(' None None', '');
                 console.warn(`Fixed location ${item.name} to ${item.location_string}`);
             }
-            item.location = undefined;
+            if (item.location_string.endsWith(' &')) {
+                item.location_string = item.location_string.substring(0, item.location_string.length - 2);
+            }
             if (item.location_string == 'None & None') {
+                item.location_string = '';
+            }
+            item.location = undefined;
+            if (item.location_string == '') {
                 if (!item.description) {
-                    item.invalid = true;
                     console.warn(`Camp ${item.name} has no description or location and will be removed`);
                 }
+                // Camps with no location are removed
+                item.invalid = true;
             } else if (!item.description) {
                 item.description = `This theme camp has no description.`;
                 console.warn(`Camp ${item.name} has no description`);
@@ -198,7 +205,7 @@ function dedup(name: string, items: any[]): any[] {
             items[idx].invalid = true;
         }
 
-        idx++;        
+        idx++;
     }
     return items;
 }
