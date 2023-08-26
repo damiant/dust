@@ -85,7 +85,7 @@ export class PinMapPage implements OnInit {
       const gps = { lng: art.location.gps_longitude, lat: art.location.gps_latitude };
       point = await this.db.gpsToMapPoint(gps, undefined);
     }
-    point.info = { title: art.name, subtitle: '', location: '', imageUrl: art.images[0].thumbnail_url }
+    point.info = { title: art.name, subtitle: '', location: '', imageUrl: art.images ? art.images[0].thumbnail_url : '' }
     return point;
   }
 

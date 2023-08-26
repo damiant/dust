@@ -45,7 +45,7 @@ export class ApiService {
     const events = await this.getUri(ds, Names.events);
     const art = await this.getUri(ds, Names.art);
     const camps = await this.getUri(ds, Names.camps);
-    const rsl = await this.getUri(ds, Names.rsl);    
+    const rsl = await this.getUri(ds, Names.rsl);
     await this.dbService.setDataset({
       dataset: ds,
       events,
@@ -68,23 +68,34 @@ export class ApiService {
   public async download() {
     const lastDownload = this.settingsService.getLastDownload();
     const mins = minutesBetween(now(), lastDownload);
+    let latest = '';
+    let revision: Revision = { revision: 0};
     if (mins < 60) {
       console.log(`Downloaded ${mins} minutes ago (${lastDownload})`);
       return;
     }
-    const datasets: Dataset[] = await getLive('datasets', Names.datasets);
-    await this.save(Names.datasets, datasets);
-    const latest = datasetFilename(datasets[0]);
-    const revision: Revision = await getLive(latest, Names.revision);
-    // Check the current revision
-    const id = this.getId(latest, Names.revision);
-    const currentRevision: Revision = await this.get(id, { revision: 0 });
+    try {
+      const datasets: Dataset[] = await getLive('datasets', Names.datasets, 1000);
+      console.log(datasets);
+      await this.save(Names.datasets, datasets);
+      latest = datasetFilename(datasets[0]);
 
-    if (revision && currentRevision && revision.revision === currentRevision.revision) {
-      console.log(`Will not download data for ${latest} as it is already at revision ${currentRevision.revision}`);
-      this.rememberLastDownload();
+      revision = await getLive(latest, Names.revision, 1000);
+      console.log(revision);
+      // Check the current revision
+      const id = this.getId(latest, Names.revision);
+      const currentRevision: Revision = await this.get(id, { revision: 0 });
+
+      if (revision && currentRevision && revision.revision === currentRevision.revision) {
+        console.log(`Will not download data for ${latest} as it is already at revision ${currentRevision.revision}`);
+        this.rememberLastDownload();
+        return;
+      }
+    } catch (err) {
+      console.error(err);
       return;
     }
+
 
     const events = await getLive(latest, Names.events);
     const art = await getLive(latest, Names.art);
@@ -112,7 +123,7 @@ export class ApiService {
   }
 
   private async getUri(dataset: string, name: string): Promise<string> {
-    const r = await Filesystem.getUri({ path: `${this.getId(dataset, name)}.txt`, directory: Directory.Data })    
+    const r = await Filesystem.getUri({ path: `${this.getId(dataset, name)}.txt`, directory: Directory.Data })
     return Capacitor.convertFileSrc(r.uri);
   }
 
