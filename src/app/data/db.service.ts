@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
 export class DbService {
   public selectedDay = signal(noDate());
   public selectedYear = signal('');
+  public featuresHidden = signal(['']);
   public networkStatus = signal('');
   public resume = signal('');
   private initialized = false;

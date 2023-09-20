@@ -23,9 +23,9 @@
     <app-tile title="Directions" (click)="directions()" iconName="compass-outline"></app-tile>
   </app-tile-container>
 
-  <app-friends />
+  <app-friends *ngIf="!db.featuresHidden().includes('friends')" />
 
-  <app-private-events />
+  <app-private-events *ngIf="!db.featuresHidden().includes('private')" />
 
   <ion-card>
     <ion-card-header>
@@ -55,7 +55,7 @@
 
         <ion-item (click)="home()" detail="true">
           <ion-icon slot="start" name="exit-outline"></ion-icon>
-          Select Year
+          Select Event
         </ion-item>
       </ion-list>
     </ion-card-content>

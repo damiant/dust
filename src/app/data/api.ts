@@ -11,10 +11,14 @@ function path(dataset: string, name: string): string {
 }
 
 function livePath(dataset: string, name: string): string {
-    return `https://dust.events/assets/data-v2/${dataset}/${name}.json`;
+    if (dataset.toLowerCase().includes('ttitd') || dataset == 'datasets') {
+        return `https://dust.events/assets/data-v2/${dataset}/${name}.json`;
+    } else {
+        return `https://data.dust.events/${dataset}/${name}.json`;
+    }
 }
 
-export async function getLive(dataset: string, name: string, timeout :number = 5000): Promise<any> {    
+export async function getLive(dataset: string, name: string, timeout: number = 5000): Promise<any> {
     const status = await Network.getStatus();
     if (!status.connected) {
         console.log(`readData ${dataset} ${name}...`);
@@ -27,14 +31,14 @@ export async function getLive(dataset: string, name: string, timeout :number = 5
     }
 }
 
-async function fetchWithTimeout(url: string, options = {}, timeout :number = 5000) {   
-    const signal = AbortSignal.timeout(timeout);  
+async function fetchWithTimeout(url: string, options = {}, timeout: number = 5000) {
+    const signal = AbortSignal.timeout(timeout);
     const response = await fetch(url, {
-      ...options,
-      signal
+        ...options,
+        signal
     });
     return response;
-  }
+}
 
 async function get(dataset: string, name: string): Promise<any> {
     const res = await fetch(path(dataset, name));

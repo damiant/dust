@@ -5,7 +5,7 @@
     <ion-text><b>dust</b> is a guide for burners to find events, camps and art.</ion-text>
   </div>
   <div [hidden]="vm.yearSelectedAlready" class="container" id="scroll-container">
-    <div class="card" [ngClass]="(vm.selected?.year === card.year) ? 'select' : 'unselect'" *ngFor="let card of vm.cards"
+    <div class="card" [ngClass]="(vm.selected?.id === card.id) ? 'select' : 'unselect'" *ngFor="let card of vm.cards"
       (click)="open(card)">
       <div class="card-container">
         <ion-text>{{card.name}}<br />{{card.year}}</ion-text>

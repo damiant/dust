@@ -152,10 +152,12 @@ export interface Settings {
 }
 
 export interface Dataset {
-  name: string;
-  title: string;
-  year: string;
-  start: string;
+  name: string; // Name
+  title: string; // Title
+  year: string; // Year name
+  id: string; // Identifier for the remote dataset at data.dust.events
+  start: string; // When it starts
+  end: string; // When it ends
 }
 
 export interface TimeString {

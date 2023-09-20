@@ -62,7 +62,7 @@ export class ApiService {
   }
 
   private badData(events: Event[], art: Art[], camps: Camp[]): boolean {
-    return (!camps || camps.length == 0 || !art || art.length == 0 || !events || events.length == 0);
+    return (!camps || camps.length == 0 || !art || !events || events.length == 0);
   }
 
   public async download() {
@@ -95,7 +95,6 @@ export class ApiService {
       console.error(err);
       return;
     }
-
 
     const events = await getLive(latest, Names.events);
     const art = await getLive(latest, Names.art);

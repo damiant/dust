@@ -1,4 +1,8 @@
 ## Changes
+
+### 1.3
+- Support for regional events
+
 ### 1.23
 - Fixed issue with art button
 - Fixed timeout with slow networks

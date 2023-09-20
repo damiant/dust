@@ -121,6 +121,10 @@ export class DataManager implements WorkerClass {
     private initGeoLocation() {
         const gpsCoords: GpsCoord[] = [];
         const points: Point[] = [];
+        if (this.georeferences.length < 3) {
+            console.error(`This dataset does not have the required 3 geolocation points.`);
+            return;
+        }
         for (let ref of [this.georeferences[0], this.georeferences[1], this.georeferences[2]]) {
             gpsCoords.push({ lng: ref.coordinates[0], lat: ref.coordinates[1] });
             const mp: MapPoint = { clock: ref.clock, street: ref.street };
@@ -699,10 +703,16 @@ export class DataManager implements WorkerClass {
 
     private path(name: string, online?: boolean): string {
         if (this.dataset !== CurrentYear && online) {
-            return `https://dust.events/assets/data-v2/${this.dataset}/${name}.json`;
+            if (this.dataset.toLowerCase().includes('ttitd')) {
+                // Burning Man dataset is extracted from API and published manually
+                return `https://dust.events/assets/data-v2/${this.dataset}/${name}.json`;
+            } else {
+                return `https://data.dust.events/${this.dataset}/${name}.json`;
+            }
         }
         return `assets/${this.dataset}/${name}.json`;
     }
+
     private async loadEvents(): Promise<Event[]> {
         const res = await fetch(this.path('events', true));
         return await res.json();
@@ -741,8 +751,13 @@ export class DataManager implements WorkerClass {
     }
 
     public async getGeoReferences(): Promise<GeoRef[]> {
-        const res = await fetch(this.path('geo'));
-        return await res.json();
+        try {
+            const res = await fetch(this.path('geo', true));
+
+            return await res.json();
+        } catch {
+            return [];
+        }
     }
 
     private async loadCamps(): Promise<Camp[]> {

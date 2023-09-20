@@ -105,7 +105,7 @@ export class IntroPage {
     const x = daysUntil(manBurns, now());
     const until = daysUntil(start, now());
 
-    let hideLocations = (thisYear && until > 1);
+    let hideLocations = (thisYear && until > 1 && this.isBurningMan());
     if (environment.overrideLocations) {
       hideLocations = false;
       console.error('Overriding hiding locations');
@@ -123,6 +123,10 @@ export class IntroPage {
 
   isCurrentYear() {
     return this.vm.selected && this.vm.selected.year == this.vm.cards[0].year;
+  }
+
+  isBurningMan() {
+    return this.settingsService.settings.dataset.includes('ttitd');
   }
 
   async launch() {
@@ -149,6 +153,18 @@ export class IntroPage {
       this.fav.init(this.settingsService.settings.dataset);
       const title = (this.isCurrentYear()) ? '' : this.vm.selected.year;
       this.db.selectedYear.set(title);
+
+      const hidden = [];
+      if (this.isBurningMan() && !this.isCurrentYear()) {
+        hidden.push('rsl');
+      }
+      if (!this.isBurningMan()) {
+        hidden.push('rsl');
+        hidden.push('art');
+        hidden.push('friends');
+        hidden.push('private');
+      }
+      this.db.featuresHidden.set(hidden);
       if (Capacitor.isNativePlatform()) {
         setTimeout(async () => {
           this.ui.setNavigationBar();
