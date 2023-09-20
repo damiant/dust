@@ -123,6 +123,10 @@ export class MapComponent implements OnInit, OnDestroy {
   ngOnInit() {
     const darkMode = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
     this.src = darkMode ? 'assets/map-dark.svg' : 'assets/map.svg';
+    if (this.settings.settings.mapUri !== '') {
+      this.src = this.settings.settings.mapUri;
+      console.log('map source is ', this.src);
+    }
   }
 
   private async updateLocation() {

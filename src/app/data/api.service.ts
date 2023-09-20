@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Art, Camp, Dataset, Revision } from './models';
-import { datasetFilename, getLive } from './api';
+import { datasetFilename, getLive, getLiveBinary } from './api';
 import { SettingsService } from './settings.service';
 import { minutesBetween, now } from '../utils/utils';
 import { DbService } from './db.service';
@@ -13,7 +13,8 @@ enum Names {
   art = 'art',
   camps = 'camps',
   rsl = 'rsl',
-  revision = 'revision'
+  revision = 'revision',
+  map = 'map'
 }
 
 
@@ -69,7 +70,7 @@ export class ApiService {
     const lastDownload = this.settingsService.getLastDownload();
     const mins = minutesBetween(now(), lastDownload);
     let latest = '';
-    let revision: Revision = { revision: 0};
+    let revision: Revision = { revision: 0 };
     if (mins < 60) {
       console.log(`Downloaded ${mins} minutes ago (${lastDownload})`);
       return;
@@ -81,18 +82,19 @@ export class ApiService {
       latest = datasetFilename(datasets[0]);
 
       revision = await getLive(latest, Names.revision, 1000);
-      console.log(revision);
+
       // Check the current revision
       const id = this.getId(latest, Names.revision);
       const currentRevision: Revision = await this.get(id, { revision: 0 });
 
-      if (revision && currentRevision && revision.revision === currentRevision.revision) {
+      if (revision && currentRevision && currentRevision.revision !== null && revision.revision === currentRevision.revision) {
         console.log(`Will not download data for ${latest} as it is already at revision ${currentRevision.revision}`);
         this.rememberLastDownload();
         return;
       }
     } catch (err) {
-      console.error(err);
+      console.log('Possible CORs error as document location is ', document.location.href);
+      console.error('Unable to download', err);
       return;
     }
 
@@ -100,6 +102,7 @@ export class ApiService {
     const art = await getLive(latest, Names.art);
     const camps = await getLive(latest, Names.camps);
     const rsl = await getLive(latest, Names.rsl);
+    const mapData = await getLiveBinary(latest, Names.map, 'svg');
     if (this.badData(events, art, camps)) {
       console.error(`Download failed`);
       return;
@@ -109,6 +112,9 @@ export class ApiService {
     await this.save(this.getId(latest, Names.art), art);
     await this.save(this.getId(latest, Names.rsl), rsl);
     await this.save(this.getId(latest, Names.revision), revision);
+    const uri = await this.saveBinary(this.getId(latest, Names.map), 'svg', mapData);
+    console.log('map data was set to ' + uri);
+    this.settingsService.settings.mapUri = uri;
     this.rememberLastDownload();
   }
 
@@ -150,11 +156,20 @@ export class ApiService {
     });
   }
 
+  private async saveBinary(id: string, ext: string, data: any): Promise<string> {
+    const res = await Filesystem.writeFile({
+      path: `${id}.${ext}`,
+      data: data,
+      directory: this.getDirectory()
+    });
+    return Capacitor.convertFileSrc(res.uri);
+  }
+
   private getDirectory(): Directory {
     if (this.isAndroid()) {
       return Directory.Data;
     } else {
-      return Directory.Documents;
+      return Directory.Data;//Documents;
     }
   }
 

@@ -147,6 +147,7 @@ export interface Settings {
   dataset: string;
   eventTitle: string;
   lastDownload: string;
+  mapUri: string;
   locationEnabled: LocationEnabledStatus;
   longEvents: boolean;
 }

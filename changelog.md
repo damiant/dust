@@ -1,6 +1,6 @@
 ## Changes
 
-### 1.3
+### 1.30
 - Support for regional events
 
 ### 1.23
