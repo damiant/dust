@@ -179,8 +179,10 @@ export class DataManager implements WorkerClass {
             }
             campIndex[camp.uid] = camp.name;
             locIndex[camp.uid] = camp.location_string;
-            if (!camp.location_string || hideLocations) {
+            if (hideLocations) {
                 camp.location_string = LocationName.Unavailable;
+            } else if (!camp.location_string) {
+                camp.location_string = LocationName.Undefined;
             }
         }
         for (let art of this.art) {

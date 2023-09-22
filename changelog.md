@@ -2,6 +2,7 @@
 
 ### 1.30
 - Support for regional events
+- Fix for when locations are hidden or unplaced
 
 ### 1.23
 - Fixed issue with art button
