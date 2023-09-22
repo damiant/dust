@@ -19,7 +19,7 @@
   </ion-card-header>
   
   <ion-card-content (click)="detail()">
-    <ion-text class="clamp">{{event.print_description}}</ion-text>
+    <ion-text class="clamp">{{event.description}}</ion-text>
     <ion-text class="one-line">      
       {{longTime ? event.longTimeString : event.timeString}} {{event.event_type.label}}</ion-text>
   </ion-card-content>

@@ -116,7 +116,10 @@ export class ApiService {
     await this.save(this.getId(latest, Names.art), art);
     await this.save(this.getId(latest, Names.rsl), rsl);
     await this.save(this.getId(latest, Names.revision), revision);
-    const uri = await this.saveBinary(this.getId(latest, Names.map), 'svg', mapData);
+    let uri = await this.saveBinary(this.getId(latest, Names.map), 'svg', mapData);
+    if (uri.startsWith('/DATA/')) {
+      uri = `https://data.dust.events/${latest}/map.svg`;
+    }
     console.log('map data was set to ' + uri);
     this.settingsService.settings.mapUri = uri;
     this.rememberLastDownload();
