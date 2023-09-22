@@ -4,7 +4,7 @@ import { IonicModule } from '@ionic/angular';
 import { DbService } from '../data/db.service';
 import { NotificationService } from '../notifications/notification.service';
 import { Router } from '@angular/router';
-import { delay } from '../utils/utils';
+import { daysUntil, delay, now } from '../utils/utils';
 import { UiService } from '../ui/ui.service';
 import { SettingsService } from '../data/settings.service';
 import { ShareInfoType, ShareService } from '../share/share.service';
@@ -55,7 +55,7 @@ export class TabsPage implements OnInit {
 
     // Whenever app is resumed set signal called resume
     App.addListener('resume', async () => {
-      const until = await this.db.daysUntilStarts();
+      const until = await this.daysUntilStarts();
       console.log(`${until} days until event.`);
       let hide = until > 1;
       if (environment.overrideLocations) {
@@ -79,6 +79,13 @@ export class TabsPage implements OnInit {
     });
     const status = await Network.getStatus();
     this.db.networkStatus.set(status.connectionType);
+  }
+
+  public async daysUntilStarts(): Promise<number> {
+    const s = this.settings.settings.dataset?.start;
+    const start = new Date(s!);
+    const until = daysUntil(start, now());
+    return until;
   }
 
   private async navTo(page: string, id: string) {

@@ -68,7 +68,7 @@ export class IntroPage {
       }
     }
 
-    this.vm.cards = await this.db.loadDatasets();
+    this.vm.cards = await this.api.loadDatasets();
     // need to load
     this.load();
   }
@@ -86,7 +86,7 @@ export class IntroPage {
 
     try {
       this.vm.downloading = true;
-      await this.api.download();
+      await this.api.download(this.vm.selected);
     } finally {
       this.vm.downloading = false;
     }
@@ -158,7 +158,7 @@ export class IntroPage {
 
       console.log(`init ${this.settingsService.settings.datasetId}`);
       const revision = await this.db.init(this.settingsService.settings.datasetId);
-      const useData = await this.api.sendDataToWorker(revision, this.db.locationsHidden());
+      const useData = await this.api.sendDataToWorker(revision, this.db.locationsHidden(), this.isBurningMan());
 
       this.fav.init(this.settingsService.settings.datasetId);
       const title = (this.isCurrentYear()) ? '' : this.vm.selected.year;

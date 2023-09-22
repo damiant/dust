@@ -47,22 +47,6 @@ export class DbService {
     return await call(this.worker, DataMethods.CheckEvents, day);
   }
 
-  public async loadDatasets(): Promise<Dataset[]> {
-    const res = await fetch('assets/datasets/datasets.json');
-    return await res.json();
-  }
-
-  public async daysUntilStarts(): Promise<number> {
-    const datasets = await this.loadDatasets();
-    console.log('daysUntilStarts', this.selectedYear());
-    const year = (this.selectedYear() == '') ? datasets[0].year : this.selectedYear();
-    const dataset = datasets.find((d) => d.year == year);
-
-    const start = new Date(dataset!.start);
-    const until = daysUntil(start, now());
-    return until;
-  }
-
   public async findEvents(query: string, day: Date | undefined, category: string, coords: GpsCoord | undefined, timeRange: TimeRange | undefined, allDay: boolean): Promise<Event[]> {    
     return await call(this.worker, DataMethods.FindEvents, query, day, category, coords, timeRange, allDay);
   }
