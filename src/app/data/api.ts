@@ -66,15 +66,11 @@ function getFileReader(): FileReader {
 function blobToBase64(blob: Blob) {
     return new Promise((resolve, reject) => {
         try {
-            console.log(`Create FileReader`);
             const reader = getFileReader();// new FileReader();
             reader.onloadend = () => resolve(reader.result);
             reader.onerror = reject;
-
-            console.log(`Call readAsDataURL`);
             reader.readAsDataURL(blob);
         } catch (e) {
-            console.log(`Failed blobToBase64`);
             reject(e);
         }
     });
