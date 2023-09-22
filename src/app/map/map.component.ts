@@ -257,7 +257,7 @@ export class MapComponent implements OnInit, OnDestroy {
       const prefix = this.points.length > 1 ? 'The closest is ' : '';
       const dist = formatDistanceMiles(least);
       if (least > 50) {
-        this.footer = 'You are outside of BRC';
+        this.footer = 'You are outside of the Event';
       } else {
         if (dist != '') {
           this.footer = `${prefix}${dist} away.`;

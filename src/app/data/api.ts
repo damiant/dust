@@ -36,25 +36,54 @@ export async function getLiveBinary(dataset: string, name: string, ext: string):
     if (!status.connected) {
         return undefined;
     } else {
-        // Try to get from url        
-        console.log(`getLive ${livePath(dataset, name)} ${dataset} ${name}...`);
-        const res = await fetchWithTimeout(livePath(dataset, name, ext), {});
-        return await blobToBase64(await res.blob());
+        // Try to get from url
+        try {
+            const url = livePath(dataset, name, ext);
+            console.log(`getLive ${url} ${dataset} ${name}...`);
+            const res = await fetchWithTimeout(url, {}, 15000);
+            console.log(`getLive ${url} convert to blob`);
+            const blob = await res.blob();
+            console.log(`getLive ${url} converted to blob. Size is ${blob.size}`);
+            console.log(`getLive ${url} convert to base64`);
+            const data = await blobToBase64(blob);
+            console.log(`getLive ${url} complete`);
+            return data;
+        } catch (error) {
+            console.error(`Failed getLiveBinary`);
+            throw new Error(error as string);
+        }
     }
 }
 
-function blobToBase64(blob: Blob) {
-    return new Promise((resolve, _) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result);
-      reader.readAsDataURL(blob);
-    });
-  }
 
-async function fetchWithTimeout(url: string, options = {}, timeout: number = 5000) {    
+// Hack for Capacitor: See https://github.com/ionic-team/capacitor/issues/1564
+function getFileReader(): FileReader {
+    const fileReader = new FileReader();
+    const zoneOriginalInstance = (fileReader as any)["__zone_symbol__originalInstance"];
+    return zoneOriginalInstance || fileReader;
+}
+
+function blobToBase64(blob: Blob) {
+    return new Promise((resolve, reject) => {
+        try {
+            console.log(`Create FileReader`);
+            const reader = getFileReader();// new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = reject;
+
+            console.log(`Call readAsDataURL`);
+            reader.readAsDataURL(blob);
+        } catch (e) {
+            console.log(`Failed blobToBase64`);
+            reject(e);
+        }
+    });
+}
+
+async function fetchWithTimeout(url: string, options = {}, timeout: number = 5000) {
     if (!AbortSignal.timeout) {
         return await fetch(url, {
-            ...options            
+            ...options
         });
     }
     const signal = AbortSignal.timeout(timeout);

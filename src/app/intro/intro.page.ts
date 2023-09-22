@@ -81,6 +81,7 @@ export class IntroPage {
     } finally {
       this.vm.downloading = false;
     }
+    console.log(`Auto starting = ${this.vm.yearSelectedAlready}...`);
     if (this.vm.yearSelectedAlready) {
       this.go();
     }
@@ -147,6 +148,7 @@ export class IntroPage {
       this.vm.ready = false;
       this.vm.showMessage = false;
 
+      console.log(`init ${this.settingsService.settings.dataset}`);
       const revision = await this.db.init(this.settingsService.settings.dataset);
       const useData = await this.api.sendDataToWorker(revision, this.db.locationsHidden());
 

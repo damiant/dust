@@ -81,11 +81,14 @@ export class ApiService {
       await this.save(Names.datasets, datasets);
       latest = datasetFilename(datasets[0]);
 
+      console.log(`get revision live ${latest}`);
       revision = await getLive(latest, Names.revision, 1000);
+      console.log(`Live revision is ${JSON.stringify(revision)}`);
 
       // Check the current revision
       const id = this.getId(latest, Names.revision);
       const currentRevision: Revision = await this.get(id, { revision: 0 });
+      console.log(`Current revision is ${JSON.stringify(currentRevision)}`);
 
       if (revision && currentRevision && currentRevision.revision !== null && revision.revision === currentRevision.revision) {
         console.log(`Will not download data for ${latest} as it is already at revision ${currentRevision.revision}`);
@@ -107,6 +110,7 @@ export class ApiService {
       console.error(`Download failed`);
       return;
     }
+    console.log('saving data...');
     await this.save(this.getId(latest, Names.events), events);
     await this.save(this.getId(latest, Names.camps), camps);
     await this.save(this.getId(latest, Names.art), art);
