@@ -144,7 +144,8 @@ export enum LocationEnabledStatus {
 }
 
 export interface Settings {
-  dataset: string;
+  datasetId: string;
+  dataset: Dataset | undefined;
   eventTitle: string;
   lastDownload: string;
   mapUri: string;
@@ -159,6 +160,8 @@ export interface Dataset {
   id: string; // Identifier for the remote dataset at data.dust.events
   start: string; // When it starts
   end: string; // When it ends
+  lat: number; // Latitude (for directions)
+  long: number; // Longitude (for directions)
 }
 
 export interface TimeString {

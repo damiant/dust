@@ -22,7 +22,7 @@ interface IntroState {
   ready: boolean,
   showMessage: boolean
   downloading: boolean
-  yearSelectedAlready: boolean
+  eventAlreadySelected: boolean
   cards: Dataset[];
   selected: Dataset | undefined;
   message: string;
@@ -33,7 +33,7 @@ function initialState(): IntroState {
     ready: true,
     showMessage: false,
     downloading: false,
-    yearSelectedAlready: true,
+    eventAlreadySelected: true,
     cards: [],
     selected: undefined,
     message: ''
@@ -56,8 +56,17 @@ export class IntroPage {
 
   async ionViewWillEnter() {
     this.vm = initialState();
-    // Whether the user has selected a year previously
-    this.vm.yearSelectedAlready = !isWhiteSpace(this.settingsService.settings.dataset);
+    // Whether the user has selected an event already
+    this.vm.eventAlreadySelected = !isWhiteSpace(this.settingsService.settings.datasetId);
+    if (this.settingsService.settings.dataset) {
+      const end = new Date(this.settingsService.settings.dataset.end);
+      const until = daysUntil(end, now());
+      if (until < 0) {
+        // event has already ended. We shouldn't auto start
+        console.warn(`Event ended ${Math.abs(until)} days ago. Not opening automatically.`);
+        this.vm.eventAlreadySelected = false;
+      }
+    }
 
     this.vm.cards = await this.db.loadDatasets();
     // need to load
@@ -81,14 +90,14 @@ export class IntroPage {
     } finally {
       this.vm.downloading = false;
     }
-    console.log(`Auto starting = ${this.vm.yearSelectedAlready}...`);
-    if (this.vm.yearSelectedAlready) {
+    console.log(`Auto starting = ${this.vm.eventAlreadySelected}...`);
+    if (this.vm.eventAlreadySelected) {
       this.go();
     }
   }
 
   private load() {
-    const idx = this.vm.cards.findIndex((c) => datasetFilename(c) == this.settingsService.settings.dataset);
+    const idx = this.vm.cards.findIndex((c) => datasetFilename(c) == this.settingsService.settings.datasetId);
     if (idx >= 0) {
       this.vm.selected = this.vm.cards[idx];
     } else {
@@ -100,20 +109,19 @@ export class IntroPage {
 
   async go() {
     if (!this.vm.selected) return;
-    const thisYear = this.vm.selected.year == this.vm.cards[0].year;
-    const start = new Date(this.vm.cards[0].start);
+    const start = new Date(this.vm.selected.start);
     const manBurns = addDays(start, 6);
     const x = daysUntil(manBurns, now());
     const until = daysUntil(start, now());
 
-    let hideLocations = (thisYear && until > 1 && this.isBurningMan());
+    let hideLocations = (until > 1 && this.isBurningMan());
     if (environment.overrideLocations) {
       hideLocations = false;
       console.error('Overriding hiding locations');
     }
     console.log(`Event starts ${start}, today is ${now()} and there are ${until} days until then`);
     this.db.setHideLocations(hideLocations);
-    if (hideLocations && !this.vm.yearSelectedAlready) {
+    if (hideLocations && !this.vm.eventAlreadySelected) {
       this.vm.message = `Locations for camps and art will be released in the app on Sunday 27th. There are ${x} days until the man burns.`;
       this.vm.showMessage = true;
     } else {
@@ -127,7 +135,7 @@ export class IntroPage {
   }
 
   isBurningMan() {
-    return this.settingsService.settings.dataset.includes('ttitd');
+    return this.settingsService.settings.datasetId.includes('ttitd');
   }
 
   async launch() {
@@ -138,7 +146,7 @@ export class IntroPage {
         const status = await Network.getStatus();
         if (!status.connected) {
           this.ui.presentDarkToast('You are offline: Previous years require network access. Try this year instead.', this.toastController);
-          this.vm.yearSelectedAlready = false;
+          this.vm.eventAlreadySelected = false;
           this.vm.selected = this.vm.cards[0];
           this.save();
           return;
@@ -148,11 +156,11 @@ export class IntroPage {
       this.vm.ready = false;
       this.vm.showMessage = false;
 
-      console.log(`init ${this.settingsService.settings.dataset}`);
-      const revision = await this.db.init(this.settingsService.settings.dataset);
+      console.log(`init ${this.settingsService.settings.datasetId}`);
+      const revision = await this.db.init(this.settingsService.settings.datasetId);
       const useData = await this.api.sendDataToWorker(revision, this.db.locationsHidden());
 
-      this.fav.init(this.settingsService.settings.dataset);
+      this.fav.init(this.settingsService.settings.datasetId);
       const title = (this.isCurrentYear()) ? '' : this.vm.selected.year;
       this.db.selectedYear.set(title);
 
@@ -188,7 +196,8 @@ export class IntroPage {
   }
 
   save() {
-    this.settingsService.settings.dataset = datasetFilename(this.vm.selected!);
+    this.settingsService.settings.datasetId = datasetFilename(this.vm.selected!);
+    this.settingsService.settings.dataset = this.vm.selected;
     this.settingsService.settings.eventTitle = this.vm.selected!.title;
     this.settingsService.save();
   }

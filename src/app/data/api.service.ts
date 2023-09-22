@@ -28,7 +28,7 @@ export class ApiService {
 
   public async sendDataToWorker(defaultRevision: number, hideLocations: boolean): Promise<boolean> {
 
-    const ds = this.settingsService.settings.dataset;
+    const ds = this.settingsService.settings.datasetId;
     try {
       const revision: Revision = await this.read(ds, Names.revision);
       if (!revision) {

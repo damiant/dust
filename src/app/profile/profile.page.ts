@@ -60,7 +60,7 @@ export class ProfilePage implements OnInit {
       this.settings.settings.lastDownload = '';
       this.settings.save();
       this.db.setHideLocations(false);      
-      await this.db.init(this.settings.settings.dataset);
+      await this.db.init(this.settings.settings.datasetId);
       this.db.resume.set(new Date().toString());
     }
   }
@@ -106,8 +106,11 @@ export class ProfilePage implements OnInit {
   }
 
   async directions() {
-    // From: https://burningman.org/event/preparation/getting-there-and-back/
-    const pin = { lat: 40.753842, long: -119.277000 };
+    // Default comes from https://burningman.org/event/preparation/getting-there-and-back/    
+    const lat = this.settings.settings.dataset ? this.settings.settings.dataset.lat : 40.753842;
+    const long = this.settings.settings.dataset ? this.settings.settings.dataset.long : -119.277000;
+    const pin = { lat, long };
+    
     if (await this.map.canOpenMapApp('google')) {
       await this.map.openGoogleMapDirections(pin);
     } else if (await this.map.canOpenMapApp('apple')) {

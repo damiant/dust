@@ -15,7 +15,7 @@ export class SettingsService {
     try {
       return JSON.parse(localStorage['settings']);
     } catch {
-      return { dataset: '', lastDownload: '', mapUri: '', eventTitle: '', locationEnabled: LocationEnabledStatus.Unknown, longEvents: false };
+      return { datasetId: '', lastDownload: '', mapUri: '', dataset: undefined, eventTitle: '', locationEnabled: LocationEnabledStatus.Unknown, longEvents: false };
     }
   }
 
@@ -32,7 +32,8 @@ export class SettingsService {
   }
 
   public clearSelectedEvent() {
-    this.settings.dataset = '';
+    this.settings.datasetId = '';
+    this.settings.dataset = undefined;
     this.settings.eventTitle = '';
     this.save();
   }
