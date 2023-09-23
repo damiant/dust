@@ -12,6 +12,7 @@ export interface Event {
   distance: number; // Calculated
   distanceInfo: string; // Calculated
   gpsCoords: GpsCoord; // Calculated
+  pin?: Pin; // Calculated if no gps
   all_day: any
   check_location?: number
   description: string

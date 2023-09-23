@@ -166,6 +166,7 @@ export class DataManager implements WorkerClass {
 
         let campIndex: any = {};
         let locIndex: any = {};
+        let pinIndex: any = {};
         let artIndex: any = {};
         let artGPS: any = {};
         let artLocationNames: any = {};
@@ -179,6 +180,7 @@ export class DataManager implements WorkerClass {
             }
             campIndex[camp.uid] = camp.name;
             locIndex[camp.uid] = camp.location_string;
+            pinIndex[camp.uid] = camp.pin;
             if (hideLocations) {
                 camp.location_string = LocationName.Unavailable;
             } else if (!camp.location_string) {
@@ -211,11 +213,15 @@ export class DataManager implements WorkerClass {
             }
             if (event.hosted_by_camp) {
                 event.camp = campIndex[event.hosted_by_camp];
-                event.location = locIndex[event.hosted_by_camp];
+                event.location = locIndex[event.hosted_by_camp];                
 
                 const pin = locationStringToPin(event.location, this.mapRadius);
+                const placed = pinIndex[event.hosted_by_camp]; 
+                if (placed) {                    
+                    event.pin = placed;
+                }
                 if (pin) {
-                    const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
+                    const gpsCoords = mapToGps({ x: pin.x, y: pin.y });                    
                     event.gpsCoords = gpsCoords;
                 } else {
                     if (!environment.production) {
@@ -299,15 +305,17 @@ export class DataManager implements WorkerClass {
 
     public async setDataset(ds: FullDataset) {
         try {
-            this.dataset = ds.dataset;
-            this.events = await this.loadData(ds.events);
+            this.dataset = ds.dataset;            
+            this.events = await this.loadData(ds.events);            
             this.camps = await this.loadData(ds.camps);
-            this.art = await this.loadData(ds.art);
-            const rslData = await this.loadData(ds.rsl);
-            console.log(`Setting dataset in worker: ${this.events.length} events, ${this.camps.length} camps, ${this.art.length} art, ${rslData.length} rsl`);
-            this.init(ds.hideLocations);
+            this.art = await this.loadData(ds.art);            
+            //const rslData = await this.loadData(ds.rsl);
+            console.log(`Setting dataset in worker: ${this.events.length} events, ${this.camps.length} camps, ${this.art.length} art`);
+            
         } catch (err) {
             console.error(`Failed to setDataset`, err);
+        } finally {
+            this.init(ds.hideLocations);
         }
     }
 
@@ -433,53 +441,59 @@ export class DataManager implements WorkerClass {
     }
 
     public async getRSLEvents(query: string, day: Date | undefined, coords: GpsCoord | undefined, ids?: string[] | undefined, campId?: string | undefined): Promise<RSLEvent[]> {
-        const res = await fetch(this.path('rsl'));
-        const events: RSLEvent[] = await res.json();
-        const result: RSLEvent[] = [];
-        query = this.scrubQuery(query);
-        const fDay = day ? this.toRSLDateFormat(day) : undefined;
-        const today = now();
-        for (let event of events) {
-            let match = false;
-            if (campId) {
-                match = (event.campUID == campId && this.nullOrEmpty(event.artCar));
-            } else {
-                match = (this.rslEventContains(event, query) && (event.day == fDay || !!ids));
-            }
+        try {
+            const res = await fetch(this.path('rsl'));
+            const events: RSLEvent[] = await res.json();
 
-            if (match) {
-                let allOld = true;
-                for (let occurrence of event.occurrences) {
-                    occurrence.old = (new Date(occurrence.endTime).getTime() - today.getTime() < 0);
-                    if (!occurrence.old) {
-                        allOld = false;
-                    }
+            const result: RSLEvent[] = [];
+            query = this.scrubQuery(query);
+            const fDay = day ? this.toRSLDateFormat(day) : undefined;
+            const today = now();
+            for (let event of events) {
+                let match = false;
+                if (campId) {
+                    match = (event.campUID == campId && this.nullOrEmpty(event.artCar));
+                } else {
+                    match = (this.rslEventContains(event, query) && (event.day == fDay || !!ids));
                 }
-                if (ids && ids.length > 0) {
-                    event.occurrences = event.occurrences.filter(o => {
-                        const id = `${event.id}-${o.id}`;
-                        return ids.includes(id);
-                    });
-                    if (event.occurrences.length == 0) {
-                        allOld = true; // Don't include
+
+                if (match) {
+                    let allOld = true;
+                    for (let occurrence of event.occurrences) {
+                        occurrence.old = (new Date(occurrence.endTime).getTime() - today.getTime() < 0);
+                        if (!occurrence.old) {
+                            allOld = false;
+                        }
                     }
-                }
-                if (!allOld) {
-                    // If all times have ended
-                    event.distance = distance(coords!, event.gpsCoords!);
-                    event.distanceInfo = formatDistance(event.distance);
-                    result.push(event);
+                    if (ids && ids.length > 0) {
+                        event.occurrences = event.occurrences.filter(o => {
+                            const id = `${event.id}-${o.id}`;
+                            return ids.includes(id);
+                        });
+                        if (event.occurrences.length == 0) {
+                            allOld = true; // Don't include
+                        }
+                    }
+                    if (!allOld) {
+                        // If all times have ended
+                        event.distance = distance(coords!, event.gpsCoords!);
+                        event.distanceInfo = formatDistance(event.distance);
+                        result.push(event);
+                    }
                 }
             }
+            if (coords) {
+                this.sortRSLEventsByDistance(result);
+            } else if (campId) {
+                this.sortRSLEventsByDay(result);
+            } else {
+                this.sortRSLEventsByName(result);
+            }
+            return result;
+        } catch (err) {
+            console.error(`getRSLEvents returned an error`, err)
+            return [];
         }
-        if (coords) {
-            this.sortRSLEventsByDistance(result);
-        } else if (campId) {
-            this.sortRSLEventsByDay(result);
-        } else {
-            this.sortRSLEventsByName(result);
-        }
-        return result;
     }
 
     private scrubQuery(query: string): string {

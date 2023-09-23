@@ -6,8 +6,11 @@ export const streets = [0.285, 0.338, 0.369, 0.405, 0.435, 0.465, 0.525, 0.557, 
 
 export const defaultMapRadius = 5000;
 
-export function toMapPoint(location: string | undefined, info?: MapInfo): MapPoint {
+export function toMapPoint(location: string | undefined, info?: MapInfo, pin?: Pin): MapPoint {
     if (!location) {
+        if (pin) {
+            return { street: '', clock: '', x: pin.x, y: pin.y };
+        }
         return { street: '', clock: '' };
     }
     let l = location.toLowerCase();

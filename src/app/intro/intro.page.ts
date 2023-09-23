@@ -156,7 +156,7 @@ export class IntroPage {
       this.vm.ready = false;
       this.vm.showMessage = false;
 
-      console.log(`init ${this.settingsService.settings.datasetId}`);
+   
       const revision = await this.db.init(this.settingsService.settings.datasetId);
       const useData = await this.api.sendDataToWorker(revision, this.db.locationsHidden(), this.isBurningMan());
 
