@@ -1,5 +1,5 @@
 import { WorkerClass } from './worker-interface';
-import { Art, Camp, DataMethods, Day, Event, FullDataset, GPSSet, GeoRef, LocationName, MapPoint, MapSet, Pin, RSLEvent, Revision, TimeRange, TimeString } from './models';
+import { Art, Camp, DataMethods, Day, Event, FullDataset, GPSSet, GeoRef, LocationName, MapPoint, MapSet, Pin, PlacedPin, RSLEvent, Revision, TimeRange, TimeString } from './models';
 import { BurningManTimeZone, CurrentYear, getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from '../utils/utils';
 import { defaultMapRadius, distance, formatDistance, locationStringToPin, mapPointToPoint } from '../map/map.utils';
 import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from '../map/geo.utils';
@@ -12,6 +12,7 @@ interface TimeCache {
 export class DataManager implements WorkerClass {
     private events: Event[] = [];
     private camps: Camp[] = [];
+    private pins: PlacedPin[] = [];
     private categories: string[] = [];
     private art: Art[] = [];
     private days: number[] = [];
@@ -43,6 +44,7 @@ export class DataManager implements WorkerClass {
             case DataMethods.SetMapPointsGPS: return this.setMapPointsGPS(args[0]);
             case DataMethods.GetMapPoints: return this.getMapPoints(args[0]);
             case DataMethods.GetGPSPoints: return this.getGPSPoints(args[0], args[1]);
+            case DataMethods.GetPins: return this.getPins(args[0]);
             case DataMethods.GetRSLEvents: return await this.getRSLEvents(args[0], args[1], args[2], undefined, undefined);
             case DataMethods.CheckEvents: return this.checkEvents(args[0]);
             case DataMethods.FindEvents: return this.findEvents(args[0], args[1], args[2], args[3], args[4], args[5]);
@@ -62,6 +64,7 @@ export class DataManager implements WorkerClass {
         this.events = await this.loadEvents();
         this.camps = await this.loadCamps();
         this.art = await this.loadArt();
+        this.pins = await this.loadPins();
         this.revision = await this.loadRevision();
         this.georeferences = await this.getGeoReferences();
         this.init(hideLocations);
@@ -213,15 +216,15 @@ export class DataManager implements WorkerClass {
             }
             if (event.hosted_by_camp) {
                 event.camp = campIndex[event.hosted_by_camp];
-                event.location = locIndex[event.hosted_by_camp];                
+                event.location = locIndex[event.hosted_by_camp];
 
                 const pin = locationStringToPin(event.location, this.mapRadius);
-                const placed = pinIndex[event.hosted_by_camp]; 
-                if (placed) {                    
+                const placed = pinIndex[event.hosted_by_camp];
+                if (placed) {
                     event.pin = placed;
                 }
                 if (pin) {
-                    const gpsCoords = mapToGps({ x: pin.x, y: pin.y });                    
+                    const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
                     event.gpsCoords = gpsCoords;
                 } else {
                     if (!environment.production) {
@@ -305,13 +308,14 @@ export class DataManager implements WorkerClass {
 
     public async setDataset(ds: FullDataset) {
         try {
-            this.dataset = ds.dataset;            
-            this.events = await this.loadData(ds.events);            
+            this.dataset = ds.dataset;
+            this.events = await this.loadData(ds.events);
             this.camps = await this.loadData(ds.camps);
-            this.art = await this.loadData(ds.art);            
-            //const rslData = await this.loadData(ds.rsl);
+            this.art = await this.loadData(ds.art);
+            this.pins = await this.loadData(ds.pins);
+            const rslData = await this.loadData(ds.rsl);
             console.log(`Setting dataset in worker: ${this.events.length} events, ${this.camps.length} camps, ${this.art.length} art`);
-            
+
         } catch (err) {
             console.error(`Failed to setDataset`, err);
         } finally {
@@ -736,8 +740,13 @@ export class DataManager implements WorkerClass {
 
     private async loadData(uri: string): Promise<any> {
         console.log(`loadData`, uri);
-        const res = await fetch(uri);
-        return await res.json();
+        try {
+            const res = await fetch(uri);
+            return await res.json();
+        } catch (err) {
+            console.warn(`Failed to load ${uri}`);
+            return [];
+        }
     }
 
     public async getPotties(): Promise<Pin[]> {
@@ -746,24 +755,52 @@ export class DataManager implements WorkerClass {
     }
 
     public async getGPSPoints(name: string, title: string): Promise<MapSet> {
-        const res = await fetch(this.path(name));
-        const data: GPSSet = await res.json();
-        const result: MapSet = { title: data.title, description: data.description, points: [] };
-        for (let gps of data.points) {
-            const point = gpsToMap(gps);
-            const mapPoint: MapPoint = { street: '', clock: '', x: point.x, y: point.y, gps: structuredClone(gps), info: { title, location: '', subtitle: '' } }
-            result.points.push(mapPoint);
+        try {
+            const res = await fetch(this.path(name));
+            const data: GPSSet = await res.json();
+            const result: MapSet = { title: data.title, description: data.description, points: [] };
+            for (let gps of data.points) {
+                const point = gpsToMap(gps);
+                const mapPoint: MapPoint = { street: '', clock: '', x: point.x, y: point.y, gps: structuredClone(gps), info: { title, location: '', subtitle: '' } }
+                result.points.push(mapPoint);
+            }
+            return result;
+        } catch (err) {
+            return { title: '', description: '', points: [] }
         }
-        return result;
     }
 
     public async getMapPoints(name: string): Promise<MapSet> {
-        const res = await fetch(this.path(name));
-        const mapSet: MapSet = await res.json();
-        for (let point of mapSet.points) {
-            point.gps = this.getMapPointGPS(point);
+        try {
+            const res = await fetch(this.path(name));
+            const mapSet: MapSet = await res.json();
+            for (let point of mapSet.points) {
+                point.gps = this.getMapPointGPS(point);
+            }
+            return mapSet;
+        } catch (err) {
+            return { title: '', description: '', points: [] };
         }
-        return mapSet;
+    }
+
+    public async getPins(pinType: string): Promise<MapSet> {
+        try {
+            const url = this.path('pins', true);
+            console.log(`Get ${url}`);
+            const res = await fetch(url);
+            const pins: PlacedPin[] = await res.json();
+            const mapSet: MapSet = { title: pinType, description: '', points: [] };
+            for (let pin of pins) {
+                const mp: MapPoint = { x: pin.x, y: pin.y, street: '', clock: '' };
+                mp.gps = this.getMapPointGPS(mp);
+                if (pin.label == pinType) {
+                    mapSet.points.push(mp);
+                }
+            }
+            return mapSet;
+        } catch (err) {
+            return { title: pinType, description: '', points: [] };
+        }
     }
 
     public async getGeoReferences(): Promise<GeoRef[]> {
@@ -784,6 +821,15 @@ export class DataManager implements WorkerClass {
     private async loadArt(): Promise<Art[]> {
         const res = await fetch(this.path('art', true));
         return await res.json();
+    }
+
+    private async loadPins(): Promise<PlacedPin[]> {
+        try {
+            const res = await fetch(this.path('pins', true));
+            return await res.json();
+        } catch {
+            return [];
+        }
     }
 
     private async loadRevision(): Promise<Revision> {

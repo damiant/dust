@@ -82,6 +82,10 @@ export class DbService {
     return await call(this.worker, DataMethods.GetMapPoints, name);
   }
 
+  public async getPins(name: string): Promise<MapSet> {
+    return await call(this.worker, DataMethods.GetPins, name);
+  }
+
   public async getGPSPoints(name: string, title: string): Promise<MapSet> {
     return await call(this.worker, DataMethods.GetGPSPoints, name, title);
   }
@@ -152,7 +156,7 @@ export class DbService {
     return await call(this.worker, DataMethods.GetEvents, idx, count);
   }
 
-  public async setDataset(fullDataset: FullDataset): Promise<void> {
+  public async setDataset(fullDataset: FullDataset): Promise<void> {    
     return await call(this.worker, DataMethods.SetDataset, fullDataset);
   }
 

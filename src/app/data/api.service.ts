@@ -14,6 +14,7 @@ enum Names {
   camps = 'camps',
   rsl = 'rsl',
   revision = 'revision',
+  pins = 'pins',
   map = 'map'
 }
 
@@ -55,12 +56,14 @@ export class ApiService {
     const events = await this.getUri(ds, Names.events);
     const art = await this.getUri(ds, Names.art);
     const camps = await this.getUri(ds, Names.camps);
+    const pins = await this.getUri(ds, Names.pins);
     const rsl = await this.getUri(ds, Names.rsl);
     await this.dbService.setDataset({
       dataset: ds,
       events,
       camps,
       art,
+      pins,
       rsl,
       hideLocations
     });
@@ -124,7 +127,8 @@ export class ApiService {
     const events = await getLive(latest, Names.events);
     const art = await getLive(latest, Names.art);
     const camps = await getLive(latest, Names.camps);
-    const rsl = await getLive(latest, Names.rsl);
+    const rsl = await getLive(latest, Names.rsl);    
+    const pins = await getLive(latest, Names.pins);    
     const mapData = await getLiveBinary(latest, Names.map, 'svg');
     if (this.badData(events, art, camps)) {
       console.error(`Download failed`);
@@ -135,6 +139,7 @@ export class ApiService {
     await this.save(this.getId(latest, Names.camps), camps);
     await this.save(this.getId(latest, Names.art), art);
     await this.save(this.getId(latest, Names.rsl), rsl);
+    await this.save(this.getId(latest, Names.pins), pins);
     let uri = await this.saveBinary(this.getId(latest, Names.map), 'svg', mapData);
     await this.save(this.getId(latest, Names.revision), revision);
     if (uri.startsWith('/DATA/')) {
@@ -155,6 +160,9 @@ export class ApiService {
   }
 
   private async getUri(dataset: string, name: string, ext?: string): Promise<string> {
+    if (Capacitor.getPlatform() == 'web') {
+      return `https://data.dust.events/${dataset}/${name}.${ext ? ext : 'json'}`;
+    }
     const r = await Filesystem.getUri({ path: `${this.getId(dataset, name)}.${ext ? ext : 'txt'}`, directory: Directory.Data })
     return Capacitor.convertFileSrc(r.uri);
   }

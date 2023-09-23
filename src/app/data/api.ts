@@ -22,12 +22,19 @@ export async function getLive(dataset: string, name: string, timeout: number = 5
     const status = await Network.getStatus();
     if (!status.connected) {
         console.log(`readData ${dataset} ${name}...`);
+
         return await get(dataset, name);
+
     } else {
         // Try to get from url        
         console.log(`getLive ${livePath(dataset, name)} ${dataset} ${name}...`);
-        const res = await fetchWithTimeout(livePath(dataset, name), {}, timeout);
-        return await res.json();
+        try {
+            const res = await fetchWithTimeout(livePath(dataset, name), {}, timeout);
+            return await res.json();
+        } catch (error) {
+            console.error(error);
+            return [];
+        }
     }
 }
 

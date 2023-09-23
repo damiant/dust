@@ -176,6 +176,12 @@ export interface Pin {
   y: number;
 }
 
+export interface PlacedPin {
+  x: number;
+  y: number;
+  label: string;
+}
+
 export interface Friend {
   name: string;
   address: string;
@@ -246,6 +252,7 @@ export interface FullDataset {
   events: string;
   camps: string;
   art: string;
+  pins: string;
   rsl: string;
   hideLocations: boolean
 }
@@ -275,6 +282,7 @@ export enum DataMethods {
   GetPotties = 'getPotties',
   GetMapPoints = 'getMapPoints',
   GetGPSPoints = 'getGPSPoints',
+  GetPins = 'getPins',
   GetCategories = 'getCategories',
   SetDataset = 'setDataset',
   GetEvents = 'getEvents',
