@@ -179,6 +179,7 @@ export interface Pin {
 export interface PlacedPin {
   x: number;
   y: number;
+  gps?: GpsCoord;
   label: string;
 }
 

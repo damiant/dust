@@ -124,17 +124,27 @@ export class DataManager implements WorkerClass {
     private initGeoLocation() {
         const gpsCoords: GpsCoord[] = [];
         const points: Point[] = [];
-        if (this.georeferences.length < 3) {
+        if (this.georeferences.length < 3 && this.pins.length > 0) {
+            // We can get GPS points from pins (eg SNRG)
+            for (let pin of this.pins) {
+                if (points.length < 3 && pin.label.toLowerCase() == 'gps' && pin.gps) {
+                    gpsCoords.push({ lng: pin.gps.lng, lat: pin.gps.lat });
+                    points.push({ x: pin.x, y: pin.y });
+                }
+            }
+        } else {
+            // Or from geo.json file (eg Burning Man)
+            for (let ref of [this.georeferences[0], this.georeferences[1], this.georeferences[2]]) {
+                gpsCoords.push({ lng: ref.coordinates[0], lat: ref.coordinates[1] });
+                const mp: MapPoint = { clock: ref.clock, street: ref.street };
+                const pt = mapPointToPoint(mp, this.mapRadius);
+                points.push(pt);
+            }
+        }
+        if (gpsCoords.length != 3) {
             console.error(`This dataset does not have the required 3 geolocation points.`);
             return;
         }
-        for (let ref of [this.georeferences[0], this.georeferences[1], this.georeferences[2]]) {
-            gpsCoords.push({ lng: ref.coordinates[0], lat: ref.coordinates[1] });
-            const mp: MapPoint = { clock: ref.clock, street: ref.street };
-            const pt = mapPointToPoint(mp, this.mapRadius);
-            points.push(pt);
-        }
-
         setReferencePoints(gpsCoords, points);
     }
 
