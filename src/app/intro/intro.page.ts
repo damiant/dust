@@ -17,6 +17,7 @@ import { Capacitor } from '@capacitor/core';
 import { ThemePrimaryColor, UiService } from '../ui/ui.service';
 import { environment } from 'src/environments/environment';
 import { Network } from '@capacitor/network';
+import { Directory, Filesystem } from '@capacitor/filesystem';
 
 interface IntroState {
   ready: boolean,
@@ -26,6 +27,7 @@ interface IntroState {
   cards: Dataset[];
   selected: Dataset | undefined;
   message: string;
+  clearCount: number;
 }
 
 function initialState(): IntroState {
@@ -36,7 +38,8 @@ function initialState(): IntroState {
     eventAlreadySelected: true,
     cards: [],
     selected: undefined,
-    message: ''
+    message: '',
+    clearCount: 0
   }
 }
 
@@ -107,8 +110,26 @@ export class IntroPage {
     }
   }
 
+  public async clear() {
+    this.vm.clearCount++;
+    if (this.vm.clearCount < 5) {
+       return;
+    }
+    const d = await Filesystem.readdir({ path: '.', directory: Directory.Data });
+    for (let file of d.files) {
+      console.log(`Delete file ${file.name}`);
+      await Filesystem.deleteFile({ path: file.name, directory: Directory.Data });
+    }
+    console.log('Done clearing');
+    this.settingsService.clearSelectedEvent();
+    this.settingsService.settings.lastDownload = '';
+    this.settingsService.save();
+    document.location.href = '';
+  }
+
   async go() {
     if (!this.vm.selected) return;
+
     const start = new Date(this.vm.selected.start);
     const manBurns = addDays(start, 6);
     const x = daysUntil(manBurns, now());
@@ -156,7 +177,7 @@ export class IntroPage {
       this.vm.ready = false;
       this.vm.showMessage = false;
 
-   
+
       const revision = await this.db.init(this.settingsService.settings.datasetId);
       const useData = await this.api.sendDataToWorker(revision, this.db.locationsHidden(), this.isBurningMan());
 

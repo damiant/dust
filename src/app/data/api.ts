@@ -1,5 +1,6 @@
 import { Network } from '@capacitor/network';
 import { Dataset } from './models';
+import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
 //https://dust.events/assets/data/datasets.json
 
 export function datasetFilename(dataset: Dataset): string {
@@ -16,6 +17,56 @@ function livePath(dataset: string, name: string, ext?: string): string {
     } else {
         return `https://data.dust.events/${dataset}/${name}.${ext ? ext : 'json'}`;
     }
+}
+
+export async function getCached(dataset: string, name: string, timeout: number = 5000): Promise<any> {
+    try {
+        console.log(`getLive ${livePath(dataset, name)} ${dataset} ${name}...`);
+        const res = await fetchWithTimeout(livePath(dataset, name), {}, timeout);
+        const data = await res.json();
+        // Store cached data
+        await save(getId(dataset, name), data);
+        return data;
+    } catch (error) {
+        console.error(error);
+
+        // Get from the app store
+        const data = await read(getId(dataset, name));
+        if (data) {
+            return data;
+        }
+
+
+        // else Get default value
+        return await get(dataset, name);
+    }
+}
+
+function getId(dataset: string, name: string): string {
+    return `${dataset}-${name}`;
+}
+
+async function read(id: string): Promise<any> {
+    try {
+        console.log(`Reading from filesystem ${id}`);
+        const contents = await Filesystem.readFile({
+            path: `${id}.txt`,
+            directory: Directory.Data,
+            encoding: Encoding.UTF8,
+        });
+        return JSON.parse(contents.data as any);
+    } catch {
+        return undefined;
+    }
+}
+
+async function save(id: string, data: any) {
+    await Filesystem.writeFile({
+        path: `${id}.txt`,
+        data: JSON.stringify(data),
+        directory: Directory.Data,
+        encoding: Encoding.UTF8,
+    });
 }
 
 export async function getLive(dataset: string, name: string, timeout: number = 5000): Promise<any> {
@@ -48,12 +99,8 @@ export async function getLiveBinary(dataset: string, name: string, ext: string):
             const url = livePath(dataset, name, ext);
             console.log(`getLive ${url} ${dataset} ${name}...`);
             const res = await fetchWithTimeout(url, {}, 15000);
-            console.log(`getLive ${url} convert to blob`);
             const blob = await res.blob();
-            console.log(`getLive ${url} converted to blob. Size is ${blob.size}`);
-            console.log(`getLive ${url} convert to base64`);
             const data = await blobToBase64(blob);
-            console.log(`getLive ${url} complete`);
             return data;
         } catch (error) {
             console.error(`Failed getLiveBinary`);

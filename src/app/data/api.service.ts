@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Art, Camp, Dataset, Revision } from './models';
-import { datasetFilename, getLive, getLiveBinary } from './api';
+import { datasetFilename, getCached, getLive, getLiveBinary } from './api';
 import { SettingsService } from './settings.service';
 import { minutesBetween, now } from '../utils/utils';
 import { DbService } from './db.service';
@@ -79,42 +79,35 @@ export class ApiService {
   }
 
   public async loadDatasets(): Promise<Dataset[]> {
-    const d = await this.get(Names.datasets, []);
-    if (d.length == 0) {
-      console.warn('Read datasets from app');
-      const res = await fetch('assets/datasets/datasets.json');
-      return await res.json();
-    } else {
-      return d;
-    }
+    return await getCached(Names.datasets, Names.datasets, 5000);
   }
 
-  public async download(dataset: Dataset | undefined) {
+  public async download(selected: Dataset | undefined) {
     const lastDownload = this.settingsService.getLastDownload();
     const mins = minutesBetween(now(), lastDownload);
-    let latest = '';
+    let dataset = '';
     let revision: Revision = { revision: 0 };
-    if (mins < 5) {
-      console.log(`Downloaded ${mins} minutes ago (${lastDownload})`);
-      return;
-    }
+    // if (mins < 5) {
+    //   console.log(`Downloaded ${mins} minutes ago (${lastDownload})`);
+    //   return;
+    // }
     try {
       const datasets: Dataset[] = await getLive('datasets', Names.datasets, 1000);
       console.log(datasets);
       await this.save(Names.datasets, datasets);
-      latest = datasetFilename(dataset ? dataset : datasets[0]);
+      dataset = datasetFilename(selected ? selected : datasets[0]);
 
-      console.log(`get revision live ${latest}`);
-      revision = await getLive(latest, Names.revision, 1000);
+      console.log(`get revision live ${dataset}`);
+      revision = await getLive(dataset, Names.revision, 1000);
       console.log(`Live revision is ${JSON.stringify(revision)}`);
 
       // Check the current revision
-      const id = this.getId(latest, Names.revision);
+      const id = this.getId(dataset, Names.revision);
       const currentRevision: Revision = await this.get(id, { revision: 0 });
       console.log(`Current revision is ${JSON.stringify(currentRevision)}`);
 
       if (revision && currentRevision && currentRevision.revision !== null && revision.revision === currentRevision.revision) {
-        console.log(`Will not download data for ${latest} as it is already at revision ${currentRevision.revision}`);
+        console.log(`Will not download data for ${dataset} as it is already at revision ${currentRevision.revision}`);
         this.rememberLastDownload();
         return;
       }
@@ -124,26 +117,26 @@ export class ApiService {
       return;
     }
 
-    const events = await getLive(latest, Names.events);
-    const art = await getLive(latest, Names.art);
-    const camps = await getLive(latest, Names.camps);
-    const rsl = await getLive(latest, Names.rsl);    
-    const pins = await getLive(latest, Names.pins);    
-    const mapData = await getLiveBinary(latest, Names.map, 'svg');
+    const events = await getLive(dataset, Names.events);
+    const art = await getLive(dataset, Names.art);
+    const camps = await getLive(dataset, Names.camps);
+    const rsl = await getLive(dataset, Names.rsl);    
+    const pins = await getLive(dataset, Names.pins);    
+    const mapData = await getLiveBinary(dataset, Names.map, 'svg');
     if (this.badData(events, art, camps)) {
       console.error(`Download failed`);
       return;
     }
     console.log('saving data...');
-    await this.save(this.getId(latest, Names.events), events);
-    await this.save(this.getId(latest, Names.camps), camps);
-    await this.save(this.getId(latest, Names.art), art);
-    await this.save(this.getId(latest, Names.rsl), rsl);
-    await this.save(this.getId(latest, Names.pins), pins);
-    let uri = await this.saveBinary(this.getId(latest, Names.map), 'svg', mapData);
-    await this.save(this.getId(latest, Names.revision), revision);
+    await this.save(this.getId(dataset, Names.events), events);
+    await this.save(this.getId(dataset, Names.camps), camps);
+    await this.save(this.getId(dataset, Names.art), art);
+    await this.save(this.getId(dataset, Names.rsl), rsl);
+    await this.save(this.getId(dataset, Names.pins), pins);
+    let uri = await this.saveBinary(this.getId(dataset, Names.map), 'svg', mapData);
+    await this.save(this.getId(dataset, Names.revision), revision);
     if (uri.startsWith('/DATA/')) {
-      uri = `https://data.dust.events/${latest}/map.svg`;
+      uri = `https://data.dust.events/${dataset}/map.svg`;
     }
     console.log('map data was set to ' + uri);
     //this.settingsService.settings.mapUri = uri;
@@ -198,6 +191,7 @@ export class ApiService {
       directory: this.getDirectory(),
       encoding: Encoding.UTF8,
     });
+    console.log(`Saved ${id} count=${data.length}`);
   }
 
   private async saveBinary(id: string, ext: string, data: any): Promise<string> {
