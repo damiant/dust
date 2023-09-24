@@ -55,7 +55,7 @@ export class PinMapPage {
     }
   }
 
-  private async fallback(mapSet: MapSet, pinType: string): Promise<MapSet> {    
+  private async fallback(mapSet: MapSet, pinType: string): Promise<MapSet> {
     if (mapSet.points.length > 0) return mapSet;
     return await this.db.getPins(pinType);
   }
@@ -103,7 +103,7 @@ export class PinMapPage {
           location: event.location,
           subtitle: event.camp,
           href: `event/${event.uid}+Now`
-        });
+        }, event.pin);
       mapPoint.gps = await this.db.getMapPointGPS(mapPoint);
       points.push(mapPoint);
     }
