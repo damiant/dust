@@ -12,6 +12,7 @@ export interface Event {
   distance: number; // Calculated
   distanceInfo: string; // Calculated
   gpsCoords: GpsCoord; // Calculated
+  pin?: Pin; // Calculated if no gps
   all_day: any
   check_location?: number
   description: string
@@ -32,6 +33,7 @@ export interface Event {
 
 export enum LocationName {
   Unavailable = 'Location Available Soon',
+  Undefined = '',
   Unplaced = 'Unplaced'
 }
 
@@ -144,18 +146,24 @@ export enum LocationEnabledStatus {
 }
 
 export interface Settings {
-  dataset: string;
+  datasetId: string;
+  dataset: Dataset | undefined;
   eventTitle: string;
   lastDownload: string;
+  mapUri: string;
   locationEnabled: LocationEnabledStatus;
   longEvents: boolean;
 }
 
 export interface Dataset {
-  name: string;
-  title: string;
-  year: string;
-  start: string;
+  name: string; // Name
+  title: string; // Title
+  year: string; // Year name
+  id: string; // Identifier for the remote dataset at data.dust.events
+  start: string; // When it starts
+  end: string; // When it ends
+  lat: number; // Latitude (for directions)
+  long: number; // Longitude (for directions)
 }
 
 export interface TimeString {
@@ -166,6 +174,13 @@ export interface TimeString {
 export interface Pin {
   x: number;
   y: number;
+}
+
+export interface PlacedPin {
+  x: number;
+  y: number;
+  gps?: GpsCoord;
+  label: string;
 }
 
 export interface Friend {
@@ -238,6 +253,7 @@ export interface FullDataset {
   events: string;
   camps: string;
   art: string;
+  pins: string;
   rsl: string;
   hideLocations: boolean
 }
@@ -267,6 +283,7 @@ export enum DataMethods {
   GetPotties = 'getPotties',
   GetMapPoints = 'getMapPoints',
   GetGPSPoints = 'getGPSPoints',
+  GetPins = 'getPins',
   GetCategories = 'getCategories',
   SetDataset = 'setDataset',
   GetEvents = 'getEvents',

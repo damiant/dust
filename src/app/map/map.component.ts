@@ -123,6 +123,10 @@ export class MapComponent implements OnInit, OnDestroy {
   ngOnInit() {
     const darkMode = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
     this.src = darkMode ? 'assets/map-dark.svg' : 'assets/map.svg';
+    if (this.settings.settings.mapUri !== '') {
+      console.log(this.settings.settings.mapUri)
+      this.src = this.settings.settings.mapUri;
+    }
   }
 
   private async updateLocation() {
@@ -253,7 +257,7 @@ export class MapComponent implements OnInit, OnDestroy {
       const prefix = this.points.length > 1 ? 'The closest is ' : '';
       const dist = formatDistanceMiles(least);
       if (least > 50) {
-        this.footer = 'You are outside of BRC';
+        this.footer = 'You are outside of the Event';
       } else {
         if (dist != '') {
           this.footer = `${prefix}${dist} away.`;

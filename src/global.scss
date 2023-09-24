@@ -212,8 +212,9 @@ cdk-virtual-scroll-viewport {
 .virtual-scroll-container {
     width: 100%;
     max-width: 100%;
-    height: 100%;
+    height: calc(100% - 60px - env(safe-area-inset-bottom));
 }
+
 
 @keyframes pulse {
     0% {

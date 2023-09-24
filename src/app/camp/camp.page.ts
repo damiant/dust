@@ -49,16 +49,17 @@ export class CampPage implements OnInit {
     this.camp = await this.db.findCamp(id);
     this.star = await this.fav.isFavCamp(this.camp.uid);
     this.events = await this.db.getCampEvents(id);
-    const rslEvents = await this.db.getCampRSLEvents(id);
-    const favs = await this.fav.getFavorites();
     
+    const rslEvents = await this.db.getCampRSLEvents(id);
+   
+    const favs = await this.fav.getFavorites();
     this.fav.setFavorites(rslEvents, favs.rslEvents);
     for (let rsl of rslEvents) {
       rsl.camp =  this.toDate(rsl.day);
     }
     this.rslEvents = rslEvents;
-    const mp = toMapPoint(this.camp.location_string!, { title: this.camp.name, location: this.camp.location_string!, subtitle: '' });
-    this.mapPoints = [mp];
+    const mp = toMapPoint(this.camp.location_string!, { title: this.camp.name, location: this.camp.location_string!, subtitle: '' }, this.camp.pin);
+    this.mapPoints = [mp];    
   }
 
   public async toggleRSLStar(occurrence: RSLOccurrence, rslEvent: RSLEvent) {

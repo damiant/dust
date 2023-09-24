@@ -72,3 +72,8 @@
 
 ## Info
 - Audio Guide https://soundcloud.com/burningman/sets/2023-art-audio-guide
+
+## SNRG
+- Gate - Cattle Grate: 36.992388, -116.716492
+- Center Big Pond: 36.994489, -116.710432
+- Spicer Ranch Marker Pin: 36.995026, -116.717426

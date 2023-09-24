@@ -54916,23 +54916,6 @@
     ]
   },
   {
-    "title": "Burlesqapella... Burlesque + A Capella",
-    "uid": "43709",
-    "description": "The art of the tease while we meld our vocal harmonies. No instruments. Naked? Borrow gloves, remove only with toes.",
-    "event_type": {
-      "label": "Class/Workshop"
-    },
-    "print_description": "",
-    "hosted_by_camp": "a1X8X00000k3LhpUAE",
-    "check_location": 1,
-    "occurrence_set": [
-      {
-        "start_time": "2023-09-01T10:15:00-07:00",
-        "end_time": "2023-09-01T11:45:00-07:00"
-      }
-    ]
-  },
-  {
     "title": "Solar-Powered Artists on Playa",
     "uid": "43710",
     "description": "Learn how the Renewables for Artists Team (RAT) helps artists adopt solar power on playa!",
@@ -90091,22 +90074,6 @@
     ]
   },
   {
-    "title": "Imbalance as a Source of Motion",
-    "uid": "45531",
-    "description": "Balance is Stillness; Weight matched by Opposing Force. Motion is the natural result of the Disruption of this Balance.",
-    "event_type": {
-      "label": "Class/Workshop"
-    },
-    "print_description": "",
-    "hosted_by_camp": "a1X8X00000jJ93uUAC",
-    "occurrence_set": [
-      {
-        "start_time": "2023-09-02T16:30:00-07:00",
-        "end_time": "2023-09-02T18:30:00-07:00"
-      }
-    ]
-  },
-  {
     "title": "Manifest Your Magic: Unleash the Power Within",
     "uid": "45532",
     "description": "Dive into manifestation with authentic relating games. Explore beliefs, share techniques, unlock your manifesting power.",
@@ -100480,6 +100447,22 @@
       {
         "start_time": "2023-08-31T20:00:00-07:00",
         "end_time": "2023-09-01T00:00:00-07:00"
+      }
+    ]
+  },
+  {
+    "title": "Full Moon Ceremony at The Wisdom Totems",
+    "uid": "46129",
+    "description": "Rituals including Cacao, guided meditation, tribal paint and intentions, and a beautiful sound healing controlled by crystal resonance. Gather at 3:30pm for the 4-5pm ceremony.",
+    "event_type": {
+      "label": "Ritual/Ceremony"
+    },
+    "print_description": "",
+    "hosted_by_camp": "a1X8X00000k3M9IUAU",
+    "occurrence_set": [
+      {
+        "start_time": "2023-08-30T15:30:00-07:00",
+        "end_time": "2023-08-30T17:00:00-07:00"
       }
     ]
   }

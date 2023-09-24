@@ -26,7 +26,7 @@ export class FavoritesService {
   private favorites: Favorites = { art: [], events: [], camps: [], friends: [], rslEvents: [], privateEvents: [] };
 
   constructor(private notificationService: NotificationService, private settingsService: SettingsService, private db: DbService) {
-    this.init(this.settingsService.settings.dataset);
+    this.init(this.settingsService.settings.datasetId);
   }
 
 

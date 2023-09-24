@@ -27,7 +27,7 @@
       <h1 *ngIf="!camp.url">{{camp.name}}</h1>
       <h1 style="color: var(--ion-color-primary)" *ngIf="camp.url" (click)="open(camp.url)">{{camp.name}}</h1>
     </ion-item>
-    <ion-item (click)="noop()">
+    <ion-item *ngIf="camp.location_string" (click)="noop()">
       <ion-icon slot="start" name="location-outline"></ion-icon>
       <ion-label>{{camp.location_string}}</ion-label>
     </ion-item>

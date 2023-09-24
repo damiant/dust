@@ -25,7 +25,7 @@ enum MapType {
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, MapComponent]
 })
-export class PinMapPage implements OnInit {
+export class PinMapPage {
   @Input() mapType = '';
   points: MapPoint[] = [];
   smallPins: boolean = false;
@@ -33,9 +33,6 @@ export class PinMapPage implements OnInit {
   description = '';
   constructor(private db: DbService, private geo: GeoService) {
     this.db.checkInit();
-  }
-
-  ngOnInit() {
   }
 
   async ionViewWillEnter() {
@@ -51,11 +48,16 @@ export class PinMapPage implements OnInit {
     switch (mapType) {
       case MapType.Art: return await this.getArt();
       case MapType.Now: return await this.getEventsNow();
-      case MapType.Restrooms: return await this.db.getGPSPoints('restrooms', 'Block of restrooms');
-      case MapType.Ice: return await this.db.getMapPoints('ice');
-      case MapType.Medical: return await this.db.getMapPoints('medical');
+      case MapType.Restrooms: return await this.fallback(await this.db.getGPSPoints('restrooms', 'Block of restrooms'), 'Restrooms');
+      case MapType.Ice: return await this.fallback(await this.db.getMapPoints('ice'), 'Ice');
+      case MapType.Medical: return await this.fallback(await this.db.getMapPoints('medical'), 'Medical');
       default: return { title: '', description: '', points: [] };
     }
+  }
+
+  private async fallback(mapSet: MapSet, pinType: string): Promise<MapSet> {
+    if (mapSet.points.length > 0) return mapSet;
+    return await this.db.getPins(pinType);
   }
 
   private async getArt(): Promise<MapSet> {
@@ -101,7 +103,7 @@ export class PinMapPage implements OnInit {
           location: event.location,
           subtitle: event.camp,
           href: `event/${event.uid}+Now`
-        });
+        }, event.pin);
       mapPoint.gps = await this.db.getMapPointGPS(mapPoint);
       points.push(mapPoint);
     }

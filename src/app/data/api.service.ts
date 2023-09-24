@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Art, Camp, Dataset, Revision } from './models';
-import { datasetFilename, getLive } from './api';
+import { datasetFilename, getCached, getLive, getLiveBinary } from './api';
 import { SettingsService } from './settings.service';
 import { minutesBetween, now } from '../utils/utils';
 import { DbService } from './db.service';
@@ -13,7 +13,9 @@ enum Names {
   art = 'art',
   camps = 'camps',
   rsl = 'rsl',
-  revision = 'revision'
+  revision = 'revision',
+  pins = 'pins',
+  map = 'map'
 }
 
 
@@ -25,16 +27,25 @@ export class ApiService {
   constructor(private settingsService: SettingsService, private dbService: DbService) {
   }
 
-  public async sendDataToWorker(defaultRevision: number, hideLocations: boolean): Promise<boolean> {
+  public async sendDataToWorker(defaultRevision: number, hideLocations: boolean, mapIsOffline: boolean): Promise<boolean> {
 
-    const ds = this.settingsService.settings.dataset;
+    const ds = this.settingsService.settings.datasetId;
     try {
       const revision: Revision = await this.read(ds, Names.revision);
       if (!revision) {
         console.warn(`Read from app storage`);
         return false;
       }
-      if (revision.revision <= defaultRevision) {
+      const mapUri = await this.getUri(ds, Names.map, 'svg');
+      const exists = await this.stat(ds, Names.map, 'svg');
+      if (exists) {
+        console.info(`${ds} map is ${mapUri}`);
+      } else {
+        console.error(`${ds} map not found at ${mapUri}`);
+      }
+      this.settingsService.settings.mapUri = mapIsOffline ? '' : mapUri;
+      this.settingsService.save();
+      if (revision.revision <= defaultRevision && mapIsOffline) {
         console.warn(`Did not read data from storage as it is at revision ${revision.revision} but current is ${defaultRevision}`);
         return false;
       }
@@ -45,12 +56,14 @@ export class ApiService {
     const events = await this.getUri(ds, Names.events);
     const art = await this.getUri(ds, Names.art);
     const camps = await this.getUri(ds, Names.camps);
+    const pins = await this.getUri(ds, Names.pins);
     const rsl = await this.getUri(ds, Names.rsl);
     await this.dbService.setDataset({
       dataset: ds,
       events,
       camps,
       art,
+      pins,
       rsl,
       hideLocations
     });
@@ -62,54 +75,71 @@ export class ApiService {
   }
 
   private badData(events: Event[], art: Art[], camps: Camp[]): boolean {
-    return (!camps || camps.length == 0 || !art || art.length == 0 || !events || events.length == 0);
+    return (!camps || camps.length == 0 || !art || !events || events.length == 0);
   }
 
-  public async download() {
+  public async loadDatasets(): Promise<Dataset[]> {
+    return await getCached(Names.datasets, Names.datasets, 5000);
+  }
+
+  public async download(selected: Dataset | undefined) {
     const lastDownload = this.settingsService.getLastDownload();
     const mins = minutesBetween(now(), lastDownload);
-    let latest = '';
-    let revision: Revision = { revision: 0};
-    if (mins < 60) {
-      console.log(`Downloaded ${mins} minutes ago (${lastDownload})`);
-      return;
-    }
+    let dataset = '';
+    let revision: Revision = { revision: 0 };
+    // if (mins < 5) {
+    //   console.log(`Downloaded ${mins} minutes ago (${lastDownload})`);
+    //   return;
+    // }
     try {
       const datasets: Dataset[] = await getLive('datasets', Names.datasets, 1000);
       console.log(datasets);
       await this.save(Names.datasets, datasets);
-      latest = datasetFilename(datasets[0]);
+      dataset = datasetFilename(selected ? selected : datasets[0]);
 
-      revision = await getLive(latest, Names.revision, 1000);
-      console.log(revision);
+      console.log(`get revision live ${dataset}`);
+      revision = await getLive(dataset, Names.revision, 1000);
+      console.log(`Live revision is ${JSON.stringify(revision)}`);
+
       // Check the current revision
-      const id = this.getId(latest, Names.revision);
+      const id = this.getId(dataset, Names.revision);
       const currentRevision: Revision = await this.get(id, { revision: 0 });
+      console.log(`Current revision is ${JSON.stringify(currentRevision)}`);
 
-      if (revision && currentRevision && revision.revision === currentRevision.revision) {
-        console.log(`Will not download data for ${latest} as it is already at revision ${currentRevision.revision}`);
+      if (revision && currentRevision && currentRevision.revision !== null && revision.revision === currentRevision.revision) {
+        console.log(`Will not download data for ${dataset} as it is already at revision ${currentRevision.revision}`);
         this.rememberLastDownload();
         return;
       }
     } catch (err) {
-      console.error(err);
+      console.log('Possible CORs error as document location is ', document.location.href);
+      console.error('Unable to download', err);
       return;
     }
 
-
-    const events = await getLive(latest, Names.events);
-    const art = await getLive(latest, Names.art);
-    const camps = await getLive(latest, Names.camps);
-    const rsl = await getLive(latest, Names.rsl);
+    const events = await getLive(dataset, Names.events);
+    const art = await getLive(dataset, Names.art);
+    const camps = await getLive(dataset, Names.camps);
+    const rsl = await getLive(dataset, Names.rsl);    
+    const pins = await getLive(dataset, Names.pins);    
+    const mapData = await getLiveBinary(dataset, Names.map, 'svg');
     if (this.badData(events, art, camps)) {
       console.error(`Download failed`);
       return;
     }
-    await this.save(this.getId(latest, Names.events), events);
-    await this.save(this.getId(latest, Names.camps), camps);
-    await this.save(this.getId(latest, Names.art), art);
-    await this.save(this.getId(latest, Names.rsl), rsl);
-    await this.save(this.getId(latest, Names.revision), revision);
+    console.log('saving data...');
+    await this.save(this.getId(dataset, Names.events), events);
+    await this.save(this.getId(dataset, Names.camps), camps);
+    await this.save(this.getId(dataset, Names.art), art);
+    await this.save(this.getId(dataset, Names.rsl), rsl);
+    await this.save(this.getId(dataset, Names.pins), pins);
+    let uri = await this.saveBinary(this.getId(dataset, Names.map), 'svg', mapData);
+    await this.save(this.getId(dataset, Names.revision), revision);
+    if (uri.startsWith('/DATA/')) {
+      uri = `https://data.dust.events/${dataset}/map.svg`;
+    }
+    console.log('map data was set to ' + uri);
+    //this.settingsService.settings.mapUri = uri;
     this.rememberLastDownload();
   }
 
@@ -122,9 +152,21 @@ export class ApiService {
     return `${dataset}-${name}`;
   }
 
-  private async getUri(dataset: string, name: string): Promise<string> {
-    const r = await Filesystem.getUri({ path: `${this.getId(dataset, name)}.txt`, directory: Directory.Data })
+  private async getUri(dataset: string, name: string, ext?: string): Promise<string> {
+    if (Capacitor.getPlatform() == 'web') {
+      return `https://data.dust.events/${dataset}/${name}.${ext ? ext : 'json'}`;
+    }
+    const r = await Filesystem.getUri({ path: `${this.getId(dataset, name)}.${ext ? ext : 'txt'}`, directory: Directory.Data })
     return Capacitor.convertFileSrc(r.uri);
+  }
+
+  private async stat(dataset: string, name: string, ext?: string): Promise<boolean> {
+    try {
+      const s = await Filesystem.stat({ path: `${this.getId(dataset, name)}.${ext ? ext : 'txt'}`, directory: Directory.Data })
+      return s.size > 0;
+    } catch {
+      return false;
+    }
   }
 
   private async get(id: string, defaultValue: any): Promise<any> {
@@ -149,13 +191,23 @@ export class ApiService {
       directory: this.getDirectory(),
       encoding: Encoding.UTF8,
     });
+    console.log(`Saved ${id} count=${data.length}`);
+  }
+
+  private async saveBinary(id: string, ext: string, data: any): Promise<string> {
+    const res = await Filesystem.writeFile({
+      path: `${id}.${ext}`,
+      data: data,
+      directory: this.getDirectory()
+    });
+    return Capacitor.convertFileSrc(res.uri);
   }
 
   private getDirectory(): Directory {
     if (this.isAndroid()) {
       return Directory.Data;
     } else {
-      return Directory.Documents;
+      return Directory.Data;//Documents;
     }
   }
 

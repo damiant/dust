@@ -1,11 +1,11 @@
 <ion-content color="primary" [fullscreen]="true">
   <app-message (dismissed)="launch()" [show]="vm.showMessage" [title]="'About 2023'" [message]="vm.message"></app-message>
-  <div [class.full]="vm.yearSelectedAlready" class="vcenter rows">
-    <h1>dust.</h1>
+  <div [class.full]="vm.eventAlreadySelected" class="vcenter rows">
+    <h1 (click)="clear()">dust.</h1>
     <ion-text><b>dust</b> is a guide for burners to find events, camps and art.</ion-text>
   </div>
-  <div [hidden]="vm.yearSelectedAlready" class="container" id="scroll-container">
-    <div class="card" [ngClass]="(vm.selected?.year === card.year) ? 'select' : 'unselect'" *ngFor="let card of vm.cards"
+  <div [hidden]="vm.eventAlreadySelected" class="container" id="scroll-container">
+    <div class="card" [ngClass]="(vm.selected?.id === card.id) ? 'select' : 'unselect'" *ngFor="let card of vm.cards"
       (click)="open(card)">
       <div class="card-container">
         <ion-text>{{card.name}}<br />{{card.year}}</ion-text>
@@ -17,7 +17,7 @@
       <ion-spinner name="dots" color="light"></ion-spinner>
     </div>
   </div>
-  <div [hidden]="vm.yearSelectedAlready" class="footer">
+  <div [hidden]="vm.eventAlreadySelected" class="footer">
     <ion-button [disabled]="!vm.ready" (click)="go()" size="large" shape="round">Get Dusty
       <ion-spinner style="margin-left: 0.5rem" color="light" name="circular" *ngIf="!vm.ready"></ion-spinner>
       <ion-icon *ngIf="vm.ready" name="arrow-forward-outline"></ion-icon></ion-button>

@@ -40,20 +40,22 @@ export function setReferencePoints(coords: GpsCoord[], mapXY: Point[]) {
 }
 
 export function gpsToMap(gps: GpsCoord): Point {
+    if (!transform) return { x: 0, y: 0 }
     return transform.toXY(gps);
 }
 
 export function mapToGps(point: Point): GpsCoord {
+    if (!transform) return { lat: 0, lng: 0 };
     return transform.toGPS(point.x, point.y);
 }
 
 export function NoGPSCoord(): GpsCoord2 {
-    return { lat: 0, lng: 0, timeStamp: new Date().getTime()};
+    return { lat: 0, lng: 0, timeStamp: new Date().getTime() };
 }
 
 export function timeStampGPS(gpsCoord: GpsCoord): GpsCoord2 {
     (gpsCoord as GpsCoord2).timeStamp = new Date().getTime();
-    return (gpsCoord as GpsCoord2);    
+    return (gpsCoord as GpsCoord2);
 }
 
 export interface GpsCoord {

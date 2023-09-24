@@ -61,14 +61,19 @@ export class EventPage implements OnInit {
       this.mapSubtitle = this.event.location;
       const mapPoint = toMapPoint(this.event.location,
         { title: this.event.title, location: this.event.location, subtitle: this.event.camp });
-      mapPoint.gps = await this.db.getMapPointGPS(mapPoint);
+      if (this.event.pin) {
+        mapPoint.x = this.event.pin.x;
+        mapPoint.y = this.event.pin.y;
+      } else {
+        mapPoint.gps = await this.db.getMapPointGPS(mapPoint);
+      }
       this.mapPoints.push(mapPoint);
-        const selectedDay = this.db.selectedDay();            
+      const selectedDay = this.db.selectedDay();
       this.event.occurrence_set = this.event.occurrence_set.filter((o) => {
-        if (!sameDay(selectedDay,noDate()) && !dateMatches(selectedDay, o)) {
+        if (!sameDay(selectedDay, noDate()) && !dateMatches(selectedDay, o)) {
           return false;
         }
-        return !o.old; 
+        return !o.old;
       });
       await this.fav.setEventStars(this.event);
     } finally {

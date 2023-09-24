@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
 export class DbService {
   public selectedDay = signal(noDate());
   public selectedYear = signal('');
+  public featuresHidden = signal(['']);
   public networkStatus = signal('');
   public resume = signal('');
   private initialized = false;
@@ -46,22 +47,6 @@ export class DbService {
     return await call(this.worker, DataMethods.CheckEvents, day);
   }
 
-  public async loadDatasets(): Promise<Dataset[]> {
-    const res = await fetch('assets/datasets/datasets.json');
-    return await res.json();
-  }
-
-  public async daysUntilStarts(): Promise<number> {
-    const datasets = await this.loadDatasets();
-    console.log('daysUntilStarts', this.selectedYear());
-    const year = (this.selectedYear() == '') ? datasets[0].year : this.selectedYear();
-    const dataset = datasets.find((d) => d.year == year);
-
-    const start = new Date(dataset!.start);
-    const until = daysUntil(start, now());
-    return until;
-  }
-
   public async findEvents(query: string, day: Date | undefined, category: string, coords: GpsCoord | undefined, timeRange: TimeRange | undefined, allDay: boolean): Promise<Event[]> {    
     return await call(this.worker, DataMethods.FindEvents, query, day, category, coords, timeRange, allDay);
   }
@@ -95,6 +80,10 @@ export class DbService {
 
   public async getMapPoints(name: string): Promise<MapSet> {
     return await call(this.worker, DataMethods.GetMapPoints, name);
+  }
+
+  public async getPins(name: string): Promise<MapSet> {
+    return await call(this.worker, DataMethods.GetPins, name);
   }
 
   public async getGPSPoints(name: string, title: string): Promise<MapSet> {
@@ -167,7 +156,7 @@ export class DbService {
     return await call(this.worker, DataMethods.GetEvents, idx, count);
   }
 
-  public async setDataset(fullDataset: FullDataset): Promise<void> {
+  public async setDataset(fullDataset: FullDataset): Promise<void> {    
     return await call(this.worker, DataMethods.SetDataset, fullDataset);
   }
 

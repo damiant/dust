@@ -1,5 +1,5 @@
 import { WorkerClass } from './worker-interface';
-import { Art, Camp, DataMethods, Day, Event, FullDataset, GPSSet, GeoRef, LocationName, MapPoint, MapSet, Pin, RSLEvent, Revision, TimeRange, TimeString } from './models';
+import { Art, Camp, DataMethods, Day, Event, FullDataset, GPSSet, GeoRef, LocationName, MapPoint, MapSet, Pin, PlacedPin, RSLEvent, Revision, TimeRange, TimeString } from './models';
 import { BurningManTimeZone, CurrentYear, getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from '../utils/utils';
 import { defaultMapRadius, distance, formatDistance, locationStringToPin, mapPointToPoint } from '../map/map.utils';
 import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from '../map/geo.utils';
@@ -12,6 +12,7 @@ interface TimeCache {
 export class DataManager implements WorkerClass {
     private events: Event[] = [];
     private camps: Camp[] = [];
+    private pins: PlacedPin[] = [];
     private categories: string[] = [];
     private art: Art[] = [];
     private days: number[] = [];
@@ -43,6 +44,7 @@ export class DataManager implements WorkerClass {
             case DataMethods.SetMapPointsGPS: return this.setMapPointsGPS(args[0]);
             case DataMethods.GetMapPoints: return this.getMapPoints(args[0]);
             case DataMethods.GetGPSPoints: return this.getGPSPoints(args[0], args[1]);
+            case DataMethods.GetPins: return this.getPins(args[0]);
             case DataMethods.GetRSLEvents: return await this.getRSLEvents(args[0], args[1], args[2], undefined, undefined);
             case DataMethods.CheckEvents: return this.checkEvents(args[0]);
             case DataMethods.FindEvents: return this.findEvents(args[0], args[1], args[2], args[3], args[4], args[5]);
@@ -62,6 +64,7 @@ export class DataManager implements WorkerClass {
         this.events = await this.loadEvents();
         this.camps = await this.loadCamps();
         this.art = await this.loadArt();
+        this.pins = await this.loadPins();
         this.revision = await this.loadRevision();
         this.georeferences = await this.getGeoReferences();
         this.init(hideLocations);
@@ -121,13 +124,27 @@ export class DataManager implements WorkerClass {
     private initGeoLocation() {
         const gpsCoords: GpsCoord[] = [];
         const points: Point[] = [];
-        for (let ref of [this.georeferences[0], this.georeferences[1], this.georeferences[2]]) {
-            gpsCoords.push({ lng: ref.coordinates[0], lat: ref.coordinates[1] });
-            const mp: MapPoint = { clock: ref.clock, street: ref.street };
-            const pt = mapPointToPoint(mp, this.mapRadius);
-            points.push(pt);
+        if (this.georeferences.length < 3 && this.pins.length > 0) {
+            // We can get GPS points from pins (eg SNRG)
+            for (let pin of this.pins) {
+                if (points.length < 3 && pin.label.toLowerCase() == 'gps' && pin.gps) {
+                    gpsCoords.push({ lng: pin.gps.lng, lat: pin.gps.lat });
+                    points.push({ x: pin.x, y: pin.y });
+                }
+            }
+        } else {
+            // Or from geo.json file (eg Burning Man)
+            for (let ref of [this.georeferences[0], this.georeferences[1], this.georeferences[2]]) {
+                gpsCoords.push({ lng: ref.coordinates[0], lat: ref.coordinates[1] });
+                const mp: MapPoint = { clock: ref.clock, street: ref.street };
+                const pt = mapPointToPoint(mp, this.mapRadius);
+                points.push(pt);
+            }
         }
-
+        if (gpsCoords.length != 3) {
+            console.error(`This dataset does not have the required 3 geolocation points.`);
+            return;
+        }
         setReferencePoints(gpsCoords, points);
     }
 
@@ -162,6 +179,7 @@ export class DataManager implements WorkerClass {
 
         let campIndex: any = {};
         let locIndex: any = {};
+        let pinIndex: any = {};
         let artIndex: any = {};
         let artGPS: any = {};
         let artLocationNames: any = {};
@@ -175,8 +193,11 @@ export class DataManager implements WorkerClass {
             }
             campIndex[camp.uid] = camp.name;
             locIndex[camp.uid] = camp.location_string;
-            if (!camp.location_string || hideLocations) {
+            pinIndex[camp.uid] = camp.pin;
+            if (hideLocations) {
                 camp.location_string = LocationName.Unavailable;
+            } else if (!camp.location_string) {
+                camp.location_string = LocationName.Undefined;
             }
         }
         for (let art of this.art) {
@@ -208,6 +229,10 @@ export class DataManager implements WorkerClass {
                 event.location = locIndex[event.hosted_by_camp];
 
                 const pin = locationStringToPin(event.location, this.mapRadius);
+                const placed = pinIndex[event.hosted_by_camp];
+                if (placed) {
+                    event.pin = placed;
+                }
                 if (pin) {
                     const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
                     event.gpsCoords = gpsCoords;
@@ -297,11 +322,14 @@ export class DataManager implements WorkerClass {
             this.events = await this.loadData(ds.events);
             this.camps = await this.loadData(ds.camps);
             this.art = await this.loadData(ds.art);
+            this.pins = await this.loadData(ds.pins);
             const rslData = await this.loadData(ds.rsl);
-            console.log(`Setting dataset in worker: ${this.events.length} events, ${this.camps.length} camps, ${this.art.length} art, ${rslData.length} rsl`);
-            this.init(ds.hideLocations);
+            console.log(`Setting dataset in worker: ${this.events.length} events, ${this.camps.length} camps, ${this.art.length} art`);
+
         } catch (err) {
             console.error(`Failed to setDataset`, err);
+        } finally {
+            this.init(ds.hideLocations);
         }
     }
 
@@ -427,53 +455,59 @@ export class DataManager implements WorkerClass {
     }
 
     public async getRSLEvents(query: string, day: Date | undefined, coords: GpsCoord | undefined, ids?: string[] | undefined, campId?: string | undefined): Promise<RSLEvent[]> {
-        const res = await fetch(this.path('rsl'));
-        const events: RSLEvent[] = await res.json();
-        const result: RSLEvent[] = [];
-        query = this.scrubQuery(query);
-        const fDay = day ? this.toRSLDateFormat(day) : undefined;
-        const today = now();
-        for (let event of events) {
-            let match = false;
-            if (campId) {
-                match = (event.campUID == campId && this.nullOrEmpty(event.artCar));
-            } else {
-                match = (this.rslEventContains(event, query) && (event.day == fDay || !!ids));
-            }
+        try {
+            const res = await fetch(this.path('rsl'));
+            const events: RSLEvent[] = await res.json();
 
-            if (match) {
-                let allOld = true;
-                for (let occurrence of event.occurrences) {
-                    occurrence.old = (new Date(occurrence.endTime).getTime() - today.getTime() < 0);
-                    if (!occurrence.old) {
-                        allOld = false;
-                    }
+            const result: RSLEvent[] = [];
+            query = this.scrubQuery(query);
+            const fDay = day ? this.toRSLDateFormat(day) : undefined;
+            const today = now();
+            for (let event of events) {
+                let match = false;
+                if (campId) {
+                    match = (event.campUID == campId && this.nullOrEmpty(event.artCar));
+                } else {
+                    match = (this.rslEventContains(event, query) && (event.day == fDay || !!ids));
                 }
-                if (ids && ids.length > 0) {
-                    event.occurrences = event.occurrences.filter(o => {
-                        const id = `${event.id}-${o.id}`;
-                        return ids.includes(id);
-                    });
-                    if (event.occurrences.length == 0) {
-                        allOld = true; // Don't include
+
+                if (match) {
+                    let allOld = true;
+                    for (let occurrence of event.occurrences) {
+                        occurrence.old = (new Date(occurrence.endTime).getTime() - today.getTime() < 0);
+                        if (!occurrence.old) {
+                            allOld = false;
+                        }
                     }
-                }
-                if (!allOld) {
-                    // If all times have ended
-                    event.distance = distance(coords!, event.gpsCoords!);
-                    event.distanceInfo = formatDistance(event.distance);
-                    result.push(event);
+                    if (ids && ids.length > 0) {
+                        event.occurrences = event.occurrences.filter(o => {
+                            const id = `${event.id}-${o.id}`;
+                            return ids.includes(id);
+                        });
+                        if (event.occurrences.length == 0) {
+                            allOld = true; // Don't include
+                        }
+                    }
+                    if (!allOld) {
+                        // If all times have ended
+                        event.distance = distance(coords!, event.gpsCoords!);
+                        event.distanceInfo = formatDistance(event.distance);
+                        result.push(event);
+                    }
                 }
             }
+            if (coords) {
+                this.sortRSLEventsByDistance(result);
+            } else if (campId) {
+                this.sortRSLEventsByDay(result);
+            } else {
+                this.sortRSLEventsByName(result);
+            }
+            return result;
+        } catch (err) {
+            console.error(`getRSLEvents returned an error`, err)
+            return [];
         }
-        if (coords) {
-            this.sortRSLEventsByDistance(result);
-        } else if (campId) {
-            this.sortRSLEventsByDay(result);
-        } else {
-            this.sortRSLEventsByName(result);
-        }
-        return result;
     }
 
     private scrubQuery(query: string): string {
@@ -699,10 +733,16 @@ export class DataManager implements WorkerClass {
 
     private path(name: string, online?: boolean): string {
         if (this.dataset !== CurrentYear && online) {
-            return `https://dust.events/assets/data-v2/${this.dataset}/${name}.json`;
+            if (this.dataset.toLowerCase().includes('ttitd')) {
+                // Burning Man dataset is extracted from API and published manually
+                return `https://dust.events/assets/data-v2/${this.dataset}/${name}.json`;
+            } else {
+                return `https://data.dust.events/${this.dataset}/${name}.json`;
+            }
         }
         return `assets/${this.dataset}/${name}.json`;
     }
+
     private async loadEvents(): Promise<Event[]> {
         const res = await fetch(this.path('events', true));
         return await res.json();
@@ -710,8 +750,13 @@ export class DataManager implements WorkerClass {
 
     private async loadData(uri: string): Promise<any> {
         console.log(`loadData`, uri);
-        const res = await fetch(uri);
-        return await res.json();
+        try {
+            const res = await fetch(uri);
+            return await res.json();
+        } catch (err) {
+            console.warn(`Failed to load ${uri}`);
+            return [];
+        }
     }
 
     public async getPotties(): Promise<Pin[]> {
@@ -720,29 +765,62 @@ export class DataManager implements WorkerClass {
     }
 
     public async getGPSPoints(name: string, title: string): Promise<MapSet> {
-        const res = await fetch(this.path(name));
-        const data: GPSSet = await res.json();
-        const result: MapSet = { title: data.title, description: data.description, points: [] };
-        for (let gps of data.points) {
-            const point = gpsToMap(gps);
-            const mapPoint: MapPoint = { street: '', clock: '', x: point.x, y: point.y, gps: structuredClone(gps), info: { title, location: '', subtitle: '' } }
-            result.points.push(mapPoint);
+        try {
+            const res = await fetch(this.path(name));
+            const data: GPSSet = await res.json();
+            const result: MapSet = { title: data.title, description: data.description, points: [] };
+            for (let gps of data.points) {
+                const point = gpsToMap(gps);
+                const mapPoint: MapPoint = { street: '', clock: '', x: point.x, y: point.y, gps: structuredClone(gps), info: { title, location: '', subtitle: '' } }
+                result.points.push(mapPoint);
+            }
+            return result;
+        } catch (err) {
+            return { title: '', description: '', points: [] }
         }
-        return result;
     }
 
     public async getMapPoints(name: string): Promise<MapSet> {
-        const res = await fetch(this.path(name));
-        const mapSet: MapSet = await res.json();
-        for (let point of mapSet.points) {
-            point.gps = this.getMapPointGPS(point);
+        try {
+            const res = await fetch(this.path(name));
+            const mapSet: MapSet = await res.json();
+            for (let point of mapSet.points) {
+                point.gps = this.getMapPointGPS(point);
+            }
+            return mapSet;
+        } catch (err) {
+            return { title: '', description: '', points: [] };
         }
-        return mapSet;
+    }
+
+    public async getPins(pinType: string): Promise<MapSet> {
+        try {
+            const url = this.path('pins', true);
+            console.log(`Get ${url}`);
+            const res = await fetch(url);
+            const pins: PlacedPin[] = await res.json();
+            const mapSet: MapSet = { title: pinType, description: '', points: [] };
+            for (let pin of pins) {
+                const mp: MapPoint = { x: pin.x, y: pin.y, street: '', clock: '' };
+                mp.gps = this.getMapPointGPS(mp);
+                if (pin.label == pinType) {
+                    mapSet.points.push(mp);
+                }
+            }
+            return mapSet;
+        } catch (err) {
+            return { title: pinType, description: '', points: [] };
+        }
     }
 
     public async getGeoReferences(): Promise<GeoRef[]> {
-        const res = await fetch(this.path('geo'));
-        return await res.json();
+        try {
+            const res = await fetch(this.path('geo', true));
+
+            return await res.json();
+        } catch {
+            return [];
+        }
     }
 
     private async loadCamps(): Promise<Camp[]> {
@@ -753,6 +831,15 @@ export class DataManager implements WorkerClass {
     private async loadArt(): Promise<Art[]> {
         const res = await fetch(this.path('art', true));
         return await res.json();
+    }
+
+    private async loadPins(): Promise<PlacedPin[]> {
+        try {
+            const res = await fetch(this.path('pins', true));
+            return await res.json();
+        } catch {
+            return [];
+        }
     }
 
     private async loadRevision(): Promise<Revision> {

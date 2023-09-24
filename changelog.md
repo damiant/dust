@@ -1,4 +1,10 @@
 ## Changes
+
+### 1.30
+- Support for regional events
+- Fix for when locations are hidden or unplaced
+- Show placed camps (with or without GPS)
+
 ### 1.23
 - Fixed issue with art button
 - Fixed timeout with slow networks
