@@ -138,8 +138,8 @@ export class MapComponent implements OnInit, OnDestroy {
       console.error(`Got compass heading but compass element is not defined`);
       return;
     }
-    // The 45 degrees here is based on the BM map that has North at 45 degrees.
-    let degree = Math.trunc(heading.trueHeading) - 45;
+    const rotation = this.settings.settings.mapRotation; // Note: Burning Mans map is rotately from North 45 degrees
+    let degree = Math.trunc(heading.trueHeading) - rotation;
     if (degree < 0) {
       degree += 360;
     }

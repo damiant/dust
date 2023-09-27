@@ -150,6 +150,7 @@ export interface Settings {
   dataset: Dataset | undefined;
   eventTitle: string;
   lastDownload: string;
+  mapRotation: number;
   mapUri: string;
   locationEnabled: LocationEnabledStatus;
   longEvents: boolean;
