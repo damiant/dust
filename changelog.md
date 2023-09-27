@@ -1,4 +1,6 @@
 ## Changes
+### 1.32
+- Added links to profile
 
 ### 1.30
 - Support for regional events
