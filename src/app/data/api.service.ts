@@ -15,6 +15,7 @@ enum Names {
   rsl = 'rsl',
   revision = 'revision',
   pins = 'pins',
+  links = 'links',
   map = 'map'
 }
 
@@ -57,6 +58,7 @@ export class ApiService {
     const art = await this.getUri(ds, Names.art);
     const camps = await this.getUri(ds, Names.camps);
     const pins = await this.getUri(ds, Names.pins);
+    const links = await this.getUri(ds, Names.links);
     const rsl = await this.getUri(ds, Names.rsl);
     await this.dbService.setDataset({
       dataset: ds,
@@ -64,6 +66,7 @@ export class ApiService {
       camps,
       art,
       pins,
+      links,
       rsl,
       hideLocations
     });
@@ -122,6 +125,7 @@ export class ApiService {
     const camps = await getLive(dataset, Names.camps);
     const rsl = await getLive(dataset, Names.rsl);    
     const pins = await getLive(dataset, Names.pins);    
+    const links = await getLive(dataset, Names.links);    
     const mapData = await getLiveBinary(dataset, Names.map, 'svg');
     if (this.badData(events, art, camps)) {
       console.error(`Download failed`);
@@ -133,6 +137,7 @@ export class ApiService {
     await this.save(this.getId(dataset, Names.art), art);
     await this.save(this.getId(dataset, Names.rsl), rsl);
     await this.save(this.getId(dataset, Names.pins), pins);
+    await this.save(this.getId(dataset, Names.links), links);
     let uri = await this.saveBinary(this.getId(dataset, Names.map), 'svg', mapData);
     await this.save(this.getId(dataset, Names.revision), revision);
     if (uri.startsWith('/DATA/')) {

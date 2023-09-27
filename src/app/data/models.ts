@@ -189,6 +189,12 @@ export interface Friend {
   notes: string;
 }
 
+export interface Link {
+  uid: string;
+  title: string;
+  url: string;
+}
+
 export interface MapPoint {
   street: string,
   clock: string,
@@ -254,6 +260,7 @@ export interface FullDataset {
   camps: string;
   art: string;
   pins: string;
+  links: string;
   rsl: string;
   hideLocations: boolean
 }
@@ -287,6 +294,7 @@ export enum DataMethods {
   GetCategories = 'getCategories',
   SetDataset = 'setDataset',
   GetEvents = 'getEvents',
+  GetLinks = 'getLinks',
   GetEventList = 'getEventList',
   GetRSLEventList = 'getRSLEventList',
   GetCampList = 'getCampList',

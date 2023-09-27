@@ -1,5 +1,5 @@
 import { WorkerClass } from './worker-interface';
-import { Art, Camp, DataMethods, Day, Event, FullDataset, GPSSet, GeoRef, LocationName, MapPoint, MapSet, Pin, PlacedPin, RSLEvent, Revision, TimeRange, TimeString } from './models';
+import { Art, Camp, DataMethods, Day, Event, FullDataset, GPSSet, GeoRef, Link, LocationName, MapPoint, MapSet, Pin, PlacedPin, RSLEvent, Revision, TimeRange, TimeString } from './models';
 import { BurningManTimeZone, CurrentYear, getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from '../utils/utils';
 import { defaultMapRadius, distance, formatDistance, locationStringToPin, mapPointToPoint } from '../map/map.utils';
 import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from '../map/geo.utils';
@@ -16,6 +16,7 @@ export class DataManager implements WorkerClass {
     private categories: string[] = [];
     private art: Art[] = [];
     private days: number[] = [];
+    private links: Link[] = [];
     private georeferences: GeoRef[] = [];
     private revision: Revision = { revision: 0 };
     private allEventsOld = false;
@@ -32,6 +33,7 @@ export class DataManager implements WorkerClass {
             case DataMethods.GetCategories: return this.categories;
             case DataMethods.SetDataset: return await this.setDataset(args[0]);
             case DataMethods.GetEvents: return this.getEvents(args[0], args[1]);
+            case DataMethods.GetLinks: return this.getLinks();
             case DataMethods.GetEventList: return this.getEventList(args[0]);
             case DataMethods.GetRSLEventList: return this.getRSLEventList(args[0]);
             case DataMethods.SearchRSLEvents: return this.searchRSLEvents(args[0]);
@@ -65,6 +67,7 @@ export class DataManager implements WorkerClass {
         this.camps = await this.loadCamps();
         this.art = await this.loadArt();
         this.pins = await this.loadPins();
+        this.links = await this.loadLinks();
         this.revision = await this.loadRevision();
         this.georeferences = await this.getGeoReferences();
         this.init(hideLocations);
@@ -322,6 +325,7 @@ export class DataManager implements WorkerClass {
             this.events = await this.loadData(ds.events);
             this.camps = await this.loadData(ds.camps);
             this.art = await this.loadData(ds.art);
+            this.links = await this.loadData(ds.links);
             this.pins = await this.loadData(ds.pins);
             const rslData = await this.loadData(ds.rsl);
             console.log(`Setting dataset in worker: ${this.events.length} events, ${this.camps.length} camps, ${this.art.length} art`);
@@ -341,6 +345,10 @@ export class DataManager implements WorkerClass {
             i++;
         }
         return result;
+    }
+
+    public getLinks(): Link[] {
+        return this.links;
     }
 
     public getEventList(ids: string[]): Event[] {
@@ -836,6 +844,15 @@ export class DataManager implements WorkerClass {
     private async loadPins(): Promise<PlacedPin[]> {
         try {
             const res = await fetch(this.path('pins', true));
+            return await res.json();
+        } catch {
+            return [];
+        }
+    }
+
+    private async loadLinks(): Promise<Link[]> {
+        try {
+            const res = await fetch(this.path('links', true));
             return await res.json();
         } catch {
             return [];
