@@ -57,6 +57,10 @@ export function toMapPoint(location: string | undefined, info?: MapInfo, pin?: P
 }
 
 export function mapPointToPoint(mapPoint: MapPoint, circleRadius: number) {
+    if (mapPoint.clock == '' && mapPoint.street == '' && mapPoint.x && mapPoint.y) {
+        // If its a pin then dont use clock/street
+        return { x: mapPoint.x, y: mapPoint.y };
+    }
     const clock = toClock(mapPoint.clock);
     const rad = toStreetRadius(mapPoint.street);
     const circleRad = circleRadius;

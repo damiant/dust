@@ -150,6 +150,7 @@ export interface Settings {
   dataset: Dataset | undefined;
   eventTitle: string;
   lastDownload: string;
+  mapRotation: number;
   mapUri: string;
   locationEnabled: LocationEnabledStatus;
   longEvents: boolean;
@@ -187,6 +188,12 @@ export interface Friend {
   name: string;
   address: string;
   notes: string;
+}
+
+export interface Link {
+  uid: string;
+  title: string;
+  url: string;
 }
 
 export interface MapPoint {
@@ -254,6 +261,7 @@ export interface FullDataset {
   camps: string;
   art: string;
   pins: string;
+  links: string;
   rsl: string;
   hideLocations: boolean
 }
@@ -287,6 +295,7 @@ export enum DataMethods {
   GetCategories = 'getCategories',
   SetDataset = 'setDataset',
   GetEvents = 'getEvents',
+  GetLinks = 'getLinks',
   GetEventList = 'getEventList',
   GetRSLEventList = 'getRSLEventList',
   GetCampList = 'getCampList',

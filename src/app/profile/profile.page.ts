@@ -12,7 +12,7 @@ import { DbService } from '../data/db.service';
 import { TileContainerComponent } from '../tile-container/tile-container.component';
 import { TileComponent } from '../tile/tile.component';
 import { GeoService } from '../geolocation/geo.service';
-import { LocationEnabledStatus } from '../data/models';
+import { Link, LocationEnabledStatus } from '../data/models';
 import { environment } from 'src/environments/environment';
 import { RateApp } from 'capacitor-rate-app';
 import { PrivateEventsComponent } from '../private-events/private-events.component';
@@ -32,6 +32,7 @@ export class ProfilePage implements OnInit {
   locationEnabled = false;
   longEvents = false;
   hiddenPanel = false;
+  links: Link[] = [];
 
   constructor(
     private ui: UiService,
@@ -42,14 +43,19 @@ export class ProfilePage implements OnInit {
     public db: DbService
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.db.checkInit();
     this.longEvents = this.settings.settings.longEvents;
     this.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
+    this.links = await this.db.getLinks();
   }
 
   ionViewDidEnter() {
 
+  }
+
+  visit(url: string) {
+    this.ui.openUrl(url);
   }
 
   async moreClick() {
@@ -59,7 +65,7 @@ export class ProfilePage implements OnInit {
       environment.overrideLocations = true;
       this.settings.settings.lastDownload = '';
       this.settings.save();
-      this.db.setHideLocations(false);      
+      this.db.setHideLocations(false);
       await this.db.init(this.settings.settings.datasetId);
       this.db.resume.set(new Date().toString());
     }
@@ -76,7 +82,7 @@ export class ProfilePage implements OnInit {
     this.rated = true;
     RateApp.requestReview();
   }
-  
+
   async share() {
     await Share.share({
       title: 'Dust in Curious Places',
@@ -110,7 +116,7 @@ export class ProfilePage implements OnInit {
     const lat = this.settings.settings.dataset ? this.settings.settings.dataset.lat : 40.753842;
     const long = this.settings.settings.dataset ? this.settings.settings.dataset.long : -119.277000;
     const pin = { lat, long };
-    
+
     if (await this.map.canOpenMapApp('google')) {
       await this.map.openGoogleMapDirections(pin);
     } else if (await this.map.canOpenMapApp('apple')) {
