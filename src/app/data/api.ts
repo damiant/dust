@@ -13,9 +13,9 @@ function path(dataset: string, name: string): string {
 
 function livePath(dataset: string, name: string, ext?: string): string {
     if (dataset.toLowerCase().includes('ttitd') || dataset == 'datasets') {
-        return `https://dust.events/assets/data-v2/${dataset}/${name}.${ext ? ext : 'json'}`;
+        return `https://dust.events/assets/data-v2/${dataset}/${name}.${ext ? ext : 'json'}?${Math.random()}`;
     } else {
-        return `https://data.dust.events/${dataset}/${name}.${ext ? ext : 'json'}`;
+        return `https://data.dust.events/${dataset}/${name}.${ext ? ext : 'json'}?${Math.random()}`;
     }
 }
 
@@ -134,11 +134,13 @@ function blobToBase64(blob: Blob) {
 async function fetchWithTimeout(url: string, options = {}, timeout: number = 5000) {
     if (!AbortSignal.timeout) {
         return await fetch(url, {
+            cache: "no-cache",
             ...options
         });
     }
     const signal = AbortSignal.timeout(timeout);
     const response = await fetch(url, {
+        cache: "no-cache",
         ...options,
         signal
     });
