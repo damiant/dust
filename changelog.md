@@ -1,6 +1,7 @@
 ## Changes
-### 1.32
+### 1.33
 - Added links to profile
+- Better error handling
 
 ### 1.30
 - Support for regional events
