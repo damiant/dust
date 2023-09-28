@@ -113,7 +113,7 @@ export class IntroPage {
   public async clear() {
     this.vm.clearCount++;
     if (this.vm.clearCount < 5) {
-       return;
+      return;
     }
     const d = await Filesystem.readdir({ path: '.', directory: Directory.Data });
     for (let file of d.files) {
@@ -178,9 +178,16 @@ export class IntroPage {
       this.vm.showMessage = false;
 
 
+      console.warn(`populate ${this.settingsService.settings.datasetId}`);
       const revision = await this.db.init(this.settingsService.settings.datasetId);
+      console.warn(`sendDataToWorker ${this.settingsService.settings.datasetId}`);
       const useData = await this.api.sendDataToWorker(revision, this.db.locationsHidden(), this.isBurningMan());
-
+      if (!useData) {
+        // Its a mess
+        this.cleanup();
+        return;
+      }
+      console.log(`sendDataToWorker completed`);
       this.fav.init(this.settingsService.settings.datasetId);
       const title = (this.isCurrentYear()) ? '' : this.vm.selected.year;
       this.db.selectedYear.set(title);
@@ -211,6 +218,18 @@ export class IntroPage {
     }
   }
 
+  async cleanup() {
+    console.error(`Redownloading...`);
+    try {
+      this.vm.downloading = true;
+      await this.api.download(this.vm.selected, true);
+    } finally {
+      this.vm.downloading = false;
+    }
+    this.vm.eventAlreadySelected = false; // Show intro page
+    
+  }
+
   open(card: Dataset) {
     this.vm.selected = card;
     this.save();
@@ -223,5 +242,4 @@ export class IntroPage {
     this.settingsService.settings.eventTitle = this.vm.selected!.title;
     this.settingsService.save();
   }
-
 }

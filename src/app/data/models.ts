@@ -266,6 +266,15 @@ export interface FullDataset {
   hideLocations: boolean
 }
 
+export interface DatasetResult {
+  events: number;
+  camps: number;
+  art: number;
+  pins: number;
+  links: number;
+  rsl: number;
+}
+
 export interface RSLOccurrence {
   id: string;
   time: string; // Display format
