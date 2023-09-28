@@ -147,7 +147,7 @@ export class ApiService {
     const rsl = await getLive(dataset, Names.rsl);
     const pins = await getLive(dataset, Names.pins);
     const links = await getLive(dataset, Names.links);
-    const mapData = await getLiveBinary(dataset, Names.map, 'svg');
+    const mapData = await getLiveBinary(dataset, Names.map, 'svg', await this.getVersion());
     if (this.badData(events, art, camps)) {
       console.error(`Download failed`);
       return;

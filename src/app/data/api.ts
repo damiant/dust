@@ -90,14 +90,14 @@ export async function getLive(dataset: string, name: string, timeout: number = 5
     }
 }
 
-export async function getLiveBinary(dataset: string, name: string, ext: string): Promise<any> {
+export async function getLiveBinary(dataset: string, name: string, ext: string, revision: string): Promise<any> {
     const status = await Network.getStatus();
     if (!status.connected) {
         return undefined;
     } else {
         // Try to get from url
         try {
-            const url = livePath(dataset, name, ext);
+            const url = livePath(dataset, name, ext)+`?${revision}`;
             console.log(`getLive ${url} ${dataset} ${name}...`);
             const res = await fetchWithTimeout(url, {}, 15000);
             const blob = await res.blob();
