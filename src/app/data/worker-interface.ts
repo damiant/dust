@@ -15,6 +15,7 @@ export interface CallPromise {
 
 export interface Response {
     id: string;
+    error?: any;
     data: any;
 }
 
@@ -29,7 +30,11 @@ export function registerWorkerClass(workerClass: WorkerClass) {
         if (!environment.production) {
             console.time(call.method);
         }
-        response.data = await workerClass.doWork(call.method, call.arguments);
+        try {
+            response.data = await workerClass.doWork(call.method, call.arguments);
+        } catch (error) {
+            postMessage({ error: `Call to ${call.method} failed: ${error}` });
+        }
         if (!environment.production) {
             console.timeEnd(call.method);
         }
@@ -43,7 +48,11 @@ export function registerWorker(worker: Worker) {
     worker.onmessage = ({ data }) => {
         const response: Response = data;
         if (!response.id) {
-            console.error(`Response id cannot be undefined`);
+            if (response.error) {
+                console.error('Worker Error: ' + response.error);
+            } else {
+                console.error(`Response id cannot be undefined: ` + response);
+            }
         }
 
         const idx = calls.findIndex((p) => p.id == response.id);

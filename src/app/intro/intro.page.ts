@@ -113,7 +113,7 @@ export class IntroPage {
   public async clear() {
     this.vm.clearCount++;
     if (this.vm.clearCount < 5) {
-       return;
+      return;
     }
     const d = await Filesystem.readdir({ path: '.', directory: Directory.Data });
     for (let file of d.files) {
@@ -180,7 +180,12 @@ export class IntroPage {
 
       const revision = await this.db.init(this.settingsService.settings.datasetId);
       const useData = await this.api.sendDataToWorker(revision, this.db.locationsHidden(), this.isBurningMan());
-
+      if (!useData) {
+        // Its a mess
+        this.cleanup();
+        return;
+      }
+      console.log(`sendDataToWorker completed`);
       this.fav.init(this.settingsService.settings.datasetId);
       const title = (this.isCurrentYear()) ? '' : this.vm.selected.year;
       this.db.selectedYear.set(title);
@@ -209,6 +214,17 @@ export class IntroPage {
         this.vm.ready = true;
       }, 2000);
     }
+  }
+
+  async cleanup() {
+    console.error(`Redownloading...`);
+    try {
+      this.vm.downloading = true;
+      await this.api.download(this.vm.selected, true);
+    } finally {
+      this.vm.downloading = false;
+    }
+    this.vm.eventAlreadySelected = false; // Show intro page
   }
 
   open(card: Dataset) {

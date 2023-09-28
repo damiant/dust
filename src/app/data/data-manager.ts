@@ -1,5 +1,5 @@
 import { WorkerClass } from './worker-interface';
-import { Art, Camp, DataMethods, Day, Event, FullDataset, GPSSet, GeoRef, Link, LocationName, MapPoint, MapSet, Pin, PlacedPin, RSLEvent, Revision, TimeRange, TimeString } from './models';
+import { Art, Camp, DataMethods, DatasetResult, Day, Event, FullDataset, GPSSet, GeoRef, Link, LocationName, MapPoint, MapSet, Pin, PlacedPin, RSLEvent, Revision, TimeRange, TimeString } from './models';
 import { BurningManTimeZone, CurrentYear, getDayNameFromDate, getOccurrenceTimeString, now, sameDay } from '../utils/utils';
 import { defaultMapRadius, distance, formatDistance, locationStringToPin, mapPointToPoint } from '../map/map.utils';
 import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from '../map/geo.utils';
@@ -137,11 +137,19 @@ export class DataManager implements WorkerClass {
             }
         } else {
             // Or from geo.json file (eg Burning Man)
-            for (let ref of [this.georeferences[0], this.georeferences[1], this.georeferences[2]]) {
-                gpsCoords.push({ lng: ref.coordinates[0], lat: ref.coordinates[1] });
-                const mp: MapPoint = { clock: ref.clock, street: ref.street };
-                const pt = mapPointToPoint(mp, this.mapRadius);
-                points.push(pt);
+            if (this.georeferences.length > 0) {
+                for (let ref of [this.georeferences[0], this.georeferences[1], this.georeferences[2]]) {
+                    if (ref.coordinates && ref.coordinates.length > 0) {
+                        gpsCoords.push({ lng: ref.coordinates[0], lat: ref.coordinates[1] });
+                        const mp: MapPoint = { clock: ref.clock, street: ref.street };
+                        const pt = mapPointToPoint(mp, this.mapRadius);
+                        points.push(pt);
+                    } else {
+                        console.info(`geo.json data missing coordinates`);
+                    }
+                }
+            } else {
+                console.info(`No data in geo.json`);
             }
         }
         if (gpsCoords.length != 3) {
@@ -319,7 +327,8 @@ export class DataManager implements WorkerClass {
         return locationStringToPin(camp.location_string, this.mapRadius);
     }
 
-    public async setDataset(ds: FullDataset) {
+    public async setDataset(ds: FullDataset): Promise<DatasetResult | undefined> {
+        let result: DatasetResult | undefined;
         try {
             this.dataset = ds.dataset;
             this.events = await this.loadData(ds.events);
@@ -329,12 +338,20 @@ export class DataManager implements WorkerClass {
             this.pins = await this.loadData(ds.pins);
             const rslData = await this.loadData(ds.rsl);
             console.log(`Setting dataset in worker: ${this.events.length} events, ${this.camps.length} camps, ${this.art.length} art`);
-
+            result = {
+                events: this.events.length,
+                camps: this.camps.length,
+                art: this.art.length,
+                pins: this.pins.length,
+                links: this.links.length,
+                rsl: 0
+            }
         } catch (err) {
             console.error(`Failed to setDataset`, err);
         } finally {
             this.init(ds.hideLocations);
         }
+        return result;
     }
 
     public getEvents(idx: number, count: number): Event[] {

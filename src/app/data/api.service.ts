@@ -46,6 +46,7 @@ export class ApiService {
       }
       this.settingsService.settings.mapUri = mapIsOffline ? '' : mapUri;
       this.settingsService.save();
+      console.info(`Saved settings`);
       if (revision.revision <= defaultRevision && mapIsOffline) {
         console.warn(`Did not read data from storage as it is at revision ${revision.revision} but current is ${defaultRevision}`);
         return false;
@@ -60,7 +61,8 @@ export class ApiService {
     const pins = await this.getUri(ds, Names.pins);
     const links = await this.getUri(ds, Names.links);
     const rsl = await this.getUri(ds, Names.rsl);
-    await this.dbService.setDataset({
+    console.info(`dbService.setDataset...`);
+    const result = await this.dbService.setDataset({
       dataset: ds,
       events,
       camps,
@@ -70,6 +72,8 @@ export class ApiService {
       rsl,
       hideLocations
     });
+    console.info(`dbService.setDataset complete ${JSON.stringify(result)}`);
+    if (result.events == 0 && result.camps == 0 && result.pins == 0) return false;
     return true;
   }
 
@@ -85,7 +89,7 @@ export class ApiService {
     return await getCached(Names.datasets, Names.datasets, 5000);
   }
 
-  public async download(selected: Dataset | undefined) {
+  public async download(selected: Dataset | undefined, force?: boolean) {
     const lastDownload = this.settingsService.getLastDownload();
     const mins = minutesBetween(now(), lastDownload);
     let dataset = '';
@@ -107,9 +111,9 @@ export class ApiService {
       // Check the current revision
       const id = this.getId(dataset, Names.revision);
       const currentRevision: Revision = await this.get(id, { revision: 0 });
-      console.log(`Current revision is ${JSON.stringify(currentRevision)}`);
+      console.log(`Current revision is ${JSON.stringify(currentRevision)} force is ${force}`);
 
-      if (revision && currentRevision && currentRevision.revision !== null && revision.revision === currentRevision.revision) {
+      if (!force && revision && currentRevision && currentRevision.revision !== null && revision.revision === currentRevision.revision) {
         console.log(`Will not download data for ${dataset} as it is already at revision ${currentRevision.revision}`);
         this.rememberLastDownload();
         return;
