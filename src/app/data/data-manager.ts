@@ -348,6 +348,7 @@ export class DataManager implements WorkerClass {
             }
         } catch (err) {
             console.error(`Failed to setDataset`, err);
+            throw new Error(`setDataset: ${err}`);
         } finally {
             this.init(ds.hideLocations);
         }
@@ -774,12 +775,13 @@ export class DataManager implements WorkerClass {
     }
 
     private async loadData(uri: string): Promise<any> {
-        console.log(`loadData`, uri);
+        console.log(`Worker fetch ${uri}...`);
         try {
             const res = await fetch(uri);
             return await res.json();
         } catch (err) {
-            console.warn(`Failed to load ${uri}`);
+            throw new Error(`${uri}: ${err}`)
+            console.error(`Worker fetch Failed to load ${uri}`);
             return [];
         }
     }

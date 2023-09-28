@@ -26,7 +26,6 @@ export class DbService {
     }
 
     return await call(this.worker, DataMethods.Populate, dataset, this.hideLocations);
-
   }
 
   public checkInit() {

@@ -178,7 +178,9 @@ export class IntroPage {
       this.vm.showMessage = false;
 
 
+      console.warn(`populate ${this.settingsService.settings.datasetId}`);
       const revision = await this.db.init(this.settingsService.settings.datasetId);
+      console.warn(`sendDataToWorker ${this.settingsService.settings.datasetId}`);
       const useData = await this.api.sendDataToWorker(revision, this.db.locationsHidden(), this.isBurningMan());
       if (!useData) {
         // Its a mess
@@ -225,6 +227,7 @@ export class IntroPage {
       this.vm.downloading = false;
     }
     this.vm.eventAlreadySelected = false; // Show intro page
+    
   }
 
   open(card: Dataset) {
@@ -239,5 +242,4 @@ export class IntroPage {
     this.settingsService.settings.eventTitle = this.vm.selected!.title;
     this.settingsService.save();
   }
-
 }

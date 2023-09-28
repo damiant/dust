@@ -21,7 +21,7 @@ function livePath(dataset: string, name: string, ext?: string): string {
 
 export async function getCached(dataset: string, name: string, timeout: number = 5000): Promise<any> {
     try {
-        console.log(`getLive ${livePath(dataset, name)} ${dataset} ${name}...`);
+        console.log(`getCached ${livePath(dataset, name)} ${dataset} ${name}...`);
         const res = await fetchWithTimeout(livePath(dataset, name), {}, timeout);
         const data = await res.json();
         // Store cached data
@@ -50,7 +50,7 @@ async function read(id: string): Promise<any> {
     try {
         console.log(`Reading from filesystem ${id}`);
         const contents = await Filesystem.readFile({
-            path: `${id}.txt`,
+            path: `${id}.json`,
             directory: Directory.Data,
             encoding: Encoding.UTF8,
         });
@@ -62,7 +62,7 @@ async function read(id: string): Promise<any> {
 
 async function save(id: string, data: any) {
     await Filesystem.writeFile({
-        path: `${id}.txt`,
+        path: `${id}.json`,
         data: JSON.stringify(data),
         directory: Directory.Data,
         encoding: Encoding.UTF8,
@@ -77,13 +77,14 @@ export async function getLive(dataset: string, name: string, timeout: number = 5
         return await get(dataset, name);
 
     } else {
-        // Try to get from url        
-        console.log(`getLive ${livePath(dataset, name)} ${dataset} ${name}...`);
+        // Try to get from url     
+        const url = livePath(dataset, name);   
+        console.log(`getLive ${url} ${dataset} ${name}...`);
         try {
-            const res = await fetchWithTimeout(livePath(dataset, name), {}, timeout);
+            const res = await fetchWithTimeout(url, {}, timeout);
             return await res.json();
         } catch (error) {
-            console.error(error);
+            console.error(`Unable to download live from ${url}`, error);
             return [];
         }
     }
