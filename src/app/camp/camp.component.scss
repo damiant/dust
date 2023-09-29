@@ -1,3 +1,12 @@
 .item {
     height: 156px;
 }
+
+.image {
+    padding-left: 0.5rem;
+    float: right;
+    height: 156px;
+    width: 33vw;
+    min-width: 150px;
+    object-fit: cover;
+}

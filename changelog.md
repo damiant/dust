@@ -1,4 +1,7 @@
 ## Changes
+### 1.35
+- Images for camps and events
+
 ### 1.34
 - Cache bust so that updates go out quicker
 - Fix tel and mailto links

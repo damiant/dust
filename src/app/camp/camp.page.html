@@ -23,6 +23,10 @@
     </ng-template>
   </ion-modal>
   <ion-list *ngIf="camp" lines="none">
+    <div class="image" *ngIf="camp.imageUrl">
+      <img loading="lazy" class="image" [@fade]="isReady ? 'visible' : 'hidden'" alt="{{camp.name}}" (load)="setReady()"
+        [src]="camp.imageUrl" />
+    </div>
     <ion-item>
       <h1 *ngIf="!camp.url">{{camp.name}}</h1>
       <h1 style="color: var(--ion-color-primary)" *ngIf="camp.url" (click)="open(camp.url)">{{camp.name}}</h1>
@@ -67,5 +71,6 @@
     </ion-item>
   </div>
   </ion-list>
+  <div class="pad"></div>
   <app-map [points]="mapPoints"></app-map>
 </ion-content>

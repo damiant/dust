@@ -49,7 +49,7 @@
     </div>
     <div *ngIf="vm.noEvents" class="message large"><ion-text>{{vm.noEventsMessage}}</ion-text></div>
     <cdk-virtual-scroll-viewport [minBufferPx]="vm.minBufferPx" itemSize="180" maxBufferPx="2350">
-      <app-event [title]="vm.title" [longTime]="!vm.day" [day]="vm.day" [event]="event" (mapClick)="map($event)"
+      <app-event [showImage]="vm.showImage" [title]="vm.title" [longTime]="!vm.day" [day]="vm.day" [event]="event" (mapClick)="map($event)"
         *cdkVirtualFor="let event of vm.events; trackBy: eventsTrackBy" />
     </cdk-virtual-scroll-viewport>
   </div>

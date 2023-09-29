@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { Event } from '../data/models';
 import { CommonModule } from '@angular/common';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-event',
@@ -10,21 +11,33 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./event.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IonicModule, CommonModule, RouterModule]
+  imports: [IonicModule, CommonModule, RouterModule],
+  animations: [
+    trigger('fade', [ 
+      state('visible', style({ opacity: 1 })),
+      state('hidden', style({ opacity: 0 })),
+      transition('visible <=> hidden', animate('0.3s ease-in-out')),
+    ])
+  ]
 })
-export class EventComponent  implements OnInit {
+export class EventComponent {
 
   @Input() event!: Event;
   @Input() title = 'Events';
   @Input() day: Date | undefined;
+  @Input() showImage = true;
   @Input() longTime = false;
   @Output() mapClick = new EventEmitter<any>();
   @Output() groupClick = new EventEmitter<Event>();
   @Output() rslClick = new EventEmitter<string>();
+  isReady = false;
 
   constructor(private router: Router) { }
 
-  ngOnInit() {}
+
+  ready() {
+    this.isReady = true;    
+  }
 
   map(event: Event) {
     this.mapClick.emit(event);

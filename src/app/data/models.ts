@@ -23,6 +23,7 @@ export interface Event {
   occurrence_set: OccurrenceSet[]
   other_location?: string
   print_description: string
+  imageUrl?: string // Added by dust
   slug: string
   title: string
   uid: string
@@ -70,6 +71,7 @@ export interface Camp {
   name: string
   uid: string
   url?: string
+  imageUrl?: string // Added by dust
   gpsCoord: GpsCoord
   pin: Pin
   distance: number

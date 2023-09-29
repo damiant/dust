@@ -28,6 +28,7 @@ interface EventsState {
   categories: string[],
   search: string,
   noEvents: boolean,
+  showImage: boolean,
   noEventsMessage: string,
   screenHeight: number,
   day: Date | undefined,
@@ -52,6 +53,7 @@ function initialState(): EventsState {
     categories: ['All Events'],
     search: '',
     noEvents: false,
+    showImage: true,
     noEventsMessage: '',
     screenHeight: window.screen.height,
     day: undefined,
@@ -77,7 +79,7 @@ function initialState(): EventsState {
     MapModalComponent, FormsModule, EventComponent, CategoryComponent,
     SkeletonEventComponent, SearchComponent],
 })
-export class EventsPage implements OnInit {
+export class EventsPage {
   vm: EventsState = initialState();
 
   @ViewChild(CdkVirtualScrollViewport) virtualScroll!: CdkVirtualScrollViewport;
@@ -104,9 +106,10 @@ export class EventsPage implements OnInit {
       await this.db.checkEvents();
       this.update();
     });
-  }
-
-  ngOnInit() {
+    effect(() => {
+      const status = this.db.networkStatus();
+      this.vm.showImage = ((status == 'wifi' || status == 'cellular'));
+    });
   }
 
   ionViewDidEnter() {
@@ -199,7 +202,7 @@ export class EventsPage implements OnInit {
   }
 
   map(event: Event) {
-    this.vm.mapPoints = [toMapPoint(event.location)];
+    this.vm.mapPoints = [toMapPoint(event.location, undefined, event.pin)];
     this.vm.mapTitle = event.camp;
     this.vm.mapSubtitle = event.location;
     this.vm.showMap = true;

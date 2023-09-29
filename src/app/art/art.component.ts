@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Art } from '../data/models';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
@@ -19,7 +19,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
     ])
   ]
 })
-export class ArtComponent implements OnInit {
+export class ArtComponent {
 
   @Input() art!: Art;
   @Input() title = 'Art';
@@ -28,7 +28,6 @@ export class ArtComponent implements OnInit {
   isReady = false;
   constructor() { }
 
-  ngOnInit() { }
 
   ready() {
     this.isReady = true;    

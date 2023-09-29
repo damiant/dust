@@ -36,7 +36,7 @@ export class ApiService {
   public async sendDataToWorker(defaultRevision: number, hideLocations: boolean, mapIsOffline: boolean): Promise<boolean> {
 
     const ds = this.settingsService.settings.datasetId;
-    
+
     try {
       const revision: Revision = await this.read(ds, Names.revision);
       if (!revision) {
@@ -66,8 +66,8 @@ export class ApiService {
     const camps = await this.getUri(ds, Names.camps);
     const pins = await this.getUri(ds, Names.pins);
     const links = await this.getUri(ds, Names.links);
-    const rsl = await this.getUri(ds, Names.rsl);    
-    
+    const rsl = await this.getUri(ds, Names.rsl);
+
     const datasetInfo = {
       dataset: ds,
       events,
@@ -78,7 +78,7 @@ export class ApiService {
       rsl,
       hideLocations
     };
-    console.info(`dbService.setDataset ${JSON.stringify(datasetInfo)}...`);    
+    console.info(`dbService.setDataset ${JSON.stringify(datasetInfo)}...`);
     const result = await this.dbService.setDataset(datasetInfo);
     console.info(`dbService.setDataset complete ${JSON.stringify(result)}`);
     if (!result) return false;
@@ -181,7 +181,11 @@ export class ApiService {
 
   private async getUri(dataset: string, name: string, ext?: string): Promise<string> {
     if (Capacitor.getPlatform() == 'web') {
-      return `https://data.dust.events/${dataset}/${name}.${ext ? ext : 'json'}`;
+      if (dataset.includes('ttitd')) {
+        return `assets/${dataset}/${name}.json`;
+      } else {
+        return `https://data.dust.events/${dataset}/${name}.${ext ? ext : 'json'}`;
+      }
     }
     const r = await Filesystem.getUri({ path: `${this.getId(dataset, name)}.${ext ? ext : 'json'}`, directory: Directory.Data })
     return Capacitor.convertFileSrc(r.uri);
@@ -218,14 +222,14 @@ export class ApiService {
       directory: Directory.Data,
       encoding: Encoding.UTF8,
     });
-    const uri =  Capacitor.convertFileSrc(res.uri);
+    const uri = Capacitor.convertFileSrc(res.uri);
     if (data.length) {
       console.log(`Saved ${uri} length=${data.length}`);
     } else {
       console.log(`Saved ${uri} data=${JSON.stringify(data)}`)
     }
   }
-    
+
   private async saveBinary(id: string, ext: string, data: any): Promise<string> {
     const res = await Filesystem.writeFile({
       path: `${id}.${ext}`,
