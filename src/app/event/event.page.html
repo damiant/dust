@@ -18,6 +18,10 @@
     </ng-template>
   </ion-popover>
   <ion-list *ngIf="ready && event" lines="none">
+    <div class="image" *ngIf="event.imageUrl">
+      <img loading="lazy" class="image" [@fade]="isReady ? 'visible' : 'hidden'" alt="{{event.title}}" (load)="setReady()"
+        [src]="'https://data.dust.events/'+event.imageUrl" />
+    </div>
     <ion-item>
       <h1>{{event.title}}</h1>
     </ion-item>
@@ -46,7 +50,7 @@
       <ion-text style="padding-right: 1rem;" class="text selectable">{{event.description}}</ion-text>
     </ion-item>
     <div class="center" *ngIf="event.occurrence_set.length === 1">
-      <ion-button *ngIf="!event.occurrence_set[0].star" (click)="toggleStar(event.occurrence_set[0])" shape="round">Add
+      <ion-button style="padding-bottom: 1rem" *ngIf="!event.occurrence_set[0].star" (click)="toggleStar(event.occurrence_set[0])" shape="round">Add
         To Favorites</ion-button>
     </div>
   </ion-list>

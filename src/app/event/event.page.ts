@@ -13,6 +13,7 @@ import { SettingsService } from '../data/settings.service';
 import { UiService } from '../ui/ui.service';
 import { toMapPoint } from '../map/map.utils';
 import { dateMatches, noDate, sameDay } from '../utils/utils';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 
 @Component({
@@ -20,7 +21,14 @@ import { dateMatches, noDate, sameDay } from '../utils/utils';
   templateUrl: './event.page.html',
   styleUrls: ['./event.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, RouterLink, FormsModule, MapModalComponent, MapComponent]
+  imports: [IonicModule, CommonModule, RouterLink, FormsModule, MapModalComponent, MapComponent],
+  animations: [
+    trigger('fade', [ 
+      state('visible', style({ opacity: 1 })),
+      state('hidden', style({ opacity: 0 })),
+      transition('visible <=> hidden', animate('0.3s ease-in-out')),
+    ])
+  ]
 })
 export class EventPage implements OnInit {
   public event: Event | undefined;
@@ -28,6 +36,7 @@ export class EventPage implements OnInit {
   @ViewChild(IonPopover) popover!: IonPopover;
   isOpen = false;
   ready = false;
+  isReady = false; // Image
   showMap = false;
   mapPoints: MapPoint[] = [];
   mapTitle = '';
@@ -90,6 +99,10 @@ export class EventPage implements OnInit {
     });
 
     await toast.present();
+  }
+  
+  setReady() {
+    this.isReady = true;    
   }
 
   async showCamp(e: any) {

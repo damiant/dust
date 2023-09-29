@@ -13,13 +13,21 @@ import { SettingsService } from '../data/settings.service';
 import { ShareInfoType } from '../share/share.service';
 import { toMapPoint } from '../map/map.utils';
 import { getOrdinalNum } from '../utils/utils';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-camp',
   templateUrl: './camp.page.html',
   styleUrls: ['./camp.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, MapComponent, EventPage]
+  imports: [IonicModule, CommonModule, FormsModule, MapComponent, EventPage],
+  animations: [
+    trigger('fade', [ 
+      state('visible', style({ opacity: 1 })),
+      state('hidden', style({ opacity: 0 })),
+      transition('visible <=> hidden', animate('0.3s ease-in-out')),
+    ])
+  ]
 })
 export class CampPage implements OnInit {
   showEvent = false;
@@ -29,6 +37,7 @@ export class CampPage implements OnInit {
   eventId: string | undefined;
   rslEvents: RSLEvent[] = [];
   star = false;
+  isReady = false; // Image
   backText = 'Camps';
 
   constructor(
@@ -68,6 +77,10 @@ export class CampPage implements OnInit {
     if (message) {
       this.ui.presentToast(message, this.toastController);      
     }
+  }
+
+  setReady() {
+    this.isReady = true;    
   }
 
   private toDate(d: string): string {

@@ -7,7 +7,10 @@
 </h1>
 
 <ion-card class="item">
-
+  <div class="image" *ngIf="showImage && event.imageUrl">
+    <img loading="lazy" class="image" [@fade]="isReady ? 'visible' : 'hidden'" alt="{{event.title}}" (load)="ready()"
+      [src]="'https://data.dust.events/'+event.imageUrl" />
+  </div>
   <p *ngIf="event.happening" class="badge">NOW</p>
   <ion-card-header>
     <ion-card-title [routerLink]="'/event/'+ event.uid + '+' + title">{{event.title}}
@@ -19,8 +22,10 @@
   </ion-card-header>
 
   <ion-card-content (click)="detail()">
+
     <ion-text class="clamp">{{event.description}}</ion-text>
-    <ion-text class="one-line">
+    <ion-text class="clamp1">
       {{longTime ? event.longTimeString : event.timeString}} {{event.event_type.label}}</ion-text>
+
   </ion-card-content>
 </ion-card>

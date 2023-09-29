@@ -98,6 +98,14 @@ ion-text.one-line {
     text-overflow: ellipsis;
 }
 
+.clamp1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
 
 .selectable {
     -webkit-user-select: text;
