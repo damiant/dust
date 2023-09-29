@@ -1,4 +1,8 @@
 ## Changes
+### 1.34
+- Cache bust so that updates go out quicker
+- Fix tel and mailto links
+
 ### 1.33
 - Added links to profile
 - Better error handling

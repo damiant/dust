@@ -52,6 +52,10 @@ export class UiService {
   }
 
   public async openUrl(url: string) {
+    if (url.startsWith('tel:') || url.startsWith('mailto:')) {
+      window.open(url,'_blank'); 
+      return;
+    }
     await Browser.open({ url, presentationStyle: 'popover' });
   }
 
