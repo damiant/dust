@@ -1,0 +1,9 @@
+{
+    "apps": [
+      {
+        "appId": "c33fbefd",
+        "root": ".",
+        "dependencyInstallCommand": "npm ci && npm i @capacitor/assets@3 -D && npx @capacitor/assets generate --ios"
+      }
+    ]
+  }
