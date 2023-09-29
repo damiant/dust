@@ -1,7 +1,7 @@
 <ion-card class="item">
   <div class="image" *ngIf="showImage && camp.imageUrl">
     <img loading="lazy" class="image" [@fade]="isReady ? 'visible' : 'hidden'" alt="{{camp.name}}" (load)="ready()"
-      [src]="'https://data.dust.events/'+camp.imageUrl" />
+      [src]="camp.imageUrl" />
   </div>
   <ion-card-header>
     <ion-card-title [routerLink]="'/camp/'+ camp.uid+ '+' + title">{{camp.name}}</ion-card-title>

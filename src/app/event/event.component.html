@@ -9,7 +9,7 @@
 <ion-card class="item">
   <div class="image" *ngIf="showImage && event.imageUrl">
     <img loading="lazy" class="image" [@fade]="isReady ? 'visible' : 'hidden'" alt="{{event.title}}" (load)="ready()"
-      [src]="'https://data.dust.events/'+event.imageUrl" />
+      [src]="event.imageUrl" />
   </div>
   <p *ngIf="event.happening" class="badge">NOW</p>
   <ion-card-header>

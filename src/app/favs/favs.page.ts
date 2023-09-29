@@ -196,7 +196,7 @@ export class FavsPage implements OnInit {
       }
       if (thisGroup) {
         points.push(toMapPoint(event.location,
-          { title: event.title, location: event.location, subtitle: event.longTimeString }, event.pin));
+          { title: event.title, location: event.location, subtitle: event.longTimeString, imageUrl: event.imageUrl }, event.pin));
 
       }
     }
@@ -208,7 +208,7 @@ export class FavsPage implements OnInit {
     const points: MapPoint[] = [];
     for (const camp of this.vm.camps) {
       points.push(toMapPoint(camp.location_string,
-        { title: camp.name, location: camp.location_string!, subtitle: '' }, camp.pin));
+        { title: camp.name, location: camp.location_string!, subtitle: '', imageUrl: camp.imageUrl }, camp.pin));
     }
     this.displayPoints(points, 'Favorite Camps');
   }

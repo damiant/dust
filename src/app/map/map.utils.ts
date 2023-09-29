@@ -9,7 +9,7 @@ export const defaultMapRadius = 5000;
 export function toMapPoint(location: string | undefined, info?: MapInfo, pin?: Pin): MapPoint {
     if (!location) {
         if (pin) {
-            return { street: '', clock: '', x: pin.x, y: pin.y };
+            return { street: '', clock: '', x: pin.x, y: pin.y, info };
         }
         return { street: '', clock: '' };
     }

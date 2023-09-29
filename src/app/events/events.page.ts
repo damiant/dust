@@ -202,7 +202,7 @@ export class EventsPage {
   }
 
   map(event: Event) {
-    this.vm.mapPoints = [toMapPoint(event.location)];
+    this.vm.mapPoints = [toMapPoint(event.location, undefined, event.pin)];
     this.vm.mapTitle = event.camp;
     this.vm.mapSubtitle = event.location;
     this.vm.showMap = true;

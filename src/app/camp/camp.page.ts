@@ -67,7 +67,7 @@ export class CampPage implements OnInit {
       rsl.camp =  this.toDate(rsl.day);
     }
     this.rslEvents = rslEvents;
-    const mp = toMapPoint(this.camp.location_string!, { title: this.camp.name, location: this.camp.location_string!, subtitle: '' }, this.camp.pin);
+    const mp = toMapPoint(this.camp.location_string!, { title: this.camp.name, location: this.camp.location_string!, subtitle: '', imageUrl: this.camp.imageUrl }, this.camp.pin);
     this.mapPoints = [mp];    
   }
 

@@ -205,6 +205,9 @@ export class DataManager implements WorkerClass {
             campIndex[camp.uid] = camp.name;
             locIndex[camp.uid] = camp.location_string;
             pinIndex[camp.uid] = camp.pin;
+            if (camp.imageUrl) {
+                camp.imageUrl = `https://data.dust.events/${camp.imageUrl}`;
+            }
             if (hideLocations) {
                 camp.location_string = LocationName.Unavailable;
             } else if (!camp.location_string) {
@@ -234,6 +237,9 @@ export class DataManager implements WorkerClass {
             let allLong = true;
             if (!this.categories.includes(event.event_type.label)) {
                 this.categories.push(event.event_type.label);
+            }
+            if (event.imageUrl) {
+                event.imageUrl = `https://data.dust.events/${event.imageUrl}`;
             }
             if (event.hosted_by_camp) {
                 event.camp = campIndex[event.hosted_by_camp];
@@ -780,7 +786,7 @@ export class DataManager implements WorkerClass {
             const res = await fetch(uri);
             return await res.json();
         } catch (err) {
-            throw new Error(`${uri}: ${err}`)
+            //throw new Error(`${uri}: ${err}`)
             console.error(`Worker fetch Failed to load ${uri}`);
             return [];
         }

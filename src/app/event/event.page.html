@@ -20,7 +20,7 @@
   <ion-list *ngIf="ready && event" lines="none">
     <div class="image" *ngIf="event.imageUrl">
       <img loading="lazy" class="image" [@fade]="isReady ? 'visible' : 'hidden'" alt="{{event.title}}" (load)="setReady()"
-        [src]="'https://data.dust.events/'+event.imageUrl" />
+        [src]="event.imageUrl" />
     </div>
     <ion-item>
       <h1>{{event.title}}</h1>
@@ -54,5 +54,6 @@
         To Favorites</ion-button>
     </div>
   </ion-list>
+  <div class="pad"></div>
   <app-map *ngIf="ready && event" [points]="mapPoints"></app-map>
 </ion-content>

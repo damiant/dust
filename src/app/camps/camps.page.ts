@@ -114,7 +114,7 @@ export class CampsPage {
   }
 
   map(camp: Camp) {
-    this.vm.mapPoints = [toMapPoint(camp.location_string!)];
+    this.vm.mapPoints = [toMapPoint(camp.location_string!, undefined, camp.pin)];
     this.vm.mapTitle = camp.name;
     this.vm.mapSubtitle = camp.location_string!;
     this.vm.showMap = true;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
@@ -14,14 +14,11 @@ import { MapPoint } from '../data/models';
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, MapComponent]
 })
-export class FavMapPage implements OnInit {
+export class FavMapPage{
   isToastOpen = false;
   points: MapPoint[] = [];
   title = '';
   constructor(private fav: FavoritesService, private db: DbService) { }
-
-  ngOnInit() {
-  }
 
   ionViewWillEnter() {
     this.title = this.fav.getMapPointsTitle();
