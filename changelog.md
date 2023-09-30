@@ -1,4 +1,8 @@
 ## Changes
+## 1.36
+- Fix to set status bar color when appearance changed in background
+- Improve speed when downloading dataset files for event
+
 ### 1.35
 - Images for camps and events
 
