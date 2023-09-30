@@ -203,13 +203,7 @@ export class IntroPage {
         hidden.push('private');
       }
       this.db.featuresHidden.set(hidden);
-      if (Capacitor.isNativePlatform()) {
-        setTimeout(async () => {
-          this.ui.setNavigationBar();
-          StatusBar.setStyle({ style: this.ui.darkMode() ? Style.Dark : Style.Light });
-          this.ui.setStatusBarBackgroundColor(this.ui.darkMode() ? '#000000' : '#FFFFFF');
-        }, 100);
-      }
+      this.ui.setStatusBarBasedOnTheme();
       await this.router.navigateByUrl('/tabs/events');
     } finally {
       setTimeout(() => {
