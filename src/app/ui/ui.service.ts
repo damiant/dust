@@ -81,6 +81,16 @@ export class UiService {
     await toast.present();
   }
 
+  public setStatusBarBasedOnTheme() {
+    if (Capacitor.isNativePlatform()) {
+      setTimeout(async () => {
+        this.setNavigationBar();
+        StatusBar.setStyle({ style: this.darkMode() ? Style.Dark : Style.Light });
+        this.setStatusBarBackgroundColor(this.darkMode() ? '#000000' : '#FFFFFF');
+      }, 100);
+    }
+  }
+
   public setTab(name: string) {
     this.clickedTab.set(`${name}.${randomInt(1, 9999999)}`);
   }

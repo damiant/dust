@@ -47,7 +47,7 @@
       <ion-label>{{event.event_type.label}}</ion-label>
     </ion-item>
     <ion-item>
-      <ion-text style="padding-right: 1rem;" class="text selectable">{{event.description}}</ion-text>
+      <ion-text style="padding-right: 1rem; white-space: pre-line" class="text selectable">{{event.description}}</ion-text>
     </ion-item>
     <div class="center" *ngIf="event.occurrence_set.length === 1">
       <ion-button style="padding-bottom: 1rem" *ngIf="!event.occurrence_set[0].star" (click)="toggleStar(event.occurrence_set[0])" shape="round">Add

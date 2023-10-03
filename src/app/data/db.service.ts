@@ -90,7 +90,8 @@ export class DbService {
   }
 
   public async getRSL(terms: string, day: Date | undefined, gpsCoord: GpsCoord | undefined): Promise<RSLEvent[]> {
-    return await call(this.worker, DataMethods.GetRSLEvents, terms, day, gpsCoord);
+    const r = await call(this.worker, DataMethods.GetRSLEvents, terms, day, gpsCoord);    
+    return r;
   }
 
   public async searchRSL(terms: string): Promise<Day[]> {

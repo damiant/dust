@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, effect } from '@angular/core';
+import { Component, ViewChild, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { InfiniteScrollCustomEvent, IonContent, IonicModule, ToastController } from '@ionic/angular';
@@ -63,7 +63,7 @@ function initialState(): RSLState {
     RslEventComponent,
     SearchComponent, MapModalComponent, SkeletonEventComponent]
 })
-export class RslPage implements OnInit {
+export class RslPage {
 
   vm: RSLState = initialState();
   allEvents: RSLEvent[] = [];
@@ -115,7 +115,7 @@ export class RslPage implements OnInit {
       coords = await this.geo.getPosition();
     }
     const favs = await this.fav.getFavorites();
-    const events = await this.db.getRSL(this.vm.search, this.vm.day, coords);
+    const events = await this.db.getRSL(this.vm.search, this.vm.day, coords);    
     this.fav.setFavorites(events, favs.rslEvents);
     this.allEvents = events;
     this.vm.events = [];
@@ -197,7 +197,7 @@ export class RslPage implements OnInit {
 
   private updateTitle() {
     const day = this.vm.day;
-    this.vm.title = (!sameDay(day, noDate())) ? day.toLocaleDateString('en-US', { weekday: 'long' }) : 'Rock Star Librarian';
+    this.vm.title = (!sameDay(day, noDate())) ? day.toLocaleDateString('en-US', { weekday: 'long' }) : 'Music';
   }
 
   private setToday(today: Date) {
@@ -224,9 +224,6 @@ export class RslPage implements OnInit {
     }
     this.vm.day = this.vm.days[0].date;
     return this.vm.days[0].date;
-  }
-
-  ngOnInit() {
   }
 
   toggleByDist() {

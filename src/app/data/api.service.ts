@@ -141,13 +141,15 @@ export class ApiService {
       return;
     }
 
-    const events = await getLive(dataset, Names.events);
-    const art = await getLive(dataset, Names.art);
-    const camps = await getLive(dataset, Names.camps);
-    const rsl = await getLive(dataset, Names.rsl);
-    const pins = await getLive(dataset, Names.pins);
-    const links = await getLive(dataset, Names.links);
-    const mapData = await getLiveBinary(dataset, Names.map, 'svg', await this.getVersion());
+    const currentVersion = await this.getVersion();
+    const pEvents = getLive(dataset, Names.events);
+    const pArt = getLive(dataset, Names.art);
+    const pCamps = getLive(dataset, Names.camps);
+    const pRsl = getLive(dataset, Names.rsl);
+    const pPins = getLive(dataset, Names.pins);
+    const pLinks = getLive(dataset, Names.links);
+    const pMapData = getLiveBinary(dataset, Names.map, 'svg', currentVersion);
+    const [events, art, camps, rsl, pins, links, mapData] = await Promise.all([pEvents, pArt, pCamps, pRsl, pPins, pLinks, pMapData])
     if (this.badData(events, art, camps)) {
       console.error(`Download failed`);
       return;
@@ -156,7 +158,7 @@ export class ApiService {
     await this.save(this.getId(dataset, Names.events), events);
     await this.save(this.getId(dataset, Names.camps), camps);
     await this.save(this.getId(dataset, Names.art), art);
-    await this.save(this.getId(dataset, Names.rsl), rsl);
+    await this.save(this.getId(dataset, Names.rsl), rsl);    
     await this.save(this.getId(dataset, Names.pins), pins);
     await this.save(this.getId(dataset, Names.links), links);
     let uri = await this.saveBinary(this.getId(dataset, Names.map), 'svg', mapData);

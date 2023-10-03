@@ -260,7 +260,7 @@ export class FavsPage implements OnInit {
   }
 
   async mapEvent(event: Event) {
-    const mp = toMapPoint(event.location);
+    const mp = toMapPoint(event.location, undefined, event.pin);
     mp.gps = await this.db.getMapPointGPS(mp);
     this.vm.mapPoints = [mp];
     this.vm.mapTitle = event.title;
@@ -269,7 +269,7 @@ export class FavsPage implements OnInit {
   }
 
   async mapCamp(camp: Camp) {
-    const mp = toMapPoint(camp.location_string!);
+    const mp = toMapPoint(camp.location_string!, undefined, camp.pin);
     mp.gps = await this.db.getMapPointGPS(mp);
     this.vm.mapPoints = [mp];
     this.vm.mapTitle = camp.name;
