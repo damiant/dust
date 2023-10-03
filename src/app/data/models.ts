@@ -248,6 +248,7 @@ export interface RSLEvent {
   campUID?: string;
   day: string; // Format yyyy-mm-dd
   gpsCoords?: GpsCoord,
+  pin?: Pin, // Added by dust
   wa: boolean; // Wheelchair accessible
   waNotes: string;
   distance: number,

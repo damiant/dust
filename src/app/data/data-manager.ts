@@ -487,20 +487,36 @@ export class DataManager implements WorkerClass {
     }
 
     public async getRSLEvents(query: string, day: Date | undefined, coords: GpsCoord | undefined, ids?: string[] | undefined, campId?: string | undefined): Promise<RSLEvent[]> {
-        try {            
+        try {
             const res = await fetch(this.path('rsl', true));
             const events: RSLEvent[] = await res.json();
             const result: RSLEvent[] = [];
             query = this.scrubQuery(query);
             const fDay = day ? this.toRSLDateFormat(day) : undefined;
             const today = now();
+            console.log('getRSLEvents');
+            const campPins: any = {};
             for (let event of events) {
+                // Place RSL Events at the camp pin
+                if (event.campUID) {
+                    const pin = campPins[event.campUID];
+                    if (pin) {
+                        event.pin = pin;
+                    } else {
+                        const camps = this.getCampList([event.campUID]);                        
+                        if (!event.pin) {
+                            event.pin = camps[0].pin;
+                            Object.defineProperty(campPins, event.campUID, { value: event.pin, enumerable: true });
+                        }
+                    }
+                }                
+
                 let match = false;
                 if (campId) {
                     match = (event.campUID == campId && this.nullOrEmpty(event.artCar));
                 } else {
                     match = (this.rslEventContains(event, query) && (event.day == fDay || !!ids));
-                }                
+                }
 
                 if (match) {
                     let allOld = true;
@@ -534,7 +550,6 @@ export class DataManager implements WorkerClass {
             } else {
                 this.sortRSLEventsByName(result);
             }
-            console.log('getRSLEvents returning', result)
             return result;
         } catch (err) {
             console.error(`getRSLEvents returned an error`, err)
