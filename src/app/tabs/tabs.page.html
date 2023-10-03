@@ -22,8 +22,8 @@
     </ion-tab-button>
 
     <ion-tab-button *ngIf="!db.featuresHidden().includes('rsl')" tab="rsl" (click)="select('rsl')">
-      <ion-icon aria-hidden="true" [src]="'assets/icon/rsl-icon.svg'"></ion-icon>
-      <ion-label>RSL</ion-label>
+      <ion-icon aria-hidden="true" name="musical-notes-outline"></ion-icon>
+      <ion-label>Music</ion-label>
     </ion-tab-button>
 
     <ion-tab-button tab="profile" (click)="select('profile')">

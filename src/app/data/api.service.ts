@@ -158,7 +158,7 @@ export class ApiService {
     await this.save(this.getId(dataset, Names.events), events);
     await this.save(this.getId(dataset, Names.camps), camps);
     await this.save(this.getId(dataset, Names.art), art);
-    await this.save(this.getId(dataset, Names.rsl), rsl);
+    await this.save(this.getId(dataset, Names.rsl), rsl);    
     await this.save(this.getId(dataset, Names.pins), pins);
     await this.save(this.getId(dataset, Names.links), links);
     let uri = await this.saveBinary(this.getId(dataset, Names.map), 'svg', mapData);

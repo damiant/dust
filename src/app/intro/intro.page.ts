@@ -197,7 +197,7 @@ export class IntroPage {
         hidden.push('rsl');
       }
       if (!this.isBurningMan()) {
-        hidden.push('rsl');
+        //hidden.push('rsl');
         hidden.push('art');
         hidden.push('friends');
         hidden.push('private');

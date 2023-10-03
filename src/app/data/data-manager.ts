@@ -47,7 +47,7 @@ export class DataManager implements WorkerClass {
             case DataMethods.GetMapPoints: return this.getMapPoints(args[0]);
             case DataMethods.GetGPSPoints: return this.getGPSPoints(args[0], args[1]);
             case DataMethods.GetPins: return this.getPins(args[0]);
-            case DataMethods.GetRSLEvents: return await this.getRSLEvents(args[0], args[1], args[2], undefined, undefined);
+            case DataMethods.GetRSLEvents: return this.getRSLEvents(args[0], args[1], args[2], undefined, undefined);
             case DataMethods.CheckEvents: return this.checkEvents(args[0]);
             case DataMethods.FindEvents: return this.findEvents(args[0], args[1], args[2], args[3], args[4], args[5]);
             case DataMethods.FindCamps: return this.findCamps(args[0], args[1]);
@@ -487,10 +487,9 @@ export class DataManager implements WorkerClass {
     }
 
     public async getRSLEvents(query: string, day: Date | undefined, coords: GpsCoord | undefined, ids?: string[] | undefined, campId?: string | undefined): Promise<RSLEvent[]> {
-        try {
-            const res = await fetch(this.path('rsl'));
+        try {            
+            const res = await fetch(this.path('rsl', true));
             const events: RSLEvent[] = await res.json();
-
             const result: RSLEvent[] = [];
             query = this.scrubQuery(query);
             const fDay = day ? this.toRSLDateFormat(day) : undefined;
@@ -501,7 +500,7 @@ export class DataManager implements WorkerClass {
                     match = (event.campUID == campId && this.nullOrEmpty(event.artCar));
                 } else {
                     match = (this.rslEventContains(event, query) && (event.day == fDay || !!ids));
-                }
+                }                
 
                 if (match) {
                     let allOld = true;
@@ -535,6 +534,7 @@ export class DataManager implements WorkerClass {
             } else {
                 this.sortRSLEventsByName(result);
             }
+            console.log('getRSLEvents returning', result)
             return result;
         } catch (err) {
             console.error(`getRSLEvents returned an error`, err)
@@ -769,7 +769,7 @@ export class DataManager implements WorkerClass {
                 // Burning Man dataset is extracted from API and published manually
                 return `https://dust.events/assets/data-v2/${this.dataset}/${name}.json`;
             } else {
-                return `https://data.dust.events/${this.dataset}/${name}.json`;
+                return `https://data.dust.events/${this.dataset}/${name}.json?${Math.random()}`;
             }
         }
         return `assets/${this.dataset}/${name}.json`;
