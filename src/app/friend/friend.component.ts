@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonicModule, ModalController, PickerColumn, ToastController } from '@ionic/angular';
+import { IonButton, IonButtons, IonContent, IonHeader, IonInput, IonItem, IonPicker, IonTitle, IonToolbar, ModalController, PickerColumn, ToastController } from '@ionic/angular/standalone';
 import { Friend } from '../data/models';
 import { StreetService } from '../map/street.service';
+import { addIcons } from 'ionicons';
+import { add, person } from 'ionicons/icons';
 
 export enum FriendResult {
   confirm = 'confirm',
@@ -15,7 +17,7 @@ export enum FriendResult {
   selector: 'app-friend',
   templateUrl: './friend.component.html',
   styleUrls: ['./friend.component.scss'],
-  imports: [IonicModule, CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, IonItem, IonButton, IonPicker, IonContent, IonButtons, IonToolbar, IonTitle, IonInput, IonHeader],
   standalone: true
 })
 export class FriendComponent implements OnInit {
@@ -39,6 +41,7 @@ export class FriendComponent implements OnInit {
   ];
 
   constructor(private modalCtrl: ModalController, private toastController: ToastController, private streetService: StreetService) {
+    addIcons({ add, person });
     this.addresses = this.streetService.getAddresses();
   }
 

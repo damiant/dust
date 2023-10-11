@@ -1,7 +1,7 @@
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Injectable, signal } from '@angular/core';
 import { randomInt } from '../utils/utils';
-import { IonContent, NavController, ToastController } from '@ionic/angular';
+import { IonContent, NavController, ToastController } from '@ionic/angular/standalone';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
 import { NavigationBar } from '@mauricewegner/capacitor-navigation-bar';

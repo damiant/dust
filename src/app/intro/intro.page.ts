@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule, ToastController } from '@ionic/angular';
+import { IonButton, IonContent, IonIcon, IonSpinner, IonText, ToastController } from '@ionic/angular/standalone';
 import { Router, RouterModule } from '@angular/router';
 import { DbService } from '../data/db.service';
 import { SplashScreen } from '@capacitor/splash-screen';
@@ -18,6 +18,8 @@ import { ThemePrimaryColor, UiService } from '../ui/ui.service';
 import { environment } from 'src/environments/environment';
 import { Network } from '@capacitor/network';
 import { Directory, Filesystem } from '@capacitor/filesystem';
+import { addIcons } from 'ionicons';
+import { arrowForwardOutline } from 'ionicons/icons';
 
 interface IntroState {
   ready: boolean,
@@ -48,14 +50,16 @@ function initialState(): IntroState {
   templateUrl: './intro.page.html',
   styleUrls: ['./intro.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, RouterModule, MessageComponent]
+  imports: [CommonModule, FormsModule, RouterModule, MessageComponent, IonButton, IonSpinner, IonIcon, IonText, IonContent]
 })
 export class IntroPage {
   vm: IntroState = initialState();
 
   constructor(private db: DbService, private api: ApiService,
     private settingsService: SettingsService, private ui: UiService,
-    private fav: FavoritesService, private router: Router, private toastController: ToastController) { }
+    private fav: FavoritesService, private router: Router, private toastController: ToastController) {
+    addIcons({ arrowForwardOutline });
+  }
 
   async ionViewWillEnter() {
     this.vm = initialState();
@@ -221,7 +225,7 @@ export class IntroPage {
       this.vm.downloading = false;
     }
     this.vm.eventAlreadySelected = false; // Show intro page
-    
+
   }
 
   open(card: Dataset) {

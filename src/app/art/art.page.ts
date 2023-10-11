@@ -1,5 +1,5 @@
 import { Component, ViewChild, effect } from '@angular/core';
-import { InfiniteScrollCustomEvent, IonicModule, ToastController } from '@ionic/angular';
+import { InfiniteScrollCustomEvent, IonBadge, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInfiniteScroll, IonInfiniteScrollContent, IonText, IonTitle, IonToolbar, ToastController } from '@ionic/angular/standalone';
 import { Art } from '../data/models';
 import { DbService } from '../data/db.service';
 import { Router, RouterLink, Scroll } from '@angular/router';
@@ -46,8 +46,9 @@ function initialState(): ArtState {
   templateUrl: 'art.page.html',
   styleUrls: ['art.page.scss'],
   standalone: true,
-  imports: [IonicModule, RouterLink, CommonModule, ScrollingModule,
-    AlphabeticalScrollBarComponent,
+  imports: [RouterLink, CommonModule, ScrollingModule, IonButton, IonButtons,
+    AlphabeticalScrollBarComponent, IonContent, IonHeader, IonTitle, IonIcon,
+    IonText, IonToolbar, IonInfiniteScroll, IonInfiniteScrollContent, IonBadge,
     ArtComponent, SearchComponent, SkeletonArtComponent],
 })
 export class ArtPage {

@@ -1,20 +1,20 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { IonButton, IonIcon, IonText } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-tile',
   templateUrl: './tile.component.html',
   styleUrls: ['./tile.component.scss'],
-  imports: [IonicModule],
+  imports: [IonButton, IonIcon, IonText],
   standalone: true
 })
-export class TileComponent implements OnInit {
+export class TileComponent {
 
   @Input() title = 'tile';
   @Input() imgSrc = '';
   @Input() iconName: string | undefined;
   constructor() { }
 
-  ngOnInit() { }
+
 
 }

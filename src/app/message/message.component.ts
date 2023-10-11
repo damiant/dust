@@ -1,23 +1,26 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { IonButton, IonIcon, IonModal, IonText } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { arrowForwardOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-message',
   templateUrl: './message.component.html',
   styleUrls: ['./message.component.scss'],
   standalone: true,
-  imports: [IonicModule]
+  imports: [IonModal, IonButton, IonText, IonIcon]
 })
-export class MessageComponent  implements OnInit {
+export class MessageComponent {
 
   @Input() show = false;
 
   @Input() message = '';
   @Input() title = '';
   @Output() dismissed = new EventEmitter<void>();
-  constructor() { }
+  constructor() { 
+    addIcons({ arrowForwardOutline })
+  }
 
-  ngOnInit() {}
 
   close() {    
     this.show = false; 

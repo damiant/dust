@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { IonicModule, ModalController, PickerColumn, ToastController } from '@ionic/angular';
+import { IonButton, IonButtons, IonContent, IonDatetime, IonDatetimeButton, IonHeader, IonItem, IonLabel, IonModal, IonPicker, IonTitle, IonToolbar, ModalController, PickerColumn, ToastController } from '@ionic/angular/standalone';
 import { PrivateEvent } from '../data/models';
 import { FormsModule } from '@angular/forms';
 import { StreetService } from '../map/street.service';
@@ -16,7 +16,7 @@ export enum PrivateEventResult {
   selector: 'app-private-event',
   templateUrl: './private-event.component.html',
   styleUrls: ['./private-event.component.scss'],
-  imports: [IonicModule, FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, IonItem, IonButton, IonLabel, IonModal, IonDatetimeButton, IonDatetime, IonPicker, IonContent, IonButtons, IonButton, IonHeader, IonTitle, IonToolbar],
   standalone: true
 })
 export class PrivateEventComponent implements OnInit {

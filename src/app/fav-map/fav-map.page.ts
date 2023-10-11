@@ -1,18 +1,19 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
 import { MapComponent } from '../map/map.component';
 import { FavoritesService } from '../favs/favorites.service';
 import { DbService } from '../data/db.service';
 import { MapPoint } from '../data/models';
+import { IonBackButton, IonButtons, IonContent, IonHeader, IonTitle, IonToast, IonToolbar } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-fav-map',
   templateUrl: './fav-map.page.html',
   styleUrls: ['./fav-map.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, MapComponent]
+  imports: [CommonModule, FormsModule, MapComponent, IonHeader, IonContent, 
+    IonTitle, IonToast, IonToolbar, IonButtons, IonBackButton]
 })
 export class FavMapPage{
   isToastOpen = false;

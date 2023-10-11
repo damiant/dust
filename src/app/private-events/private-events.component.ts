@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicModule, ModalController, ToastController } from '@ionic/angular';
+import { IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonFabButton, IonIcon, IonItem, IonLabel, IonList, IonText, ModalController, ToastController } from '@ionic/angular/standalone';
 import { FriendComponent, FriendResult } from '../friend/friend.component';
 import { FavoritesService } from '../favs/favorites.service';
 import { Friend, PrivateEvent } from '../data/models';
@@ -7,13 +7,15 @@ import { CommonModule } from '@angular/common';
 import { BurningManTimeZone, delay, getDayName } from '../utils/utils';
 import { PrivateEventComponent, PrivateEventResult } from '../private-event/private-event.component';
 import { UiService } from '../ui/ui.service';
+import { addIcons } from 'ionicons';
+import { add, calendar } from 'ionicons/icons';
 
 
 @Component({
   selector: 'app-private-events',
   templateUrl: './private-events.component.html',
   styleUrls: ['./private-events.component.scss'],
-  imports: [IonicModule, CommonModule, FriendComponent],
+  imports: [CommonModule, FriendComponent, IonCard, IonCardHeader, IonCardTitle, IonFabButton, IonIcon, IonCardContent, IonList, IonText, IonItem, IonLabel],
   standalone: true
 })
 export class PrivateEventsComponent implements OnInit {
@@ -21,6 +23,7 @@ export class PrivateEventsComponent implements OnInit {
   private editingPrivateEvent: PrivateEvent | undefined;
 
   constructor(private modalCtrl: ModalController, private fav: FavoritesService, private ui: UiService, private toastController: ToastController) {
+    addIcons({ add, calendar });
   }
 
   ngOnInit() {

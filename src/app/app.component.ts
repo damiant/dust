@@ -1,16 +1,16 @@
 import { Component, EnvironmentInjector, NgZone, OnInit, inject } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { NotificationService } from './notifications/notification.service';
 import { App, URLOpenListenerEvent } from '@capacitor/app';
 import { ShareInfoType, ShareService } from './share/share.service';
+import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule],
+  imports: [IonApp, IonRouterOutlet, CommonModule],
 })
 export class AppComponent implements OnInit {
   public environmentInjector = inject(EnvironmentInjector);

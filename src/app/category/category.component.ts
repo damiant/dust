@@ -1,24 +1,27 @@
 import { NgFor } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { IonButton, IonContent, IonIcon, IonPopover, IonRadio, IonRadioGroup } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { chevronDown } from 'ionicons/icons';
 
 @Component({
   selector: 'app-category',
   templateUrl: './category.component.html',
   styleUrls: ['./category.component.scss'],
   standalone: true,
-  imports: [IonicModule, NgFor]
+  imports: [NgFor, IonButton, IonPopover, IonContent, IonRadioGroup, IonRadio, IonIcon]
 })
-export class CategoryComponent implements OnInit {
+export class CategoryComponent {
   @Input() id = '';
   @Input() allTitle: string = '';
   @Input() category: string = '';
   @Input() categories: string[] = [];
   @Output() categoryChange = new EventEmitter<string>();
   @Output() change = new EventEmitter<string>();
-  constructor() { }
+  constructor() {
+    addIcons({ chevronDown });
+   }
 
-  ngOnInit() { }
 
   changed(e: any) {
     this.category = e.detail.value;

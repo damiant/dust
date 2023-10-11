@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonPopover, IonicModule, ToastController } from '@ionic/angular';
+import { IonBackButton, IonBadge, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonPopover, IonText, IonToolbar, ToastController } from '@ionic/angular/standalone';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DbService } from '../data/db.service';
 import { Event, MapPoint, OccurrenceSet } from '../data/models';
@@ -14,16 +14,19 @@ import { UiService } from '../ui/ui.service';
 import { toMapPoint } from '../map/map.utils';
 import { dateMatches, noDate, sameDay } from '../utils/utils';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-
+import { addIcons } from 'ionicons';
+import { shareOutline, locationOutline, timeOutline, star, starOutline, pricetagOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-event',
   templateUrl: './event.page.html',
   styleUrls: ['./event.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, RouterLink, FormsModule, MapModalComponent, MapComponent],
+  imports: [CommonModule, RouterLink, FormsModule, MapModalComponent, MapComponent,
+    IonItem, IonButton, IonText, IonIcon, IonLabel, IonBadge, IonContent, IonList,
+    IonButtons, IonToolbar, IonBackButton, IonHeader, IonPopover],
   animations: [
-    trigger('fade', [ 
+    trigger('fade', [
       state('visible', style({ opacity: 1 })),
       state('hidden', style({ opacity: 0 })),
       transition('visible <=> hidden', animate('0.3s ease-in-out')),
@@ -51,6 +54,7 @@ export class EventPage implements OnInit {
     private settings: SettingsService,
     private ui: UiService,
     private toastController: ToastController) {
+      addIcons({ shareOutline, locationOutline, timeOutline, star, starOutline, pricetagOutline});
   }
 
   async ngOnInit() {
@@ -100,9 +104,9 @@ export class EventPage implements OnInit {
 
     await toast.present();
   }
-  
+
   setReady() {
-    this.isReady = true;    
+    this.isReady = true;
   }
 
   async showCamp(e: any) {

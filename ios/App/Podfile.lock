@@ -1,5 +1,5 @@
 PODS:
-  - Capacitor (5.4.1):
+  - Capacitor (5.5.0):
     - CapacitorCordova
   - CapacitorApp (5.0.6):
     - Capacitor
@@ -7,7 +7,7 @@ PODS:
     - Capacitor
   - CapacitorBrowser (5.1.0):
     - Capacitor
-  - CapacitorCordova (5.4.1)
+  - CapacitorCordova (5.5.0)
   - CapacitorFilesystem (5.1.4):
     - Capacitor
   - CapacitorGeolocation (5.0.6):
@@ -30,7 +30,7 @@ PODS:
     - Capacitor
   - CapacitorStatusBar (5.0.6):
     - Capacitor
-  - CordovaPlugins (5.4.1):
+  - CordovaPlugins (5.5.0):
     - CapacitorCordova
   - MauricewegnerCapacitorNavigationBar (2.0.3):
     - Capacitor
@@ -94,11 +94,11 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@mauricewegner/capacitor-navigation-bar"
 
 SPEC CHECKSUMS:
-  Capacitor: 4c0681b47eebeba1f902093d24149cf2f518393e
+  Capacitor: 57890b363df14d5d2d5d8461aa23e886cb34da2a
   CapacitorApp: 024e1b1bea5f883d79f6330d309bc441c88ad04a
   CapacitorAppLauncher: 5a9f06c13c6b4f5d65b550a07128ef04f3a216b3
   CapacitorBrowser: 7a0fb6a1011abfaaf2dfedfd8248f942a8eda3d6
-  CapacitorCordova: 1222fdd78bfd0d323cc22bf254eed1484fe6c92a
+  CapacitorCordova: 3d3908a3d208a11a75f9df3b18c4405c4de76e1d
   CapacitorFilesystem: af704badfbc69f6f8623d9ed313e5490e3723dcb
   CapacitorGeolocation: 7be5f77abc205c0efe319fff8587a7183e7b0240
   CapacitorHaptics: 1fffc1217c7e64a472d7845be50fb0c2f7d4204c
@@ -110,7 +110,7 @@ SPEC CHECKSUMS:
   CapacitorShare: cd41743331cb71d217c029de54b681cbd91e0fcc
   CapacitorSplashScreen: 5fa2ab5e46cf5cc530cf16a51c80c7a986579ccd
   CapacitorStatusBar: 565c0a1ebd79bb40d797606a8992b4a105885309
-  CordovaPlugins: 8e27382f077b3e6693f2c298541b82c85e84a8a3
+  CordovaPlugins: 21b95a019890574231a2440270e140951db2d2f0
   MauricewegnerCapacitorNavigationBar: 37f1308a961a8d8cd00f6362e30bad03a73728f7
 
 PODFILE CHECKSUM: 1419417fb0c2457bd955f64d233366cd63520bb5

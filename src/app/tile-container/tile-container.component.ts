@@ -6,10 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./tile-container.component.scss'],
   standalone: true
 })
-export class TileContainerComponent  implements OnInit {
+export class TileContainerComponent {
 
   constructor() { }
-
-  ngOnInit() {}
 
 }

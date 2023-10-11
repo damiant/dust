@@ -1,17 +1,17 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormControl } from '@angular/forms';
 import { Keyboard } from '@capacitor/keyboard';
-import { IonicModule } from '@ionic/angular';
+import { IonSearchbar } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
   standalone: true,
-  imports: [IonicModule, ReactiveFormsModule]
+  imports: [ReactiveFormsModule, IonSearchbar]
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent {
 
   @Input() placeholder = '';
   @Output() search = new EventEmitter<string>();
@@ -20,7 +20,6 @@ export class SearchComponent implements OnInit {
   });
   constructor() { }
 
-  ngOnInit() { }
 
   onSubmit() {
     if (this.form.value.search) {

@@ -1,14 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
 import { MapComponent } from '../map/map.component';
 import { DbService } from '../data/db.service';
 import { Art, MapPoint, MapSet, Pin } from '../data/models';
 import { GpsCoord } from '../map/geo.utils';
 import { GeoService } from '../geolocation/geo.service';
 import { toMapPoint } from '../map/map.utils';
-import { noDate, nowRange, timeRangeToString } from '../utils/utils';
+import { nowRange, timeRangeToString } from '../utils/utils';
+import { IonBackButton, IonButtons, IonContent, IonHeader, IonItem, IonText, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 
 enum MapType {
   Restrooms = 'restrooms',
@@ -23,7 +23,7 @@ enum MapType {
   templateUrl: './pin-map.page.html',
   styleUrls: ['./pin-map.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, MapComponent]
+  imports: [CommonModule, FormsModule, MapComponent, IonContent, IonHeader, IonItem, IonToolbar, IonTitle, IonButtons, IonBackButton, IonText]
 })
 export class PinMapPage {
   @Input() mapType = '';

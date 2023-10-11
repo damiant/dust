@@ -1,17 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonSkeletonText } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-skeleton-event',
   templateUrl: './skeleton-event.component.html',
   styleUrls: ['./skeleton-event.component.scss'],
   standalone: true,
-  imports: [ IonicModule]
+  imports: [IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonSkeletonText, IonCardContent]
 })
-export class SkeletonEventComponent  implements OnInit {
+export class SkeletonEventComponent {
 
   constructor() { }
 
-  ngOnInit() {}
 
 }

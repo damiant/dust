@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, EnvironmentInjector, OnInit, effect, inject } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
 import { DbService } from '../data/db.service';
 import { NotificationService } from '../notifications/notification.service';
 import { Router } from '@angular/router';
@@ -12,13 +11,16 @@ import { Network } from '@capacitor/network';
 import { App } from '@capacitor/app';
 import { environment } from 'src/environments/environment';
 import { Keyboard } from '@capacitor/keyboard';
+import { IonIcon, IonLabel, IonTabBar, IonTabButton, IonTabs } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { musicalNotesOutline, ellipsisVertical } from 'ionicons/icons';
 
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule],
+  imports: [CommonModule, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel],
 })
 export class TabsPage implements OnInit {
   ready = false;
@@ -30,6 +32,7 @@ export class TabsPage implements OnInit {
     private shareService: ShareService,
     private settings: SettingsService,
     private router: Router, private settingsService: SettingsService) {
+      addIcons({ musicalNotesOutline, ellipsisVertical });
     effect(() => {
       const eventId = this.notificationService.hasNotification();
       if (eventId && eventId.length > 0) {
@@ -71,7 +74,7 @@ export class TabsPage implements OnInit {
     });
 
     // When app is paused hide the keyboard
-    App.addListener('pause', async() => {
+    App.addListener('pause', async () => {
       await Keyboard.hide();
     });
 

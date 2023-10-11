@@ -1,7 +1,7 @@
 import { enableProdMode, importProvidersFrom } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { RouteReuseStrategy, provideRouter, withComponentInputBinding } from '@angular/router';
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { provideIonicAngular, IonicRouteStrategy } from '@ionic/angular/standalone';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { routes } from './app/app.routes';
@@ -15,7 +15,7 @@ if (environment.production) {
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    importProvidersFrom(IonicModule.forRoot({ mode: 'ios', swipeBackEnabled: false })),
+    provideIonicAngular({ mode: 'ios', swipeBackEnabled: false }),
     provideAnimations(),
     provideRouter(routes, withComponentInputBinding()),
   ],
