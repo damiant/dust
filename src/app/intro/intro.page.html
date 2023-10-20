@@ -2,13 +2,13 @@
   <app-message (dismissed)="launch()" [show]="vm.showMessage" [title]="'About 2023'" [message]="vm.message"></app-message>
   <div [class.full]="vm.eventAlreadySelected" class="vcenter rows">
     <h1 (click)="clear()">dust.</h1>
-    <ion-text><b>dust</b> is a guide for burners to find events, camps and art.</ion-text>
+    <ion-text><strong>dust</strong> is a guide for burners to find events, camps and art.</ion-text>
   </div>
   <div [hidden]="vm.eventAlreadySelected" class="container" id="scroll-container">
-    <div class="card" [ngClass]="(vm.selected?.id === card.id) ? 'select' : 'unselect'" *ngFor="let card of vm.cards"
+    <div role="button" attr.aria-label="{{card.name}} {{card.year}}" class="card" [ngClass]="(vm.selected?.id === card.id) ? 'select' : 'unselect'" *ngFor="let card of vm.cards"
       (click)="open(card)">
       <div class="card-container">
-        <ion-text>{{card.name}}<br />{{card.year}}</ion-text>
+        <ion-text aria-hidden="true">{{card.name}}<br />{{card.year}}</ion-text>
       </div>
     </div>
   </div>
