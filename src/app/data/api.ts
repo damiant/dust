@@ -1,7 +1,7 @@
 import { Network } from '@capacitor/network';
 import { Dataset } from './models';
 import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
-import { CapacitorHttp, HttpOptions, HttpResponse, HttpResponseType } from '@capacitor/core';
+import { Capacitor, CapacitorHttp, HttpOptions, HttpResponse, HttpResponseType } from '@capacitor/core';
 //https://dust.events/assets/data/datasets.json
 
 export function datasetFilename(dataset: Dataset): string {
@@ -100,7 +100,7 @@ export async function getLiveBinary(dataset: string, name: string, ext: string, 
         try {
             const url = livePath(dataset, name, ext) + `?${revision}`;
             console.log(`getLive ${url} ${dataset} ${name}...`);
-            const res = await fetchWithTimeout(url, 15000, 'blob');            
+            const res = await fetchWithTimeout(url, 15000, 'blob');
             return res.data;
         } catch (error) {
             console.error(`Failed getLiveBinary`);
@@ -131,6 +131,13 @@ function blobToBase64(blob: Blob) {
 }
 
 async function fetchWithTimeout(url: string, timeout: number = 5000, responseType: HttpResponseType = 'json'): Promise<HttpResponse> {
+    if (Capacitor.getPlatform() == 'web' && (responseType == 'blob')) {        
+        const res = await webFetchWithTimeout(url, {}, timeout);
+        const blob = await res.blob();
+        const data = await blobToBase64(blob);
+        return { data, status: res.status, url, headers: {} };
+    }
+
     const options: HttpOptions = {
         url,
         responseType: responseType
@@ -139,7 +146,23 @@ async function fetchWithTimeout(url: string, timeout: number = 5000, responseTyp
         throw new Error(`Timeout on ${url}`);
     }, timeout);
     const response: HttpResponse = await CapacitorHttp.get(options);
-    clearTimeout(id);    
+    clearTimeout(id);
+    return response;
+}
+
+async function webFetchWithTimeout(url: string, options = {}, timeout: number = 5000) {
+    if (!AbortSignal.timeout) {
+        return await fetch(url, {
+            cache: "no-cache",
+            ...options
+        });
+    }
+    const signal = AbortSignal.timeout(timeout);
+    const response = await fetch(url, {
+        cache: "no-cache",
+        ...options,
+        signal
+    });
     return response;
 }
 
