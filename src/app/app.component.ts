@@ -4,6 +4,7 @@ import { NotificationService } from './notifications/notification.service';
 import { App, URLOpenListenerEvent } from '@capacitor/app';
 import { ShareInfoType, ShareService } from './share/share.service';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { RouterFocusService } from './utils/focus.service';
 
 @Component({
   selector: 'app-root',
@@ -15,11 +16,16 @@ import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 export class AppComponent implements OnInit {
   public environmentInjector = inject(EnvironmentInjector);
 
-  constructor(private notificationService: NotificationService, private shareService: ShareService,
-    private zone: NgZone) { }
+  constructor(
+    private notificationService: NotificationService, 
+    private shareService: ShareService,
+    private zone: NgZone,
+    private focusService: RouterFocusService
+    ) { }
 
   async ngOnInit() {
     await this.notificationService.configure();
+    this.focusService.init();
     App.addListener('appUrlOpen', (event: URLOpenListenerEvent) => {
       this.zone.run(() => {
         try {
