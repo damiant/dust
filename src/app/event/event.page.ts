@@ -15,7 +15,7 @@ import { toMapPoint } from '../map/map.utils';
 import { dateMatches, noDate, sameDay } from '../utils/utils';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { addIcons } from 'ionicons';
-import { shareOutline, locationOutline, timeOutline, star, starOutline, pricetagOutline } from 'ionicons/icons';
+import { shareOutline, locationOutline, timeOutline, star, starOutline, pricetagOutline, closeCircleOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-event',
@@ -54,7 +54,7 @@ export class EventPage implements OnInit {
     private settings: SettingsService,
     private ui: UiService,
     private toastController: ToastController) {
-      addIcons({ shareOutline, locationOutline, timeOutline, star, starOutline, pricetagOutline});
+      addIcons({ shareOutline, locationOutline, timeOutline, star, starOutline, pricetagOutline, closeCircleOutline});
   }
 
   async ngOnInit() {
@@ -109,6 +109,10 @@ export class EventPage implements OnInit {
     this.isReady = true;
   }
 
+  closePopover() {
+    this.isOpen = false;
+  }
+  
   async showCamp(e: any) {
     this.popover.event = e;
     const camp = await this.db.findCamp(this.event?.hosted_by_camp!);

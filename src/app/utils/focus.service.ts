@@ -30,10 +30,6 @@ export class RouterFocusService {
         // We look for an element on an ion-content that we want to focus
         const all = document.getElementsByClassName('page-focus');
 
-
-
-
-
         // This can return more than one page
         const pages = document.querySelectorAll('.ion-page:not(.ion-page-hidden, .ion-page:has(ion-tabs))');
         let page: Element | undefined;
@@ -47,7 +43,6 @@ export class RouterFocusService {
             console.log(`element not found on ${page?.tagName}`);
             return;
         }
-
 
         // We need to set tabindex to -1 and focus the element for the screen reader to read what we want
         (e as HTMLElement).setAttribute('tabindex', '-1');

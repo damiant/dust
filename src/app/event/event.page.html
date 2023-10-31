@@ -4,9 +4,9 @@
       <ion-back-button [text]="back()"></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button (click)="share()">
-      <ion-icon color="primary" name="share-outline"></ion-icon>
-    </ion-button>
+      <ion-button aria-label="Share this event" (click)="share()">
+        <ion-icon color="primary" name="share-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -14,46 +14,51 @@
 <ion-content [fullscreen]="true">
   <ion-popover #popover side="bottom" [isOpen]="isOpen" (didDismiss)="isOpen = false">
     <ng-template>
+      <ion-icon aria-label="Close popover" class="btn" role="button" name="close-circle-outline"
+        (click)="closePopover()"></ion-icon>
       <ion-content class="ion-padding">{{campDescription}}</ion-content>
     </ng-template>
   </ion-popover>
   <ion-list *ngIf="ready && event" lines="none">
     <div class="image" *ngIf="event.imageUrl">
-      <img loading="lazy" class="image" [@fade]="isReady ? 'visible' : 'hidden'" alt="{{event.title}}" (load)="setReady()"
-        [src]="event.imageUrl" />
+      <img loading="lazy" class="image" [@fade]="isReady ? 'visible' : 'hidden'" alt="{{event.title}}"
+        (load)="setReady()" [src]="event.imageUrl" />
     </div>
     <ion-item>
       <h1 class="page-focus">{{event.title}}</h1>
     </ion-item>
     <ion-item (click)="showCamp($event)">
-      <ion-icon color="primary" slot="start" [src]="'assets/icon/camp.svg'"></ion-icon>
-      <ion-label>{{event.camp}}</ion-label>
+      <ion-icon aria-hidden="true" color="primary" slot="start" [src]="'assets/icon/camp.svg'"></ion-icon>
+      <ion-label attr.aria-label="{{event.camp}}" role="button">{{event.camp}}</ion-label>
     </ion-item>
     <ion-item (click)="noop()" *ngIf="event.location">
-      <ion-icon slot="start" name="location-outline"></ion-icon>
-      <ion-label>{{event.location}}</ion-label>
+      <ion-icon aria-hidden="true" slot="start" name="location-outline"></ion-icon>
+      <ion-label attr.aria-label="Camp location is {{event.location}}">{{event.location}}</ion-label>
     </ion-item>
     <ion-item (click)="toggleStar(occurrence)" *ngFor="let occurrence of event.occurrence_set">
-      <ion-icon name="time-outline" slot="start"></ion-icon>
+      <ion-icon aria-hidden="true" name="time-outline" slot="start"></ion-icon>
       <ion-label>{{occurrence.longTimeString}}</ion-label>
       <ion-badge *ngIf="occurrence.happening">Now</ion-badge>
-      <ion-button *ngIf="!occurrence.happening" color="primary" fill="clear" slot="end">
+      <ion-button aria-label="Make this event a favorite" *ngIf="!occurrence.happening" color="primary" fill="clear"
+        slot="end">
         <ion-icon *ngIf="occurrence.star" name="star"></ion-icon>
         <ion-icon *ngIf="!occurrence.star" name="star-outline"></ion-icon>
       </ion-button>
     </ion-item>
     <ion-item>
-      <ion-icon name="pricetag-outline" slot="start"></ion-icon>
+      <ion-icon aria-hidden="true" name="pricetag-outline" slot="start"></ion-icon>
       <ion-label>{{event.event_type.label}}</ion-label>
     </ion-item>
     <ion-item>
-      <ion-text style="padding-right: 1rem; white-space: pre-line" class="text selectable">{{event.description}}</ion-text>
+      <ion-text style="padding-right: 1rem; white-space: pre-line"
+        class="text selectable">{{event.description}}</ion-text>
     </ion-item>
     <div class="center" *ngIf="event.occurrence_set.length === 1">
-      <ion-button style="padding-bottom: 1rem" *ngIf="!event.occurrence_set[0].star" (click)="toggleStar(event.occurrence_set[0])" shape="round">Add
+      <ion-button style="padding-bottom: 1rem" *ngIf="!event.occurrence_set[0].star"
+        (click)="toggleStar(event.occurrence_set[0])" shape="round">Add
         To Favorites</ion-button>
     </div>
   </ion-list>
   <div class="pad"></div>
-  <app-map *ngIf="ready && event" [points]="mapPoints"></app-map>
+  <app-map aria-hidden="true" *ngIf="ready && event" [points]="mapPoints"></app-map>
 </ion-content>
