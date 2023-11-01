@@ -1,15 +1,17 @@
-<ion-card class="item">
+<ion-card role="button" class="item">
   <div class="image" *ngIf="showImage && camp.imageUrl">
     <img loading="lazy" class="image" [@fade]="isReady ? 'visible' : 'hidden'" alt="{{camp.name}}" (load)="ready()"
       [src]="camp.imageUrl" />
   </div>
   <ion-card-header>
-    <ion-card-title [routerLink]="'/camp/'+ camp.uid+ '+' + title">{{camp.name}}</ion-card-title>
-    <ion-card-subtitle color="primary" (click)="map(camp)">{{camp.location_string}} {{camp.distanceInfo}}</ion-card-subtitle>
+    <ion-card-title aria-hidden="true" [routerLink]="'/camp/'+ camp.uid+ '+' + title">{{camp.name}}</ion-card-title>
+    <ion-card-subtitle aria-hidden="true" color="primary" (click)="map(camp)">{{camp.location_string}}
+      {{camp.distanceInfo}}</ion-card-subtitle>
   </ion-card-header>
 
-  <ion-card-content [routerLink]="'/camp/'+ camp.uid+ '+' + title">
-    <ion-text class="clamp3">{{camp.description}}</ion-text>
-    <ion-text color="primary"></ion-text>
+  <ion-card-content attr.aria-label="{{camp.name}} at {{camp.location_string}}.{{camp.description}}"
+    [routerLink]="'/camp/'+ camp.uid+ '+' + title">
+    <ion-text aria-hidden="true" class="clamp3">{{camp.description}}</ion-text>
+    <ion-text aria-hidden="true" color="primary"></ion-text>
   </ion-card-content>
 </ion-card>
