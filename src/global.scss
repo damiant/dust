@@ -295,3 +295,7 @@ cdk-virtual-scroll-viewport {
         background: #555;
     }
 }
+
+.page-focus:focus-visible {
+    outline: none;
+}

@@ -24,8 +24,7 @@ export class AppComponent implements OnInit {
     ) { }
 
   async ngOnInit() {
-    await this.notificationService.configure();
-    this.focusService.init();
+    await this.notificationService.configure();    
     App.addListener('appUrlOpen', (event: URLOpenListenerEvent) => {
       this.zone.run(() => {
         try {
@@ -40,6 +39,10 @@ export class AppComponent implements OnInit {
         }
       });
     });
+  }
+
+  stackChanged() {
+    this.focusService.focus();
   }
 
 }
