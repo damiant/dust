@@ -21,8 +21,7 @@ import { star, starOutline, shareOutline, personOutline, locateOutline } from 'i
   templateUrl: './art-item.page.html',
   styleUrls: ['./art-item.page.scss'],
   standalone: true,
-  imports: [CommonModule, IonTitle, FormsModule, RouterModule, MapComponent, MapModalComponent,
-    IonHeader, IonToolbar, IonBackButton, IonButtons, IonButton, IonContent, IonList, IonItem, IonIcon, IonLabel, IonText],
+  imports: [CommonModule, IonTitle, FormsModule, RouterModule, MapComponent, MapModalComponent, IonHeader, IonToolbar, IonBackButton, IonButtons, IonButton, IonContent, IonList, IonItem, IonIcon, IonLabel, IonText],
   animations: [
     trigger('fade', [
       state('visible', style({ opacity: 1 })),

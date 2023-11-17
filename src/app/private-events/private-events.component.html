@@ -9,10 +9,13 @@
 
   <ion-card-content>
     <ion-list>
-      <div *ngIf="events.length === 0" class="center">
+      @if (events.length === 0) {
+<div class="center">
         <ion-text class="large" color="medium">Press + to add your private event to this list.</ion-text>
       </div>
-      <ion-item (click)="editPrivateEvent(event)" *ngFor="let event of events">
+}
+      @for (event of events; track event) {
+  <ion-item (click)="editPrivateEvent(event)">
         <span slot="start" class="cal-title">{{event.startTime}}</span>
         <ion-icon slot="start" style="margin-top:-14px; font-size: 40px" aria-hidden="true" [src]="'assets/icon/calendar.svg'"></ion-icon>
         
@@ -24,6 +27,7 @@
 
 
       </ion-item>
+}
     </ion-list>
   </ion-card-content>
 </ion-card>

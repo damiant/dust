@@ -64,10 +64,7 @@ function intitialState(): FavsState {
   templateUrl: './favs.page.html',
   styleUrls: ['./favs.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, EventComponent,
-    IonContent, IonButtons, IonButton, IonIcon, IonHeader, IonToolbar, IonTitle, IonActionSheet,
-    IonText, IonBadge,
-    CampComponent, MapModalComponent, ArtComponent, CategoryComponent, SearchComponent]
+  imports: [CommonModule, FormsModule, RouterModule, EventComponent, IonContent, IonButtons, IonButton, IonIcon, IonHeader, IonToolbar, IonTitle, IonActionSheet, IonText, IonBadge, CampComponent, MapModalComponent, ArtComponent, CategoryComponent, SearchComponent]
 })
 export class FavsPage implements OnInit {
   vm: FavsState = intitialState();

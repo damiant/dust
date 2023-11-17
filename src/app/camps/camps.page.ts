@@ -52,10 +52,7 @@ function initialState(): CampsState {
   templateUrl: 'camps.page.html',
   styleUrls: ['camps.page.scss'],
   standalone: true,
-  imports: [CommonModule, RouterModule, ScrollingModule, MapModalComponent,
-    IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent, 
-    IonText, IonIcon, IonBadge,
-    CampComponent, SearchComponent, AlphabeticalScrollBarComponent]
+  imports: [CommonModule, RouterModule, ScrollingModule, MapModalComponent, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent, IonText, IonIcon, IonBadge, CampComponent, SearchComponent, AlphabeticalScrollBarComponent]
 })
 export class CampsPage {
   vm: CampsState = initialState();

@@ -1,11 +1,21 @@
 <ion-card class="item">
-  <img *ngIf="event.imageUrl" loading="lazy" class="image" alt="{{event.artCar}}"  [src]="event.imageUrl" />
+  @if (event.imageUrl) {
+<img loading="lazy" class="image" alt="{{event.artCar}}"  [src]="event.imageUrl" />
+}
   <ion-card-header>
-    <ng-template [ngIf]="!event.artCar" [ngIfElse]="artCar">
+    @if (!event.artCar) {
+
       <ion-card-title>{{event.camp}} <ion-icon [color]="event.wa ? 'primary' : 'medium'" (click)="wheelchair()" class="wheelchair" size="small" [src]="'assets/icon/wheelchair.svg'"></ion-icon></ion-card-title>
       <ion-card-subtitle color="primary" (click)="map(event)">{{event.location}}
         {{event.distanceInfo}}<span>{{event.title}}</span></ion-card-subtitle>
-    </ng-template>
+    
+} @else {
+
+      <ion-card-title (click)="carClick($event)"><ion-icon style="font-size: 26px; margin-bottom: -8px" color="primary" name="car"></ion-icon> {{event.artCar}}</ion-card-title>
+      <ion-card-subtitle>
+        <span>{{event.title}}</span></ion-card-subtitle>
+    
+}
     <ng-template #artCar>
       <ion-card-title (click)="carClick($event)"><ion-icon style="font-size: 26px; margin-bottom: -8px" color="primary" name="car"></ion-icon> {{event.artCar}}</ion-card-title>
       <ion-card-subtitle>
@@ -14,7 +24,8 @@
   </ion-card-header>
   <ion-card-content>
     <div class="rsl-container">
-      <div class="rsl-item" (click)="toggleStar(occurrence)" *ngFor="let occurrence of event.occurrences">
+      @for (occurrence of event.occurrences; track occurrence) {
+  <div class="rsl-item" (click)="toggleStar(occurrence)">
         <!-- <ion-button size="small" fill="clear" (click)="toggleStar(occurrence)" slot="icon"> -->
         <!-- <ion-icon *ngIf="!occurrence.star" name="star-outline"></ion-icon> -->
         <!-- </ion-button> -->
@@ -24,6 +35,7 @@
         </ion-text>
 
       </div>
+}
     </div>
   </ion-card-content>
 </ion-card>

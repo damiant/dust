@@ -1,4 +1,4 @@
-import { NgFor } from '@angular/common';
+
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { IonButton, IonContent, IonIcon, IonPopover, IonRadio, IonRadioGroup } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -9,7 +9,7 @@ import { chevronDown } from 'ionicons/icons';
   templateUrl: './category.component.html',
   styleUrls: ['./category.component.scss'],
   standalone: true,
-  imports: [NgFor, IonButton, IonPopover, IonContent, IonRadioGroup, IonRadio, IonIcon]
+  imports: [IonButton, IonPopover, IonContent, IonRadioGroup, IonRadio, IonIcon]
 })
 export class CategoryComponent {
   @Input() id = '';

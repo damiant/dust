@@ -76,10 +76,27 @@ function initialState(): EventsState {
   styleUrls: ['events.page.scss'],
   standalone: true,
   imports: [
-    CommonModule, RouterModule, ScrollingModule, 
-    MapModalComponent, FormsModule, EventComponent, CategoryComponent, IonSegment, 
-    IonSegmentButton, IonToolbar, IonText, IonButtons, IonTitle, IonHeader, IonContent,
-    SkeletonEventComponent, SearchComponent, IonButton, IonBadge, IonIcon],
+    CommonModule,
+    RouterModule,
+    ScrollingModule,
+    MapModalComponent,
+    FormsModule,
+    EventComponent,
+    CategoryComponent,
+    IonSegment,
+    IonSegmentButton,
+    IonToolbar,
+    IonText,
+    IonButtons,
+    IonTitle,
+    IonHeader,
+    IonContent,
+    SkeletonEventComponent,
+    SearchComponent,
+    IonButton,
+    IonBadge,
+    IonIcon
+],
 })
 export class EventsPage {
   vm: EventsState = initialState();

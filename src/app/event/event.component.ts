@@ -13,8 +13,7 @@ import { mapOutline } from 'ionicons/icons';
   styleUrls: ['./event.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, RouterModule, IonButtons, IonButton, IonIcon, IonCard,
-  IonCardHeader, IonCardSubtitle, IonCardContent, IonText],
+  imports: [CommonModule, RouterModule, IonButtons, IonButton, IonIcon, IonCard, IonCardHeader, IonCardSubtitle, IonCardContent, IonText],
   animations: [
     trigger('fade', [ 
       state('visible', style({ opacity: 1 })),

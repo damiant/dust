@@ -7,8 +7,10 @@
       <ion-button (click)="toggleByDist()" fill="clear"><ion-icon
           [name]="vm.byDist ? 'compass' : 'compass-outline'"></ion-icon></ion-button>
     </ion-buttons>
-    <ion-badge class="pad-right" *ngIf="db.selectedYear() !== ''" (click)="home()"
+    @if (db.selectedYear() !== '') {
+<ion-badge class="pad-right" (click)="home()"
       slot="end">{{db.selectedYear()}}</ion-badge>
+}
   </ion-toolbar>
 </ion-header>
 
@@ -31,9 +33,11 @@
     </ion-header>
     <app-map-modal [title]="vm.mapTitle" [subtitle]="vm.mapSubtitle" [(show)]="vm.showMap"
       [points]="vm.mapPoints"></app-map-modal>
-    <div *ngIf="vm.camps.length === 0" class="center pad-top">
+    @if (vm.camps.length === 0) {
+<div class="center pad-top">
       <ion-text class="large" color="medium">{{vm.noCampsMessage}}</ion-text>
     </div>
+}
     <cdk-virtual-scroll-viewport itemSize="180" [minBufferPx]="vm.minBufferPx" maxBufferPx="1350">
       <app-camp [camp]="camp" title="Camps" (mapClick)="map($event)"
         *cdkVirtualFor="let camp of vm.camps; trackBy: campsTrackBy" />

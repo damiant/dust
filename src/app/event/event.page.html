@@ -1,4 +1,5 @@
-<ion-header *ngIf="back() !== ''" [translucent]="true">
+@if (back() !== '') {
+<ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button [text]="back()"></ion-back-button>
@@ -10,6 +11,7 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+}
 
 <ion-content [fullscreen]="true">
   <ion-popover #popover side="bottom" [isOpen]="isOpen" (didDismiss)="isOpen = false">
@@ -19,11 +21,14 @@
       <ion-content class="ion-padding">{{campDescription}}</ion-content>
     </ng-template>
   </ion-popover>
-  <ion-list *ngIf="ready && event" lines="none">
-    <div class="image" *ngIf="event.imageUrl">
+  @if (ready && event) {
+<ion-list lines="none">
+    @if (event.imageUrl) {
+<div class="image">
       <img loading="lazy" class="image" [@fade]="isReady ? 'visible' : 'hidden'" alt="{{event.title}}"
         (load)="setReady()" [src]="event.imageUrl" />
     </div>
+}
     <ion-item>
       <h1 class="page-focus">{{event.title}}</h1>
     </ion-item>
@@ -31,20 +36,32 @@
       <ion-icon aria-hidden="true" color="primary" slot="start" [src]="'assets/icon/camp.svg'"></ion-icon>
       <ion-label attr.aria-label="{{event.camp}}" role="button">{{event.camp}}</ion-label>
     </ion-item>
-    <ion-item (click)="noop()" *ngIf="event.location">
+    @if (event.location) {
+<ion-item (click)="noop()">
       <ion-icon aria-hidden="true" slot="start" name="location-outline"></ion-icon>
       <ion-label attr.aria-label="Camp location is {{event.location}}">{{event.location}}</ion-label>
     </ion-item>
-    <ion-item (click)="toggleStar(occurrence)" *ngFor="let occurrence of event.occurrence_set">
+}
+    @for (occurrence of event.occurrence_set; track occurrence) {
+  <ion-item (click)="toggleStar(occurrence)">
       <ion-icon aria-hidden="true" name="time-outline" slot="start"></ion-icon>
       <ion-label>{{occurrence.longTimeString}}</ion-label>
-      <ion-badge *ngIf="occurrence.happening">Now</ion-badge>
-      <ion-button aria-label="Make this event a favorite" *ngIf="!occurrence.happening" color="primary" fill="clear"
+      @if (occurrence.happening) {
+<ion-badge>Now</ion-badge>
+}
+      @if (!occurrence.happening) {
+<ion-button aria-label="Make this event a favorite" color="primary" fill="clear"
         slot="end">
-        <ion-icon *ngIf="occurrence.star" name="star"></ion-icon>
-        <ion-icon *ngIf="!occurrence.star" name="star-outline"></ion-icon>
+        @if (occurrence.star) {
+<ion-icon name="star"></ion-icon>
+}
+        @if (!occurrence.star) {
+<ion-icon name="star-outline"></ion-icon>
+}
       </ion-button>
+}
     </ion-item>
+}
     <ion-item>
       <ion-icon aria-hidden="true" name="pricetag-outline" slot="start"></ion-icon>
       <ion-label>{{event.event_type.label}}</ion-label>
@@ -53,12 +70,19 @@
       <ion-text style="padding-right: 1rem; white-space: pre-line"
         class="text selectable">{{event.description}}</ion-text>
     </ion-item>
-    <div class="center" *ngIf="event.occurrence_set.length === 1">
-      <ion-button style="padding-bottom: 1rem" *ngIf="!event.occurrence_set[0].star"
+    @if (event.occurrence_set.length === 1) {
+<div class="center">
+      @if (!event.occurrence_set[0].star) {
+<ion-button style="padding-bottom: 1rem"
         (click)="toggleStar(event.occurrence_set[0])" shape="round">Add
         To Favorites</ion-button>
+}
     </div>
+}
   </ion-list>
+}
   <div class="pad"></div>
-  <app-map aria-hidden="true" *ngIf="ready && event" [points]="mapPoints"></app-map>
+  @if (ready && event) {
+<app-map aria-hidden="true" [points]="mapPoints"></app-map>
+}
 </ion-content>

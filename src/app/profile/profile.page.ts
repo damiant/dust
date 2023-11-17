@@ -24,11 +24,7 @@ import { linkOutline, mailUnreadOutline, shareOutline, starHalfOutline, informat
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, FriendsComponent,
-    IonHeader, IonToolbar, IonTitle, IonBadge, IonContent, IonCard,
-    IonCardHeader, IonCardTitle, IonCardContent, IonList, IonItem,
-    IonIcon, IonToggle,
-    TileContainerComponent, TileComponent, PrivateEventsComponent]
+  imports: [CommonModule, FormsModule, RouterModule, FriendsComponent, IonHeader, IonToolbar, IonTitle, IonBadge, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonList, IonItem, IonIcon, IonToggle, TileContainerComponent, TileComponent, PrivateEventsComponent]
 })
 export class ProfilePage implements OnInit {
 

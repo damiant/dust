@@ -46,10 +46,7 @@ function initialState(): ArtState {
   templateUrl: 'art.page.html',
   styleUrls: ['art.page.scss'],
   standalone: true,
-  imports: [RouterLink, CommonModule, ScrollingModule, IonButton, IonButtons,
-    AlphabeticalScrollBarComponent, IonContent, IonHeader, IonTitle, IonIcon,
-    IonText, IonToolbar, IonInfiniteScroll, IonInfiniteScrollContent, IonBadge,
-    ArtComponent, SearchComponent, SkeletonArtComponent],
+  imports: [RouterLink, CommonModule, ScrollingModule, IonButton, IonButtons, AlphabeticalScrollBarComponent, IonContent, IonHeader, IonTitle, IonIcon, IonText, IonToolbar, IonInfiniteScroll, IonInfiniteScrollContent, IonBadge, ArtComponent, SearchComponent, SkeletonArtComponent],
 })
 export class ArtPage {
   vm: ArtState = initialState();

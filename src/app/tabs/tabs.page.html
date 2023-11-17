@@ -1,5 +1,5 @@
-
-<ion-tabs *ngIf="ready" (ionTabsWillChange)="changeTab($event)">
+@if (ready) {
+<ion-tabs (ionTabsWillChange)="changeTab($event)">
   <ion-tab-bar slot="bottom" translucent>
     <ion-tab-button tab="events" (click)="select('events')">
       <ion-icon aria-hidden="true" [src]="'assets/icon/calendar.svg'"></ion-icon>
@@ -16,15 +16,19 @@
       <ion-label>Favorites</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button *ngIf="!db.featuresHidden().includes('art')" tab="art" (click)="select('art')">
+    @if (!db.featuresHidden().includes('art')) {
+    <ion-tab-button tab="art" (click)="select('art')">
       <ion-icon aria-hidden="true" [src]="'assets/icon/art.svg'"></ion-icon>
       <ion-label>Art</ion-label>
     </ion-tab-button>
+    }
 
-    <ion-tab-button *ngIf="!db.featuresHidden().includes('rsl')" tab="rsl" (click)="select('rsl')">
+    @if (!db.featuresHidden().includes('rsl')) {
+    <ion-tab-button tab="rsl" (click)="select('rsl')">
       <ion-icon aria-hidden="true" name="musical-notes-outline"></ion-icon>
       <ion-label>Music</ion-label>
     </ion-tab-button>
+    }
 
     <ion-tab-button tab="profile" (click)="select('profile')">
       <ion-icon aria-hidden="true" name="ellipsis-vertical"></ion-icon>
@@ -32,3 +36,4 @@
     </ion-tab-button>
   </ion-tab-bar>
 </ion-tabs>
+}
