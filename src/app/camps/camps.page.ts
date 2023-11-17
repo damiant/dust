@@ -1,6 +1,6 @@
 import { Component, ViewChild, effect } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { IonicModule, ToastController } from '@ionic/angular';
+import { IonBadge, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonText, IonTitle, IonToolbar, ToastController } from '@ionic/angular/standalone';
 import { Camp, MapPoint } from '../data/models';
 import { DbService } from '../data/db.service';
 import { CommonModule } from '@angular/common';
@@ -14,6 +14,8 @@ import { toMapPoint } from '../map/map.utils';
 import { GeoService } from '../geolocation/geo.service';
 import { GpsCoord } from '../map/geo.utils';
 import { AlphabeticalScrollBarComponent } from '../alpha/alpha.component';
+import { addIcons } from 'ionicons';
+import { compass, compassOutline } from 'ionicons/icons';
 
 interface CampsState {
   camps: Camp[],
@@ -50,7 +52,9 @@ function initialState(): CampsState {
   templateUrl: 'camps.page.html',
   styleUrls: ['camps.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, RouterModule, ScrollingModule, MapModalComponent,
+  imports: [CommonModule, RouterModule, ScrollingModule, MapModalComponent,
+    IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent, 
+    IonText, IonIcon, IonBadge,
     CampComponent, SearchComponent, AlphabeticalScrollBarComponent]
 })
 export class CampsPage {
@@ -63,6 +67,7 @@ export class CampsPage {
     private ui: UiService,
     private toastController: ToastController,
     private geo: GeoService) {
+      addIcons({ compass, compassOutline });
     effect(() => {
       this.ui.scrollUp('camps', this.virtualScroll);
     });

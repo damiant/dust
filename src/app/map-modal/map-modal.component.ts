@@ -1,16 +1,16 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MapComponent } from '../map/map.component';
-import { IonicModule } from '@ionic/angular';
 import { MapPoint } from '../data/models';
+import { IonModal, IonText } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-map-modal',
   templateUrl: './map-modal.component.html',
   styleUrls: ['./map-modal.component.scss'],
   standalone: true,
-  imports: [MapComponent, IonicModule]
+  imports: [MapComponent, IonModal, IonText]
 })
-export class MapModalComponent  implements OnInit {
+export class MapModalComponent {
   @Input() show = false;
   @Input() title = '';
   @Input() subtitle = '';
@@ -18,7 +18,7 @@ export class MapModalComponent  implements OnInit {
   @Input() points: MapPoint[] = [];
   constructor() { }
 
-  ngOnInit() {}
+
 
   close() {    
     this.show = false;

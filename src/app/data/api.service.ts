@@ -211,8 +211,8 @@ export class ApiService {
         encoding: Encoding.UTF8,
       });
       return JSON.parse(contents.data as any);
-    } catch {
-      console.warn(`Unable to read ${id}. Using ${JSON.stringify(defaultValue)}`);
+    } catch (err) {
+      console.warn(`Unable to read ${id}. Using ${JSON.stringify(defaultValue)}: ${err}`);
       return defaultValue;
     }
   }

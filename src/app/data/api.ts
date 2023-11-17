@@ -1,6 +1,7 @@
 import { Network } from '@capacitor/network';
 import { Dataset } from './models';
 import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
+import { Capacitor, CapacitorHttp, HttpOptions, HttpResponse, HttpResponseType } from '@capacitor/core';
 //https://dust.events/assets/data/datasets.json
 
 export function datasetFilename(dataset: Dataset): string {
@@ -22,8 +23,8 @@ function livePath(dataset: string, name: string, ext?: string): string {
 export async function getCached(dataset: string, name: string, timeout: number = 5000): Promise<any> {
     try {
         console.log(`getCached ${livePath(dataset, name)} ${dataset} ${name}...`);
-        const res = await fetchWithTimeout(livePath(dataset, name), {}, timeout);
-        const data = await res.json();
+        const res = await fetchWithTimeout(livePath(dataset, name), timeout);
+        const data = res.data;
         // Store cached data
         await save(getId(dataset, name), data);
         return data;
@@ -78,11 +79,11 @@ export async function getLive(dataset: string, name: string, timeout: number = 5
 
     } else {
         // Try to get from url     
-        const url = livePath(dataset, name);   
+        const url = livePath(dataset, name);
         console.log(`getLive ${url} ${dataset} ${name}...`);
         try {
-            const res = await fetchWithTimeout(url, {}, timeout);
-            return await res.json();
+            const res = await fetchWithTimeout(url, timeout);
+            return res.data;
         } catch (error) {
             console.error(`Unable to download live from ${url}`, error);
             return [];
@@ -97,12 +98,10 @@ export async function getLiveBinary(dataset: string, name: string, ext: string, 
     } else {
         // Try to get from url
         try {
-            const url = livePath(dataset, name, ext)+`?${revision}`;
+            const url = livePath(dataset, name, ext) + `?${revision}`;
             console.log(`getLive ${url} ${dataset} ${name}...`);
-            const res = await fetchWithTimeout(url, {}, 15000);
-            const blob = await res.blob();
-            const data = await blobToBase64(blob);
-            return data;
+            const res = await fetchWithTimeout(url, 15000, 'blob');
+            return res.data;
         } catch (error) {
             console.error(`Failed getLiveBinary`);
             throw new Error(error as string);
@@ -131,7 +130,27 @@ function blobToBase64(blob: Blob) {
     });
 }
 
-async function fetchWithTimeout(url: string, options = {}, timeout: number = 5000) {
+async function fetchWithTimeout(url: string, timeout: number = 5000, responseType: HttpResponseType = 'json'): Promise<HttpResponse> {
+    if (Capacitor.getPlatform() == 'web' && (responseType == 'blob')) {        
+        const res = await webFetchWithTimeout(url, {}, timeout);
+        const blob = await res.blob();
+        const data = await blobToBase64(blob);
+        return { data, status: res.status, url, headers: {} };
+    }
+
+    const options: HttpOptions = {
+        url,
+        responseType: responseType
+    }
+    const id = setTimeout(() => {
+        throw new Error(`Timeout on ${url}`);
+    }, timeout);
+    const response: HttpResponse = await CapacitorHttp.get(options);
+    clearTimeout(id);
+    return response;
+}
+
+async function webFetchWithTimeout(url: string, options = {}, timeout: number = 5000) {
     if (!AbortSignal.timeout) {
         return await fetch(url, {
             cache: "no-cache",

@@ -4,13 +4,15 @@
       <ion-back-button [text]="backText"></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button (click)="toggleStar()" slot="icon">
-        <ion-icon *ngIf="star" name="star"></ion-icon>
-        <ion-icon *ngIf="!star" name="star-outline"></ion-icon>
+      <div role="switch" [attr.aria-checked]="star">
+        <ion-button aria-label="Camp is favorited" (click)="toggleStar()" slot="icon">
+          <ion-icon aria-hidden="true" *ngIf="star" name="star"></ion-icon>
+          <ion-icon aria-hidden="true" *ngIf="!star" name="star-outline"></ion-icon>
+        </ion-button>
+      </div>
+      <ion-button aria-label="Share camp information" (click)="share()">
+        <ion-icon color="primary" name="share-outline"></ion-icon>
       </ion-button>
-      <ion-button (click)="share()">
-      <ion-icon color="primary" name="share-outline" ></ion-icon>
-    </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -28,16 +30,20 @@
         [src]="camp.imageUrl" />
     </div>
     <ion-item>
-      <h1 *ngIf="!camp.url">{{camp.name}}</h1>
-      <h1 style="color: var(--ion-color-primary)" *ngIf="camp.url" (click)="open(camp.url)">{{camp.name}}</h1>
+      <h1 class="page-focus" *ngIf="!camp.url">{{camp.name}}</h1>
+      <h1 class="page-focus" style="color: var(--ion-color-primary)" *ngIf="camp.url" (click)="open(camp.url)">
+        {{camp.name}}</h1>
     </ion-item>
     <ion-item *ngIf="camp.location_string" (click)="noop()">
-      <ion-icon slot="start" name="location-outline"></ion-icon>
-      <ion-label>{{camp.location_string}}</ion-label>
+      <ion-icon aria-hidden="true" slot="start" name="location-outline"></ion-icon>
+      <div role="text" attr.aria-label="Located at {{camp.location_string}}">
+        <ion-label aria-hidden="true">{{camp.location_string}}</ion-label>
+      </div>
     </ion-item>
 
     <ion-item>
-      <ion-text style="padding-right: 1rem; white-space: pre-line" class="text selectable">{{camp.description}}</ion-text>
+      <ion-text style="padding-right: 1rem; white-space: pre-line"
+        class="text selectable">{{camp.description}}</ion-text>
     </ion-item>
   </ion-list>
 
@@ -46,14 +52,14 @@
       <h1>Events</h1>
     </ion-item>
     <div *ngFor="let event of events">
-    <ion-item class="event">
-      <ion-icon class="event-icon" slot="start" name="calendar-outline"></ion-icon>
-      <ion-label class="bold" color="primary" (click)="show(event)">{{event.title}}</ion-label>
-    </ion-item>
-    <ion-item class="small" *ngFor="let occurrence of event.occurrence_set">
-      <ion-label class="pad-left text" (click)="show(event)">{{occurrence.longTimeString}}</ion-label>
-    </ion-item>
-  </div>
+      <ion-item class="event">
+        <ion-icon aria-hidden="true" class="event-icon" slot="start" name="calendar-outline"></ion-icon>
+        <ion-label role="button" class="bold" color="primary" (click)="show(event)">{{event.title}}</ion-label>
+      </ion-item>
+      <ion-item class="small" *ngFor="let occurrence of event.occurrence_set">
+        <ion-label class="pad-left text" (click)="show(event)">{{occurrence.longTimeString}}</ion-label>
+      </ion-item>
+    </div>
   </ion-list>
 
   <ion-list *ngIf="rslEvents.length > 0" lines="none">
@@ -61,16 +67,17 @@
       <h1>Parties</h1>
     </ion-item>
     <div *ngFor="let event of rslEvents">
-    <ion-item class="event">
-      <ion-icon class="event-icon" slot="start" name="calendar-outline"></ion-icon>
-      <ion-label (click)="rslInfo()" class="bold" color="primary">{{event.camp}} - {{event.title}}</ion-label>
-    </ion-item>
-    <ion-item class="small" *ngFor="let occurrence of event.occurrences" (click)="toggleRSLStar(occurrence, event)">
-      <ion-label class="pad-left text">
-        <span class="time">{{occurrence.timeRange}}</span> {{occurrence.who}}<ion-icon class="star" color="primary" [hidden]="!occurrence.star" name="star"></ion-icon></ion-label>
-    </ion-item>
-  </div>
+      <ion-item class="event">
+        <ion-icon class="event-icon" slot="start" name="calendar-outline"></ion-icon>
+        <ion-label (click)="rslInfo()" class="bold" color="primary">{{event.camp}} - {{event.title}}</ion-label>
+      </ion-item>
+      <ion-item class="small" *ngFor="let occurrence of event.occurrences" (click)="toggleRSLStar(occurrence, event)">
+        <ion-label class="pad-left text">
+          <span class="time">{{occurrence.timeRange}}</span> {{occurrence.who}}<ion-icon class="star" color="primary"
+            [hidden]="!occurrence.star" name="star"></ion-icon></ion-label>
+      </ion-item>
+    </div>
   </ion-list>
   <div class="pad"></div>
-  <app-map [points]="mapPoints"></app-map>
+  <app-map aria-hidden="true" [points]="mapPoints"></app-map>
 </ion-content>

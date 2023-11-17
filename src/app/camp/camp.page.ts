@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule, ToastController } from '@ionic/angular';
+import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonModal, IonText, IonToolbar, ToastController } from '@ionic/angular/standalone';
 import { ActivatedRoute } from '@angular/router';
 import { DbService } from '../data/db.service';
 import { Camp, Event, MapPoint, RSLEvent, RSLOccurrence } from '../data/models';
@@ -14,13 +14,16 @@ import { ShareInfoType } from '../share/share.service';
 import { toMapPoint } from '../map/map.utils';
 import { getOrdinalNum } from '../utils/utils';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { addIcons } from 'ionicons';
+import { star, starOutline, shareOutline, locationOutline, calendarOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-camp',
   templateUrl: './camp.page.html',
   styleUrls: ['./camp.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, MapComponent, EventPage],
+  imports: [CommonModule, FormsModule, MapComponent, EventPage, IonHeader, IonToolbar, IonButtons, IonBackButton, IonButton, IonIcon, IonContent,
+  IonList, IonItem, IonLabel, IonText, IonModal],
   animations: [
     trigger('fade', [ 
       state('visible', style({ opacity: 1 })),
@@ -47,6 +50,7 @@ export class CampPage implements OnInit {
     private settings: SettingsService,
     private toastController: ToastController,
     private ui: UiService) {
+      addIcons({ star, starOutline, shareOutline, locationOutline, calendarOutline });
   }
 
   async ngOnInit() {

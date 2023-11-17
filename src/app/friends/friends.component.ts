@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicModule, ModalController } from '@ionic/angular';
+import {  IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonFabButton, IonIcon, IonItem, IonLabel, IonList, IonText, ModalController } from '@ionic/angular/standalone';
 import { FriendComponent, FriendResult } from '../friend/friend.component';
 import { FavoritesService } from '../favs/favorites.service';
 import { Friend } from '../data/models';
 import { CommonModule } from '@angular/common';
 import { delay } from '../utils/utils';
+import { addIcons } from 'ionicons';
+import { add, person } from 'ionicons/icons';
 
 
 @Component({
   selector: 'app-friends',
   templateUrl: './friends.component.html',
   styleUrls: ['./friends.component.scss'],
-  imports: [IonicModule, CommonModule, FriendComponent],
+  imports: [CommonModule, FriendComponent, IonCard, IonCardHeader, IonCardTitle, IonFabButton, IonCardContent, IonList, IonText, IonItem, IonIcon, IonLabel],
   standalone: true
 })
 export class FriendsComponent implements OnInit {
@@ -19,6 +21,7 @@ export class FriendsComponent implements OnInit {
   private editingFriend: Friend | undefined;
 
   constructor(private modalCtrl: ModalController, private fav: FavoritesService) {
+    addIcons({ add, person });
   }
 
   ngOnInit() {

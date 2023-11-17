@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
 import { Art, Image, MapPoint } from '../data/models';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { DbService } from '../data/db.service';
@@ -13,13 +12,17 @@ import { UiService } from '../ui/ui.service';
 import { SettingsService } from '../data/settings.service';
 import { ShareInfoType } from '../share/share.service';
 import { toMapPoint } from '../map/map.utils';
+import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonText, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { star, starOutline, shareOutline, personOutline, locateOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-art-item',
   templateUrl: './art-item.page.html',
   styleUrls: ['./art-item.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, RouterModule, MapComponent, MapModalComponent],
+  imports: [CommonModule, IonTitle, FormsModule, RouterModule, MapComponent, MapModalComponent,
+    IonHeader, IonToolbar, IonBackButton, IonButtons, IonButton, IonContent, IonList, IonItem, IonIcon, IonLabel, IonText],
   animations: [
     trigger('fade', [
       state('visible', style({ opacity: 1 })),
@@ -43,6 +46,7 @@ export class ArtItemPage implements OnInit {
     private db: DbService,
     private settings: SettingsService,
     private fav: FavoritesService) {
+      addIcons({ star, starOutline, shareOutline, personOutline, locateOutline });
   }
 
   async ngOnInit() {
@@ -84,7 +88,7 @@ export class ArtItemPage implements OnInit {
 
   mailArtist() {
     if (!this.art?.contact_email) return;
-    window.open('mailto:'+this.art?.contact_email);
+    window.open('mailto:' + this.art?.contact_email);
   }
 
   share() {

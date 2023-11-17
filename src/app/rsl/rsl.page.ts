@@ -1,7 +1,7 @@
 import { Component, ViewChild, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { InfiniteScrollCustomEvent, IonContent, IonicModule, ToastController } from '@ionic/angular';
+import { InfiniteScrollCustomEvent, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInfiniteScroll, IonInfiniteScrollContent, IonPopover, IonSegment, IonSegmentButton, IonText, IonTitle, IonToolbar, ToastController } from '@ionic/angular/standalone';
 import { UiService } from '../ui/ui.service';
 import { DbService } from '../data/db.service';
 import { noDate, now, sameDay } from '../utils/utils';
@@ -14,6 +14,9 @@ import { SkeletonEventComponent } from '../skeleton-event/skeleton-event.compone
 import { ArtCarEvent, RslEventComponent } from '../rsl-event/rsl-event.component';
 import { toMapPoint } from '../map/map.utils';
 import { FavoritesService } from '../favs/favorites.service';
+import { addIcons } from 'ionicons';
+import { compass, compassOutline } from 'ionicons/icons';
+
 
 interface RSLState {
   byDist: boolean,
@@ -59,8 +62,11 @@ function initialState(): RSLState {
   templateUrl: './rsl.page.html',
   styleUrls: ['./rsl.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule,
-    RslEventComponent,
+  imports: [CommonModule, FormsModule,
+    RslEventComponent, IonHeader, IonToolbar, IonButtons,
+    IonSegment,
+    IonButton, IonContent, IonTitle, IonSegmentButton, IonPopover,
+    IonIcon, IonInfiniteScroll, IonInfiniteScrollContent, IonText,
     SearchComponent, MapModalComponent, SkeletonEventComponent]
 })
 export class RslPage {
@@ -75,6 +81,7 @@ export class RslPage {
     private geo: GeoService,
     private fav: FavoritesService,
     private toastController: ToastController) {
+    addIcons({ compass, compassOutline });
     effect(() => {
       this.ui.scrollUpContent('rsl', this.ionContent);
     });
@@ -115,7 +122,7 @@ export class RslPage {
       coords = await this.geo.getPosition();
     }
     const favs = await this.fav.getFavorites();
-    const events = await this.db.getRSL(this.vm.search, this.vm.day, coords);    
+    const events = await this.db.getRSL(this.vm.search, this.vm.day, coords);
     this.fav.setFavorites(events, favs.rslEvents);
     this.allEvents = events;
     this.vm.events = [];
@@ -133,7 +140,7 @@ export class RslPage {
       return;
     }
     const wasSearch = this.vm.search?.length > 0;
-    const days = await this.db.searchRSL(this.vm.search);    
+    const days = await this.db.searchRSL(this.vm.search);
     if (days.length == 0) {
       this.vm.noEvents = this.vm.events.length == 0;
       this.vm.noEventsMessage = wasSearch ?

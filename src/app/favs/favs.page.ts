@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonicModule } from '@ionic/angular';
+import { IonActionSheet, IonBadge, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonText, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { Router, RouterModule } from '@angular/router';
 import { Art, Camp, Event, MapPoint } from '../data/models';
 import { FavoritesService } from './favorites.service';
@@ -15,6 +15,8 @@ import { CategoryComponent } from '../category/category.component';
 import { SearchComponent } from '../search/search.component';
 import { distance, formatDistanceMiles, toMapPoint } from '../map/map.utils';
 import { GeoService } from '../geolocation/geo.service';
+import { addIcons } from 'ionicons';
+import { star, starOutline, mapOutline } from 'ionicons/icons';
 
 enum Filter {
   All = '',
@@ -62,7 +64,9 @@ function intitialState(): FavsState {
   templateUrl: './favs.page.html',
   styleUrls: ['./favs.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, RouterModule, EventComponent,
+  imports: [CommonModule, FormsModule, RouterModule, EventComponent,
+    IonContent, IonButtons, IonButton, IonIcon, IonHeader, IonToolbar, IonTitle, IonActionSheet,
+    IonText, IonBadge,
     CampComponent, MapModalComponent, ArtComponent, CategoryComponent, SearchComponent]
 })
 export class FavsPage implements OnInit {
@@ -76,6 +80,7 @@ export class FavsPage implements OnInit {
     private geo: GeoService,
     public db: DbService,
     private router: Router) {
+    addIcons({ star, starOutline, mapOutline })
     effect(() => {
       console.log('update favorite');
       this.fav.changed();

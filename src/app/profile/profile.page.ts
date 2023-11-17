@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AlertController, IonicModule, ToastController } from '@ionic/angular';
+import { IonBadge, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonHeader, IonIcon, IonItem, IonList, IonTitle, IonToggle, IonToolbar, ToastController } from '@ionic/angular/standalone';
 import { UiService } from '../ui/ui.service';
 import { Share } from '@capacitor/share';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { FriendsComponent } from '../friends/friends.component';
 import { SettingsService } from '../data/settings.service';
 import { MapService } from '../map/map.service';
@@ -16,13 +16,18 @@ import { Link, LocationEnabledStatus } from '../data/models';
 import { environment } from 'src/environments/environment';
 import { RateApp } from 'capacitor-rate-app';
 import { PrivateEventsComponent } from '../private-events/private-events.component';
+import { addIcons } from 'ionicons';
+import { linkOutline, mailUnreadOutline, shareOutline, starHalfOutline, informationCircleOutline, exitOutline, timeOutline, locateOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, RouterModule, FriendsComponent,
+  imports: [CommonModule, FormsModule, RouterModule, FriendsComponent,
+    IonHeader, IonToolbar, IonTitle, IonBadge, IonContent, IonCard,
+    IonCardHeader, IonCardTitle, IonCardContent, IonList, IonItem,
+    IonIcon, IonToggle,
     TileContainerComponent, TileComponent, PrivateEventsComponent]
 })
 export class ProfilePage implements OnInit {
@@ -41,7 +46,9 @@ export class ProfilePage implements OnInit {
     private geo: GeoService,
     private toastController: ToastController,
     public db: DbService
-  ) { }
+  ) {
+    addIcons({ linkOutline, mailUnreadOutline, shareOutline, starHalfOutline, informationCircleOutline, exitOutline, timeOutline, locateOutline })
+  }
 
   async ngOnInit() {
     this.db.checkInit();

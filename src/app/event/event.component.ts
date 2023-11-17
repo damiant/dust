@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { IonicModule } from '@ionic/angular';
 import { Event } from '../data/models';
 import { CommonModule } from '@angular/common';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonIcon, IonText } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { mapOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-event',
@@ -11,7 +13,8 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
   styleUrls: ['./event.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IonicModule, CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, IonButtons, IonButton, IonIcon, IonCard,
+  IonCardHeader, IonCardSubtitle, IonCardContent, IonText],
   animations: [
     trigger('fade', [ 
       state('visible', style({ opacity: 1 })),
@@ -32,7 +35,9 @@ export class EventComponent {
   @Output() rslClick = new EventEmitter<string>();
   isReady = false;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) { 
+    addIcons({mapOutline});
+  }
 
 
   ready() {

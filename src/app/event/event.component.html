@@ -6,25 +6,25 @@
   </ion-buttons>
 </h1>
 
-<ion-card class="item">
+<ion-card role="button" (click)="detail()" class="item">
   <div class="image" *ngIf="showImage && event.imageUrl">
     <img loading="lazy" class="image" [@fade]="isReady ? 'visible' : 'hidden'" alt="{{event.title}}" (load)="ready()"
       [src]="event.imageUrl" />
   </div>
   <p *ngIf="event.happening" class="badge">NOW</p>
   <ion-card-header>
-    <ion-card-title [routerLink]="'/event/'+ event.uid + '+' + title">{{event.title}}
+    <ion-card-title aria-hidden="true" [routerLink]="'/event/'+ event.uid + '+' + title">{{event.title}}
     </ion-card-title>
-    <ion-card-subtitle color="primary" (click)="map(event)">
+    <ion-card-subtitle aria-hidden="true" color="primary" (click)="map(event)">
       {{event.camp}} {{event.location ? '(' + event.location + ')' : ''}} {{event.distanceInfo}}
 
     </ion-card-subtitle>
   </ion-card-header>
 
-  <ion-card-content (click)="detail()">
+  <ion-card-content attr.aria-label="{{event.title}} at {{event.camp}} located at {{event.location}} " (click)="detail()">
 
-    <ion-text class="clamp">{{event.description}}</ion-text>
-    <ion-text class="clamp1">
+    <ion-text aria-hidden="true" class="clamp">{{event.description}}</ion-text>
+    <ion-text aria-hidden="true" class="clamp1">
       {{longTime ? event.longTimeString : event.timeString}} {{event.event_type.label}}</ion-text>
 
   </ion-card-content>

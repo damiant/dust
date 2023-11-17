@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, effect } from '@angular/core';
-import { IonicModule, ToastController } from '@ionic/angular';
+import { Component, ViewChild, effect } from '@angular/core';
+import { IonBadge, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonSegment, IonSegmentButton, IonText, IonTitle, IonToolbar, ToastController } from '@ionic/angular/standalone';
 import { DbService } from '../data/db.service';
 import { Day, Event, MapPoint } from '../data/models';
 import { CommonModule } from '@angular/common';
@@ -8,7 +8,6 @@ import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrollin
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { FormsModule } from '@angular/forms';
 import { noDate, now, nowRange, sameDay, timeRangeToString } from '../utils/utils';
-import { App } from '@capacitor/app';
 import { EventComponent } from '../event/event.component';
 import { UiService } from '../ui/ui.service';
 import { CategoryComponent } from '../category/category.component';
@@ -18,6 +17,8 @@ import { toMapPoint } from '../map/map.utils';
 import { GpsCoord } from '../map/geo.utils';
 import { GeoService } from '../geolocation/geo.service';
 import { SettingsService } from '../data/settings.service';
+import { addIcons } from 'ionicons';
+import { compass, compassOutline } from 'ionicons/icons';
 
 interface EventsState {
   title: string,
@@ -75,9 +76,10 @@ function initialState(): EventsState {
   styleUrls: ['events.page.scss'],
   standalone: true,
   imports: [
-    IonicModule, CommonModule, RouterModule, ScrollingModule,
-    MapModalComponent, FormsModule, EventComponent, CategoryComponent,
-    SkeletonEventComponent, SearchComponent],
+    CommonModule, RouterModule, ScrollingModule, 
+    MapModalComponent, FormsModule, EventComponent, CategoryComponent, IonSegment, 
+    IonSegmentButton, IonToolbar, IonText, IonButtons, IonTitle, IonHeader, IonContent,
+    SkeletonEventComponent, SearchComponent, IonButton, IonBadge, IonIcon],
 })
 export class EventsPage {
   vm: EventsState = initialState();
@@ -91,6 +93,7 @@ export class EventsPage {
     private toastController: ToastController,
     private geo: GeoService
   ) {
+    addIcons({ compass, compassOutline })
     effect(() => {
       this.ui.scrollUp('events', this.virtualScroll);
     });

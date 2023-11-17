@@ -1,4 +1,7 @@
 ## Changes
+## 1.38
+- Change to use standalone components
+
 ## 1.37
 - Support for music
 

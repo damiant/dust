@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild, effect } from '@angular/core';
 import { PinchZoomModule } from '@meddv/ngx-pinch-zoom';
 import { LocationEnabledStatus, MapInfo, MapPoint, Pin } from '../data/models';
-import { IonicModule } from '@ionic/angular';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { defaultMapRadius, distance, formatDistanceMiles, mapPointToPin, toMapPoint } from './map.utils';
 import { delay } from '../utils/utils';
@@ -13,6 +12,7 @@ import { CompassError, CompassHeading } from './compass';
 import { GpsCoord, Point } from './geo.utils';
 import { Router, RouterModule } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { IonButton, IonContent, IonPopover, IonText } from '@ionic/angular/standalone';
 
 interface MapInformation {
   width: number; // Width of the map
@@ -31,7 +31,7 @@ const youOffsetY = 4;
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
-  imports: [IonicModule, PinchZoomModule, RouterModule, CommonModule, MessageComponent],
+  imports: [PinchZoomModule, RouterModule, CommonModule, MessageComponent, IonPopover, IonContent, IonText, IonButton],
   standalone: true,
   animations: [
     trigger('fade', [
