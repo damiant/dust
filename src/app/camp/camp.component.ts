@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Camp } from '../data/models';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { IonCard, IonCardHeader, IonCardSubtitle, IonText } from '@ionic/angular/standalone';
+import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonText } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-camp',
@@ -11,7 +11,7 @@ import { IonCard, IonCardHeader, IonCardSubtitle, IonText } from '@ionic/angular
   styleUrls: ['./camp.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, RouterModule, IonCard, IonCardHeader, IonCardSubtitle, IonText],
+  imports: [CommonModule, RouterModule, IonCard, IonCardHeader, IonCardSubtitle, IonText, IonCardTitle, IonCardContent],
   animations: [
     trigger('fade', [ 
       state('visible', style({ opacity: 1 })),
@@ -27,8 +27,6 @@ export class CampComponent {
   @Input() title = 'Camps';
   @Output() mapClick = new EventEmitter<any>();
   isReady = false;
-
-  constructor() { }
 
   ready() {
     this.isReady = true;    

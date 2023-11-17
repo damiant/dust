@@ -6,7 +6,7 @@
   </ion-buttons>
 </h1>
 
-<ion-card role="button" class="item">
+<ion-card role="button" (click)="detail()" class="item">
   <div class="image" *ngIf="showImage && event.imageUrl">
     <img loading="lazy" class="image" [@fade]="isReady ? 'visible' : 'hidden'" alt="{{event.title}}" (load)="ready()"
       [src]="event.imageUrl" />
