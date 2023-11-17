@@ -7,8 +7,10 @@
       <ion-button (click)="toggleByDist()" fill="clear"><ion-icon
           [name]="vm.byDist ? 'compass' : 'compass-outline'"></ion-icon></ion-button>
     </ion-buttons>
-    <ion-badge class="pad-right" *ngIf="db.selectedYear() !== ''" (click)="home()"
+    @if (db.selectedYear() !== '') {
+<ion-badge class="pad-right" (click)="home()"
       slot="end">{{db.selectedYear()}}</ion-badge>
+}
   </ion-toolbar>
 </ion-header>
 
@@ -38,8 +40,10 @@
     </div>
     <cdk-virtual-scroll-viewport [minBufferPx]="vm.minBufferPx" [itemSize]="vm.showImage ? 390 : 180"
       maxBufferPx="2350">
-      <app-art *ngFor="let art of vm.arts; trackBy: artTrackBy" (artClick)="click($event)" [showImage]="vm.showImage"
+      @for (art of vm.arts; track artTrackBy($index, art)) {
+  <app-art (artClick)="click($event)" [showImage]="vm.showImage"
         [art]="art" />
+}
     </cdk-virtual-scroll-viewport>
     <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
       <ion-infinite-scroll-content></ion-infinite-scroll-content>

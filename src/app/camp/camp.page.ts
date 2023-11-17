@@ -22,8 +22,7 @@ import { star, starOutline, shareOutline, locationOutline, calendarOutline } fro
   templateUrl: './camp.page.html',
   styleUrls: ['./camp.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, MapComponent, EventPage, IonHeader, IonToolbar, IonButtons, IonBackButton, IonButton, IonIcon, IonContent,
-  IonList, IonItem, IonLabel, IonText, IonModal],
+  imports: [CommonModule, FormsModule, MapComponent, EventPage, IonHeader, IonToolbar, IonButtons, IonBackButton, IonButton, IonIcon, IonContent, IonList, IonItem, IonLabel, IonText, IonModal],
   animations: [
     trigger('fade', [ 
       state('visible', style({ opacity: 1 })),

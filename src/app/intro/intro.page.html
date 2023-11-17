@@ -5,12 +5,14 @@
     <ion-text role="text"><strong>dust</strong> is a guide for burners to find events, camps and art.</ion-text>
   </div>
   <div [hidden]="vm.eventAlreadySelected" class="container" id="scroll-container">
-    <div role="button" attr.aria-label="{{card.name}} {{card.year}}" class="card" [ngClass]="(vm.selected?.id === card.id) ? 'select' : 'unselect'" *ngFor="let card of vm.cards"
+    @for (card of vm.cards; track card) {
+  <div role="button" attr.aria-label="{{card.name}} {{card.year}}" class="card" [ngClass]="(vm.selected?.id === card.id) ? 'select' : 'unselect'"
       (click)="open(card)">
       <div class="card-container">
         <ion-text aria-hidden="true">{{card.name}}<br />{{card.year}}</ion-text>
       </div>
     </div>
+}
   </div>
   <div class="center">    
     <div [hidden]="!vm.downloading">
@@ -19,7 +21,11 @@
   </div>
   <div [hidden]="vm.eventAlreadySelected" class="footer">
     <ion-button [disabled]="!vm.ready" (click)="go()" size="large" shape="round">Get Dusty
-      <ion-spinner style="margin-left: 0.5rem" color="light" name="circular" *ngIf="!vm.ready"></ion-spinner>
-      <ion-icon *ngIf="vm.ready" name="arrow-forward-outline"></ion-icon></ion-button>
+      @if (!vm.ready) {
+<ion-spinner style="margin-left: 0.5rem" color="light" name="circular"></ion-spinner>
+}
+      @if (vm.ready) {
+<ion-icon name="arrow-forward-outline"></ion-icon>
+}</ion-button>
   </div>
 </ion-content>

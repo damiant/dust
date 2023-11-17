@@ -32,8 +32,10 @@
     <ion-input label="Notes" [(ngModel)]="event.notes" placeholder=""></ion-input>
   </ion-item>
 
-  <div class="center" *ngIf="isEdit">
+  @if (isEdit) {
+<div class="center">
     <ion-button (click)="deleteEvent()" shape="round">Delete</ion-button>
   </div>
+}
   <ion-picker trigger="pick-address" [columns]="addresses" [buttons]="pickerButtons"></ion-picker>
 </ion-content>

@@ -22,9 +22,11 @@
     </ion-toolbar>
     <ion-toolbar>
       <ion-segment (ionChange)="dayChange($event)" [(ngModel)]="vm.defaultDay" [scrollable]="true">
-        <ion-segment-button [class.bold]="day.today" *ngFor="let day of vm.days" [value]="day.date">
+        @for (day of vm.days; track day) {
+  <ion-segment-button [class.bold]="day.today" [value]="day.date">
           {{day.name}}<br />{{day.dayName}}
         </ion-segment-button>
+}
       </ion-segment>
     </ion-toolbar>
   </ion-header>
@@ -37,15 +39,21 @@
   </ion-popover>
   <app-map-modal [title]="vm.mapTitle" [subtitle]="vm.mapSubtitle" [(show)]="vm.showMap"
     [points]="vm.mapPoints"></app-map-modal>
-  <div *ngIf="!vm.noEvents && this.vm.events.length === 0">
+  @if (!vm.noEvents && this.vm.events.length === 0) {
+<div>
     <app-skeleton-event></app-skeleton-event>
     <app-skeleton-event></app-skeleton-event>
     <app-skeleton-event></app-skeleton-event>
     <app-skeleton-event></app-skeleton-event>
   </div>
-  <div *ngIf="vm.noEvents" class="message large"><ion-text>{{vm.noEventsMessage}}</ion-text></div>
+}
+  @if (vm.noEvents) {
+<div class="message large"><ion-text>{{vm.noEventsMessage}}</ion-text></div>
+}
+  @for (event of vm.events; track eventsTrackBy($index, event)) {
   <app-rsl-event [event]="event" (mapClick)="map($event)" (artCarClick)="artCar($event)"
-    *ngFor="let event of vm.events; trackBy: eventsTrackBy"></app-rsl-event>
+   ></app-rsl-event>
+}
   <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>

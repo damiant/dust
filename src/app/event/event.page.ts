@@ -22,9 +22,7 @@ import { shareOutline, locationOutline, timeOutline, star, starOutline, pricetag
   templateUrl: './event.page.html',
   styleUrls: ['./event.page.scss'],
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule, MapModalComponent, MapComponent,
-    IonItem, IonButton, IonText, IonIcon, IonLabel, IonBadge, IonContent, IonList,
-    IonButtons, IonToolbar, IonBackButton, IonHeader, IonPopover],
+  imports: [CommonModule, RouterLink, FormsModule, MapModalComponent, MapComponent, IonItem, IonButton, IonText, IonIcon, IonLabel, IonBadge, IonContent, IonList, IonButtons, IonToolbar, IonBackButton, IonHeader, IonPopover],
   animations: [
     trigger('fade', [
       state('visible', style({ opacity: 1 })),

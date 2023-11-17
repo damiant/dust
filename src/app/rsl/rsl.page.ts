@@ -62,12 +62,7 @@ function initialState(): RSLState {
   templateUrl: './rsl.page.html',
   styleUrls: ['./rsl.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule,
-    RslEventComponent, IonHeader, IonToolbar, IonButtons,
-    IonSegment,
-    IonButton, IonContent, IonTitle, IonSegmentButton, IonPopover,
-    IonIcon, IonInfiniteScroll, IonInfiniteScrollContent, IonText,
-    SearchComponent, MapModalComponent, SkeletonEventComponent]
+  imports: [CommonModule, FormsModule, RslEventComponent, IonHeader, IonToolbar, IonButtons, IonSegment, IonButton, IonContent, IonTitle, IonSegmentButton, IonPopover, IonIcon, IonInfiniteScroll, IonInfiniteScrollContent, IonText, SearchComponent, MapModalComponent, SkeletonEventComponent]
 })
 export class RslPage {
 

@@ -12,8 +12,7 @@ import { IonBackButton, IonButtons, IonContent, IonHeader, IonTitle, IonToast, I
   templateUrl: './fav-map.page.html',
   styleUrls: ['./fav-map.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, MapComponent, IonHeader, IonContent, 
-    IonTitle, IonToast, IonToolbar, IonButtons, IonBackButton]
+  imports: [CommonModule, FormsModule, MapComponent, IonHeader, IonContent, IonTitle, IonToast, IonToolbar, IonButtons, IonBackButton]
 })
 export class FavMapPage{
   isToastOpen = false;

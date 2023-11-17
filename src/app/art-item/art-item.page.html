@@ -5,8 +5,12 @@
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-button (click)="toggleStar()" slot="icon">
-        <ion-icon *ngIf="star" name="star"></ion-icon>
-        <ion-icon *ngIf="!star" name="star-outline"></ion-icon>
+        @if (star) {
+<ion-icon name="star"></ion-icon>
+}
+        @if (!star) {
+<ion-icon name="star-outline"></ion-icon>
+}
       </ion-button>
       <ion-button (click)="share()">
         <ion-icon color="primary" name="share-outline"></ion-icon>
@@ -17,10 +21,15 @@
 
 <ion-content [fullscreen]="true">
   <app-map-modal [title]="mapTitle" [subtitle]="mapSubtitle" [(show)]="showMap" [points]="mapPoints"></app-map-modal>
-  <ion-list *ngIf="art" lines="none">
+  @if (art) {
+<ion-list lines="none">
     <ion-item>
-      <h1 *ngIf="!art.url">{{art.name}}</h1>
-      <h1 style="color: var(--ion-color-primary)" *ngIf="art.url" (click)="open(art.url)">{{art.name}}</h1>      
+      @if (!art.url) {
+<h1>{{art.name}}</h1>
+}
+      @if (art.url) {
+<h1 style="color: var(--ion-color-primary)" (click)="open(art.url)">{{art.name}}</h1>
+}      
     </ion-item>
     <ion-item>
       <ion-icon slot="start" name="person-outline"></ion-icon>
@@ -36,9 +45,14 @@
     </ion-item>
 
     <ion-item>
-      <div [@fade]="image.ready ? 'visible' : 'hidden'" class="center" *ngFor="let image of art.images">
-        <img *ngIf="image.thumbnail_url" (load)="ready(image)" [src]="image.thumbnail_url" [alt]="art.name" />
+      @for (image of art.images; track image) {
+  <div [@fade]="image.ready ? 'visible' : 'hidden'" class="center">
+        @if (image.thumbnail_url) {
+<img (load)="ready(image)" [src]="image.thumbnail_url" [alt]="art.name" />
+}
       </div>
+}
     </ion-item>
   </ion-list>
+}
 </ion-content>

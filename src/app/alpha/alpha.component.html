@@ -3,8 +3,9 @@
   class="container"
   [class.cursor-pointer]="!navigateOnHover"
 >
+  @for (letter of visibleLetters; track letter; let i = $index) {
   <div
-    *ngFor="let letter of visibleLetters; let i = index"
+   
     class="letter"
     [class.letter-disabled]="disableInvalidLetters && !isValid(letter)"
     [class.letter-is-hidden-value]="letter === hiddenLetterValue"
@@ -12,4 +13,5 @@
   >
     <label>{{ letter }}</label>
   </div>
+}
 </div>
