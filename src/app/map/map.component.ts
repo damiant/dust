@@ -3,7 +3,7 @@ import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild, effect } fr
 import { PinchZoomModule } from '@meddv/ngx-pinch-zoom';
 import { LocationEnabledStatus, MapInfo, MapPoint, Pin } from '../data/models';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { defaultMapRadius, distance, formatDistanceMiles, mapPointToPin, toMapPoint } from './map.utils';
+import { defaultMapRadius, distance, formatDistanceMiles, mapPointToPin } from './map.utils';
 import { delay } from '../utils/utils';
 import { GeoService } from '../geolocation/geo.service';
 import { SettingsService } from '../data/settings.service';
@@ -54,7 +54,6 @@ export class MapComponent implements OnInit, OnDestroy {
   divs: HTMLDivElement[] = [];
   private geoInterval: any;
   private nearestPoint: number | undefined;
-  //private gpsCoord: GpsCoord = NoGPSCoord();
   private you: HTMLDivElement | undefined;
   private watchId: any;
   private mapInformation: MapInformation | undefined;
