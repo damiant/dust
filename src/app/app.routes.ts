@@ -1,33 +1,32 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  
   {
     path: '',
     loadChildren: () => import('./tabs/tabs.routes').then((m) => m.routes),
   },
   {
     path: 'intro',
-    loadComponent: () => import('./intro/intro.page').then( m => m.IntroPage)
+    loadComponent: () => import('./intro/intro.page').then((m) => m.IntroPage),
   },
   {
     path: 'event/:id',
-    loadComponent: () => import('./event/event.page').then( m => m.EventPage)
+    loadComponent: () => import('./event/event.page').then((m) => m.EventPage),
   },
   {
     path: 'camp/:id',
-    loadComponent: () => import('./camp/camp.page').then( m => m.CampPage)
+    loadComponent: () => import('./camp/camp.page').then((m) => m.CampPage),
   },
   {
     path: 'art/:id',
-    loadComponent: () => import('./art-item/art-item.page').then( m => m.ArtItemPage)
+    loadComponent: () => import('./art-item/art-item.page').then((m) => m.ArtItemPage),
   },
   {
     path: 'map/:mapType',
-    loadComponent: () => import('./pin-map/pin-map.page').then(m => m.PinMapPage)
+    loadComponent: () => import('./pin-map/pin-map.page').then((m) => m.PinMapPage),
   },
   {
     path: 'intro',
-    loadComponent: () => import('./intro/intro.page').then( m => m.IntroPage)
-  }
+    loadComponent: () => import('./intro/intro.page').then((m) => m.IntroPage),
+  },
 ];

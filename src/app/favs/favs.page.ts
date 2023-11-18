@@ -1,7 +1,18 @@
 import { Component, OnInit, ViewChild, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonActionSheet, IonBadge, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonText, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import {
+  IonActionSheet,
+  IonBadge,
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonText,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/angular/standalone';
 import { Router, RouterModule } from '@angular/router';
 import { Art, Camp, Event, MapPoint } from '../data/models';
 import { FavoritesService } from './favorites.service';
@@ -22,23 +33,23 @@ enum Filter {
   All = '',
   Camps = 'Camps',
   Art = 'Art',
-  Events = 'Events'
+  Events = 'Events',
 }
 
 interface FavsState {
-  filter: string,
-  events: Event[],
-  camps: Camp[],
-  art: Art[],
-  filters: Filter[],
-  showMap: boolean,
-  noFavorites: boolean,
-  mapTitle: string,
-  search: string,
-  mapSubtitle: string,
-  rslId: string | undefined,
-  isActionSheetOpen: boolean,
-  mapPoints: MapPoint[]
+  filter: string;
+  events: Event[];
+  camps: Camp[];
+  art: Art[];
+  filters: Filter[];
+  showMap: boolean;
+  noFavorites: boolean;
+  mapTitle: string;
+  search: string;
+  mapSubtitle: string;
+  rslId: string | undefined;
+  isActionSheetOpen: boolean;
+  mapPoints: MapPoint[];
 }
 
 function intitialState(): FavsState {
@@ -55,8 +66,8 @@ function intitialState(): FavsState {
     mapSubtitle: '',
     rslId: undefined,
     isActionSheetOpen: false,
-    mapPoints: []
-  }
+    mapPoints: [],
+  };
 }
 
 @Component({
@@ -64,7 +75,27 @@ function intitialState(): FavsState {
   templateUrl: './favs.page.html',
   styleUrls: ['./favs.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, EventComponent, IonContent, IonButtons, IonButton, IonIcon, IonHeader, IonToolbar, IonTitle, IonActionSheet, IonText, IonBadge, CampComponent, MapModalComponent, ArtComponent, CategoryComponent, SearchComponent]
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    EventComponent,
+    IonContent,
+    IonButtons,
+    IonButton,
+    IonIcon,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonActionSheet,
+    IonText,
+    IonBadge,
+    CampComponent,
+    MapModalComponent,
+    ArtComponent,
+    CategoryComponent,
+    SearchComponent,
+  ],
 })
 export class FavsPage implements OnInit {
   vm: FavsState = intitialState();
@@ -76,8 +107,9 @@ export class FavsPage implements OnInit {
     private ui: UiService,
     private geo: GeoService,
     public db: DbService,
-    private router: Router) {
-    addIcons({ star, starOutline, mapOutline })
+    private router: Router,
+  ) {
+    addIcons({ star, starOutline, mapOutline });
     effect(() => {
       console.log('update favorite');
       this.fav.changed();
@@ -92,7 +124,7 @@ export class FavsPage implements OnInit {
       this.ui.scrollUpContent('favs', this.ionContent);
     });
     effect(() => {
-      const status = this.db.networkStatus();
+      const _status = this.db.networkStatus();
     });
   }
 
@@ -112,7 +144,6 @@ export class FavsPage implements OnInit {
       },
     },
   ];
-
 
   async ionViewWillEnter() {
     // if (this.vm.events.length == 0) {
@@ -147,7 +178,10 @@ export class FavsPage implements OnInit {
   private async update() {
     const favs = await this.fav.getFavorites();
     const rslEvents = this.filterItems(Filter.Events, await this.fav.getRSLEventList(favs.rslEvents));
-    const events = this.filterItems(Filter.Events, await this.fav.getEventList(favs.events, this.db.selectedYear() !== '', rslEvents));
+    const events = this.filterItems(
+      Filter.Events,
+      await this.fav.getEventList(favs.events, this.db.selectedYear() !== '', rslEvents),
+    );
     const camps = this.filterItems(Filter.Camps, await this.db.getCampList(favs.camps));
     const art = this.filterItems(Filter.Art, await this.db.getArtList(favs.art));
     this.vm.events = events;
@@ -184,8 +218,6 @@ export class FavsPage implements OnInit {
     this.vm.rslId = rslId;
   }
 
-
-
   groupClick(gevent: Event) {
     console.log(gevent);
     const points: MapPoint[] = [];
@@ -197,9 +229,13 @@ export class FavsPage implements OnInit {
         thisGroup = false;
       }
       if (thisGroup) {
-        points.push(toMapPoint(event.location,
-          { title: event.title, location: event.location, subtitle: event.longTimeString, imageUrl: event.imageUrl }, event.pin));
-
+        points.push(
+          toMapPoint(
+            event.location,
+            { title: event.title, location: event.location, subtitle: event.longTimeString, imageUrl: event.imageUrl },
+            event.pin,
+          ),
+        );
       }
     }
 
@@ -209,8 +245,13 @@ export class FavsPage implements OnInit {
   mapCamps() {
     const points: MapPoint[] = [];
     for (const camp of this.vm.camps) {
-      points.push(toMapPoint(camp.location_string,
-        { title: camp.name, location: camp.location_string!, subtitle: '', imageUrl: camp.imageUrl }, camp.pin));
+      points.push(
+        toMapPoint(
+          camp.location_string,
+          { title: camp.name, location: camp.location_string!, subtitle: '', imageUrl: camp.imageUrl },
+          camp.pin,
+        ),
+      );
     }
     this.displayPoints(points, 'Favorite Camps');
   }
@@ -220,8 +261,7 @@ export class FavsPage implements OnInit {
     const gps = await this.geo.getPosition();
     for (const art of this.vm.art) {
       const imageUrl: string = art.images?.length > 0 ? art.images[0].thumbnail_url! : '';
-      const mp = toMapPoint(art.location_string,
-        { title: art.name, location: '', subtitle: '', imageUrl: imageUrl });
+      const mp = toMapPoint(art.location_string, { title: art.name, location: '', subtitle: '', imageUrl: imageUrl });
       if (art.location.gps_latitude && art.location.gps_longitude) {
         mp.gps = { lat: art.location.gps_latitude, lng: art.location.gps_longitude };
         const dist = distance(gps, mp.gps);

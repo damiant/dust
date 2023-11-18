@@ -53,6 +53,7 @@ yarn-error.log
 !.vscode/extensions.json
 .history/*
 
+.husky/*
 
 # Miscellaneous
 /.angular

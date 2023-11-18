@@ -1,17 +1,22 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      {{vm.title}}
-    </ion-title>
+    <ion-title> {{vm.title}} </ion-title>
     <ion-buttons class="b-pad-r" slot="end">
-      <ion-button (click)="toggleByDist()" fill="clear"><ion-icon
-          [name]="vm.byDist ? 'compass' : 'compass-outline'"></ion-icon></ion-button>
-      <app-category id="event-categories" allTitle="All Events" (change)="categoryChanged($event)"
-        [(category)]="vm.category" [categories]="vm.categories" slot="end"></app-category>
+      <ion-button (click)="toggleByDist()" fill="clear"
+        ><ion-icon [name]="vm.byDist ? 'compass' : 'compass-outline'"></ion-icon
+      ></ion-button>
+      <app-category
+        id="event-categories"
+        allTitle="All Events"
+        (categoryChange)="categoryChanged()"
+        [(category)]="vm.category"
+        [categories]="vm.categories"
+        slot="end"
+      ></app-category>
     </ion-buttons>
     @if (db.selectedYear() !== '') {
-<ion-badge class="pad-right" slot="end">{{db.selectedYear()}}</ion-badge>
-}
+    <ion-badge class="pad-right" slot="end">{{db.selectedYear()}}</ion-badge>
+    }
   </ion-toolbar>
 </ion-header>
 
@@ -29,36 +34,42 @@
       </ion-toolbar>
       <ion-toolbar>
         <ion-segment (ionChange)="dayChange($event)" [(ngModel)]="vm.defaultDay" [scrollable]="true">
-          <ion-segment-button [value]="'now'">
-            Now
-          </ion-segment-button>
-          <ion-segment-button [value]="'all'">
-            All
-          </ion-segment-button>
+          <ion-segment-button [value]="'now'"> Now </ion-segment-button>
+          <ion-segment-button [value]="'all'"> All </ion-segment-button>
           @for (day of vm.days; track day) {
-  <ion-segment-button [class.bold]="day.today" [value]="day.date">
+          <ion-segment-button [class.bold]="day.today" [value]="day.date">
             {{day.name}}<br />{{day.dayName}}
           </ion-segment-button>
-}
+          }
         </ion-segment>
       </ion-toolbar>
     </ion-header>
-    <app-map-modal [title]="vm.mapTitle" [subtitle]="vm.mapSubtitle" [(show)]="vm.showMap"
-      [points]="vm.mapPoints"></app-map-modal>
+    <app-map-modal
+      [title]="vm.mapTitle"
+      [subtitle]="vm.mapSubtitle"
+      [(show)]="vm.showMap"
+      [points]="vm.mapPoints"
+    ></app-map-modal>
     @if (!vm.noEvents && this.vm.events.length === 0) {
-<div>
+    <div>
       <app-skeleton-event></app-skeleton-event>
       <app-skeleton-event></app-skeleton-event>
       <app-skeleton-event></app-skeleton-event>
       <app-skeleton-event></app-skeleton-event>
     </div>
-}
-    @if (vm.noEvents) {
-<div class="message large"><ion-text>{{vm.noEventsMessage}}</ion-text></div>
-}
+    } @if (vm.noEvents) {
+    <div class="message large"><ion-text>{{vm.noEventsMessage}}</ion-text></div>
+    }
     <cdk-virtual-scroll-viewport [minBufferPx]="vm.minBufferPx" itemSize="180" maxBufferPx="2350">
-      <app-event [showImage]="vm.showImage" [title]="vm.title" [longTime]="!vm.day" [day]="vm.day" [event]="event" (mapClick)="map($event)"
-        *cdkVirtualFor="let event of vm.events; trackBy: eventsTrackBy" />
+      <app-event
+        [showImage]="vm.showImage"
+        [title]="vm.title"
+        [longTime]="!vm.day"
+        [day]="vm.day"
+        [event]="event"
+        (mapClick)="map($event)"
+        *cdkVirtualFor="let event of vm.events; trackBy: eventsTrackBy"
+      />
     </cdk-virtual-scroll-viewport>
   </div>
 </ion-content>

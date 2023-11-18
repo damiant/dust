@@ -8,7 +8,7 @@ import { IonModal, IonText } from '@ionic/angular/standalone';
   templateUrl: './map-modal.component.html',
   styleUrls: ['./map-modal.component.scss'],
   standalone: true,
-  imports: [MapComponent, IonModal, IonText]
+  imports: [MapComponent, IonModal, IonText],
 })
 export class MapModalComponent {
   @Input() show = false;
@@ -16,18 +16,15 @@ export class MapModalComponent {
   @Input() subtitle = '';
   @Output() showChange = new EventEmitter<boolean>();
   @Input() points: MapPoint[] = [];
-  constructor() { }
+  constructor() {}
 
-
-
-  close() {    
+  close() {
     this.show = false;
-    this.showChange.emit(this.show);    
+    this.showChange.emit(this.show);
   }
 
   open() {
     this.show = true;
     this.showChange.emit(this.show);
   }
-
 }

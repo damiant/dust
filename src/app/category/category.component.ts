@@ -1,4 +1,3 @@
-
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { IonButton, IonContent, IonIcon, IonPopover, IonRadio, IonRadioGroup } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -9,7 +8,7 @@ import { chevronDown } from 'ionicons/icons';
   templateUrl: './category.component.html',
   styleUrls: ['./category.component.scss'],
   standalone: true,
-  imports: [IonButton, IonPopover, IonContent, IonRadioGroup, IonRadio, IonIcon]
+  imports: [IonButton, IonPopover, IonContent, IonRadioGroup, IonRadio, IonIcon],
 })
 export class CategoryComponent {
   @Input() id = '';
@@ -17,16 +16,13 @@ export class CategoryComponent {
   @Input() category: string = '';
   @Input() categories: string[] = [];
   @Output() categoryChange = new EventEmitter<string>();
-  @Output() change = new EventEmitter<string>();
+
   constructor() {
     addIcons({ chevronDown });
-   }
-
+  }
 
   changed(e: any) {
     this.category = e.detail.value;
     this.categoryChange.emit(this.category);
-    this.change.emit(this.category);
   }
-
 }

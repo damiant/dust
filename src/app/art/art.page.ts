@@ -1,8 +1,22 @@
 import { Component, ViewChild, effect } from '@angular/core';
-import { InfiniteScrollCustomEvent, IonBadge, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInfiniteScroll, IonInfiniteScrollContent, IonText, IonTitle, IonToolbar, ToastController } from '@ionic/angular/standalone';
+import {
+  InfiniteScrollCustomEvent,
+  IonBadge,
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent,
+  IonText,
+  IonTitle,
+  IonToolbar,
+  ToastController,
+} from '@ionic/angular/standalone';
 import { Art } from '../data/models';
 import { DbService } from '../data/db.service';
-import { Router, RouterLink, Scroll } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ArtComponent } from './art.component';
 import { UiService } from '../ui/ui.service';
@@ -15,17 +29,16 @@ import { GeoService } from '../geolocation/geo.service';
 import { AlphabeticalScrollBarComponent } from '../alpha/alpha.component';
 
 interface ArtState {
-  showImage: boolean,
-  busy: boolean,
-  noArtMessage: string,
-  arts: Art[],
-  minBufferPx: number,
-  byDist: boolean,
-  alphaIndex: number[],
-  alphaValues: string[],
-  displayedDistMessage: boolean
+  showImage: boolean;
+  busy: boolean;
+  noArtMessage: string;
+  arts: Art[];
+  minBufferPx: number;
+  byDist: boolean;
+  alphaIndex: number[];
+  alphaValues: string[];
+  displayedDistMessage: boolean;
 }
-
 
 function initialState(): ArtState {
   return {
@@ -37,7 +50,7 @@ function initialState(): ArtState {
     alphaValues: [],
     minBufferPx: 1900,
     byDist: false,
-    displayedDistMessage: false
+    displayedDistMessage: false,
   };
 }
 
@@ -46,7 +59,26 @@ function initialState(): ArtState {
   templateUrl: 'art.page.html',
   styleUrls: ['art.page.scss'],
   standalone: true,
-  imports: [RouterLink, CommonModule, ScrollingModule, IonButton, IonButtons, AlphabeticalScrollBarComponent, IonContent, IonHeader, IonTitle, IonIcon, IonText, IonToolbar, IonInfiniteScroll, IonInfiniteScrollContent, IonBadge, ArtComponent, SearchComponent, SkeletonArtComponent],
+  imports: [
+    RouterLink,
+    CommonModule,
+    ScrollingModule,
+    IonButton,
+    IonButtons,
+    AlphabeticalScrollBarComponent,
+    IonContent,
+    IonHeader,
+    IonTitle,
+    IonIcon,
+    IonText,
+    IonToolbar,
+    IonInfiniteScroll,
+    IonInfiniteScrollContent,
+    IonBadge,
+    ArtComponent,
+    SearchComponent,
+    SkeletonArtComponent,
+  ],
 })
 export class ArtPage {
   vm: ArtState = initialState();
@@ -58,13 +90,13 @@ export class ArtPage {
     private ui: UiService,
     private router: Router,
     private geo: GeoService,
-    private toastController: ToastController
+    private toastController: ToastController,
   ) {
     effect(() => {
       this.ui.scrollUp('art', this.virtualScroll);
     });
     effect(() => {
-      const year = this.db.selectedYear();
+      const _year = this.db.selectedYear();
       this.db.checkInit();
       this.vm = initialState();
       this.vm.showImage = this.isThisYear();
@@ -72,14 +104,13 @@ export class ArtPage {
     });
     effect(() => {
       const status = this.db.networkStatus();
-      this.vm.showImage = this.isThisYear() || (status == 'wifi');
+      this.vm.showImage = this.isThisYear() || status == 'wifi';
     });
   }
 
   isThisYear(): boolean {
     return this.db.selectedYear() == '';
   }
-
 
   home() {
     this.ui.home();
@@ -132,7 +163,7 @@ export class ArtPage {
     this.search(event.target.value);
   }
 
-  search(val: string) {    
+  search(val: string) {
     this.virtualScroll.scrollToOffset(0, 'smooth');
     this.vm.noArtMessage = isWhiteSpace(val) ? `No art were found.` : `No art were found matching "${val}"`;
     this.update(val.toLowerCase());
@@ -140,7 +171,7 @@ export class ArtPage {
 
   private hack() {
     // Hack to ensure tab view is updated on switch of tabs or when day is changed
-    this.vm.minBufferPx = (this.vm.minBufferPx == 1901) ? 1900 : 1901;
+    this.vm.minBufferPx = this.vm.minBufferPx == 1901 ? 1900 : 1901;
   }
 
   artTrackBy(index: number, art: Art) {

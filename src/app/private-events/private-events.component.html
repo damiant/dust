@@ -1,8 +1,11 @@
 <ion-card>
   <ion-card-header>
-    
-    <ion-card-title>Private Events</ion-card-title>    
-    <ion-fab-button style="position: absolute; top: 0.2rem; z-index:1; right:0.2rem; left: auto" (click)="addPrivateEvent()" size="small">
+    <ion-card-title>Private Events</ion-card-title>
+    <ion-fab-button
+      style="position: absolute; top: 0.2rem; z-index: 1; right: 0.2rem; left: auto"
+      (click)="addPrivateEvent()"
+      size="small"
+    >
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-card-header>
@@ -10,24 +13,27 @@
   <ion-card-content>
     <ion-list>
       @if (events.length === 0) {
-<div class="center">
-        <ion-text class="large" color="medium">Press + to add your private event to this list.</ion-text>
-      </div>
-}
+        <div class="center">
+          <ion-text class="large" color="medium">Press + to add your private event to this list.</ion-text>
+        </div>
+      }
       @for (event of events; track event) {
-  <ion-item (click)="editPrivateEvent(event)">
-        <span slot="start" class="cal-title">{{event.startTime}}</span>
-        <ion-icon slot="start" style="margin-top:-14px; font-size: 40px" aria-hidden="true" [src]="'assets/icon/calendar.svg'"></ion-icon>
-        
-        <ion-label>
-          {{event.startDay}} &#64; {{event.address}}          
-          <p>{{event.title}}</p>
-          <p>{{event.notes}}&nbsp;</p>
-        </ion-label>
+        <ion-item (click)="editPrivateEvent(event)">
+          <span slot="start" class="cal-title">{{ event.startTime }}</span>
+          <ion-icon
+            slot="start"
+            style="margin-top: -14px; font-size: 40px"
+            aria-hidden="true"
+            [src]="'assets/icon/calendar.svg'"
+          ></ion-icon>
 
-
-      </ion-item>
-}
+          <ion-label>
+            {{ event.startDay }} &#64; {{ event.address }}
+            <p>{{ event.title }}</p>
+            <p>{{ event.notes }}&nbsp;</p>
+          </ion-label>
+        </ion-item>
+      }
     </ion-list>
   </ion-card-content>
 </ion-card>

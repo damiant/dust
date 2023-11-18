@@ -1,5 +1,21 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { IonButton, IonButtons, IonContent, IonDatetime, IonDatetimeButton, IonHeader, IonItem, IonLabel, IonModal, IonPicker, IonTitle, IonToolbar, ModalController, PickerColumn, ToastController } from '@ionic/angular/standalone';
+import {
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonDatetime,
+  IonDatetimeButton,
+  IonHeader,
+  IonItem,
+  IonLabel,
+  IonModal,
+  IonPicker,
+  IonTitle,
+  IonToolbar,
+  ModalController,
+  PickerColumn,
+  ToastController,
+} from '@ionic/angular/standalone';
 import { PrivateEvent } from '../data/models';
 import { FormsModule } from '@angular/forms';
 import { StreetService } from '../map/street.service';
@@ -9,15 +25,31 @@ import { now, uniqueId } from '../utils/utils';
 export enum PrivateEventResult {
   confirm = 'confirm',
   cancel = 'cancel',
-  delete = 'delete'
+  delete = 'delete',
 }
 
 @Component({
   selector: 'app-private-event',
   templateUrl: './private-event.component.html',
   styleUrls: ['./private-event.component.scss'],
-  imports: [FormsModule, CommonModule, IonItem, IonButton, IonLabel, IonModal, IonDatetimeButton, IonDatetime, IonPicker, IonContent, IonButtons, IonButton, IonHeader, IonTitle, IonToolbar],
-  standalone: true
+  imports: [
+    FormsModule,
+    CommonModule,
+    IonItem,
+    IonButton,
+    IonLabel,
+    IonModal,
+    IonDatetimeButton,
+    IonDatetime,
+    IonPicker,
+    IonContent,
+    IonButtons,
+    IonButton,
+    IonHeader,
+    IonTitle,
+    IonToolbar,
+  ],
+  standalone: true,
 })
 export class PrivateEventComponent implements OnInit {
   noAddress = 'Choose Address';
@@ -27,11 +59,18 @@ export class PrivateEventComponent implements OnInit {
   public startEvent = new Date(new Date().getFullYear(), 7, 20).toISOString();
   public endEvent = new Date(new Date().getFullYear(), 8, 10).toISOString();
 
-  @Input() event: PrivateEvent = { title: '', id: uniqueId('pe'), start: this.initialTime, address: this.noAddress, notes: '' }
+  @Input() event: PrivateEvent = {
+    title: '',
+    id: uniqueId('pe'),
+    start: this.initialTime,
+    address: this.noAddress,
+    notes: '',
+  };
   constructor(
     private streetService: StreetService,
     private modalCtrl: ModalController,
-    private toastController: ToastController) {
+    private toastController: ToastController,
+  ) {
     this.addresses = this.streetService.getAddresses();
   }
 
@@ -66,7 +105,7 @@ export class PrivateEventComponent implements OnInit {
       return;
     }
     if (this.event.start == this.initialTime) {
-      this.presentToast(`Select a date and time when the event starts`)
+      this.presentToast(`Select a date and time when the event starts`);
       return;
     }
     return this.modalCtrl.dismiss(this.event, PrivateEventResult.confirm);
@@ -86,5 +125,4 @@ export class PrivateEventComponent implements OnInit {
 
     await toast.present();
   }
-
 }

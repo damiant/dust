@@ -5,7 +5,7 @@ const config: CapacitorConfig = {
   appName: 'ttitd',
   webDir: 'www/browser',
   server: {
-    androidScheme: 'https'
+    androidScheme: 'https',
   },
   plugins: {
     SplashScreen: {
@@ -17,15 +17,15 @@ const config: CapacitorConfig = {
     LocalNotifications: {
       smallIcon: 'icon',
       iconColor: '#F61067',
-      sound: 'blazing2.wav'
-    }
+      sound: 'blazing2.wav',
+    },
   },
   android: {
     buildOptions: {
       keystorePath: '../android-keys/Untitled',
       keystoreAlias: 'dust',
-    }
-  }
+    },
+  },
 };
 
 export default config;

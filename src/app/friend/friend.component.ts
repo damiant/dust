@@ -1,7 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonButton, IonButtons, IonContent, IonHeader, IonInput, IonItem, IonPicker, IonTitle, IonToolbar, ModalController, PickerColumn, ToastController } from '@ionic/angular/standalone';
+import {
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonInput,
+  IonItem,
+  IonPicker,
+  IonTitle,
+  IonToolbar,
+  ModalController,
+  PickerColumn,
+  ToastController,
+} from '@ionic/angular/standalone';
 import { Friend } from '../data/models';
 import { StreetService } from '../map/street.service';
 import { addIcons } from 'ionicons';
@@ -10,15 +23,27 @@ import { add, person } from 'ionicons/icons';
 export enum FriendResult {
   confirm = 'confirm',
   cancel = 'cancel',
-  delete = 'delete'
+  delete = 'delete',
 }
 
 @Component({
   selector: 'app-friend',
   templateUrl: './friend.component.html',
   styleUrls: ['./friend.component.scss'],
-  imports: [CommonModule, FormsModule, IonItem, IonButton, IonPicker, IonContent, IonButtons, IonToolbar, IonTitle, IonInput, IonHeader],
-  standalone: true
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonItem,
+    IonButton,
+    IonPicker,
+    IonContent,
+    IonButtons,
+    IonToolbar,
+    IonTitle,
+    IonInput,
+    IonHeader,
+  ],
+  standalone: true,
 })
 export class FriendComponent implements OnInit {
   noAddress = 'Choose Address';
@@ -40,7 +65,11 @@ export class FriendComponent implements OnInit {
     },
   ];
 
-  constructor(private modalCtrl: ModalController, private toastController: ToastController, private streetService: StreetService) {
+  constructor(
+    private modalCtrl: ModalController,
+    private toastController: ToastController,
+    private streetService: StreetService,
+  ) {
     addIcons({ add, person });
     this.addresses = this.streetService.getAddresses();
   }
@@ -78,7 +107,5 @@ export class FriendComponent implements OnInit {
 
   deleteFriend() {
     return this.modalCtrl.dismiss(this.friend, FriendResult.delete);
-
   }
-
 }

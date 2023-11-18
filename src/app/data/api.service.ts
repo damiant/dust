@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Art, Camp, Dataset, Revision } from './models';
 import { datasetFilename, getCached, getLive, getLiveBinary } from './api';
 import { SettingsService } from './settings.service';
-import { minutesBetween, now } from '../utils/utils';
+import { now } from '../utils/utils';
 import { DbService } from './db.service';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Capacitor } from '@capacitor/core';
@@ -18,23 +18,27 @@ enum Names {
   version = 'version',
   pins = 'pins',
   links = 'links',
-  map = 'map'
+  map = 'map',
 }
 
 interface Version {
   version: string;
 }
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
-  constructor(private settingsService: SettingsService, private dbService: DbService) {
-  }
+  constructor(
+    private settingsService: SettingsService,
+    private dbService: DbService,
+  ) {}
 
-  public async sendDataToWorker(defaultRevision: number, hideLocations: boolean, mapIsOffline: boolean): Promise<boolean> {
-
+  public async sendDataToWorker(
+    defaultRevision: number,
+    hideLocations: boolean,
+    mapIsOffline: boolean,
+  ): Promise<boolean> {
     const ds = this.settingsService.settings.datasetId;
 
     try {
@@ -54,7 +58,9 @@ export class ApiService {
       this.settingsService.save();
       console.info(`Saved settings`);
       if (revision.revision <= defaultRevision && mapIsOffline) {
-        console.warn(`Did not read data from storage as it is at revision ${revision.revision} but current is ${defaultRevision}`);
+        console.warn(
+          `Did not read data from storage as it is at revision ${revision.revision} but current is ${defaultRevision}`,
+        );
         return true;
       }
     } catch (err) {
@@ -76,7 +82,7 @@ export class ApiService {
       pins,
       links,
       rsl,
-      hideLocations
+      hideLocations,
     };
     console.info(`dbService.setDataset ${JSON.stringify(datasetInfo)}...`);
     const result = await this.dbService.setDataset(datasetInfo);
@@ -87,11 +93,11 @@ export class ApiService {
   }
 
   private async read(dataset: string, name: Names): Promise<any> {
-    return (await this.get(this.getId(dataset, name), []));
+    return await this.get(this.getId(dataset, name), []);
   }
 
   private badData(events: Event[], art: Art[], camps: Camp[]): boolean {
-    return (!camps || camps.length == 0 || !art || !events || events.length == 0);
+    return !camps || camps.length == 0 || !art || !events || events.length == 0;
   }
 
   public async loadDatasets(): Promise<Dataset[]> {
@@ -104,8 +110,8 @@ export class ApiService {
   }
 
   public async download(selected: Dataset | undefined, force?: boolean) {
-    const lastDownload = this.settingsService.getLastDownload();
-    const mins = minutesBetween(now(), lastDownload);
+    //const lastDownload = this.settingsService.getLastDownload();
+    //const mins = minutesBetween(now(), lastDownload);
     let dataset = '';
     let revision: Revision = { revision: 0 };
     // if (mins < 5) {
@@ -130,8 +136,17 @@ export class ApiService {
       const currentVersion = await this.getVersion();
       console.log(`Current revision is ${JSON.stringify(currentRevision)} force is ${force}`);
 
-      if (!force && revision && currentRevision && currentRevision.revision !== null && revision.revision === currentRevision.revision && version?.version == currentVersion) {
-        console.log(`Will not download data for ${dataset} as it is already at revision ${currentRevision.revision} and version is ${currentVersion}`);
+      if (
+        !force &&
+        revision &&
+        currentRevision &&
+        currentRevision.revision !== null &&
+        revision.revision === currentRevision.revision &&
+        version?.version == currentVersion
+      ) {
+        console.log(
+          `Will not download data for ${dataset} as it is already at revision ${currentRevision.revision} and version is ${currentVersion}`,
+        );
         this.rememberLastDownload();
         return;
       }
@@ -149,7 +164,15 @@ export class ApiService {
     const pPins = getLive(dataset, Names.pins);
     const pLinks = getLive(dataset, Names.links);
     const pMapData = getLiveBinary(dataset, Names.map, 'svg', currentVersion);
-    const [events, art, camps, rsl, pins, links, mapData] = await Promise.all([pEvents, pArt, pCamps, pRsl, pPins, pLinks, pMapData])
+    const [events, art, camps, rsl, pins, links, mapData] = await Promise.all([
+      pEvents,
+      pArt,
+      pCamps,
+      pRsl,
+      pPins,
+      pLinks,
+      pMapData,
+    ]);
     if (this.badData(events, art, camps)) {
       console.error(`Download failed`);
       return;
@@ -158,7 +181,7 @@ export class ApiService {
     await this.save(this.getId(dataset, Names.events), events);
     await this.save(this.getId(dataset, Names.camps), camps);
     await this.save(this.getId(dataset, Names.art), art);
-    await this.save(this.getId(dataset, Names.rsl), rsl);    
+    await this.save(this.getId(dataset, Names.rsl), rsl);
     await this.save(this.getId(dataset, Names.pins), pins);
     await this.save(this.getId(dataset, Names.links), links);
     let uri = await this.saveBinary(this.getId(dataset, Names.map), 'svg', mapData);
@@ -189,13 +212,19 @@ export class ApiService {
         return `https://data.dust.events/${dataset}/${name}.${ext ? ext : 'json'}`;
       }
     }
-    const r = await Filesystem.getUri({ path: `${this.getId(dataset, name)}.${ext ? ext : 'json'}`, directory: Directory.Data })
+    const r = await Filesystem.getUri({
+      path: `${this.getId(dataset, name)}.${ext ? ext : 'json'}`,
+      directory: Directory.Data,
+    });
     return Capacitor.convertFileSrc(r.uri);
   }
 
   private async stat(dataset: string, name: string, ext?: string): Promise<boolean> {
     try {
-      const s = await Filesystem.stat({ path: `${this.getId(dataset, name)}.${ext ? ext : 'json'}`, directory: Directory.Data })
+      const s = await Filesystem.stat({
+        path: `${this.getId(dataset, name)}.${ext ? ext : 'json'}`,
+        directory: Directory.Data,
+      });
       return s.size > 0;
     } catch {
       return false;
@@ -228,7 +257,7 @@ export class ApiService {
     if (data.length) {
       console.log(`Saved ${uri} length=${data.length}`);
     } else {
-      console.log(`Saved ${uri} data=${JSON.stringify(data)}`)
+      console.log(`Saved ${uri} data=${JSON.stringify(data)}`);
     }
   }
 
@@ -236,7 +265,7 @@ export class ApiService {
     const res = await Filesystem.writeFile({
       path: `${id}.${ext}`,
       data: data,
-      directory: Directory.Data
+      directory: Directory.Data,
     });
     return Capacitor.convertFileSrc(res.uri);
   }

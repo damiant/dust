@@ -1,13 +1,14 @@
-
 <ion-button fill="clear" [id]="id"><ion-icon name="chevron-down"></ion-icon></ion-button>
 <ion-popover [trigger]="id" size="auto" side="bottom" [dismissOnSelect]="true">
   <ng-template>
     <ion-content>
       <ion-radio-group (ionChange)="changed($event)" [value]="category">
-        <ion-radio labelPlacement="end" justify="start" value="">{{allTitle}}</ion-radio><br/>
+        <ion-radio labelPlacement="end" justify="start" value="">{{ allTitle }}</ion-radio
+        ><br />
         @for (category of categories; track category) {
-  <ion-radio labelPlacement="end" justify="start" [value]="category">{{category}}</ion-radio>
-}<br/>        
+          <ion-radio labelPlacement="end" justify="start" [value]="category">{{ category }}</ion-radio>
+        }
+        <br />
       </ion-radio-group>
     </ion-content>
   </ng-template>

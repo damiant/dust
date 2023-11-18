@@ -8,43 +8,40 @@ export const routes: Routes = [
     children: [
       {
         path: 'events',
-        loadComponent: () =>
-          import('../events/events.page').then((m) => m.EventsPage),
+        loadComponent: () => import('../events/events.page').then((m) => m.EventsPage),
       },
       {
         path: 'camps',
-        loadComponent: () =>
-          import('../camps/camps.page').then((m) => m.CampsPage),
+        loadComponent: () => import('../camps/camps.page').then((m) => m.CampsPage),
       },
       {
         path: 'favs',
-        loadComponent: () => import('../favs/favs.page').then(m => m.FavsPage)
+        loadComponent: () => import('../favs/favs.page').then((m) => m.FavsPage),
       },
       {
         path: 'favs/map',
-        loadComponent: () => import('../fav-map/fav-map.page').then(m => m.FavMapPage)
+        loadComponent: () => import('../fav-map/fav-map.page').then((m) => m.FavMapPage),
       },
       {
         path: 'art',
-        loadComponent: () =>
-          import('../art/art.page').then((m) => m.ArtPage),
+        loadComponent: () => import('../art/art.page').then((m) => m.ArtPage),
       },
 
       {
         path: 'rsl',
-        loadComponent: () => import('../rsl/rsl.page').then(m => m.RslPage)
+        loadComponent: () => import('../rsl/rsl.page').then((m) => m.RslPage),
       },
       {
         path: 'profile',
-        loadComponent: () => import('../profile/profile.page').then(m => m.ProfilePage)
+        loadComponent: () => import('../profile/profile.page').then((m) => m.ProfilePage),
       },
       {
         path: 'profile/ice',
-        loadComponent: () => import('../pin-map/pin-map.page').then(m => m.PinMapPage)
+        loadComponent: () => import('../pin-map/pin-map.page').then((m) => m.PinMapPage),
       },
       {
         path: 'profile/about',
-        loadComponent: () => import('../about/about.page').then( m => m.AboutPage)
+        loadComponent: () => import('../about/about.page').then((m) => m.AboutPage),
       },
       {
         path: '',

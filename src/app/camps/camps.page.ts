@@ -1,6 +1,17 @@
 import { Component, ViewChild, effect } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { IonBadge, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonText, IonTitle, IonToolbar, ToastController } from '@ionic/angular/standalone';
+import {
+  IonBadge,
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonText,
+  IonTitle,
+  IonToolbar,
+  ToastController,
+} from '@ionic/angular/standalone';
 import { Camp, MapPoint } from '../data/models';
 import { DbService } from '../data/db.service';
 import { CommonModule } from '@angular/common';
@@ -18,17 +29,17 @@ import { addIcons } from 'ionicons';
 import { compass, compassOutline } from 'ionicons/icons';
 
 interface CampsState {
-  camps: Camp[],
-  showMap: boolean,
-  mapTitle: string,
-  mapSubtitle: string,
-  noCampsMessage: string,
-  mapPoints: MapPoint[],
-  minBufferPx: number,
-  alphaIndex: number[],
-  alphaValues: string[]
-  byDist: boolean,
-  displayedDistMessage: boolean
+  camps: Camp[];
+  showMap: boolean;
+  mapTitle: string;
+  mapSubtitle: string;
+  noCampsMessage: string;
+  mapPoints: MapPoint[];
+  minBufferPx: number;
+  alphaIndex: number[];
+  alphaValues: string[];
+  byDist: boolean;
+  displayedDistMessage: boolean;
 }
 
 function initialState(): CampsState {
@@ -43,7 +54,7 @@ function initialState(): CampsState {
     alphaIndex: [],
     alphaValues: [],
     byDist: false,
-    displayedDistMessage: false
+    displayedDistMessage: false,
   };
 }
 
@@ -52,7 +63,24 @@ function initialState(): CampsState {
   templateUrl: 'camps.page.html',
   styleUrls: ['camps.page.scss'],
   standalone: true,
-  imports: [CommonModule, RouterModule, ScrollingModule, MapModalComponent, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent, IonText, IonIcon, IonBadge, CampComponent, SearchComponent, AlphabeticalScrollBarComponent]
+  imports: [
+    CommonModule,
+    RouterModule,
+    ScrollingModule,
+    MapModalComponent,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonButtons,
+    IonButton,
+    IonContent,
+    IonText,
+    IonIcon,
+    IonBadge,
+    CampComponent,
+    SearchComponent,
+    AlphabeticalScrollBarComponent,
+  ],
 })
 export class CampsPage {
   vm: CampsState = initialState();
@@ -63,13 +91,14 @@ export class CampsPage {
     public db: DbService,
     private ui: UiService,
     private toastController: ToastController,
-    private geo: GeoService) {
-      addIcons({ compass, compassOutline });
+    private geo: GeoService,
+  ) {
+    addIcons({ compass, compassOutline });
     effect(() => {
       this.ui.scrollUp('camps', this.virtualScroll);
     });
     effect(() => {
-      const year = this.db.selectedYear();
+      const _year = this.db.selectedYear();
       this.db.checkInit();
       this.vm = initialState();
       this.update('');
@@ -84,10 +113,10 @@ export class CampsPage {
     this.isScrollDisabled = false;
   }
 
-  goToLetterGroup(e: string) {    
+  goToLetterGroup(e: string) {
     const idx = this.vm.alphaValues.indexOf(e);
     if (idx >= 0) {
-      this.virtualScroll.scrollToIndex(this.vm.alphaIndex[idx]);      
+      this.virtualScroll.scrollToIndex(this.vm.alphaIndex[idx]);
     }
   }
 
@@ -103,7 +132,7 @@ export class CampsPage {
 
   async ionViewDidEnter() {
     // Hack to ensure tab view is updated on switch of tabs
-    this.vm.minBufferPx = (this.vm.minBufferPx == 901) ? 900 : 901;
+    this.vm.minBufferPx = this.vm.minBufferPx == 901 ? 900 : 901;
   }
 
   search(value: string) {

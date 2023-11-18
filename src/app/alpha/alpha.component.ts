@@ -19,12 +19,12 @@ import { takeUntil } from 'rxjs/operators';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 
 @Component({
-  selector: 'alphabetical-scroll-bar',
+  selector: 'app-alphabetical-scroll-bar',
   templateUrl: './alpha.component.html',
   styleUrls: ['./alpha.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule],
-  standalone: true
+  standalone: true,
 })
 export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, OnDestroy {
   constructor(private _cdr: ChangeDetectorRef) {}
@@ -120,7 +120,8 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
   }
   //Magnification curve accepts an array of numbers between 1 and 0 that represets the curve of magnification starting from magnificaiton multiplier to 1: defaults to [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1]
   @Input() set magnificationCurve(value: Array<number>) {
-    if (Array.isArray(value) && value.every((it) => typeof it === 'number' && it >= 0 && it <= 1)) this._magnificationCurve = value;
+    if (Array.isArray(value) && value.every((it) => typeof it === 'number' && it >= 0 && it <= 1))
+      this._magnificationCurve = value;
     else throw new Error('magnificationCurve must be an array of numbers between 0 and 1');
   }
 
@@ -163,9 +164,9 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
   private _letterSpacing: number | string | null = '1%';
 
   //Output event when a letter selected
-  @Output('letterChange') letterChange$ = new EventEmitter<string>();
+  @Output() letterChange = new EventEmitter<string>();
   //Emitted when scrollbar is activated or deactivated
-  @Output('isActive') isActive$ = new EventEmitter<boolean>();
+  @Output() isActive = new EventEmitter<boolean>();
 
   private _lastEmittedActive = false;
   private _isComponentActive = false;
@@ -211,7 +212,9 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
 
     let newAlphabet = this.alphabet;
     let letterSpacing = 0;
-    let letterSize = this.stringToNumber(getComputedStyle(this.alphabetContainer.nativeElement).getPropertyValue('font-size'));
+    let letterSize = this.stringToNumber(
+      getComputedStyle(this.alphabetContainer.nativeElement).getPropertyValue('font-size'),
+    );
 
     if (this.letterMagnification) {
       letterSize = letterSize * this.magnificationMultiplier;
@@ -307,7 +310,9 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
     let relativeIndex = this.magnifyDividers ? Math.abs(this.magIndex - index) : Math.abs(mappedMagIndex - mappedIndex);
 
     const magnification =
-      relativeIndex < this.magnificationCurve.length - 1 ? this.magnificationCurve[relativeIndex] * (this.magnificationMultiplier - 1) + 1 : 1;
+      relativeIndex < this.magnificationCurve.length - 1
+        ? this.magnificationCurve[relativeIndex] * (this.magnificationMultiplier - 1) + 1
+        : 1;
     const style: any = {
       transform: `scale(${magnification})`,
       zIndex: this.magIndex === index ? 1 : 0,
@@ -322,17 +327,19 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
   @HostListener('click', ['$event', '$event.type'])
   focusEvent(event: MouseEvent & TouchEvent, type?: string): void {
     if (!this._lastEmittedActive) {
-      this.isActive$.emit((this._lastEmittedActive = true));
+      this.isActive.emit((this._lastEmittedActive = true));
     }
 
     if (type == 'click') this._isComponentActive = false;
     else this._isComponentActive = true;
 
-    this.setLetterFromCoordinates(event.touches?.[0].clientX ?? event.clientX, event.touches?.[0].clientY ?? event.clientY);
+    this.setLetterFromCoordinates(
+      event.touches?.[0].clientX ?? event.clientX,
+      event.touches?.[0].clientY ?? event.clientY,
+    );
 
     if (this._lastEmittedLetter !== this.letterSelected && (this.navigateOnHover || !type!.includes('mouse'))) {
-      
-      this.letterChange$.emit((this._lastEmittedLetter = this.letterSelected));
+      this.letterChange.emit((this._lastEmittedLetter = this.letterSelected));
       Haptics.impact({ style: ImpactStyle.Medium });
     }
   }
@@ -341,7 +348,7 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
   @HostListener('mouseleave')
   @HostListener('touchend')
   focusEnd(): void {
-    this.isActive$.emit((this._isComponentActive = this._lastEmittedActive = false));
+    this.isActive.emit((this._isComponentActive = this._lastEmittedActive = false));
   }
 
   magIndex!: number;
@@ -396,8 +403,8 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
               ? prev
               : curr
             : Math.abs(curr - visualLetterIndex) < Math.abs(prev - visualLetterIndex)
-            ? curr
-            : prev
+              ? curr
+              : prev,
         )
       : 0;
   }

@@ -1,41 +1,54 @@
 <ion-card class="item">
   @if (event.imageUrl) {
-<img loading="lazy" class="image" alt="{{event.artCar}}"  [src]="event.imageUrl" />
-}
+    <img loading="lazy" class="image" alt="{{ event.artCar }}" [src]="event.imageUrl" />
+  }
   <ion-card-header>
     @if (!event.artCar) {
-
-      <ion-card-title>{{event.camp}} <ion-icon [color]="event.wa ? 'primary' : 'medium'" (click)="wheelchair()" class="wheelchair" size="small" [src]="'assets/icon/wheelchair.svg'"></ion-icon></ion-card-title>
-      <ion-card-subtitle color="primary" (click)="map(event)">{{event.location}}
-        {{event.distanceInfo}}<span>{{event.title}}</span></ion-card-subtitle>
-    
-} @else {
-
-      <ion-card-title (click)="carClick($event)"><ion-icon style="font-size: 26px; margin-bottom: -8px" color="primary" name="car"></ion-icon> {{event.artCar}}</ion-card-title>
+      <ion-card-title
+        >{{ event.camp }}
+        <ion-icon
+          [color]="event.wa ? 'primary' : 'medium'"
+          (click)="wheelchair()"
+          class="wheelchair"
+          size="small"
+          [src]="'assets/icon/wheelchair.svg'"
+        ></ion-icon
+      ></ion-card-title>
+      <ion-card-subtitle color="primary" (click)="map(event)"
+        >{{ event.location }} {{ event.distanceInfo }}<span>{{ event.title }}</span></ion-card-subtitle
+      >
+    } @else {
+      <ion-card-title (click)="carClick($event)"
+        ><ion-icon style="font-size: 26px; margin-bottom: -8px" color="primary" name="car"></ion-icon>
+        {{ event.artCar }}</ion-card-title
+      >
       <ion-card-subtitle>
-        <span>{{event.title}}</span></ion-card-subtitle>
-    
-}
+        <span>{{ event.title }}</span></ion-card-subtitle
+      >
+    }
     <ng-template #artCar>
-      <ion-card-title (click)="carClick($event)"><ion-icon style="font-size: 26px; margin-bottom: -8px" color="primary" name="car"></ion-icon> {{event.artCar}}</ion-card-title>
+      <ion-card-title (click)="carClick($event)"
+        ><ion-icon style="font-size: 26px; margin-bottom: -8px" color="primary" name="car"></ion-icon>
+        {{ event.artCar }}</ion-card-title
+      >
       <ion-card-subtitle>
-        <span>{{event.title}}</span></ion-card-subtitle>
+        <span>{{ event.title }}</span></ion-card-subtitle
+      >
     </ng-template>
   </ion-card-header>
   <ion-card-content>
     <div class="rsl-container">
       @for (occurrence of event.occurrences; track occurrence) {
-  <div class="rsl-item" (click)="toggleStar(occurrence)">
-        <!-- <ion-button size="small" fill="clear" (click)="toggleStar(occurrence)" slot="icon"> -->
-        <!-- <ion-icon *ngIf="!occurrence.star" name="star-outline"></ion-icon> -->
-        <!-- </ion-button> -->
-        <ion-text [class.old]="occurrence.old" class="one-line">
-          <span class="time">{{occurrence.timeRange}}</span> {{occurrence.who}}
-          <ion-icon class="star" color="primary" [hidden]="!occurrence.star" name="star"></ion-icon>
-        </ion-text>
-
-      </div>
-}
+        <div class="rsl-item" (click)="toggleStar(occurrence)">
+          <!-- <ion-button size="small" fill="clear" (click)="toggleStar(occurrence)" slot="icon"> -->
+          <!-- <ion-icon *ngIf="!occurrence.star" name="star-outline"></ion-icon> -->
+          <!-- </ion-button> -->
+          <ion-text [class.old]="occurrence.old" class="one-line">
+            <span class="time">{{ occurrence.timeRange }}</span> {{ occurrence.who }}
+            <ion-icon class="star" color="primary" [hidden]="!occurrence.star" name="star"></ion-icon>
+          </ion-text>
+        </div>
+      }
     </div>
   </ion-card-content>
 </ion-card>

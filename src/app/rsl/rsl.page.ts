@@ -1,7 +1,23 @@
 import { Component, ViewChild, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { InfiniteScrollCustomEvent, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInfiniteScroll, IonInfiniteScrollContent, IonPopover, IonSegment, IonSegmentButton, IonText, IonTitle, IonToolbar, ToastController } from '@ionic/angular/standalone';
+import {
+  InfiniteScrollCustomEvent,
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent,
+  IonPopover,
+  IonSegment,
+  IonSegmentButton,
+  IonText,
+  IonTitle,
+  IonToolbar,
+  ToastController,
+} from '@ionic/angular/standalone';
 import { UiService } from '../ui/ui.service';
 import { DbService } from '../data/db.service';
 import { noDate, now, sameDay } from '../utils/utils';
@@ -17,24 +33,23 @@ import { FavoritesService } from '../favs/favorites.service';
 import { addIcons } from 'ionicons';
 import { compass, compassOutline } from 'ionicons/icons';
 
-
 interface RSLState {
-  byDist: boolean,
-  days: Day[],
-  events: RSLEvent[],
-  search: string,
-  mapTitle: string,
-  mapSubtitle: string,
-  title: string,
-  defaultDay: any,
-  showMap: boolean,
-  noEvents: boolean,
-  noEventsMessage: string,
-  mapPoints: MapPoint[],
-  day: Date,
-  isOpen: boolean,
-  message: string,
-  displayedDistMessage: boolean
+  byDist: boolean;
+  days: Day[];
+  events: RSLEvent[];
+  search: string;
+  mapTitle: string;
+  mapSubtitle: string;
+  title: string;
+  defaultDay: any;
+  showMap: boolean;
+  noEvents: boolean;
+  noEventsMessage: string;
+  mapPoints: MapPoint[];
+  day: Date;
+  isOpen: boolean;
+  message: string;
+  displayedDistMessage: boolean;
 }
 
 function initialState(): RSLState {
@@ -54,18 +69,37 @@ function initialState(): RSLState {
     isOpen: false,
     message: '',
     defaultDay: 'all',
-    displayedDistMessage: false
-  }
+    displayedDistMessage: false,
+  };
 }
 @Component({
   selector: 'app-rsl',
   templateUrl: './rsl.page.html',
   styleUrls: ['./rsl.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, RslEventComponent, IonHeader, IonToolbar, IonButtons, IonSegment, IonButton, IonContent, IonTitle, IonSegmentButton, IonPopover, IonIcon, IonInfiniteScroll, IonInfiniteScrollContent, IonText, SearchComponent, MapModalComponent, SkeletonEventComponent]
+  imports: [
+    CommonModule,
+    FormsModule,
+    RslEventComponent,
+    IonHeader,
+    IonToolbar,
+    IonButtons,
+    IonSegment,
+    IonButton,
+    IonContent,
+    IonTitle,
+    IonSegmentButton,
+    IonPopover,
+    IonIcon,
+    IonInfiniteScroll,
+    IonInfiniteScrollContent,
+    IonText,
+    SearchComponent,
+    MapModalComponent,
+    SkeletonEventComponent,
+  ],
 })
 export class RslPage {
-
   vm: RSLState = initialState();
   allEvents: RSLEvent[] = [];
   @ViewChild(IonContent) ionContent!: IonContent;
@@ -75,13 +109,14 @@ export class RslPage {
     private db: DbService,
     private geo: GeoService,
     private fav: FavoritesService,
-    private toastController: ToastController) {
+    private toastController: ToastController,
+  ) {
     addIcons({ compass, compassOutline });
     effect(() => {
       this.ui.scrollUpContent('rsl', this.ionContent);
     });
     effect(() => {
-      const year = this.db.selectedYear();
+      const _year = this.db.selectedYear();
       this.db.checkInit();
       this.vm = initialState();
       this.init();
@@ -91,7 +126,7 @@ export class RslPage {
       if (resumed.length > 0) {
         await this.update();
       }
-    })
+    });
   }
 
   private async init() {
@@ -138,28 +173,25 @@ export class RslPage {
     const days = await this.db.searchRSL(this.vm.search);
     if (days.length == 0) {
       this.vm.noEvents = this.vm.events.length == 0;
-      this.vm.noEventsMessage = wasSearch ?
-        `There are no events matching "${this.vm.search}".` :
-        'All the events for this day have concluded.';
+      this.vm.noEventsMessage = wasSearch
+        ? `There are no events matching "${this.vm.search}".`
+        : 'All the events for this day have concluded.';
     } else {
-      const otherDays = days.map(d => `${d.name}`).join(', ');
+      const otherDays = days.map((d) => `${d.name}`).join(', ');
       this.vm.noEvents = true;
-      this.vm.noEventsMessage = wasSearch ?
-        `There are no events matching "${this.vm.search}" for this day but there are on ${otherDays}.` :
-        'There are no events on this day.';
+      this.vm.noEventsMessage = wasSearch
+        ? `There are no events matching "${this.vm.search}" for this day but there are on ${otherDays}.`
+        : 'There are no events on this day.';
     }
-
   }
 
   private addEvents(count: number) {
     const items = this.allEvents.slice(this.vm.events.length, this.vm.events.length + count);
-    let lastItem = undefined;
     let hidingImage: string | undefined;
     for (let item of items) {
       if (hidingImage == item.imageUrl) {
         item.imageUrl = undefined; // This ensures that 2 events with the same image do not appear
       }
-      lastItem = item;
       if (item.imageUrl) {
         hidingImage = item.imageUrl;
       }
@@ -181,7 +213,6 @@ export class RslPage {
     this.vm.isOpen = true;
   }
 
-
   public map(event: RSLEvent) {
     this.vm.mapPoints = [toMapPoint(event.location)];
     this.vm.mapTitle = event.camp;
@@ -199,7 +230,7 @@ export class RslPage {
 
   private updateTitle() {
     const day = this.vm.day;
-    this.vm.title = (!sameDay(day, noDate())) ? day.toLocaleDateString('en-US', { weekday: 'long' }) : 'Music';
+    this.vm.title = !sameDay(day, noDate()) ? day.toLocaleDateString('en-US', { weekday: 'long' }) : 'Music';
   }
 
   private setToday(today: Date) {
@@ -236,5 +267,4 @@ export class RslPage {
     }
     this.update(true);
   }
-
 }

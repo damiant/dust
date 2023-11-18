@@ -9,19 +9,19 @@ export enum ShareInfoType {
   none = '',
   art = 'art',
   event = 'event',
-  camp = 'camp'
+  camp = 'camp',
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ShareService {
   private defaultShareInfo: ShareInfo = { type: ShareInfoType.none, id: '' };
   public hasShare = signal(this.defaultShareInfo);
-  constructor() { }
+  constructor() {}
 
   // This notifies anyone listening to the signal that we're starting with a shared item
   public notify(type: ShareInfoType, id: string) {
     this.hasShare.set({ type, id });
   }
-} 
+}

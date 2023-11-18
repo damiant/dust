@@ -1,5 +1,14 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonIcon, IonText, ToastController } from '@ionic/angular/standalone';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonCardTitle,
+  IonIcon,
+  IonText,
+  ToastController,
+} from '@ionic/angular/standalone';
 import { RSLEvent, RSLOccurrence } from '../data/models';
 import { CommonModule } from '@angular/common';
 import { FavoritesService } from '../favs/favorites.service';
@@ -7,8 +16,8 @@ import { addIcons } from 'ionicons';
 import { car, star, starOutline } from 'ionicons/icons';
 
 export interface ArtCarEvent {
-  event: Event,
-  artCar: string
+  event: Event;
+  artCar: string;
 }
 
 @Component({
@@ -17,18 +26,19 @@ export interface ArtCarEvent {
   styleUrls: ['./rsl-event.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonIcon, IonText]
+  imports: [CommonModule, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonIcon, IonText],
 })
 export class RslEventComponent {
-
   @Input() event!: RSLEvent;
   @Output() mapClick = new EventEmitter<RSLEvent>();
   @Output() artCarClick = new EventEmitter<ArtCarEvent>();
 
-  constructor(private fav: FavoritesService, private toast: ToastController) {
-    addIcons({ car, star, starOutline })
+  constructor(
+    private fav: FavoritesService,
+    private toast: ToastController,
+  ) {
+    addIcons({ car, star, starOutline });
   }
-
 
   public map(event: RSLEvent) {
     this.mapClick.emit(event);
@@ -66,7 +76,5 @@ export class RslEventComponent {
         this.presentToast('This camp may not be wheelchair accessible. They did not provide information.', 'top');
       }
     }
-
   }
-
 }

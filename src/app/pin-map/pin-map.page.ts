@@ -1,21 +1,30 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MapComponent } from '../map/map.component';
 import { DbService } from '../data/db.service';
-import { Art, MapPoint, MapSet, Pin } from '../data/models';
+import { Art, MapPoint, MapSet } from '../data/models';
 import { GpsCoord } from '../map/geo.utils';
 import { GeoService } from '../geolocation/geo.service';
 import { toMapPoint } from '../map/map.utils';
 import { nowRange, timeRangeToString } from '../utils/utils';
-import { IonBackButton, IonButtons, IonContent, IonHeader, IonItem, IonText, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import {
+  IonBackButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonItem,
+  IonText,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/angular/standalone';
 
 enum MapType {
   Restrooms = 'restrooms',
   Ice = 'ice',
   Now = 'now',
   Art = 'art',
-  Medical = 'medical'
+  Medical = 'medical',
 }
 
 @Component({
@@ -23,7 +32,19 @@ enum MapType {
   templateUrl: './pin-map.page.html',
   styleUrls: ['./pin-map.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, MapComponent, IonContent, IonHeader, IonItem, IonToolbar, IonTitle, IonButtons, IonBackButton, IonText]
+  imports: [
+    CommonModule,
+    FormsModule,
+    MapComponent,
+    IonContent,
+    IonHeader,
+    IonItem,
+    IonToolbar,
+    IonTitle,
+    IonButtons,
+    IonBackButton,
+    IonText,
+  ],
 })
 export class PinMapPage {
   @Input() mapType = '';
@@ -31,7 +52,10 @@ export class PinMapPage {
   smallPins: boolean = false;
   title = '';
   description = '';
-  constructor(private db: DbService, private geo: GeoService) {
+  constructor(
+    private db: DbService,
+    private geo: GeoService,
+  ) {
     this.db.checkInit();
   }
 
@@ -42,16 +66,20 @@ export class PinMapPage {
     this.description = mapSet.description;
   }
 
-
-
   private async mapFor(mapType: string): Promise<MapSet> {
     switch (mapType) {
-      case MapType.Art: return await this.getArt();
-      case MapType.Now: return await this.getEventsNow();
-      case MapType.Restrooms: return await this.fallback(await this.db.getGPSPoints('restrooms', 'Block of restrooms'), 'Restrooms');
-      case MapType.Ice: return await this.fallback(await this.db.getMapPoints('ice'), 'Ice');
-      case MapType.Medical: return await this.fallback(await this.db.getMapPoints('medical'), 'Medical');
-      default: return { title: '', description: '', points: [] };
+      case MapType.Art:
+        return await this.getArt();
+      case MapType.Now:
+        return await this.getEventsNow();
+      case MapType.Restrooms:
+        return await this.fallback(await this.db.getGPSPoints('restrooms', 'Block of restrooms'), 'Restrooms');
+      case MapType.Ice:
+        return await this.fallback(await this.db.getMapPoints('ice'), 'Ice');
+      case MapType.Medical:
+        return await this.fallback(await this.db.getMapPoints('medical'), 'Medical');
+      default:
+        return { title: '', description: '', points: [] };
     }
   }
 
@@ -76,8 +104,8 @@ export class PinMapPage {
     return {
       title: 'Art',
       description: '',
-      points
-    }
+      points,
+    };
   }
 
   private async convertToPoint(art: Art): Promise<MapPoint | undefined> {
@@ -87,7 +115,12 @@ export class PinMapPage {
       const gps = { lng: art.location.gps_longitude, lat: art.location.gps_latitude };
       point = await this.db.gpsToMapPoint(gps, undefined);
     }
-    point.info = { title: art.name, subtitle: '', location: '', imageUrl: art.images ? art.images[0].thumbnail_url : '' }
+    point.info = {
+      title: art.name,
+      subtitle: '',
+      location: '',
+      imageUrl: art.images ? art.images[0].thumbnail_url : '',
+    };
     return point;
   }
 
@@ -97,21 +130,23 @@ export class PinMapPage {
     const points = [];
     const allEvents = await this.db.findEvents('', undefined, '', undefined, timeRange, false);
     for (let event of allEvents) {
-      const mapPoint = toMapPoint(event.location,
+      const mapPoint = toMapPoint(
+        event.location,
         {
           title: event.title,
           location: event.location,
           subtitle: event.camp,
-          href: `event/${event.uid}+Now`
-        }, event.pin);
+          href: `event/${event.uid}+Now`,
+        },
+        event.pin,
+      );
       mapPoint.gps = await this.db.getMapPointGPS(mapPoint);
       points.push(mapPoint);
     }
     return {
       title: 'Happening Now',
       description: `Map of ${allEvents.length} events happening ${timeRangeToString(timeRange)}`,
-      points
-    }
+      points,
+    };
   }
-
 }

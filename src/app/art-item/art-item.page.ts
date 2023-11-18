@@ -12,7 +12,20 @@ import { UiService } from '../ui/ui.service';
 import { SettingsService } from '../data/settings.service';
 import { ShareInfoType } from '../share/share.service';
 import { toMapPoint } from '../map/map.utils';
-import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonText, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import {
+  IonBackButton,
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonText,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { star, starOutline, shareOutline, personOutline, locateOutline } from 'ionicons/icons';
 
@@ -21,14 +34,32 @@ import { star, starOutline, shareOutline, personOutline, locateOutline } from 'i
   templateUrl: './art-item.page.html',
   styleUrls: ['./art-item.page.scss'],
   standalone: true,
-  imports: [CommonModule, IonTitle, FormsModule, RouterModule, MapComponent, MapModalComponent, IonHeader, IonToolbar, IonBackButton, IonButtons, IonButton, IonContent, IonList, IonItem, IonIcon, IonLabel, IonText],
+  imports: [
+    CommonModule,
+    IonTitle,
+    FormsModule,
+    RouterModule,
+    MapComponent,
+    MapModalComponent,
+    IonHeader,
+    IonToolbar,
+    IonBackButton,
+    IonButtons,
+    IonButton,
+    IonContent,
+    IonList,
+    IonItem,
+    IonIcon,
+    IonLabel,
+    IonText,
+  ],
   animations: [
     trigger('fade', [
       state('visible', style({ opacity: 1 })),
       state('hidden', style({ opacity: 0 })),
       transition('visible <=> hidden', animate('0.3s ease-in-out')),
-    ])
-  ]
+    ]),
+  ],
 })
 export class ArtItemPage implements OnInit {
   art: Art | undefined;
@@ -44,8 +75,9 @@ export class ArtItemPage implements OnInit {
     private ui: UiService,
     private db: DbService,
     private settings: SettingsService,
-    private fav: FavoritesService) {
-      addIcons({ star, starOutline, shareOutline, personOutline, locateOutline });
+    private fav: FavoritesService,
+  ) {
+    addIcons({ star, starOutline, shareOutline, personOutline, locateOutline });
   }
 
   async ngOnInit() {
@@ -62,7 +94,7 @@ export class ArtItemPage implements OnInit {
       const gps = { lng: this.art.location.gps_longitude, lat: this.art.location.gps_latitude };
       point = await this.db.gpsToMapPoint(gps, undefined);
     }
-    point.info = { title: this.art.name, subtitle: '', location: '' }
+    point.info = { title: this.art.name, subtitle: '', location: '' };
     this.mapPoints.push(point);
     this.star = await this.fav.isFavArt(this.art.uid);
   }
@@ -96,10 +128,8 @@ export class ArtItemPage implements OnInit {
       title: this.art?.name,
       dialogTitle: this.art?.name,
       text: `Check out ${this.art?.name} at ${this.settings.eventTitle()} using the dust app: ${url}`,
-      url: this.art?.images[0].thumbnail_url
+      url: this.art?.images[0].thumbnail_url,
       //url: `https://dust.events/art/${this.art?.uid}`
     });
   }
-
-
 }

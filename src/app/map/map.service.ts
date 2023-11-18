@@ -8,11 +8,10 @@ interface GPSPin {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MapService {
-
-  constructor() { }
+  constructor() {}
 
   async openAppleMap(pin: GPSPin) {
     if (await this.canOpenMapApp('apple')) {
@@ -20,7 +19,7 @@ export class MapService {
       // https://stackoverflow.com/questions/39603120/how-to-check-if-apple-maps-is-installed
       try {
         const { completed } = await AppLauncher.openUrl({ url: this.generateLaunchURL('apple', 'pin', pin) });
-        
+
         // The completed result will be false if there was an issue or if app was missing (fails before user answers prompt to restore app from App Store)
         // In the case the user was missing the app, they'll need to return to your application to relaunch the URL after installing Apple Maps
         if (!completed) {
@@ -42,7 +41,7 @@ export class MapService {
     if (await this.canOpenMapApp('apple')) {
       try {
         const { completed } = await AppLauncher.openUrl({ url: this.generateLaunchURL('apple', 'directions', pin) });
-        
+
         if (!completed) {
           throw new Error('Failed to open Apple Maps!');
         }
@@ -59,10 +58,10 @@ export class MapService {
     // Recommendation: https://developers.google.com/maps/documentation/urls/ios-urlscheme
     const canOpen = await this.canOpenMapApp('google');
     console.log(`Google Maps will open in the ${canOpen ? 'installed application' : 'browser'}`);
-    
+
     try {
       const { completed } = await AppLauncher.openUrl({ url: this.generateLaunchURL('google', 'pin', pin) });
-      
+
       // The completed result will be false if there was an issue
       if (!completed) {
         throw new Error('Failed to open Google Maps!');
@@ -72,10 +71,10 @@ export class MapService {
     }
   }
 
-  async openGoogleMapDirections (pin: GPSPin) {
+  async openGoogleMapDirections(pin: GPSPin) {
     // We want turn-by-turn directions, so need to rely on check if we can open
     const canOpen = await this.canOpenMapApp('google');
-    
+
     if (canOpen) {
       try {
         // By trying to launch the native application, iOS will prompt the user to allow it
@@ -93,8 +92,8 @@ export class MapService {
     }
   }
 
-  public async canOpenMapApp (targetApp: 'google'|'apple') {
-    switch(targetApp) {
+  public async canOpenMapApp(targetApp: 'google' | 'apple') {
+    switch (targetApp) {
       case 'apple': {
         if (!this.isIOS()) {
           return false;
@@ -105,7 +104,9 @@ export class MapService {
       }
 
       case 'google': {
-        const { value } = await AppLauncher.canOpenUrl({ url: this.isIOS() ? 'comgooglemaps://' : 'com.google.android.apps.maps' });
+        const { value } = await AppLauncher.canOpenUrl({
+          url: this.isIOS() ? 'comgooglemaps://' : 'com.google.android.apps.maps',
+        });
         console.log('Can open url: ', value);
         return value;
       }
@@ -113,11 +114,11 @@ export class MapService {
   }
 
   private isIOS(): boolean {
-    return (Capacitor.getPlatform() == 'ios');
+    return Capacitor.getPlatform() == 'ios';
   }
 
-  private generateLaunchURL(targetApp: 'google'|'apple', mapType: 'pin'|'directions', pin: GPSPin) {
-    switch(targetApp) {
+  private generateLaunchURL(targetApp: 'google' | 'apple', mapType: 'pin' | 'directions', pin: GPSPin) {
+    switch (targetApp) {
       // Documentation: https://developer.apple.com/library/archive/featuredarticles/iPhoneURLScheme_Reference/MapLinks/MapLinks.html
       case 'apple': {
         if (!this.isIOS()) {

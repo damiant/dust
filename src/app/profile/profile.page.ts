@@ -1,7 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonBadge, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonHeader, IonIcon, IonItem, IonList, IonTitle, IonToggle, IonToolbar, ToastController } from '@ionic/angular/standalone';
+import {
+  IonBadge,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardTitle,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonItem,
+  IonList,
+  IonTitle,
+  IonToggle,
+  IonToolbar,
+  ToastController,
+} from '@ionic/angular/standalone';
 import { UiService } from '../ui/ui.service';
 import { Share } from '@capacitor/share';
 import { RouterModule } from '@angular/router';
@@ -17,17 +32,46 @@ import { environment } from 'src/environments/environment';
 import { RateApp } from 'capacitor-rate-app';
 import { PrivateEventsComponent } from '../private-events/private-events.component';
 import { addIcons } from 'ionicons';
-import { linkOutline, mailUnreadOutline, shareOutline, starHalfOutline, informationCircleOutline, exitOutline, timeOutline, locateOutline } from 'ionicons/icons';
+import {
+  linkOutline,
+  mailUnreadOutline,
+  shareOutline,
+  starHalfOutline,
+  informationCircleOutline,
+  exitOutline,
+  timeOutline,
+  locateOutline,
+} from 'ionicons/icons';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, FriendsComponent, IonHeader, IonToolbar, IonTitle, IonBadge, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonList, IonItem, IonIcon, IonToggle, TileContainerComponent, TileComponent, PrivateEventsComponent]
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    FriendsComponent,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonBadge,
+    IonContent,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardContent,
+    IonList,
+    IonItem,
+    IonIcon,
+    IonToggle,
+    TileContainerComponent,
+    TileComponent,
+    PrivateEventsComponent,
+  ],
 })
 export class ProfilePage implements OnInit {
-
   moreClicks = 0;
   rated = false;
   locationEnabled = false;
@@ -41,9 +85,18 @@ export class ProfilePage implements OnInit {
     private map: MapService,
     private geo: GeoService,
     private toastController: ToastController,
-    public db: DbService
+    public db: DbService,
   ) {
-    addIcons({ linkOutline, mailUnreadOutline, shareOutline, starHalfOutline, informationCircleOutline, exitOutline, timeOutline, locateOutline })
+    addIcons({
+      linkOutline,
+      mailUnreadOutline,
+      shareOutline,
+      starHalfOutline,
+      informationCircleOutline,
+      exitOutline,
+      timeOutline,
+      locateOutline,
+    });
   }
 
   async ngOnInit() {
@@ -53,9 +106,7 @@ export class ProfilePage implements OnInit {
     this.links = await this.db.getLinks();
   }
 
-  ionViewDidEnter() {
-
-  }
+  ionViewDidEnter() {}
 
   visit(url: string) {
     this.ui.openUrl(url);
@@ -73,8 +124,6 @@ export class ProfilePage implements OnInit {
       this.db.resume.set(new Date().toString());
     }
   }
-
-
 
   home() {
     this.settings.clearSelectedEvent();
@@ -110,14 +159,16 @@ export class ProfilePage implements OnInit {
     } else {
       this.locationEnabled = false;
     }
-    this.settings.settings.locationEnabled = this.locationEnabled ? LocationEnabledStatus.Enabled : LocationEnabledStatus.Disabled;
+    this.settings.settings.locationEnabled = this.locationEnabled
+      ? LocationEnabledStatus.Enabled
+      : LocationEnabledStatus.Disabled;
     this.settings.save();
   }
 
   async directions() {
-    // Default comes from https://burningman.org/event/preparation/getting-there-and-back/    
+    // Default comes from https://burningman.org/event/preparation/getting-there-and-back/
     const lat = this.settings.settings.dataset ? this.settings.settings.dataset.lat : 40.753842;
-    const long = this.settings.settings.dataset ? this.settings.settings.dataset.long : -119.277000;
+    const long = this.settings.settings.dataset ? this.settings.settings.dataset.long : -119.277;
     const pin = { lat, long };
 
     if (await this.map.canOpenMapApp('google')) {
@@ -126,5 +177,4 @@ export class ProfilePage implements OnInit {
       await this.map.openAppleMapDirections(pin);
     }
   }
-
 }
