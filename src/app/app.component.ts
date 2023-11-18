@@ -12,7 +12,7 @@ import { defineCustomElement } from '@ionic/core/components/ion-modal.js';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
   standalone: true,
-  imports: [IonApp, IonRouterOutlet, CommonModule],
+  imports: [IonApp, IonRouterOutlet, CommonModule]
 })
 export class AppComponent implements OnInit {
   public environmentInjector = inject(EnvironmentInjector);
