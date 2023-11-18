@@ -1,10 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-  Channel,
-  LocalNotificationDescriptor,
-  LocalNotifications,
-} from '@capacitor/local-notifications';
+import { Channel, LocalNotificationDescriptor, LocalNotifications } from '@capacitor/local-notifications';
 import { OccurrenceSet } from '../data/models';
 import { BurningManTimeZone, getDayName, noDate, now, randomInt, time } from '../utils/utils';
 import { Capacitor } from '@capacitor/core';
