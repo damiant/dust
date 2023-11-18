@@ -72,7 +72,8 @@ export class MapComponent implements OnInit, OnDestroy {
     if (this._points.length > 0) {
       this.fixGPSAndUpdate();
     }
-  } get points() {
+  }
+  get points() {
     return this._points;
   }
 
