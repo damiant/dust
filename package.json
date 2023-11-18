@@ -108,5 +108,13 @@
       "pre-commit": "npx lint-staged",
       "pre-push": "npm run lint"
     }
+  },
+  "lint-staged": {
+    "*.{css,html,js,jsx,scss,ts,tsx}": [
+      "prettier --write"
+    ],
+    "*.{md,json}": [
+      "prettier --write"
+    ]
   }
 }
