@@ -14,7 +14,9 @@
     "download-this-year": "npx tsx scripts/download.ts yes 2023",
     "rsl": "npx tsx scripts/rsl.ts",
     "restrooms": "npx tsx scripts/restrooms.ts",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "prettify": "prettier \"**/*.{ts,html}\" --write",
+    "prepare": "husky install"
   },
   "private": true,
   "dependencies": {
@@ -75,6 +77,7 @@
     "eslint-plugin-import": "2.29.0",
     "eslint-plugin-jsdoc": "46.9.0",
     "eslint-plugin-prefer-arrow": "1.2.3",
+    "husky": "8.0.3",
     "jasmine-core": "~4.6.0",
     "jasmine-spec-reporter": "~5.0.0",
     "karma": "~6.4.0",
@@ -83,7 +86,9 @@
     "karma-coverage-istanbul-reporter": "~3.0.2",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "2.1.0",
+    "lint-staged": "15.1.0",
     "node-fetch": "^3.3.2",
+    "prettier": "3.1.0",
     "sharp": "^0.32.5",
     "tsx": "3.14.0",
     "typescript": "5.2.2"
@@ -97,5 +102,11 @@
     "Edge >=79",
     "Safari >=14",
     "iOS >=14"
-  ]
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "npx lint-staged",
+      "pre-push": "npm run lint"
+    }
+  }
 }
