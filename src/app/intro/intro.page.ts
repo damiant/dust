@@ -22,10 +22,10 @@ import { addIcons } from 'ionicons';
 import { arrowForwardOutline } from 'ionicons/icons';
 
 interface IntroState {
-  ready: boolean,
-  showMessage: boolean
-  downloading: boolean
-  eventAlreadySelected: boolean
+  ready: boolean;
+  showMessage: boolean;
+  downloading: boolean;
+  eventAlreadySelected: boolean;
   cards: Dataset[];
   selected: Dataset | undefined;
   message: string;
@@ -41,8 +41,8 @@ function initialState(): IntroState {
     cards: [],
     selected: undefined,
     message: '',
-    clearCount: 0
-  }
+    clearCount: 0,
+  };
 }
 
 @Component({
@@ -50,14 +50,30 @@ function initialState(): IntroState {
   templateUrl: './intro.page.html',
   styleUrls: ['./intro.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, MessageComponent, IonButton, IonSpinner, IonIcon, IonText, IonContent]
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    MessageComponent,
+    IonButton,
+    IonSpinner,
+    IonIcon,
+    IonText,
+    IonContent,
+  ],
 })
 export class IntroPage {
   vm: IntroState = initialState();
 
-  constructor(private db: DbService, private api: ApiService,
-    private settingsService: SettingsService, private ui: UiService,
-    private fav: FavoritesService, private router: Router, private toastController: ToastController) {
+  constructor(
+    private db: DbService,
+    private api: ApiService,
+    private settingsService: SettingsService,
+    private ui: UiService,
+    private fav: FavoritesService,
+    private router: Router,
+    private toastController: ToastController,
+  ) {
     addIcons({ arrowForwardOutline });
   }
 
@@ -139,7 +155,7 @@ export class IntroPage {
     const x = daysUntil(manBurns, now());
     const until = daysUntil(start, now());
 
-    let hideLocations = (until > 1 && this.isBurningMan());
+    let hideLocations = until > 1 && this.isBurningMan();
     if (environment.overrideLocations) {
       hideLocations = false;
       console.error('Overriding hiding locations');
@@ -170,17 +186,18 @@ export class IntroPage {
       if (!this.isCurrentYear()) {
         const status = await Network.getStatus();
         if (!status.connected) {
-          this.ui.presentDarkToast('You are offline: Previous years require network access. Try this year instead.', this.toastController);
+          this.ui.presentDarkToast(
+            'You are offline: Previous years require network access. Try this year instead.',
+            this.toastController,
+          );
           this.vm.eventAlreadySelected = false;
           this.vm.selected = this.vm.cards[0];
           this.save();
           return;
         }
-
       }
       this.vm.ready = false;
       this.vm.showMessage = false;
-
 
       console.warn(`populate ${this.settingsService.settings.datasetId}`);
       const revision = await this.db.init(this.settingsService.settings.datasetId);
@@ -193,7 +210,7 @@ export class IntroPage {
       }
       console.log(`sendDataToWorker completed`);
       this.fav.init(this.settingsService.settings.datasetId);
-      const title = (this.isCurrentYear()) ? '' : this.vm.selected.year;
+      const title = this.isCurrentYear() ? '' : this.vm.selected.year;
       this.db.selectedYear.set(title);
 
       const hidden = [];
@@ -225,7 +242,6 @@ export class IntroPage {
       this.vm.downloading = false;
     }
     this.vm.eventAlreadySelected = false; // Show intro page
-
   }
 
   open(card: Dataset) {

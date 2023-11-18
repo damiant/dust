@@ -1,25 +1,34 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Art
-    </ion-title>
+    <ion-title> Art </ion-title>
     <ion-buttons class="b-pad-r" slot="end">
-      <ion-button (click)="toggleByDist()" fill="clear"><ion-icon
-          [name]="vm.byDist ? 'compass' : 'compass-outline'"></ion-icon></ion-button>
+      <ion-button (click)="toggleByDist()" fill="clear"
+        ><ion-icon [name]="vm.byDist ? 'compass' : 'compass-outline'"></ion-icon
+      ></ion-button>
     </ion-buttons>
     @if (db.selectedYear() !== '') {
-<ion-badge class="pad-right" (click)="home()"
-      slot="end">{{db.selectedYear()}}</ion-badge>
-}
+    <ion-badge class="pad-right" (click)="home()" slot="end">{{db.selectedYear()}}</ion-badge>
+    }
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="app-page">
-  <alphabetical-scroll-bar [hidden]="vm.byDist" [alphabet]="'#ABCDEFGHIJKLMNOPQRSTUVWXYZ'"
-    [disableInvalidLetters]="false" [prioritizeHidingInvalidLetters]="true" [letterMagnification]="true"
-    [magnifyDividers]="true" [magnificationMultiplier]="2" [magnificationCurve]="[1, .7, .6, .4, .2, 0]"
-    [exactX]="false" [navigateOnHover]="true" [letterSpacing]="'0.5%'" [offsetSizeCheckInterval]="100"
-    (letterChange)="goToLetterGroup($event)" (isActive)="!$event"></alphabetical-scroll-bar>
+  <alphabetical-scroll-bar
+    [hidden]="vm.byDist"
+    [alphabet]="'#ABCDEFGHIJKLMNOPQRSTUVWXYZ'"
+    [disableInvalidLetters]="false"
+    [prioritizeHidingInvalidLetters]="true"
+    [letterMagnification]="true"
+    [magnifyDividers]="true"
+    [magnificationMultiplier]="2"
+    [magnificationCurve]="[1, .7, .6, .4, .2, 0]"
+    [exactX]="false"
+    [navigateOnHover]="true"
+    [letterSpacing]="'0.5%'"
+    [offsetSizeCheckInterval]="100"
+    (letterChange)="goToLetterGroup($event)"
+    (isActive)="!$event"
+  ></alphabetical-scroll-bar>
   <div [class.side]="!vm.byDist" class="virtual-scroll-container ion-content-scroll-host" cdkVirtualScrollingElement>
     <ion-header collapse="condense">
       <ion-toolbar>
@@ -38,12 +47,14 @@
       <app-skeleton-art />
       <app-skeleton-art />
     </div>
-    <cdk-virtual-scroll-viewport [minBufferPx]="vm.minBufferPx" [itemSize]="vm.showImage ? 390 : 180"
-      maxBufferPx="2350">
+    <cdk-virtual-scroll-viewport
+      [minBufferPx]="vm.minBufferPx"
+      [itemSize]="vm.showImage ? 390 : 180"
+      maxBufferPx="2350"
+    >
       @for (art of vm.arts; track artTrackBy($index, art)) {
-  <app-art (artClick)="click($event)" [showImage]="vm.showImage"
-        [art]="art" />
-}
+      <app-art (artClick)="click($event)" [showImage]="vm.showImage" [art]="art" />
+      }
     </cdk-virtual-scroll-viewport>
     <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
       <ion-infinite-scroll-content></ion-infinite-scroll-content>

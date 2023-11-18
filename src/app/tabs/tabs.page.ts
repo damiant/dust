@@ -27,12 +27,15 @@ export class TabsPage implements OnInit {
   currentTab = '';
   public environmentInjector = inject(EnvironmentInjector);
   constructor(
-    public db: DbService, private ui: UiService,
+    public db: DbService,
+    private ui: UiService,
     private notificationService: NotificationService,
     private shareService: ShareService,
     private settings: SettingsService,
-    private router: Router, private settingsService: SettingsService) {
-      addIcons({ musicalNotesOutline, ellipsisVertical });
+    private router: Router,
+    private settingsService: SettingsService,
+  ) {
+    addIcons({ musicalNotesOutline, ellipsisVertical });
     effect(() => {
       const eventId = this.notificationService.hasNotification();
       if (eventId && eventId.length > 0) {
@@ -45,12 +48,15 @@ export class TabsPage implements OnInit {
       if (shareItem && shareItem.type !== ShareInfoType.none) {
         console.log(`Open shared item ${shareItem.type} ${shareItem.id}`);
         switch (shareItem.type) {
-          case ShareInfoType.art: return await this.navTo('art', shareItem.id);
-          case ShareInfoType.camp: return await this.navTo('camp', shareItem.id);
-          case ShareInfoType.event: return await this.navTo('event', shareItem.id);
+          case ShareInfoType.art:
+            return await this.navTo('art', shareItem.id);
+          case ShareInfoType.camp:
+            return await this.navTo('camp', shareItem.id);
+          case ShareInfoType.event:
+            return await this.navTo('event', shareItem.id);
         }
       }
-    })
+    });
   }
 
   async ngOnInit() {
@@ -78,7 +84,7 @@ export class TabsPage implements OnInit {
       await Keyboard.hide();
     });
 
-    Network.addListener('networkStatusChange', status => {
+    Network.addListener('networkStatusChange', (status) => {
       this.db.networkStatus.set(status.connectionType);
     });
     const status = await Network.getStatus();
@@ -119,6 +125,5 @@ export class TabsPage implements OnInit {
     if (tab == this.currentTab) {
       this.ui.setTab(tab);
     }
-
   }
 }

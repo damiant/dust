@@ -8,29 +8,24 @@ import { arrowForwardOutline } from 'ionicons/icons';
   templateUrl: './message.component.html',
   styleUrls: ['./message.component.scss'],
   standalone: true,
-  imports: [IonModal, IonButton, IonText, IonIcon]
+  imports: [IonModal, IonButton, IonText, IonIcon],
 })
 export class MessageComponent {
-
   @Input() show = false;
 
   @Input() message = '';
   @Input() title = '';
   @Output() dismissed = new EventEmitter<void>();
-  constructor() { 
-    addIcons({ arrowForwardOutline })
+  constructor() {
+    addIcons({ arrowForwardOutline });
   }
 
-
-  close() {    
-    this.show = false; 
+  close() {
+    this.show = false;
   }
 
   dismiss() {
-    this.close();       
+    this.close();
     this.dismissed.emit();
   }
-
-
-
 }

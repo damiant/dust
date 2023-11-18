@@ -21,9 +21,7 @@
       <ion-icon aria-hidden="true" [src]="'assets/icon/art.svg'"></ion-icon>
       <ion-label>Art</ion-label>
     </ion-tab-button>
-    }
-
-    @if (!db.featuresHidden().includes('rsl')) {
+    } @if (!db.featuresHidden().includes('rsl')) {
     <ion-tab-button tab="rsl" (click)="select('rsl')">
       <ion-icon aria-hidden="true" name="musical-notes-outline"></ion-icon>
       <ion-label>Music</ion-label>

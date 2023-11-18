@@ -9,17 +9,15 @@ import { IonSearchbar } from '@ionic/angular/standalone';
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
   standalone: true,
-  imports: [ReactiveFormsModule, IonSearchbar]
+  imports: [ReactiveFormsModule, IonSearchbar],
 })
 export class SearchComponent {
-
   @Input() placeholder = '';
   @Output() search = new EventEmitter<string>();
   form = new FormGroup({
-    search: new FormControl('')
+    search: new FormControl(''),
   });
-  constructor() { }
-
+  constructor() {}
 
   onSubmit() {
     if (this.form.value.search) {
@@ -31,5 +29,4 @@ export class SearchComponent {
   handleInput(event: any) {
     this.search.emit(event.target.value);
   }
-
 }

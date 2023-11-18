@@ -1,5 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import {  IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonFabButton, IonIcon, IonItem, IonLabel, IonList, IonText, ModalController } from '@ionic/angular/standalone';
+import {
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardTitle,
+  IonFabButton,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonText,
+  ModalController,
+} from '@ionic/angular/standalone';
 import { FriendComponent, FriendResult } from '../friend/friend.component';
 import { FavoritesService } from '../favs/favorites.service';
 import { Friend } from '../data/models';
@@ -8,19 +20,34 @@ import { delay } from '../utils/utils';
 import { addIcons } from 'ionicons';
 import { add, person } from 'ionicons/icons';
 
-
 @Component({
   selector: 'app-friends',
   templateUrl: './friends.component.html',
   styleUrls: ['./friends.component.scss'],
-  imports: [CommonModule, FriendComponent, IonCard, IonCardHeader, IonCardTitle, IonFabButton, IonCardContent, IonList, IonText, IonItem, IonIcon, IonLabel],
-  standalone: true
+  imports: [
+    CommonModule,
+    FriendComponent,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonFabButton,
+    IonCardContent,
+    IonList,
+    IonText,
+    IonItem,
+    IonIcon,
+    IonLabel,
+  ],
+  standalone: true,
 })
 export class FriendsComponent implements OnInit {
   public friends: Friend[] = [];
   private editingFriend: Friend | undefined;
 
-  constructor(private modalCtrl: ModalController, private fav: FavoritesService) {
+  constructor(
+    private modalCtrl: ModalController,
+    private fav: FavoritesService,
+  ) {
     addIcons({ add, person });
   }
 
@@ -33,10 +60,12 @@ export class FriendsComponent implements OnInit {
     const modal = await this.modalCtrl.create({
       component: FriendComponent,
       presentingElement: e,
-      componentProps: friend ? {
-        friend: friend,
-        isEdit: (friend)
-      } : undefined
+      componentProps: friend
+        ? {
+            friend: friend,
+            isEdit: friend,
+          }
+        : undefined,
     });
     modal.present();
 
@@ -69,5 +98,4 @@ export class FriendsComponent implements OnInit {
     this.editingFriend = structuredClone(friend);
     this.addFriend(friend);
   }
-
 }

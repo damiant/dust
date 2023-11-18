@@ -1,5 +1,18 @@
 import { Component, ViewChild, effect } from '@angular/core';
-import { IonBadge, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonSegment, IonSegmentButton, IonText, IonTitle, IonToolbar, ToastController } from '@ionic/angular/standalone';
+import {
+  IonBadge,
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonSegment,
+  IonSegmentButton,
+  IonText,
+  IonTitle,
+  IonToolbar,
+  ToastController,
+} from '@ionic/angular/standalone';
 import { DbService } from '../data/db.service';
 import { Day, Event, MapPoint } from '../data/models';
 import { CommonModule } from '@angular/common';
@@ -21,27 +34,27 @@ import { addIcons } from 'ionicons';
 import { compass, compassOutline } from 'ionicons/icons';
 
 interface EventsState {
-  title: string,
-  defaultDay: any,
-  category: string,
-  events: Event[],
-  days: Day[],
-  categories: string[],
-  search: string,
-  noEvents: boolean,
-  showImage: boolean,
-  noEventsMessage: string,
-  screenHeight: number,
-  day: Date | undefined,
-  showMap: boolean
-  mapTitle: string,
-  mapSubtitle: string,
-  mapPoints: MapPoint[],
-  minBufferPx: number,
-  byDist: boolean,
-  isNow: boolean,
-  timeRange: string,
-  displayedDistMessage: boolean
+  title: string;
+  defaultDay: any;
+  category: string;
+  events: Event[];
+  days: Day[];
+  categories: string[];
+  search: string;
+  noEvents: boolean;
+  showImage: boolean;
+  noEventsMessage: string;
+  screenHeight: number;
+  day: Date | undefined;
+  showMap: boolean;
+  mapTitle: string;
+  mapSubtitle: string;
+  mapPoints: MapPoint[];
+  minBufferPx: number;
+  byDist: boolean;
+  isNow: boolean;
+  timeRange: string;
+  displayedDistMessage: boolean;
 }
 
 function initialState(): EventsState {
@@ -66,7 +79,7 @@ function initialState(): EventsState {
     isNow: false,
     timeRange: '',
     displayedDistMessage: false,
-    minBufferPx: 1900
+    minBufferPx: 1900,
   };
 }
 
@@ -95,8 +108,8 @@ function initialState(): EventsState {
     SearchComponent,
     IonButton,
     IonBadge,
-    IonIcon
-],
+    IonIcon,
+  ],
 })
 export class EventsPage {
   vm: EventsState = initialState();
@@ -108,9 +121,9 @@ export class EventsPage {
     private ui: UiService,
     private settings: SettingsService,
     private toastController: ToastController,
-    private geo: GeoService
+    private geo: GeoService,
   ) {
-    addIcons({ compass, compassOutline })
+    addIcons({ compass, compassOutline });
     effect(() => {
       this.ui.scrollUp('events', this.virtualScroll);
     });
@@ -128,7 +141,7 @@ export class EventsPage {
     });
     effect(() => {
       const status = this.db.networkStatus();
-      this.vm.showImage = ((status == 'wifi' || status == 'cellular'));
+      this.vm.showImage = status == 'wifi' || status == 'cellular';
     });
   }
 
@@ -141,7 +154,7 @@ export class EventsPage {
     this.setToday(today);
     await this.db.checkEvents();
     this.vm.days = await this.db.getDays();
-    this.db.getCategories().then((categories) => this.vm.categories = categories);
+    this.db.getCategories().then((categories) => (this.vm.categories = categories));
     this.vm.defaultDay = this.chooseDefaultDay(now());
     await this.update();
   }
@@ -159,10 +172,9 @@ export class EventsPage {
     this.update(true);
   }
 
-
   private hack() {
     // Hack to ensure tab view is updated on switch of tabs or when day is changed
-    this.vm.minBufferPx = (this.vm.minBufferPx == 1901) ? 1900 : 1901;
+    this.vm.minBufferPx = this.vm.minBufferPx == 1901 ? 1900 : 1901;
   }
 
   private chooseDefaultDay(today: Date): Date | string {
@@ -218,7 +230,7 @@ export class EventsPage {
       this.vm.title = 'Now';
       return;
     }
-    this.vm.title = (!sameDay(day, noDate())) ? day.toLocaleDateString('en-US', { weekday: 'long' }) : 'Events';
+    this.vm.title = !sameDay(day, noDate()) ? day.toLocaleDateString('en-US', { weekday: 'long' }) : 'Events';
   }
 
   map(event: Event) {
@@ -243,7 +255,7 @@ export class EventsPage {
       this.vm.category, // Filtered category
       coords, // Geolocation
       timeRange, // Time Range
-      this.settings.settings.longEvents // Filter events > 6 hrs
+      this.settings.settings.longEvents, // Filter events > 6 hrs
     );
     this.vm.noEvents = this.vm.events.length == 0;
     this.vm.noEventsMessage = this.noEventsMessage();

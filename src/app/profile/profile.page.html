@@ -2,9 +2,8 @@
   <ion-toolbar>
     <ion-title>More</ion-title>
     @if (db.selectedYear() !== '') {
-<ion-badge class="pad-right" (click)="home()"
-      slot="end">{{db.selectedYear()}}</ion-badge>
-}
+    <ion-badge class="pad-right" (click)="home()" slot="end">{{db.selectedYear()}}</ion-badge>
+    }
   </ion-toolbar>
 </ion-header>
 
@@ -20,26 +19,19 @@
     <app-tile title="Ice" routerLink="/map/ice" imgSrc="assets/icon/ice.svg"></app-tile>
     <app-tile title="Medical" routerLink="/map/medical" imgSrc="assets/icon/medical.svg"></app-tile>
     @if (!db.locationsHidden() && !db.featuresHidden().includes('art')) {
-<app-tile title="Art" routerLink="/map/art"
-      imgSrc="assets/icon/art.svg"></app-tile>
-}
-    @if (!db.locationsHidden()) {
-<app-tile title="Now" routerLink="/map/now"
-      imgSrc="assets/icon/calendar.svg"></app-tile>
-}
+    <app-tile title="Art" routerLink="/map/art" imgSrc="assets/icon/art.svg"></app-tile>
+    } @if (!db.locationsHidden()) {
+    <app-tile title="Now" routerLink="/map/now" imgSrc="assets/icon/calendar.svg"></app-tile>
+    }
     <app-tile title="Directions" (click)="directions()" iconName="compass-outline"></app-tile>
   </app-tile-container>
 
   @if (!db.featuresHidden().includes('friends')) {
-<app-friends />
-}
-
-  @if (!db.featuresHidden().includes('private')) {
-<app-private-events />
-}
-
-  @if (links.length > 0) {
-<ion-card>
+  <app-friends />
+  } @if (!db.featuresHidden().includes('private')) {
+  <app-private-events />
+  } @if (links.length > 0) {
+  <ion-card>
     <ion-card-header>
       <ion-card-title>Links</ion-card-title>
     </ion-card-header>
@@ -47,15 +39,15 @@
     <ion-card-content>
       <ion-list>
         @for (link of links; track link) {
-  <ion-item (click)="visit(link.url)" detail="true">
+        <ion-item (click)="visit(link.url)" detail="true">
           <ion-icon slot="start" name="link-outline"></ion-icon>
           {{link.title}}
         </ion-item>
-}
+        }
       </ion-list>
     </ion-card-content>
   </ion-card>
-}
+  }
 
   <ion-card>
     <ion-card-header>

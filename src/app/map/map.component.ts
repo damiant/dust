@@ -38,8 +38,8 @@ const youOffsetY = 4;
       state('visible', style({ opacity: 1 })),
       state('hidden', style({ opacity: 0 })),
       transition('visible <=> hidden', animate('0.3s ease-in-out')),
-    ])
-  ]
+    ]),
+  ],
 })
 export class MapComponent implements OnInit, OnDestroy {
   points: MapPoint[];
@@ -100,7 +100,8 @@ export class MapComponent implements OnInit, OnDestroy {
   constructor(
     private geo: GeoService,
     private router: Router,
-    private settings: SettingsService) {
+    private settings: SettingsService,
+  ) {
     this.points = [];
     effect(async () => {
       const gpsPos = this.geo.gpsPosition();
@@ -121,10 +122,10 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    const darkMode = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    const darkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     this.src = darkMode ? 'assets/map-dark.svg' : 'assets/map.svg';
     if (this.settings.settings.mapUri !== '') {
-      console.log(this.settings.settings.mapUri)
+      console.log(this.settings.settings.mapUri);
       this.src = this.settings.settings.mapUri;
     }
   }
@@ -145,8 +146,7 @@ export class MapComponent implements OnInit, OnDestroy {
     }
     this.compass.style.transform = `rotate(${degree}deg)`;
     this.compass.style.visibility = 'visible';
-
-  };
+  }
 
   private async displayYourLocation(gpsCoord: GpsCoord) {
     //this.gpsCoord = await this.geo.getPosition();
@@ -170,8 +170,8 @@ export class MapComponent implements OnInit, OnDestroy {
     this.mapInformation = {
       width: rect.width,
       height: rect.height,
-      circleRadius: rect.width / 2
-    }
+      circleRadius: rect.width / 2,
+    };
   }
   async update() {
     this.setMapInformation();
@@ -190,8 +190,6 @@ export class MapComponent implements OnInit, OnDestroy {
     this._viewReady = true;
     await this.checkGeolocation();
   }
-
-
 
   private async checkGeolocation() {
     if (this.settings.settings.locationEnabled === LocationEnabledStatus.Unknown) {
@@ -229,7 +227,6 @@ export class MapComponent implements OnInit, OnDestroy {
     let closestIdx = 0;
     let idx = 0;
     for (let point of this.points) {
-
       if (!point.gps || !point.gps.lat) {
         if (!environment.production) {
           console.error(`MapPoint is missing gps coordinate: ${JSON.stringify(point)}`);
@@ -279,7 +276,9 @@ export class MapComponent implements OnInit, OnDestroy {
       (heading: CompassHeading) => {
         this.geo.heading.set(heading);
       },
-      this.compassError, { frequency: 1000 });
+      this.compassError,
+      { frequency: 1000 },
+    );
   }
 
   ngOnDestroy(): void {
@@ -306,12 +305,11 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private compassError(error: CompassError) {
     console.error(error);
-
   }
 
   private pointShift(x: number, y: number, sz: number, ox: number, oy: number): Point {
-    const px = x / 10000.0 * this.mapInformation!.width;
-    const py = y / 10000.0 * this.mapInformation!.height;
+    const px = (x / 10000.0) * this.mapInformation!.width;
+    const py = (y / 10000.0) * this.mapInformation!.height;
     return { x: px - sz + ox, y: py - sz + oy };
   }
 
@@ -321,17 +319,15 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   private plotXY(x: number, y: number, ox: number, oy: number, info?: MapInfo, bgColor?: string): HTMLDivElement {
-    const sz = (info || bgColor) ? this.smallPins ? 5 : 10 : 8;
+    const sz = info || bgColor ? (this.smallPins ? 5 : 10) : 8;
     if (info && info.location && !this.smallPins) {
       this.placeLabel(this.pointShift(x, y, 0, 0, -7), info);
     }
     return this.createPin(sz, this.pointShift(x, y, sz, ox + (this.smallPins ? -2 : 0), oy), info, bgColor);
   }
 
-
-
   createPin(sz: number, pt: Point, info?: MapInfo, bgColor?: string): HTMLDivElement {
-    const d = document.createElement("div");
+    const d = document.createElement('div');
     d.style.left = `${pt.x}px`;
     d.style.top = `${pt.y}px`;
     d.style.width = `${sz}px`;
@@ -388,8 +384,8 @@ export class MapComponent implements OnInit, OnDestroy {
     const y = event.clientY;
     const el: HTMLElement = this.map.nativeElement;
     const r = el.getBoundingClientRect();
-    const rx = (x - r.x) * 10000 / r.width;
-    const ry = (y - r.y) * 10000 / r.height;
+    const rx = ((x - r.x) * 10000) / r.width;
+    const ry = ((y - r.y) * 10000) / r.height;
     this.store(Math.ceil(rx), Math.ceil(ry));
     return false;
   }
@@ -405,4 +401,3 @@ export class MapComponent implements OnInit, OnDestroy {
     this.pins.push({ x, y });
   }
 }
-

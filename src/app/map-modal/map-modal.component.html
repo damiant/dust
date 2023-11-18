@@ -1,9 +1,9 @@
-<ion-modal [isOpen]="show" (didDismiss)="close()"  [initialBreakpoint]="0.60" [breakpoints]="[0, 0.60, 0.75]">
+<ion-modal [isOpen]="show" (didDismiss)="close()" [initialBreakpoint]="0.6" [breakpoints]="[0, 0.6, 0.75]">
   <ng-template>
     <app-map [isHeader]="true" [points]="points"></app-map>
     <div class="float">
-      <h2>{{title}}</h2>
-      <ion-text>{{subtitle}}</ion-text>
+      <h2>{{ title }}</h2>
+      <ion-text>{{ subtitle }}</ion-text>
     </div>
   </ng-template>
 </ion-modal>

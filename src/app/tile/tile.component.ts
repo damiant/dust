@@ -6,15 +6,11 @@ import { IonButton, IonIcon, IonText } from '@ionic/angular/standalone';
   templateUrl: './tile.component.html',
   styleUrls: ['./tile.component.scss'],
   imports: [IonButton, IonIcon, IonText],
-  standalone: true
+  standalone: true,
 })
 export class TileComponent {
-
   @Input() title = 'tile';
   @Input() imgSrc = '';
   @Input() iconName: string | undefined;
-  constructor() { }
-
-
-
+  constructor() {}
 }

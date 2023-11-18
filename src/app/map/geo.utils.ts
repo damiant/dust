@@ -1,77 +1,100 @@
-function affineTransformation(lat1: number, lat2: number, lat3: number, lon1: number, lon2: number, lon3: number, x1: number, x2: number, x3: number, y1: number, y2: number, y3: number) {
-    // Compute the coefficients for the affine transformation
-    let detT = (lat1 * lon2 + lat2 * lon3 + lat3 * lon1 - lat2 * lon1 - lat3 * lon2 - lat1 * lon3);
+function affineTransformation(
+  lat1: number,
+  lat2: number,
+  lat3: number,
+  lon1: number,
+  lon2: number,
+  lon3: number,
+  x1: number,
+  x2: number,
+  x3: number,
+  y1: number,
+  y2: number,
+  y3: number,
+) {
+  // Compute the coefficients for the affine transformation
+  let detT = lat1 * lon2 + lat2 * lon3 + lat3 * lon1 - lat2 * lon1 - lat3 * lon2 - lat1 * lon3;
 
-    const A = ((x1 * lon2 + x2 * lon3 + x3 * lon1 - x2 * lon1 - x3 * lon2 - x1 * lon3) / detT);
-    const B = ((lat1 * x2 + lat2 * x3 + lat3 * x1 - lat2 * x1 - lat3 * x2 - lat1 * x3) / detT);
-    const C = ((lat1 * lon2 * x3 + lat2 * lon3 * x1 + lat3 * lon1 * x2 - lat2 * lon1 * x3 - lat3 * lon2 * x1 - lat1 * lon3 * x2) / detT);
+  const A = (x1 * lon2 + x2 * lon3 + x3 * lon1 - x2 * lon1 - x3 * lon2 - x1 * lon3) / detT;
+  const B = (lat1 * x2 + lat2 * x3 + lat3 * x1 - lat2 * x1 - lat3 * x2 - lat1 * x3) / detT;
+  const C =
+    (lat1 * lon2 * x3 + lat2 * lon3 * x1 + lat3 * lon1 * x2 - lat2 * lon1 * x3 - lat3 * lon2 * x1 - lat1 * lon3 * x2) /
+    detT;
 
-    const D = ((y1 * lon2 + y2 * lon3 + y3 * lon1 - y2 * lon1 - y3 * lon2 - y1 * lon3) / detT);
-    const E = ((lat1 * y2 + lat2 * y3 + lat3 * y1 - lat2 * y1 - lat3 * y2 - lat1 * y3) / detT);
-    const F = ((lat1 * lon2 * y3 + lat2 * lon3 * y1 + lat3 * lon1 * y2 - lat2 * lon1 * y3 - lat3 * lon2 * y1 - lat1 * lon3 * y2) / detT);
+  const D = (y1 * lon2 + y2 * lon3 + y3 * lon1 - y2 * lon1 - y3 * lon2 - y1 * lon3) / detT;
+  const E = (lat1 * y2 + lat2 * y3 + lat3 * y1 - lat2 * y1 - lat3 * y2 - lat1 * y3) / detT;
+  const F =
+    (lat1 * lon2 * y3 + lat2 * lon3 * y1 + lat3 * lon1 * y2 - lat2 * lon1 * y3 - lat3 * lon2 * y1 - lat1 * lon3 * y2) /
+    detT;
 
-    return {
-        toXY: function (gpsPoint: GpsCoord) {
-            let x = A * gpsPoint.lat + B * gpsPoint.lng + C;
-            let y = D * gpsPoint.lat + E * gpsPoint.lng + F;
-            return { x, y };
-        },
-        toGPS: function (x: number, y: number) {
-            let det = A * E - B * D;
-            let lat = (E * x - B * y + B * F - C * E) / det;
-            let lng = (-D * x + A * y + C * D - A * F) / det;
-            return { lat, lng };
-        }
-    };
+  return {
+    toXY: function (gpsPoint: GpsCoord) {
+      let x = A * gpsPoint.lat + B * gpsPoint.lng + C;
+      let y = D * gpsPoint.lat + E * gpsPoint.lng + F;
+      return { x, y };
+    },
+    toGPS: function (x: number, y: number) {
+      let det = A * E - B * D;
+      let lat = (E * x - B * y + B * F - C * E) / det;
+      let lng = (-D * x + A * y + C * D - A * F) / det;
+      return { lat, lng };
+    },
+  };
 }
 
 let transform: any = undefined;
 
 export function setReferencePoints(coords: GpsCoord[], mapXY: Point[]) {
-    if (!coords || coords.length < 3 || !mapXY || mapXY.length < 3) {
-        console.error(`setReferencePoints requires at least 3 GPS points and map points`);
-    }
-    transform = affineTransformation(
-        coords[0].lat, coords[1].lat, coords[2].lat,
-        coords[0].lng, coords[1].lng, coords[2].lng,
-        mapXY[0].x, mapXY[1].x, mapXY[2].x,
-        mapXY[0].y, mapXY[1].y, mapXY[2].y
-    );
+  if (!coords || coords.length < 3 || !mapXY || mapXY.length < 3) {
+    console.error(`setReferencePoints requires at least 3 GPS points and map points`);
+  }
+  transform = affineTransformation(
+    coords[0].lat,
+    coords[1].lat,
+    coords[2].lat,
+    coords[0].lng,
+    coords[1].lng,
+    coords[2].lng,
+    mapXY[0].x,
+    mapXY[1].x,
+    mapXY[2].x,
+    mapXY[0].y,
+    mapXY[1].y,
+    mapXY[2].y,
+  );
 }
 
 export function gpsToMap(gps: GpsCoord): Point {
-    if (!transform) return { x: 0, y: 0 }
-    return transform.toXY(gps);
+  if (!transform) return { x: 0, y: 0 };
+  return transform.toXY(gps);
 }
 
 export function mapToGps(point: Point): GpsCoord {
-    if (!transform) return { lat: 0, lng: 0 };
-    return transform.toGPS(point.x, point.y);
+  if (!transform) return { lat: 0, lng: 0 };
+  return transform.toGPS(point.x, point.y);
 }
 
 export function NoGPSCoord(): GpsCoord2 {
-    return { lat: 0, lng: 0, timeStamp: new Date().getTime() };
+  return { lat: 0, lng: 0, timeStamp: new Date().getTime() };
 }
 
 export function timeStampGPS(gpsCoord: GpsCoord): GpsCoord2 {
-    (gpsCoord as GpsCoord2).timeStamp = new Date().getTime();
-    return (gpsCoord as GpsCoord2);
+  (gpsCoord as GpsCoord2).timeStamp = new Date().getTime();
+  return gpsCoord as GpsCoord2;
 }
 
 export interface GpsCoord {
-    lat: number,
-    lng: number
+  lat: number;
+  lng: number;
 }
 
 export interface GpsCoord2 {
-    lat: number,
-    lng: number,
-    timeStamp: number
+  lat: number;
+  lng: number;
+  timeStamp: number;
 }
 
 export interface Point {
-    x: number;
-    y: number;
+  x: number;
+  y: number;
 }
-
-

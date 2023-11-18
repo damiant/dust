@@ -1,7 +1,22 @@
 import { Component, Input, OnInit, ViewChild, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonBackButton, IonBadge, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonPopover, IonText, IonToolbar, ToastController } from '@ionic/angular/standalone';
+import {
+  IonBackButton,
+  IonBadge,
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonPopover,
+  IonText,
+  IonToolbar,
+  ToastController,
+} from '@ionic/angular/standalone';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DbService } from '../data/db.service';
 import { Event, MapPoint, OccurrenceSet } from '../data/models';
@@ -15,21 +30,48 @@ import { toMapPoint } from '../map/map.utils';
 import { dateMatches, noDate, sameDay } from '../utils/utils';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { addIcons } from 'ionicons';
-import { shareOutline, locationOutline, timeOutline, star, starOutline, pricetagOutline, closeCircleOutline } from 'ionicons/icons';
+import {
+  shareOutline,
+  locationOutline,
+  timeOutline,
+  star,
+  starOutline,
+  pricetagOutline,
+  closeCircleOutline,
+} from 'ionicons/icons';
 
 @Component({
   selector: 'app-event',
   templateUrl: './event.page.html',
   styleUrls: ['./event.page.scss'],
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule, MapModalComponent, MapComponent, IonItem, IonButton, IonText, IonIcon, IonLabel, IonBadge, IonContent, IonList, IonButtons, IonToolbar, IonBackButton, IonHeader, IonPopover],
+  imports: [
+    CommonModule,
+    RouterLink,
+    FormsModule,
+    MapModalComponent,
+    MapComponent,
+    IonItem,
+    IonButton,
+    IonText,
+    IonIcon,
+    IonLabel,
+    IonBadge,
+    IonContent,
+    IonList,
+    IonButtons,
+    IonToolbar,
+    IonBackButton,
+    IonHeader,
+    IonPopover,
+  ],
   animations: [
     trigger('fade', [
       state('visible', style({ opacity: 1 })),
       state('hidden', style({ opacity: 0 })),
       transition('visible <=> hidden', animate('0.3s ease-in-out')),
-    ])
-  ]
+    ]),
+  ],
 })
 export class EventPage implements OnInit {
   public event: Event | undefined;
@@ -51,8 +93,9 @@ export class EventPage implements OnInit {
     private fav: FavoritesService,
     private settings: SettingsService,
     private ui: UiService,
-    private toastController: ToastController) {
-      addIcons({ shareOutline, locationOutline, timeOutline, star, starOutline, pricetagOutline, closeCircleOutline});
+    private toastController: ToastController,
+  ) {
+    addIcons({ shareOutline, locationOutline, timeOutline, star, starOutline, pricetagOutline, closeCircleOutline });
   }
 
   async ngOnInit() {
@@ -70,8 +113,11 @@ export class EventPage implements OnInit {
       this.event = await this.db.findEvent(id);
       this.mapTitle = this.event.camp;
       this.mapSubtitle = this.event.location;
-      const mapPoint = toMapPoint(this.event.location,
-        { title: this.event.title, location: this.event.location, subtitle: this.event.camp });
+      const mapPoint = toMapPoint(this.event.location, {
+        title: this.event.title,
+        location: this.event.location,
+        subtitle: this.event.camp,
+      });
       if (this.event.pin) {
         mapPoint.x = this.event.pin.x;
         mapPoint.y = this.event.pin.y;
@@ -110,7 +156,7 @@ export class EventPage implements OnInit {
   closePopover() {
     this.isOpen = false;
   }
-  
+
   async showCamp(e: any) {
     this.popover.event = e;
     const camp = await this.db.findCamp(this.event?.hosted_by_camp!);
@@ -120,16 +166,16 @@ export class EventPage implements OnInit {
     }
   }
 
-  noop() {
-  }
+  noop() {}
 
   share() {
     const url = `https://dust.events?${ShareInfoType.event}=${this.event?.uid}`;
     this.ui.share({
       title: this.event?.title,
       dialogTitle: this.event?.title,
-      text: `Check out ${this.event?.title} at ${this.event?.camp} (${this.event?.location}) ${this.settings.eventTitle()} using the dust app.`,
-      url
+      text: `Check out ${this.event?.title} at ${this.event?.camp} (${this.event
+        ?.location}) ${this.settings.eventTitle()} using the dust app.`,
+      url,
     });
   }
 

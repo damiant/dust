@@ -12,11 +12,14 @@ import { Browser } from '@capacitor/browser';
 export const ThemePrimaryColor = '#F61067';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UiService {
   private clickedTab = signal('');
-  constructor(private router: Router, public navCtrl: NavController) { }
+  constructor(
+    private router: Router,
+    public navCtrl: NavController,
+  ) {}
 
   public scrollUp(name: string, virtualScroll: CdkVirtualScrollViewport) {
     const tab = this.clickedTab();
@@ -53,7 +56,7 @@ export class UiService {
 
   public async openUrl(url: string) {
     if (url.startsWith('tel:') || url.startsWith('mailto:')) {
-      window.open(url,'_blank'); 
+      window.open(url, '_blank');
       return;
     }
     await Browser.open({ url, presentationStyle: 'popover' });
@@ -111,10 +114,10 @@ export class UiService {
   }
 
   private isAndroid(): boolean {
-    return (Capacitor.getPlatform() == 'android');
+    return Capacitor.getPlatform() == 'android';
   }
 
   public darkMode(): boolean {
-    return (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
   }
 }

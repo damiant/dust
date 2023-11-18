@@ -3,7 +3,16 @@ import { Router, RouterModule } from '@angular/router';
 import { Event } from '../data/models';
 import { CommonModule } from '@angular/common';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonIcon, IonText } from '@ionic/angular/standalone';
+import {
+  IonButton,
+  IonButtons,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonIcon,
+  IonText,
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { mapOutline } from 'ionicons/icons';
 
@@ -13,17 +22,27 @@ import { mapOutline } from 'ionicons/icons';
   styleUrls: ['./event.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, RouterModule, IonButtons, IonButton, IonIcon, IonCard, IonCardHeader, IonCardSubtitle, IonCardContent, IonText],
+  imports: [
+    CommonModule,
+    RouterModule,
+    IonButtons,
+    IonButton,
+    IonIcon,
+    IonCard,
+    IonCardHeader,
+    IonCardSubtitle,
+    IonCardContent,
+    IonText,
+  ],
   animations: [
-    trigger('fade', [ 
+    trigger('fade', [
       state('visible', style({ opacity: 1 })),
       state('hidden', style({ opacity: 0 })),
       transition('visible <=> hidden', animate('0.3s ease-in-out')),
-    ])
-  ]
+    ]),
+  ],
 })
 export class EventComponent {
-
   @Input() event!: Event;
   @Input() title = 'Events';
   @Input() day: Date | undefined;
@@ -34,13 +53,12 @@ export class EventComponent {
   @Output() rslClick = new EventEmitter<string>();
   isReady = false;
 
-  constructor(private router: Router) { 
-    addIcons({mapOutline});
+  constructor(private router: Router) {
+    addIcons({ mapOutline });
   }
 
-
   ready() {
-    this.isReady = true;    
+    this.isReady = true;
   }
 
   map(event: Event) {
@@ -60,7 +78,6 @@ export class EventComponent {
       this.rslClick.emit(this.event.slug);
       return;
     }
-    this.router.navigateByUrl('/event/'+ this.event.uid + '+' + this.title);
+    this.router.navigateByUrl('/event/' + this.event.uid + '+' + this.title);
   }
-
 }

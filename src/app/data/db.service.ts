@@ -1,12 +1,29 @@
 import { Injectable, signal } from '@angular/core';
-import { Event, Day, Camp, Art, Pin, DataMethods, MapSet, GeoRef, Dataset, RSLEvent, TimeRange, GPSSet, MapPoint, FullDataset, Link, DatasetResult } from './models';
+import {
+  Event,
+  Day,
+  Camp,
+  Art,
+  Pin,
+  DataMethods,
+  MapSet,
+  GeoRef,
+  Dataset,
+  RSLEvent,
+  TimeRange,
+  GPSSet,
+  MapPoint,
+  FullDataset,
+  Link,
+  DatasetResult,
+} from './models';
 import { call, registerWorker } from './worker-interface';
 import { daysUntil, noDate, now } from '../utils/utils';
 import { GpsCoord, Point } from '../map/geo.utils';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DbService {
   public selectedDay = signal(noDate());
@@ -46,7 +63,14 @@ export class DbService {
     return await call(this.worker, DataMethods.CheckEvents, day);
   }
 
-  public async findEvents(query: string, day: Date | undefined, category: string, coords: GpsCoord | undefined, timeRange: TimeRange | undefined, allDay: boolean): Promise<Event[]> {    
+  public async findEvents(
+    query: string,
+    day: Date | undefined,
+    category: string,
+    coords: GpsCoord | undefined,
+    timeRange: TimeRange | undefined,
+    allDay: boolean,
+  ): Promise<Event[]> {
     return await call(this.worker, DataMethods.FindEvents, query, day, category, coords, timeRange, allDay);
   }
 
@@ -58,8 +82,6 @@ export class DbService {
     return await call(this.worker, DataMethods.GetRSLEventList, ids);
   }
 
-  
-
   public async getGeoReferences(): Promise<GeoRef[]> {
     return await call(this.worker, DataMethods.GetGeoReferences);
   }
@@ -70,7 +92,14 @@ export class DbService {
 
   public async gpsToMapPoint(gpsCoord: GpsCoord, title: string | undefined): Promise<MapPoint> {
     const point = await this.gpsToPoint(gpsCoord);
-    return { street: '', clock: '', x: point.x, y: point.y, gps: structuredClone(gpsCoord), info: (title) ? { title, location: '', subtitle: '' } : undefined }
+    return {
+      street: '',
+      clock: '',
+      x: point.x,
+      y: point.y,
+      gps: structuredClone(gpsCoord),
+      info: title ? { title, location: '', subtitle: '' } : undefined,
+    };
   }
 
   public async getPotties(): Promise<Pin[]> {
@@ -90,7 +119,7 @@ export class DbService {
   }
 
   public async getRSL(terms: string, day: Date | undefined, gpsCoord: GpsCoord | undefined): Promise<RSLEvent[]> {
-    const r = await call(this.worker, DataMethods.GetRSLEvents, terms, day, gpsCoord);    
+    const r = await call(this.worker, DataMethods.GetRSLEvents, terms, day, gpsCoord);
     return r;
   }
 
@@ -127,7 +156,7 @@ export class DbService {
   }
 
   public async getMapPointGPS(mapPoint: MapPoint): Promise<GpsCoord> {
-    return await call(this.worker, DataMethods.GetMapPointGPS, mapPoint);    
+    return await call(this.worker, DataMethods.GetMapPointGPS, mapPoint);
   }
 
   public offsetGPS(gpsCoord: GpsCoord): GpsCoord {
@@ -160,7 +189,7 @@ export class DbService {
     return await call(this.worker, DataMethods.GetLinks);
   }
 
-  public async setDataset(fullDataset: FullDataset): Promise<DatasetResult> {    
+  public async setDataset(fullDataset: FullDataset): Promise<DatasetResult> {
     return await call(this.worker, DataMethods.SetDataset, fullDataset);
   }
 
@@ -176,4 +205,3 @@ export class DbService {
     return await call(this.worker, DataMethods.GetCamps, idx, count);
   }
 }
-

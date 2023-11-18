@@ -1,4 +1,4 @@
-import { GpsCoord } from "../map/geo.utils";
+import { GpsCoord } from '../map/geo.utils';
 
 export interface Event {
   camp: string; // Calculated
@@ -13,29 +13,29 @@ export interface Event {
   distanceInfo: string; // Calculated
   gpsCoords: GpsCoord; // Calculated
   pin?: Pin; // Calculated if no gps
-  all_day: any
-  check_location?: number
-  description: string
-  event_id: number
-  event_type: EventType
-  hosted_by_camp?: string
-  located_at_art?: string
-  occurrence_set: OccurrenceSet[]
-  other_location?: string
-  print_description: string
-  imageUrl?: string // Added by dust
-  slug: string
-  title: string
-  uid: string
-  url: any
-  year: number
-  contact?: string
+  all_day: any;
+  check_location?: number;
+  description: string;
+  event_id: number;
+  event_type: EventType;
+  hosted_by_camp?: string;
+  located_at_art?: string;
+  occurrence_set: OccurrenceSet[];
+  other_location?: string;
+  print_description: string;
+  imageUrl?: string; // Added by dust
+  slug: string;
+  title: string;
+  uid: string;
+  url: any;
+  year: number;
+  contact?: string;
 }
 
 export enum LocationName {
   Unavailable = 'Location Available Soon',
   Undefined = '',
-  Unplaced = 'Unplaced'
+  Unplaced = 'Unplaced',
 }
 
 export interface Revision {
@@ -43,48 +43,48 @@ export interface Revision {
 }
 
 export interface EventType {
-  abbr: string
-  id: number
-  label: string
+  abbr: string;
+  id: number;
+  label: string;
 }
 
 export interface OccurrenceSet {
-  end_time: string
-  start_time: string
-  old: boolean // Calculated
+  end_time: string;
+  start_time: string;
+  old: boolean; // Calculated
   happening: boolean; // Calculated (whether the event is happening now)
-  longTimeString: string // Calculated
+  longTimeString: string; // Calculated
   star?: boolean;
 }
 
 export interface TimeRange {
-  start: Date
-  end: Date  
+  start: Date;
+  end: Date;
 }
 
 export interface Camp {
-  contact_email?: string
-  description?: string
-  hometown?: string
-  location: Location
-  location_string?: string
-  name: string
-  uid: string
-  url?: string
-  imageUrl?: string // Added by dust
-  gpsCoord: GpsCoord
-  pin: Pin
-  distance: number
-  distanceInfo: string
-  year: number
+  contact_email?: string;
+  description?: string;
+  hometown?: string;
+  location: Location;
+  location_string?: string;
+  name: string;
+  uid: string;
+  url?: string;
+  imageUrl?: string; // Added by dust
+  gpsCoord: GpsCoord;
+  pin: Pin;
+  distance: number;
+  distanceInfo: string;
+  year: number;
 }
 
 export interface Location {
-  dimensions: any
-  frontage?: string
-  intersection?: string
-  intersection_type?: string
-  string?: string
+  dimensions: any;
+  frontage?: string;
+  intersection?: string;
+  intersection_type?: string;
+  string?: string;
 }
 
 export interface Day {
@@ -95,56 +95,56 @@ export interface Day {
 }
 
 export interface Art {
-  artist?: string
-  category?: string
-  contact_email?: string
-  description: string
+  artist?: string;
+  category?: string;
+  contact_email?: string;
+  description: string;
   distance: number; // Calculated
   distanceInfo: string; // Calculated
   gpsCoords: GpsCoord; // Calculated
-  donation_link?: string
-  guided_tours: number
-  hometown: string
-  images: Image[]
-  location: ArtLocation
-  location_string?: string
-  name: string
-  program: string
-  self_guided_tour_map: number
-  uid: string
-  url?: string
-  year: number
+  donation_link?: string;
+  guided_tours: number;
+  hometown: string;
+  images: Image[];
+  location: ArtLocation;
+  location_string?: string;
+  name: string;
+  program: string;
+  self_guided_tour_map: number;
+  uid: string;
+  url?: string;
+  year: number;
 }
 
 export interface Image {
-  gallery_ref: any
-  ready: boolean
-  thumbnail_url?: string
+  gallery_ref: any;
+  ready: boolean;
+  thumbnail_url?: string;
 }
 
 export interface ArtLocation {
-  category?: string
-  distance?: number
-  gps_latitude?: number
-  gps_longitude?: number
-  hour?: number
-  minute?: number
-  string?: string
+  category?: string;
+  distance?: number;
+  gps_latitude?: number;
+  gps_longitude?: number;
+  hour?: number;
+  minute?: number;
+  string?: string;
 }
 
 export interface Favorites {
-  events: string[]
-  camps: string[]
-  art: string[]
-  friends: Friend[]
-  rslEvents: string[]
-  privateEvents: PrivateEvent[]
+  events: string[];
+  camps: string[];
+  art: string[];
+  friends: Friend[];
+  rslEvents: string[];
+  privateEvents: PrivateEvent[];
 }
 
 export enum LocationEnabledStatus {
   Unknown = 0,
   Enabled = 1,
-  Disabled = 2
+  Disabled = 2,
 }
 
 export interface Settings {
@@ -199,15 +199,15 @@ export interface Link {
 }
 
 export interface MapPoint {
-  street: string,
-  clock: string,
-  feet?: number,
-  streetOffset?: string,
-  clockOffset?: string,
-  x?: number,
-  y?: number,
-  gps?: GpsCoord, // Used as additional info when displaying the map
-  info?: MapInfo
+  street: string;
+  clock: string;
+  feet?: number;
+  streetOffset?: string;
+  clockOffset?: string;
+  x?: number;
+  y?: number;
+  gps?: GpsCoord; // Used as additional info when displaying the map
+  info?: MapInfo;
 }
 
 export interface MapInfo {
@@ -247,12 +247,12 @@ export interface RSLEvent {
   location: string;
   campUID?: string;
   day: string; // Format yyyy-mm-dd
-  gpsCoords?: GpsCoord,
-  pin?: Pin, // Added by dust
+  gpsCoords?: GpsCoord;
+  pin?: Pin; // Added by dust
   wa: boolean; // Wheelchair accessible
   waNotes: string;
-  distance: number,
-  distanceInfo: string,
+  distance: number;
+  distanceInfo: string;
   artCar?: string;
   imageUrl?: string;
   occurrences: RSLOccurrence[];
@@ -266,7 +266,7 @@ export interface FullDataset {
   pins: string;
   links: string;
   rsl: string;
-  hideLocations: boolean
+  hideLocations: boolean;
 }
 
 export interface DatasetResult {
@@ -327,5 +327,5 @@ export enum DataMethods {
   GetRSLEvents = 'getRSLEvents',
   SearchRSLEvents = 'searchRSLEvents',
   GetMapPointGPS = 'getMapPointGPS',
-  SetMapPointsGPS = 'setMapPointsGPS'
+  SetMapPointsGPS = 'setMapPointsGPS',
 }

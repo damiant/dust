@@ -1,40 +1,47 @@
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { Channel, LocalNotificationDescriptor, LocalNotifications, NotificationChannel } from '@capacitor/local-notifications';
+import {
+  Channel,
+  LocalNotificationDescriptor,
+  LocalNotifications,
+  NotificationChannel,
+} from '@capacitor/local-notifications';
 import { OccurrenceSet } from '../data/models';
 import { BurningManTimeZone, getDayName, noDate, now, randomInt, time } from '../utils/utils';
 import { Capacitor } from '@capacitor/core';
 
 export interface Reminder {
-  title: string,
-  body: string,
-  id: string,
-  when?: Date,
-  comment: string
+  title: string;
+  body: string;
+  id: string;
+  when?: Date;
+  comment: string;
 }
 
 export interface ScheduleResult {
-  notifications: number,
-  error?: string,
-  message?: string
+  notifications: number;
+  error?: string;
+  message?: string;
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NotificationService {
   public hasNotification = signal('');
-  constructor(public router: Router) {
-
-  }
+  constructor(public router: Router) {}
 
   public async configure() {
-    LocalNotifications.addListener('localNotificationActionPerformed', (notification => {
+    LocalNotifications.addListener('localNotificationActionPerformed', (notification) => {
       this.hasNotification.set(notification.notification.extra.eventId);
-    }));
+    });
   }
 
-  public async scheduleAll(reminder: Reminder, occurrence_set: OccurrenceSet[], selectedDay?: Date): Promise<ScheduleResult> {
+  public async scheduleAll(
+    reminder: Reminder,
+    occurrence_set: OccurrenceSet[],
+    selectedDay?: Date,
+  ): Promise<ScheduleResult> {
     const error = await this.verifyPermissions();
     if (error) {
       return { notifications: 0, error };
@@ -47,15 +54,19 @@ export class NotificationService {
         let isValid = true;
         if (!this.sameDate(selectedDay, noDate())) {
           // User has selected a particular day
-          isValid = true;// dateMatches(selectedDay, occurrence);
+          isValid = true; // dateMatches(selectedDay, occurrence);
         }
-        console.log(`for this day=${isValid} selected=${selectedDay} start=${occurrence.start_time} end=${occurrence.end_time}`);
+        console.log(
+          `for this day=${isValid} selected=${selectedDay} start=${occurrence.start_time} end=${occurrence.end_time}`,
+        );
         if (isValid) {
           const start = new Date(occurrence.start_time);
           reminder.when = this.reminderTime(start);
           if (!this.sameDate(last, reminder.when)) {
             await this.schedule(reminder);
-            message = `You'll be notified ${reminder.comment} on ${getDayName(reminder.when.toLocaleString("en-US", { timeZone: BurningManTimeZone }))} at ${time(reminder.when)}`;
+            message = `You'll be notified ${reminder.comment} on ${getDayName(
+              reminder.when.toLocaleString('en-US', { timeZone: BurningManTimeZone }),
+            )} at ${time(reminder.when)}`;
             count++;
           }
           last = reminder.when;
@@ -113,7 +124,7 @@ export class NotificationService {
 
   private hasHappened(d: Date) {
     const today = now();
-    return (d.getTime() - today.getTime() < 0);
+    return d.getTime() - today.getTime() < 0;
   }
 
   private async schedule(reminder: Reminder) {
@@ -122,7 +133,7 @@ export class NotificationService {
       return;
     }
 
-    const isAndroid = (Capacitor.getPlatform() == 'android');
+    const isAndroid = Capacitor.getPlatform() == 'android';
     const sound = 'blazing2.wav';
     const channelId = 'dust';
     if (Capacitor.getPlatform() == 'android') {
@@ -132,7 +143,7 @@ export class NotificationService {
         importance: 5,
         sound: sound,
         visibility: 1,
-      }
+      };
       await LocalNotifications.createChannel(channel);
     }
     // Schedule reminder
@@ -146,10 +157,10 @@ export class NotificationService {
           sound: isAndroid ? undefined : sound,
           schedule: { at: reminder.when, allowWhileIdle: true },
           extra: {
-            eventId: reminder.id // Assume it is an event
-          }
-        }
-      ]
+            eventId: reminder.id, // Assume it is an event
+          },
+        },
+      ],
     });
   }
 }

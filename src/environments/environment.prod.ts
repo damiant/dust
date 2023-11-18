@@ -3,6 +3,6 @@ export const environment = {
   simulatedTime: undefined,
   gps: undefined,
   overrideLocations: false,
-  latitudeOffset: undefined,  
+  latitudeOffset: undefined,
   longitudeOffset: undefined,
 };

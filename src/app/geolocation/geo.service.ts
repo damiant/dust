@@ -5,12 +5,12 @@ import { DbService } from '../data/db.service';
 import { environment } from 'src/environments/environment';
 import { Capacitor } from '@capacitor/core';
 import { noDate, secondsBetween } from '../utils/utils';
-import {  toMapPoint } from '../map/map.utils';
+import { toMapPoint } from '../map/map.utils';
 import { CompassHeading } from '../map/compass';
 import { MapPoint } from '../data/models';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GeoService {
   public gpsPosition = signal(NoGPSCoord());
@@ -19,8 +19,7 @@ export class GeoService {
   private hasPermission = false;
   private centerOfMap: GpsCoord | undefined;
 
-
-  constructor(private db: DbService) { }
+  constructor(private db: DbService) {}
 
   // Returns true if you are granted permission
   public async checkPermissions(): Promise<boolean> {
@@ -29,7 +28,7 @@ export class GeoService {
     }
     const status = await Geolocation.checkPermissions();
     console.log(status);
-    return (status.location == 'granted' || status.coarseLocation == 'granted');
+    return status.location == 'granted' || status.coarseLocation == 'granted';
   }
 
   public async getPermission(): Promise<boolean> {
@@ -37,24 +36,24 @@ export class GeoService {
       return true;
     }
     const status = await Geolocation.requestPermissions({ permissions: ['location'] });
-    return (status.location == 'granted');
+    return status.location == 'granted';
   }
 
   public async getCenterOfMap(): Promise<GpsCoord> {
     if (!this.centerOfMap) {
       const center = toMapPoint(`10:25 0', Open Playa`);
-      this.centerOfMap = await this.db.getMapPointGPS(center);      
+      this.centerOfMap = await this.db.getMapPointGPS(center);
     }
     return this.centerOfMap;
-  }  
+  }
 
   private noCompassHeading(): CompassHeading {
     return {
       magneticHeading: 0,
       trueHeading: 0,
       timestamp: new Date().getTime(),
-      headingAccuracy: 0
-    }
+      headingAccuracy: 0,
+    };
   }
 
   public async getMapPointToGPS(mp: MapPoint): Promise<GpsCoord> {
@@ -70,8 +69,8 @@ export class GeoService {
 
     console.time('geo.permissions');
     if (!this.hasPermission) {
-      if (!await this.checkPermissions()) {
-        if (!await this.getPermission()) {
+      if (!(await this.checkPermissions())) {
+        if (!(await this.getPermission())) {
           console.error(`User geolocation permission denied.`);
           this.gpsPosition.set(NoGPSCoord());
           return NoGPSCoord();

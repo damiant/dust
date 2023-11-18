@@ -21,8 +21,8 @@ export class AppComponent implements OnInit {
     private notificationService: NotificationService,
     private shareService: ShareService,
     private zone: NgZone,
-    private focusService: RouterFocusService
-  ) { }
+    private focusService: RouterFocusService,
+  ) {}
 
   async ngOnInit() {
     // This is required to fix tree shaking until this issue is resolved: https://github.com/ionic-team/ionic-framework/issues/28385
@@ -47,7 +47,4 @@ export class AppComponent implements OnInit {
   stackChanged() {
     this.focusService.focus();
   }
-
 }
-
-

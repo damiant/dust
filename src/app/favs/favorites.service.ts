@@ -1,5 +1,14 @@
 import { Injectable, signal } from '@angular/core';
-import { Event, Favorites, Friend, MapPoint, OccurrenceSet, PrivateEvent, RSLEvent, RSLOccurrence } from '../data/models';
+import {
+  Event,
+  Favorites,
+  Friend,
+  MapPoint,
+  OccurrenceSet,
+  PrivateEvent,
+  RSLEvent,
+  RSLOccurrence,
+} from '../data/models';
 import { NotificationService, ScheduleResult } from '../notifications/notification.service';
 import { Preferences } from '@capacitor/preferences';
 import { SettingsService } from '../data/settings.service';
@@ -7,16 +16,14 @@ import { DbService } from '../data/db.service';
 import { getDayName, getOccurrenceTimeString, now } from '../utils/utils';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 
-
 enum DbId {
-  favorites = 'favorites'
+  favorites = 'favorites',
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FavoritesService {
-
   private ready: Promise<void> | undefined;
   public changed = signal(1);
   private dataset: string = '';
@@ -25,10 +32,13 @@ export class FavoritesService {
 
   private favorites: Favorites = { art: [], events: [], camps: [], friends: [], rslEvents: [], privateEvents: [] };
 
-  constructor(private notificationService: NotificationService, private settingsService: SettingsService, private db: DbService) {
+  constructor(
+    private notificationService: NotificationService,
+    private settingsService: SettingsService,
+    private db: DbService,
+  ) {
     this.init(this.settingsService.settings.datasetId);
   }
-
 
   public async init(dataset: string) {
     this.dataset = dataset;
@@ -86,7 +96,7 @@ export class FavoritesService {
   public setFavorites(events: RSLEvent[], favs: string[]) {
     for (let event of events) {
       for (let occurrence of event.occurrences) {
-        occurrence.star = (favs.includes(this.rslId(event, occurrence)));
+        occurrence.star = favs.includes(this.rslId(event, occurrence));
       }
     }
     return events;
@@ -127,7 +137,12 @@ export class FavoritesService {
     return result;
   }
 
-  public async starEvent(star: boolean, event: Event, selectedDay: Date, occurrence?: OccurrenceSet): Promise<string | undefined> {
+  public async starEvent(
+    star: boolean,
+    event: Event,
+    selectedDay: Date,
+    occurrence?: OccurrenceSet,
+  ): Promise<string | undefined> {
     const id = this.eventId(event, occurrence);
     this.favorites.events = this.include(star, id, this.favorites.events);
     console.log('starEvent', star, JSON.stringify(this.favorites));
@@ -141,12 +156,13 @@ export class FavoritesService {
           id: event.uid,
           title,
           body: event.description,
-          comment
+          comment,
         },
         occurrence ? [occurrence] : event.occurrence_set,
-        selectedDay);
+        selectedDay,
+      );
       await Haptics.impact({ style: ImpactStyle.Heavy });
-      return (result.error) ? result.error : result.message;
+      return result.error ? result.error : result.message;
     } else {
       // Remove notifications
       this.notificationService.unscheduleAll(event.uid);
@@ -164,7 +180,13 @@ export class FavoritesService {
     const id = this.rslId(event, occurrence);
     this.favorites.rslEvents = this.include(star, id, this.favorites.rslEvents);
     await this.saveFavorites();
-    const when: OccurrenceSet = { start_time: occurrence.startTime, end_time: occurrence.endTime, old: false, happening: true, longTimeString: '' };
+    const when: OccurrenceSet = {
+      start_time: occurrence.startTime,
+      end_time: occurrence.endTime,
+      old: false,
+      happening: true,
+      longTimeString: '',
+    };
     if (star) {
       const title = `${occurrence.who} @ ${event.camp} (${event.location}) is starting soon`;
       const comment = `when ${occurrence.who} starts`;
@@ -173,11 +195,12 @@ export class FavoritesService {
           id,
           title,
           body: `${occurrence.who} starts ${occurrence.timeRange} at ${event.camp} - ${event.title ? event.title : ''}`,
-          comment
+          comment,
         },
-        [when]);
+        [when],
+      );
       await Haptics.impact({ style: ImpactStyle.Heavy });
-      return (result.error) ? result.error : result.message;
+      return result.error ? result.error : result.message;
     } else {
       this.notificationService.unscheduleAll(id);
       return undefined;
@@ -218,19 +241,26 @@ export class FavoritesService {
   }
 
   private async notifyPrivateEvent(event: PrivateEvent): Promise<string | undefined> {
-    const occurrenceSet: OccurrenceSet = { start_time: event.start, end_time: event.start, old: false, happening: false, longTimeString: '' };
+    const occurrenceSet: OccurrenceSet = {
+      start_time: event.start,
+      end_time: event.start,
+      old: false,
+      happening: false,
+      longTimeString: '',
+    };
     const result = await this.notificationService.scheduleAll(
       {
         id: event.id,
         title: event.title + ' @ ' + event.address,
         body: event.title + ' will start soon. ',
-        comment: event.notes
+        comment: event.notes,
       },
       [occurrenceSet],
-      undefined);
+      undefined,
+    );
 
     await Haptics.impact({ style: ImpactStyle.Heavy });
-    return (result.error) ? result.error : result.message;
+    return result.error ? result.error : result.message;
   }
 
   public async updateFriend(friend: Friend, old: Friend) {
@@ -253,12 +283,16 @@ export class FavoritesService {
   }
 
   public async deleteFriend(toDelete: Friend) {
-    this.favorites.friends = this.favorites.friends.filter((friend) => friend.name !== toDelete.name || friend.address !== toDelete.address);
+    this.favorites.friends = this.favorites.friends.filter(
+      (friend) => friend.name !== toDelete.name || friend.address !== toDelete.address,
+    );
     await this.saveFavorites();
   }
 
   public async deletePrivateEvent(toDelete: PrivateEvent) {
-    this.favorites.privateEvents = this.favorites.privateEvents.filter((event) => event.title !== toDelete.title || event.address !== toDelete.address);
+    this.favorites.privateEvents = this.favorites.privateEvents.filter(
+      (event) => event.title !== toDelete.title || event.address !== toDelete.address,
+    );
     await this.saveFavorites();
     await this.notificationService.unscheduleAll(toDelete.id);
   }
@@ -295,7 +329,7 @@ export class FavoritesService {
         camp: rslEvent.artCar ? `${rslEvent.artCar} mutant vehicle` : rslEvent.camp,
         timeString: o.timeRange,
         start: new Date(o.startTime),
-        location: rslEvent.artCar ? 'playa' : rslEvent.location,        
+        location: rslEvent.artCar ? 'playa' : rslEvent.location,
         longTimeString: o.timeRange,
         old: false,
         happening: false,
@@ -308,13 +342,24 @@ export class FavoritesService {
         gpsCoords: { lat: 0, lng: 0 },
         description: '',
         slug: this.rslId(rslEvent, o),
-        print_description: `${o.who} is playing ${party}${rslEvent.artCar ? 'on the ' + rslEvent.artCar + ' mutant vehicle' : 'at ' + rslEvent.camp}.`,
-        occurrence_set: [{ start_time: o.startTime, end_time: o.endTime, star: true, old: false, happening: false, longTimeString: o.timeRange }],
+        print_description: `${o.who} is playing ${party}${
+          rslEvent.artCar ? 'on the ' + rslEvent.artCar + ' mutant vehicle' : 'at ' + rslEvent.camp
+        }.`,
+        occurrence_set: [
+          {
+            start_time: o.startTime,
+            end_time: o.endTime,
+            star: true,
+            old: false,
+            happening: false,
+            longTimeString: o.timeRange,
+          },
+        ],
         title: o.who,
-        uid: '',// rslEvent.campUID!,
+        uid: '', // rslEvent.campUID!,
         url: undefined,
-        year: 2000
-      }
+        year: 2000,
+      };
       items.push(newEvent);
     }
   }
@@ -332,8 +377,8 @@ export class FavoritesService {
           let start: Date = new Date(occurrence.start_time);
           let end: Date = new Date(occurrence.end_time);
 
-          const isOld = (end.getTime() - timeNow < 0);
-          const isHappening = (start.getTime() < timeNow) && !isOld;
+          const isOld = end.getTime() - timeNow < 0;
+          const isHappening = start.getTime() < timeNow && !isOld;
           eventItem.occurrence_set[0].old = isOld;
           eventItem.occurrence_set[0].happening = isHappening;
           // console.log(eventItem.title);
@@ -353,7 +398,9 @@ export class FavoritesService {
   }
 
   public sortByStartTime(eventItems: Event[]) {
-    eventItems.sort((a, b) => { return Date.parse(a.occurrence_set[0].start_time) - Date.parse(b.occurrence_set[0].start_time); });
+    eventItems.sort((a, b) => {
+      return Date.parse(a.occurrence_set[0].start_time) - Date.parse(b.occurrence_set[0].start_time);
+    });
   }
 
   private groupEvents(events: Event[]) {
@@ -394,7 +441,6 @@ export class FavoritesService {
     } catch {
       this.favorites = this.noData();
     }
-
   }
 
   private include(add: boolean, value: string, items: string[]): string[] {

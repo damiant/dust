@@ -2,13 +2,18 @@
   <ion-toolbar>
     <ion-title>Favorites</ion-title>
     <ion-buttons class="b-pad-r" slot="end">
-      <app-category id="fav-categories" allTitle="All" (change)="filterChanged()" [(category)]="vm.filter"
-        [categories]="vm.filters" slot="end"></app-category>
+      <app-category
+        id="fav-categories"
+        allTitle="All"
+        (change)="filterChanged()"
+        [(category)]="vm.filter"
+        [categories]="vm.filters"
+        slot="end"
+      ></app-category>
     </ion-buttons>
     @if (db.selectedYear() !== '') {
-<ion-badge class="pad-right" (click)="home()"
-      slot="end">{{db.selectedYear()}}</ion-badge>
-}
+    <ion-badge class="pad-right" (click)="home()" slot="end">{{db.selectedYear()}}</ion-badge>
+    }
   </ion-toolbar>
 </ion-header>
 
@@ -25,46 +30,55 @@
     </ion-toolbar>
   </ion-header>
   <ion-action-sheet
-  [isOpen]="vm.isActionSheetOpen"
-  header="Actions"
-  [buttons]="actionSheetButtons"
-  (didDismiss)="sheetAction($event)"
-></ion-action-sheet>
-  <app-map-modal [title]="vm.mapTitle" [subtitle]="vm.mapSubtitle" [(show)]="vm.showMap" [points]="vm.mapPoints"></app-map-modal>
+    [isOpen]="vm.isActionSheetOpen"
+    header="Actions"
+    [buttons]="actionSheetButtons"
+    (didDismiss)="sheetAction($event)"
+  ></ion-action-sheet>
+  <app-map-modal
+    [title]="vm.mapTitle"
+    [subtitle]="vm.mapSubtitle"
+    [(show)]="vm.showMap"
+    [points]="vm.mapPoints"
+  ></app-map-modal>
   @if (vm.noFavorites) {
-<div class="center pad-top pad-sides">
-    <ion-text class="large" color="medium">Press the <ion-icon [src]="'assets/icon/star.svg'"></ion-icon> icon on Events, Theme Camps and
-      Art to add them here.</ion-text>
+  <div class="center pad-top pad-sides">
+    <ion-text class="large" color="medium"
+      >Press the <ion-icon [src]="'assets/icon/star.svg'"></ion-icon> icon on Events, Theme Camps and Art to add them
+      here.</ion-text
+    >
   </div>
-}
-  @for (event of vm.events; track eventsTrackBy($index, event)) {
-  <app-event (rslClick)="rslClick($event)" (groupClick)="groupClick($event)" title="Favorites" (mapClick)="mapEvent($event)" [event]="event" [longTime]="true"
-    />
-}
-  @if (vm.camps.length > 0) {
-<h1 class="flex">Camps
+  } @for (event of vm.events; track eventsTrackBy($index, event)) {
+  <app-event
+    (rslClick)="rslClick($event)"
+    (groupClick)="groupClick($event)"
+    title="Favorites"
+    (mapClick)="mapEvent($event)"
+    [event]="event"
+    [longTime]="true"
+  />
+  } @if (vm.camps.length > 0) {
+  <h1 class="flex">
+    Camps
     <ion-buttons slot="end">
       <ion-button (click)="mapCamps()">
         <ion-icon slot="icon-only" name="map-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </h1>
-}
-  @for (camp of vm.camps; track campsTrackBy($index, camp)) {
-  <app-camp title="Favorites" (mapClick)="mapCamp($event)" [camp]="camp"
-    />
-}
-  @if (vm.art.length > 0) {
-<h1 class="flex">Art
+  } @for (camp of vm.camps; track campsTrackBy($index, camp)) {
+  <app-camp title="Favorites" (mapClick)="mapCamp($event)" [camp]="camp" />
+  } @if (vm.art.length > 0) {
+  <h1 class="flex">
+    Art
     <ion-buttons slot="end">
       <ion-button (click)="mapArt()">
         <ion-icon slot="icon-only" name="map-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </h1>
-}
-  @for (art of vm.art; track artTrackBy($index, art)) {
+  } @for (art of vm.art; track artTrackBy($index, art)) {
   <app-art (artClick)="artClick($event)" [showImage]="true" title="Favorites" [art]="art" />
-}
-  <div style="padding:2.5rem"></div>
+  }
+  <div style="padding: 2.5rem"></div>
 </ion-content>
