@@ -124,7 +124,7 @@ export class FavsPage implements OnInit {
       this.ui.scrollUpContent('favs', this.ionContent);
     });
     effect(() => {
-      const status = this.db.networkStatus();
+      const _status = this.db.networkStatus();
     });
   }
 

@@ -128,13 +128,13 @@ export class EventsPage {
       this.ui.scrollUp('events', this.virtualScroll);
     });
     effect(() => {
-      const year = this.db.selectedYear();
+      const _year = this.db.selectedYear();
       this.db.checkInit();
       this.vm = initialState();
       this.init();
     });
     effect(async () => {
-      const r = this.db.resume();
+      const _r = this.db.resume();
       this.setToday(now());
       await this.db.checkEvents();
       this.update();
@@ -159,7 +159,7 @@ export class EventsPage {
     await this.update();
   }
 
-  public categoryChanged(category: string) {
+  public categoryChanged() {
     this.update(true);
   }
 

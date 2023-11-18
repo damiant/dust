@@ -177,7 +177,6 @@ export class MapComponent implements OnInit, OnDestroy {
   }
   async update() {
     this.setMapInformation();
-    let idx = 0;
     this.divs = [];
     for (let point of this._points) {
       const pin = mapPointToPin(point, defaultMapRadius);
@@ -187,7 +186,6 @@ export class MapComponent implements OnInit, OnDestroy {
       } else {
         console.error(`Point could not be converted to pin`);
       }
-      idx++;
     }
     this._viewReady = true;
     await this.checkGeolocation();

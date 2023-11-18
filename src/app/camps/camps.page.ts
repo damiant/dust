@@ -98,7 +98,7 @@ export class CampsPage {
       this.ui.scrollUp('camps', this.virtualScroll);
     });
     effect(() => {
-      const year = this.db.selectedYear();
+      const _year = this.db.selectedYear();
       this.db.checkInit();
       this.vm = initialState();
       this.update('');

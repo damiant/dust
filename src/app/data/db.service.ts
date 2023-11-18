@@ -8,17 +8,15 @@ import {
   DataMethods,
   MapSet,
   GeoRef,
-  Dataset,
   RSLEvent,
   TimeRange,
-  GPSSet,
   MapPoint,
   FullDataset,
   Link,
   DatasetResult,
 } from './models';
 import { call, registerWorker } from './worker-interface';
-import { daysUntil, noDate, now } from '../utils/utils';
+import { noDate } from '../utils/utils';
 import { GpsCoord, Point } from '../map/geo.utils';
 import { environment } from 'src/environments/environment';
 

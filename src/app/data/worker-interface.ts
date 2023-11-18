@@ -67,7 +67,7 @@ export function call(worker: Worker, method: DataMethods, ...args: any[]): Promi
   const callPromise: CallPromise = {
     id,
     resolve: resolver,
-    promise: new Promise((resolve, reject) => {
+    promise: new Promise((resolve) => {
       resolver = resolve;
     }),
   };

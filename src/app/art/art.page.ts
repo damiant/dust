@@ -16,7 +16,7 @@ import {
 } from '@ionic/angular/standalone';
 import { Art } from '../data/models';
 import { DbService } from '../data/db.service';
-import { Router, RouterLink, Scroll } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ArtComponent } from './art.component';
 import { UiService } from '../ui/ui.service';
@@ -96,7 +96,7 @@ export class ArtPage {
       this.ui.scrollUp('art', this.virtualScroll);
     });
     effect(() => {
-      const year = this.db.selectedYear();
+      const _year = this.db.selectedYear();
       this.db.checkInit();
       this.vm = initialState();
       this.vm.showImage = this.isThisYear();

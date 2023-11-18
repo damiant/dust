@@ -4,7 +4,6 @@ import {
   Channel,
   LocalNotificationDescriptor,
   LocalNotifications,
-  NotificationChannel,
 } from '@capacitor/local-notifications';
 import { OccurrenceSet } from '../data/models';
 import { BurningManTimeZone, getDayName, noDate, now, randomInt, time } from '../utils/utils';

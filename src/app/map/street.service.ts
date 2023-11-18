@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PickerColumn, PickerColumnOption } from '@ionic/angular/standalone';
+import { PickerColumn } from '@ionic/angular/standalone';
 import { PickerColumnItem } from '@ionic/core';
 
 @Injectable({

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Art, Camp, Dataset, Revision } from './models';
 import { datasetFilename, getCached, getLive, getLiveBinary } from './api';
 import { SettingsService } from './settings.service';
-import { minutesBetween, now } from '../utils/utils';
+import { now } from '../utils/utils';
 import { DbService } from './db.service';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Capacitor } from '@capacitor/core';
@@ -110,8 +110,8 @@ export class ApiService {
   }
 
   public async download(selected: Dataset | undefined, force?: boolean) {
-    const lastDownload = this.settingsService.getLastDownload();
-    const mins = minutesBetween(now(), lastDownload);
+    //const lastDownload = this.settingsService.getLastDownload();
+    //const mins = minutesBetween(now(), lastDownload);
     let dataset = '';
     let revision: Revision = { revision: 0 };
     // if (mins < 5) {

@@ -97,7 +97,7 @@ export class DataManager implements WorkerClass {
       case DataMethods.GetRSLEvents:
         return this.getRSLEvents(args[0], args[1], args[2], undefined, undefined);
       case DataMethods.CheckEvents:
-        return this.checkEvents(args[0]);
+        return this.checkEvents();
       case DataMethods.FindEvents:
         return this.findEvents(args[0], args[1], args[2], args[3], args[4], args[5]);
       case DataMethods.FindCamps:
@@ -144,7 +144,7 @@ export class DataManager implements WorkerClass {
     });
   }
 
-  private checkEvents(day?: Date): boolean {
+  private checkEvents(): boolean {
     const today = now();
     let hasLiveEvents = false;
     for (const event of this.events) {
@@ -414,7 +414,7 @@ export class DataManager implements WorkerClass {
       this.art = await this.loadData(ds.art);
       this.links = await this.loadData(ds.links);
       this.pins = await this.loadData(ds.pins);
-      const rslData = await this.loadData(ds.rsl);
+      const _rslData = await this.loadData(ds.rsl);
       console.log(
         `Setting dataset in worker: ${this.events.length} events, ${this.camps.length} camps, ${this.art.length} art`,
       );

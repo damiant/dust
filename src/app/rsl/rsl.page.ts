@@ -116,7 +116,7 @@ export class RslPage {
       this.ui.scrollUpContent('rsl', this.ionContent);
     });
     effect(() => {
-      const year = this.db.selectedYear();
+      const _year = this.db.selectedYear();
       this.db.checkInit();
       this.vm = initialState();
       this.init();
@@ -187,13 +187,11 @@ export class RslPage {
 
   private addEvents(count: number) {
     const items = this.allEvents.slice(this.vm.events.length, this.vm.events.length + count);
-    let lastItem = undefined;
     let hidingImage: string | undefined;
     for (let item of items) {
       if (hidingImage == item.imageUrl) {
         item.imageUrl = undefined; // This ensures that 2 events with the same image do not appear
       }
-      lastItem = item;
       if (item.imageUrl) {
         hidingImage = item.imageUrl;
       }

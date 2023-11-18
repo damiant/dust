@@ -13,9 +13,9 @@ import {
   ModalController,
   ToastController,
 } from '@ionic/angular/standalone';
-import { FriendComponent, FriendResult } from '../friend/friend.component';
+import { FriendComponent } from '../friend/friend.component';
 import { FavoritesService } from '../favs/favorites.service';
-import { Friend, PrivateEvent } from '../data/models';
+import { PrivateEvent } from '../data/models';
 import { CommonModule } from '@angular/common';
 import { BurningManTimeZone, delay, getDayName } from '../utils/utils';
 import { PrivateEventComponent, PrivateEventResult } from '../private-event/private-event.component';
