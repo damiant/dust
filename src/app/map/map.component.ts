@@ -42,7 +42,7 @@ const youOffsetY = 4;
   ],
 })
 export class MapComponent implements OnInit, OnDestroy {
-  points: MapPoint[];
+  _points: MapPoint[];
   isOpen = false;
   imageReady = false;
   footer: string | undefined;
@@ -68,15 +68,17 @@ export class MapComponent implements OnInit, OnDestroy {
   @Input() footerPadding: number = 0;
   @Input() smallPins: boolean = false;
   @Input() isHeader: boolean = false;
-  @Input('points') set setPoints(points: MapPoint[]) {
-    this.points = points;
-    if (this.points.length > 0) {
+  @Input() set points(points: MapPoint[]) {
+    this._points = points;
+    if (this._points.length > 0) {
       this.fixGPSAndUpdate();
     }
+  } get points() {
+    return this._points;
   }
 
   private async fixGPSAndUpdate() {
-    for (let point of this.points) {
+    for (let point of this._points) {
       if (!point.gps) {
         point.gps = await this.geo.getMapPointToGPS(point);
       }
@@ -102,7 +104,7 @@ export class MapComponent implements OnInit, OnDestroy {
     private router: Router,
     private settings: SettingsService,
   ) {
-    this.points = [];
+    this._points = [];
     effect(async () => {
       const gpsPos = this.geo.gpsPosition();
       await this.viewReady();
@@ -177,7 +179,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.setMapInformation();
     let idx = 0;
     this.divs = [];
-    for (let point of this.points) {
+    for (let point of this._points) {
       const pin = mapPointToPin(point, defaultMapRadius);
       if (pin) {
         const div = this.plotXY(pin.x, pin.y, 6, 0, point.info, undefined);
@@ -226,7 +228,7 @@ export class MapComponent implements OnInit, OnDestroy {
     let closest: MapPoint | undefined;
     let closestIdx = 0;
     let idx = 0;
-    for (let point of this.points) {
+    for (let point of this._points) {
       if (!point.gps || !point.gps.lat) {
         if (!environment.production) {
           console.error(`MapPoint is missing gps coordinate: ${JSON.stringify(point)}`);
@@ -251,7 +253,7 @@ export class MapComponent implements OnInit, OnDestroy {
         div.style.animationDuration = '2s';
       }
 
-      const prefix = this.points.length > 1 ? 'The closest is ' : '';
+      const prefix = this._points.length > 1 ? 'The closest is ' : '';
       const dist = formatDistanceMiles(least);
       if (least > 50) {
         this.footer = 'You are outside of the Event';

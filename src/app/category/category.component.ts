@@ -16,7 +16,7 @@ export class CategoryComponent {
   @Input() category: string = '';
   @Input() categories: string[] = [];
   @Output() categoryChange = new EventEmitter<string>();
-  @Output() change = new EventEmitter<string>();
+
   constructor() {
     addIcons({ chevronDown });
   }
@@ -24,6 +24,5 @@ export class CategoryComponent {
   changed(e: any) {
     this.category = e.detail.value;
     this.categoryChange.emit(this.category);
-    this.change.emit(this.category);
   }
 }

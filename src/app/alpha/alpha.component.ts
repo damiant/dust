@@ -19,7 +19,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 
 @Component({
-  selector: 'alphabetical-scroll-bar',
+  selector: 'app-alphabetical-scroll-bar',
   templateUrl: './alpha.component.html',
   styleUrls: ['./alpha.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -164,9 +164,9 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
   private _letterSpacing: number | string | null = '1%';
 
   //Output event when a letter selected
-  @Output('letterChange') letterChange$ = new EventEmitter<string>();
+  @Output() letterChange = new EventEmitter<string>();
   //Emitted when scrollbar is activated or deactivated
-  @Output('isActive') isActive$ = new EventEmitter<boolean>();
+  @Output() isActive = new EventEmitter<boolean>();
 
   private _lastEmittedActive = false;
   private _isComponentActive = false;
@@ -327,7 +327,7 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
   @HostListener('click', ['$event', '$event.type'])
   focusEvent(event: MouseEvent & TouchEvent, type?: string): void {
     if (!this._lastEmittedActive) {
-      this.isActive$.emit((this._lastEmittedActive = true));
+      this.isActive.emit((this._lastEmittedActive = true));
     }
 
     if (type == 'click') this._isComponentActive = false;
@@ -339,7 +339,7 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
     );
 
     if (this._lastEmittedLetter !== this.letterSelected && (this.navigateOnHover || !type!.includes('mouse'))) {
-      this.letterChange$.emit((this._lastEmittedLetter = this.letterSelected));
+      this.letterChange.emit((this._lastEmittedLetter = this.letterSelected));
       Haptics.impact({ style: ImpactStyle.Medium });
     }
   }
@@ -348,7 +348,7 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
   @HostListener('mouseleave')
   @HostListener('touchend')
   focusEnd(): void {
-    this.isActive$.emit((this._isComponentActive = this._lastEmittedActive = false));
+    this.isActive.emit((this._isComponentActive = this._lastEmittedActive = false));
   }
 
   magIndex!: number;

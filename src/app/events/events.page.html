@@ -8,7 +8,7 @@
       <app-category
         id="event-categories"
         allTitle="All Events"
-        (change)="categoryChanged($event)"
+        (categoryChange)="categoryChanged($event)"
         [(category)]="vm.category"
         [categories]="vm.categories"
         slot="end"

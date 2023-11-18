@@ -13,7 +13,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="app-page">
-  <alphabetical-scroll-bar
+  <app-alphabetical-scroll-bar
     [hidden]="vm.byDist"
     [alphabet]="'#ABCDEFGHIJKLMNOPQRSTUVWXYZ'"
     [disableInvalidLetters]="false"
@@ -28,7 +28,7 @@
     [offsetSizeCheckInterval]="100"
     (letterChange)="goToLetterGroup($event)"
     (isActive)="!$event"
-  ></alphabetical-scroll-bar>
+  ></app-alphabetical-scroll-bar>
   <div [class.side]="!vm.byDist" class="virtual-scroll-container ion-content-scroll-host" cdkVirtualScrollingElement>
     <ion-header collapse="condense">
       <ion-toolbar>
