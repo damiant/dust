@@ -7,7 +7,7 @@ android {
         applicationId "nexus.concepts.dust"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 47
+        versionCode 48
         versionName "1.38"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
