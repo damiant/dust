@@ -5,7 +5,6 @@ import { App, URLOpenListenerEvent } from '@capacitor/app';
 import { ShareInfoType, ShareService } from './share/share.service';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { RouterFocusService } from './utils/focus.service';
-import { defineCustomElement } from '@ionic/core/components/ion-modal.js';
 
 @Component({
   selector: 'app-root',
@@ -25,8 +24,7 @@ export class AppComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    // This is required to fix tree shaking until this issue is resolved: https://github.com/ionic-team/ionic-framework/issues/28385
-    defineCustomElement();
+
     await this.notificationService.configure();
     App.addListener('appUrlOpen', (event: URLOpenListenerEvent) => {
       this.zone.run(() => {
