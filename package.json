@@ -16,7 +16,8 @@
     "restrooms": "npx tsx scripts/restrooms.ts",
     "lint": "ng lint",
     "prettify": "prettier \"**/*.{ts,html}\" --write",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postinstall": "npx pkup"
   },
   "private": true,
   "dependencies": {
