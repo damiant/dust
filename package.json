@@ -68,7 +68,6 @@
     "@angular/cli": "^17.0.5",
     "@angular/compiler-cli": "^17.0.6",
     "@angular/language-service": "^17.0.6",
-    "@capacitor/assets": "3.0.1",
     "@capacitor/cli": "5.5.1",
     "@ionic/angular-toolkit": "10.0.0",
     "@types/jasmine": "4.6.4",
