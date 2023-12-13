@@ -1,8 +1,8 @@
 {
-  "name": "app",
-  "short_name": "app",
-  "theme_color": "#1976d2",
-  "background_color": "#fafafa",
+  "name": "dust",
+  "short_name": "dust",
+  "theme_color": "#F61067",
+  "background_color": "#F61067",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
