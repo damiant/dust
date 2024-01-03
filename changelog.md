@@ -1,4 +1,7 @@
 ## Changes
+## 1.39
+- category selection does not update
+
 ## 1.38
 - Change to use standalone components
 

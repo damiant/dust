@@ -8,8 +8,8 @@
       <app-category
         id="event-categories"
         allTitle="All Events"
-        (categoryChange)="categoryChanged()"
         [(category)]="vm.category"
+        (categoryChange)="categoryChanged()"
         [categories]="vm.categories"
         slot="end"
       ></app-category>
