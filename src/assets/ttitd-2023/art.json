@@ -213,7 +213,7 @@
     "uid": "a2I8X00000gxMROUA2",
     "name": "Te Wheke - The Octopus Alien Abduction Experience",
     "hometown": "Las Vegas, NV",
-    "description": "Glowing day and night deep on the playa, with long flowing tentacles to climb under and experience a glowing, pulsating other world. \nAnimalia of the sea and space unite.",
+    "description": "Glowing day and night deep on the playa, with long flowing tentacles to climb under and experience a glowing, pulsating other world. \r\nAnimalia of the sea and space unite.",
     "artist": "Purple Cow Arts",
     "category": "Open Playa",
     "location": {
@@ -723,12 +723,12 @@
     "artist": "LYSA MORGAN/Dazzle!",
     "category": "Mobile",
     "location": {
-      "string": null,
-      "category": null,
+      "string": "Mobile",
+      "category": "Mobile",
       "gps_latitude": null,
       "gps_longitude": null
     },
-    "location_string": null,
+    "location_string": "Mobile",
     "images": [
       {
         "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00000hDBkqUAG.webp"
@@ -825,7 +825,7 @@
     "contact_email": "tyfu@me.com",
     "hometown": "Eagle Creek, OR",
     "description": "Mechan 1 & Mechan 1000 - Two robots frozen in time.  One is made of metal and appears fresh off the factory line and one seems to be an ancient prototype for it is made of wood.  Both robots have a hand outstretched towards the other with a finger pointing right at the opposing robot.  The metal one holds an axe.  The wooden one holds a wrench.  Are they here to fight?  Did they some how create each other?  And where did they come from?  Who built them? So many questions that can be answered with a bit of creative sleuthing.",
-    "artist": "Tyler Fuqua Creations",
+    "artist": "Tyler FuQua Creations",
     "category": "Open Playa",
     "location": {
       "string": "6:39 1455', Open Playa",
@@ -1223,7 +1223,7 @@
     "url": "https://sanctuariatemple.com",
     "contact_email": "sanctuariatemple@gmail.com",
     "hometown": "Brooklyn, NY",
-    "description": "Sanctuaria Oasis is a haven and sanctuary for all Animalia and inhabitants of Black Rock City. The structure emulates the aesthetic of a cave though with a modern architecture exterior inspired by a crystal cave. Sanctuaria is a refuge from the harsh elements of the playa, from scorching heat and blistering dust storms. Within the safety of Sanctuaria, Animalia can contemplate, feel, and heal. \n\nSanctuaria is a solar powered art installation and its accompanying oasis will be powered 100% with renewable energy. Building integrated photovoltaic (BIPV) tiles will be used to construct part of the cave facade. The structure is built with sustainable materials including timber from trees which have been killed by recent droughts and wildfires.",
+    "description": "Sanctuaria Oasis is a haven and sanctuary for all Animalia and inhabitants of Black Rock City. The structure emulates the aesthetic of a cave though with a modern architecture exterior inspired by a crystal cave. Sanctuaria is a refuge from the harsh elements of the playa, from scorching heat and blistering dust storms. Within the safety of Sanctuaria, Animalia can contemplate, feel, and heal. \r\n\r\nSanctuaria is a solar powered art installation and its accompanying oasis will be powered 100% with renewable energy. Building integrated photovoltaic (BIPV) tiles will be used to construct part of the cave facade. The structure is built with sustainable materials including timber from trees which have been killed by recent droughts and wildfires.",
     "artist": "Cecilia Pagkalinawan and Sanctuaria Regenerative Art & Architecture Collective",
     "category": "Open Playa",
     "location": {
@@ -1823,7 +1823,7 @@
     "name": "Quetzalcóatl Reborn",
     "contact_email": "quetzalcoatlreborn@gmail.com",
     "hometown": "Coahuila, Mexico & Tulsa, OK",
-    "description": "Quetzalcóatl manifests in a large scale installation piece made out of ¼ inches metal sheets with prehispanic symbols plasma cut all over his serpent body with jewelry bracelets at some parts of it and a drum corn tail.\n\nThe bracelets will be stained glass as well as some of the prehispanic symbols, so with the light of the sun it transfers the colors on the playa ground and the people at day time.\nLed lights and metal fluorescent paint in the other symbols as well as led lighted in all the profile of the piece so it can light up at night and have a great presence both at day and night, and a great visual impact in the middle of playa.",
+    "description": "Quetzalcóatl manifests in a large scale installation piece made out of ¼ inches metal sheets with prehispanic symbols plasma cut all over his serpent body with jewelry bracelets at some parts of it and a drum corn tail.\r\n\r\nThe bracelets will be stained glass as well as some of the prehispanic symbols, so with the light of the sun it transfers the colors on the playa ground and the people at day time.\r\nLed lights and metal fluorescent paint in the other symbols as well as led lighted in all the profile of the piece so it can light up at night and have a great presence both at day and night, and a great visual impact in the middle of playa.",
     "artist": "Crescent Art Collective/Lisa Regan & Ley Brashka",
     "category": "Open Playa",
     "location": {
@@ -1932,7 +1932,7 @@
     "url": "http://www.mythousandwords.com",
     "contact_email": "lambin.arts@gmail.com",
     "hometown": "Carson City, NV",
-    "description": "This piece is a combination of several things, but first the construction is a very simple combination of eight, eight foot 4 by 4’s laid out like the spokes of a wagon wheel.  Then there are eight, eight foot 4 by 4’s standing up right at the end of each spoke.  They will all be supported by using hemp rope as guide wires and the lack of any solid areas will mitigate the sail affect which might blow the piece apart or collapse it in place.  The center has a smaller statue with rope connecting it to the tops of each of the perimeter 4 by 4’s.  The majority of the piece is biodegradable with metal brackets and bolts to hold high stress points together.  There will be solar lights on top pillar, in the ground where every guide wire is anchored and spotlights in the columns focused inward.\n\nThe concept or statement is that the government is able to any program they wish, in ways that allow for very little input by the community.  The center sculpture is smaller in size and represents the government project.  The ropes leading from the top of the outer columns represent input from the community.  And the best part is the interaction between the artist and the attendees in that the artist will be teaching her art of folding used books into various articles to be hung from the connecting wires.  The smaller sculptures are intended to represent the community’s support or aversion to the government project.\n\nImagine the community peacefully fighting the government’s desire to construct a geothermal drilling rig in their unspoiled back yard by connecting all of their thoughts together and focusing either positive or negative thoughts from on high.",
+    "description": "This piece is a combination of several things, but first the construction is a very simple combination of eight, eight foot 4 by 4’s laid out like the spokes of a wagon wheel.  Then there are eight, eight foot 4 by 4’s standing up right at the end of each spoke.  They will all be supported by using hemp rope as guide wires and the lack of any solid areas will mitigate the sail affect which might blow the piece apart or collapse it in place.  The center has a smaller statue with rope connecting it to the tops of each of the perimeter 4 by 4’s.  The majority of the piece is biodegradable with metal brackets and bolts to hold high stress points together.  There will be solar lights on top pillar, in the ground where every guide wire is anchored and spotlights in the columns focused inward.\r\n\r\nThe concept or statement is that the government is able to any program they wish, in ways that allow for very little input by the community.  The center sculpture is smaller in size and represents the government project.  The ropes leading from the top of the outer columns represent input from the community.  And the best part is the interaction between the artist and the attendees in that the artist will be teaching her art of folding used books into various articles to be hung from the connecting wires.  The smaller sculptures are intended to represent the community’s support or aversion to the government project.\r\n\r\nImagine the community peacefully fighting the government’s desire to construct a geothermal drilling rig in their unspoiled back yard by connecting all of their thoughts together and focusing either positive or negative thoughts from on high.",
     "artist": "Deborah A Lambin and \"My Thousand Words\"",
     "category": "Open Playa",
     "location": {
@@ -2214,7 +2214,7 @@
     "url": "https://kurenivka.ua/temple",
     "contact_email": "kurenivkacamp@gmail.com",
     "hometown": "Kyiv, Ukraine",
-    "description": "The Hedgehog Temple is a powerful, visually striking tribute to the diverse Ukrainian creative community members who bravely defended their country during the war, including DJs, musicians, artists, journalists, and film directors. It encourages visitors to contemplate the sacrifices made by these individuals and the significance of community, support, and dedication.\nThis installation, composed of a cluster of anti-tank hedgehogs, forms an abstract figure that evokes both an animal hedgehog and a looming thundercloud, which often carries a foreboding threat. For Ukrainians, these anti-tank hedgehogs symbolize protection and unity. During the early days of the war, ordinary Ukrainians created thousands of hedgehogs from three sections of iron I-beams welded together to safeguard their communities.\nInside the Temple, visitors can uncover stories of war victims who dreamt of attending Burning Man and pay tribute to the thousands of courageous and talented individuals the Ukrainian creative community lost due to the war. Through this installation, the artists seek to express gratitude for those who lost their lives defending their homeland and those who continue to stand guard. The Hedgehog Temple represents hope and resilience, reminding us that the human spirit can triumph even in the darkest times.",
+    "description": "The Hedgehog Temple is a powerful, visually striking tribute to the diverse Ukrainian creative community members who bravely defended their country during the war, including DJs, musicians, artists, journalists, and film directors. It encourages visitors to contemplate the sacrifices made by these individuals and the significance of community, support, and dedication.\r\nThis installation, composed of a cluster of anti-tank hedgehogs, forms an abstract figure that evokes both an animal hedgehog and a looming thundercloud, which often carries a foreboding threat. For Ukrainians, these anti-tank hedgehogs symbolize protection and unity. During the early days of the war, ordinary Ukrainians created thousands of hedgehogs from three sections of iron I-beams welded together to safeguard their communities.\r\nInside the Temple, visitors can uncover stories of war victims who dreamt of attending Burning Man and pay tribute to the thousands of courageous and talented individuals the Ukrainian creative community lost due to the war. Through this installation, the artists seek to express gratitude for those who lost their lives defending their homeland and those who continue to stand guard. The Hedgehog Temple represents hope and resilience, reminding us that the human spirit can triumph even in the darkest times.",
     "artist": "Yaroslav Korets, Kurenivka",
     "category": "Open Playa",
     "location": {
@@ -2623,7 +2623,7 @@
     "url": "https://www.instagram.com/buildaseat/",
     "contact_email": "buildaseat@gmail.com",
     "hometown": "Brooklyn, NY",
-    "description": "Build A Seat 2.0 is a collective art piece made by Black creatives, intentionally inviting us to contribute their presence, energy and voice to the Burning Man experience.\nEach seat will well be created by a Black artist, shining a light to their individual experience at Burning Man.",
+    "description": "Build A Seat 2.0 is a collective art piece made by Black creatives, intentionally inviting us to contribute their presence, energy and voice to the Burning Man experience.\r\nEach seat will well be created by a Black artist, shining a light to their individual experience at Burning Man.",
     "artist": "Mo Osunbor",
     "category": "Open Playa",
     "location": {
@@ -2753,7 +2753,7 @@
     "uid": "a2I8X00000hDGZWUA4",
     "name": "Sangye Menla Medicine Buddha",
     "hometown": "Las Vegas, NM",
-    "description": "Sangye Menla is an interactive 10 Feet Medicine Buddha statue.\nHis royal deep blue, unusual color will stand on the Golden Playa. At night, the statue will also be lighted.\n\nTraditionally the Medicine Buddha is a powerful representation of an Healing Buddha. Its aim and mantra is to relieve pain, illness,  disease  and emotional suffering for all sentient being.",
+    "description": "Sangye Menla is an interactive 10 Feet Medicine Buddha statue.\r\nHis royal deep blue, unusual color will stand on the Golden Playa. At night, the statue will also be lighted.\r\n\r\nTraditionally the Medicine Buddha is a powerful representation of an Healing Buddha. Its aim and mantra is to relieve pain, illness,  disease  and emotional suffering for all sentient being.",
     "artist": "Virginia and Guy Connor",
     "category": "Open Playa",
     "location": {
@@ -3261,7 +3261,7 @@
     "url": "https://www.markdesign.info/",
     "contact_email": "mark-design@gmx.de",
     "hometown": "Wuerzburg, Germany",
-    "description": "The Tear Drop is an interactive kinetic art sculpture. The one Teardrop in the middle, drops and crates waves, in the form of glistening metal rings. One single tear in a vast ocean of choices, potential, and repercussions.\n People can turn the crank in both directions, to discover how their motions will impact the wave going in and out of eternity. Regardless of the direction and path they choose, they will always create cause and effect.\nBy night the LED lights will reflect on the rings, illuminating the surroundings and illuminating the impactfull waves of their decisions.",
+    "description": "The Tear Drop is an interactive kinetic art sculpture. The one Teardrop in the middle, drops and crates waves, in the form of glistening metal rings. One single tear in a vast ocean of choices, potential, and repercussions.\r\n People can turn the crank in both directions, to discover how their motions will impact the wave going in and out of eternity. Regardless of the direction and path they choose, they will always create cause and effect.\r\nBy night the LED lights will reflect on the rings, illuminating the surroundings and illuminating the impactfull waves of their decisions.",
     "artist": "Lukas Mark and Jettinae VonJaeger",
     "category": "Open Playa",
     "location": {
@@ -3815,7 +3815,7 @@
     "url": "https://obsydianstudios.com/",
     "contact_email": "obsydianstudios@gmail.com",
     "hometown": "San Francisco, CA",
-    "description": "Anam Cara is an ancient Celtic phrase referring to the concept of the “soul friend” in spirituality. Temple Anam Cara intertwines a Celtic Tree of Life upon an Aztec Step Pyramid, an homage to the ancestral heritages of our co-creators. The shared belief in this concept has inspired the creation of this sculpture. We recognize that the path of wisdom is woven by countless cultures and civilizations, each offering unique insights into the nature of existence - to celebrate the shared connections of our Soul Friends that have guided and inspired deeper connections to the universe’s beauty. At the heart of Temple Anam Cara lies a deep belief in the unity of love, light, and consciousness—a recognition that all ancient traditions converge in their quest for higher truth. The base sanctuary is adorned by murals, mirrors and LEDs to welcome all to offered experiences. This sculpture is a creation in honor of the indigenous wisdom embraced by the creators of Temple Anam Cara, a shared expression of love of community, life and earth.\nwww.templeanamcara.com.",
+    "description": "Anam Cara is an ancient Celtic phrase referring to the concept of the “soul friend” in spirituality. Temple Anam Cara intertwines a Celtic Tree of Life upon an Aztec Step Pyramid, an homage to the ancestral heritages of our co-creators. The shared belief in this concept has inspired the creation of this sculpture. We recognize that the path of wisdom is woven by countless cultures and civilizations, each offering unique insights into the nature of existence - to celebrate the shared connections of our Soul Friends that have guided and inspired deeper connections to the universe’s beauty. At the heart of Temple Anam Cara lies a deep belief in the unity of love, light, and consciousness—a recognition that all ancient traditions converge in their quest for higher truth. The base sanctuary is adorned by murals, mirrors and LEDs to welcome all to offered experiences. This sculpture is a creation in honor of the indigenous wisdom embraced by the creators of Temple Anam Cara, a shared expression of love of community, life and earth.\r\nwww.templeanamcara.com.",
     "artist": "A Celtic Light and Obsydian Studios creation",
     "category": "Open Playa",
     "location": {
@@ -3941,7 +3941,7 @@
     "name": "Black Rock City Taxi Stand",
     "contact_email": "brctaxistand@gmail.com",
     "hometown": "New York City, NY",
-    "description": "The Black Rock City Taxi stand will provide a ride service to stranded burners out in deep playa, bringing weary travelers from one place.... to another. \n\nWe are here for all burners in need of a ride to your next destination. All we ask if for something they are contemplating in return, which we will discuss (as any good cabbie would).",
+    "description": "The Black Rock City Taxi stand will provide a ride service to stranded burners out in deep playa, bringing weary travelers from one place.... to another. \r\n\r\nWe are here for all burners in need of a ride to your next destination. All we ask if for something they are contemplating in return, which we will discuss (as any good cabbie would).",
     "artist": "A Nice Camp",
     "category": "Open Playa",
     "location": {
@@ -3989,12 +3989,12 @@
     "artist": "Anthony Fieldman and James Tramel, with the Entheos Community Artist Collective",
     "category": "Open Playa",
     "location": {
-      "string": "2:48 2375', Open Playa",
+      "string": "2:45 2340', Open Playa",
       "category": "Open Playa",
-      "gps_latitude": 40.782306940942,
-      "gps_longitude": -119.19682625773
+      "gps_latitude": 40.782498968004,
+      "gps_longitude": -119.19678743266
     },
-    "location_string": "2:48 2375', Open Playa",
+    "location_string": "2:45 2340', Open Playa",
     "images": [
       {
         "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00000hDPVeUAO.webp"
@@ -4345,7 +4345,7 @@
     "url": "https://www.chadrice.com/",
     "contact_email": "chad.rice.art@gmail.com",
     "hometown": "Fernley, NV",
-    "description": "Numinous II is a dimensional, forced-perspective piece that constantly changes based on where participants are located around or within the structure.  Using geometry to channel the power of the spiritual and supernatural, Numinous gives participants a view into the infinite possibilities of shifting reality.",
+    "description": "Numinous II is a dimensional, forced-perspective piece that constantly changes based on where participants are located around or within the structure.  Using geometry to channel the power of the spiritual and supernatural, Numinous gives participants a view into the infinite possibilities of shifting reality.  .",
     "artist": "Chad Rice",
     "category": "Open Playa",
     "location": {
@@ -4435,7 +4435,7 @@
     "category": "Open Playa",
     "location": {
       "string": null,
-      "category": null,
+      "category": "Airport",
       "gps_latitude": null,
       "gps_longitude": null
     },
@@ -5856,12 +5856,12 @@
     "artist": "Camp BORiNG",
     "category": "Mobile",
     "location": {
-      "string": null,
-      "category": null,
+      "string": "Mobile",
+      "category": "Mobile",
       "gps_latitude": null,
       "gps_longitude": null
     },
-    "location_string": null,
+    "location_string": "Mobile",
     "images": [
       {
         "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00000hDef1UAC.webp"
@@ -6502,7 +6502,7 @@
     "name": "Blue Moon",
     "contact_email": "shooter1966@gmail.com",
     "hometown": "Reno, NV",
-    "description": "Poohe Muha (Blue Moon) \n\nThis Stonehenge-inspired project will illustrate where the moon rises above the Man (or Temple)  A series of 10 reclaimed lodge pole pine trees from a 2021 MT forest fire will be salvaged, de-barked, cut, and then carefully placed. A viewing post will be at which the viewer can stand, and watch the moon rise as indicated by the markers, on August 30th, at dusk. The installation will be occasionally lit by one single beam of light, climbing will be allowed on the posts to allow for solitary moments and personal photo opportunities.",
+    "description": "Poohe Muha (Blue Moon) \r\n\r\nThis Stonehenge-inspired project will illustrate where the moon rises above the Man (or Temple)  A series of 10 reclaimed lodge pole pine trees from a 2021 MT forest fire will be salvaged, de-barked, cut, and then carefully placed. A viewing post will be at which the viewer can stand, and watch the moon rise as indicated by the markers, on August 30th, at dusk. The installation will be occasionally lit by one single beam of light, climbing will be allowed on the posts to allow for solitary moments and personal photo opportunities.",
     "artist": "Mark Mennie + Charlie Petrik",
     "category": "Open Playa",
     "location": {
@@ -6523,7 +6523,7 @@
     "name": "The Fabrik",
     "contact_email": "braden@binghamx.com",
     "hometown": "Denver, CO",
-    "description": "Amidst a rapidly changing world, this minimalist and futuristic art piece serves as a catalyst for self-reflection, inviting individuals to embrace the evolving future and ponder the implications of their choices.\n\nEach of its three sides showcases a distinctive an vaguely familiar font, only accessible to those willing to engage. As night descends, the monolith becomes a radiant beacon, casting its luminous lettering and words across the playa, captivating onlookers with its mesmerizing display. The words inscribed upon the monolith and the resonant voices invite introspection, encouraging viewers to contemplate their lives and actions.",
+    "description": "Amidst a rapidly changing world, this minimalist and futuristic art piece serves as a catalyst for self-reflection, inviting individuals to embrace the evolving future and ponder the implications of their choices.\r\n\r\nEach of its three sides showcases a distinctive an vaguely familiar font, only accessible to those willing to engage. As night descends, the monolith becomes a radiant beacon, casting its luminous lettering and words across the playa, captivating onlookers with its mesmerizing display. The words inscribed upon the monolith and the resonant voices invite introspection, encouraging viewers to contemplate their lives and actions.",
     "artist": "Braden Bingham",
     "category": "Open Playa",
     "location": {
@@ -6649,7 +6649,7 @@
     "contact_email": "hello@sablesrouges.cafe",
     "hometown": "San Francisco, CA",
     "description": "A piece of a 1930s Parisian cafe got displaced through space and time and is now at Black Rock City. It's unclear how this happened. What mysteries does it hold?",
-    "artist": "Café des Sables Rouges Team",
+    "artist": "From Mars With Love",
     "category": "Open Playa",
     "location": {
       "string": "12:30 5100', Open Playa",
@@ -6758,7 +6758,7 @@
     "hometown": "Bay Area, California",
     "description": "The Dancing Forest is an enchanting, interactive playground with tilting steel poles linked by a glowing canopy of elastic web, creating a network of swaying \"trees\" entwined with vivid, reactive colors. Participants play, dance, swing, and balance through the installation, connecting with each other through shared, dynamic body motions. This captivating environment invites exploration and interaction, fostering a sense of unity and joy among participants.",
     "artist": "Sam Cooler & friends",
-    "category": null,
+    "category": "Open Playa",
     "location": {
       "string": "3:08 1830', Open Playa",
       "category": "Open Playa",
@@ -6777,7 +6777,7 @@
     "name": "Merkaba Molecule",
     "url": "http://www.SpencerEdgerton.com",
     "hometown": "Tucson, AZ & San Diego, CA",
-    "description": "Geometry Plaza!\n\nThree works of art inspired by geometry:  Eukaryot, Merkaba Molecule, and Hexy BattleDress work together to create a memorable landmark.",
+    "description": "Geometry Plaza!\r\n\r\nThree works of art inspired by geometry:  Eukaryot, Merkaba Molecule, and Hexy BattleDress work together to create a memorable landmark.",
     "artist": "Spencer Edgerton and Meghan Draper-Hiller",
     "category": "Open Playa",
     "location": {
@@ -6839,65 +6839,85 @@
     "uid": "a2I8X00001hA5PiUAK",
     "name": "Moomba Poomba",
     "contact_email": "csguerrero0120@gmail.com",
-    "hometown": "Oakland",
+    "hometown": "Oakland, CA",
     "description": "Moomba Poomba is the offspring of Cannibal Crane another Art Installation, whom Cannibal Crane has not eaten yet. He flies and walk. His favorite meal is worms. He likes to play all day. He usually stays in a house, and he is here because he like to pulta a doomdoom. \n\nMoomba Poomba was created by the hand of 3 year old.",
     "artist": "Aria Shiraz",
-    "category": null,
+    "category": "Open Playa",
     "location": {
       "string": "8:02 2301'",
       "category": null,
       "gps_latitude": 40.788136865484,
       "gps_longitude": -119.21149871311
     },
-    "location_string": "8:02 2301'"
+    "location_string": "8:02 2301'",
+    "images": [
+      {
+        "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00001hA5PiUAK.webp"
+      }
+    ]
   },
   {
     "uid": "a2I8X00001hA5PnUAK",
     "name": "Wildlight Trail",
     "contact_email": "qhelgren@gmail.com",
-    "hometown": "Oakland, California",
+    "hometown": "Oakland, CA",
     "description": "A Mile of Lights Along the Trash Fence.",
     "artist": "Quentin Helgren",
-    "category": null,
+    "category": "Open Playa",
     "location": {
       "string": "11:00 6850'",
       "category": null,
       "gps_latitude": 40.804516042779,
       "gps_longitude": -119.19708475231
     },
-    "location_string": "11:00 6850'"
+    "location_string": "11:00 6850'",
+    "images": [
+      {
+        "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00001hA5PnUAK.webp"
+      }
+    ]
   },
   {
     "uid": "a2I8X00001hA5XNUA0",
     "name": "The Eternal Flame",
     "contact_email": "priorityearth@gmail.com",
-    "hometown": "Maui, Hawaii",
+    "hometown": "Maui, HI",
     "description": "THE ETERNAL FLAME looks like a torch silver sticking out of the playa and is 5' tall. Attached to the torch on both sides is a plaque that reads: 'There is a flame that is Eternal / It burns within each of us / Even if it is not visible / It shines on!'.",
     "artist": "Cosmic Cowboy",
-    "category": null,
+    "category": "Open Playa",
     "location": {
-      "string": null,
+      "string": "12:15 3300'",
       "category": null,
-      "gps_latitude": null,
-      "gps_longitude": null
+      "gps_latitude": 40.79189949917,
+      "gps_longitude": -119.19403090629
     },
-    "location_string": null
+    "location_string": "12:15 3300'",
+    "images": [
+      {
+        "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00001hA5XNUA0.webp"
+      }
+    ]
   },
   {
     "uid": "a2I8X00001hA5XSUA0",
     "name": "JakO Fierce",
     "contact_email": "patricia@steveandpat.com",
-    "hometown": "Grand Prairie TX",
+    "hometown": "Grand Prairie, TX",
     "description": "JakO Fierce is a 7 foot jackrabbit embodiment of a puka. He was constructed of found trash after a flood and represents what can be accomplished with the discards of our culture.",
     "artist": "Fireball and Sos Heidel",
-    "category": null,
+    "category": "Open Playa",
     "location": {
-      "string": null,
+      "string": "7:20 2105'",
       "category": null,
-      "gps_latitude": null,
-      "gps_longitude": null
+      "gps_latitude": 40.785897937212,
+      "gps_longitude": -119.21108329985
     },
-    "location_string": null
+    "location_string": "7:20 2105'",
+    "images": [
+      {
+        "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00001hA5XSUA0.webp"
+      }
+    ]
   },
   {
     "uid": "a2I8X00001hA5YkUAK",
@@ -6906,30 +6926,40 @@
     "hometown": "Bordeaux, France",
     "description": "A receptacle awaits the viewer's arrival. Between the nest, the turtle shell and the boat, it is formed by the sacred geometry of the tree of life, which forms its frame and even grows as a protective branch, rounding out above the cradle.\n\nLike the various elements it conjures, this work is intended to convey notions of protection, evolution, connection and matrix. \n\nThe spectator can come and take shelter inside the turtle shell, the bearer of the world, just as the secrets of creation are sheltered there, according to legend.\n\nThe work invites the viewer to enter this cocoon, resting on the sheepskin that welcomes him inside the rough metal structure. The latter, often used in rites of passage, is a symbol of natural protection.\n\nVisitors are invited to nestle into the work for refuge. Then, under the sign of protection, they can come to germinate and grow their connection to themselves and the world. \n\nThis shelter offers protection, a break from the turmoil, a return to the source.",
     "artist": "Heloise Roueau",
-    "category": null,
+    "category": "Open Playa",
     "location": {
       "string": "2:00 2000'",
       "category": null,
       "gps_latitude": 40.784981984851,
       "gps_longitude": -119.1965142065
     },
-    "location_string": "2:00 2000'"
+    "location_string": "2:00 2000'",
+    "images": [
+      {
+        "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00001hA5YkUAK.webp"
+      }
+    ]
   },
   {
     "uid": "a2I8X00001hA5ZOUA0",
     "name": "Here's Looking Through You",
     "contact_email": "neal.h.gottlieb@gmail.com",
-    "hometown": "Mill Valley, California",
+    "hometown": "Mill Valley, CA",
     "description": "Here's Looking Through you takes the ubiquitous \"you are beautiful\" sticker and turns it into a probing question and offers sage advice for better living. One side asks, \"are you beautiful?\" while the other side suggests \"don't look high\" as you stare at your own reflection. \n\nThe piece is two 40\" x 30\" mirrors with vinyl lettering mounted on a wood stand. Total height is about 6 feet.",
     "artist": "The Goodest Boys and Girls",
-    "category": null,
+    "category": "Open Playa",
     "location": {
       "string": "7:15 800'",
       "category": null,
       "gps_latitude": 40.786114249284,
       "gps_longitude": -119.20636829359
     },
-    "location_string": "7:15 800'"
+    "location_string": "7:15 800'",
+    "images": [
+      {
+        "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00001hA5ZOUA0.webp"
+      }
+    ]
   },
   {
     "uid": "a2I8X00001hA5ZYUA0",
@@ -6937,36 +6967,46 @@
     "hometown": "Brooklyn, NY",
     "description": "The Slut Altar is an interactive experience. The experience centers around a round platform, which is 5 ft in diameter, raised about a foot off the ground. It rotates slowly and is essentially a stage for performances, rituals, and ceremonies. The experience is emceed by the lead artist, Ginny. Music, lighting and audio will be provided by the artists' camp, where the piece will be placed (Kostume Kult - 6:45 & Esplanade). The idea  is to create  a container where participants feel safe and empowered to embody The Divine Slut within. Anyone who would like to come up to the altar will be given the opportunity to express themselves through movement for the duration of one song. While participants are performing on the altar they will get to experience being worshiped and exalted by those who are watching. There will also be electric votive candles available so that folks who would like to make an offering to the sluts on the altar will be able to light and place a candle at the altar.",
     "artist": "Ginny Cohen",
-    "category": null,
+    "category": "Art in Camp",
     "location": {
       "string": null,
       "category": null,
       "gps_latitude": null,
       "gps_longitude": null
     },
-    "location_string": null
+    "location_string": null,
+    "images": [
+      {
+        "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00001hA5ZYUA0.webp"
+      }
+    ]
   },
   {
     "uid": "a2I8X00001hA5ZdUAK",
     "name": "SkyWhale: The Not Shywhale",
     "contact_email": "blake.b.marcus@gmail.com",
-    "hometown": "New York City",
+    "hometown": "New York, NY",
     "description": "The SkyWhale represents the ephemerality of nature and to break our per-concieved notions of where are can be. She is a flying whale that swims through the sky and adds a reflection of water and serenity to a landscape that is harsh and unforgiving.",
     "artist": "Blake Marcus and Seven",
-    "category": null,
+    "category": "Open Playa",
     "location": {
       "string": "10:50 4100'",
       "category": null,
       "gps_latitude": 40.797455312675,
       "gps_longitude": -119.20092361622
     },
-    "location_string": "10:50 4100'"
+    "location_string": "10:50 4100'",
+    "images": [
+      {
+        "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00001hA5ZdUAK.webp"
+      }
+    ]
   },
   {
     "uid": "a2I8X00001hA5ZnUAK",
     "name": "Dead Baby Jokes Are Funny, Unless You're a Dead Baby",
     "contact_email": "jordy.clements@gmail.com",
-    "hometown": "Incline Village",
+    "hometown": "Incline Village, NV",
     "description": "It has no meaning. But it rotates.",
     "artist": "Jordy Clements",
     "category": null,
@@ -6976,7 +7016,12 @@
       "gps_latitude": 40.783318337634,
       "gps_longitude": -119.20048904531
     },
-    "location_string": "3:17 1400'"
+    "location_string": "3:17 1400'",
+    "images": [
+      {
+        "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00001hA5ZnUAK.webp"
+      }
+    ]
   },
   {
     "uid": "a2I8X00001hA5a2UAC",
@@ -6984,143 +7029,188 @@
     "hometown": "Plymouth, CA",
     "description": "The labyrinth is in the staff of the biological sign of a woman with one way in and one way out. The labyrinth is used for meditation and relaxation purposes.",
     "artist": "Jon Colburn",
-    "category": null,
+    "category": "Open Playa",
     "location": {
       "string": "8:50 2300'",
       "category": null,
       "gps_latitude": 40.790448247338,
       "gps_longitude": -119.20987143293
     },
-    "location_string": "8:50 2300'"
+    "location_string": "8:50 2300'",
+    "images": [
+      {
+        "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00001hA5a2UAC.webp"
+      }
+    ]
   },
   {
     "uid": "a2I8X00001hA5aHUAS",
     "name": "Vainamal",
     "url": "https://www.instagram.com/gungaa/?hl=fr",
     "contact_email": "gungaat@gmail.com",
-    "hometown": "SF",
+    "hometown": "San Francisco, CA",
     "description": "Three alien half body ladies into the mirror.",
     "artist": "Vainamal",
-    "category": null,
+    "category": "Open Playa",
     "location": {
       "string": "12:10 7700'",
       "category": null,
       "gps_latitude": 40.799948532341,
       "gps_longitude": -119.18216326405
     },
-    "location_string": "12:10 7700'"
+    "location_string": "12:10 7700'",
+    "images": [
+      {
+        "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00001hA5aHUAS.webp"
+      }
+    ]
   },
   {
     "uid": "a2I8X00001hA5aMUAS",
     "name": "Reality is Malleable",
     "contact_email": "conorbmurphy@gmail.com",
-    "hometown": "Lake Tahoe",
+    "hometown": "Lake Tahoe, CA",
     "description": "Participants can hit a suspended metal plate with the words \"Reality is Malleable\" plasma cut into it using sledge hammers.",
     "artist": "Conor Murphy",
-    "category": null,
+    "category": "Open Playa",
     "location": {
       "string": "11:40 4800'",
       "category": null,
       "gps_latitude": 40.797164770529,
       "gps_longitude": -119.19354088565
     },
-    "location_string": "11:40 4800'"
+    "location_string": "11:40 4800'",
+    "images": [
+      {
+        "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00001hA5aMUAS.webp"
+      }
+    ]
   },
   {
     "uid": "a2I8X00001hA5aRUAS",
     "name": "Additive Reflection",
     "contact_email": "davelaughlinmusic@gmail.com",
-    "hometown": "Lake Tahoe, California",
+    "hometown": "Lake Tahoe, CA",
     "description": "A polished stainless steel monolith rises from the Playa. Its mirrored surface reflects the viewer and the Playa, positioned westward to maximize the position of the sunset. The monolith presents viewers with a message. This message is outlined by the colors of the sky or projected onto the Playa by the light and shadow of the setting sun. It encourages the citizens of Black Rock City to build love; to recognize that love is forged - in all its imperfections - and not found, and to love each other more tomorrow than they did today.",
     "artist": "Dave Laughlin and Magpie",
-    "category": null,
+    "category": "Open Playa",
     "location": {
       "string": "10:45 2000'",
       "category": null,
       "gps_latitude": 40.79182921257,
       "gps_longitude": -119.20255523721
     },
-    "location_string": "10:45 2000'"
+    "location_string": "10:45 2000'",
+    "images": [
+      {
+        "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00001hA5aRUAS.webp"
+      }
+    ]
   },
   {
     "uid": "a2I8X00001hA5agUAC",
     "name": "Deep Pie",
-    "hometown": "LA",
+    "hometown": "Los Angeles, CA",
     "description": "Deep Pie is an illumuniated retrofuture pizza bar in deep playa that lures wanderers in for a hot, fresh slice and some space tunes. Here for a good time, not a long time.",
     "artist": "Deep Pie Collective",
-    "category": null,
+    "category": "Open Playa",
     "location": {
       "string": "1:23 5600'",
       "category": null,
       "gps_latitude": 40.787332921354,
       "gps_longitude": -119.18328622248
     },
-    "location_string": "1:23 5600'"
+    "location_string": "1:23 5600'",
+    "images": [
+      {
+        "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00001hA5agUAC.webp"
+      }
+    ]
   },
   {
     "uid": "a2I8X00001hA5avUAC",
     "name": "Mechanical Bull",
     "contact_email": "barrycrawfordart@gmail.com",
-    "hometown": "Silver Springs, Nevada",
+    "hometown": "Silver Springs, NV",
     "description": "Mechanical Bull is a 25% larger than life found art sculpture of a bull digging in to charge.",
     "artist": "Barry Crawford",
-    "category": null,
+    "category": "Open Playa",
     "location": {
       "string": "10:15 2400'",
       "category": null,
       "gps_latitude": 40.79291520912,
       "gps_longitude": -119.20463217932
     },
-    "location_string": "10:15 2400'"
+    "location_string": "10:15 2400'",
+    "images": [
+      {
+        "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00001hA5avUAC.webp"
+      }
+    ]
   },
   {
     "uid": "a2I8X00001hA5bFUAS",
     "name": "Sezacotel",
     "url": "https://bishproductions.org/",
     "contact_email": "heather@bishproductions.org",
-    "hometown": "Crested Butte, Colorado",
+    "hometown": "Crested Butte, CO",
     "description": "Animating the ether, Sezacotel pays homage to the archetype of the cosmic serpent. Legendary dragons, on the wing, soaring through the cosmos. Uniting the Earth and Sky and when so inspired, sparking the Fire in its heart through breath. As the Ouroboros bites its own tail, so does this creature honor the cycles of creative destruction, death/rebirth, beginning/end. Highlighting the dance of the Universe as it ebbs & flows through time & space, Sezacotel reminds us to flow, fly & feel free!",
     "artist": "BiSH",
-    "category": null,
+    "category": "Open Playa",
     "location": {
       "string": "12:15 3750'",
       "category": null,
       "gps_latitude": 40.792649370899,
       "gps_longitude": -119.19273954471
     },
-    "location_string": "12:15 3750'"
+    "location_string": "12:15 3750'",
+    "images": [
+      {
+        "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00001hA5bFUAS.webp"
+      }
+    ]
   },
   {
     "uid": "a2I8X00001hA5bPUAS",
     "name": "PSYKCK Transducer",
     "contact_email": "castout@gmail.com",
-    "hometown": "Alameda",
+    "hometown": "Alameda, CA",
     "description": "We're capturing bursts of physical effort and positive intention and directing them toward climate action.",
     "artist": "Crank",
-    "category": null,
+    "category": "Open Playa",
     "location": {
       "string": "10:30 4600'",
       "category": null,
       "gps_latitude": 40.79899509908,
       "gps_longitude": -119.20349849721
     },
-    "location_string": "10:30 4600'"
+    "location_string": "10:30 4600'",
+    "images": [
+      {
+        "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00001hA5bPUAS.webp"
+      }
+    ]
   },
   {
     "uid": "a2I8X00001hA5dCUAS",
     "name": "Bruce the Beetle, on Blocks",
     "contact_email": "rewindstuff@gmail.com",
-    "hometown": "Los Angeles",
+    "hometown": "Los Angeles, CA",
     "description": "Bruce the Beetle, On Blocks. A rescue. With the heart of a lion but the shell of a...well. You'll see.",
     "artist": "Coco",
-    "category": null,
+    "category": "Open Playa",
     "location": {
       "string": "11:37 5900'",
       "category": null,
       "gps_latitude": 40.799869673984,
       "gps_longitude": -119.19171985523
     },
-    "location_string": "11:37 5900'"
+    "location_string": "11:37 5900'",
+    "images": [
+      {
+        "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00001hA5dCUAS.webp"
+      }
+    ]
   },
   {
     "uid": "a2I8X00001hA5snUAC",
@@ -7128,80 +7218,105 @@
     "hometown": "San Francisco, CA",
     "description": "A place to connect with yourself in the desert! Pens & paper provided.",
     "artist": "Kiel Howe",
-    "category": null,
+    "category": "Open Playa",
     "location": {
       "string": "2:30 2100'",
       "category": null,
       "gps_latitude": 40.783524395302,
       "gps_longitude": -119.19692387246
     },
-    "location_string": "2:30 2100'"
+    "location_string": "2:30 2100'",
+    "images": [
+      {
+        "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00001hA5snUAC.webp"
+      }
+    ]
   },
   {
     "uid": "a2I8X00001hA5tCUAS",
     "name": "Pedro The Cactus",
     "url": "https://docs.google.com/presentation/d/1vxPIW2lop_2_K5XnCRBHSupJkfWjIOnd_Jy0D-SU65c/edit?pli=1#slide=id.p",
     "contact_email": "taciturnobsidian@gmail.com",
-    "hometown": "Paris - France",
+    "hometown": "Paris, France",
     "description": "Is a nomad Art project designed to be placed in deep playa for the 2023 Animalia Burn. Brought as a walk-in art project traveling across the Atlantic all the way from the city of love, PARIS- France.\n\n\"You Get what you Give\" The 1,70mts tall cactus will represent the 10 principles of the burn in some form or an other.\n\nInspired by the viral children's toy cactus that reproduces the sounds it is fed, The CACTUS has as purpose to inspire words and acts of kindness from each Burner in its path.",
     "artist": "The Cactus Team- Tanny Onsalo -Boris Dore - Jeremy Kenigsman",
-    "category": null,
+    "category": "Open Playa",
     "location": {
       "string": "12:07 3500'",
       "category": null,
       "gps_latitude": 40.792749002452,
       "gps_longitude": -119.19401882488
     },
-    "location_string": "12:07 3500'"
+    "location_string": "12:07 3500'",
+    "images": [
+      {
+        "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00001hA5tCUAS.webp"
+      }
+    ]
   },
   {
     "uid": "a2I8X00001hA5wyUAC",
-    "name": "Blind Burners Tabletop Models & Audio-Described Photograph Gallery",
+    "name": "Blind Burners Tabletop Models",
     "url": "http://www.blindburnersworld.com",
     "contact_email": "chris@blindburners.com",
     "hometown": "Brighton, England",
-    "description": "Blind Burners' gallery of tabletop models includes two models of this year's Man Pavilion and the Temple of the Heart, along with Trust by Paige Tashner. The gallery also includes scale models of Ursa Minor produced by Jen Lewin, and Justice by Jenny Mount.\n\nParticipants can explore some of this year's large scale art through touch. The project was originated by Blind Burners to help Burning Man's art community to remove barriers to accessibility, and to invite participants to experience art through their more instinctive sense of touch, and challenge assumptions around art being a predominantly visual medium.\n\nThe gallery also includes a small selection of prints of photographs by blind artists, presented with audio descriptions recorded in the voice of the artists.",
-    "artist": "3D Printers - Anne Pauley, Micah Shapiro, Genesis, Zoltan Ferenczy, Adam Ervin. Original Artists - Temple Crew. Man Pavilion Crew. Paige Tashner. Jen Lewin. Jenny Mount. Photography - Ebony Rose Dark, Marimuthu, Dust Devil & Fenbi.",
-    "category": null,
+    "description": "Blind Burners' gallery of tabletop models includes two models of this year's Man Pavilion and the Temple of the Heart, along with Trust by Paige Tashner. The gallery also includes scale models of Ursa Minor produced by Jen Lewin, and Justice by Jenny Mount.\r\n\r\nParticipants can explore some of this year's large scale art through touch. The project was originated by Blind Burners to help Burning Man's art community to remove barriers to accessibility, and to invite participants to experience art through their more instinctive sense of touch, and challenge assumptions around art being a predominantly visual medium.",
+    "artist": "3D Printers - Anne Pauley, Micah Shapiro, Genesis, Zoltan Ferenczy, Adam Ervin. Original Artists - Temple Crew. Man Pavilion Crew. Paige Tashner. Jen Lewin. Jenny Mount",
+    "category": "Open Playa",
     "location": {
       "string": "6:30 2500'",
       "category": null,
       "gps_latitude": 40.782977689573,
       "gps_longitude": -119.21132947536
     },
-    "location_string": "6:30 2500'"
+    "location_string": "6:30 2500'",
+    "images": [
+      {
+        "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00001hA5wyUAC.webp"
+      }
+    ]
   },
   {
     "uid": "a2I8X00001hA5xZUAS",
     "name": "Growing Cosmologies",
     "contact_email": "ajuric@gmail.com",
-    "hometown": "Vancouver",
+    "hometown": "Vancouver, Canada",
     "description": "A \"World Tree\" sharing a small sampling  of the evolution of art from the paleolithic to the present, charting the change of peoples place in the natural world and prompting what for the kind of relationship we need to create.",
     "artist": "Portal Project",
-    "category": null,
+    "category": "Open Playa",
     "location": {
       "string": "5:30 1100'",
       "category": null,
       "gps_latitude": 40.783791761692,
       "gps_longitude": -119.20548918568
     },
-    "location_string": "5:30 1100'"
+    "location_string": "5:30 1100'",
+    "images": [
+      {
+        "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00001hA5xZUAS.webp"
+      }
+    ]
   },
   {
     "uid": "a2I8X00001hA5z2UAC",
     "name": "Four Horsepersons Of The Apocalypse",
     "contact_email": "quickraid4@aol.com",
-    "hometown": "SANTA MONICA",
-    "description": "BACKPACK PERFORMANCE PIECES REPRESENTING EACH OF THE FOUR HORSEPERSONS OF THE APOCALYPSE...WAR...DEATH...FAMINE...CONQUEST.",
+    "hometown": "Santa Monica, CA",
+    "description": "Backpack performace pieces representing each of the four horsepersons of the apocalypse...war...death...famine...conquest.",
     "artist": "DAVE QUICK",
-    "category": null,
+    "category": "Open Playa",
     "location": {
       "string": "5:30 1300'",
       "category": null,
       "gps_latitude": 40.783317532876,
       "gps_longitude": -119.20585083902
     },
-    "location_string": "5:30 1300'"
+    "location_string": "5:30 1300'",
+    "images": [
+      {
+        "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00001hA5z2UAC.webp"
+      }
+    ]
   },
   {
     "uid": "a2I8X00001hA5zHUAS",
@@ -7209,48 +7324,63 @@
     "hometown": "Half Moon Bay, CA",
     "description": "A suspended mesh jellyfish with ruffly tendrils blows in the wind.",
     "artist": "Erin Ashley Eggers",
-    "category": null,
+    "category": "Open Playa",
     "location": {
       "string": "8:45 2100'",
       "category": null,
       "gps_latitude": 40.789900594944,
       "gps_longitude": -119.20952477034
     },
-    "location_string": "8:45 2100'"
+    "location_string": "8:45 2100'",
+    "images": [
+      {
+        "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00001hA5zHUAS.webp"
+      }
+    ]
   },
   {
     "uid": "a2I8X00001hA5zMUAS",
     "name": "Rosita's Dream Vanity",
     "url": "http://www.instagram.com/rositasvanity",
     "contact_email": "eliorojas@gmail.com",
-    "hometown": "Miami, Fl",
+    "hometown": "Miami, FL",
     "description": "Our vanity doesn't have a mirror and my idea is to bring art that burners can interact with.\nNormally vanities are used to get hair and makeup done and make yourself \"beautifull\" but since my vanity doesn't have a mirror the idea is to show burners that they do not need to see their reflection to feel beautiful.",
     "artist": "Elio Rojas",
-    "category": null,
+    "category": "Open Playa",
     "location": {
       "string": "2:20 2100'",
       "category": null,
       "gps_latitude": 40.783969296691,
       "gps_longitude": -119.19661787474
     },
-    "location_string": "2:20 2100'"
+    "location_string": "2:20 2100'",
+    "images": [
+      {
+        "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00001hA5zMUAS.webp"
+      }
+    ]
   },
   {
     "uid": "a2I8X00001hA6QyUAK",
     "name": "Crystal Unicorn",
     "url": "http://wethebuilders.com",
     "contact_email": "todd@custom3dstuff.com",
-    "hometown": "Baltimore",
+    "hometown": "Baltimore, MD",
     "description": null,
     "artist": "Todd Blatt",
-    "category": null,
+    "category": "Open Playa",
     "location": {
       "string": null,
       "category": null,
       "gps_latitude": null,
       "gps_longitude": null
     },
-    "location_string": null
+    "location_string": null,
+    "images": [
+      {
+        "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00001hA6QyUAK.webp"
+      }
+    ]
   },
   {
     "uid": "a2I8X00001hA6RmUAK",
@@ -7260,14 +7390,19 @@
     "hometown": "Marion, IA",
     "description": "Figure sculpture resembling michaelangelo's David made from tools and hardware.",
     "artist": "Drew Evans-Arcenas",
-    "category": null,
+    "category": "Open Playa",
     "location": {
       "string": "7:15 2100'",
       "category": null,
       "gps_latitude": 40.785649752899,
       "gps_longitude": -119.21102921802
     },
-    "location_string": "7:15 2100'"
+    "location_string": "7:15 2100'",
+    "images": [
+      {
+        "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00001hA6RmUAK.webp"
+      }
+    ]
   },
   {
     "uid": "a2I8X00001hA6XBUA0",
@@ -7276,13 +7411,18 @@
     "hometown": "Riverside CA",
     "description": "The structure is built out of aluminum tubing that is wrapped by black mesh netting and Burlap. The shape is an abstract representation of a bull. The visitors can enter the bull in the rear of the bull through a small slit in the fabric. Once inside there are two benches where they are invited to sit and see a large stained glass window titled \"Plastic Ocean\", a 75 foot long painting of a herd of mammals, and a hanging altar piece that utilizes sacred geometry.",
     "artist": "Ivan, Silvina, Eric, and Enrique",
-    "category": null,
+    "category": "Art in Camp",
     "location": {
       "string": null,
       "category": null,
       "gps_latitude": null,
       "gps_longitude": null
     },
-    "location_string": null
+    "location_string": null,
+    "images": [
+      {
+        "thumbnail_url": "./assets/ttitd-2023/images/a2I8X00001hA6XBUA0.webp"
+      }
+    ]
   }
 ]
