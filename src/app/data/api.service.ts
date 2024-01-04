@@ -32,7 +32,7 @@ export class ApiService {
   constructor(
     private settingsService: SettingsService,
     private dbService: DbService,
-  ) {}
+  ) { }
 
   public async sendDataToWorker(
     defaultRevision: number,
@@ -101,7 +101,22 @@ export class ApiService {
   }
 
   public async loadDatasets(): Promise<Dataset[]> {
-    return await getCached(Names.datasets, Names.datasets, 5000);
+    return this.cleanNames(await getCached(Names.datasets, Names.datasets, 5000));
+  }
+
+  private cleanNames(datasets: Dataset[]): Dataset[] {
+    for (const dataset of datasets) {
+      if (dataset.name == 'TTITD') {
+        switch (dataset.year) {
+          case '2023': dataset.title = 'Animalia 2023'; break;
+          case '2022': dataset.title = 'Walking Dreams 2022'; break;
+          case '2019': dataset.title = 'Metamorphosis 2019'; break;
+          case '2018': dataset.title = 'I, Robot 2018'; break;
+          case '2017': dataset.title = 'Radical Ritual 2017'; break;
+        }
+      }
+    }
+    return datasets;
   }
 
   private async getVersion(): Promise<string> {
