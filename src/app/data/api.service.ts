@@ -86,10 +86,25 @@ export class ApiService {
     };
     console.info(`dbService.setDataset ${JSON.stringify(datasetInfo)}...`);
     const result = await this.dbService.setDataset(datasetInfo);
+
+    if (!result || (result.events == 0 && result.camps == 0 && result.pins == 0)) {
+      console.error(`dbService.setDataset complete but bad data ${JSON.stringify(result)}`);
+      await this.reportWorkerLogs();
+      return false;
+    }
     console.info(`dbService.setDataset complete ${JSON.stringify(result)}`);
-    if (!result) return false;
-    if (result.events == 0 && result.camps == 0 && result.pins == 0) return false;
     return true;
+  }
+
+  private async reportWorkerLogs() {
+    const logs = await this.dbService.getWorkerLogs();
+    for (const log of logs) {
+      if (log.startsWith('[error]')) {
+        console.error(`[worker]${log.replace('[error]', '')}`);
+      } else {
+        console.info('[worker]', log);
+      }
+    }
   }
 
   private async read(dataset: string, name: Names): Promise<any> {
@@ -206,6 +221,7 @@ export class ApiService {
       uri = `https://data.dust.events/${dataset}/map.svg`;
     }
     console.log('map data was set to ' + uri);
+
     //this.settingsService.settings.mapUri = uri;
     this.rememberLastDownload();
   }

@@ -205,8 +205,10 @@ export class IntroPage {
       const useData = await this.api.sendDataToWorker(revision, this.db.locationsHidden(), this.isBurningMan());
       if (!useData) {
         // Its a mess
-        this.cleanup();
+        await this.cleanup();
+        // It doesnt matter if we were able to cleanup the dataset by downloading again, we need to exit to relaunch
         return;
+        
       }
       console.log(`sendDataToWorker completed`);
       this.fav.init(this.settingsService.settings.datasetId);
@@ -233,15 +235,20 @@ export class IntroPage {
     }
   }
 
-  async cleanup() {
+  async cleanup(): Promise<boolean> {
     console.error(`Redownloading...`);
+    let success = true;
     try {
       this.vm.downloading = true;
       await this.api.download(this.vm.selected, true);
-    } finally {
+    } catch {
+      success = false;
+    }
+    finally {
       this.vm.downloading = false;
     }
     this.vm.eventAlreadySelected = false; // Show intro page
+    return success;
   }
 
   open(card: Dataset) {

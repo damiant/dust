@@ -328,4 +328,5 @@ export enum DataMethods {
   SearchRSLEvents = 'searchRSLEvents',
   GetMapPointGPS = 'getMapPointGPS',
   SetMapPointsGPS = 'setMapPointsGPS',
+  ConsoleLog = 'consoleLog'
 }
