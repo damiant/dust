@@ -16,6 +16,9 @@
 - Show a message when map is shown for the first time "Use 2 fingers or double tap to zoom into the map"
 - Favorites should show time highlighted (day is less important because it is grouped)
 
+## Marketing
+- Add github, twitter, mastodon, instagram links to home page
+
 ## RSL
 - Now tab for the next 2ish hours - filter out items
 - Group multiple parties into the one card
