@@ -1,5 +1,17 @@
 
 # Roadmap
+
+## Bugs
+- Adding private events fails with specify name
+- Rsl music is all “concluded”
+- favorite art map doesn’t link until gps is obtained (spin)
+- dark mode tooltips on the map need a visible border 
+- webp files don’t share
+- use event image for header of events
+- events small title should be event title
+- Add 2024 with coming soon
+
+## Features
 - Use the timezone from the dataset
 - Show a message when map is shown for the first time "Use 2 fingers or double tap to zoom into the map"
 - Favorites should show time highlighted (day is less important because it is grouped)
@@ -7,6 +19,8 @@
 ## RSL
 - Now tab for the next 2ish hours - filter out items
 - Group multiple parties into the one card
+
+# Ideas
 
 ## Check In
 - Check In Button - For events, add to check in history on the more tab
@@ -24,7 +38,14 @@
 - Reminder times configurable - 5 mins is too early (Google App Reviewer)
 - Camps filter by clock (eg Near 7:00 which would be 6:30-7:30) (Robin)
 - Tabs for favorites (JD)
+
 - Google nearby plugin - use for bluetooth chat feature
+
+## RSS Feed
+- RSS Feed > App
+- Push Notifications backend to handle sending them out
+
+## Lock Screen Image
 - Create lock screen image: use name, location, email, camp, emergency name, emergency phone. Save to photos
 
 ## Priority 1
