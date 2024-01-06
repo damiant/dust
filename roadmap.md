@@ -2,7 +2,6 @@
 # Roadmap
 
 ## Bugs
-- Adding private events fails with specify name
 - Rsl music is all “concluded”
 - favorite art map doesn’t link until gps is obtained (spin)
 - dark mode tooltips on the map need a visible border 
