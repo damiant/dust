@@ -2,7 +2,7 @@
 # Roadmap
 
 ## Bugs
-- favorite art map doesn’t link until gps is obtained (spin)
+- favorite art map doesn’t link until gps is obtained (need spinner)
 - dark mode tooltips on the map need a visible border 
 - webp files don’t share
 - use event image for header of events
