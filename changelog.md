@@ -4,7 +4,8 @@
 - add logging for the worker thread
 - fixes for offline startup
 - fix for Adding private events fails with specify name
-- Fix for music showing all “concluded”
+- Fix for music showing all "concluded"
+- Fix for incorrect time used for "now"
 
 ## 1.38
 - Change to use standalone components

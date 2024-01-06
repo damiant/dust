@@ -40,7 +40,7 @@ export class DbService {
       this.initialized = true;
     }
 
-    return await call(this.worker, DataMethods.Populate, dataset, this.hideLocations);
+    return await call(this.worker, DataMethods.Populate, dataset, this.hideLocations, environment);
   }
 
   public checkInit() {
@@ -96,6 +96,9 @@ export class DbService {
       } else {
         console.info('[worker]', log);
       }
+    }
+    if (logs.length == 0) {
+      console.info('[worker] no worker logs')
     }
   }
 

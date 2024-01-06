@@ -25,12 +25,11 @@ import {
   CurrentYear,
   getDayNameFromDate,
   getOccurrenceTimeString,
-  now,
+  nowPST,
   sameDay,
 } from '../utils/utils';
 import { defaultMapRadius, distance, formatDistance, locationStringToPin, mapPointToPoint } from '../map/map.utils';
 import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from '../map/geo.utils';
-import { environment } from 'src/environments/environment';
 
 interface TimeCache {
   [index: string]: TimeString | undefined;
@@ -51,17 +50,17 @@ export class DataManager implements WorkerClass {
   private cache: TimeCache = {};
   private mapRadius = 5000;
   private logs: string[] = [];
+  private env: any; // Environment variables dont work in web worker so we have them passed in
 
   // This is required for a WorkerClass
   public async doWork(method: DataMethods, args: any[]): Promise<any> {
-    if (method != DataMethods.ConsoleLog) {
-      this.logs = [];
-    }
     switch (method) {
       case DataMethods.ConsoleLog:
-        return this.logs;
+        const logs = structuredClone(this.logs);
+        this.logs = [];
+        return logs;
       case DataMethods.Populate:
-        return await this.populate(args[0], args[1]);
+        return await this.populate(args[0], args[1], args[2]);
       case DataMethods.GetDays:
         return this.getDays();
       case DataMethods.GetPotties:
@@ -125,8 +124,9 @@ export class DataManager implements WorkerClass {
     }
   }
 
-  public async populate(dataset: string, hideLocations: boolean): Promise<number> {
+  public async populate(dataset: string, hideLocations: boolean, env: any): Promise<number> {
     this.dataset = dataset;
+    this.env = env;
     this.events = await this.loadEvents();
     this.camps = await this.loadCamps();
     this.art = await this.loadArt();
@@ -150,8 +150,15 @@ export class DataManager implements WorkerClass {
     });
   }
 
+  private now(): Date {
+    if (!this.env.simulatedTime) {
+      return nowPST();
+    }
+    return structuredClone(this.env.simulatedTime);
+  }
+
   private checkEvents(): boolean {
-    const today = now();
+    const today = this.now();
     let hasLiveEvents = false;
     for (const event of this.events) {
       event.old = true;
@@ -326,7 +333,7 @@ export class DataManager implements WorkerClass {
           const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
           event.gpsCoords = gpsCoords;
         } else {
-          if (!environment.production) {
+          if (!this.env.production) {
             this.consoleError(`Unable to find camp ${event.hosted_by_camp} for event ${event.title}`);
           }
         }
@@ -582,7 +589,7 @@ export class DataManager implements WorkerClass {
       const result: RSLEvent[] = [];
       query = this.scrubQuery(query);
       const fDay = day ? this.toRSLDateFormat(day) : undefined;
-      const today = now();
+      const today = this.now();
       const campPins: any = {};
       for (let event of events) {
         // Place RSL Events at the camp pin
