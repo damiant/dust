@@ -3,6 +3,7 @@
 - category selection does not update
 - add logging for the worker thread
 - fixes for offline startup
+- fix:Adding private events fails with specify name
 
 ## 1.38
 - Change to use standalone components
