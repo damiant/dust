@@ -3,7 +3,8 @@
 - category selection does not update
 - add logging for the worker thread
 - fixes for offline startup
-- fix:Adding private events fails with specify name
+- fix for Adding private events fails with specify name
+- Fix for music showing all “concluded”
 
 ## 1.38
 - Change to use standalone components

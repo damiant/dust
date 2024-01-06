@@ -97,14 +97,7 @@ export class ApiService {
   }
 
   private async reportWorkerLogs() {
-    const logs = await this.dbService.getWorkerLogs();
-    for (const log of logs) {
-      if (log.startsWith('[error]')) {
-        console.error(`[worker]${log.replace('[error]', '')}`);
-      } else {
-        console.info('[worker]', log);
-      }
-    }
+    await this.dbService.getWorkerLogs();
   }
 
   private async read(dataset: string, name: Names): Promise<any> {

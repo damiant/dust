@@ -179,7 +179,7 @@ export class IntroPage {
     return this.settingsService.settings.datasetId.includes('ttitd');
   }
 
-  async launch(attempt = 1) {
+  async launch(attempt: number = 1) {
     try {
       if (!this.vm.selected) return;
 
@@ -200,7 +200,7 @@ export class IntroPage {
       this.vm.ready = false;
       this.vm.showMessage = false;
 
-      console.warn(`populate ${this.settingsService.settings.datasetId}`);
+      console.warn(`populate ${this.settingsService.settings.datasetId} attempt ${attempt}`);
       const revision = await this.db.init(this.settingsService.settings.datasetId);
       console.warn(`sendDataToWorker ${this.settingsService.settings.datasetId}`);
       const useData = await this.api.sendDataToWorker(revision, this.db.locationsHidden(), this.isBurningMan());
@@ -208,8 +208,8 @@ export class IntroPage {
         // Its a mess
         await this.cleanup();
         // It doesnt matter if we were able to cleanup the dataset by downloading again, we need to exit to relaunch
-        if (attempt == 1) {
-          this.launch(attempt++);
+        if (attempt == 1) {          
+          this.launch(attempt + 1);
         }
         return;
       }

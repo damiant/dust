@@ -593,7 +593,7 @@ export class DataManager implements WorkerClass {
           } else {
             const camps = this.getCampList([event.campUID]);
             if (!event.pin) {
-              event.pin = camps[0].pin;
+              event.pin = (camps && camps.length > 0) ? camps[0].pin : undefined;
               Object.defineProperty(campPins, event.campUID, { value: event.pin, enumerable: true });
             }
           }
@@ -621,6 +621,7 @@ export class DataManager implements WorkerClass {
             });
             if (event.occurrences.length == 0) {
               allOld = true; // Don't include
+              this.consoleError('All RSL events over');
             }
           }
           if (!allOld) {
