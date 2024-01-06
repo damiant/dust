@@ -1,4 +1,8 @@
 ## Changes
+## 1.39
+- category selection does not update
+- add logging for the worker thread
+
 ## 1.38
 - Change to use standalone components
 

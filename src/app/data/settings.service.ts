@@ -8,6 +8,13 @@ export class SettingsService {
   public settings!: Settings;
   constructor() {
     this.settings = this.getSettings();
+    this.validate();
+  }
+
+  private validate() {
+    if (!this.settings.offlineEvents) {
+      this.settings.offlineEvents = [];
+    }
   }
 
   public getSettings(): Settings {
@@ -23,6 +30,7 @@ export class SettingsService {
         eventTitle: '',
         locationEnabled: LocationEnabledStatus.Unknown,
         longEvents: false,
+        offlineEvents: []
       };
     }
   }
@@ -48,5 +56,15 @@ export class SettingsService {
 
   public save() {
     localStorage['settings'] = JSON.stringify(this.settings);
+  }
+
+  public setOffline(datasetId: string) {
+    if (!this.settings.offlineEvents.includes(datasetId)) {
+      this.settings.offlineEvents.push(datasetId);
+    }
+  }
+
+  public isOffline(datasetId: string) {
+    return this.settings.offlineEvents.includes(datasetId);
   }
 }

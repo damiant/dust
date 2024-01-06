@@ -50,10 +50,16 @@ export class DataManager implements WorkerClass {
   private dataset: string = '';
   private cache: TimeCache = {};
   private mapRadius = 5000;
+  private logs: string[] = [];
 
   // This is required for a WorkerClass
   public async doWork(method: DataMethods, args: any[]): Promise<any> {
+    if (method != DataMethods.ConsoleLog) {
+      this.logs = [];
+    }
     switch (method) {
+      case DataMethods.ConsoleLog:
+        return this.logs;
       case DataMethods.Populate:
         return await this.populate(args[0], args[1]);
       case DataMethods.GetDays:
@@ -115,7 +121,7 @@ export class DataManager implements WorkerClass {
       case DataMethods.GetCamps:
         return this.getCamps(args[0], args[1]);
       default:
-        console.error(`Unknown method ${method}`);
+        this.consoleError(`Unknown method ${method}`);
     }
   }
 
@@ -179,7 +185,7 @@ export class DataManager implements WorkerClass {
           }
         }
       } catch (err) {
-        console.error('Failed', event);
+        this.consoleError(`Failed: ${event}`);
         throw err;
       }
     }
@@ -207,15 +213,15 @@ export class DataManager implements WorkerClass {
             const pt = mapPointToPoint(mp, this.mapRadius);
             points.push(pt);
           } else {
-            console.info(`geo.json data missing coordinates`);
+            this.consoleLog(`geo.json data missing coordinates`);
           }
         }
       } else {
-        console.info(`No data in geo.json`);
+        this.consoleLog(`No data in geo.json`);
       }
     }
     if (gpsCoords.length != 3) {
-      console.error(`This dataset does not have the required 3 geolocation points.`);
+      this.consoleError(`This dataset does not have the required 3 geolocation points.`);
       return;
     }
     setReferencePoints(gpsCoords, points);
@@ -236,7 +242,7 @@ export class DataManager implements WorkerClass {
       if (!isNaN(pin.x)) {
         mapPoint.gps = mapToGps(pin);
       }
-      console.log('setMapPointsGPS', pin, mapPoint.gps);
+      this.consoleLog(`setMapPointsGPS: ${pin} ${mapPoint.gps}`);
     }
     return mapPoints;
   }
@@ -321,7 +327,7 @@ export class DataManager implements WorkerClass {
           event.gpsCoords = gpsCoords;
         } else {
           if (!environment.production) {
-            console.error(`Unable to find camp ${event.hosted_by_camp} for event ${event.title}`);
+            this.consoleError(`Unable to find camp ${event.hosted_by_camp} for event ${event.title}`);
           }
         }
         if (hideLocations) {
@@ -344,10 +350,10 @@ export class DataManager implements WorkerClass {
           event.gpsCoords = artGPS[event.located_at_art];
           event.location = artLocationNames[event.located_at_art];
         } catch (err) {
-          console.error(`Failed GPS: ${event.title} hosted at art ${event.located_at_art}`);
+          this.consoleError(`Failed GPS: ${event.title} hosted at art ${event.located_at_art}`);
         }
       } else {
-        console.error('no location', event);
+        this.consoleError(`no location ${event}`);
       }
       if (event.print_description === '') {
         // Happens before events go to the WWW guide
@@ -405,6 +411,10 @@ export class DataManager implements WorkerClass {
     return locationStringToPin(camp.location_string, this.mapRadius);
   }
 
+  private log(message: string) {
+    this.logs.push(message);
+  }
+
   public async setDataset(ds: FullDataset): Promise<DatasetResult | undefined> {
     let result: DatasetResult | undefined;
     try {
@@ -415,7 +425,7 @@ export class DataManager implements WorkerClass {
       this.links = await this.loadData(ds.links);
       this.pins = await this.loadData(ds.pins);
       const _rslData = await this.loadData(ds.rsl);
-      console.log(
+      this.consoleLog(
         `Setting dataset in worker: ${this.events.length} events, ${this.camps.length} camps, ${this.art.length} art`,
       );
       result = {
@@ -427,7 +437,7 @@ export class DataManager implements WorkerClass {
         rsl: 0,
       };
     } catch (err) {
-      console.error(`Failed to setDataset`, err);
+      this.consoleError(`Failed to setDataset: ${err}`);
       throw new Error(`setDataset: ${err}`);
     } finally {
       this.init(ds.hideLocations);
@@ -573,7 +583,6 @@ export class DataManager implements WorkerClass {
       query = this.scrubQuery(query);
       const fDay = day ? this.toRSLDateFormat(day) : undefined;
       const today = now();
-      console.log('getRSLEvents');
       const campPins: any = {};
       for (let event of events) {
         // Place RSL Events at the camp pin
@@ -631,7 +640,7 @@ export class DataManager implements WorkerClass {
       }
       return result;
     } catch (err) {
-      console.error(`getRSLEvents returned an error`, err);
+      this.consoleError(`getRSLEvents returned an error ${err}`);
       return [];
     }
   }
@@ -902,15 +911,23 @@ export class DataManager implements WorkerClass {
   }
 
   private async loadData(uri: string): Promise<any> {
-    console.log(`Worker fetch ${uri}...`);
+    this.consoleLog(`Worker fetch ${uri}...`);
     try {
       const res = await fetch(uri);
       return await res.json();
     } catch (err) {
       //throw new Error(`${uri}: ${err}`)
-      console.error(`Worker fetch Failed to load ${uri}`);
+      this.consoleError(`Worker fetch Failed to load ${uri}`);
       return [];
     }
+  }
+
+  private consoleLog(message: string) {
+    this.log(message);
+  }
+
+  private consoleError(message: string) {
+    this.log(`[error]${message}`);
   }
 
   public async getPotties(): Promise<Pin[]> {
@@ -957,7 +974,7 @@ export class DataManager implements WorkerClass {
   public async getPins(pinType: string): Promise<MapSet> {
     try {
       const url = this.path('pins', true);
-      console.log(`Get ${url}`);
+      this.consoleLog(`Get ${url}`);
       const res = await fetch(url);
       const pins: PlacedPin[] = await res.json();
       const mapSet: MapSet = { title: pinType, description: '', points: [] };

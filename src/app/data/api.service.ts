@@ -32,7 +32,7 @@ export class ApiService {
   constructor(
     private settingsService: SettingsService,
     private dbService: DbService,
-  ) {}
+  ) { }
 
   public async sendDataToWorker(
     defaultRevision: number,
@@ -86,10 +86,25 @@ export class ApiService {
     };
     console.info(`dbService.setDataset ${JSON.stringify(datasetInfo)}...`);
     const result = await this.dbService.setDataset(datasetInfo);
+
+    if (!result || (result.events == 0 && result.camps == 0 && result.pins == 0)) {
+      console.error(`dbService.setDataset complete but bad data ${JSON.stringify(result)}`);
+      await this.reportWorkerLogs();
+      return false;
+    }
     console.info(`dbService.setDataset complete ${JSON.stringify(result)}`);
-    if (!result) return false;
-    if (result.events == 0 && result.camps == 0 && result.pins == 0) return false;
     return true;
+  }
+
+  private async reportWorkerLogs() {
+    const logs = await this.dbService.getWorkerLogs();
+    for (const log of logs) {
+      if (log.startsWith('[error]')) {
+        console.error(`[worker]${log.replace('[error]', '')}`);
+      } else {
+        console.info('[worker]', log);
+      }
+    }
   }
 
   private async read(dataset: string, name: Names): Promise<any> {
@@ -101,7 +116,22 @@ export class ApiService {
   }
 
   public async loadDatasets(): Promise<Dataset[]> {
-    return await getCached(Names.datasets, Names.datasets, 5000);
+    return this.cleanNames(await getCached(Names.datasets, Names.datasets, 5000));
+  }
+
+  private cleanNames(datasets: Dataset[]): Dataset[] {
+    for (const dataset of datasets) {
+      if (dataset.name == 'TTITD') {
+        switch (dataset.year) {
+          case '2023': dataset.title = 'Animalia 2023'; break;
+          case '2022': dataset.title = 'Walking Dreams 2022'; break;
+          case '2019': dataset.title = 'Metamorphosis 2019'; break;
+          case '2018': dataset.title = 'I, Robot 2018'; break;
+          case '2017': dataset.title = 'Radical Ritual 2017'; break;
+        }
+      }
+    }
+    return datasets;
   }
 
   private async getVersion(): Promise<string> {
@@ -191,6 +221,7 @@ export class ApiService {
       uri = `https://data.dust.events/${dataset}/map.svg`;
     }
     console.log('map data was set to ' + uri);
+
     //this.settingsService.settings.mapUri = uri;
     this.rememberLastDownload();
   }

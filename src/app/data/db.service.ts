@@ -88,6 +88,10 @@ export class DbService {
     return await call(this.worker, DataMethods.GpsToPoint, gpsCoord);
   }
 
+  public async getWorkerLogs(): Promise<string[]> {
+    return await call(this.worker, DataMethods.ConsoleLog);
+  }
+
   public async gpsToMapPoint(gpsCoord: GpsCoord, title: string | undefined): Promise<MapPoint> {
     const point = await this.gpsToPoint(gpsCoord);
     return {

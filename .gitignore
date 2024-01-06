@@ -72,3 +72,5 @@ Thumbs.db
 resources/ios/**/*
 resources/android/**/*
 scripts/rsl
+# Local Netlify folder
+.netlify

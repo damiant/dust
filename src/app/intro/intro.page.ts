@@ -179,15 +179,16 @@ export class IntroPage {
     return this.settingsService.settings.datasetId.includes('ttitd');
   }
 
-  async launch() {
+  async launch(attempt = 1) {
     try {
       if (!this.vm.selected) return;
 
-      if (!this.isCurrentYear()) {
+      const hasOffline = this.isCurrentYear() || this.settingsService.isOffline(this.settingsService.settings.datasetId);
+      if (!hasOffline) {
         const status = await Network.getStatus();
         if (!status.connected) {
           this.ui.presentDarkToast(
-            'You are offline: Previous years require network access. Try this year instead.',
+            'You are offline: This event needs to be downloaded before you can view it.',
             this.toastController,
           );
           this.vm.eventAlreadySelected = false;
@@ -205,7 +206,11 @@ export class IntroPage {
       const useData = await this.api.sendDataToWorker(revision, this.db.locationsHidden(), this.isBurningMan());
       if (!useData) {
         // Its a mess
-        this.cleanup();
+        await this.cleanup();
+        // It doesnt matter if we were able to cleanup the dataset by downloading again, we need to exit to relaunch
+        if (attempt == 1) {
+          this.launch(attempt++);
+        }
         return;
       }
       console.log(`sendDataToWorker completed`);
@@ -224,6 +229,8 @@ export class IntroPage {
         hidden.push('private');
       }
       this.db.featuresHidden.set(hidden);
+      this.settingsService.setOffline(this.settingsService.settings.datasetId);
+      this.settingsService.save();
       this.ui.setStatusBarBasedOnTheme();
       await this.router.navigateByUrl('/tabs/events');
     } finally {
@@ -233,15 +240,20 @@ export class IntroPage {
     }
   }
 
-  async cleanup() {
+  async cleanup(): Promise<boolean> {
     console.error(`Redownloading...`);
+    let success = true;
     try {
       this.vm.downloading = true;
       await this.api.download(this.vm.selected, true);
-    } finally {
+    } catch {
+      success = false;
+    }
+    finally {
       this.vm.downloading = false;
     }
     this.vm.eventAlreadySelected = false; // Show intro page
+    return success;
   }
 
   open(card: Dataset) {
