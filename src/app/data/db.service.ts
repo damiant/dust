@@ -96,7 +96,7 @@ export class DbService {
       } else {
         console.info('[worker]', log);
       }
-    }    
+    }
   }
 
   public async gpsToMapPoint(gpsCoord: GpsCoord, title: string | undefined): Promise<MapPoint> {
