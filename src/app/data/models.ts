@@ -156,6 +156,7 @@ export interface Settings {
   mapUri: string;
   locationEnabled: LocationEnabledStatus;
   longEvents: boolean;
+  offlineEvents: string[]; // List of all offline event ids
 }
 
 export interface Dataset {

@@ -179,15 +179,16 @@ export class IntroPage {
     return this.settingsService.settings.datasetId.includes('ttitd');
   }
 
-  async launch() {
+  async launch(attempt = 1) {
     try {
       if (!this.vm.selected) return;
 
-      if (!this.isCurrentYear()) {
+      const hasOffline = this.isCurrentYear() || this.settingsService.isOffline(this.settingsService.settings.datasetId);
+      if (!hasOffline) {
         const status = await Network.getStatus();
         if (!status.connected) {
           this.ui.presentDarkToast(
-            'You are offline: Previous years require network access. Try this year instead.',
+            'You are offline: This event needs to be downloaded before you can view it.',
             this.toastController,
           );
           this.vm.eventAlreadySelected = false;
@@ -207,8 +208,10 @@ export class IntroPage {
         // Its a mess
         await this.cleanup();
         // It doesnt matter if we were able to cleanup the dataset by downloading again, we need to exit to relaunch
+        if (attempt == 1) {
+          this.launch(attempt++);
+        }
         return;
-        
       }
       console.log(`sendDataToWorker completed`);
       this.fav.init(this.settingsService.settings.datasetId);
@@ -226,6 +229,8 @@ export class IntroPage {
         hidden.push('private');
       }
       this.db.featuresHidden.set(hidden);
+      this.settingsService.setOffline(this.settingsService.settings.datasetId);
+      this.settingsService.save();
       this.ui.setStatusBarBasedOnTheme();
       await this.router.navigateByUrl('/tabs/events');
     } finally {
