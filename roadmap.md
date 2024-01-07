@@ -2,18 +2,19 @@
 # Roadmap
 
 ## Bugs
-- music is not being shown
-- favorited events not being shown
-- art from home not being shown first time
+- Favorited events not being shown
+- Art from home not being shown first time
+- Art page has a white block in top left corner
+- Favorites with 2 items fades one item
+- Clicking the location also drills down
+- When you revisit the home page it should scroll to top
+- Favorite art map doesn’t link until gps is obtained (need spinner)
 
 - favorites should on home page ?
 - search on home page to search all events, camps, art, and music
-
-- favorite art map doesn’t link until gps is obtained (need spinner)
 - dark mode tooltips on the map need a visible border 
 - webp files don’t share
-- use event image for header of events
-- events small title should be event title
+
 - Add 2024 with coming soon
 
 ## Features
@@ -21,6 +22,7 @@
 - Show a message when map is shown for the first time "Use 2 fingers or double tap to zoom into the map"
 - Favorites should show time highlighted (day is less important because it is grouped)
 - PWA to Microsoft store: https://tech.lgbt/@lilPWA/111711138018508269
+- Art tour audio
 
 ## RSL
 - Now tab for the next 2ish hours - filter out items

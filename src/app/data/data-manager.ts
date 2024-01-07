@@ -631,12 +631,12 @@ export class DataManager implements WorkerClass {
               this.consoleError('All RSL events over');
             }
           }
-          if (!allOld) {
-            // If all times have ended
-            event.distance = distance(coords!, event.gpsCoords!);
-            event.distanceInfo = formatDistance(event.distance);
-            result.push(event);
-          }
+
+          // If allOld is true then all times have ended
+          event.distance = distance(coords!, event.gpsCoords!);
+          event.distanceInfo = formatDistance(event.distance);
+          result.push(event);
+
         }
       }
       if (coords) {
@@ -646,6 +646,7 @@ export class DataManager implements WorkerClass {
       } else {
         this.sortRSLEventsByName(result);
       }
+
       return result;
     } catch (err) {
       this.consoleError(`getRSLEvents returned an error ${err}`);
