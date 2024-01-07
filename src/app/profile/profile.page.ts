@@ -44,6 +44,7 @@ import {
   exitOutline,
   timeOutline,
   locateOutline,
+  compassOutline,
   closeSharp,
 } from 'ionicons/icons';
 import { Animation, StatusBar } from '@capacitor/status-bar';
@@ -102,6 +103,7 @@ export class ProfilePage implements OnInit {
       shareOutline,
       starHalfOutline,
       informationCircleOutline,
+      compassOutline,
       exitOutline,
       timeOutline,
       locateOutline,

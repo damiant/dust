@@ -2,6 +2,13 @@
 # Roadmap
 
 ## Bugs
+- music is not being shown
+- favorited events not being shown
+- art from home not being shown first time
+
+- favorites should on home page ?
+- search on home page to search all events, camps, art, and music
+
 - favorite art map doesn’t link until gps is obtained (need spinner)
 - dark mode tooltips on the map need a visible border 
 - webp files don’t share
