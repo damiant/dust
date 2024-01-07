@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, computed, signal } from '@angular/core';
 import {
   Event,
   Day,
@@ -14,6 +14,7 @@ import {
   FullDataset,
   Link,
   DatasetResult,
+  Dataset,
 } from './models';
 import { call, registerWorker } from './worker-interface';
 import { noDate } from '../utils/utils';
@@ -24,8 +25,11 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class DbService {
+  private defaultDataset: Dataset = {name: '', year: '', id: '', title: '', start: '', end: '', lat: 0, long: 0};
   public selectedDay = signal(noDate());
   public selectedYear = signal('');
+  public selectedDataset = signal(this.defaultDataset);
+  public selectedImage = computed(() => `assets/datasets/${this.selectedDataset().id}.webp`);
   public featuresHidden = signal(['']);
   public networkStatus = signal('');
   public resume = signal('');

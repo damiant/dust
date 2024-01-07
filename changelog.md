@@ -6,6 +6,7 @@
 - fix for Adding private events fails with specify name
 - Fix for music showing all "concluded"
 - Fix for incorrect time used for "now"
+- More changed to Home
 
 ## 1.38
 - Change to use standalone components

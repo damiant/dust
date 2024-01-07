@@ -217,6 +217,7 @@ export class IntroPage {
       this.fav.init(this.settingsService.settings.datasetId);
       const title = this.isCurrentYear() ? '' : this.vm.selected.year;
       this.db.selectedYear.set(title);
+      this.db.selectedDataset.set(this.vm.selected);
 
       const hidden = [];
       if (this.isBurningMan() && !this.isCurrentYear()) {
@@ -232,7 +233,7 @@ export class IntroPage {
       this.settingsService.setOffline(this.settingsService.settings.datasetId);
       this.settingsService.save();
       this.ui.setStatusBarBasedOnTheme();
-      await this.router.navigateByUrl('/tabs/events');
+      await this.router.navigateByUrl('/tabs/profile');
     } finally {
       setTimeout(() => {
         this.vm.ready = true;

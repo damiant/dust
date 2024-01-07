@@ -13,6 +13,9 @@ import {
   IonItem,
   IonList,
   IonTitle,
+  IonFooter,
+  IonFab,
+  IonFabButton,
   IonToggle,
   IonToolbar,
   ToastController,
@@ -41,7 +44,10 @@ import {
   exitOutline,
   timeOutline,
   locateOutline,
+  closeSharp,
 } from 'ionicons/icons';
+import { Animation, StatusBar } from '@capacitor/status-bar';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-profile',
@@ -66,6 +72,9 @@ import {
     IonItem,
     IonIcon,
     IonToggle,
+    IonFooter,
+    IonFabButton,
+    IonFab,
     TileContainerComponent,
     TileComponent,
     PrivateEventsComponent,
@@ -96,6 +105,7 @@ export class ProfilePage implements OnInit {
       exitOutline,
       timeOutline,
       locateOutline,
+      closeSharp
     });
   }
 
@@ -105,8 +115,6 @@ export class ProfilePage implements OnInit {
     this.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
     this.links = await this.db.getLinks();
   }
-
-  ionViewDidEnter() {}
 
   visit(url: string) {
     this.ui.openUrl(url);
@@ -163,6 +171,18 @@ export class ProfilePage implements OnInit {
       ? LocationEnabledStatus.Enabled
       : LocationEnabledStatus.Disabled;
     this.settings.save();
+  }
+
+  async ionViewWillEnter() {
+    if (Capacitor.isNativePlatform()) {
+      await StatusBar.hide({ animation: Animation.Fade });
+    }
+  }
+
+  async ionViewWillLeave() {
+    if (Capacitor.isNativePlatform()) {
+      await StatusBar.show({ animation: Animation.Fade });
+    }
   }
 
   async directions() {

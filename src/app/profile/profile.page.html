@@ -1,18 +1,11 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>More</ion-title>
-    @if (db.selectedYear() !== '') {
-    <ion-badge class="pad-right" (click)="home()" slot="end">{{db.selectedYear()}}</ion-badge>
-    }
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title (click)="moreClick()" size="large">More</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="header" [ngStyle]="{'background-image': 'url('+ db.selectedImage()+')'}">
+    <ion-fab-button color="dark" style="position: absolute; top: 0.2rem; z-index: 1; right: 0.8rem; left: auto"
+      (click)="home()" size="small">
+      <ion-icon name="close-sharp"></ion-icon>
+    </ion-fab-button>
+    <ion-title class="image-text" (click)="moreClick()" size="large">{{db.selectedDataset().title}}</ion-title>
+  </div>
 
   <app-tile-container>
     <app-tile title="Restrooms" routerLink="/map/restrooms" imgSrc="assets/icon/toilet.svg"></app-tile>
@@ -50,9 +43,9 @@
   }
 
   <ion-card>
-    <ion-card-header>
+    <!-- <ion-card-header>
       <ion-card-title>Options</ion-card-title>
-    </ion-card-header>
+    </ion-card-header> -->
 
     <ion-card-content>
       <ion-list>
@@ -75,15 +68,15 @@
           About
         </ion-item>
 
-        <ion-item (click)="home()" detail="true">
+        <!-- <ion-item (click)="home()" detail="true">
           <ion-icon slot="start" name="exit-outline"></ion-icon>
           Select Event
-        </ion-item>
+        </ion-item> -->
       </ion-list>
     </ion-card-content>
   </ion-card>
   <div class="pad-top" (click)="hiddenPanel = !hiddenPanel"></div>
-  <div style="padding: 2rem">
+  <div style="padding: 1rem">
     <ion-item [hidden]="!hiddenPanel" lines="none">
       <ion-icon slot="start" name="time-outline"></ion-icon>
       <ion-toggle (ionChange)="toggleLongEvents($event)" [checked]="longEvents">Long Events In Search</ion-toggle>
