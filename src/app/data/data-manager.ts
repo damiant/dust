@@ -628,8 +628,7 @@ export class DataManager implements WorkerClass {
               return ids.includes(id);
             });
             if (event.occurrences.length == 0) {
-              allOld = true; // Don't include
-              this.consoleError(`All RSL events over ${isHistorical}`);
+              allOld = true; // Don't include              
             }
           }
 

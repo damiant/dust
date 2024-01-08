@@ -9,7 +9,7 @@
   </h1>
 }
 
-<ion-card role="button" (click)="detail()" class="item">
+<ion-card role="button" (click)="detail()" [class]="variableHeight ? '' : 'item'">
   @if (showImage && event.imageUrl) {
     <div class="image">
       <img

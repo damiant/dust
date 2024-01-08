@@ -8,6 +8,7 @@
 - Fix for incorrect time used for "now"
 - More changed to Home
 - Fix listing historical events in favorites and music
+- Fix height on favorite items
 
 ## 1.38
 - Change to use standalone components
