@@ -1,7 +1,15 @@
 [
     {
         "name": "TTITD",
-        "title": "Burning Man 2023",
+        "title": "Curiouser 2024",
+        "id": "ttitd-2024",
+        "year": "2024",
+        "start": "2023-08-25T07:00:00.000Z",
+        "end": "2023-09-02T07:00:00.000Z"
+    },
+    {
+        "name": "TTITD",
+        "title": "Animalia 2023",
         "id": "ttitd-2023",
         "year": "2023",
         "start": "2023-08-27T07:00:00.000Z",
@@ -9,7 +17,7 @@
     },
     {
         "name": "TTITD",
-        "title": "Burning Man 2022",
+        "title": "Waking Dreams 2022",
         "id": "ttitd-2022",
         "year": "2022",
         "start": "2022-08-28T00:00:00-07:00",
@@ -17,7 +25,7 @@
     },
     {
         "name": "TTITD",
-        "title": "Burning Man 2019",
+        "title": "Metamorphosis 2019",
         "id": "ttitd-2019",
         "year": "2019",
         "start": "2019-08-26T00:00:00-07:00",
@@ -25,7 +33,7 @@
     },
     {
         "name": "TTITD",
-        "title": "Burning Man 2018",
+        "title": "I, Robot 2018",
         "id": "ttitd-2018",
         "year": "2018",
         "start": "2018-08-27T00:00:00-07:00",
@@ -33,7 +41,7 @@
     },
     {
         "name": "TTITD",
-        "title": "Burning Man 2017",
+        "title": "Radical Ritual 2017",
         "id": "ttitd-2017",
         "year": "2017",
         "start": "2017-08-28T00:00:00-07:00",

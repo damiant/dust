@@ -220,7 +220,7 @@ export class IntroPage {
       this.db.selectedDataset.set(this.vm.selected);
 
       const hidden = [];
-      if (this.isBurningMan() && !this.isCurrentYear()) {
+      if (this.isBurningMan() && !['2024','2023'].includes(this.vm.selected.year)) {
         hidden.push('rsl');
       }
       if (!this.isBurningMan()) {

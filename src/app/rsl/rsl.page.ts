@@ -175,7 +175,7 @@ export class RslPage {
       this.vm.noEvents = this.vm.events.length == 0;
       this.vm.noEventsMessage = wasSearch
         ? `There are no events matching "${this.vm.search}".`
-        : 'All the events for this day have concluded.';
+        : this.noEventsMessage();
     } else {
       const otherDays = days.map((d) => `${d.name}`).join(', ');
       this.vm.noEvents = true;
@@ -183,6 +183,12 @@ export class RslPage {
         ? `There are no events matching "${this.vm.search}" for this day but there are on ${otherDays}.`
         : 'There are no events on this day.';
     }
+  }
+
+  private noEventsMessage() {
+    return this.db.eventHasntBegun() ?
+    'Events have not been added yet.' : 
+    'All the events for this day have concluded.';  
   }
 
   private addEvents(count: number) {

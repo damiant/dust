@@ -54,6 +54,13 @@ export class DbService {
     return (until < 0);
   }
 
+  public eventHasntBegun(): boolean {
+    // This is whether the event has not started yet
+    const start = new Date(this.selectedDataset().start);
+    const until = daysUntil(start, now());
+    return (until < 0);
+  }
+
   public checkInit() {
     if (!this.initialized) {
       document.location.href = '';

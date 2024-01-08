@@ -360,7 +360,7 @@ export class DataManager implements WorkerClass {
           this.consoleError(`Failed GPS: ${event.title} hosted at art ${event.located_at_art}`);
         }
       } else {
-        this.consoleError(`no location ${event}`);
+        this.consoleError(`no location ${JSON.stringify(event)}`);
       }
       if (event.print_description === '') {
         // Happens before events go to the WWW guide
@@ -710,12 +710,14 @@ export class DataManager implements WorkerClass {
     if (query) {
       query = this.scrubQuery(query);
     }
-    for (let event of this.events) {
+    
+    for (let event of this.events) {      
       if (
         this.eventContains(query, event, allDay) &&
         this.eventIsCategory(category, event) &&
         this.onDay(day, event, timeRange)
       ) {
+        
         const timeString = this.getTimeString(event, day);
         event.timeString = timeString.short;
         event.longTimeString = timeString.long;
