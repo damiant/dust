@@ -17,7 +17,7 @@ import {
   Dataset,
 } from './models';
 import { call, registerWorker } from './worker-interface';
-import { noDate } from '../utils/utils';
+import { daysUntil, noDate, now } from '../utils/utils';
 import { GpsCoord, Point } from '../map/geo.utils';
 import { environment } from 'src/environments/environment';
 
@@ -25,7 +25,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class DbService {
-  private defaultDataset: Dataset = {name: '', year: '', id: '', title: '', start: '', end: '', lat: 0, long: 0};
+  private defaultDataset: Dataset = { name: '', year: '', id: '', title: '', start: '', end: '', lat: 0, long: 0 };
   public selectedDay = signal(noDate());
   public selectedYear = signal('');
   public selectedDataset = signal(this.defaultDataset);
@@ -45,6 +45,13 @@ export class DbService {
     }
 
     return await call(this.worker, DataMethods.Populate, dataset, this.hideLocations, environment);
+  }
+
+  public isHistorical(): boolean {
+    // This is whether the event is in the past
+    const end = new Date(this.selectedDataset().end);
+    const until = daysUntil(end, now());
+    return (until < 0);
   }
 
   public checkInit() {
@@ -81,7 +88,7 @@ export class DbService {
   }
 
   public async getRSLEvents(ids: string[]): Promise<RSLEvent[]> {
-    return await call(this.worker, DataMethods.GetRSLEventList, ids);
+    return await call(this.worker, DataMethods.GetRSLEventList, ids, this.isHistorical());
   }
 
   public async getGeoReferences(): Promise<GeoRef[]> {
@@ -135,7 +142,7 @@ export class DbService {
   }
 
   public async getRSL(terms: string, day: Date | undefined, gpsCoord: GpsCoord | undefined): Promise<RSLEvent[]> {
-    const r = await call(this.worker, DataMethods.GetRSLEvents, terms, day, gpsCoord);
+    const r = await call(this.worker, DataMethods.GetRSLEvents, terms, day, gpsCoord, this.isHistorical());
     this.getWorkerLogs();
     return r;
   }

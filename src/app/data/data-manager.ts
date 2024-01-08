@@ -76,7 +76,7 @@ export class DataManager implements WorkerClass {
       case DataMethods.GetEventList:
         return this.getEventList(args[0]);
       case DataMethods.GetRSLEventList:
-        return this.getRSLEventList(args[0]);
+        return this.getRSLEventList(args[0], args[1]);
       case DataMethods.SearchRSLEvents:
         return this.searchRSLEvents(args[0]);
       case DataMethods.GetCampList:
@@ -100,7 +100,7 @@ export class DataManager implements WorkerClass {
       case DataMethods.GetPins:
         return this.getPins(args[0]);
       case DataMethods.GetRSLEvents:
-        return this.getRSLEvents(args[0], args[1], args[2], undefined, undefined);
+        return this.getRSLEvents(args[0], args[1], args[2], undefined, undefined, args[3]);
       case DataMethods.CheckEvents:
         return this.checkEvents();
       case DataMethods.FindEvents:
@@ -477,9 +477,9 @@ export class DataManager implements WorkerClass {
     return result;
   }
 
-  public async getRSLEventList(ids: string[]): Promise<RSLEvent[]> {
+  public async getRSLEventList(ids: string[], isHistorical: boolean): Promise<RSLEvent[]> {
     if (ids.length == 0) return [];
-    return await this.getRSLEvents('', undefined, undefined, ids, undefined);
+    return await this.getRSLEvents('', undefined, undefined, ids, undefined, isHistorical);
   }
 
   public getCampList(ids: string[]): Camp[] {
@@ -582,6 +582,7 @@ export class DataManager implements WorkerClass {
     coords: GpsCoord | undefined,
     ids?: string[] | undefined,
     campId?: string | undefined,
+    isHistorical?: boolean
   ): Promise<RSLEvent[]> {
     try {
       const res = await fetch(this.path('rsl', true));
@@ -628,14 +629,16 @@ export class DataManager implements WorkerClass {
             });
             if (event.occurrences.length == 0) {
               allOld = true; // Don't include
-              this.consoleError('All RSL events over');
+              this.consoleError(`All RSL events over ${isHistorical}`);
             }
           }
 
           // If allOld is true then all times have ended
-          event.distance = distance(coords!, event.gpsCoords!);
-          event.distanceInfo = formatDistance(event.distance);
-          result.push(event);
+          if (!allOld || isHistorical) {
+            event.distance = distance(coords!, event.gpsCoords!);
+            event.distanceInfo = formatDistance(event.distance);
+            result.push(event);
+          }
 
         }
       }
