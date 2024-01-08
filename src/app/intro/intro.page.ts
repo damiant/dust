@@ -160,10 +160,14 @@ export class IntroPage {
       hideLocations = false;
       console.error('Overriding hiding locations');
     }
-    console.log(`Event starts ${start}, today is ${now()} and there are ${until} days until then`);
+    console.debug(`Event starts ${start}, today is ${now()} and there are ${until} days until then`);
     this.db.setHideLocations(hideLocations);
     if (hideLocations && !this.vm.eventAlreadySelected) {
-      this.vm.message = `Locations for camps and art will be released in the app on Sunday 27th. There are ${x} days until the man burns.`;
+      if (x < 50) {
+        this.vm.message = `Locations for camps and art will be released in the app when gates open. There are ${x} days until the man burns.`;
+      } else {
+        this.vm.message = `Camps, Art and Events will be released in the app closer to the event. There are ${x} days until the man burns.`;
+      }
       this.vm.showMessage = true;
     } else {
       this.vm.showMessage = false;
@@ -208,7 +212,7 @@ export class IntroPage {
         // Its a mess
         await this.cleanup();
         // It doesnt matter if we were able to cleanup the dataset by downloading again, we need to exit to relaunch
-        if (attempt == 1) {          
+        if (attempt == 1) {
           this.launch(attempt + 1);
         }
         return;
@@ -220,7 +224,7 @@ export class IntroPage {
       this.db.selectedDataset.set(this.vm.selected);
 
       const hidden = [];
-      if (this.isBurningMan() && !['2024','2023'].includes(this.vm.selected.year)) {
+      if (this.isBurningMan() && !['2024', '2023'].includes(this.vm.selected.year)) {
         hidden.push('rsl');
       }
       if (!this.isBurningMan()) {
