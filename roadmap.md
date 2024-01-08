@@ -2,13 +2,10 @@
 # Roadmap
 
 ## Bugs
-- Favorited events not being shown
-- Art from home not being shown first time
 - Art page has a white block in top left corner
 - Favorites with 2 items fades one item
 - Clicking the location also drills down
 - When you revisit the home page it should scroll to top
-- Favorite art map doesn’t link until gps is obtained (need spinner)
 
 - favorites should on home page ?
 - search on home page to search all events, camps, art, and music

@@ -1,7 +1,8 @@
 ## Changes
 ## 1.39
-- category selection does not update
-- add logging for the worker thread
+- Category selection does not update
+- Add logging for the worker thread
+- Add spinner for map when waiting on GPS
 - fixes for offline startup
 - fix for Adding private events fails with specify name
 - Fix for music showing all "concluded"

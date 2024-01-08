@@ -3,6 +3,10 @@
     <ion-buttons slot="start">
       <ion-back-button text="Back"></ion-back-button>
     </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-icon [hidden]="!busy()" class="rotate" color="primary" name="compass-outline"></ion-icon>
+
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
