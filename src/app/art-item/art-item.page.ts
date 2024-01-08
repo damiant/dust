@@ -27,7 +27,7 @@ import {
   IonToolbar,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { star, starOutline, shareOutline, personOutline, locateOutline } from 'ionicons/icons';
+import { star, starOutline, shareOutline, personOutline, locateOutline, locationOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-art-item',
@@ -77,7 +77,7 @@ export class ArtItemPage implements OnInit {
     private settings: SettingsService,
     private fav: FavoritesService,
   ) {
-    addIcons({ star, starOutline, shareOutline, personOutline, locateOutline });
+    addIcons({ star, starOutline, shareOutline, personOutline, locateOutline, locationOutline });
   }
 
   async ngOnInit() {
