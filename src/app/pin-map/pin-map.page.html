@@ -16,7 +16,7 @@
       <ion-title size="large">{{title}} </ion-title>
     </ion-toolbar>
   </ion-header>
-  <div style="position: absolute" class="ion-padding">
+  <div [hidden]="description === ''" style="position: absolute" class="ion-padding">
     <ion-item lines="none">
       <ion-text class="text">{{description}}</ion-text>
     </ion-item>
