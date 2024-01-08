@@ -10,6 +10,7 @@
 - More changed to Home
 - Fix listing historical events in favorites and music
 - Fix height on favorite items
+- Fix clicking a location also drills down
 
 ## 1.38
 - Change to use standalone components

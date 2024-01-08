@@ -62,8 +62,9 @@ export class EventComponent {
     this.isReady = true;
   }
 
-  map(event: Event) {
+  map(event: Event, ev: any) {
     this.mapClick.emit(event);
+    ev.stopPropagation();
   }
 
   group(event: Event) {

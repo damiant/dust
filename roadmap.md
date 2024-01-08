@@ -3,7 +3,6 @@
 
 ## Bugs
 - Favorites with 2 items fades one item
-- Clicking the location also drills down
 - When you revisit the home page it should scroll to top
 
 - favorites should on home page ?
