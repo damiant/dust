@@ -12,7 +12,6 @@
 - Add 2024 with coming soon
 - Use the timezone from the dataset
 - Show a message when map is shown for the first time "Use 2 fingers or double tap to zoom into the map"
-- Favorites should show time highlighted (day is less important because it is grouped)
 - PWA to Microsoft store: https://tech.lgbt/@lilPWA/111711138018508269
 - Art tour audio
 
@@ -52,7 +51,6 @@
 - After adding a favorite show the badge count on the fav tab increase (and disappear after opening it)
 - If an event has a long durations (>3hrs) then let user choose notification hour
 - Pressing the tab again should clear search
-- Sounds for notifications
 - "Not Interested" button for Events
 
 ## Priority 2
@@ -60,7 +58,6 @@
 - Show/collapse fav group
 - Notification for gates open
 - Notification for week before (daily) ^these give chance to download data
-- Mark some events as “soon” if < 1hr
 - Search keyboard hint should be "search" instead of "go"
 
 ## Priority 3
@@ -86,9 +83,7 @@
 - Soundcloud link
 - Instagram
 - SEO for metadata
-- Twitter metadata image and app link
 - Linked In Post
-- Page Info about the app on dust.events
 
 ## Info
 - Audio Guide https://soundcloud.com/burningman/sets/2023-art-audio-guide
