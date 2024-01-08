@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -88,6 +88,7 @@ export class ProfilePage implements OnInit {
   longEvents = false;
   hiddenPanel = false;
   links: Link[] = [];
+  @ViewChild(IonContent) ionContent!: IonContent;
 
   constructor(
     private ui: UiService,
@@ -108,6 +109,9 @@ export class ProfilePage implements OnInit {
       timeOutline,
       locateOutline,
       closeSharp
+    });
+    effect(() => {
+      this.ui.scrollUpContent('profile', this.ionContent);
     });
   }
 

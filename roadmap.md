@@ -3,16 +3,13 @@
 
 ## Bugs
 - Favorites with 2 items fades one item
-- When you revisit the home page it should scroll to top
-
 - favorites should on home page ?
 - search on home page to search all events, camps, art, and music
 - dark mode tooltips on the map need a visible border 
 - webp files don’t share
 
-- Add 2024 with coming soon
-
 ## Features
+- Add 2024 with coming soon
 - Use the timezone from the dataset
 - Show a message when map is shown for the first time "Use 2 fingers or double tap to zoom into the map"
 - Favorites should show time highlighted (day is less important because it is grouped)
