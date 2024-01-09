@@ -25,12 +25,11 @@ import {
   CurrentYear,
   getDayNameFromDate,
   getOccurrenceTimeString,
-  now,
+  nowPST,
   sameDay,
 } from '../utils/utils';
 import { defaultMapRadius, distance, formatDistance, locationStringToPin, mapPointToPoint } from '../map/map.utils';
 import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from '../map/geo.utils';
-import { environment } from 'src/environments/environment';
 
 interface TimeCache {
   [index: string]: TimeString | undefined;
@@ -51,17 +50,17 @@ export class DataManager implements WorkerClass {
   private cache: TimeCache = {};
   private mapRadius = 5000;
   private logs: string[] = [];
+  private env: any; // Environment variables dont work in web worker so we have them passed in
 
   // This is required for a WorkerClass
   public async doWork(method: DataMethods, args: any[]): Promise<any> {
-    if (method != DataMethods.ConsoleLog) {
-      this.logs = [];
-    }
     switch (method) {
       case DataMethods.ConsoleLog:
-        return this.logs;
+        const logs = structuredClone(this.logs);
+        this.logs = [];
+        return logs;
       case DataMethods.Populate:
-        return await this.populate(args[0], args[1]);
+        return await this.populate(args[0], args[1], args[2]);
       case DataMethods.GetDays:
         return this.getDays();
       case DataMethods.GetPotties:
@@ -77,7 +76,7 @@ export class DataManager implements WorkerClass {
       case DataMethods.GetEventList:
         return this.getEventList(args[0]);
       case DataMethods.GetRSLEventList:
-        return this.getRSLEventList(args[0]);
+        return this.getRSLEventList(args[0], args[1]);
       case DataMethods.SearchRSLEvents:
         return this.searchRSLEvents(args[0]);
       case DataMethods.GetCampList:
@@ -101,7 +100,7 @@ export class DataManager implements WorkerClass {
       case DataMethods.GetPins:
         return this.getPins(args[0]);
       case DataMethods.GetRSLEvents:
-        return this.getRSLEvents(args[0], args[1], args[2], undefined, undefined);
+        return this.getRSLEvents(args[0], args[1], args[2], undefined, undefined, args[3]);
       case DataMethods.CheckEvents:
         return this.checkEvents();
       case DataMethods.FindEvents:
@@ -125,8 +124,9 @@ export class DataManager implements WorkerClass {
     }
   }
 
-  public async populate(dataset: string, hideLocations: boolean): Promise<number> {
+  public async populate(dataset: string, hideLocations: boolean, env: any): Promise<number> {
     this.dataset = dataset;
+    this.env = env;
     this.events = await this.loadEvents();
     this.camps = await this.loadCamps();
     this.art = await this.loadArt();
@@ -150,8 +150,15 @@ export class DataManager implements WorkerClass {
     });
   }
 
+  private now(): Date {
+    if (!this.env.simulatedTime) {
+      return nowPST();
+    }
+    return structuredClone(this.env.simulatedTime);
+  }
+
   private checkEvents(): boolean {
-    const today = now();
+    const today = this.now();
     let hasLiveEvents = false;
     for (const event of this.events) {
       event.old = true;
@@ -326,7 +333,7 @@ export class DataManager implements WorkerClass {
           const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
           event.gpsCoords = gpsCoords;
         } else {
-          if (!environment.production) {
+          if (!this.env.production) {
             this.consoleError(`Unable to find camp ${event.hosted_by_camp} for event ${event.title}`);
           }
         }
@@ -353,7 +360,7 @@ export class DataManager implements WorkerClass {
           this.consoleError(`Failed GPS: ${event.title} hosted at art ${event.located_at_art}`);
         }
       } else {
-        this.consoleError(`no location ${event}`);
+        this.consoleError(`no location ${JSON.stringify(event)}`);
       }
       if (event.print_description === '') {
         // Happens before events go to the WWW guide
@@ -470,9 +477,9 @@ export class DataManager implements WorkerClass {
     return result;
   }
 
-  public async getRSLEventList(ids: string[]): Promise<RSLEvent[]> {
+  public async getRSLEventList(ids: string[], isHistorical: boolean): Promise<RSLEvent[]> {
     if (ids.length == 0) return [];
-    return await this.getRSLEvents('', undefined, undefined, ids, undefined);
+    return await this.getRSLEvents('', undefined, undefined, ids, undefined, isHistorical);
   }
 
   public getCampList(ids: string[]): Camp[] {
@@ -575,6 +582,7 @@ export class DataManager implements WorkerClass {
     coords: GpsCoord | undefined,
     ids?: string[] | undefined,
     campId?: string | undefined,
+    isHistorical?: boolean
   ): Promise<RSLEvent[]> {
     try {
       const res = await fetch(this.path('rsl', true));
@@ -582,7 +590,7 @@ export class DataManager implements WorkerClass {
       const result: RSLEvent[] = [];
       query = this.scrubQuery(query);
       const fDay = day ? this.toRSLDateFormat(day) : undefined;
-      const today = now();
+      const today = this.now();
       const campPins: any = {};
       for (let event of events) {
         // Place RSL Events at the camp pin
@@ -593,7 +601,7 @@ export class DataManager implements WorkerClass {
           } else {
             const camps = this.getCampList([event.campUID]);
             if (!event.pin) {
-              event.pin = camps[0].pin;
+              event.pin = (camps && camps.length > 0) ? camps[0].pin : undefined;
               Object.defineProperty(campPins, event.campUID, { value: event.pin, enumerable: true });
             }
           }
@@ -620,15 +628,17 @@ export class DataManager implements WorkerClass {
               return ids.includes(id);
             });
             if (event.occurrences.length == 0) {
-              allOld = true; // Don't include
+              allOld = true; // Don't include              
             }
           }
-          if (!allOld) {
-            // If all times have ended
+
+          // If allOld is true then all times have ended
+          if (!allOld || isHistorical) {
             event.distance = distance(coords!, event.gpsCoords!);
             event.distanceInfo = formatDistance(event.distance);
             result.push(event);
           }
+
         }
       }
       if (coords) {
@@ -638,6 +648,7 @@ export class DataManager implements WorkerClass {
       } else {
         this.sortRSLEventsByName(result);
       }
+
       return result;
     } catch (err) {
       this.consoleError(`getRSLEvents returned an error ${err}`);
@@ -699,12 +710,14 @@ export class DataManager implements WorkerClass {
     if (query) {
       query = this.scrubQuery(query);
     }
-    for (let event of this.events) {
+    
+    for (let event of this.events) {      
       if (
         this.eventContains(query, event, allDay) &&
         this.eventIsCategory(category, event) &&
         this.onDay(day, event, timeRange)
       ) {
+        
         const timeString = this.getTimeString(event, day);
         event.timeString = timeString.short;
         event.longTimeString = timeString.long;

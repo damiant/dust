@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -13,6 +13,9 @@ import {
   IonItem,
   IonList,
   IonTitle,
+  IonFooter,
+  IonFab,
+  IonFabButton,
   IonToggle,
   IonToolbar,
   ToastController,
@@ -41,7 +44,11 @@ import {
   exitOutline,
   timeOutline,
   locateOutline,
+  compassOutline,
+  closeSharp,
 } from 'ionicons/icons';
+import { Animation, StatusBar } from '@capacitor/status-bar';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-profile',
@@ -66,6 +73,9 @@ import {
     IonItem,
     IonIcon,
     IonToggle,
+    IonFooter,
+    IonFabButton,
+    IonFab,
     TileContainerComponent,
     TileComponent,
     PrivateEventsComponent,
@@ -78,6 +88,7 @@ export class ProfilePage implements OnInit {
   longEvents = false;
   hiddenPanel = false;
   links: Link[] = [];
+  @ViewChild(IonContent) ionContent!: IonContent;
 
   constructor(
     private ui: UiService,
@@ -93,9 +104,14 @@ export class ProfilePage implements OnInit {
       shareOutline,
       starHalfOutline,
       informationCircleOutline,
+      compassOutline,
       exitOutline,
       timeOutline,
       locateOutline,
+      closeSharp
+    });
+    effect(() => {
+      this.ui.scrollUpContent('profile', this.ionContent);
     });
   }
 
@@ -105,8 +121,6 @@ export class ProfilePage implements OnInit {
     this.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
     this.links = await this.db.getLinks();
   }
-
-  ionViewDidEnter() {}
 
   visit(url: string) {
     this.ui.openUrl(url);
@@ -163,6 +177,18 @@ export class ProfilePage implements OnInit {
       ? LocationEnabledStatus.Enabled
       : LocationEnabledStatus.Disabled;
     this.settings.save();
+  }
+
+  async ionViewWillEnter() {
+    if (Capacitor.isNativePlatform()) {
+      await StatusBar.hide({ animation: Animation.Fade });
+    }
+  }
+
+  async ionViewWillLeave() {
+    if (Capacitor.isNativePlatform()) {
+      await StatusBar.show({ animation: Animation.Fade });
+    }
   }
 
   async directions() {

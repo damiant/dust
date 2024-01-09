@@ -13,7 +13,7 @@
   }
   <ion-card-header>
     <ion-card-title aria-hidden="true">{{ camp.name }}</ion-card-title>
-    <ion-card-subtitle aria-hidden="true" color="primary" (click)="map(camp)"
+    <ion-card-subtitle aria-hidden="true" color="primary" (click)="map(camp, $event)"
       >{{ camp.location_string }} {{ camp.distanceInfo }}</ion-card-subtitle
     >
   </ion-card-header>

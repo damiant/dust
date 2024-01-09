@@ -28,7 +28,7 @@ export function registerWorkerClass(workerClass: WorkerClass) {
     const call: Call = data;
     const response: Response = { id: call.id, data: undefined };
     if (!environment.production) {
-      console.time(call.method);
+      console.time(`${call.method} (${call.id})`);
     }
     try {
       response.data = await workerClass.doWork(call.method, call.arguments);
@@ -36,7 +36,7 @@ export function registerWorkerClass(workerClass: WorkerClass) {
       postMessage({ error: `Call to ${call.method} failed: ${error}` });
     }
     if (!environment.production) {
-      console.timeEnd(call.method);
+      console.timeEnd(`${call.method} (${call.id})`);
     }
     postMessage(response);
   });
@@ -82,5 +82,5 @@ export function call(worker: Worker, method: DataMethods, ...args: any[]): Promi
 }
 
 function uniqueId(): string {
-  return Math.random().toString();
+  return Math.random().toString().replace('0.','');
 }

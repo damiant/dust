@@ -2,19 +2,18 @@
 # Roadmap
 
 ## Bugs
-- Adding private events fails with specify name
-- Rsl music is all “concluded”
-- favorite art map doesn’t link until gps is obtained (spin)
+- Favorites with 2 items fades one item
+- favorites should on home page ?
+- search on home page to search all events, camps, art, and music
 - dark mode tooltips on the map need a visible border 
 - webp files don’t share
-- use event image for header of events
-- events small title should be event title
-- Add 2024 with coming soon
 
 ## Features
+- Add 2024 with coming soon
 - Use the timezone from the dataset
 - Show a message when map is shown for the first time "Use 2 fingers or double tap to zoom into the map"
-- Favorites should show time highlighted (day is less important because it is grouped)
+- PWA to Microsoft store: https://tech.lgbt/@lilPWA/111711138018508269
+- Art tour audio
 
 ## Marketing
 - Add github, twitter, mastodon, instagram links to home page
@@ -55,7 +54,6 @@
 - After adding a favorite show the badge count on the fav tab increase (and disappear after opening it)
 - If an event has a long durations (>3hrs) then let user choose notification hour
 - Pressing the tab again should clear search
-- Sounds for notifications
 - "Not Interested" button for Events
 
 ## Priority 2
@@ -63,7 +61,6 @@
 - Show/collapse fav group
 - Notification for gates open
 - Notification for week before (daily) ^these give chance to download data
-- Mark some events as “soon” if < 1hr
 - Search keyboard hint should be "search" instead of "go"
 
 ## Priority 3
@@ -89,9 +86,7 @@
 - Soundcloud link
 - Instagram
 - SEO for metadata
-- Twitter metadata image and app link
 - Linked In Post
-- Page Info about the app on dust.events
 
 ## Info
 - Audio Guide https://soundcloud.com/burningman/sets/2023-art-audio-guide

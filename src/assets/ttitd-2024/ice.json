@@ -1,0 +1,33 @@
+{
+    "title": "Ice",
+    "description": "Open 9am to 6pm. $10 a 16lb bag (crushed). $5 a 7lb bag (block).",
+    "points": [
+        {
+            "street": "G",
+            "clock": "3:00",
+            "info": {
+                "title": "Arctica - 3 & G",
+                "subtitle": "Open 9am to 6pm. $10 a 16lb bag (crushed). $5 a 7lb bag (block).",
+                "location": "3:00 G Plaza"
+            }
+        },
+        {
+            "street": "G",
+            "clock": "9:00",
+            "info": {
+                "title": "Arctica - 9 & G",
+                "subtitle": "Open 9am to 6pm. $10 a 16lb bag (crushed). $5 a 7lb bag (block).",
+                "location": "9:00 G Plaza"
+            }
+        },
+        {
+            "street": "A",
+            "clock": "6:00",
+            "info": {
+                "title": "Arctica - Center Camp",
+                "subtitle": "Open 9am to 6pm. $10 a 16lb bag (crushed). $5 a 7lb bag (block).",
+                "location": "Center Camp"
+            }
+        }
+    ]
+}

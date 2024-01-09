@@ -15,6 +15,7 @@ import { MapPoint } from '../data/models';
 export class GeoService {
   public gpsPosition = signal(NoGPSCoord());
   public heading = signal(this.noCompassHeading());
+  public gpsBusy = signal(false);
   private lastGpsUpdate: Date = noDate();
   private hasPermission = false;
   private centerOfMap: GpsCoord | undefined;
@@ -88,8 +89,10 @@ export class GeoService {
     if (secondsBetween(this.lastGpsUpdate, new Date()) < 10) {
       return this.gpsPosition();
     }
-    const position = await Geolocation.getCurrentPosition({ enableHighAccuracy: true });
 
+    this.gpsBusy.set(true);
+    const position = await Geolocation.getCurrentPosition({ enableHighAccuracy: true });
+    this.gpsBusy.set(false);
     let gps = { lat: position.coords.latitude, lng: position.coords.longitude };
     gps = this.db.offsetGPS(gps);
     this.lastGpsUpdate = new Date();

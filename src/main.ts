@@ -11,6 +11,7 @@ import { provideServiceWorker } from '@angular/service-worker';
 
 if (environment.production) {
   enableProdMode();
+  window.console.log = () => { }
 }
 
 bootstrapApplication(AppComponent, {
