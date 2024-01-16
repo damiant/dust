@@ -180,13 +180,13 @@ export class ProfilePage implements OnInit {
   }
 
   async ionViewWillEnter() {
-    if (Capacitor.isNativePlatform()) {
+    if (Capacitor.isNativePlatform() && !this.ui.isAndroid()) {
       await StatusBar.hide({ animation: Animation.Fade });
     }
   }
 
   async ionViewWillLeave() {
-    if (Capacitor.isNativePlatform()) {
+    if (Capacitor.isNativePlatform() && !this.ui.isAndroid()) {
       await StatusBar.show({ animation: Animation.Fade });
     }
   }

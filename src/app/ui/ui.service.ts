@@ -113,7 +113,7 @@ export class UiService {
     }
   }
 
-  private isAndroid(): boolean {
+  public isAndroid(): boolean {
     return Capacitor.getPlatform() == 'android';
   }
 
