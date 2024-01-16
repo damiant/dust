@@ -38,8 +38,9 @@ export class CampComponent {
     this.isReady = true;
   }
 
-  map(camp: Camp) {
+  map(camp: Camp, ev: any) {
     console.log('emit', camp);
     this.mapClick.emit(camp);
+    ev.stopPropagation();
   }
 }

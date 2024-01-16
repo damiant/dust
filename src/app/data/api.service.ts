@@ -7,6 +7,7 @@ import { DbService } from './db.service';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Capacitor } from '@capacitor/core';
 import { App } from '@capacitor/app';
+import { environment } from 'src/environments/environment';
 
 enum Names {
   datasets = 'datasets',
@@ -84,12 +85,15 @@ export class ApiService {
       rsl,
       hideLocations,
     };
+    if (!environment.production) {
+      console.warn(`Using non-production: ${JSON.stringify(environment)}`);
+    }
     console.info(`dbService.setDataset ${JSON.stringify(datasetInfo)}...`);
     const result = await this.dbService.setDataset(datasetInfo);
-
+    await this.reportWorkerLogs();
     if (!result || (result.events == 0 && result.camps == 0 && result.pins == 0)) {
       console.error(`dbService.setDataset complete but bad data ${JSON.stringify(result)}`);
-      await this.reportWorkerLogs();
+
       return false;
     }
     console.info(`dbService.setDataset complete ${JSON.stringify(result)}`);
@@ -97,14 +101,7 @@ export class ApiService {
   }
 
   private async reportWorkerLogs() {
-    const logs = await this.dbService.getWorkerLogs();
-    for (const log of logs) {
-      if (log.startsWith('[error]')) {
-        console.error(`[worker]${log.replace('[error]', '')}`);
-      } else {
-        console.info('[worker]', log);
-      }
-    }
+    await this.dbService.getWorkerLogs();
   }
 
   private async read(dataset: string, name: Names): Promise<any> {

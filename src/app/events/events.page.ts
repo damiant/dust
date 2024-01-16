@@ -247,8 +247,7 @@ export class EventsPage {
     }
 
     const timeRange = this.vm.isNow ? nowRange() : undefined;
-    this.vm.timeRange = timeRangeToString(timeRange);
-
+    this.vm.timeRange = timeRangeToString(timeRange);    
     this.vm.events = await this.db.findEvents(
       this.vm.search, // Search terms
       this.vm.day, // Selected day
@@ -271,6 +270,8 @@ export class EventsPage {
     } else if (this.vm.isNow) {
       return `There are no events starting ${this.vm.timeRange}`;
     }
-    return 'All the events for this day have concluded.';
+    return this.db.eventHasntBegun() ?
+    'Events have not been added yet.' : 
+    'All the events for this day have concluded.';    
   }
 }

@@ -160,10 +160,14 @@ export class IntroPage {
       hideLocations = false;
       console.error('Overriding hiding locations');
     }
-    console.log(`Event starts ${start}, today is ${now()} and there are ${until} days until then`);
+    console.debug(`Event starts ${start}, today is ${now()} and there are ${until} days until then`);
     this.db.setHideLocations(hideLocations);
     if (hideLocations && !this.vm.eventAlreadySelected) {
-      this.vm.message = `Locations for camps and art will be released in the app on Sunday 27th. There are ${x} days until the man burns.`;
+      if (x < 50) {
+        this.vm.message = `Locations for camps and art will be released in the app when gates open. There are ${x} days until the man burns.`;
+      } else {
+        this.vm.message = `Camps, Art and Events will be released in the app closer to the event. There are ${x} days until the man burns.`;
+      }
       this.vm.showMessage = true;
     } else {
       this.vm.showMessage = false;
@@ -179,7 +183,7 @@ export class IntroPage {
     return this.settingsService.settings.datasetId.includes('ttitd');
   }
 
-  async launch(attempt = 1) {
+  async launch(attempt: number = 1) {
     try {
       if (!this.vm.selected) return;
 
@@ -200,7 +204,7 @@ export class IntroPage {
       this.vm.ready = false;
       this.vm.showMessage = false;
 
-      console.warn(`populate ${this.settingsService.settings.datasetId}`);
+      console.warn(`populate ${this.settingsService.settings.datasetId} attempt ${attempt}`);
       const revision = await this.db.init(this.settingsService.settings.datasetId);
       console.warn(`sendDataToWorker ${this.settingsService.settings.datasetId}`);
       const useData = await this.api.sendDataToWorker(revision, this.db.locationsHidden(), this.isBurningMan());
@@ -209,7 +213,7 @@ export class IntroPage {
         await this.cleanup();
         // It doesnt matter if we were able to cleanup the dataset by downloading again, we need to exit to relaunch
         if (attempt == 1) {
-          this.launch(attempt++);
+          this.launch(attempt + 1);
         }
         return;
       }
@@ -217,9 +221,10 @@ export class IntroPage {
       this.fav.init(this.settingsService.settings.datasetId);
       const title = this.isCurrentYear() ? '' : this.vm.selected.year;
       this.db.selectedYear.set(title);
+      this.db.selectedDataset.set(this.vm.selected);
 
       const hidden = [];
-      if (this.isBurningMan() && !this.isCurrentYear()) {
+      if (this.isBurningMan() && !['2024', '2023'].includes(this.vm.selected.year)) {
         hidden.push('rsl');
       }
       if (!this.isBurningMan()) {
@@ -232,7 +237,7 @@ export class IntroPage {
       this.settingsService.setOffline(this.settingsService.settings.datasetId);
       this.settingsService.save();
       this.ui.setStatusBarBasedOnTheme();
-      await this.router.navigateByUrl('/tabs/events');
+      await this.router.navigateByUrl('/tabs/profile');
     } finally {
       setTimeout(() => {
         this.vm.ready = true;

@@ -6,7 +6,7 @@ import { ShareInfoType, ShareService } from './share/share.service';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { RouterFocusService } from './utils/focus.service';
 import { IntegrityService } from './data/integrity.service';
-
+import { DbService } from './data/db.service';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +24,8 @@ export class AppComponent implements OnInit {
     private shareService: ShareService,
     private zone: NgZone,
     private focusService: RouterFocusService,
-  ) { }
+    private dbService: DbService
+  ) {}
 
   async ngOnInit() {
 
@@ -50,7 +51,8 @@ export class AppComponent implements OnInit {
     }, 10000);
   }
 
-  stackChanged() {
+  stackChanged() {    
+    this.dbService.getWorkerLogs();
     this.focusService.focus();
   }
 }

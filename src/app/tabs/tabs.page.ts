@@ -14,6 +14,8 @@ import { Keyboard } from '@capacitor/keyboard';
 import { IonIcon, IonLabel, IonTabBar, IonTabButton, IonTabs } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { musicalNotesOutline, ellipsisVertical } from 'ionicons/icons';
+import { Capacitor } from '@capacitor/core';
+import { Animation, StatusBar } from '@capacitor/status-bar';
 
 @Component({
   selector: 'app-tabs',
@@ -24,7 +26,8 @@ import { musicalNotesOutline, ellipsisVertical } from 'ionicons/icons';
 })
 export class TabsPage implements OnInit {
   ready = false;
-  currentTab = '';
+  currentTab: string | undefined;
+  private activeTab?: HTMLElement;
   public environmentInjector = inject(EnvironmentInjector);
   constructor(
     public db: DbService,
@@ -32,8 +35,7 @@ export class TabsPage implements OnInit {
     private notificationService: NotificationService,
     private shareService: ShareService,
     private settings: SettingsService,
-    private router: Router,
-    private settingsService: SettingsService,
+    private router: Router
   ) {
     addIcons({ musicalNotesOutline, ellipsisVertical });
     effect(() => {
@@ -60,7 +62,7 @@ export class TabsPage implements OnInit {
   }
 
   async ngOnInit() {
-    this.ready = true;
+    this.ready = true;    
 
     // Whenever app is resumed set signal called resume
     App.addListener('resume', async () => {
@@ -117,8 +119,39 @@ export class TabsPage implements OnInit {
     }, 1000);
   }
 
-  changeTab(e: any) {
-    this.currentTab = e.tab;
+  async changeTab(tabsRef: IonTabs) {
+    this.activeTab = tabsRef.outlet.activatedView?.element;
+    this.currentTab = tabsRef.getSelected();
+    if (Capacitor.isNativePlatform()) {
+      const isHidden = (this.currentTab == 'profile');
+      if (isHidden) {
+      StatusBar.hide({ animation: Animation.Fade })
+      } else {
+        StatusBar.show({ animation: Animation.Fade })
+      }
+    }
+  }
+
+  ionViewWillLeave() {
+    this.propagateToActiveTab('ionViewWillLeave');
+  }
+
+  ionViewDidLeave() {
+    this.propagateToActiveTab('ionViewDidLeave');
+  }
+  
+  ionViewWillEnter() {
+    this.propagateToActiveTab('ionViewWillEnter');
+  }
+  
+  ionViewDidEnter() {
+    this.propagateToActiveTab('ionViewDidEnter');
+  }
+
+  private propagateToActiveTab(eventName: string) {    
+    if (this.activeTab) {
+      this.activeTab.dispatchEvent(new CustomEvent(eventName));
+    }
   }
 
   select(tab: string) {

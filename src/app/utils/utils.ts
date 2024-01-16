@@ -12,11 +12,10 @@ export function now(): Date {
   if (!environment.simulatedTime) {
     return nowPST();
   }
-  //console.log(`Simulating time ${environment.simulatedTime}`);
   return structuredClone(environment.simulatedTime);
 }
 
-function nowPST(): Date {
+export function nowPST(): Date {
   let str = new Date().toLocaleString('en-US', { timeZone: BurningManTimeZone });
   return new Date(str);
 }

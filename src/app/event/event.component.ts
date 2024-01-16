@@ -48,6 +48,7 @@ export class EventComponent {
   @Input() day: Date | undefined;
   @Input() showImage = true;
   @Input() longTime = false;
+  @Input() variableHeight = false;
   @Output() mapClick = new EventEmitter<any>();
   @Output() groupClick = new EventEmitter<Event>();
   @Output() rslClick = new EventEmitter<string>();
@@ -61,8 +62,9 @@ export class EventComponent {
     this.isReady = true;
   }
 
-  map(event: Event) {
+  map(event: Event, ev: any) {
     this.mapClick.emit(event);
+    ev.stopPropagation();
   }
 
   group(event: Event) {

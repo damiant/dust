@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, computed, signal } from '@angular/core';
 import {
   Event,
   Day,
@@ -14,9 +14,10 @@ import {
   FullDataset,
   Link,
   DatasetResult,
+  Dataset,
 } from './models';
 import { call, registerWorker } from './worker-interface';
-import { noDate } from '../utils/utils';
+import { daysUntil, noDate, now } from '../utils/utils';
 import { GpsCoord, Point } from '../map/geo.utils';
 import { environment } from 'src/environments/environment';
 
@@ -24,8 +25,11 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class DbService {
+  private defaultDataset: Dataset = { name: '', year: '', id: '', title: '', start: '', end: '', lat: 0, long: 0 };
   public selectedDay = signal(noDate());
   public selectedYear = signal('');
+  public selectedDataset = signal(this.defaultDataset);
+  public selectedImage = computed(() => `assets/datasets/${this.selectedDataset().id}.webp`);
   public featuresHidden = signal(['']);
   public networkStatus = signal('');
   public resume = signal('');
@@ -40,7 +44,21 @@ export class DbService {
       this.initialized = true;
     }
 
-    return await call(this.worker, DataMethods.Populate, dataset, this.hideLocations);
+    return await call(this.worker, DataMethods.Populate, dataset, this.hideLocations, environment);
+  }
+
+  public isHistorical(): boolean {
+    // This is whether the event is in the past
+    const end = new Date(this.selectedDataset().end);
+    const until = daysUntil(end, now());
+    return (until < 0);
+  }
+
+  public eventHasntBegun(): boolean {
+    // This is whether the event has not started yet
+    const start = new Date(this.selectedDataset().start);
+    const until = daysUntil(start, now());
+    return (until < 0);
   }
 
   public checkInit() {
@@ -77,7 +95,7 @@ export class DbService {
   }
 
   public async getRSLEvents(ids: string[]): Promise<RSLEvent[]> {
-    return await call(this.worker, DataMethods.GetRSLEventList, ids);
+    return await call(this.worker, DataMethods.GetRSLEventList, ids, this.isHistorical());
   }
 
   public async getGeoReferences(): Promise<GeoRef[]> {
@@ -88,8 +106,18 @@ export class DbService {
     return await call(this.worker, DataMethods.GpsToPoint, gpsCoord);
   }
 
-  public async getWorkerLogs(): Promise<string[]> {
-    return await call(this.worker, DataMethods.ConsoleLog);
+  public async getWorkerLogs(): Promise<void> {
+    const logs = await call(this.worker, DataMethods.ConsoleLog);
+    for (const log of logs) {
+      if (log.startsWith('[error]')) {
+        console.error(`[worker]${log.replace('[error]', '')}`);
+      } else {
+        console.info('[worker]', log);
+      }
+    }
+    if (logs.length == 0) {
+      console.info('[worker] no worker logs')
+    }
   }
 
   public async gpsToMapPoint(gpsCoord: GpsCoord, title: string | undefined): Promise<MapPoint> {
@@ -121,7 +149,8 @@ export class DbService {
   }
 
   public async getRSL(terms: string, day: Date | undefined, gpsCoord: GpsCoord | undefined): Promise<RSLEvent[]> {
-    const r = await call(this.worker, DataMethods.GetRSLEvents, terms, day, gpsCoord);
+    const r = await call(this.worker, DataMethods.GetRSLEvents, terms, day, gpsCoord, this.isHistorical());
+    this.getWorkerLogs();
     return r;
   }
 

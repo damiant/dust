@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MapComponent } from '../map/map.component';
@@ -17,7 +17,11 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
+  IonSpinner,
+  IonIcon
 } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { compassOutline } from 'ionicons/icons';
 
 enum MapType {
   Restrooms = 'restrooms',
@@ -44,18 +48,24 @@ enum MapType {
     IonButtons,
     IonBackButton,
     IonText,
+    IonIcon,
+    IonSpinner
   ],
 })
 export class PinMapPage {
   @Input() mapType = '';
   points: MapPoint[] = [];
   smallPins: boolean = false;
+  busy: Signal<boolean> = computed(() => {
+    return this.geo.gpsBusy();
+  });
   title = '';
   description = '';
   constructor(
     private db: DbService,
     private geo: GeoService,
   ) {
+    addIcons({ compassOutline });
     this.db.checkInit();
   }
 
