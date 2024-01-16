@@ -7,6 +7,8 @@ PODS:
     - Capacitor
   - CapacitorBrowser (5.1.0):
     - Capacitor
+  - CapacitorCommunityPlayIntegrity (5.0.0):
+    - Capacitor
   - CapacitorCordova (5.6.0)
   - CapacitorFilesystem (5.2.0):
     - Capacitor
@@ -42,6 +44,7 @@ DEPENDENCIES:
   - "CapacitorApp (from `../../node_modules/@capacitor/app`)"
   - "CapacitorAppLauncher (from `../../node_modules/@capacitor/app-launcher`)"
   - "CapacitorBrowser (from `../../node_modules/@capacitor/browser`)"
+  - "CapacitorCommunityPlayIntegrity (from `../../node_modules/@capacitor-community/play-integrity`)"
   - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorFilesystem (from `../../node_modules/@capacitor/filesystem`)"
   - "CapacitorGeolocation (from `../../node_modules/@capacitor/geolocation`)"
@@ -67,6 +70,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/app-launcher"
   CapacitorBrowser:
     :path: "../../node_modules/@capacitor/browser"
+  CapacitorCommunityPlayIntegrity:
+    :path: "../../node_modules/@capacitor-community/play-integrity"
   CapacitorCordova:
     :path: "../../node_modules/@capacitor/ios"
   CapacitorFilesystem:
@@ -103,6 +108,7 @@ SPEC CHECKSUMS:
   CapacitorApp: 024e1b1bea5f883d79f6330d309bc441c88ad04a
   CapacitorAppLauncher: 5a9f06c13c6b4f5d65b550a07128ef04f3a216b3
   CapacitorBrowser: 7a0fb6a1011abfaaf2dfedfd8248f942a8eda3d6
+  CapacitorCommunityPlayIntegrity: 9189b3f7e5147381976b3c2f17d38af2e410232e
   CapacitorCordova: 931b48fcdbc9bc985fc2f16cec9f77c794a27729
   CapacitorFilesystem: 02f9a9053b96e1881ba1fc98d846869413c195c2
   CapacitorGeolocation: 7be5f77abc205c0efe319fff8587a7183e7b0240
@@ -119,6 +125,6 @@ SPEC CHECKSUMS:
   CordovaPlugins: 9ebe8afec72c6e8709ea4f65de4d72e36314a41c
   MauricewegnerCapacitorNavigationBar: 37f1308a961a8d8cd00f6362e30bad03a73728f7
 
-PODFILE CHECKSUM: e613afc7fa310b648c3dd57af51ed81cf03f77d4
+PODFILE CHECKSUM: 225080c16a00b030c55d1b8b9bc225384b25beb9
 
 COCOAPODS: 1.14.3

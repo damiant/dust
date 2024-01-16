@@ -1,4 +1,7 @@
 ## Changes
+## 1.40
+- Check for Play Integrity
+
 ## 1.39
 - Category selection does not update
 - Add logging for the worker thread

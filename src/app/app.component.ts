@@ -5,6 +5,7 @@ import { App, URLOpenListenerEvent } from '@capacitor/app';
 import { ShareInfoType, ShareService } from './share/share.service';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { RouterFocusService } from './utils/focus.service';
+import { IntegrityService } from './data/integrity.service';
 import { DbService } from './data/db.service';
 
 @Component({
@@ -19,6 +20,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private notificationService: NotificationService,
+    private integrityService: IntegrityService,
     private shareService: ShareService,
     private zone: NgZone,
     private focusService: RouterFocusService,
@@ -42,6 +44,11 @@ export class AppComponent implements OnInit {
         }
       });
     });
+
+    // Test application integrity
+    setTimeout(() => {
+      this.integrityService.testIntegrity();
+    }, 10000);
   }
 
   stackChanged() {    
