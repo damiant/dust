@@ -122,7 +122,7 @@ export class TabsPage implements OnInit {
   async changeTab(tabsRef: IonTabs) {
     this.activeTab = tabsRef.outlet.activatedView?.element;
     this.currentTab = tabsRef.getSelected();
-    if (Capacitor.isNativePlatform()) {
+    if (Capacitor.isNativePlatform() && !this.ui.isAndroid()) {
       const isHidden = (this.currentTab == 'profile');
       if (isHidden) {
       StatusBar.hide({ animation: Animation.Fade })
