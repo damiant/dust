@@ -1,4 +1,9 @@
 ## Changes
+
+## 1.41
+- Update dependencies
+- Fix click of year on events page to go home
+
 ## 1.40
 - Check for Play Integrity
 

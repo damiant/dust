@@ -15,7 +15,7 @@
       ></app-category>
     </ion-buttons>
     @if (db.selectedYear() !== '') {
-    <ion-badge class="pad-right" slot="end">{{db.selectedYear()}}</ion-badge>
+    <ion-badge  (click)="home()" class="pad-right" slot="end">{{db.selectedYear()}}</ion-badge>
     }
   </ion-toolbar>
 </ion-header>

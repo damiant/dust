@@ -196,6 +196,10 @@ export class EventsPage {
     }
   }
 
+  home() {
+    this.ui.home();
+  }
+
   searchEvents(value: string) {
     this.vm.search = value.toLowerCase();
     this.update(true);
