@@ -29,15 +29,17 @@ export async function getCached(dataset: string, name: string, timeout: number =
     await save(getId(dataset, name), data);
     return data;
   } catch (error) {
-    console.error(error);
+    console.info(`getCached.error(${dataset} ${name})`,error);
 
-    // Get from the app store
+    // Get from the storage
     const data = await read(getId(dataset, name));
     if (data) {
+      console.info(`handled getCached.error with read from storage (${dataset} ${name})`,error);
       return data;
     }
 
     // else Get default value
+    console.info(`handled getCached.error with get default value (${dataset} ${name})`,error);
     return await get(dataset, name);
   }
 }
@@ -142,12 +144,14 @@ async function fetchWithTimeout(
   const options: HttpOptions = {
     url,
     responseType: responseType,
+    connectTimeout: timeout,
+    readTimeout: timeout
   };
-  const id = setTimeout(() => {
-    throw new Error(`Timeout on ${url}`);
-  }, timeout);
+  // const id = setTimeout(() => {
+  //   throw new Error(`Timeout on ${url}`);
+  // }, timeout);
   const response: HttpResponse = await CapacitorHttp.get(options);
-  clearTimeout(id);
+  // clearTimeout(id);
   return response;
 }
 

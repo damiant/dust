@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { CapacitorHttp, HttpResponse } from '@capacitor/core';
+import { Capacitor, CapacitorHttp, HttpResponse } from '@capacitor/core';
 import { PlayIntegrity } from '@capacitor-community/play-integrity';
 
 @Injectable({
@@ -9,6 +9,9 @@ export class IntegrityService {
     // Sample of using the Play Integrity API to see if this mobile client is legitimate
     public async testIntegrity(): Promise<boolean> {
         try {
+            if (Capacitor.getPlatform() !== 'android') {
+                return true;
+            }
             const result = await PlayIntegrity.requestIntegrityToken({
                 nonce: this.generateUUID(),
                 googleCloudProjectNumber: 150349171567

@@ -191,7 +191,7 @@ export class ApiService {
     const pPins = getLive(dataset, Names.pins);
     const pLinks = getLive(dataset, Names.links);
     const pMapData = getLiveBinary(dataset, Names.map, 'svg', currentVersion);
-    const [events, art, camps, rsl, pins, links, mapData] = await Promise.all([
+    const [rEvents, rArt, rCamps, rMusic, rPins, rLinks, rMapData] = await Promise.allSettled([
       pEvents,
       pArt,
       pCamps,
@@ -200,6 +200,14 @@ export class ApiService {
       pLinks,
       pMapData,
     ]);
+    const events = rEvents.status == 'fulfilled' ? rEvents.value : '';
+    const art = rArt.status == 'fulfilled' ? rArt.value : '';
+    const camps = rCamps.status == 'fulfilled' ? rCamps.value : '';
+    const rsl = rMusic.status == 'fulfilled' ? rMusic.value : '';
+    const pins = rPins.status == 'fulfilled' ? rPins.value : '';
+    const links = rLinks.status == 'fulfilled' ? rLinks.value : '';
+    const mapData = rMapData.status == 'fulfilled' ? rMapData.value : '';
+
     if (this.badData(events, art, camps)) {
       console.error(`Download failed`);
       return;
@@ -211,10 +219,13 @@ export class ApiService {
     await this.save(this.getId(dataset, Names.rsl), rsl);
     await this.save(this.getId(dataset, Names.pins), pins);
     await this.save(this.getId(dataset, Names.links), links);
-    let uri = await this.saveBinary(this.getId(dataset, Names.map), 'svg', mapData);
+    let uri: string | undefined = undefined;
+    if (mapData) {
+      uri = await this.saveBinary(this.getId(dataset, Names.map), 'svg', mapData);
+    }
     await this.save(this.getId(dataset, Names.revision), revision);
     await this.save(this.getId(dataset, Names.version), { version: await this.getVersion() });
-    if (uri.startsWith('/DATA/')) {
+    if (uri?.startsWith('/DATA/')) {
       uri = `https://data.dust.events/${dataset}/map.svg`;
     }
     console.log('map data was set to ' + uri);
