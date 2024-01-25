@@ -79,7 +79,7 @@
     "eslint-plugin-jsdoc": "48.0.2",
     "eslint-plugin-prefer-arrow": "1.2.3",
     "eslint-plugin-unused-imports": "^3.0.0",
-    "husky": "8.0.3",
+    "husky": "9.0.3",
     "jasmine-core": "5.1.1",
     "jasmine-spec-reporter": "7.0.0",
     "karma": "~6.4.0",
