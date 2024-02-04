@@ -1,4 +1,6 @@
 ## Changes
+## 2.0
+- Use new datasets
 
 ## 1.41
 - Update dependencies

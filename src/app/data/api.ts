@@ -5,7 +5,11 @@ import { Capacitor, CapacitorHttp, HttpOptions, HttpResponse, HttpResponseType }
 //https://dust.events/assets/data/datasets.json
 
 export function datasetFilename(dataset: Dataset): string {
-  return `${dataset.name.toLowerCase()}-${dataset.year ? dataset.year.toLowerCase(): '0000'}`;
+  if (dataset.name == 'TTITD') {
+    return `${dataset.name.toLowerCase()}-${dataset.year.toLowerCase()}`;
+  } else {
+    return `${dataset.name.toLowerCase()}`;
+  }
 }
 
 function path(dataset: string, name: string): string {
@@ -18,7 +22,7 @@ function livePath(dataset: string, name: string, ext?: string): string {
   }
   if (dataset.toLowerCase().includes('ttitd') || dataset == 'datasets') {
     return `https://dust.events/assets/data-v2/${dataset}/${name}.${ext ? ext : 'json'}?${Math.random()}`;
-  } else {    
+  } else {
     return `https://data.dust.events/${dataset}/${name}.${ext ? ext : 'json'}?${Math.random()}`;
   }
 }
@@ -32,17 +36,17 @@ export async function getCached(dataset: string, name: string, timeout: number =
     await save(getId(dataset, name), data);
     return data;
   } catch (error) {
-    console.info(`getCached.error(${dataset} ${name})`,error);
+    console.info(`getCached.error(${dataset} ${name})`, error);
 
     // Get from the storage
     const data = await read(getId(dataset, name));
     if (data) {
-      console.info(`handled getCached.error with read from storage (${dataset} ${name})`,error);
+      console.info(`handled getCached.error with read from storage (${dataset} ${name})`, error);
       return data;
     }
 
     // else Get default value
-    console.info(`handled getCached.error with get default value (${dataset} ${name})`,error);
+    console.info(`handled getCached.error with get default value (${dataset} ${name})`, error);
     return await get(dataset, name);
   }
 }

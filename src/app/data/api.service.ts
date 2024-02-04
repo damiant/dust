@@ -121,15 +121,8 @@ export class ApiService {
 
   private cleanNames(datasets: Dataset[]): Dataset[] {
     for (const dataset of datasets) {      
-      console.log('clean',dataset);
+      console.log('cleanup',dataset);
       if (dataset.name == 'TTITD') {
-        switch (dataset.year) {
-          case '2023': dataset.title = 'Animalia 2023'; break;
-          case '2022': dataset.title = 'Walking Dreams 2022'; break;
-          case '2019': dataset.title = 'Metamorphosis 2019'; break;
-          case '2018': dataset.title = 'I, Robot 2018'; break;
-          case '2017': dataset.title = 'Radical Ritual 2017'; break;        
-        }
         dataset.imageUrl = `assets/datasets/${dataset.id}.webp`;
       } else {
         dataset.imageUrl = `https://data.dust.events/${dataset.imageUrl}`;
