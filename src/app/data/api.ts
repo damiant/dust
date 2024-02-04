@@ -18,12 +18,13 @@ function path(dataset: string, name: string): string {
 
 function livePath(dataset: string, name: string, ext?: string): string {
   if (name == 'festivals') {
-    return `https://data.dust.events/${dataset}.${ext ? ext : 'json'}?${Math.random()}`;
+    return `https://data.dust.events/${dataset}.${ext ? ext : 'json'}`;
   }
   if (dataset.toLowerCase().includes('ttitd') || dataset == 'datasets') {
+    return `https://api.dust.events/static/${dataset}/${name}.${ext ? ext : 'json'}`;
     return `https://dust.events/assets/data-v2/${dataset}/${name}.${ext ? ext : 'json'}?${Math.random()}`;
   } else {
-    return `https://data.dust.events/${dataset}/${name}.${ext ? ext : 'json'}?${Math.random()}`;
+    return `https://data.dust.events/${dataset}/${name}.${ext ? ext : 'json'}`;
   }
 }
 

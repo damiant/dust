@@ -910,9 +910,10 @@ export class DataManager implements WorkerClass {
     if (this.dataset !== CurrentYear && online) {
       if (this.dataset.toLowerCase().includes('ttitd')) {
         // Burning Man dataset is extracted from API and published manually
+        return `https://api.dust.events/static/${this.dataset}/${name}.json`;
         return `https://dust.events/assets/data-v2/${this.dataset}/${name}.json`;
       } else {
-        return `https://data.dust.events/${this.dataset}/${name}.json?${Math.random()}`;
+        return `https://data.dust.events/${this.dataset}/${name}.json`;
       }
     }
     return `assets/${this.dataset}/${name}.json`;
