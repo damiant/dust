@@ -10,7 +10,7 @@
     <ion-text role="text"><strong>dust</strong> is a guide for burners to find events, camps and art.</ion-text>
   </div>
   <div [hidden]="vm.eventAlreadySelected" class="container" id="scroll-container">
-    @for (card of vm.cards; track card) {
+    @for (card of vm.cards; track card.id) {
     <div
       role="button"
       attr.aria-label="{{card.title}}"
@@ -19,7 +19,7 @@
       (click)="open(card)"
     >
       <div class="card-container">        
-        <img [ngClass]="(vm.selected?.id === card.id) ? 'img-select' : 'img-unselect'" [src]="'assets/datasets/' + card.id + '.webp'">        
+        <img class="img" [ngClass]="(vm.selected?.id === card.id) ? 'img-select' : 'img-unselect'" [src]="card.imageUrl">        
         <p class="name" aria-hidden="true">{{card.title}}</p>
       </div>
     </div>

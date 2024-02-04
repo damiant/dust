@@ -5,7 +5,7 @@ import { Capacitor, CapacitorHttp, HttpOptions, HttpResponse, HttpResponseType }
 //https://dust.events/assets/data/datasets.json
 
 export function datasetFilename(dataset: Dataset): string {
-  return `${dataset.name.toLowerCase()}-${dataset.year.toLowerCase()}`;
+  return `${dataset.name.toLowerCase()}-${dataset.year ? dataset.year.toLowerCase(): '0000'}`;
 }
 
 function path(dataset: string, name: string): string {
@@ -13,9 +13,12 @@ function path(dataset: string, name: string): string {
 }
 
 function livePath(dataset: string, name: string, ext?: string): string {
+  if (name == 'festivals') {
+    return `https://data.dust.events/${dataset}.${ext ? ext : 'json'}?${Math.random()}`;
+  }
   if (dataset.toLowerCase().includes('ttitd') || dataset == 'datasets') {
     return `https://dust.events/assets/data-v2/${dataset}/${name}.${ext ? ext : 'json'}?${Math.random()}`;
-  } else {
+  } else {    
     return `https://data.dust.events/${dataset}/${name}.${ext ? ext : 'json'}?${Math.random()}`;
   }
 }

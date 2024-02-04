@@ -25,7 +25,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class DbService {
-  private defaultDataset: Dataset = { name: '', year: '', id: '', title: '', start: '', end: '', lat: 0, long: 0 };
+  private defaultDataset: Dataset = { name: '', year: '', id: '', title: '', start: '', end: '', lat: 0, long: 0, imageUrl: '', timeZone: '' };
   public selectedDay = signal(noDate());
   public selectedYear = signal('');
   public selectedDataset = signal(this.defaultDataset);

@@ -168,6 +168,8 @@ export interface Dataset {
   end: string; // When it ends
   lat: number; // Latitude (for directions)
   long: number; // Longitude (for directions)
+  imageUrl: string; // Image
+  timeZone: string; // Timezone
 }
 
 export interface TimeString {

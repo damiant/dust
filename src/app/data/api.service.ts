@@ -10,6 +10,7 @@ import { App } from '@capacitor/app';
 import { environment } from 'src/environments/environment';
 
 enum Names {
+  festivals = 'festivals', // Get from the root path at https://data.dust.events/  
   datasets = 'datasets',
   events = 'events',
   art = 'art',
@@ -113,30 +114,37 @@ export class ApiService {
   }
 
   public async loadDatasets(): Promise<Dataset[]> {
-    return this.cleanNames(await getCached(Names.datasets, Names.datasets, 5000));
+    const datasets = await getCached(Names.datasets, Names.datasets, 5000);
+    const festivals = await getCached(Names.festivals, Names.festivals, 5000)
+    return this.cleanNames([...festivals, ...datasets]);
   }
 
   private cleanNames(datasets: Dataset[]): Dataset[] {
-    for (const dataset of datasets) {
+    for (const dataset of datasets) {      
+      console.log('clean',dataset);
       if (dataset.name == 'TTITD') {
         switch (dataset.year) {
           case '2023': dataset.title = 'Animalia 2023'; break;
           case '2022': dataset.title = 'Walking Dreams 2022'; break;
           case '2019': dataset.title = 'Metamorphosis 2019'; break;
           case '2018': dataset.title = 'I, Robot 2018'; break;
-          case '2017': dataset.title = 'Radical Ritual 2017'; break;
+          case '2017': dataset.title = 'Radical Ritual 2017'; break;        
         }
+        dataset.imageUrl = `assets/datasets/${dataset.id}.webp`;
+      } else {
+        dataset.imageUrl = `https://data.dust.events/${dataset.imageUrl}`;
       }
     }
     return datasets;
   }
 
   private async getVersion(): Promise<string> {
+    if (Capacitor.getPlatform() == 'web') return `1.0.0.0`;
     const result = await App.getInfo();
     return `${result.version}.${result.build}`;
   }
 
-  public async download(selected: Dataset | undefined, force?: boolean) {
+  public async download(selected: Dataset | undefined, force?: boolean): Promise<boolean> {
     //const lastDownload = this.settingsService.getLastDownload();
     //const mins = minutesBetween(now(), lastDownload);
     let dataset = '';
@@ -146,9 +154,12 @@ export class ApiService {
     //   return;
     // }
     try {
-      const datasets: Dataset[] = await getLive('datasets', Names.datasets, 1000);
-      console.log(datasets);
+      // Gets it from netlify
+      const datasets: Dataset[] = await getLive(Names.datasets, Names.datasets, 1000);      
       await this.save(Names.datasets, datasets);
+      const rootDatasets: Dataset[] = await getLive(Names.festivals, Names.festivals, 1000);      
+      await this.save(Names.datasets, datasets);
+      await this.save(Names.festivals, rootDatasets);
       dataset = datasetFilename(selected ? selected : datasets[0]);
 
       console.log(`get revision live ${dataset}`);
@@ -175,12 +186,12 @@ export class ApiService {
           `Will not download data for ${dataset} as it is already at revision ${currentRevision.revision} and version is ${currentVersion}`,
         );
         this.rememberLastDownload();
-        return;
+        return true;
       }
     } catch (err) {
       console.log('Possible CORs error as document location is ', document.location.href);
       console.error('Unable to download', err);
-      return;
+      return false;
     }
 
     const currentVersion = await this.getVersion();
@@ -210,7 +221,7 @@ export class ApiService {
 
     if (this.badData(events, art, camps)) {
       console.error(`Download failed`);
-      return;
+      return false;
     }
     console.log('saving data...');
     await this.save(this.getId(dataset, Names.events), events);
@@ -232,6 +243,7 @@ export class ApiService {
 
     //this.settingsService.settings.mapUri = uri;
     this.rememberLastDownload();
+    return true;
   }
 
   private rememberLastDownload() {
@@ -286,6 +298,7 @@ export class ApiService {
   }
 
   private async save(id: string, data: any) {
+    console.warn('save', id)
     const res = await Filesystem.writeFile({
       path: `${id}.json`,
       data: JSON.stringify(data),
