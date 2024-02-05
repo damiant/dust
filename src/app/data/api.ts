@@ -2,6 +2,7 @@ import { Network } from '@capacitor/network';
 import { Dataset } from './models';
 import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
 import { Capacitor, CapacitorHttp, HttpOptions, HttpResponse, HttpResponseType } from '@capacitor/core';
+import { data_dust_events, static_dust_events } from '../utils/utils';
 //https://dust.events/assets/data/datasets.json
 
 export function datasetFilename(dataset: Dataset): string {
@@ -18,13 +19,13 @@ function path(dataset: string, name: string): string {
 
 function livePath(dataset: string, name: string, ext?: string): string {
   if (name == 'festivals') {
-    return `https://data.dust.events/${dataset}.${ext ? ext : 'json'}`;
+    return `${data_dust_events}${dataset}.${ext ? ext : 'json'}`;
   }
   if (dataset.toLowerCase().includes('ttitd') || dataset == 'datasets') {
-    return `https://api.dust.events/static/${dataset}/${name}.${ext ? ext : 'json'}`;
+    return `${static_dust_events}${dataset}/${name}.${ext ? ext : 'json'}`;
     return `https://dust.events/assets/data-v2/${dataset}/${name}.${ext ? ext : 'json'}?${Math.random()}`;
   } else {
-    return `https://data.dust.events/${dataset}/${name}.${ext ? ext : 'json'}`;
+    return `${data_dust_events}${dataset}/${name}.${ext ? ext : 'json'}`;
   }
 }
 
@@ -106,7 +107,7 @@ export async function getLiveBinary(dataset: string, name: string, ext: string, 
   } else {
     // Try to get from url
     try {
-      const url = livePath(dataset, name, ext) + `?${revision}`;
+      const url = livePath(dataset, name, ext);// + `?${revision}`;
       console.log(`getLive ${url} ${dataset} ${name}...`);
       const res = await fetchWithTimeout(url, 15000, 'blob');
       return res.data;

@@ -8,6 +8,12 @@ export function sameDay(d1: Date, d2: Date) {
 export const BurningManTimeZone = 'America/Los_Angeles';
 export const CurrentYear = 'ttitd-2023';
 
+// Data is for dust admin generated datasets
+export const data_dust_events = 'https://api.dust.events/data/'
+
+// Static data is for burning man datasets
+export const static_dust_events = 'https://api.dust.events/static/'
+
 export function now(): Date {
   if (!environment.simulatedTime) {
     return nowPST();

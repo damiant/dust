@@ -23,10 +23,12 @@ import {
 import {
   BurningManTimeZone,
   CurrentYear,
+  data_dust_events,
   getDayNameFromDate,
   getOccurrenceTimeString,
   nowPST,
   sameDay,
+  static_dust_events,
 } from '../utils/utils';
 import { defaultMapRadius, distance, formatDistance, locationStringToPin, mapPointToPoint } from '../map/map.utils';
 import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from '../map/geo.utils';
@@ -285,7 +287,7 @@ export class DataManager implements WorkerClass {
       locIndex[camp.uid] = camp.location_string;
       pinIndex[camp.uid] = camp.pin;
       if (camp.imageUrl) {
-        camp.imageUrl = `https://data.dust.events/${camp.imageUrl}`;
+        camp.imageUrl = `${data_dust_events}${camp.imageUrl}`;
       }
       if (hideLocations) {
         camp.location_string = LocationName.Unavailable;
@@ -318,7 +320,7 @@ export class DataManager implements WorkerClass {
         this.categories.push(event.event_type.label);
       }
       if (event.imageUrl) {
-        event.imageUrl = `https://data.dust.events/${event.imageUrl}`;
+        event.imageUrl = `${data_dust_events}${event.imageUrl}`;
       }
       if (event.hosted_by_camp) {
         event.camp = campIndex[event.hosted_by_camp];
@@ -910,10 +912,10 @@ export class DataManager implements WorkerClass {
     if (this.dataset !== CurrentYear && online) {
       if (this.dataset.toLowerCase().includes('ttitd')) {
         // Burning Man dataset is extracted from API and published manually
-        return `https://api.dust.events/static/${this.dataset}/${name}.json`;
+        return `${static_dust_events}${this.dataset}/${name}.json`;
         return `https://dust.events/assets/data-v2/${this.dataset}/${name}.json`;
       } else {
-        return `https://data.dust.events/${this.dataset}/${name}.json`;
+        return `${data_dust_events}${this.dataset}/${name}.json`;
       }
     }
     return `assets/${this.dataset}/${name}.json`;

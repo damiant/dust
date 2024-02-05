@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Art, Camp, Dataset, Revision } from './models';
 import { datasetFilename, getCached, getLive, getLiveBinary } from './api';
 import { SettingsService } from './settings.service';
-import { now } from '../utils/utils';
+import { data_dust_events, now } from '../utils/utils';
 import { DbService } from './db.service';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Capacitor } from '@capacitor/core';
@@ -125,7 +125,7 @@ export class ApiService {
       if (dataset.name == 'TTITD') {
         dataset.imageUrl = `assets/datasets/${dataset.id}.webp`;
       } else {
-        dataset.imageUrl = `https://data.dust.events/${dataset.imageUrl}`;
+        dataset.imageUrl = `${data_dust_events}${dataset.imageUrl}`;
       }
     }
     return datasets;
@@ -230,7 +230,7 @@ export class ApiService {
     await this.save(this.getId(dataset, Names.revision), revision);
     await this.save(this.getId(dataset, Names.version), { version: await this.getVersion() });
     if (uri?.startsWith('/DATA/')) {
-      uri = `https://data.dust.events/${dataset}/map.svg`;
+      uri = `${data_dust_events}${dataset}/map.svg`;
     }
     console.log('map data was set to ' + uri);
 
@@ -253,7 +253,7 @@ export class ApiService {
       if (dataset.includes('ttitd')) {
         return `assets/${dataset}/${name}.json`;
       } else {
-        return `https://data.dust.events/${dataset}/${name}.${ext ? ext : 'json'}`;
+        return `${data_dust_events}${dataset}/${name}.${ext ? ext : 'json'}`;
       }
     }
     const r = await Filesystem.getUri({
@@ -290,8 +290,7 @@ export class ApiService {
     }
   }
 
-  private async save(id: string, data: any) {
-    console.warn('save', id)
+  private async save(id: string, data: any) {    
     const res = await Filesystem.writeFile({
       path: `${id}.json`,
       data: JSON.stringify(data),
