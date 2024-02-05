@@ -17,7 +17,7 @@ import { FriendComponent } from '../friend/friend.component';
 import { FavoritesService } from '../favs/favorites.service';
 import { PrivateEvent } from '../data/models';
 import { CommonModule } from '@angular/common';
-import { BurningManTimeZone, delay, getDayName } from '../utils/utils';
+import { BurningManTimeZone, clone, delay, getDayName } from '../utils/utils';
 import { PrivateEventComponent, PrivateEventResult } from '../private-event/private-event.component';
 import { UiService } from '../ui/ui.service';
 import { addIcons } from 'ionicons';
@@ -109,7 +109,7 @@ export class PrivateEventsComponent implements OnInit {
   }
 
   async editPrivateEvent(event: PrivateEvent) {
-    this.editingPrivateEvent = structuredClone(event);
+    this.editingPrivateEvent = clone(event);
     this.addPrivateEvent(event);
   }
 }

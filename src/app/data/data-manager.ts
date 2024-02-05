@@ -23,6 +23,7 @@ import {
 import {
   BurningManTimeZone,
   CurrentYear,
+  clone,
   data_dust_events,
   getDayNameFromDate,
   getOccurrenceTimeString,
@@ -58,7 +59,7 @@ export class DataManager implements WorkerClass {
   public async doWork(method: DataMethods, args: any[]): Promise<any> {
     switch (method) {
       case DataMethods.ConsoleLog:
-        const logs = structuredClone(this.logs);
+        const logs = clone(this.logs);
         this.logs = [];
         return logs;
       case DataMethods.Populate:
@@ -156,7 +157,7 @@ export class DataManager implements WorkerClass {
     if (!this.env.simulatedTime) {
       return nowPST();
     }
-    return structuredClone(this.env.simulatedTime);
+    return this.env.simulatedTime;// clone(this.env.simulatedTime);
   }
 
   private checkEvents(): boolean {
@@ -959,7 +960,7 @@ export class DataManager implements WorkerClass {
           clock: '',
           x: point.x,
           y: point.y,
-          gps: structuredClone(gps),
+          gps: clone(gps),
           info: { title, location: '', subtitle: '' },
         };
         result.points.push(mapPoint);

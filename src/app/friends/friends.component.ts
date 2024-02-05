@@ -16,7 +16,7 @@ import { FriendComponent, FriendResult } from '../friend/friend.component';
 import { FavoritesService } from '../favs/favorites.service';
 import { Friend } from '../data/models';
 import { CommonModule } from '@angular/common';
-import { delay } from '../utils/utils';
+import { clone, delay } from '../utils/utils';
 import { addIcons } from 'ionicons';
 import { add, person } from 'ionicons/icons';
 
@@ -95,7 +95,7 @@ export class FriendsComponent implements OnInit {
   }
 
   async editFriend(friend: Friend) {
-    this.editingFriend = structuredClone(friend);
+    this.editingFriend = clone(friend);
     this.addFriend(friend);
   }
 }

@@ -157,6 +157,8 @@ async function fetchWithTimeout(
   // const id = setTimeout(() => {
   //   throw new Error(`Timeout on ${url}`);
   // }, timeout);
+
+  console.log(`caphttp fetch ${url}`);
   const response: HttpResponse = await CapacitorHttp.get(options);
   // clearTimeout(id);
   return response;

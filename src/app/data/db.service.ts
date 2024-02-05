@@ -17,7 +17,7 @@ import {
   Dataset,
 } from './models';
 import { call, registerWorker } from './worker-interface';
-import { daysUntil, noDate, now } from '../utils/utils';
+import { clone, daysUntil, noDate, now } from '../utils/utils';
 import { GpsCoord, Point } from '../map/geo.utils';
 import { environment } from 'src/environments/environment';
 
@@ -127,7 +127,7 @@ export class DbService {
       clock: '',
       x: point.x,
       y: point.y,
-      gps: structuredClone(gpsCoord),
+      gps: clone(gpsCoord),
       info: title ? { title, location: '', subtitle: '' } : undefined,
     };
   }
@@ -192,7 +192,7 @@ export class DbService {
 
   public offsetGPS(gpsCoord: GpsCoord): GpsCoord {
     if (environment.latitudeOffset && environment.longitudeOffset) {
-      const before = structuredClone(gpsCoord);
+      const before = clone(gpsCoord);
       const after = { lat: gpsCoord.lat + environment.latitudeOffset, lng: gpsCoord.lng + environment.longitudeOffset };
       gpsCoord = after;
       console.error(`GPS Position was modified ${JSON.stringify(before)} to ${JSON.stringify(after)}`);

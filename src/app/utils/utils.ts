@@ -18,7 +18,7 @@ export function now(): Date {
   if (!environment.simulatedTime) {
     return nowPST();
   }
-  return structuredClone(environment.simulatedTime);
+  return clone(environment.simulatedTime);
 }
 
 export function nowPST(): Date {
@@ -34,6 +34,14 @@ export function nowRange(): TimeRange {
   end.setTime(end.getTime() + 60 * minute);
   console.log(start, end);
   return { start, end };
+}
+
+export function clone(o: any): any {
+  if (typeof structuredClone === 'function') {
+    return structuredClone(o);
+  } else {
+    return JSON.parse(JSON.stringify(o));
+  }
 }
 
 export function timeRangeToString(timeRange: TimeRange | undefined): string {
