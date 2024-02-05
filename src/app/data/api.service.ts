@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Art, Camp, Dataset, Revision } from './models';
 import { datasetFilename, getCached, getLive, getLiveBinary } from './api';
 import { SettingsService } from './settings.service';
-import { data_dust_events, now } from '../utils/utils';
+import { data_dust_events, now, static_dust_events } from '../utils/utils';
 import { DbService } from './db.service';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Capacitor } from '@capacitor/core';
@@ -120,10 +120,9 @@ export class ApiService {
   }
 
   private cleanNames(datasets: Dataset[]): Dataset[] {
-    for (const dataset of datasets) {      
-      console.log('cleanup',dataset);
-      if (dataset.name == 'TTITD') {
-        dataset.imageUrl = `assets/datasets/${dataset.id}.webp`;
+    for (const dataset of datasets) {
+      if (dataset.imageUrl.includes('[@static]')) {
+        dataset.imageUrl = dataset.imageUrl.replace('[@static]', static_dust_events);
       } else {
         dataset.imageUrl = `${data_dust_events}${dataset.imageUrl}`;
       }
@@ -148,9 +147,9 @@ export class ApiService {
     // }
     try {
       // Gets it from netlify
-      const datasets: Dataset[] = await getLive(Names.datasets, Names.datasets, 1000);      
+      const datasets: Dataset[] = await getLive(Names.datasets, Names.datasets, 1000);
       await this.save(Names.datasets, datasets);
-      const rootDatasets: Dataset[] = await getLive(Names.festivals, Names.festivals, 1000);      
+      const rootDatasets: Dataset[] = await getLive(Names.festivals, Names.festivals, 1000);
       await this.save(Names.datasets, datasets);
       await this.save(Names.festivals, rootDatasets);
       dataset = datasetFilename(selected ? selected : datasets[0]);
@@ -250,11 +249,12 @@ export class ApiService {
 
   private async getUri(dataset: string, name: string, ext?: string): Promise<string> {
     if (Capacitor.getPlatform() == 'web') {
-      if (dataset.includes('ttitd')) {
-        return `assets/${dataset}/${name}.json`;
-      } else {
-        return `${data_dust_events}${dataset}/${name}.${ext ? ext : 'json'}`;
-      }
+      const host = (dataset.includes('ttitd')) ?
+        static_dust_events :
+        data_dust_events;
+
+      return `${host}${dataset}/${name}.${ext ? ext : 'json'}`;
+
     }
     const r = await Filesystem.getUri({
       path: `${this.getId(dataset, name)}.${ext ? ext : 'json'}`,
@@ -290,7 +290,7 @@ export class ApiService {
     }
   }
 
-  private async save(id: string, data: any) {    
+  private async save(id: string, data: any) {
     const res = await Filesystem.writeFile({
       path: `${id}.json`,
       data: JSON.stringify(data),

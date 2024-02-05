@@ -21,7 +21,8 @@ bootstrapApplication(AppComponent, {
     provideAnimations(),
     provideRouter(routes, withComponentInputBinding()),
     provideServiceWorker('ngsw-worker.js', {
-        enabled: !isDevMode(),
+      // Service Worker seems to be causing problems
+        enabled: false,//!isDevMode(),
         registrationStrategy: 'registerWhenStable:30000'
     })
 ],

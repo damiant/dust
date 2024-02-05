@@ -29,7 +29,7 @@ export class DbService {
   public selectedDay = signal(noDate());
   public selectedYear = signal('');
   public selectedDataset = signal(this.defaultDataset);
-  public selectedImage = computed(() => `assets/datasets/${this.selectedDataset().id}.webp`);
+  public selectedImage = computed(() => `${this.selectedDataset().imageUrl}`);
   public featuresHidden = signal(['']);
   public networkStatus = signal('');
   public resume = signal('');

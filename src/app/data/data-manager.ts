@@ -712,14 +712,14 @@ export class DataManager implements WorkerClass {
     if (query) {
       query = this.scrubQuery(query);
     }
-    
-    for (let event of this.events) {      
+
+    for (let event of this.events) {
       if (
         this.eventContains(query, event, allDay) &&
         this.eventIsCategory(category, event) &&
         this.onDay(day, event, timeRange)
       ) {
-        
+
         const timeString = this.getTimeString(event, day);
         event.timeString = timeString.short;
         event.longTimeString = timeString.long;
@@ -909,16 +909,12 @@ export class DataManager implements WorkerClass {
   }
 
   private path(name: string, online?: boolean): string {
-    if (this.dataset !== CurrentYear && online) {
-      if (this.dataset.toLowerCase().includes('ttitd')) {
-        // Burning Man dataset is extracted from API and published manually
-        return `${static_dust_events}${this.dataset}/${name}.json`;
-        return `https://dust.events/assets/data-v2/${this.dataset}/${name}.json`;
-      } else {
-        return `${data_dust_events}${this.dataset}/${name}.json`;
-      }
+    if (this.dataset.toLowerCase().includes('ttitd')) {
+      // Burning Man dataset is extracted from API and published manually
+      return `${static_dust_events}${this.dataset}/${name}.json`;
+    } else {
+      return `${data_dust_events}${this.dataset}/${name}.json`;
     }
-    return `assets/${this.dataset}/${name}.json`;
   }
 
   private async loadEvents(): Promise<Event[]> {

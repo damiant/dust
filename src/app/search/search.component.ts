@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormControl } from '@angular/forms';
+import { Capacitor } from '@capacitor/core';
 import { Keyboard } from '@capacitor/keyboard';
 import { IonSearchbar } from '@ionic/angular/standalone';
 
@@ -17,13 +18,15 @@ export class SearchComponent {
   form = new FormGroup({
     search: new FormControl(''),
   });
-  constructor() {}
+  constructor() { }
 
   onSubmit() {
     if (this.form.value.search) {
       this.search.emit(this.form.value.search);
     }
-    Keyboard.hide();
+    if (Capacitor.getPlatform() != 'web') {
+      Keyboard.hide();
+    }
   }
 
   handleInput(event: any) {

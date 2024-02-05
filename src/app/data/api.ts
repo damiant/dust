@@ -22,8 +22,7 @@ function livePath(dataset: string, name: string, ext?: string): string {
     return `${data_dust_events}${dataset}.${ext ? ext : 'json'}`;
   }
   if (dataset.toLowerCase().includes('ttitd') || dataset == 'datasets') {
-    return `${static_dust_events}${dataset}/${name}.${ext ? ext : 'json'}`;
-    return `https://dust.events/assets/data-v2/${dataset}/${name}.${ext ? ext : 'json'}?${Math.random()}`;
+    return `${static_dust_events}${dataset}/${name}.${ext ? ext : 'json'}`;    
   } else {
     return `${data_dust_events}${dataset}/${name}.${ext ? ext : 'json'}`;
   }
@@ -48,7 +47,7 @@ export async function getCached(dataset: string, name: string, timeout: number =
     }
 
     // else Get default value
-    console.info(`handled getCached.error with get default value (${dataset} ${name})`, error);
+    console.error(`handled getCached.error with get default value (${dataset} ${name})`, error);
     return await get(dataset, name);
   }
 }
@@ -84,7 +83,6 @@ export async function getLive(dataset: string, name: string, timeout: number = 5
   const status = await Network.getStatus();
   if (!status.connected) {
     console.log(`readData ${dataset} ${name}...`);
-
     return await get(dataset, name);
   } else {
     // Try to get from url
