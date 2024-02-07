@@ -49,8 +49,9 @@ export class ApiService {
         console.warn(`Read from app storage`);
         return false;
       }
-      const mapUri = await this.getUri(ds, Names.map, 'svg');
-      const exists = await this.stat(ds, Names.map, 'svg');
+      const mapData = await this.read(ds, Names.map);
+      const mapUri = mapData.uri;
+      const exists = await this.stat(mapUri);
       if (exists) {
         console.info(`${ds} map is ${mapUri}`);
       } else {
@@ -193,15 +194,15 @@ export class ApiService {
     const pRsl = getLive(dataset, Names.rsl);
     const pPins = getLive(dataset, Names.pins);
     const pLinks = getLive(dataset, Names.links);
-    const pMapData = getLiveBinary(dataset, Names.map, 'svg', currentVersion);
-    const [rEvents, rArt, rCamps, rMusic, rPins, rLinks, rMapData] = await Promise.allSettled([
+    const pMap = getLive(dataset, Names.map);
+    const [rEvents, rArt, rCamps, rMusic, rPins, rLinks, rMap] = await Promise.allSettled([
       pEvents,
       pArt,
       pCamps,
       pRsl,
       pPins,
       pLinks,
-      pMapData,
+      pMap
     ]);
     const events = rEvents.status == 'fulfilled' ? rEvents.value : '';
     const art = rArt.status == 'fulfilled' ? rArt.value : '';
@@ -209,7 +210,9 @@ export class ApiService {
     const rsl = rMusic.status == 'fulfilled' ? rMusic.value : '';
     const pins = rPins.status == 'fulfilled' ? rPins.value : '';
     const links = rLinks.status == 'fulfilled' ? rLinks.value : '';
-    const mapData = rMapData.status == 'fulfilled' ? rMapData.value : '';
+    const map = rMap.status == 'fulfilled' ? rMap.value : '';
+
+
 
     if (this.badData(events, art, camps)) {
       console.error(`Download failed`);
@@ -221,10 +224,18 @@ export class ApiService {
     await this.save(this.getId(dataset, Names.art), art);
     await this.save(this.getId(dataset, Names.rsl), rsl);
     await this.save(this.getId(dataset, Names.pins), pins);
-    await this.save(this.getId(dataset, Names.links), links);
+    await this.save(this.getId(dataset, Names.links), links);    
     let uri: string | undefined = undefined;
-    if (mapData) {
-      uri = await this.saveBinary(this.getId(dataset, Names.map), 'svg', mapData);
+
+
+    if (map) {
+      console.log(map);
+      const ext = map.filename ? map.filename.split('.').pop() : 'svg';
+      const mapData = await getLiveBinary(dataset, Names.map, ext, currentVersion);
+      if (mapData) {
+        uri = await this.saveBinary(this.getId(dataset, Names.map), ext, mapData);
+        console.log(`Map saved to ${uri}`);
+      }
     }
     await this.save(this.getId(dataset, Names.revision), revision);
     await this.save(this.getId(dataset, Names.version), { version: await this.getVersion() });
@@ -232,6 +243,8 @@ export class ApiService {
       uri = `${data_dust_events}${dataset}/map.svg`;
     }
     console.log('map data was set to ' + uri);
+    map.uri = uri;
+    await this.save(this.getId(dataset, Names.map), map);
 
     //this.settingsService.settings.mapUri = uri;
     this.rememberLastDownload();
@@ -263,10 +276,10 @@ export class ApiService {
     return Capacitor.convertFileSrc(r.uri);
   }
 
-  private async stat(dataset: string, name: string, ext?: string): Promise<boolean> {
+  private async stat(path: string): Promise<boolean> {
     try {
       const s = await Filesystem.stat({
-        path: `${this.getId(dataset, name)}.${ext ? ext : 'json'}`,
+        path,
         directory: Directory.Data,
       });
       return s.size > 0;

@@ -1,7 +1,7 @@
 import { Network } from '@capacitor/network';
 import { Dataset } from './models';
 import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
-import { Capacitor, CapacitorHttp, HttpOptions, HttpResponse, HttpResponseType } from '@capacitor/core';
+import { CapacitorHttp, HttpOptions, HttpResponse, HttpResponseType } from '@capacitor/core';
 import { data_dust_events, static_dust_events } from '../utils/utils';
 //https://dust.events/assets/data/datasets.json
 
@@ -105,7 +105,7 @@ export async function getLiveBinary(dataset: string, name: string, ext: string, 
   } else {
     // Try to get from url
     try {
-      const url = livePath(dataset, name, ext);// + `?${revision}`;
+      const url = livePath(dataset, name, ext) + `?${revision}`;
       console.log(`getLive ${url} ${dataset} ${name}...`);
       const res = await fetchWithTimeout(url, 15000, 'blob');
       return res.data;
@@ -141,7 +141,8 @@ async function fetchWithTimeout(
   timeout: number = 5000,
   responseType: HttpResponseType = 'json',
 ): Promise<HttpResponse> {
-  if (Capacitor.getPlatform() == 'web' && responseType == 'blob') {
+  if (responseType == 'blob') {
+    // Cap HTTP doesnt do blobs
     const res = await webFetchWithTimeout(url, {}, timeout);
     const blob = await res.blob();
     const data = await blobToBase64(blob);

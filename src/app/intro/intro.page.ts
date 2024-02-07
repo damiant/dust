@@ -175,10 +175,6 @@ export class IntroPage {
     }
   }
 
-  isCurrentYear() {
-    return this.vm.selected && this.vm.selected.year == this.vm.cards[0].year;
-  }
-
   isBurningMan() {
     return this.settingsService.settings.datasetId.includes('ttitd');
   }
@@ -187,7 +183,7 @@ export class IntroPage {
     try {
       if (!this.vm.selected) return;
 
-      const hasOffline = this.isCurrentYear() || this.settingsService.isOffline(this.settingsService.settings.datasetId);
+      const hasOffline = this.settingsService.isOffline(this.settingsService.settings.datasetId);
       if (!hasOffline) {
         const status = await Network.getStatus();
         if (!status.connected) {
@@ -219,7 +215,7 @@ export class IntroPage {
       }
       console.log(`sendDataToWorker completed`);
       this.fav.init(this.settingsService.settings.datasetId);
-      const title = this.isCurrentYear() ? '' : this.vm.selected.year;
+      const title = `${new Date().getFullYear()}` == this.vm.selected.year ? '' : this.vm.selected.year;
       this.db.selectedYear.set(title);
       this.db.selectedDataset.set(this.vm.selected);
 
