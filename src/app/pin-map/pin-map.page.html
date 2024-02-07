@@ -11,8 +11,8 @@
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
-    <ion-toolbar class="min">
-      <ion-title size="large">{{title}} </ion-title>
+    <ion-toolbar>
+      <ion-title size="large">{{title()}}</ion-title>
     </ion-toolbar>
   </ion-header>
   <div [hidden]="description === ''" style="position: absolute" class="ion-padding">

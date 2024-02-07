@@ -215,7 +215,9 @@ export class IntroPage {
       }
       console.log(`sendDataToWorker completed`);
       this.fav.init(this.settingsService.settings.datasetId);
-      const title = `${new Date().getFullYear()}` == this.vm.selected.year ? '' : this.vm.selected.year;
+      let showYear = (`${new Date().getFullYear()}` !== this.vm.selected.year) && this.vm.selected.year !== '0000';
+
+      const title = showYear ? this.vm.selected.year : '';
       this.db.selectedYear.set(title);
       this.db.selectedDataset.set(this.vm.selected);
 

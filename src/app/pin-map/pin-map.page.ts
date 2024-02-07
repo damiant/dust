@@ -1,4 +1,4 @@
-import { Component, Input, Signal, computed } from '@angular/core';
+import { Component, Input, Signal, WritableSignal, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MapComponent } from '../map/map.component';
@@ -59,7 +59,7 @@ export class PinMapPage {
   busy: Signal<boolean> = computed(() => {
     return this.geo.gpsBusy();
   });
-  title = '';
+  title: WritableSignal<string> = signal(' ');
   description = '';
   constructor(
     private db: DbService,
@@ -72,7 +72,7 @@ export class PinMapPage {
   async ionViewWillEnter() {
     const mapSet = await this.mapFor(this.mapType);
     this.points = mapSet.points;
-    this.title = mapSet.title;
+    this.title.set(mapSet.title);
     this.description = mapSet.description;
   }
 
@@ -89,16 +89,19 @@ export class PinMapPage {
       case MapType.Medical:
         return await this.fallback(await this.db.getMapPoints('medical'), 'Medical');
       default:
-        return { title: '', description: '', points: [] };
+        return { title: ' ', description: '', points: [] };
     }
   }
 
   private async fallback(mapSet: MapSet, pinType: string): Promise<MapSet> {
+    this.title.set(pinType);
     if (mapSet.points.length > 0) return mapSet;
     return await this.db.getPins(pinType);
   }
 
   private async getArt(): Promise<MapSet> {
+    const title = 'Art';
+    this.title.set(title);
     let coords: GpsCoord | undefined = undefined;
     this.smallPins = true;
     coords = await this.geo.getPosition();
@@ -112,7 +115,7 @@ export class PinMapPage {
       }
     }
     return {
-      title: 'Art',
+      title,
       description: '',
       points,
     };
@@ -135,6 +138,8 @@ export class PinMapPage {
   }
 
   private async getEventsNow(): Promise<MapSet> {
+    const title = 'Happening Now';
+    this.title.set(title)
     const timeRange = nowRange();
     this.smallPins = true;
     const points = [];
@@ -154,7 +159,7 @@ export class PinMapPage {
       points.push(mapPoint);
     }
     return {
-      title: 'Happening Now',
+      title,
       description: `Map of ${allEvents.length} events happening ${timeRangeToString(timeRange)}`,
       points,
     };
