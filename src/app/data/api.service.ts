@@ -137,7 +137,7 @@ export class ApiService {
     return `${result.version}.${result.build}`;
   }
 
-  public async download(selected: Dataset | undefined, force?: boolean): Promise<boolean> {
+  public async download(selected: Dataset | undefined, force: boolean): Promise<boolean> {
     //const lastDownload = this.settingsService.getLastDownload();
     //const mins = minutesBetween(now(), lastDownload);
     let dataset = '';
@@ -147,7 +147,7 @@ export class ApiService {
     //   return;
     // }
     try {
-      // Gets it from netlify
+      // Gets it from netlify      
       const datasets: Dataset[] = await getLive(Names.datasets, Names.datasets, 1000);
       await this.save(Names.datasets, datasets);
       const rootDatasets: Dataset[] = await getLive(Names.festivals, Names.festivals, 1000);
@@ -186,7 +186,6 @@ export class ApiService {
       console.error('Unable to download', err);
       return false;
     }
-
     const currentVersion = await this.getVersion();
     const pEvents = getLive(dataset, Names.events);
     const pArt = getLive(dataset, Names.art);

@@ -109,7 +109,7 @@ export class IntroPage {
 
     try {
       this.vm.downloading = true;
-      await this.api.download(this.vm.selected);      
+      await this.api.download(this.vm.selected, false);
     } finally {
       this.vm.downloading = false;
     }

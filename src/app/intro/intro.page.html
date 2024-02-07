@@ -1,42 +1,32 @@
 <ion-content color="primary" [fullscreen]="true">
-  <app-message
-    (dismissed)="launch()"
-    [show]="vm.showMessage"
-    [title]="'About '+vm.selected?.year"
-    [message]="vm.message"
-  ></app-message>
+
+  <app-message (dismissed)="launch()" [show]="vm.showMessage" [title]="'About '+vm.selected?.year"
+    [message]="vm.message"></app-message>
   <div [class.full]="vm.eventAlreadySelected" class="vcenter rows">
     <h1 (click)="clear()">dust.</h1>
     <ion-text role="text"><strong>dust</strong> is a guide for burners to find events, camps and art.</ion-text>
+    <div style="min-height: 40px">
+      <ion-spinner [hidden]="!vm.downloading" name="dots" color="light"></ion-spinner>
+    </div>
   </div>
   <div [hidden]="vm.eventAlreadySelected" class="container" id="scroll-container">
     @for (card of vm.cards; track card.id) {
-    <div
-      role="button"
-      attr.aria-label="{{card.title}}"
-      class="card"
-      [ngClass]="(vm.selected?.id === card.id) ? 'select' : 'unselect'"
-      (click)="open(card)"
-    >
-      <div class="card-container">        
-        <img class="img" [ngClass]="(vm.selected?.id === card.id) ? 'img-select' : 'img-unselect'" [src]="card.imageUrl">        
+    <div role="button" attr.aria-label="{{card.title}}" class="card"
+      [ngClass]="(vm.selected?.id === card.id) ? 'select' : 'unselect'" (click)="open(card)">
+      <div class="card-container">
+        <img class="img" [ngClass]="(vm.selected?.id === card.id) ? 'img-select' : 'img-unselect'"
+          [src]="card.imageUrl">
         <p class="name" aria-hidden="true">{{card.title}}</p>
       </div>
     </div>
     }
   </div>
-  <div class="center">
-    <div [hidden]="!vm.downloading">
-      <ion-spinner name="dots" color="light"></ion-spinner>
-    </div>
-  </div>
+
   <div [hidden]="vm.eventAlreadySelected" class="footer">
-    <ion-button [disabled]="!vm.ready" (click)="go()" size="large" shape="round"
-      >Get Dusty @if (!vm.ready) {
+    <ion-button [disabled]="!vm.ready" (click)="go()" size="large" shape="round">Get Dusty @if (!vm.ready) {
       <ion-spinner style="margin-left: 0.5rem" color="light" name="circular"></ion-spinner>
       } @if (vm.ready) {
       <ion-icon name="arrow-forward-outline"></ion-icon>
-      }</ion-button
-    >
+      }</ion-button>
   </div>
 </ion-content>
