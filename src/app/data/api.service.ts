@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Art, Camp, Dataset, MapData, Revision } from './models';
 
 import { SettingsService } from './settings.service';
-import { data_dust_events, now, static_dust_events } from '../utils/utils';
+import { data_dust_events, isWeb, now, static_dust_events } from '../utils/utils';
 import { DbService } from './db.service';
 import { Capacitor } from '@capacitor/core';
 import { App } from '@capacitor/app';
@@ -48,10 +48,10 @@ export class ApiService {
         console.warn(`Read from app storage`);
         return false;
       }
-      const mapData: MapData = await this.dbService.get(ds, Names.map, { onlyRead: true, defaultValue: { filename: '', uri: ''} });
+      const mapData: MapData = await this.dbService.get(ds, Names.map, { onlyRead: true, defaultValue: { filename: '', uri: '' } });
       const mapUri = mapData.uri;
       const exists = await this.dbService.stat(mapUri);
-      if (exists) {
+      if (exists || isWeb()) {
         console.info(`${ds} map is ${mapUri}`);
       } else {
         console.error(`${ds} map not found at ${mapUri}`);
@@ -104,15 +104,6 @@ export class ApiService {
   private async reportWorkerLogs() {
     await this.dbService.getWorkerLogs();
   }
-
-  // private async read(dataset: string, name: Names): Promise<any> {
-  //   try {
-  //     return await this.dbService.get(dataset, name, { onlyRead: true });
-  //   } catch (err) {
-  //     console.error(`Failed to read ${dataset} ${name} returning []`);
-  //     return [];
-  //   }
-  // }
 
   private badData(events: Event[], art: Art[], camps: Camp[]): boolean {
     return !camps || camps.length == 0 || !art || !events || events.length == 0;
@@ -228,12 +219,14 @@ export class ApiService {
         uri = await this.dbService.saveBinary(dataset, Names.map, ext, mapData);
         console.log(`Map saved to ${uri}`);
       }
+      // This is for web: it cant save binary so we link to the external url
+      if (uri?.startsWith('/DATA/')) {
+        uri = `${data_dust_events}${dataset}/map.${ext}`;
+      }
+  
     }
     await this.dbService.writeData(dataset, Names.revision, revision);
     await this.dbService.writeData(dataset, Names.version, { version: await this.getVersion() });
-    if (uri?.startsWith('/DATA/')) {
-      uri = `${data_dust_events}${dataset}/map.svg`;
-    }
     console.log('map data was set to ' + uri);
     map.uri = uri;
     await this.dbService.writeData(dataset, Names.map, map);
@@ -246,40 +239,4 @@ export class ApiService {
     this.settingsService.settings.lastDownload = now().toISOString();
     this.settingsService.save();
   }
-
-  // private getId(dataset: string, name: string): string {
-  //   return `${dataset}-${name}`;
-  // }
-
-  // private async getUri(dataset: string, name: string, ext?: string): Promise<string> {
-  //   if (Capacitor.getPlatform() == 'web') {
-  //     const host = (dataset.includes('ttitd')) ?
-  //       static_dust_events :
-  //       data_dust_events;
-
-  //     return `${host}${dataset}/${name}.${ext ? ext : 'json'}`;
-  //   }
-  //   const r = await Filesystem.getUri({
-  //     path: `${this.getId(dataset, name)}.${ext ? ext : 'json'}`,
-  //     directory: Directory.Data,
-  //   });
-  //   return Capacitor.convertFileSrc(r.uri);
-  // }
-
-  // private async save(id: string, data: any) {
-  //   const res = await Filesystem.writeFile({
-  //     path: `${id}.json`,
-  //     data: JSON.stringify(data),
-  //     directory: Directory.Data,
-  //     encoding: Encoding.UTF8,
-  //   });
-  //   const uri = Capacitor.convertFileSrc(res.uri);
-  //   if (data.length) {
-  //     console.log(`Saved ${uri} length=${data.length}`);
-  //   } else {
-  //     console.log(`Saved ${uri} data=${JSON.stringify(data)}`);
-  //   }
-  // }
-
-
 }

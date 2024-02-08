@@ -1,5 +1,6 @@
 import { environment } from 'src/environments/environment';
 import { OccurrenceSet, TimeRange, TimeString } from '../data/models';
+import { Capacitor } from '@capacitor/core';
 
 export function sameDay(d1: Date, d2: Date) {
   return d1.getDate() === d2.getDate() && d1.getMonth() === d2.getMonth() && d1.getFullYear() === d2.getFullYear();
@@ -19,6 +20,10 @@ export function now(): Date {
     return nowPST();
   }
   return clone(environment.simulatedTime);
+}
+
+export function isWeb(): boolean {
+  return Capacitor.getPlatform() == 'web';
 }
 
 export function nowPST(): Date {
