@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, WritableSignal } from '@angular/core';
 import { Art, Camp, Dataset, MapData, Revision } from './models';
 
 import { SettingsService } from './settings.service';
@@ -140,7 +140,7 @@ export class ApiService {
     }
   }
 
-  public async download(selected: Dataset | undefined, force: boolean): Promise<boolean> {
+  public async download(selected: Dataset | undefined, force: boolean, downloadSignal: WritableSignal<boolean>): Promise<boolean> {
     //const lastDownload = this.settingsService.getLastDownload();
     //const mins = minutesBetween(now(), lastDownload);
     let dataset = '';
@@ -156,14 +156,15 @@ export class ApiService {
       dataset = this.datasetId(selected ? selected : datasets[0]);
 
       console.log(`get revision live ${dataset}`);
+      const currentRevision: Revision = await this.dbService.get(dataset, Names.revision, { onlyRead: true, defaultValue: { revision: 0 } });
+      console.log(`Current revision is ${JSON.stringify(currentRevision)} force is ${force}`);
       revision = await this.dbService.get(dataset, Names.revision, { timeout: 1000 });
       console.log(`Live revision is ${JSON.stringify(revision)}`);
 
       // Check the current revision
-      const currentRevision: Revision = await this.dbService.get(dataset, Names.revision, { onlyRead: true, defaultValue: { revision: 0 } });
       const version: Version = await this.dbService.get(dataset, Names.version, { onlyRead: true, defaultValue: { version: '' } });
       const currentVersion = await this.getVersion();
-      console.log(`Current revision is ${JSON.stringify(currentRevision)} force is ${force}`);
+      
 
       if (
         !force &&
@@ -184,16 +185,18 @@ export class ApiService {
       console.error('Unable to download', err);
       return false;
     }
+
+    downloadSignal.set(true);
     const currentVersion = await this.getVersion();
 
     const [rEvents, rArt, rCamps, rMusic, rPins, rLinks, rMap] = await Promise.allSettled([
-      this.dbService.get(dataset, Names.events, { defaultValue: '' }),
-      this.dbService.get(dataset, Names.art, { defaultValue: '' }),
-      this.dbService.get(dataset, Names.camps, { defaultValue: '' }),
-      this.dbService.get(dataset, Names.pins, { defaultValue: '' }),
-      this.dbService.get(dataset, Names.links, { defaultValue: '' }),
-      this.dbService.get(dataset, Names.rsl, { defaultValue: '' }),
-      this.dbService.get(dataset, Names.map, { defaultValue: '' })
+      this.dbService.get(dataset, Names.events, { revision: revision.revision, defaultValue: '' }),
+      this.dbService.get(dataset, Names.art, { revision: revision.revision, defaultValue: '' }),
+      this.dbService.get(dataset, Names.camps, { revision: revision.revision, defaultValue: '' }),
+      this.dbService.get(dataset, Names.pins, { revision: revision.revision, defaultValue: '' }),
+      this.dbService.get(dataset, Names.links, { revision: revision.revision, defaultValue: '' }),
+      this.dbService.get(dataset, Names.rsl, { revision: revision.revision, defaultValue: '' }),
+      this.dbService.get(dataset, Names.map, { revision: revision.revision, defaultValue: '' })
     ]);
 
     const events = rEvents.status == 'fulfilled' ? rEvents.value : '';
@@ -203,6 +206,7 @@ export class ApiService {
 
     if (this.badData(events, art, camps)) {
       console.error(`Download failed`);
+      downloadSignal.set(false);
       return false;
     } else {
       console.log(`Data passed checks for events, art and camps`);
@@ -232,6 +236,7 @@ export class ApiService {
     await this.dbService.writeData(dataset, Names.map, map);
 
     this.rememberLastDownload();
+    downloadSignal.set(false);
     return true;
   }
 

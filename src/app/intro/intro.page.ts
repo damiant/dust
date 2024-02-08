@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, WritableSignal, effect, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonButton, IonContent, IonIcon, IonSpinner, IonText, ToastController } from '@ionic/angular/standalone';
@@ -63,6 +63,7 @@ function initialState(): IntroState {
 })
 export class IntroPage {
   vm: IntroState = initialState();
+  download: WritableSignal<boolean> = signal(false);
 
   constructor(
     private db: DbService,
@@ -74,6 +75,15 @@ export class IntroPage {
     private toastController: ToastController,
   ) {
     addIcons({ arrowForwardOutline });
+    effect(() => {
+      const downloading = this.download();
+      if (downloading) {
+        this.ui.presentDarkToast(
+          `Downloading update for ${this.vm.selected?.name}`,
+          this.toastController,
+        );
+      }
+    });
   }
 
   async ionViewWillEnter() {
@@ -108,7 +118,7 @@ export class IntroPage {
 
     try {
       this.vm.downloading = true;
-      await this.api.download(this.vm.selected, false);
+      await this.api.download(this.vm.selected, false, this.download);
     } finally {
       this.vm.downloading = false;
     }
@@ -247,7 +257,7 @@ export class IntroPage {
     let success = true;
     try {
       this.vm.downloading = true;
-      await this.api.download(this.vm.selected, true);
+      await this.api.download(this.vm.selected, true, this.download);
     } catch {
       success = false;
     }

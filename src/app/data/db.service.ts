@@ -29,6 +29,7 @@ export interface GetOptions {
   timeout?: number; // Timeout when reading live
   onlyRead?: boolean; // Just read from cache, do not attempt to download
   defaultValue?: any; // Return default value on failure
+  revision?: number; // This is used for cache busting
 }
 
 @Injectable({
@@ -166,7 +167,11 @@ export class DbService {
       if (!status.connected || options.onlyRead) {
         return await this._read(this._getkey(dataset, name));
       } else {
-        const url = this.livePath(dataset, name);
+        let url = this.livePath(dataset, name);
+        if (options.revision) {
+          url += `?revision=${options.revision}`;
+
+        }
         return await this._write(this._getkey(dataset, name), url, options.timeout ?? 30000);
       }
     } catch (err) {
