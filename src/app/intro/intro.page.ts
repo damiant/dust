@@ -10,7 +10,6 @@ import { FavoritesService } from '../favs/favorites.service';
 import { MessageComponent } from '../message/message.component';
 import { addDays, daysUntil, delay, isWhiteSpace, now } from '../utils/utils';
 import { Dataset } from '../data/models';
-import { datasetFilename } from '../data/api';
 import { ApiService } from '../data/api.service';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
@@ -120,7 +119,7 @@ export class IntroPage {
   }
 
   private load() {
-    const idx = this.vm.cards.findIndex((c) => datasetFilename(c) == this.settingsService.settings.datasetId);
+    const idx = this.vm.cards.findIndex((c) => this.api.datasetId(c) == this.settingsService.settings.datasetId);
     if (idx >= 0) {
       this.vm.selected = this.vm.cards[idx];
     } else {
@@ -265,7 +264,7 @@ export class IntroPage {
   }
 
   save() {
-    this.settingsService.settings.datasetId = datasetFilename(this.vm.selected!);
+    this.settingsService.settings.datasetId = this.api.datasetId(this.vm.selected!);
     this.settingsService.settings.dataset = this.vm.selected;
     this.settingsService.settings.mapRotation = this.isBurningMan() ? 45 : 0; // Burning Mans map is rotate 45 degrees
     this.settingsService.settings.eventTitle = this.vm.selected!.title;

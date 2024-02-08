@@ -4,7 +4,7 @@ const config: CapacitorConfig = {
   appId: 'ionic.ttitd',
   appName: 'ttitd',
   webDir: 'www/browser',
-  loggingBehavior: 'none',
+  //loggingBehavior: 'none',
   server: {
     androidScheme: 'https',
   },

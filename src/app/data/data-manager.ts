@@ -22,7 +22,6 @@ import {
 } from './models';
 import {
   BurningManTimeZone,
-  CurrentYear,
   clone,
   data_dust_events,
   getDayNameFromDate,
@@ -33,6 +32,7 @@ import {
 } from '../utils/utils';
 import { defaultMapRadius, distance, formatDistance, locationStringToPin, mapPointToPoint } from '../map/map.utils';
 import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from '../map/geo.utils';
+import { set, get } from 'idb-keyval';
 
 interface TimeCache {
   [index: string]: TimeString | undefined;
@@ -98,6 +98,12 @@ export class DataManager implements WorkerClass {
         return this.setMapPointsGPS(args[0]);
       case DataMethods.GetMapPoints:
         return this.getMapPoints(args[0]);
+      case DataMethods.ReadData:
+        return this.read(args[0]);
+      case DataMethods.Write:
+        return this.write(args[0], args[1], args[2]);
+      case DataMethods.WriteData:
+        return this.writeData(args[0], args[1]);
       case DataMethods.GetGPSPoints:
         return this.getGPSPoints(args[0], args[1]);
       case DataMethods.GetPins:
@@ -285,7 +291,7 @@ export class DataManager implements WorkerClass {
         camp.pin = pin;
       }
       campIndex[camp.uid] = camp.name;
-      locIndex[camp.uid] = camp.location_string;
+      locIndex[camp.uid] = camp.location_string;      
       pinIndex[camp.uid] = camp.pin;
       if (camp.imageUrl) {
         camp.imageUrl = `${data_dust_events}${camp.imageUrl}`;
@@ -327,17 +333,19 @@ export class DataManager implements WorkerClass {
         event.camp = campIndex[event.hosted_by_camp];
         event.location = locIndex[event.hosted_by_camp];
 
-        const pin = locationStringToPin(event.location, this.mapRadius);
+        let pin = locationStringToPin(event.location, this.mapRadius);
         const placed = pinIndex[event.hosted_by_camp];
         if (placed) {
           event.pin = placed;
+          pin = placed;
         }
+
         if (pin) {
           const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
           event.gpsCoords = gpsCoords;
         } else {
           if (!this.env.production) {
-            this.consoleError(`Unable to find camp ${event.hosted_by_camp} for event ${event.title}`);
+            this.consoleError(`Unable to find camp ${event.hosted_by_camp} for event ${event.title} ${placed}`);
           }
         }
         if (hideLocations) {
@@ -924,7 +932,7 @@ export class DataManager implements WorkerClass {
   }
 
   private async loadData(uri: string): Promise<any> {
-    this.consoleLog(`Worker fetch ${uri}...`);
+    //this.consoleLog(`Worker fetch ${uri}...`);
     try {
       const res = await fetch(uri);
       return await res.json();
@@ -969,6 +977,27 @@ export class DataManager implements WorkerClass {
     } catch (err) {
       return { title: '', description: '', points: [] };
     }
+  }
+
+  public async write(key: string, url: string, timeout: number): Promise<any> {
+    try {
+      const response = await webFetchWithTimeout(url, {}, timeout);
+      const json = await response.json();
+      await set(key, json);
+      return json;
+    } catch (err) {
+      this.consoleError(err as any);
+      throw new Error(`write ${key} ${url} failed`);
+    }
+  }
+
+  public async writeData(key: string, data: any): Promise<void> {
+    this.consoleLog(`writeData ${key}: data=${data}`);
+    await set(key, data);
+  }
+
+  public async read(key: string): Promise<any> {
+    return await get(key);
   }
 
   public async getMapPoints(name: string): Promise<MapSet> {
@@ -1046,4 +1075,20 @@ export class DataManager implements WorkerClass {
     const res = await fetch(this.path('revision', true));
     return await res.json();
   }
+}
+
+async function webFetchWithTimeout(url: string, options = {}, timeout: number = 5000) {
+  if (!AbortSignal.timeout) {
+    return await fetch(url, {
+      cache: 'no-cache',
+      ...options,
+    });
+  }
+  const signal = AbortSignal.timeout(timeout);
+  const response = await fetch(url, {
+    cache: 'no-cache',
+    ...options,
+    signal,
+  });
+  return response;
 }

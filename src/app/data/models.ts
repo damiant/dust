@@ -42,6 +42,11 @@ export interface Revision {
   revision: number;
 }
 
+export interface MapData {
+  filename: string;
+  uri: string; // Generated based on when it is saved by dust
+}
+
 export interface EventType {
   abbr: string;
   id: number;
@@ -331,5 +336,8 @@ export enum DataMethods {
   SearchRSLEvents = 'searchRSLEvents',
   GetMapPointGPS = 'getMapPointGPS',
   SetMapPointsGPS = 'setMapPointsGPS',
-  ConsoleLog = 'consoleLog'
+  ConsoleLog = 'consoleLog',
+  Write = 'write',
+  ReadData = 'readData',
+  WriteData = 'writeData'
 }

@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Art, Camp, Dataset, Revision } from './models';
-import { datasetFilename, getCached, getLive, getLiveBinary } from './api';
+import { Art, Camp, Dataset, MapData, Revision } from './models';
+
 import { SettingsService } from './settings.service';
 import { data_dust_events, now, static_dust_events } from '../utils/utils';
 import { DbService } from './db.service';
-import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Capacitor } from '@capacitor/core';
 import { App } from '@capacitor/app';
 import { environment } from 'src/environments/environment';
@@ -44,14 +43,14 @@ export class ApiService {
     const ds = this.settingsService.settings.datasetId;
 
     try {
-      const revision: Revision = await this.read(ds, Names.revision);
+      const revision: Revision = await this.dbService.get(ds, Names.revision, { onlyRead: true });
       if (!revision) {
         console.warn(`Read from app storage`);
         return false;
       }
-      const mapData = await this.read(ds, Names.map);
+      const mapData: MapData = await this.dbService.get(ds, Names.map, { onlyRead: true, defaultValue: { filename: '', uri: ''} });
       const mapUri = mapData.uri;
-      const exists = await this.stat(mapUri);
+      const exists = await this.dbService.stat(mapUri);
       if (exists) {
         console.info(`${ds} map is ${mapUri}`);
       } else {
@@ -70,12 +69,12 @@ export class ApiService {
       console.error(`Unable read revision`, err);
       return false;
     }
-    const events = await this.getUri(ds, Names.events);
-    const art = await this.getUri(ds, Names.art);
-    const camps = await this.getUri(ds, Names.camps);
-    const pins = await this.getUri(ds, Names.pins);
-    const links = await this.getUri(ds, Names.links);
-    const rsl = await this.getUri(ds, Names.rsl);
+    const events = this.dbService.livePath(ds, Names.events);
+    const art = this.dbService.livePath(ds, Names.art);
+    const camps = this.dbService.livePath(ds, Names.camps);
+    const pins = this.dbService.livePath(ds, Names.pins);
+    const links = this.dbService.livePath(ds, Names.links);
+    const rsl = this.dbService.livePath(ds, Names.rsl);
 
     const datasetInfo = {
       dataset: ds,
@@ -106,17 +105,22 @@ export class ApiService {
     await this.dbService.getWorkerLogs();
   }
 
-  private async read(dataset: string, name: Names): Promise<any> {
-    return await this.get(this.getId(dataset, name), []);
-  }
+  // private async read(dataset: string, name: Names): Promise<any> {
+  //   try {
+  //     return await this.dbService.get(dataset, name, { onlyRead: true });
+  //   } catch (err) {
+  //     console.error(`Failed to read ${dataset} ${name} returning []`);
+  //     return [];
+  //   }
+  // }
 
   private badData(events: Event[], art: Art[], camps: Camp[]): boolean {
     return !camps || camps.length == 0 || !art || !events || events.length == 0;
   }
 
   public async loadDatasets(): Promise<Dataset[]> {
-    const datasets = await getCached(Names.datasets, Names.datasets, 5000);
-    const festivals = await getCached(Names.festivals, Names.festivals, 5000)
+    const datasets = await this.dbService.get(Names.datasets, Names.datasets, { timeout: 5000 });
+    const festivals = await this.dbService.get(Names.festivals, Names.festivals, { timeout: 5000 });
     return this.cleanNames([...festivals, ...datasets]);
   }
 
@@ -137,6 +141,14 @@ export class ApiService {
     return `${result.version}.${result.build}`;
   }
 
+  public datasetId(dataset: Dataset): string {
+    if (dataset.name == 'TTITD') {
+      return `${dataset.name.toLowerCase()}-${dataset.year.toLowerCase()}`;
+    } else {
+      return `${dataset.name.toLowerCase()}`;
+    }
+  }
+
   public async download(selected: Dataset | undefined, force: boolean): Promise<boolean> {
     //const lastDownload = this.settingsService.getLastDownload();
     //const mins = minutesBetween(now(), lastDownload);
@@ -148,22 +160,17 @@ export class ApiService {
     // }
     try {
       // Gets it from netlify      
-      const datasets: Dataset[] = await getLive(Names.datasets, Names.datasets, 1000);
-      await this.save(Names.datasets, datasets);
-      const rootDatasets: Dataset[] = await getLive(Names.festivals, Names.festivals, 1000);
-      await this.save(Names.datasets, datasets);
-      await this.save(Names.festivals, rootDatasets);
-      dataset = datasetFilename(selected ? selected : datasets[0]);
+      const datasets: Dataset[] = await this.dbService.get(Names.datasets, Names.datasets, { timeout: 1000 });
+      const rootDatasets: Dataset[] = await this.dbService.get(Names.festivals, Names.festivals, { timeout: 1000 });
+      dataset = this.datasetId(selected ? selected : datasets[0]);
 
       console.log(`get revision live ${dataset}`);
-      revision = await getLive(dataset, Names.revision, 1000);
+      revision = await this.dbService.get(dataset, Names.revision, { timeout: 1000 });
       console.log(`Live revision is ${JSON.stringify(revision)}`);
 
       // Check the current revision
-      const id = this.getId(dataset, Names.revision);
-      const vid = this.getId(dataset, Names.version);
-      const currentRevision: Revision = await this.get(id, { revision: 0 });
-      const version: Version = await this.get(vid, { version: '' });
+      const currentRevision: Revision = await this.dbService.get(dataset, Names.revision, { onlyRead: true, defaultValue: { revision: 0 } });
+      const version: Version = await this.dbService.get(dataset, Names.version, { onlyRead: true, defaultValue: { version: '' } });
       const currentVersion = await this.getVersion();
       console.log(`Current revision is ${JSON.stringify(currentRevision)} force is ${force}`);
 
@@ -187,65 +194,50 @@ export class ApiService {
       return false;
     }
     const currentVersion = await this.getVersion();
-    const pEvents = getLive(dataset, Names.events);
-    const pArt = getLive(dataset, Names.art);
-    const pCamps = getLive(dataset, Names.camps);
-    const pRsl = getLive(dataset, Names.rsl);
-    const pPins = getLive(dataset, Names.pins);
-    const pLinks = getLive(dataset, Names.links);
-    const pMap = getLive(dataset, Names.map);
+
     const [rEvents, rArt, rCamps, rMusic, rPins, rLinks, rMap] = await Promise.allSettled([
-      pEvents,
-      pArt,
-      pCamps,
-      pRsl,
-      pPins,
-      pLinks,
-      pMap
+      this.dbService.get(dataset, Names.events, { defaultValue: '' }),
+      this.dbService.get(dataset, Names.art, { defaultValue: '' }),
+      this.dbService.get(dataset, Names.camps, { defaultValue: '' }),
+      this.dbService.get(dataset, Names.pins, { defaultValue: '' }),
+      this.dbService.get(dataset, Names.links, { defaultValue: '' }),
+      this.dbService.get(dataset, Names.rsl, { defaultValue: '' }),
+      this.dbService.get(dataset, Names.map, { defaultValue: '' })
     ]);
+
     const events = rEvents.status == 'fulfilled' ? rEvents.value : '';
     const art = rArt.status == 'fulfilled' ? rArt.value : '';
     const camps = rCamps.status == 'fulfilled' ? rCamps.value : '';
-    const rsl = rMusic.status == 'fulfilled' ? rMusic.value : '';
-    const pins = rPins.status == 'fulfilled' ? rPins.value : '';
-    const links = rLinks.status == 'fulfilled' ? rLinks.value : '';
     const map = rMap.status == 'fulfilled' ? rMap.value : '';
-
-
 
     if (this.badData(events, art, camps)) {
       console.error(`Download failed`);
       return false;
+    } else {
+      console.log(`Data passed checks for events, art and camps`);
     }
-    console.log('saving data...');
-    await this.save(this.getId(dataset, Names.events), events);
-    await this.save(this.getId(dataset, Names.camps), camps);
-    await this.save(this.getId(dataset, Names.art), art);
-    await this.save(this.getId(dataset, Names.rsl), rsl);
-    await this.save(this.getId(dataset, Names.pins), pins);
-    await this.save(this.getId(dataset, Names.links), links);    
+
     let uri: string | undefined = undefined;
 
 
     if (map) {
       console.log(map);
       const ext = map.filename ? map.filename.split('.').pop() : 'svg';
-      const mapData = await getLiveBinary(dataset, Names.map, ext, currentVersion);
+      const mapData = await this.dbService.getLiveBinary(dataset, Names.map, ext, currentVersion);
       if (mapData) {
-        uri = await this.saveBinary(this.getId(dataset, Names.map), ext, mapData);
+        uri = await this.dbService.saveBinary(dataset, Names.map, ext, mapData);
         console.log(`Map saved to ${uri}`);
       }
     }
-    await this.save(this.getId(dataset, Names.revision), revision);
-    await this.save(this.getId(dataset, Names.version), { version: await this.getVersion() });
+    await this.dbService.writeData(dataset, Names.revision, revision);
+    await this.dbService.writeData(dataset, Names.version, { version: await this.getVersion() });
     if (uri?.startsWith('/DATA/')) {
       uri = `${data_dust_events}${dataset}/map.svg`;
     }
     console.log('map data was set to ' + uri);
     map.uri = uri;
-    await this.save(this.getId(dataset, Names.map), map);
+    await this.dbService.writeData(dataset, Names.map, map);
 
-    //this.settingsService.settings.mapUri = uri;
     this.rememberLastDownload();
     return true;
   }
@@ -255,74 +247,39 @@ export class ApiService {
     this.settingsService.save();
   }
 
-  private getId(dataset: string, name: string): string {
-    return `${dataset}-${name}`;
-  }
+  // private getId(dataset: string, name: string): string {
+  //   return `${dataset}-${name}`;
+  // }
 
-  private async getUri(dataset: string, name: string, ext?: string): Promise<string> {
-    if (Capacitor.getPlatform() == 'web') {
-      const host = (dataset.includes('ttitd')) ?
-        static_dust_events :
-        data_dust_events;
+  // private async getUri(dataset: string, name: string, ext?: string): Promise<string> {
+  //   if (Capacitor.getPlatform() == 'web') {
+  //     const host = (dataset.includes('ttitd')) ?
+  //       static_dust_events :
+  //       data_dust_events;
 
-      return `${host}${dataset}/${name}.${ext ? ext : 'json'}`;
+  //     return `${host}${dataset}/${name}.${ext ? ext : 'json'}`;
+  //   }
+  //   const r = await Filesystem.getUri({
+  //     path: `${this.getId(dataset, name)}.${ext ? ext : 'json'}`,
+  //     directory: Directory.Data,
+  //   });
+  //   return Capacitor.convertFileSrc(r.uri);
+  // }
 
-    }
-    const r = await Filesystem.getUri({
-      path: `${this.getId(dataset, name)}.${ext ? ext : 'json'}`,
-      directory: Directory.Data,
-    });
-    return Capacitor.convertFileSrc(r.uri);
-  }
+  // private async save(id: string, data: any) {
+  //   const res = await Filesystem.writeFile({
+  //     path: `${id}.json`,
+  //     data: JSON.stringify(data),
+  //     directory: Directory.Data,
+  //     encoding: Encoding.UTF8,
+  //   });
+  //   const uri = Capacitor.convertFileSrc(res.uri);
+  //   if (data.length) {
+  //     console.log(`Saved ${uri} length=${data.length}`);
+  //   } else {
+  //     console.log(`Saved ${uri} data=${JSON.stringify(data)}`);
+  //   }
+  // }
 
-  private async stat(path: string): Promise<boolean> {
-    try {
-      const s = await Filesystem.stat({
-        path,
-        directory: Directory.Data,
-      });
-      return s.size > 0;
-    } catch {
-      return false;
-    }
-  }
 
-  private async get(id: string, defaultValue: any): Promise<any> {
-    try {
-      console.log(`Reading ${id}`);
-      const contents = await Filesystem.readFile({
-        path: `${id}.json`,
-        directory: Directory.Data,
-        encoding: Encoding.UTF8,
-      });
-      return JSON.parse(contents.data as any);
-    } catch (err) {
-      console.warn(`Unable to read ${id}. Using ${JSON.stringify(defaultValue)}: ${err}`);
-      return defaultValue;
-    }
-  }
-
-  private async save(id: string, data: any) {
-    const res = await Filesystem.writeFile({
-      path: `${id}.json`,
-      data: JSON.stringify(data),
-      directory: Directory.Data,
-      encoding: Encoding.UTF8,
-    });
-    const uri = Capacitor.convertFileSrc(res.uri);
-    if (data.length) {
-      console.log(`Saved ${uri} length=${data.length}`);
-    } else {
-      console.log(`Saved ${uri} data=${JSON.stringify(data)}`);
-    }
-  }
-
-  private async saveBinary(id: string, ext: string, data: any): Promise<string> {
-    const res = await Filesystem.writeFile({
-      path: `${id}.${ext}`,
-      data: data,
-      directory: Directory.Data,
-    });
-    return Capacitor.convertFileSrc(res.uri);
-  }
 }
