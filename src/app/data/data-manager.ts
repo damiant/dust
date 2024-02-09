@@ -27,6 +27,7 @@ import {
   data_dust_events,
   getDayNameFromDate,
   getOccurrenceTimeString,
+  hasValue,
   nowPST,
   sameDay,
 } from '../utils/utils';
@@ -97,7 +98,7 @@ export class DataManager implements WorkerClass {
       case DataMethods.GetMapPoints:
         return this.getMapPoints(args[0]);
       case DataMethods.ReadData:
-        return this.read(args[0],[]);
+        return this.read(args[0], []);
       case DataMethods.Write:
         return this.write(args[0], args[1], args[2]);
       case DataMethods.WriteData:
@@ -220,8 +221,8 @@ export class DataManager implements WorkerClass {
     if (this.georeferences.length < 3 && this.pins.length > 0) {
       // We can get GPS points from pins (eg SNRG)
       for (let pin of this.pins) {
-        if (points.length < 3 && pin.label.toLowerCase() == 'gps' && pin.gps) {
-          gpsCoords.push({ lng: pin.gps.lng, lat: pin.gps.lat });
+        if (points.length < 3 && pin.label.toLowerCase() == 'gps' && hasValue(pin.gpsLat) && hasValue(pin.gpsLng)) {
+          gpsCoords.push({ lng: pin.gpsLng!, lat: pin.gpsLat! });
           points.push({ x: pin.x, y: pin.y });
         }
       }
@@ -610,22 +611,22 @@ export class DataManager implements WorkerClass {
       const campPins: any = {};
       for (let event of events) {
         // Place RSL Events at the camp pin
-        if (event.campUID) {
-          const pin = campPins[event.campUID];
+        if (event.campId) {
+          const pin = campPins[event.campId];
           if (pin) {
             event.pin = pin;
           } else {
-            const camps = this.getCampList([event.campUID]);
+            const camps = this.getCampList([event.campId]);
             if (!event.pin) {
               event.pin = (camps && camps.length > 0) ? camps[0].pin : undefined;
-              Object.defineProperty(campPins, event.campUID, { value: event.pin, enumerable: true });
+              Object.defineProperty(campPins, event.campId, { value: event.pin, enumerable: true });
             }
           }
         }
 
         let match = false;
         if (campId) {
-          match = event.campUID == campId && this.nullOrEmpty(event.artCar);
+          match = event.campId == campId && this.nullOrEmpty(event.artCar);
         } else {
           match = this.rslEventContains(event, query) && (event.day == fDay || !!ids);
         }
@@ -977,10 +978,25 @@ export class DataManager implements WorkerClass {
     }
   }
 
+  private parsePin(pin: string): Pin {
+    if (hasValue(pin)) {
+      return JSON.parse(pin);
+    }
+    return { x: 0, y: 0 };
+  }
+
+  private fixPins(camps: Camp[]) {
+    for (const camp of camps) {
+      camp.pin = this.parsePin(camp.pin as any);
+    }
+  }
   public async write(key: string, url: string, timeout: number): Promise<any> {
     try {
       const response = await webFetchWithTimeout(url, {}, timeout);
       const json = await response.json();
+      if (key.includes(Names.camps)) {
+        this.fixPins(json);
+      }
       await set(key, json);
       return json;
     } catch (err) {
@@ -1015,7 +1031,7 @@ export class DataManager implements WorkerClass {
 
   public async getPins(pinType: string): Promise<MapSet> {
     try {
-      const pins: PlacedPin[] = await this.read(this.getId(Names.pins),[]);
+      const pins: PlacedPin[] = await this.read(this.getId(Names.pins), []);
       const mapSet: MapSet = { title: pinType, description: '', points: [] };
       for (let pin of pins) {
         const mp: MapPoint = { x: pin.x, y: pin.y, street: '', clock: '' };
@@ -1032,7 +1048,7 @@ export class DataManager implements WorkerClass {
 
   public async getGeoReferences(): Promise<GeoRef[]> {
     try {
-      return this.read(this.getId(Names.geo),[]);
+      return this.read(this.getId(Names.geo), []);
     } catch {
       return [];
     }
@@ -1043,17 +1059,17 @@ export class DataManager implements WorkerClass {
   }
 
   private async loadCamps(): Promise<Camp[]> {
-    return await this.read(this.getId(Names.camps),[]);
+    return await this.read(this.getId(Names.camps), []);
 
   }
 
   private async loadArt(): Promise<Art[]> {
-    return this.read(this.getId(Names.camps),[]);
+    return this.read(this.getId(Names.camps), []);
   }
 
   private async loadPins(): Promise<PlacedPin[]> {
     try {
-      return this.read(this.getId(Names.pins),[]);
+      return this.read(this.getId(Names.pins), []);
     } catch {
       return [];
     }
@@ -1061,14 +1077,14 @@ export class DataManager implements WorkerClass {
 
   private async loadLinks(): Promise<Link[]> {
     try {
-      return this.read(this.getId(Names.links),[]);
+      return this.read(this.getId(Names.links), []);
     } catch {
       return [];
     }
   }
 
   private async loadRevision(): Promise<Revision> {
-    return this.read(this.getId(Names.revision),[]);
+    return this.read(this.getId(Names.revision), []);
   }
 }
 

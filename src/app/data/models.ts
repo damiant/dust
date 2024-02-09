@@ -208,7 +208,8 @@ export interface Pin {
 export interface PlacedPin {
   x: number;
   y: number;
-  gps?: GpsCoord;
+  gpsLat?: number;
+  gpsLng?: number;  
   label: string;
 }
 
@@ -271,7 +272,7 @@ export interface RSLEvent {
   camp: string;
   title?: string;
   location: string;
-  campUID?: string;
+  campId?: string;
   day: string; // Format yyyy-mm-dd
   gpsCoords?: GpsCoord;
   pin?: Pin; // Added by dust
