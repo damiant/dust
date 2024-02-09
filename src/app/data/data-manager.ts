@@ -42,10 +42,12 @@ interface TimeCache {
 export class DataManager implements WorkerClass {
   private events: Event[] = [];
   private camps: Camp[] = [];
+  private rslEvents: RSLEvent[] = [];
   private pins: PlacedPin[] = [];
   private categories: string[] = [];
   private art: Art[] = [];
   private days: number[] = [];
+  private rslDays: number[] = [];
   private links: Link[] = [];
   private georeferences: GeoRef[] = [];
   private revision: Revision = { revision: 0 };
@@ -66,7 +68,7 @@ export class DataManager implements WorkerClass {
       case DataMethods.Populate:
         return await this.populate(args[0], args[1], args[2]);
       case DataMethods.GetDays:
-        return this.getDays();
+        return this.getDays(args[0]);
       case DataMethods.GetCategories:
         return this.categories;
       case DataMethods.SetDataset:
@@ -144,6 +146,7 @@ export class DataManager implements WorkerClass {
     this.pins = await this.loadPins();
     this.links = await this.loadLinks();
     this.revision = await this.loadRevision();
+    this.rslEvents = await this.loadMusic();
     this.georeferences = await this.getGeoReferences();
     this.log(`Successful load in populate`);
     this.init(hideLocations);
@@ -326,8 +329,10 @@ export class DataManager implements WorkerClass {
       }
     }
     this.days = [];
+    this.rslDays = [];    
     this.categories = [];
     this.allEventsOld = !this.checkEvents();
+
     for (let event of this.events) {
       let allLong = true;
       if (!this.categories.includes(event.event_type.label)) {
@@ -426,9 +431,18 @@ export class DataManager implements WorkerClass {
       event.longTimeString = timeString.long;
       event.all_day = allLong;
     }
+    for (const rslEvent of this.rslEvents) {
+         this.addRSLDay(this.asDateTime(rslEvent.day));
+    }
+
     this.categories.sort();
     this.cache = {};
     console.timeEnd('init');
+  }
+
+  private asDateTime(s: string): Date {
+    const t = s.split('-');
+    return new Date(parseInt(t[0]), parseInt(t[1]) - 1, parseInt(t[2]));
   }
 
   private locateCamp(camp: Camp): Pin | undefined {
@@ -577,7 +591,7 @@ export class DataManager implements WorkerClass {
 
     const events = await this.getRSLEvents(query, undefined, undefined, [], undefined);
     const found = events.map((e) => e.day).filter(unique);
-    const days = this.getDays();
+    const days = this.getDays(Names.rsl);
     const result: Day[] = [];
     for (let day of days) {
       const d = new Date(day.date);
@@ -603,7 +617,7 @@ export class DataManager implements WorkerClass {
     isHistorical?: boolean
   ): Promise<RSLEvent[]> {
     try {
-      const events: RSLEvent[] = await this.read(this.getId(Names.rsl), []);
+      const events= this.rslEvents;// RSLEvent[] = await this.read(this.getId(Names.rsl), []);
       const result: RSLEvent[] = [];
       query = this.scrubQuery(query);
       const fDay = day ? this.toRSLDateFormat(day) : undefined;
@@ -624,11 +638,12 @@ export class DataManager implements WorkerClass {
           }
         }
 
+
         let match = false;
         if (campId) {
           match = event.campId == campId && this.nullOrEmpty(event.artCar);
         } else {
-          match = this.rslEventContains(event, query) && (event.day == fDay || !!ids);
+          match = this.rslEventContains(event, query) && (event.day == fDay || !!ids || !fDay);
         }
 
         if (match) {
@@ -872,9 +887,10 @@ export class DataManager implements WorkerClass {
     return Math.abs(d1 - d2) / 36e5;
   }
 
-  public getDays(): Day[] {
+  public getDays(name: Names): Day[] {
     const result: Day[] = [];
-    for (let day of this.days) {
+    const days = (name == Names.rsl) ? this.rslDays : this.days;
+    for (let day of days) {
       const date = new Date(day);
       result.push({ name: getDayNameFromDate(date).substring(0, 3), dayName: date.getDate().toString(), date });
     }
@@ -923,13 +939,12 @@ export class DataManager implements WorkerClass {
     }
   }
 
-  // private path(name: string, online?: boolean): string {
-  //   if (this.dataset.toLowerCase().includes('ttitd')) {
-  //     return `${static_dust_events}${this.dataset}/${name}.json`;
-  //   } else {
-  //     return `${data_dust_events}${this.dataset}/${name}.json`;
-  //   }
-  // }
+  private addRSLDay(date: Date) {
+    const day = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
+    if (!this.rslDays.includes(day)) {
+      this.rslDays.push(day);
+    }
+  }
 
   private async loadEvents(): Promise<Event[]> {
     return await this.read(this.getId(Names.events), []);
@@ -1078,6 +1093,14 @@ export class DataManager implements WorkerClass {
   private async loadLinks(): Promise<Link[]> {
     try {
       return this.read(this.getId(Names.links), []);
+    } catch {
+      return [];
+    }
+  }
+
+  private async loadMusic(): Promise<RSLEvent[]> {
+    try {
+      return this.read(this.getId(Names.rsl), []);
     } catch {
       return [];
     }

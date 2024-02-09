@@ -14,7 +14,7 @@ import {
   ToastController,
 } from '@ionic/angular/standalone';
 import { DbService } from '../data/db.service';
-import { Day, Event, MapPoint } from '../data/models';
+import { Day, Event, MapPoint, Names } from '../data/models';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
@@ -153,7 +153,7 @@ export class EventsPage {
     const today = now();
     this.setToday(today);
     await this.db.checkEvents();
-    this.vm.days = await this.db.getDays();
+    this.vm.days = await this.db.getDays(Names.events);
     this.db.getCategories().then((categories) => (this.vm.categories = categories));
     this.vm.defaultDay = this.chooseDefaultDay(now());
     await this.update();

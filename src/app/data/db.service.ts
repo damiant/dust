@@ -14,6 +14,7 @@ import {
   Link,
   DatasetResult,
   Dataset,
+  Names,
 } from './models';
 import { call, registerWorker } from './worker-interface';
 import { clone, data_dust_events, daysUntil, noDate, now, static_dust_events } from '../utils/utils';
@@ -268,8 +269,8 @@ export class DbService {
     return await call(this.worker, DataMethods.FindCamp, uid);
   }
 
-  public async getDays(): Promise<Day[]> {
-    return await call(this.worker, DataMethods.GetDays);
+  public async getDays(name: Names): Promise<Day[]> {
+    return await call(this.worker, DataMethods.GetDays, name);
   }
 
   public async getEvents(idx: number, count: number): Promise<Event[]> {
