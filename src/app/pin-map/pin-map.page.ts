@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MapComponent } from '../map/map.component';
 import { DbService } from '../data/db.service';
-import { Art, MapPoint, MapSet } from '../data/models';
+import { Art, MapPoint, MapSet, Names } from '../data/models';
 import { GpsCoord } from '../map/geo.utils';
 import { GeoService } from '../geolocation/geo.service';
 import { toMapPoint } from '../map/map.utils';
@@ -83,11 +83,11 @@ export class PinMapPage {
       case MapType.Now:
         return await this.getEventsNow();
       case MapType.Restrooms:
-        return await this.fallback(await this.db.getGPSPoints('restrooms', 'Block of restrooms'), 'Restrooms');
+        return await this.fallback(await this.db.getGPSPoints(Names.restrooms, 'Block of restrooms'), 'Restrooms');
       case MapType.Ice:
-        return await this.fallback(await this.db.getMapPoints('ice'), 'Ice');
+        return await this.fallback(await this.db.getMapPoints(Names.ice), 'Ice');
       case MapType.Medical:
-        return await this.fallback(await this.db.getMapPoints('medical'), 'Medical');
+        return await this.fallback(await this.db.getMapPoints(Names.medical), 'Medical');
       default:
         return { title: ' ', description: '', points: [] };
     }

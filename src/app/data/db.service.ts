@@ -4,7 +4,6 @@ import {
   Day,
   Camp,
   Art,
-  Pin,
   DataMethods,
   MapSet,
   GeoRef,
@@ -146,10 +145,6 @@ export class DbService {
       gps: clone(gpsCoord),
       info: title ? { title, location: '', subtitle: '' } : undefined,
     };
-  }
-
-  public async getPotties(): Promise<Pin[]> {
-    return await call(this.worker, DataMethods.GetPotties);
   }
 
   public async getMapPoints(name: string): Promise<MapSet> {

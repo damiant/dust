@@ -38,7 +38,7 @@ export function registerWorkerClass(workerClass: WorkerClass) {
         if (response.ms > 100) {
           console.warn(msg);
         } else {
-          console.info(msg);
+          //console.info(msg);
         }
       }
     } catch (error) {

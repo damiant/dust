@@ -79,7 +79,7 @@ export class IntroPage {
       const downloading = this.download();
       if (downloading) {
         this.ui.presentDarkToast(
-          `Downloading update for ${this.vm.selected?.title}`,
+          `Downloading ${this.vm.selected?.title}`,
           this.toastController,
         );
       }
@@ -121,6 +121,7 @@ export class IntroPage {
       await this.api.download(this.vm.selected, false, this.download);
     } finally {
       this.vm.downloading = false;
+      this.download.set(false);
     }
     console.log(`Auto starting = ${this.vm.eventAlreadySelected}...`);
     if (this.vm.eventAlreadySelected) {
@@ -212,6 +213,7 @@ export class IntroPage {
 
       console.warn(`populate ${this.settingsService.settings.datasetId} attempt ${attempt}`);
       const revision = await this.db.init(this.settingsService.settings.datasetId);
+      await this.db.getWorkerLogs();
       console.warn(`sendDataToWorker ${this.settingsService.settings.datasetId}`);
       const useData = await this.api.sendDataToWorker(revision, this.db.locationsHidden(), this.isBurningMan());
       if (!useData) {

@@ -1,5 +1,5 @@
 import { Injectable, WritableSignal } from '@angular/core';
-import { Art, Camp, Dataset, MapData, Revision } from './models';
+import { Art, Camp, Dataset, MapData, Names, Revision } from './models';
 
 import { SettingsService } from './settings.service';
 import { data_dust_events, isWeb, now, static_dust_events } from '../utils/utils';
@@ -7,20 +7,6 @@ import { DbService } from './db.service';
 import { Capacitor } from '@capacitor/core';
 import { App } from '@capacitor/app';
 import { environment } from 'src/environments/environment';
-
-enum Names {
-  festivals = 'festivals', // Get from the root path at https://data.dust.events/  
-  datasets = 'datasets',
-  events = 'events',
-  art = 'art',
-  camps = 'camps',
-  rsl = 'rsl',
-  revision = 'revision',
-  version = 'version',
-  pins = 'pins',
-  links = 'links',
-  map = 'map',
-}
 
 interface Version {
   version: string;
@@ -38,7 +24,7 @@ export class ApiService {
   public async sendDataToWorker(
     defaultRevision: number,
     hideLocations: boolean,
-    mapIsOffline: boolean,
+    mapIsOffline: boolean, // Are we using the built in map.svg
   ): Promise<boolean> {
     const ds = this.settingsService.settings.datasetId;
 
@@ -58,8 +44,8 @@ export class ApiService {
       }
       this.settingsService.settings.mapUri = mapIsOffline ? '' : mapUri;
       this.settingsService.save();
-      console.info(`Saved settings`);
-      if (revision.revision <= defaultRevision && mapIsOffline) {
+      console.log(`Download? revision is ${revision.revision} and default is ${defaultRevision}`);
+      if (revision.revision <= defaultRevision) {
         console.warn(
           `Did not read data from storage as it is at revision ${revision.revision} but current is ${defaultRevision}`,
         );
@@ -94,7 +80,7 @@ export class ApiService {
     await this.reportWorkerLogs();
     if (!result || (result.events == 0 && result.camps == 0 && result.pins == 0)) {
       console.error(`dbService.setDataset complete but bad data ${JSON.stringify(result)}`);
-
+      console.log(`Bad data. Will redownload`)
       return false;
     }
     console.info(`dbService.setDataset complete ${JSON.stringify(result)}`);
@@ -158,13 +144,14 @@ export class ApiService {
       console.log(`get revision live ${dataset}`);
       const currentRevision: Revision = await this.dbService.get(dataset, Names.revision, { onlyRead: true, defaultValue: { revision: 0 } });
       console.log(`Current revision is ${JSON.stringify(currentRevision)} force is ${force}`);
-      revision = await this.dbService.get(dataset, Names.revision, { timeout: 1000 });
+      //revision: revision = await this.dbService.get(dataset, Names.revision, { timeout: 1000 });
       console.log(`Live revision is ${JSON.stringify(revision)}`);
 
       // Check the current revision
       const version: Version = await this.dbService.get(dataset, Names.version, { onlyRead: true, defaultValue: { version: '' } });
       const currentVersion = await this.getVersion();
-      
+
+      console.log(`force=${force} revision=${JSON.stringify(revision)} currentRevision=${JSON.stringify(currentRevision)}`)
 
       if (
         !force &&
@@ -189,14 +176,18 @@ export class ApiService {
     downloadSignal.set(true);
     const currentVersion = await this.getVersion();
 
-    const [rEvents, rArt, rCamps, rMusic, rPins, rLinks, rMap] = await Promise.allSettled([
+    const [rEvents, rArt, rCamps, rMusic, rPins, rLinks, rMap, rGeo, rRestrooms, rIce, rMedical] = await Promise.allSettled([
       this.dbService.get(dataset, Names.events, { revision: revision.revision, defaultValue: '' }),
       this.dbService.get(dataset, Names.art, { revision: revision.revision, defaultValue: '' }),
       this.dbService.get(dataset, Names.camps, { revision: revision.revision, defaultValue: '' }),
       this.dbService.get(dataset, Names.pins, { revision: revision.revision, defaultValue: '' }),
       this.dbService.get(dataset, Names.links, { revision: revision.revision, defaultValue: '' }),
       this.dbService.get(dataset, Names.rsl, { revision: revision.revision, defaultValue: '' }),
-      this.dbService.get(dataset, Names.map, { revision: revision.revision, defaultValue: '' })
+      this.dbService.get(dataset, Names.map, { revision: revision.revision, defaultValue: '' }),
+      this.dbService.get(dataset, Names.geo, { revision: revision.revision, defaultValue: '' }),
+      this.dbService.get(dataset, Names.restrooms, { revision: revision.revision, defaultValue: '' }),
+      this.dbService.get(dataset, Names.ice, { revision: revision.revision, defaultValue: '' }),
+      this.dbService.get(dataset, Names.medical, { revision: revision.revision, defaultValue: '' }),
     ]);
 
     const events = rEvents.status == 'fulfilled' ? rEvents.value : '';
@@ -227,7 +218,7 @@ export class ApiService {
       if (uri?.startsWith('/DATA/')) {
         uri = `${data_dust_events}${dataset}/map.${ext}`;
       }
-  
+
     }
     await this.dbService.writeData(dataset, Names.revision, revision);
     await this.dbService.writeData(dataset, Names.version, { version: await this.getVersion() });

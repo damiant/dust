@@ -182,6 +182,24 @@ export interface TimeString {
   long: string;
 }
 
+export enum Names {
+  festivals = 'festivals', // Get from the root path at https://data.dust.events/  
+  datasets = 'datasets',
+  events = 'events',
+  art = 'art',
+  camps = 'camps',
+  rsl = 'rsl',
+  revision = 'revision',
+  version = 'version',
+  pins = 'pins',
+  links = 'links',
+  map = 'map',
+  geo = 'geo', // Burning Man only
+  ice = 'ice', // Burning Man only
+  medical = 'medical', // Burning Man only
+  restrooms = 'restrooms' // Burning Man only
+}
+
 export interface Pin {
   x: number;
   y: number;
@@ -308,7 +326,6 @@ export interface GeoRef {
 export enum DataMethods {
   Populate = 'populate',
   GetDays = 'getDays',
-  GetPotties = 'getPotties',
   GetMapPoints = 'getMapPoints',
   GetGPSPoints = 'getGPSPoints',
   GetPins = 'getPins',
