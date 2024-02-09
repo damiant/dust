@@ -951,12 +951,10 @@ export class DataManager implements WorkerClass {
   }
 
   private async loadData(uri: string): Promise<any> {
-    //this.consoleLog(`Worker fetch ${uri}...`);
     try {
       const res = await fetch(uri);
       return await res.json();
     } catch (err) {
-      //throw new Error(`${uri}: ${err}`)
       this.consoleError(`Worker fetch Failed to load ${uri}`);
       return [];
     }
