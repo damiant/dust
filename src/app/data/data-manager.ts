@@ -32,7 +32,7 @@ import {
 } from '../utils/utils';
 import { defaultMapRadius, distance, formatDistance, locationStringToPin, mapPointToPoint } from '../map/map.utils';
 import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from '../map/geo.utils';
-import { set, get } from 'idb-keyval';
+import { set, get, clear } from 'idb-keyval';
 
 interface TimeCache {
   [index: string]: TimeString | undefined;
@@ -128,6 +128,8 @@ export class DataManager implements WorkerClass {
         return await this.getRSLEvents('', undefined, undefined, undefined, args[0]);
       case DataMethods.GetCamps:
         return this.getCamps(args[0], args[1]);
+        case DataMethods.Clear:
+          return this.clear();
       default:
         this.consoleError(`Unknown method ${method}`);
     }
@@ -145,6 +147,10 @@ export class DataManager implements WorkerClass {
     this.georeferences = await this.getGeoReferences();
     this.init(hideLocations);
     return this.revision.revision;
+  }
+
+  private async clear() {
+    await clear();
   }
 
   private sortArt(art: Art[]) {

@@ -339,5 +339,6 @@ export enum DataMethods {
   ConsoleLog = 'consoleLog',
   Write = 'write',
   ReadData = 'readData',
-  WriteData = 'writeData'
+  WriteData = 'writeData',
+  Clear = 'clear'
 }

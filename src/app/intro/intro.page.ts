@@ -79,7 +79,7 @@ export class IntroPage {
       const downloading = this.download();
       if (downloading) {
         this.ui.presentDarkToast(
-          `Downloading update for ${this.vm.selected?.name}`,
+          `Downloading update for ${this.vm.selected?.title}`,
           this.toastController,
         );
       }
@@ -149,6 +149,7 @@ export class IntroPage {
       console.log(`Delete file ${file.name}`);
       await Filesystem.deleteFile({ path: file.name, directory: Directory.Data });
     }
+    await this.db.clearIDB();
     console.log('Done clearing');
     this.settingsService.clearSelectedEvent();
     this.settingsService.settings.lastDownload = '';

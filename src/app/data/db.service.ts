@@ -201,6 +201,10 @@ export class DbService {
     return await call(this.worker, DataMethods.WriteData, key, data);
   }
 
+  public async clearIDB(): Promise<any> {
+    return await call(this.worker, DataMethods.Clear);
+  }
+
   public async getPins(name: string): Promise<MapSet> {
     return await call(this.worker, DataMethods.GetPins, name);
   }
