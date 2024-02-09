@@ -16,7 +16,7 @@
     } @if (!db.locationsHidden()) {
     <app-tile title="Now" routerLink="/map/now" imgSrc="assets/icon/calendar.svg"></app-tile>
     }
-    <app-tile title="Directions" (click)="directions()" iconName="compass-outline"></app-tile>
+    <app-tile title="Directions" [hidden]="!mapPin" (click)="directions()" iconName="compass-outline"></app-tile>
   </app-tile-container>
 
   @if (!db.featuresHidden().includes('friends')) {

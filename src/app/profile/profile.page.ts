@@ -25,7 +25,7 @@ import { Share } from '@capacitor/share';
 import { RouterModule } from '@angular/router';
 import { FriendsComponent } from '../friends/friends.component';
 import { SettingsService } from '../data/settings.service';
-import { MapService } from '../map/map.service';
+import { GPSPin, MapService } from '../map/map.service';
 import { DbService } from '../data/db.service';
 import { TileContainerComponent } from '../tile-container/tile-container.component';
 import { TileComponent } from '../tile/tile.component';
@@ -87,6 +87,7 @@ export class ProfilePage implements OnInit {
   locationEnabled = false;
   longEvents = false;
   hiddenPanel = false;
+  mapPin: GPSPin | undefined;
   links: Link[] = [];
   @ViewChild(IonContent) ionContent!: IonContent;
 
@@ -117,9 +118,10 @@ export class ProfilePage implements OnInit {
 
   async ngOnInit() {
     this.db.checkInit();
+    this.mapPin = this.getMapPin();
     this.longEvents = this.settings.settings.longEvents;
-    this.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
-    this.links = await this.db.getLinks();
+    this.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;    
+    this.links = await this.db.getLinks();    
   }
 
   visit(url: string) {
@@ -182,7 +184,8 @@ export class ProfilePage implements OnInit {
   async ionViewWillEnter() {
     if (Capacitor.isNativePlatform() && !this.ui.isAndroid()) {
       await StatusBar.hide({ animation: Animation.Fade });
-    }
+    }    
+    
   }
 
   async ionViewWillLeave() {
@@ -191,16 +194,26 @@ export class ProfilePage implements OnInit {
     }
   }
 
-  async directions() {
-    // Default comes from https://burningman.org/event/preparation/getting-there-and-back/
-    const lat = this.settings.settings.dataset ? this.settings.settings.dataset.lat : 40.753842;
-    const long = this.settings.settings.dataset ? this.settings.settings.dataset.long : -119.277;
-    const pin = { lat, long };
+  private getMapPin(): GPSPin | undefined {
+    
+    if (this.settings.settings.dataset?.lat) {
+      return { lat: this.settings.settings.dataset.lat, long: this.settings.settings.dataset.long };
+    } else {
+      if (!this.settings.settings.dataset?.lat) {
+      return { lat: 40.753842, long: -119.277 };
+      } else {
+        return undefined;
+      }
+    }
+  }
 
+  async directions() {
+    // Default comes from https://burningman.org/event/preparation/getting-there-and-back/    
+    if (!this.mapPin) return;
     if (await this.map.canOpenMapApp('google')) {
-      await this.map.openGoogleMapDirections(pin);
+      await this.map.openGoogleMapDirections(this.mapPin);
     } else if (await this.map.canOpenMapApp('apple')) {
-      await this.map.openAppleMapDirections(pin);
+      await this.map.openAppleMapDirections(this.mapPin);
     }
   }
 }

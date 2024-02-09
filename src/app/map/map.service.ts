@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AppLauncher } from '@capacitor/app-launcher';
 import { Capacitor } from '@capacitor/core';
 
-interface GPSPin {
+export interface GPSPin {
   lat: number;
   long: number;
 }
