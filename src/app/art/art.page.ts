@@ -102,10 +102,6 @@ export class ArtPage {
       this.vm.showImage = true;// this.isThisYear();
       this.init();
     });
-    effect(() => {
-      const status = this.db.networkStatus();
-      this.vm.showImage = true;// this.isThisYear() || status == 'wifi';
-    });
   }
 
   isThisYear(): boolean {
