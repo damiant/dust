@@ -7,7 +7,7 @@ function getFileReader(): FileReader {
 }
 
 // Keeping this in here as its a good quirk
-function blobToBase64(blob: Blob) {
+export function blobToBase64(blob: Blob) {
   return new Promise((resolve, reject) => {
     try {
       const reader = getFileReader(); // new FileReader();

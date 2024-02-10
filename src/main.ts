@@ -7,7 +7,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
-import { provideServiceWorker } from '@angular/service-worker';
+//import { provideServiceWorker } from '@angular/service-worker';
 import { DbService } from './app/data/db.service';
 
 if (environment.production) {
@@ -27,10 +27,10 @@ bootstrapApplication(AppComponent, {
     provideIonicAngular({ mode: 'ios', swipeBackEnabled: false }),
     provideAnimations(),
     provideRouter(routes, withComponentInputBinding()),
-    provideServiceWorker('ngsw-worker.js', {
-      // Service Worker seems to be causing problems
-        enabled: false,//!isDevMode(),
-        registrationStrategy: 'registerWhenStable:30000'
-    })
+    // provideServiceWorker('ngsw-worker.js', {
+    //   // Service Worker seems to be causing problems
+    //     enabled: !isDevMode(),
+    //     registrationStrategy: 'registerWhenStable:30000'
+    // })
 ],
 });

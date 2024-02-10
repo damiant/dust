@@ -2,11 +2,12 @@ import { Injectable, WritableSignal } from '@angular/core';
 import { Art, Camp, Dataset, DatasetResult, MapData, Names, Revision } from './models';
 
 import { SettingsService } from './settings.service';
-import { data_dust_events, isWeb, static_dust_events } from '../utils/utils';
+import { data_dust_events, static_dust_events } from '../utils/utils';
 import { DbService } from './db.service';
 import { Capacitor } from '@capacitor/core';
 import { App } from '@capacitor/app';
 import { environment } from 'src/environments/environment';
+import { CacheStoreService } from './cache-store.service';
 
 interface Version {
   version: string;
@@ -22,6 +23,7 @@ export interface SendResult {
 export class ApiService {
   constructor(
     private settingsService: SettingsService,
+    private cache: CacheStoreService,
     private dbService: DbService,
   ) { }
 
@@ -40,12 +42,6 @@ export class ApiService {
       }
       const mapData: MapData = await this.dbService.get(ds, Names.map, { onlyRead: true, defaultValue: { filename: '', uri: '' } });
       const mapUri = mapData.uri;
-      const exists = await this.dbService.stat(mapUri);
-      if (exists || isWeb()) {
-        console.info(`${ds} map is ${mapUri}`);
-      } else {
-        console.error(`${ds} map not found at ${mapUri}`);
-      }
       this.settingsService.settings.mapUri = mapIsOffline ? '' : mapUri;
       this.settingsService.save();
       console.log(`Download? revision is ${revision.revision} and default is ${defaultRevision}`);
@@ -99,7 +95,7 @@ export class ApiService {
     return !camps || camps.length == 0 || !art || !events || events.length == 0;
   }
 
-  public async loadDatasets(): Promise<Dataset[]> {    
+  public async loadDatasets(): Promise<Dataset[]> {
     const datasets = await this.dbService.get(Names.datasets, Names.datasets, { freshOnce: true, timeout: 5000 });
     const festivals = await this.dbService.get(Names.festivals, Names.festivals, { freshOnce: true, timeout: 5000 });
     return this.cleanNames([...festivals, ...datasets]);
@@ -135,12 +131,12 @@ export class ApiService {
     let revision: Revision = { revision: 0 };
     try {
       // Gets it from netlify      
-      const datasets: Dataset[] = await this.dbService.get(Names.datasets, Names.datasets, { freshOnce: true, timeout: 1000 });      
+      const datasets: Dataset[] = await this.dbService.get(Names.datasets, Names.datasets, { freshOnce: true, timeout: 1000 });
       dataset = this.datasetId(selected ? selected : datasets[0]);
 
       console.log(`get revision live ${dataset}`);
       const currentRevision: Revision = await this.dbService.get(dataset, Names.revision, { onlyRead: true, defaultValue: { revision: 0 } });
-      console.log(`Current revision is ${JSON.stringify(currentRevision)} force is ${force}`);      
+      console.log(`Current revision is ${JSON.stringify(currentRevision)} force is ${force}`);
       console.log(`Live revision is ${JSON.stringify(revision)}`);
 
       // Check the current revision
@@ -159,7 +155,7 @@ export class ApiService {
       ) {
         console.log(
           `Will not download data for ${dataset} as it is already at revision ${currentRevision.revision} and version is ${currentVersion}`,
-        );        
+        );
         return true;
       }
     } catch (err) {
@@ -186,7 +182,7 @@ export class ApiService {
     ]);
 
     const events = rEvents.status == 'fulfilled' ? rEvents.value : '';
-    const art = rArt.status == 'fulfilled' ? rArt.value : '';
+    const art: Art[] = rArt.status == 'fulfilled' ? rArt.value : '';
     const camps = rCamps.status == 'fulfilled' ? rCamps.value : '';
     const map = rMap.status == 'fulfilled' ? rMap.value : '';
     console.log(`events=${rEvents.status} art=${rArt.status} camps=${rCamps.status} pins=${rPins.status} links=${rLinks.status} map=${rMap.status} geo=${rGeo.status} restrooms=${rRestrooms.status} ice=${rIce.status} medical=${rMedical.status} rsl=${rRSL.status}`);
@@ -198,23 +194,14 @@ export class ApiService {
     } else {
       console.log(`Data passed checks for events, art and camps`);
     }
-
     let uri: string | undefined = undefined;
 
 
     if (map) {
       console.log(map);
       const ext = map.filename ? map.filename.split('.').pop() : 'svg';
-      const mapData = await this.dbService.getLiveBinary(dataset, Names.map, ext, currentVersion);
-      if (mapData) {
-        uri = await this.dbService.saveBinary(dataset, Names.map, ext, mapData);
-        console.log(`Map saved to ${uri}`);
-      }
-      // This is for web: it cant save binary so we link to the external url
-      if (uri?.startsWith('/DATA/')) {
-        uri = `${data_dust_events}${dataset}/map.${ext}`;
-      }
-
+      uri = await this.dbService.getLiveBinary(dataset, Names.map, ext, currentVersion);
+      uri = await this.cache.setImage(uri);
     }
     await this.dbService.writeData(dataset, Names.revision, revision);
     await this.dbService.writeData(dataset, Names.version, { version: await this.getVersion() });
@@ -225,5 +212,4 @@ export class ApiService {
     downloadSignal.set(false);
     return true;
   }
-
 }

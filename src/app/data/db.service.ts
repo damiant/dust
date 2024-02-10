@@ -22,7 +22,7 @@ import { GpsCoord, Point } from '../map/geo.utils';
 import { environment } from 'src/environments/environment';
 import { Network } from '@capacitor/network';
 import { Directory, Filesystem } from '@capacitor/filesystem';
-import { Capacitor } from '@capacitor/core';
+
 
 
 export interface GetOptions {
@@ -339,61 +339,9 @@ export class DbService {
     }
   }
 
-  public async saveBinary(dataset: string, name: string, ext: string, data: any): Promise<string> {
-    const id = this._getkey(dataset, name);
-    const res = await Filesystem.writeFile({
-      path: `${id}.${ext}`,
-      data: data,
-      directory: Directory.Data,
-    });
-    return Capacitor.convertFileSrc(res.uri);
+  public async getLiveBinary(dataset: string, name: string, ext: string, revision: string): Promise<string> {
+    return this.livePath(dataset, name, ext) + `?${revision}`;
   }
 
-  public async stat(path: string): Promise<boolean> {
-    try {
-      const s = await Filesystem.stat({
-        path,
-        directory: Directory.Data,
-      });
-      return s.size > 0;
-    } catch {
-      return false;
-    }
-  }
-
-  public async getLiveBinary(dataset: string, name: string, ext: string, revision: string): Promise<any> {
-    const status = await Network.getStatus();
-    if (!status.connected) {
-      return undefined;
-    } else {
-      // Try to get from url
-      try {
-        const url = this.livePath(dataset, name, ext) + `?${revision}`;
-        console.log(`getLive ${url} ${dataset} ${name}...`);
-        const path = this._getkey(dataset, name) + '.' + ext;
-        await Filesystem.downloadFile({ directory: Directory.Data, path, url });
-        //const res = await fetchWithTimeout(url, 15000, 'blob');
-        return await this.readBinary(this._getkey(dataset, name), undefined, ext)
-      } catch (error) {
-        console.error(`Failed getLiveBinary`);
-        throw new Error(error as string);
-      }
-    }
-  }
-
-  private async readBinary(id: string, defaultValue: any, ext: string): Promise<string | Blob> {
-    try {
-      console.log(`Reading ${id}`);
-      const contents = await Filesystem.readFile({
-        path: `${id}.${ext}`,
-        directory: Directory.Data,
-        //encoding: Encoding.UTF8,
-      });
-      return contents.data;
-    } catch (err) {
-      console.warn(`Unable to read ${id}. Using ${JSON.stringify(defaultValue)}: ${err}`);
-      return defaultValue;
-    }
-  }
 }
 

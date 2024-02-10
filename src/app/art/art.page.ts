@@ -99,12 +99,12 @@ export class ArtPage {
       const _year = this.db.selectedYear();
       this.db.checkInit();
       this.vm = initialState();
-      this.vm.showImage = this.isThisYear();
+      this.vm.showImage = true;// this.isThisYear();
       this.init();
     });
     effect(() => {
       const status = this.db.networkStatus();
-      this.vm.showImage = this.isThisYear() || status == 'wifi';
+      this.vm.showImage = true;// this.isThisYear() || status == 'wifi';
     });
   }
 
