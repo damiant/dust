@@ -4,9 +4,9 @@
       <ion-content class="ion-padding">
         <b>{{ info.title }}</b
         ><br />{{ info.location }}<br />{{ info.subtitle }}
-        <div [@fade]="imageReady ? 'visible' : 'hidden'" class="center">
+        <div class="center">
           @if (info.imageUrl) {
-            <img class="pop" (load)="ready()" [src]="info.imageUrl" [alt]="info.title" />
+            <app-cached-img class="pop" [src]="info.imageUrl" [alt]="info.title" />
           }
         </div>
         <div class="center">

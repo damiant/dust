@@ -150,9 +150,9 @@ export function mapPointToPin(point: MapPoint, mapRadius: number): Pin | undefin
     if (!point.clock) {
       if (point.street == 'airport road') {
         point.clock = '5:00';
-      } else if (point.street == 'none') {
+      } else if (point.street == 'none' || point.street == 'mobile') {
         return undefined;
-      } else {
+      } else {        
         console.error('Invalid Point', point);
         return undefined;
       }
@@ -177,7 +177,7 @@ export function locationStringToPin(location: string, mapRadius: number): Pin | 
     location = '6:00 & A';
   }
   const pin = mapPointToPin(toMapPoint(location), mapRadius);
-  if (pin == undefined && location !== 'None') {
+  if (pin == undefined && location !== 'None' && location !== 'Mobile') {
     console.warn(`Location "${location}" could not be found`);
   }
   return pin;

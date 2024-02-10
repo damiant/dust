@@ -208,8 +208,7 @@ export class IntroPage {
 
       console.warn(`populate ${this.settingsService.settings.datasetId} attempt ${attempt}`);
       let result = await this.db.init(this.settingsService.settings.datasetId);
-      await this.db.getWorkerLogs();
-      console.warn(`sendDataToWorker ${this.settingsService.settings.datasetId}`);
+      await this.db.getWorkerLogs();      
       const sendResult: SendResult = await this.api.sendDataToWorker(result.revision, this.db.locationsHidden(), this.isBurningMan());
       if (sendResult.datasetResult) {
         // We downloaded a new dataset
@@ -223,8 +222,7 @@ export class IntroPage {
           this.launch(attempt + 1);
         }
         return;
-      }
-      console.log(`sendDataToWorker completed`);
+      }      
       this.fav.init(this.settingsService.settings.datasetId);
       let showYear = (`${new Date().getFullYear()}` !== this.vm.selected.year) && this.vm.selected.year !== '0000';
 

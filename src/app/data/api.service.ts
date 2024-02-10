@@ -40,7 +40,7 @@ export class ApiService {
         return { success: false };
       }
       const mapData: MapData = await this.dbService.get(ds, Names.map, { onlyRead: true, defaultValue: { filename: '', uri: '' } });
-      const mapUri = mapData.uri;
+      const mapUri = await getCachedImage(mapData.uri);
       this.settingsService.settings.mapUri = mapIsOffline ? '' : mapUri;
       this.settingsService.save();
       console.log(`Download? revision is ${revision.revision} and default is ${defaultRevision}`);
