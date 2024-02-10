@@ -136,7 +136,7 @@ export class DataManager implements WorkerClass {
     }
   }
 
-  public async populate(dataset: string, hideLocations: boolean, env: any): Promise<number> {
+  public async populate(dataset: string, hideLocations: boolean, env: any): Promise<DatasetResult> {
     this.dataset = dataset;
     this.env = env;
     this.log(`Populate dataset=${dataset}`)
@@ -150,7 +150,9 @@ export class DataManager implements WorkerClass {
     this.georeferences = await this.getGeoReferences();
     this.log(`Successful load in populate`);
     this.init(hideLocations);
-    return this.revision.revision;
+    return { events: this.events.length, art: this.art.length, pins: this.pins.length, 
+      camps: this.camps.length, rsl: this.rslEvents.length, links: this.links.length,
+      revision: this.revision.revision };    
   }
 
   private async clear() {
@@ -329,7 +331,7 @@ export class DataManager implements WorkerClass {
       }
     }
     this.days = [];
-    this.rslDays = [];    
+    this.rslDays = [];
     this.categories = [];
     this.allEventsOld = !this.checkEvents();
 
@@ -432,7 +434,7 @@ export class DataManager implements WorkerClass {
       event.all_day = allLong;
     }
     for (const rslEvent of this.rslEvents) {
-         this.addRSLDay(this.asDateTime(rslEvent.day));
+      this.addRSLDay(this.asDateTime(rslEvent.day));
     }
 
     this.categories.sort();
@@ -463,7 +465,7 @@ export class DataManager implements WorkerClass {
       this.art = await this.loadData(ds.art);
       this.links = await this.loadData(ds.links);
       this.pins = await this.loadData(ds.pins);
-      const _rslData = await this.loadData(ds.rsl);
+      this.rslEvents = await this.loadData(ds.rsl);
       this.consoleLog(
         `Setting dataset in worker: ${this.events.length} events, ${this.camps.length} camps, ${this.art.length} art`,
       );
@@ -473,7 +475,8 @@ export class DataManager implements WorkerClass {
         art: this.art.length,
         pins: this.pins.length,
         links: this.links.length,
-        rsl: 0,
+        rsl: this.rslEvents.length,
+        revision: this.revision.revision
       };
     } catch (err) {
       this.consoleError(`Failed to setDataset: ${err}`);
@@ -617,7 +620,11 @@ export class DataManager implements WorkerClass {
     isHistorical?: boolean
   ): Promise<RSLEvent[]> {
     try {
-      const events= this.rslEvents;// RSLEvent[] = await this.read(this.getId(Names.rsl), []);
+      const events = this.rslEvents;
+      if (!events || events.length == 0) {
+        this.log('No RSL Events');
+      }
+      // RSLEvent[] = await this.read(this.getId(Names.rsl), []);
       const result: RSLEvent[] = [];
       query = this.scrubQuery(query);
       const fDay = day ? this.toRSLDateFormat(day) : undefined;

@@ -10,7 +10,7 @@ import { FavoritesService } from '../favs/favorites.service';
 import { MessageComponent } from '../message/message.component';
 import { addDays, daysUntil, delay, isWhiteSpace, now } from '../utils/utils';
 import { Dataset } from '../data/models';
-import { ApiService } from '../data/api.service';
+import { ApiService, SendResult } from '../data/api.service';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
 import { ThemePrimaryColor, UiService } from '../ui/ui.service';
@@ -212,11 +212,15 @@ export class IntroPage {
       this.vm.showMessage = false;
 
       console.warn(`populate ${this.settingsService.settings.datasetId} attempt ${attempt}`);
-      const revision = await this.db.init(this.settingsService.settings.datasetId);
+      let result = await this.db.init(this.settingsService.settings.datasetId);
       await this.db.getWorkerLogs();
       console.warn(`sendDataToWorker ${this.settingsService.settings.datasetId}`);
-      const useData = await this.api.sendDataToWorker(revision, this.db.locationsHidden(), this.isBurningMan());
-      if (!useData) {
+      const sendResult: SendResult = await this.api.sendDataToWorker(result.revision, this.db.locationsHidden(), this.isBurningMan());
+      if (sendResult.datasetResult) {
+        // We downloaded a new dataset
+        result = sendResult.datasetResult;
+      }
+      if (!sendResult.success) {
         // Its a mess
         await this.cleanup();
         // It doesnt matter if we were able to cleanup the dataset by downloading again, we need to exit to relaunch
@@ -234,7 +238,7 @@ export class IntroPage {
       this.db.selectedDataset.set(this.vm.selected);
 
       const hidden = [];
-      if (this.isBurningMan() && !['2024', '2023'].includes(this.vm.selected.year)) {
+      if (result.rsl == 0) {
         hidden.push('rsl');
       }
       if (!this.isBurningMan()) {

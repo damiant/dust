@@ -134,6 +134,7 @@ export class RslPage {
     this.setToday(today);
 
     this.vm.days = await this.db.getDays(Names.rsl);
+    console.log('init RSL days', this.vm.days);
     this.vm.defaultDay = this.chooseDefaultDay(now());
     this.updateTitle();
     await this.update();
@@ -187,8 +188,8 @@ export class RslPage {
 
   private noEventsMessage() {
     return this.db.eventHasntBegun() ?
-    'Events have not been added yet.' : 
-    'All the events for this day have concluded.';  
+      'Events have not been added yet.' :
+      'All the events for this day have concluded.';
   }
 
   private addEvents(count: number) {

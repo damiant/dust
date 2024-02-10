@@ -303,6 +303,7 @@ export interface DatasetResult {
   pins: number;
   links: number;
   rsl: number;
+  revision: number;
 }
 
 export interface RSLOccurrence {

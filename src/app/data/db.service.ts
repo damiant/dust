@@ -58,7 +58,7 @@ export class DbService {
     }
   }
 
-  public async init(dataset: string): Promise<number> {
+  public async init(dataset: string): Promise<DatasetResult> {
     this.initWorker(); // Just to double check
     return await call(this.worker, DataMethods.Populate, dataset, this.hideLocations, environment);
   }

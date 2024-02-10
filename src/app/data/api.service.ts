@@ -1,5 +1,5 @@
 import { Injectable, WritableSignal } from '@angular/core';
-import { Art, Camp, Dataset, MapData, Names, Revision } from './models';
+import { Art, Camp, Dataset, DatasetResult, MapData, Names, Revision } from './models';
 
 import { SettingsService } from './settings.service';
 import { data_dust_events, isWeb, now, static_dust_events } from '../utils/utils';
@@ -12,6 +12,10 @@ interface Version {
   version: string;
 }
 
+export interface SendResult {
+  datasetResult?: DatasetResult,
+  success: boolean;
+}
 @Injectable({
   providedIn: 'root',
 })
@@ -25,14 +29,14 @@ export class ApiService {
     defaultRevision: number,
     hideLocations: boolean,
     mapIsOffline: boolean, // Are we using the built in map.svg
-  ): Promise<boolean> {
+  ): Promise<SendResult> {
     const ds = this.settingsService.settings.datasetId;
 
     try {
       const revision: Revision = await this.dbService.get(ds, Names.revision, { onlyRead: true });
       if (!revision) {
         console.warn(`Read from app storage`);
-        return false;
+        return { success: false };
       }
       const mapData: MapData = await this.dbService.get(ds, Names.map, { onlyRead: true, defaultValue: { filename: '', uri: '' } });
       const mapUri = mapData.uri;
@@ -49,11 +53,11 @@ export class ApiService {
         console.warn(
           `Did not read data from storage as it is at revision ${revision.revision} but current is ${defaultRevision}`,
         );
-        return true;
+        return { success: true };
       }
     } catch (err) {
       console.error(`Unable read revision`, err);
-      return false;
+      return { success: false };
     }
     const events = this.dbService.livePath(ds, Names.events);
     const art = this.dbService.livePath(ds, Names.art);
@@ -81,10 +85,10 @@ export class ApiService {
     if (!result || (result.events == 0 && result.camps == 0 && result.pins == 0)) {
       console.error(`dbService.setDataset complete but bad data ${JSON.stringify(result)}`);
       console.log(`Bad data. Will redownload`)
-      return false;
+      return { success: false };
     }
     console.info(`dbService.setDataset complete ${JSON.stringify(result)}`);
-    return true;
+    return { success: false, datasetResult: result };
   }
 
   private async reportWorkerLogs() {
@@ -176,7 +180,7 @@ export class ApiService {
     downloadSignal.set(true);
     const currentVersion = await this.getVersion();
 
-    const [rEvents, rArt, rCamps, rMusic, rPins, rLinks, rMap, rGeo, rRestrooms, rIce, rMedical] = await Promise.allSettled([
+    const [rEvents, rArt, rCamps, rPins, rLinks, rRSL, rMap, rGeo, rRestrooms, rIce, rMedical] = await Promise.allSettled([
       this.dbService.get(dataset, Names.events, { revision: revision.revision, defaultValue: '' }),
       this.dbService.get(dataset, Names.art, { revision: revision.revision, defaultValue: '' }),
       this.dbService.get(dataset, Names.camps, { revision: revision.revision, defaultValue: '' }),
@@ -194,6 +198,7 @@ export class ApiService {
     const art = rArt.status == 'fulfilled' ? rArt.value : '';
     const camps = rCamps.status == 'fulfilled' ? rCamps.value : '';
     const map = rMap.status == 'fulfilled' ? rMap.value : '';
+    console.log(`events=${rEvents.status} art=${rArt.status} camps=${rCamps.status} pins=${rPins.status} links=${rLinks.status} map=${rMap.status} geo=${rGeo.status} restrooms=${rRestrooms.status} ice=${rIce.status} medical=${rMedical.status} rsl=${rRSL.status}`);
 
     if (this.badData(events, art, camps)) {
       console.error(`Download failed`);
