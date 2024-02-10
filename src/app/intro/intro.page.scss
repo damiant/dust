@@ -53,6 +53,7 @@ p {
     width: 100%;
     overflow-y: hidden;
     overflow-x: auto;
+    padding-top: 2rem;
     scroll-snap-type: x mandatory;
     scroll-padding-left: 20px;
     scroll-behavior: smooth;
