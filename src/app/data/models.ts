@@ -155,8 +155,7 @@ export enum LocationEnabledStatus {
 export interface Settings {
   datasetId: string;
   dataset: Dataset | undefined;
-  eventTitle: string;
-  lastDownload: string;
+  eventTitle: string;  
   mapRotation: number;
   mapUri: string;
   locationEnabled: LocationEnabledStatus;

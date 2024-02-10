@@ -132,8 +132,7 @@ export class ProfilePage implements OnInit {
     this.moreClicks++;
     if (this.moreClicks == 5) {
       this.ui.presentToast('Locations now enabled', this.toastController);
-      environment.overrideLocations = true;
-      this.settings.settings.lastDownload = '';
+      environment.overrideLocations = true;      
       this.settings.save();
       this.db.setHideLocations(false);
       await this.db.init(this.settings.settings.datasetId);

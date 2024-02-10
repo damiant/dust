@@ -152,8 +152,7 @@ export class IntroPage {
     }
     await this.db.clearIDB();
     console.log('Done clearing');
-    this.settingsService.clearSelectedEvent();
-    this.settingsService.settings.lastDownload = '';
+    this.settingsService.clearSelectedEvent();    
     this.settingsService.save();
     document.location.href = '';
   }

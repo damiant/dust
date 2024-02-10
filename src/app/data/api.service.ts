@@ -2,7 +2,7 @@ import { Injectable, WritableSignal } from '@angular/core';
 import { Art, Camp, Dataset, DatasetResult, MapData, Names, Revision } from './models';
 
 import { SettingsService } from './settings.service';
-import { data_dust_events, isWeb, now, static_dust_events } from '../utils/utils';
+import { data_dust_events, isWeb, static_dust_events } from '../utils/utils';
 import { DbService } from './db.service';
 import { Capacitor } from '@capacitor/core';
 import { App } from '@capacitor/app';
@@ -99,9 +99,9 @@ export class ApiService {
     return !camps || camps.length == 0 || !art || !events || events.length == 0;
   }
 
-  public async loadDatasets(): Promise<Dataset[]> {
-    const datasets = await this.dbService.get(Names.datasets, Names.datasets, { timeout: 5000 });
-    const festivals = await this.dbService.get(Names.festivals, Names.festivals, { timeout: 5000 });
+  public async loadDatasets(): Promise<Dataset[]> {    
+    const datasets = await this.dbService.get(Names.datasets, Names.datasets, { freshOnce: true, timeout: 5000 });
+    const festivals = await this.dbService.get(Names.festivals, Names.festivals, { freshOnce: true, timeout: 5000 });
     return this.cleanNames([...festivals, ...datasets]);
   }
 
@@ -131,24 +131,16 @@ export class ApiService {
   }
 
   public async download(selected: Dataset | undefined, force: boolean, downloadSignal: WritableSignal<boolean>): Promise<boolean> {
-    //const lastDownload = this.settingsService.getLastDownload();
-    //const mins = minutesBetween(now(), lastDownload);
     let dataset = '';
     let revision: Revision = { revision: 0 };
-    // if (mins < 5) {
-    //   console.log(`Downloaded ${mins} minutes ago (${lastDownload})`);
-    //   return;
-    // }
     try {
       // Gets it from netlify      
-      const datasets: Dataset[] = await this.dbService.get(Names.datasets, Names.datasets, { timeout: 1000 });
-      const rootDatasets: Dataset[] = await this.dbService.get(Names.festivals, Names.festivals, { timeout: 1000 });
+      const datasets: Dataset[] = await this.dbService.get(Names.datasets, Names.datasets, { freshOnce: true, timeout: 1000 });      
       dataset = this.datasetId(selected ? selected : datasets[0]);
 
       console.log(`get revision live ${dataset}`);
       const currentRevision: Revision = await this.dbService.get(dataset, Names.revision, { onlyRead: true, defaultValue: { revision: 0 } });
-      console.log(`Current revision is ${JSON.stringify(currentRevision)} force is ${force}`);
-      //revision: revision = await this.dbService.get(dataset, Names.revision, { timeout: 1000 });
+      console.log(`Current revision is ${JSON.stringify(currentRevision)} force is ${force}`);      
       console.log(`Live revision is ${JSON.stringify(revision)}`);
 
       // Check the current revision
@@ -167,8 +159,7 @@ export class ApiService {
       ) {
         console.log(
           `Will not download data for ${dataset} as it is already at revision ${currentRevision.revision} and version is ${currentVersion}`,
-        );
-        this.rememberLastDownload();
+        );        
         return true;
       }
     } catch (err) {
@@ -231,13 +222,8 @@ export class ApiService {
     map.uri = uri;
     await this.dbService.writeData(dataset, Names.map, map);
 
-    this.rememberLastDownload();
     downloadSignal.set(false);
     return true;
   }
 
-  private rememberLastDownload() {
-    this.settingsService.settings.lastDownload = now().toISOString();
-    this.settingsService.save();
-  }
 }

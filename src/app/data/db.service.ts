@@ -29,6 +29,7 @@ export interface GetOptions {
   timeout?: number; // Timeout when reading live
   onlyRead?: boolean; // Just read from cache, do not attempt to download
   defaultValue?: any; // Return default value on failure
+  freshOnce?: boolean; // Download once then onlyRead afterwards
   revision?: number; // This is used for cache busting
 }
 
@@ -46,6 +47,7 @@ export class DbService {
   public resume = signal('');
   private initialized = false;
   private hideLocations = true;
+  private datasetsRead: string[] = [];
   private worker!: Worker;
 
   public async initWorker(): Promise<void> {
@@ -160,7 +162,16 @@ export class DbService {
     // TODO: Move this to a signal that responds to network change to improve perf
     const status = await Network.getStatus();
     try {
-      if (!status.connected || options.onlyRead) {
+      let onlyRead = !!options.onlyRead;
+      if (options.freshOnce) {
+        if (this.haveRead(this._getkey(dataset, name))) {
+          onlyRead = true;
+        }
+      }
+      if (!status.connected) {
+        onlyRead = true;
+      }
+      if (onlyRead) {
         return await this._read(this._getkey(dataset, name));
       } else {
         let url = this.livePath(dataset, name);
@@ -168,7 +179,9 @@ export class DbService {
           url += `?revision=${options.revision}`;
 
         }
-        return await this._write(this._getkey(dataset, name), url, options.timeout ?? 30000);
+        const result = await this._write(this._getkey(dataset, name), url, options.timeout ?? 30000);
+        this.markRead(this._getkey(dataset, name));
+        return result;
       }
     } catch (err) {
       const error = `Failed to get dataset=${dataset} name=${name}`;
@@ -178,6 +191,15 @@ export class DbService {
       } else {
         throw new Error(error);
       }
+    }
+  }
+
+  private haveRead(key: string) {
+    return this.datasetsRead.includes(key);
+  }
+  private markRead(key: string) {
+    if (!this.datasetsRead.includes(key)) {
+      this.datasetsRead.push(key);
     }
   }
 
