@@ -219,8 +219,17 @@ export class DbService {
     return await call(this.worker, DataMethods.WriteData, key, data);
   }
 
-  public async clearIDB(): Promise<any> {
+  private async clearIDB(): Promise<any> {
     return await call(this.worker, DataMethods.Clear);
+  }
+
+  public async clear() {
+    const d = await Filesystem.readdir({ path: '.', directory: Directory.Data });
+    for (let file of d.files) {
+      console.log(`Delete file ${file.name}`);
+      await Filesystem.deleteFile({ path: file.name, directory: Directory.Data });
+    }
+    await this.clearIDB();
   }
 
   public async getPins(name: string): Promise<MapSet> {

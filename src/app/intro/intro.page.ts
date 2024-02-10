@@ -16,7 +16,6 @@ import { Capacitor } from '@capacitor/core';
 import { ThemePrimaryColor, UiService } from '../ui/ui.service';
 import { environment } from 'src/environments/environment';
 import { Network } from '@capacitor/network';
-import { Directory, Filesystem } from '@capacitor/filesystem';
 import { addIcons } from 'ionicons';
 import { arrowForwardOutline } from 'ionicons/icons';
 
@@ -145,12 +144,7 @@ export class IntroPage {
     if (this.vm.clearCount < 5) {
       return;
     }
-    const d = await Filesystem.readdir({ path: '.', directory: Directory.Data });
-    for (let file of d.files) {
-      console.log(`Delete file ${file.name}`);
-      await Filesystem.deleteFile({ path: file.name, directory: Directory.Data });
-    }
-    await this.db.clearIDB();
+    await this.db.clear();
     console.log('Done clearing');
     this.settingsService.clearSelectedEvent();    
     this.settingsService.save();
