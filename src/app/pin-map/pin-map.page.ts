@@ -124,6 +124,9 @@ export class PinMapPage {
   private async convertToPoint(art: Art): Promise<MapPoint | undefined> {
     let point = toMapPoint(art.location_string!);
     if (point.street == 'unplaced') return undefined;
+    if (!art.location) {
+      console.error(`Bad art found`, art)
+    }
     if (art.location.gps_latitude && art.location.gps_longitude) {
       const gps = { lng: art.location.gps_longitude, lat: art.location.gps_latitude };
       point = await this.db.gpsToMapPoint(gps, undefined);

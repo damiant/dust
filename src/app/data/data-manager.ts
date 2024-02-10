@@ -1077,7 +1077,7 @@ export class DataManager implements WorkerClass {
   }
 
   private async loadArt(): Promise<Art[]> {
-    return this.read(this.getId(Names.camps), []);
+    return this.read(this.getId(Names.art), []);
   }
 
   private async loadPins(): Promise<PlacedPin[]> {
