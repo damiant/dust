@@ -42,7 +42,6 @@ interface EventsState {
   categories: string[];
   search: string;
   noEvents: boolean;
-  showImage: boolean;
   noEventsMessage: string;
   screenHeight: number;
   day: Date | undefined;
@@ -67,7 +66,6 @@ function initialState(): EventsState {
     categories: ['All Events'],
     search: '',
     noEvents: false,
-    showImage: true,
     noEventsMessage: '',
     screenHeight: window.screen.height,
     day: undefined,
@@ -138,10 +136,6 @@ export class EventsPage {
       this.setToday(now());
       await this.db.checkEvents();
       this.update();
-    });
-    effect(() => {
-      const status = this.db.networkStatus();
-      this.vm.showImage = status == 'wifi' || status == 'cellular';
     });
   }
 
