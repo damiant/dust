@@ -1,8 +1,8 @@
 .image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    object-fit: var(--object-fit, cover);
     background-color: rgba(0, 0, 0, 0.1);
     border: var(--border);
     border-radius: var(--border-radius);
+    height: var(--height, 100%);
+    width: var(--width, 100%);
 }

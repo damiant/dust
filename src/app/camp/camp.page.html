@@ -21,12 +21,8 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="app-page">
-  <ion-modal
-    [isOpen]="showEvent"
-    (didDismiss)="showEvent = false"
-    [initialBreakpoint]="0.75"
-    [breakpoints]="[0, 0.5, 0.75]"
-  >
+  <ion-modal [isOpen]="showEvent" (didDismiss)="showEvent = false" [initialBreakpoint]="0.75"
+    [breakpoints]="[0, 0.5, 0.75]">
     <ng-template>
       <app-event class="pad" [eventId]="eventId"></app-event>
     </ng-template>
@@ -35,14 +31,7 @@
   <ion-list lines="none">
     @if (camp.imageUrl) {
     <div class="image">
-      <img
-        loading="lazy"
-        class="image"
-        [@fade]="isReady ? 'visible' : 'hidden'"
-        alt="{{camp.name}}"
-        (load)="setReady()"
-        [src]="camp.imageUrl"
-      />
+      <app-cached-img class="image" [alt]="camp.name" [src]="camp.imageUrl" />
     </div>
     }
     <ion-item>
@@ -62,9 +51,8 @@
     }
 
     <ion-item>
-      <ion-text style="padding-right: 1rem; white-space: pre-line" class="text selectable"
-        >{{camp.description}}</ion-text
-      >
+      <ion-text style="padding-right: 1rem; white-space: pre-line"
+        class="text selectable">{{camp.description}}</ion-text>
     </ion-item>
   </ion-list>
   } @if (events.length > 0) {
@@ -100,13 +88,8 @@
       @for (occurrence of event.occurrences; track occurrence) {
       <ion-item class="small" (click)="toggleRSLStar(occurrence, event)">
         <ion-label class="pad-left text">
-          <span class="time">{{occurrence.timeRange}}</span> {{occurrence.who}}<ion-icon
-            class="star"
-            color="primary"
-            [hidden]="!occurrence.star"
-            name="star"
-          ></ion-icon
-        ></ion-label>
+          <span class="time">{{occurrence.timeRange}}</span> {{occurrence.who}}<ion-icon class="star" color="primary"
+            [hidden]="!occurrence.star" name="star"></ion-icon></ion-label>
       </ion-item>
       }
     </div>

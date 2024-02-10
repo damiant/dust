@@ -12,12 +12,9 @@
 <ion-card role="button" (click)="detail()" [class]="variableHeight ? '' : 'item'">
   @if (showImage && event.imageUrl) {
     <div class="image">
-      <img
-        loading="lazy"
+      <app-cached-img        
         class="image"
-        [@fade]="isReady ? 'visible' : 'hidden'"
-        alt="{{ event.title }}"
-        (load)="ready()"
+        [alt]="event.title"
         [src]="event.imageUrl"
       />
     </div>

@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Art, Image, MapPoint } from '../data/models';
+import { Art, MapPoint } from '../data/models';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { DbService } from '../data/db.service';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MapComponent } from '../map/map.component';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { FavoritesService } from '../favs/favorites.service';
@@ -28,6 +27,7 @@ import {
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { star, starOutline, shareOutline, personOutline, locateOutline, locationOutline } from 'ionicons/icons';
+import { CachedImgComponent } from '../cached-img/cached-img.component';
 
 @Component({
   selector: 'app-art-item',
@@ -52,14 +52,8 @@ import { star, starOutline, shareOutline, personOutline, locateOutline, location
     IonIcon,
     IonLabel,
     IonText,
-  ],
-  animations: [
-    trigger('fade', [
-      state('visible', style({ opacity: 1 })),
-      state('hidden', style({ opacity: 0 })),
-      transition('visible <=> hidden', animate('0.3s ease-in-out')),
-    ]),
-  ],
+    CachedImgComponent
+  ]
 })
 export class ArtItemPage implements OnInit {
   art: Art | undefined;
@@ -105,10 +99,6 @@ export class ArtItemPage implements OnInit {
 
   map() {
     this.showMap = true;
-  }
-
-  ready(image: Image) {
-    image.ready = true;
   }
 
   async toggleStar() {

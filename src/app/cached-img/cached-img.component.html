@@ -1,4 +1,4 @@
 @if (_src) {
-<img [ngStyle]="styles" class="image" loading="lazy" [@fade]="isReady ? 'visible' : 'hidden'" alt="{{ alt }}" (load)="ready()"
+<img class="image" loading="lazy" [@fade]="isReady ? 'visible' : 'hidden'" [alt]="alt" (load)="ready()"
     [src]="_src" />
 }

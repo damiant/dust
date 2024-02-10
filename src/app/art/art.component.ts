@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Art } from '../data/models';
 import { CommonModule } from '@angular/common';
 import {
@@ -15,7 +15,8 @@ import { CachedImgComponent } from '../cached-img/cached-img.component';
   selector: 'app-art',
   templateUrl: './art.component.html',
   styleUrls: ['./art.component.scss'],
-  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,  
   imports: [CommonModule, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent,
     CachedImgComponent, IonText],
 })
