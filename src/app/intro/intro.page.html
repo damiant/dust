@@ -14,8 +14,8 @@
     <div role="button" attr.aria-label="{{card.title}}" class="card"
       [ngClass]="(vm.selected?.id === card.id) ? 'select' : 'unselect'" (click)="open(card)">
       <div class="card-container">
-        <img class="img" [ngClass]="(vm.selected?.id === card.id) ? 'img-select' : 'img-unselect'"
-          [src]="card.imageUrl">
+        <app-cached-img [ngClass]="(vm.selected?.id === card.id) ? 'select' : 'unselect'"
+          [src]="card.imageUrl" />
         <p class="name" aria-hidden="true">{{card.title}}</p>
       </div>
     </div>

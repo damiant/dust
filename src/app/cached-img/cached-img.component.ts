@@ -1,11 +1,12 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, effect, input } from '@angular/core';
-import { CacheStoreService } from '../data/cache-store.service';
+import { getCachedImage } from '../data/cache-store';
+import { NgStyle } from '@angular/common';
 
 @Component({
-  selector: 'app-cache-image',
-  templateUrl: './cache-image.component.html',
-  styleUrls: ['./cache-image.component.scss'],  
+  selector: 'app-cached-img',
+  templateUrl: './cached-img.component.html',
+  styleUrls: ['./cached-img.component.scss'],
   animations: [
     trigger('fade', [
       state('visible', style({ opacity: 1 })),
@@ -14,19 +15,21 @@ import { CacheStoreService } from '../data/cache-store.service';
     ]),
   ],
   standalone: true,
+  imports: [NgStyle]
 
 })
-export class CacheImageComponent {
+export class CachedImgComponent {
   _src: string | undefined;
   @Input() alt: string = '';
+  styles = input<Object>({});
   src = input<string>();
   isReady = false;
 
-  constructor(private cacheStoreService: CacheStoreService) {
+  constructor() {
     effect(async () => {
       const src = this.src();
       if (src) {
-        this._src = await this.cacheStoreService.setImage(src);        
+        this._src = await getCachedImage(src);
       }
     });
   }

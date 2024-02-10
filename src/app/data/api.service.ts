@@ -7,7 +7,7 @@ import { DbService } from './db.service';
 import { Capacitor } from '@capacitor/core';
 import { App } from '@capacitor/app';
 import { environment } from 'src/environments/environment';
-import { CacheStoreService } from './cache-store.service';
+import { getCachedImage } from './cache-store';
 
 interface Version {
   version: string;
@@ -22,8 +22,7 @@ export interface SendResult {
 })
 export class ApiService {
   constructor(
-    private settingsService: SettingsService,
-    private cache: CacheStoreService,
+    private settingsService: SettingsService,    
     private dbService: DbService,
   ) { }
 
@@ -201,7 +200,7 @@ export class ApiService {
       console.log(map);
       const ext = map.filename ? map.filename.split('.').pop() : 'svg';
       uri = await this.dbService.getLiveBinary(dataset, Names.map, ext, currentVersion);
-      uri = await this.cache.setImage(uri);
+      uri = await getCachedImage(uri);
     }
     await this.dbService.writeData(dataset, Names.revision, revision);
     await this.dbService.writeData(dataset, Names.version, { version: await this.getVersion() });

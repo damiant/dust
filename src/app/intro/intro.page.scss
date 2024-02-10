@@ -90,20 +90,7 @@ p {
     }
 }
 
-.img-select {
-    border: 3px solid white;
-    border-radius: 1rem;
-}
 
-.img {
-    width: 216px;
-    height: 216px;
-}
-
-.img-unselect {
-    border: 3px solid transparent;
-    border-radius: 1rem;
-}
 
 .select {
     font-weight: bolder;
@@ -121,4 +108,16 @@ p {
 
 div::-webkit-scrollbar {
     display: none;
+}
+
+app-cached-img {
+    --border-radius: 1rem;
+}
+
+app-cached-img.select {
+    --border: 3px solid white;
+}
+
+app-cached-img.unselect {
+    --border: 3px solid transparent;
 }

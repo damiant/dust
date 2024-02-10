@@ -9,7 +9,7 @@ import {
   IonCardTitle,
   IonText,
 } from '@ionic/angular/standalone';
-import { CacheImageComponent } from '../cache-image/cache-image.component';
+import { CachedImgComponent } from '../cached-img/cached-img.component';
 
 @Component({
   selector: 'app-art',
@@ -17,7 +17,7 @@ import { CacheImageComponent } from '../cache-image/cache-image.component';
   styleUrls: ['./art.component.scss'],
   standalone: true,
   imports: [CommonModule, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent,
-    CacheImageComponent, IonText],
+    CachedImgComponent, IonText],
 })
 export class ArtComponent {
   @Input() art!: Art;

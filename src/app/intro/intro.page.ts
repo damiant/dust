@@ -18,6 +18,7 @@ import { environment } from 'src/environments/environment';
 import { Network } from '@capacitor/network';
 import { addIcons } from 'ionicons';
 import { arrowForwardOutline } from 'ionicons/icons';
+import { CachedImgComponent } from '../cached-img/cached-img.component';
 
 interface IntroState {
   ready: boolean;
@@ -58,6 +59,7 @@ function initialState(): IntroState {
     IonIcon,
     IonText,
     IonContent,
+    CachedImgComponent
   ],
 })
 export class IntroPage {
