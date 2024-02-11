@@ -174,6 +174,7 @@ export interface Dataset {
   long: number; // Longitude (for directions)
   imageUrl: string; // Image
   timeZone: string; // Timezone
+  active: boolean; // Displayed publicly
 }
 
 export interface TimeString {

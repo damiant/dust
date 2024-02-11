@@ -77,13 +77,16 @@ export class ApiService {
     console.info(`dbService.setDataset ${JSON.stringify(datasetInfo)}...`);
     const result = await this.dbService.setDataset(datasetInfo);
     await this.reportWorkerLogs();
-    if (!result || (result.events == 0 && result.camps == 0 && result.pins == 0)) {
+
+    const hasNoData = result.events == 0 && result.camps == 0 && result.pins == 0;
+    const isPreview = !!this.dbService.overrideDataset;
+    if (!result || (hasNoData && !isPreview)) {
       console.error(`dbService.setDataset complete but bad data ${JSON.stringify(result)}`);
       console.log(`Bad data. Will redownload`)
       return { success: false };
     }
     console.info(`dbService.setDataset complete ${JSON.stringify(result)}`);
-    return { success: false, datasetResult: result };
+    return { success: true, datasetResult: result };
   }
 
   private async reportWorkerLogs() {
@@ -142,7 +145,7 @@ export class ApiService {
       const version: Version = await this.dbService.get(dataset, Names.version, { onlyRead: true, defaultValue: { version: '' } });
       const currentVersion = await this.getVersion();
 
-      console.log(`force=${force} revision=${JSON.stringify(revision)} currentRevision=${JSON.stringify(currentRevision)}`)
+      console.info(`${dataset}: force=${force} revision=${JSON.stringify(revision)} currentRevision=${JSON.stringify(currentRevision)}`)
 
       if (
         !force &&
@@ -185,7 +188,7 @@ export class ApiService {
     const camps = rCamps.status == 'fulfilled' ? rCamps.value : '';
     const map = rMap.status == 'fulfilled' ? rMap.value : '';
     console.log(`events=${rEvents.status} art=${rArt.status} camps=${rCamps.status} pins=${rPins.status} links=${rLinks.status} map=${rMap.status} geo=${rGeo.status} restrooms=${rRestrooms.status} ice=${rIce.status} medical=${rMedical.status} rsl=${rRSL.status}`);
-
+    
     if (this.badData(events, art, camps)) {
       console.error(`Download failed`);
       downloadSignal.set(false);
@@ -203,8 +206,7 @@ export class ApiService {
       uri = await getCachedImage(uri);
     }
     await this.dbService.writeData(dataset, Names.revision, revision);
-    await this.dbService.writeData(dataset, Names.version, { version: await this.getVersion() });
-    console.log('map data was set to ' + uri);
+    await this.dbService.writeData(dataset, Names.version, { version: await this.getVersion() });    
     map.uri = uri;
     await this.dbService.writeData(dataset, Names.map, map);
 

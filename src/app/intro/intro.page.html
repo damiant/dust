@@ -11,6 +11,7 @@
   </div>
   <div [hidden]="vm.eventAlreadySelected" class="container" id="scroll-container">
     @for (card of vm.cards; track card.id) {
+      @if (card.active) {
     <div role="button" attr.aria-label="{{card.title}}" class="card"
       [ngClass]="(vm.selected?.id === card.id) ? 'select' : 'unselect'" (click)="open(card)">
       <div class="card-container">
@@ -19,6 +20,7 @@
         <p class="name" aria-hidden="true">{{card.title}}</p>
       </div>
     </div>
+  }
     }
   </div>
 

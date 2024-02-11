@@ -37,27 +37,41 @@ export interface GetOptions {
   providedIn: 'root',
 })
 export class DbService {
-  private defaultDataset: Dataset = { name: '', year: '', id: '', title: '', start: '', end: '', lat: 0, long: 0, imageUrl: '', timeZone: '' };
+  private defaultDataset: Dataset = { name: '', year: '', id: '', title: '', start: '', end: '', lat: 0, long: 0, imageUrl: '', timeZone: '', active: false };
   public selectedDay = signal(noDate());
   public selectedYear = signal('');
   public selectedDataset = signal(this.defaultDataset);
-  public selectedImage = computed( () => {const r = `${this.selectedDataset().imageUrl}`; console.info(r); return r});
+  public selectedImage = computed(() => { const r = `${this.selectedDataset().imageUrl}`; console.info(r); return r });
   public featuresHidden = signal(['']);
   public networkStatus = signal('');
   public resume = signal('');
   private initialized = false;
   private hideLocations = true;
+  private prefix = '';
+  public overrideDataset: string | undefined;
   private datasetsRead: string[] = [];
   private worker!: Worker;
 
   public async initWorker(): Promise<void> {
     if (!this.initialized) {
-      console.log(`Initializing web worker...`);
+      this.overrideDataset = this.getPreview();
+      console.info(`Initializing web worker...`);
       this.worker = new Worker(new URL('./app.worker', import.meta.url));
       registerWorker(this.worker);
-      console.log(`Initialized web worker`);
+      console.info(`Initialized web worker`);
       this.initialized = true;
     }
+  }
+
+  public getPreview(): string | undefined {
+    const params = new URLSearchParams(document.location.search);
+    const value = params.get('preview');
+    if (value !== null) {
+      console.info(`Switching to preview ${value}`);
+      this.prefix = 'preview-';
+      return value;
+    }
+    return undefined;
   }
 
   public async init(dataset: string): Promise<DatasetResult> {
@@ -224,12 +238,20 @@ export class DbService {
   }
 
   public async clear() {
-    const d = await Filesystem.readdir({ path: '.', directory: Directory.Data });
-    for (let file of d.files) {
-      console.log(`Delete file ${file.name}`);
-      await Filesystem.deleteFile({ path: file.name, directory: Directory.Data });
+    try {
+      const d = await Filesystem.readdir({ path: '.', directory: Directory.Cache });
+      for (let file of d.files) {
+        console.log(`Delete file ${file.name}`);
+        await Filesystem.deleteFile({ path: file.name, directory: Directory.Cache });
+      }
+    } catch (err) {
+      console.error(`Failed to clear Directory.Cache`, err);
     }
-    await this.clearIDB();
+    try {
+      await this.clearIDB();
+    } catch (err) {
+      console.error(`Failed to clear IDB`, err);
+    }
   }
 
   public async getPins(name: string): Promise<MapSet> {
@@ -335,7 +357,7 @@ export class DbService {
     if (dataset.toLowerCase().includes('ttitd') || dataset == 'datasets') {
       return `${static_dust_events}${dataset}/${name}.${ext ? ext : 'json'}`;
     } else {
-      return `${data_dust_events}${dataset}/${name}.${ext ? ext : 'json'}`;
+      return `${data_dust_events}${dataset}/${this.prefix}${name}.${ext ? ext : 'json'}`;
     }
   }
 

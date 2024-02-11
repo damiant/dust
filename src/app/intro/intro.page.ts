@@ -103,7 +103,7 @@ export class IntroPage {
 
     this.vm.cards = await this.api.loadDatasets();
     // need to load
-    this.load();
+    await this.load();
   }
 
   async ionViewDidEnter() {
@@ -119,7 +119,9 @@ export class IntroPage {
 
     try {
       this.vm.downloading = true;
-      await this.api.download(this.vm.selected, false, this.download);
+      // If we are using a preview then force
+      const forceDownload = !!this.db.overrideDataset;
+      await this.api.download(this.vm.selected, forceDownload, this.download);
     } finally {
       this.vm.downloading = false;
       this.download.set(false);
@@ -130,7 +132,7 @@ export class IntroPage {
     }
   }
 
-  private load() {
+  private async load() {
     const idx = this.vm.cards.findIndex((c) => this.api.datasetId(c) == this.settingsService.settings.datasetId);
     if (idx >= 0) {
       this.vm.selected = this.vm.cards[idx];
@@ -138,6 +140,19 @@ export class IntroPage {
       // First time in: select this year
       this.vm.selected = this.vm.cards[0];
       this.save();
+    }
+    const preview = this.db.overrideDataset;
+    if (preview) {
+      console.info('overriding preview', preview);
+      await this.db.clear();
+      let p: Dataset = JSON.parse(JSON.stringify(this.vm.cards.find(d => d.name == preview)));
+      this.settingsService.settings.dataset = p;
+      this.settingsService.settings.datasetId = p.id;
+      this.settingsService.settings.eventTitle = p.title;
+      this.vm.eventAlreadySelected = true;
+      p.title += ' (Preview)';
+      this.vm.selected = p;
+      console.info(`Dataset selected`, p);
     }
   }
 
