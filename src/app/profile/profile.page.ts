@@ -49,6 +49,7 @@ import {
 } from 'ionicons/icons';
 import { Animation, StatusBar } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
+import { getCachedImage } from '../data/cache-store';
 
 @Component({
   selector: 'app-profile',
@@ -87,6 +88,7 @@ export class ProfilePage implements OnInit {
   locationEnabled = false;
   longEvents = false;
   hiddenPanel = false;
+  imageUrl = '';
   mapPin: GPSPin | undefined;
   links: Link[] = [];
   @ViewChild(IonContent) ionContent!: IonContent;
@@ -117,6 +119,7 @@ export class ProfilePage implements OnInit {
   }
 
   async ngOnInit() {
+    this.imageUrl = await getCachedImage(this.db.selectedImage());
     this.db.checkInit();
     this.mapPin = this.getMapPin();
     this.longEvents = this.settings.settings.longEvents;

@@ -41,7 +41,7 @@ export class DbService {
   public selectedDay = signal(noDate());
   public selectedYear = signal('');
   public selectedDataset = signal(this.defaultDataset);
-  public selectedImage = computed(() => `${this.selectedDataset().imageUrl}`);
+  public selectedImage = computed( () => {const r = `${this.selectedDataset().imageUrl}`; console.info(r); return r});
   public featuresHidden = signal(['']);
   public networkStatus = signal('');
   public resume = signal('');
