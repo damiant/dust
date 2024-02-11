@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { Router, RouterModule } from '@angular/router';
 import { Event } from '../data/models';
 import { CommonModule } from '@angular/common';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import {
   IonButton,
   IonButtons,
@@ -15,6 +14,7 @@ import {
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { mapOutline } from 'ionicons/icons';
+import { CachedImgComponent } from '../cached-img/cached-img.component';
 
 @Component({
   selector: 'app-event',
@@ -33,14 +33,8 @@ import { mapOutline } from 'ionicons/icons';
     IonCardSubtitle,
     IonCardContent,
     IonText,
-  ],
-  animations: [
-    trigger('fade', [
-      state('visible', style({ opacity: 1 })),
-      state('hidden', style({ opacity: 0 })),
-      transition('visible <=> hidden', animate('0.3s ease-in-out')),
-    ]),
-  ],
+    CachedImgComponent
+  ]
 })
 export class EventComponent {
   @Input() event!: Event;
@@ -56,10 +50,6 @@ export class EventComponent {
 
   constructor(private router: Router) {
     addIcons({ mapOutline });
-  }
-
-  ready() {
-    this.isReady = true;
   }
 
   map(event: Event, ev: any) {

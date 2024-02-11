@@ -1,5 +1,5 @@
 <ion-content [fullscreen]="true">
-  <div class="header" [ngStyle]="{'background-image': 'url('+ db.selectedImage()+')'}">
+  <div class="header" [ngStyle]="{'background-image': 'url('+ imageUrl+')'}">
     <ion-fab-button color="dark" style="position: absolute; top: 0.2rem; z-index: 1; right: 0.8rem; left: auto"
       (click)="home()" size="small">
       <ion-icon name="close-sharp"></ion-icon>
@@ -16,7 +16,7 @@
     } @if (!db.locationsHidden()) {
     <app-tile title="Now" routerLink="/map/now" imgSrc="assets/icon/calendar.svg"></app-tile>
     }
-    <app-tile title="Directions" (click)="directions()" iconName="compass-outline"></app-tile>
+    <app-tile title="Directions" [hidden]="!mapPin" (click)="directions()" iconName="compass-outline"></app-tile>
   </app-tile-container>
 
   @if (!db.featuresHidden().includes('friends')) {

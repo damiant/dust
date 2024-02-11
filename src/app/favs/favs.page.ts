@@ -123,9 +123,6 @@ export class FavsPage implements OnInit {
     effect(() => {
       this.ui.scrollUpContent('favs', this.ionContent);
     });
-    effect(() => {
-      const _status = this.db.networkStatus();
-    });
   }
 
   public actionSheetButtons = [

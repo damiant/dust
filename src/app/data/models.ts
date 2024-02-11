@@ -42,6 +42,11 @@ export interface Revision {
   revision: number;
 }
 
+export interface MapData {
+  filename: string;
+  uri: string; // Generated based on when it is saved by dust
+}
+
 export interface EventType {
   abbr: string;
   id: number;
@@ -150,8 +155,7 @@ export enum LocationEnabledStatus {
 export interface Settings {
   datasetId: string;
   dataset: Dataset | undefined;
-  eventTitle: string;
-  lastDownload: string;
+  eventTitle: string;  
   mapRotation: number;
   mapUri: string;
   locationEnabled: LocationEnabledStatus;
@@ -168,11 +172,31 @@ export interface Dataset {
   end: string; // When it ends
   lat: number; // Latitude (for directions)
   long: number; // Longitude (for directions)
+  imageUrl: string; // Image
+  timeZone: string; // Timezone
 }
 
 export interface TimeString {
   short: string;
   long: string;
+}
+
+export enum Names {
+  festivals = 'festivals', // Get from the root path at https://data.dust.events/  
+  datasets = 'datasets',
+  events = 'events',
+  art = 'art',
+  camps = 'camps',
+  rsl = 'rsl',
+  revision = 'revision',
+  version = 'version',
+  pins = 'pins',
+  links = 'links',
+  map = 'map',
+  geo = 'geo', // Burning Man only
+  ice = 'ice', // Burning Man only
+  medical = 'medical', // Burning Man only
+  restrooms = 'restrooms' // Burning Man only
 }
 
 export interface Pin {
@@ -183,7 +207,8 @@ export interface Pin {
 export interface PlacedPin {
   x: number;
   y: number;
-  gps?: GpsCoord;
+  gpsLat?: number;
+  gpsLng?: number;  
   label: string;
 }
 
@@ -246,7 +271,7 @@ export interface RSLEvent {
   camp: string;
   title?: string;
   location: string;
-  campUID?: string;
+  campId?: string;
   day: string; // Format yyyy-mm-dd
   gpsCoords?: GpsCoord;
   pin?: Pin; // Added by dust
@@ -277,6 +302,7 @@ export interface DatasetResult {
   pins: number;
   links: number;
   rsl: number;
+  revision: number;
 }
 
 export interface RSLOccurrence {
@@ -301,7 +327,6 @@ export interface GeoRef {
 export enum DataMethods {
   Populate = 'populate',
   GetDays = 'getDays',
-  GetPotties = 'getPotties',
   GetMapPoints = 'getMapPoints',
   GetGPSPoints = 'getGPSPoints',
   GetPins = 'getPins',
@@ -329,5 +354,9 @@ export enum DataMethods {
   SearchRSLEvents = 'searchRSLEvents',
   GetMapPointGPS = 'getMapPointGPS',
   SetMapPointsGPS = 'setMapPointsGPS',
-  ConsoleLog = 'consoleLog'
+  ConsoleLog = 'consoleLog',
+  Write = 'write',
+  ReadData = 'readData',
+  WriteData = 'writeData',
+  Clear = 'clear'
 }

@@ -17,6 +17,7 @@ export interface Response {
   id: string;
   error?: any;
   data: any;
+  ms: number
 }
 
 export interface WorkerClass {
@@ -26,17 +27,22 @@ export interface WorkerClass {
 export function registerWorkerClass(workerClass: WorkerClass) {
   addEventListener('message', async ({ data }) => {
     const call: Call = data;
-    const response: Response = { id: call.id, data: undefined };
+    const response: Response = { id: call.id, data: undefined, ms: performance.now() };
     if (!environment.production) {
-      console.time(`${call.method} (${call.id})`);
     }
     try {
       response.data = await workerClass.doWork(call.method, call.arguments);
+      response.ms = performance.now() - response.ms;
+      if (!environment.production) {
+        const msg = `${call.method} ${Math.trunc(response.ms)}ms (args ${call.arguments})`;
+        if (response.ms > 100) {
+          console.warn(msg);
+        } else {
+          //console.info(msg);
+        }
+      }
     } catch (error) {
       postMessage({ error: `Call to ${call.method} failed: ${error}` });
-    }
-    if (!environment.production) {
-      console.timeEnd(`${call.method} (${call.id})`);
     }
     postMessage(response);
   });
@@ -82,5 +88,5 @@ export function call(worker: Worker, method: DataMethods, ...args: any[]): Promi
 }
 
 function uniqueId(): string {
-  return Math.random().toString().replace('0.','');
+  return Math.random().toString().replace('0.', '');
 }

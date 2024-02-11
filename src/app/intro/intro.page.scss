@@ -39,7 +39,7 @@ ion-spinner {
 }
 
 ion-text {
-    font-size: x-large;
+    font-size: x-large; 
 }
 
 p {
@@ -53,6 +53,7 @@ p {
     width: 100%;
     overflow-y: hidden;
     overflow-x: auto;
+    padding-top: 2rem;
     scroll-snap-type: x mandatory;
     scroll-padding-left: 20px;
     scroll-behavior: smooth;
@@ -89,15 +90,7 @@ p {
     }
 }
 
-.img-select {
-    border: 3px solid white;
-    border-radius: 1rem;
-}
 
-.img-unselect {
-    border: 3px solid transparent;
-    border-radius: 1rem;
-}
 
 .select {
     font-weight: bolder;
@@ -115,4 +108,16 @@ p {
 
 div::-webkit-scrollbar {
     display: none;
+}
+
+app-cached-img {
+    --border-radius: 1rem;
+}
+
+app-cached-img.select {
+    --border: 3px solid white;
+}
+
+app-cached-img.unselect {
+    --border: 3px solid transparent;
 }

@@ -22,8 +22,7 @@ export class SettingsService {
       return JSON.parse(localStorage['settings']);
     } catch {
       return {
-        datasetId: '',
-        lastDownload: '',
+        datasetId: '',        
         mapRotation: 0,
         mapUri: '',
         dataset: undefined,
@@ -32,14 +31,6 @@ export class SettingsService {
         longEvents: false,
         offlineEvents: []
       };
-    }
-  }
-
-  public getLastDownload(): Date {
-    try {
-      return new Date(this.settings.lastDownload);
-    } catch {
-      return new Date(0);
     }
   }
 

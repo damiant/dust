@@ -1,40 +1,40 @@
 PODS:
-  - Capacitor (5.6.0):
+  - Capacitor (5.7.0):
     - CapacitorCordova
-  - CapacitorApp (5.0.6):
+  - CapacitorApp (5.0.7):
     - Capacitor
-  - CapacitorAppLauncher (5.0.6):
+  - CapacitorAppLauncher (5.0.7):
     - Capacitor
-  - CapacitorBrowser (5.1.0):
+  - CapacitorBrowser (5.2.0):
     - Capacitor
   - CapacitorCommunityPlayIntegrity (5.0.0):
     - Capacitor
-  - CapacitorCordova (5.6.0)
-  - CapacitorFilesystem (5.2.0):
+  - CapacitorCordova (5.7.0)
+  - CapacitorFilesystem (5.2.1):
     - Capacitor
-  - CapacitorGeolocation (5.0.6):
+  - CapacitorGeolocation (5.0.7):
     - Capacitor
-  - CapacitorHaptics (5.0.6):
+  - CapacitorHaptics (5.0.7):
     - Capacitor
-  - CapacitorKeyboard (5.0.7):
+  - CapacitorKeyboard (5.0.8):
     - Capacitor
-  - CapacitorLocalNotifications (5.0.6):
+  - CapacitorLocalNotifications (5.0.7):
     - Capacitor
-  - CapacitorNetwork (5.0.6):
+  - CapacitorNetwork (5.0.7):
     - Capacitor
-  - CapacitorPreferences (5.0.6):
+  - CapacitorPreferences (5.0.7):
     - Capacitor
   - CapacitorRateApp (4.0.3):
     - Capacitor
-  - CapacitorScreenReader (5.0.7):
+  - CapacitorScreenReader (5.0.8):
     - Capacitor
-  - CapacitorShare (5.0.6):
+  - CapacitorShare (5.0.7):
     - Capacitor
-  - CapacitorSplashScreen (5.0.6):
+  - CapacitorSplashScreen (5.0.7):
     - Capacitor
-  - CapacitorStatusBar (5.0.6):
+  - CapacitorStatusBar (5.0.7):
     - Capacitor
-  - CordovaPlugins (5.6.0):
+  - CordovaPlugins (5.7.0):
     - CapacitorCordova
   - MauricewegnerCapacitorNavigationBar (2.0.3):
     - Capacitor
@@ -104,25 +104,25 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@mauricewegner/capacitor-navigation-bar"
 
 SPEC CHECKSUMS:
-  Capacitor: ebfc16cdb8116d04c101686b080342872da42d43
-  CapacitorApp: 024e1b1bea5f883d79f6330d309bc441c88ad04a
-  CapacitorAppLauncher: 5a9f06c13c6b4f5d65b550a07128ef04f3a216b3
-  CapacitorBrowser: 7a0fb6a1011abfaaf2dfedfd8248f942a8eda3d6
+  Capacitor: fc155ee2ee45a2093d716f13cf5aa5a865e2d85a
+  CapacitorApp: 17fecd0e6cb23feafac7eb0939417389038b0979
+  CapacitorAppLauncher: 7b2705481a74cbe322441bd374f56194de59ab1a
+  CapacitorBrowser: a6deae9e5bf87f62b62a753cff7992c5def9e771
   CapacitorCommunityPlayIntegrity: 9189b3f7e5147381976b3c2f17d38af2e410232e
-  CapacitorCordova: 931b48fcdbc9bc985fc2f16cec9f77c794a27729
-  CapacitorFilesystem: 02f9a9053b96e1881ba1fc98d846869413c195c2
-  CapacitorGeolocation: 7be5f77abc205c0efe319fff8587a7183e7b0240
-  CapacitorHaptics: 1fffc1217c7e64a472d7845be50fb0c2f7d4204c
-  CapacitorKeyboard: ce5e01064cf57a2c05b32565310713b7fe6cc6f9
-  CapacitorLocalNotifications: c2d8b14794064fd4814b1d6c4ddbac8029afa295
-  CapacitorNetwork: d80b3e79bef6ec37640ee2806c19771f07ff2d0c
-  CapacitorPreferences: f03954bcb0ff09c792909e46bff88e3183c16b10
+  CapacitorCordova: e825fce1a2e14e4b5730641c7e098dccf74397b7
+  CapacitorFilesystem: 9f3e3c7fea2fff12f46dd5b07a2914f2103e4cfc
+  CapacitorGeolocation: 918a292459542bcce98433f9e7c7909f8c72838a
+  CapacitorHaptics: 7c7c206f0c96a628fed073830c96d28c4b2e772e
+  CapacitorKeyboard: aec619a578235c6ce279075009a2689c2cf5c42c
+  CapacitorLocalNotifications: c58afadd159f6bc540ef9b3cbdbc82510a2bf112
+  CapacitorNetwork: 81ef9728aa7a65cac8c1181ce79e578162b57b57
+  CapacitorPreferences: 77ac427e98db83bace772455f8ba447430382c4c
   CapacitorRateApp: 896df7ec6a237fea72d1955e0cb26394654b00db
-  CapacitorScreenReader: 1c0db2a5f9906165b8f9ca41510391a114b143f4
-  CapacitorShare: cd41743331cb71d217c029de54b681cbd91e0fcc
-  CapacitorSplashScreen: 5fa2ab5e46cf5cc530cf16a51c80c7a986579ccd
-  CapacitorStatusBar: 565c0a1ebd79bb40d797606a8992b4a105885309
-  CordovaPlugins: 9ebe8afec72c6e8709ea4f65de4d72e36314a41c
+  CapacitorScreenReader: be4d7dc5c3ba3cf6fc21d30a898204b5c52f8dec
+  CapacitorShare: c6a1ebbf0114ff9e863b966cd6052678fa25d480
+  CapacitorSplashScreen: dd3de3f3644710fa2a697cfb91ec262eece4d242
+  CapacitorStatusBar: f390fbb49b82ffb754ea4b3cf71dc8b048baf3e7
+  CordovaPlugins: dbd8b6840f08a8336e2631c8a2483f23271eed15
   MauricewegnerCapacitorNavigationBar: 37f1308a961a8d8cd00f6362e30bad03a73728f7
 
 PODFILE CHECKSUM: 225080c16a00b030c55d1b8b9bc225384b25beb9

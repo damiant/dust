@@ -14,7 +14,7 @@ import {
   ToastController,
 } from '@ionic/angular/standalone';
 import { DbService } from '../data/db.service';
-import { Day, Event, MapPoint } from '../data/models';
+import { Day, Event, MapPoint, Names } from '../data/models';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
@@ -42,7 +42,6 @@ interface EventsState {
   categories: string[];
   search: string;
   noEvents: boolean;
-  showImage: boolean;
   noEventsMessage: string;
   screenHeight: number;
   day: Date | undefined;
@@ -67,7 +66,6 @@ function initialState(): EventsState {
     categories: ['All Events'],
     search: '',
     noEvents: false,
-    showImage: true,
     noEventsMessage: '',
     screenHeight: window.screen.height,
     day: undefined,
@@ -139,10 +137,6 @@ export class EventsPage {
       await this.db.checkEvents();
       this.update();
     });
-    effect(() => {
-      const status = this.db.networkStatus();
-      this.vm.showImage = status == 'wifi' || status == 'cellular';
-    });
   }
 
   ionViewDidEnter() {
@@ -153,7 +147,7 @@ export class EventsPage {
     const today = now();
     this.setToday(today);
     await this.db.checkEvents();
-    this.vm.days = await this.db.getDays();
+    this.vm.days = await this.db.getDays(Names.events);
     this.db.getCategories().then((categories) => (this.vm.categories = categories));
     this.vm.defaultDay = this.chooseDefaultDay(now());
     await this.update();
@@ -194,6 +188,10 @@ export class EventsPage {
     for (const day of this.vm.days) {
       day.today = sameDay(day.date, today);
     }
+  }
+
+  home() {
+    this.ui.home();
   }
 
   searchEvents(value: string) {

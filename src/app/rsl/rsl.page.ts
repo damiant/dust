@@ -21,7 +21,7 @@ import {
 import { UiService } from '../ui/ui.service';
 import { DbService } from '../data/db.service';
 import { noDate, now, sameDay } from '../utils/utils';
-import { Day, MapPoint, RSLEvent } from '../data/models';
+import { Day, MapPoint, Names, RSLEvent } from '../data/models';
 import { GpsCoord } from '../map/geo.utils';
 import { GeoService } from '../geolocation/geo.service';
 import { SearchComponent } from '../search/search.component';
@@ -133,7 +133,8 @@ export class RslPage {
     const today = now();
     this.setToday(today);
 
-    this.vm.days = await this.db.getDays();
+    this.vm.days = await this.db.getDays(Names.rsl);
+    console.log('init RSL days', this.vm.days);
     this.vm.defaultDay = this.chooseDefaultDay(now());
     this.updateTitle();
     await this.update();
@@ -187,8 +188,8 @@ export class RslPage {
 
   private noEventsMessage() {
     return this.db.eventHasntBegun() ?
-    'Events have not been added yet.' : 
-    'All the events for this day have concluded.';  
+      'Events have not been added yet.' :
+      'All the events for this day have concluded.';
   }
 
   private addEvents(count: number) {

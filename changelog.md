@@ -1,4 +1,12 @@
 ## Changes
+## 2.0
+- Use new datasets
+
+## 1.41
+- Update dependencies
+- Fix click of year on events page to go home
+- Offline fixes
+
 ## 1.40
 - Check for Play Integrity
 

@@ -13,6 +13,7 @@ import {
   LocationName,
   MapPoint,
   MapSet,
+  Names,
   Pin,
   PlacedPin,
   RSLEvent,
@@ -22,14 +23,17 @@ import {
 } from './models';
 import {
   BurningManTimeZone,
-  CurrentYear,
+  clone,
+  data_dust_events,
   getDayNameFromDate,
   getOccurrenceTimeString,
+  hasValue,
   nowPST,
   sameDay,
 } from '../utils/utils';
 import { defaultMapRadius, distance, formatDistance, locationStringToPin, mapPointToPoint } from '../map/map.utils';
 import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from '../map/geo.utils';
+import { set, get, clear } from 'idb-keyval';
 
 interface TimeCache {
   [index: string]: TimeString | undefined;
@@ -38,10 +42,12 @@ interface TimeCache {
 export class DataManager implements WorkerClass {
   private events: Event[] = [];
   private camps: Camp[] = [];
+  private rslEvents: RSLEvent[] = [];
   private pins: PlacedPin[] = [];
   private categories: string[] = [];
   private art: Art[] = [];
   private days: number[] = [];
+  private rslDays: number[] = [];
   private links: Link[] = [];
   private georeferences: GeoRef[] = [];
   private revision: Revision = { revision: 0 };
@@ -56,15 +62,13 @@ export class DataManager implements WorkerClass {
   public async doWork(method: DataMethods, args: any[]): Promise<any> {
     switch (method) {
       case DataMethods.ConsoleLog:
-        const logs = structuredClone(this.logs);
+        const logs = clone(this.logs);
         this.logs = [];
         return logs;
       case DataMethods.Populate:
         return await this.populate(args[0], args[1], args[2]);
       case DataMethods.GetDays:
-        return this.getDays();
-      case DataMethods.GetPotties:
-        return this.getPotties();
+        return this.getDays(args[0]);
       case DataMethods.GetCategories:
         return this.categories;
       case DataMethods.SetDataset:
@@ -95,6 +99,12 @@ export class DataManager implements WorkerClass {
         return this.setMapPointsGPS(args[0]);
       case DataMethods.GetMapPoints:
         return this.getMapPoints(args[0]);
+      case DataMethods.ReadData:
+        return this.read(args[0], []);
+      case DataMethods.Write:
+        return this.write(args[0], args[1], args[2]);
+      case DataMethods.WriteData:
+        return this.writeData(args[0], args[1]);
       case DataMethods.GetGPSPoints:
         return this.getGPSPoints(args[0], args[1]);
       case DataMethods.GetPins:
@@ -119,23 +129,34 @@ export class DataManager implements WorkerClass {
         return await this.getRSLEvents('', undefined, undefined, undefined, args[0]);
       case DataMethods.GetCamps:
         return this.getCamps(args[0], args[1]);
+      case DataMethods.Clear:
+        return this.clear();
       default:
         this.consoleError(`Unknown method ${method}`);
     }
   }
 
-  public async populate(dataset: string, hideLocations: boolean, env: any): Promise<number> {
+  public async populate(dataset: string, hideLocations: boolean, env: any): Promise<DatasetResult> {
     this.dataset = dataset;
     this.env = env;
+    this.log(`Populate dataset=${dataset}`)
     this.events = await this.loadEvents();
     this.camps = await this.loadCamps();
     this.art = await this.loadArt();
     this.pins = await this.loadPins();
     this.links = await this.loadLinks();
     this.revision = await this.loadRevision();
+    this.rslEvents = await this.loadMusic();
     this.georeferences = await this.getGeoReferences();
+    this.log(`Successful load in populate`);
     this.init(hideLocations);
-    return this.revision.revision;
+    return { events: this.events.length, art: this.art.length, pins: this.pins.length, 
+      camps: this.camps.length, rsl: this.rslEvents.length, links: this.links.length,
+      revision: this.revision.revision };    
+  }
+
+  private async clear() {
+    await clear();
   }
 
   private sortArt(art: Art[]) {
@@ -154,7 +175,7 @@ export class DataManager implements WorkerClass {
     if (!this.env.simulatedTime) {
       return nowPST();
     }
-    return structuredClone(this.env.simulatedTime);
+    return this.env.simulatedTime;// clone(this.env.simulatedTime);
   }
 
   private checkEvents(): boolean {
@@ -205,8 +226,8 @@ export class DataManager implements WorkerClass {
     if (this.georeferences.length < 3 && this.pins.length > 0) {
       // We can get GPS points from pins (eg SNRG)
       for (let pin of this.pins) {
-        if (points.length < 3 && pin.label.toLowerCase() == 'gps' && pin.gps) {
-          gpsCoords.push({ lng: pin.gps.lng, lat: pin.gps.lat });
+        if (points.length < 3 && pin.label.toLowerCase() == 'gps' && hasValue(pin.gpsLat) && hasValue(pin.gpsLng)) {
+          gpsCoords.push({ lng: pin.gpsLng!, lat: pin.gpsLat! });
           points.push({ x: pin.x, y: pin.y });
         }
       }
@@ -285,7 +306,7 @@ export class DataManager implements WorkerClass {
       locIndex[camp.uid] = camp.location_string;
       pinIndex[camp.uid] = camp.pin;
       if (camp.imageUrl) {
-        camp.imageUrl = `https://data.dust.events/${camp.imageUrl}`;
+        camp.imageUrl = `${data_dust_events}${camp.imageUrl}`;
       }
       if (hideLocations) {
         camp.location_string = LocationName.Unavailable;
@@ -310,31 +331,35 @@ export class DataManager implements WorkerClass {
       }
     }
     this.days = [];
+    this.rslDays = [];
     this.categories = [];
     this.allEventsOld = !this.checkEvents();
+
     for (let event of this.events) {
       let allLong = true;
       if (!this.categories.includes(event.event_type.label)) {
         this.categories.push(event.event_type.label);
       }
       if (event.imageUrl) {
-        event.imageUrl = `https://data.dust.events/${event.imageUrl}`;
+        event.imageUrl = `${data_dust_events}${event.imageUrl}`;
       }
       if (event.hosted_by_camp) {
         event.camp = campIndex[event.hosted_by_camp];
         event.location = locIndex[event.hosted_by_camp];
 
-        const pin = locationStringToPin(event.location, this.mapRadius);
+        let pin = locationStringToPin(event.location, this.mapRadius);
         const placed = pinIndex[event.hosted_by_camp];
         if (placed) {
           event.pin = placed;
+          pin = placed;
         }
+
         if (pin) {
           const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
           event.gpsCoords = gpsCoords;
         } else {
           if (!this.env.production) {
-            this.consoleError(`Unable to find camp ${event.hosted_by_camp} for event ${event.title}`);
+            this.consoleError(`Unable to find camp ${event.hosted_by_camp} for event ${event.title} ${placed}`);
           }
         }
         if (hideLocations) {
@@ -408,9 +433,18 @@ export class DataManager implements WorkerClass {
       event.longTimeString = timeString.long;
       event.all_day = allLong;
     }
+    for (const rslEvent of this.rslEvents) {
+      this.addRSLDay(this.asDateTime(rslEvent.day));
+    }
+
     this.categories.sort();
     this.cache = {};
     console.timeEnd('init');
+  }
+
+  private asDateTime(s: string): Date {
+    const t = s.split('-');
+    return new Date(parseInt(t[0]), parseInt(t[1]) - 1, parseInt(t[2]));
   }
 
   private locateCamp(camp: Camp): Pin | undefined {
@@ -431,7 +465,7 @@ export class DataManager implements WorkerClass {
       this.art = await this.loadData(ds.art);
       this.links = await this.loadData(ds.links);
       this.pins = await this.loadData(ds.pins);
-      const _rslData = await this.loadData(ds.rsl);
+      this.rslEvents = await this.loadData(ds.rsl);
       this.consoleLog(
         `Setting dataset in worker: ${this.events.length} events, ${this.camps.length} camps, ${this.art.length} art`,
       );
@@ -441,7 +475,8 @@ export class DataManager implements WorkerClass {
         art: this.art.length,
         pins: this.pins.length,
         links: this.links.length,
-        rsl: 0,
+        rsl: this.rslEvents.length,
+        revision: this.revision.revision
       };
     } catch (err) {
       this.consoleError(`Failed to setDataset: ${err}`);
@@ -559,7 +594,7 @@ export class DataManager implements WorkerClass {
 
     const events = await this.getRSLEvents(query, undefined, undefined, [], undefined);
     const found = events.map((e) => e.day).filter(unique);
-    const days = this.getDays();
+    const days = this.getDays(Names.rsl);
     const result: Day[] = [];
     for (let day of days) {
       const d = new Date(day.date);
@@ -585,8 +620,11 @@ export class DataManager implements WorkerClass {
     isHistorical?: boolean
   ): Promise<RSLEvent[]> {
     try {
-      const res = await fetch(this.path('rsl', true));
-      const events: RSLEvent[] = await res.json();
+      const events = this.rslEvents;
+      if (!events || events.length == 0) {
+        this.log('No RSL Events');
+      }
+      // RSLEvent[] = await this.read(this.getId(Names.rsl), []);
       const result: RSLEvent[] = [];
       query = this.scrubQuery(query);
       const fDay = day ? this.toRSLDateFormat(day) : undefined;
@@ -594,24 +632,25 @@ export class DataManager implements WorkerClass {
       const campPins: any = {};
       for (let event of events) {
         // Place RSL Events at the camp pin
-        if (event.campUID) {
-          const pin = campPins[event.campUID];
+        if (event.campId) {
+          const pin = campPins[event.campId];
           if (pin) {
             event.pin = pin;
           } else {
-            const camps = this.getCampList([event.campUID]);
+            const camps = this.getCampList([event.campId]);
             if (!event.pin) {
               event.pin = (camps && camps.length > 0) ? camps[0].pin : undefined;
-              Object.defineProperty(campPins, event.campUID, { value: event.pin, enumerable: true });
+              Object.defineProperty(campPins, event.campId, { value: event.pin, enumerable: true });
             }
           }
         }
 
+
         let match = false;
         if (campId) {
-          match = event.campUID == campId && this.nullOrEmpty(event.artCar);
+          match = event.campId == campId && this.nullOrEmpty(event.artCar);
         } else {
-          match = this.rslEventContains(event, query) && (event.day == fDay || !!ids);
+          match = this.rslEventContains(event, query) && (event.day == fDay || !!ids || !fDay);
         }
 
         if (match) {
@@ -710,14 +749,14 @@ export class DataManager implements WorkerClass {
     if (query) {
       query = this.scrubQuery(query);
     }
-    
-    for (let event of this.events) {      
+
+    for (let event of this.events) {
       if (
         this.eventContains(query, event, allDay) &&
         this.eventIsCategory(category, event) &&
         this.onDay(day, event, timeRange)
       ) {
-        
+
         const timeString = this.getTimeString(event, day);
         event.timeString = timeString.short;
         event.longTimeString = timeString.long;
@@ -855,9 +894,10 @@ export class DataManager implements WorkerClass {
     return Math.abs(d1 - d2) / 36e5;
   }
 
-  public getDays(): Day[] {
+  public getDays(name: Names): Day[] {
     const result: Day[] = [];
-    for (let day of this.days) {
+    const days = (name == Names.rsl) ? this.rslDays : this.days;
+    for (let day of days) {
       const date = new Date(day);
       result.push({ name: getDayNameFromDate(date).substring(0, 3), dayName: date.getDate().toString(), date });
     }
@@ -906,30 +946,22 @@ export class DataManager implements WorkerClass {
     }
   }
 
-  private path(name: string, online?: boolean): string {
-    if (this.dataset !== CurrentYear && online) {
-      if (this.dataset.toLowerCase().includes('ttitd')) {
-        // Burning Man dataset is extracted from API and published manually
-        return `https://dust.events/assets/data-v2/${this.dataset}/${name}.json`;
-      } else {
-        return `https://data.dust.events/${this.dataset}/${name}.json?${Math.random()}`;
-      }
+  private addRSLDay(date: Date) {
+    const day = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
+    if (!this.rslDays.includes(day)) {
+      this.rslDays.push(day);
     }
-    return `assets/${this.dataset}/${name}.json`;
   }
 
   private async loadEvents(): Promise<Event[]> {
-    const res = await fetch(this.path('events', true));
-    return await res.json();
+    return await this.read(this.getId(Names.events), []);
   }
 
   private async loadData(uri: string): Promise<any> {
-    this.consoleLog(`Worker fetch ${uri}...`);
     try {
       const res = await fetch(uri);
       return await res.json();
     } catch (err) {
-      //throw new Error(`${uri}: ${err}`)
       this.consoleError(`Worker fetch Failed to load ${uri}`);
       return [];
     }
@@ -943,15 +975,10 @@ export class DataManager implements WorkerClass {
     this.log(`[error]${message}`);
   }
 
-  public async getPotties(): Promise<Pin[]> {
-    const res = await fetch(this.path('potties'));
-    return await res.json();
-  }
-
   public async getGPSPoints(name: string, title: string): Promise<MapSet> {
     try {
-      const res = await fetch(this.path(name));
-      const data: GPSSet = await res.json();
+      const def: GPSSet = { title: '', description: '', points: [] };
+      const data: GPSSet = await this.read(this.getId(name as any), def);
       const result: MapSet = { title: data.title, description: data.description, points: [] };
       for (let gps of data.points) {
         const point = gpsToMap(gps);
@@ -960,7 +987,7 @@ export class DataManager implements WorkerClass {
           clock: '',
           x: point.x,
           y: point.y,
-          gps: structuredClone(gps),
+          gps: clone(gps),
           info: { title, location: '', subtitle: '' },
         };
         result.points.push(mapPoint);
@@ -971,10 +998,48 @@ export class DataManager implements WorkerClass {
     }
   }
 
+  private parsePin(pin: string): Pin {
+    if (hasValue(pin)) {
+      return JSON.parse(pin);
+    }
+    return { x: 0, y: 0 };
+  }
+
+  private fixPins(camps: Camp[]) {
+    for (const camp of camps) {
+      camp.pin = this.parsePin(camp.pin as any);
+    }
+  }
+  public async write(key: string, url: string, timeout: number): Promise<any> {
+    try {
+      const response = await webFetchWithTimeout(url, {}, timeout);
+      const json = await response.json();
+      if (key.includes(Names.camps)) {
+        this.fixPins(json);
+      }
+      await set(key, json);
+      return json;
+    } catch (err) {
+      this.consoleError(err as any);
+      throw new Error(`write ${key} ${url} failed`);
+    }
+  }
+
+  public async writeData(key: string, data: any): Promise<void> {
+    this.consoleLog(`writeData ${key}: data=${data}`);
+    await set(key, data);
+  }
+
+  public async read(key: string, defaultValue: any): Promise<any> {
+    const value = await get(key);
+    if (!value) return defaultValue;
+    return value;
+  }
+
   public async getMapPoints(name: string): Promise<MapSet> {
     try {
-      const res = await fetch(this.path(name));
-      const mapSet: MapSet = await res.json();
+      const def: MapSet = { title: '', description: '', points: [] };
+      const mapSet: MapSet = await this.read(this.getId(name as any), def);
       for (let point of mapSet.points) {
         point.gps = this.getMapPointGPS(point);
       }
@@ -986,10 +1051,7 @@ export class DataManager implements WorkerClass {
 
   public async getPins(pinType: string): Promise<MapSet> {
     try {
-      const url = this.path('pins', true);
-      this.consoleLog(`Get ${url}`);
-      const res = await fetch(url);
-      const pins: PlacedPin[] = await res.json();
+      const pins: PlacedPin[] = await this.read(this.getId(Names.pins), []);
       const mapSet: MapSet = { title: pinType, description: '', points: [] };
       for (let pin of pins) {
         const mp: MapPoint = { x: pin.x, y: pin.y, street: '', clock: '' };
@@ -1006,28 +1068,28 @@ export class DataManager implements WorkerClass {
 
   public async getGeoReferences(): Promise<GeoRef[]> {
     try {
-      const res = await fetch(this.path('geo', true));
-
-      return await res.json();
+      return this.read(this.getId(Names.geo), []);
     } catch {
       return [];
     }
   }
 
+  private getId(name: Names): string {
+    return `${this.dataset}-${name}`;
+  }
+
   private async loadCamps(): Promise<Camp[]> {
-    const res = await fetch(this.path('camps', true));
-    return await res.json();
+    return await this.read(this.getId(Names.camps), []);
+
   }
 
   private async loadArt(): Promise<Art[]> {
-    const res = await fetch(this.path('art', true));
-    return await res.json();
+    return this.read(this.getId(Names.art), []);
   }
 
   private async loadPins(): Promise<PlacedPin[]> {
     try {
-      const res = await fetch(this.path('pins', true));
-      return await res.json();
+      return this.read(this.getId(Names.pins), []);
     } catch {
       return [];
     }
@@ -1035,15 +1097,37 @@ export class DataManager implements WorkerClass {
 
   private async loadLinks(): Promise<Link[]> {
     try {
-      const res = await fetch(this.path('links', true));
-      return await res.json();
+      return this.read(this.getId(Names.links), []);
+    } catch {
+      return [];
+    }
+  }
+
+  private async loadMusic(): Promise<RSLEvent[]> {
+    try {
+      return this.read(this.getId(Names.rsl), []);
     } catch {
       return [];
     }
   }
 
   private async loadRevision(): Promise<Revision> {
-    const res = await fetch(this.path('revision', true));
-    return await res.json();
+    return this.read(this.getId(Names.revision), []);
   }
+}
+
+async function webFetchWithTimeout(url: string, options = {}, timeout: number = 5000) {
+  if (!AbortSignal.timeout) {
+    return await fetch(url, {
+      cache: 'no-cache',
+      ...options,
+    });
+  }
+  const signal = AbortSignal.timeout(timeout);
+  const response = await fetch(url, {
+    cache: 'no-cache',
+    ...options,
+    signal,
+  });
+  return response;
 }

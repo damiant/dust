@@ -15,7 +15,7 @@
       ></app-category>
     </ion-buttons>
     @if (db.selectedYear() !== '') {
-    <ion-badge class="pad-right" slot="end">{{db.selectedYear()}}</ion-badge>
+    <ion-badge  (click)="home()" class="pad-right" slot="end">{{db.selectedYear()}}</ion-badge>
     }
   </ion-toolbar>
 </ion-header>
@@ -62,7 +62,7 @@
     }
     <cdk-virtual-scroll-viewport [minBufferPx]="vm.minBufferPx" itemSize="180" maxBufferPx="2350">
       <app-event
-        [showImage]="vm.showImage"
+        [showImage]="true"
         [title]="vm.title"
         [longTime]="!vm.day"
         [day]="vm.day"

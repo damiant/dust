@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild, effect } from '@angular/core';
 import { PinchZoomModule } from '@meddv/ngx-pinch-zoom';
 import { LocationEnabledStatus, MapInfo, MapPoint, Pin } from '../data/models';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { defaultMapRadius, distance, formatDistanceMiles, mapPointToPin } from './map.utils';
 import { delay } from '../utils/utils';
 import { GeoService } from '../geolocation/geo.service';
@@ -13,6 +12,7 @@ import { GpsCoord, Point } from './geo.utils';
 import { Router, RouterModule } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { IonButton, IonContent, IonPopover, IonText } from '@ionic/angular/standalone';
+import { CachedImgComponent } from '../cached-img/cached-img.component';
 
 interface MapInformation {
   width: number; // Width of the map
@@ -31,20 +31,12 @@ const youOffsetY = 4;
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
-  imports: [PinchZoomModule, RouterModule, CommonModule, MessageComponent, IonPopover, IonContent, IonText, IonButton],
-  standalone: true,
-  animations: [
-    trigger('fade', [
-      state('visible', style({ opacity: 1 })),
-      state('hidden', style({ opacity: 0 })),
-      transition('visible <=> hidden', animate('0.3s ease-in-out')),
-    ]),
-  ],
+  imports: [PinchZoomModule, RouterModule, CommonModule, MessageComponent, IonPopover, IonContent, IonText, IonButton, CachedImgComponent],
+  standalone: true
 })
 export class MapComponent implements OnInit, OnDestroy {
   _points: MapPoint[];
   isOpen = false;
-  imageReady = false;
   footer: string | undefined;
   @ViewChild('popover') popover: any;
   info: MapInfo | undefined;
@@ -87,10 +79,6 @@ export class MapComponent implements OnInit, OnDestroy {
     this.update();
   }
 
-  ready() {
-    this.imageReady = true;
-  }
-
   async enableGeoLocation() {
     if (await this.geo.getPermission()) {
       this.settings.settings.locationEnabled = LocationEnabledStatus.Enabled;
@@ -126,8 +114,7 @@ export class MapComponent implements OnInit, OnDestroy {
   ngOnInit() {
     const darkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     this.src = darkMode ? 'assets/map-dark.svg' : 'assets/map.svg';
-    if (this.settings.settings.mapUri !== '') {
-      console.log(this.settings.settings.mapUri);
+    if (this.settings.settings.mapUri !== '') {      
       this.src = this.settings.settings.mapUri;
     }
   }

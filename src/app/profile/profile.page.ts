@@ -25,7 +25,7 @@ import { Share } from '@capacitor/share';
 import { RouterModule } from '@angular/router';
 import { FriendsComponent } from '../friends/friends.component';
 import { SettingsService } from '../data/settings.service';
-import { MapService } from '../map/map.service';
+import { GPSPin, MapService } from '../map/map.service';
 import { DbService } from '../data/db.service';
 import { TileContainerComponent } from '../tile-container/tile-container.component';
 import { TileComponent } from '../tile/tile.component';
@@ -49,6 +49,7 @@ import {
 } from 'ionicons/icons';
 import { Animation, StatusBar } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
+import { getCachedImage } from '../data/cache-store';
 
 @Component({
   selector: 'app-profile',
@@ -87,6 +88,8 @@ export class ProfilePage implements OnInit {
   locationEnabled = false;
   longEvents = false;
   hiddenPanel = false;
+  imageUrl = '';
+  mapPin: GPSPin | undefined;
   links: Link[] = [];
   @ViewChild(IonContent) ionContent!: IonContent;
 
@@ -116,10 +119,12 @@ export class ProfilePage implements OnInit {
   }
 
   async ngOnInit() {
+    this.imageUrl = await getCachedImage(this.db.selectedImage());
     this.db.checkInit();
+    this.mapPin = this.getMapPin();
     this.longEvents = this.settings.settings.longEvents;
-    this.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
-    this.links = await this.db.getLinks();
+    this.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;    
+    this.links = await this.db.getLinks();    
   }
 
   visit(url: string) {
@@ -130,8 +135,7 @@ export class ProfilePage implements OnInit {
     this.moreClicks++;
     if (this.moreClicks == 5) {
       this.ui.presentToast('Locations now enabled', this.toastController);
-      environment.overrideLocations = true;
-      this.settings.settings.lastDownload = '';
+      environment.overrideLocations = true;      
       this.settings.save();
       this.db.setHideLocations(false);
       await this.db.init(this.settings.settings.datasetId);
@@ -182,7 +186,8 @@ export class ProfilePage implements OnInit {
   async ionViewWillEnter() {
     if (Capacitor.isNativePlatform() && !this.ui.isAndroid()) {
       await StatusBar.hide({ animation: Animation.Fade });
-    }
+    }    
+    
   }
 
   async ionViewWillLeave() {
@@ -191,16 +196,26 @@ export class ProfilePage implements OnInit {
     }
   }
 
-  async directions() {
-    // Default comes from https://burningman.org/event/preparation/getting-there-and-back/
-    const lat = this.settings.settings.dataset ? this.settings.settings.dataset.lat : 40.753842;
-    const long = this.settings.settings.dataset ? this.settings.settings.dataset.long : -119.277;
-    const pin = { lat, long };
+  private getMapPin(): GPSPin | undefined {
+    
+    if (this.settings.settings.dataset?.lat) {
+      return { lat: this.settings.settings.dataset.lat, long: this.settings.settings.dataset.long };
+    } else {
+      if (!this.settings.settings.dataset?.lat) {
+      return { lat: 40.753842, long: -119.277 };
+      } else {
+        return undefined;
+      }
+    }
+  }
 
+  async directions() {
+    // Default comes from https://burningman.org/event/preparation/getting-there-and-back/    
+    if (!this.mapPin) return;
     if (await this.map.canOpenMapApp('google')) {
-      await this.map.openGoogleMapDirections(pin);
+      await this.map.openGoogleMapDirections(this.mapPin);
     } else if (await this.map.canOpenMapApp('apple')) {
-      await this.map.openAppleMapDirections(pin);
+      await this.map.openAppleMapDirections(this.mapPin);
     }
   }
 }

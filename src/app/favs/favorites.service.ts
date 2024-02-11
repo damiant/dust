@@ -13,7 +13,7 @@ import { NotificationService, ScheduleResult } from '../notifications/notificati
 import { Preferences } from '@capacitor/preferences';
 import { SettingsService } from '../data/settings.service';
 import { DbService } from '../data/db.service';
-import { getDayName, getOccurrenceTimeString, now } from '../utils/utils';
+import { clone, getDayName, getOccurrenceTimeString, now } from '../utils/utils';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 
 enum DbId {
@@ -371,8 +371,8 @@ export class FavoritesService {
       for (let occurrence of event.occurrence_set) {
         occurrence.star = await this.isFavEventOccurrence(event.uid, occurrence);
         if (occurrence.star) {
-          const eventItem = structuredClone(event);
-          eventItem.occurrence_set = [structuredClone(occurrence)];
+          const eventItem = clone(event);
+          eventItem.occurrence_set = [clone(occurrence)];
 
           let start: Date = new Date(occurrence.start_time);
           let end: Date = new Date(occurrence.end_time);

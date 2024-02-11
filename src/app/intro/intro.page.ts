@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, WritableSignal, effect, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonButton, IonContent, IonIcon, IonSpinner, IonText, ToastController } from '@ionic/angular/standalone';
@@ -10,16 +10,15 @@ import { FavoritesService } from '../favs/favorites.service';
 import { MessageComponent } from '../message/message.component';
 import { addDays, daysUntil, delay, isWhiteSpace, now } from '../utils/utils';
 import { Dataset } from '../data/models';
-import { datasetFilename } from '../data/api';
-import { ApiService } from '../data/api.service';
+import { ApiService, SendResult } from '../data/api.service';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
 import { ThemePrimaryColor, UiService } from '../ui/ui.service';
 import { environment } from 'src/environments/environment';
 import { Network } from '@capacitor/network';
-import { Directory, Filesystem } from '@capacitor/filesystem';
 import { addIcons } from 'ionicons';
 import { arrowForwardOutline } from 'ionicons/icons';
+import { CachedImgComponent } from '../cached-img/cached-img.component';
 
 interface IntroState {
   ready: boolean;
@@ -60,10 +59,12 @@ function initialState(): IntroState {
     IonIcon,
     IonText,
     IonContent,
+    CachedImgComponent
   ],
 })
 export class IntroPage {
   vm: IntroState = initialState();
+  download: WritableSignal<boolean> = signal(false);
 
   constructor(
     private db: DbService,
@@ -75,6 +76,15 @@ export class IntroPage {
     private toastController: ToastController,
   ) {
     addIcons({ arrowForwardOutline });
+    effect(() => {
+      const downloading = this.download();
+      if (downloading) {
+        this.ui.presentDarkToast(
+          `Downloading ${this.vm.selected?.title}`,
+          this.toastController,
+        );
+      }
+    });
   }
 
   async ionViewWillEnter() {
@@ -109,9 +119,10 @@ export class IntroPage {
 
     try {
       this.vm.downloading = true;
-      await this.api.download(this.vm.selected);
+      await this.api.download(this.vm.selected, false, this.download);
     } finally {
       this.vm.downloading = false;
+      this.download.set(false);
     }
     console.log(`Auto starting = ${this.vm.eventAlreadySelected}...`);
     if (this.vm.eventAlreadySelected) {
@@ -120,7 +131,7 @@ export class IntroPage {
   }
 
   private load() {
-    const idx = this.vm.cards.findIndex((c) => datasetFilename(c) == this.settingsService.settings.datasetId);
+    const idx = this.vm.cards.findIndex((c) => this.api.datasetId(c) == this.settingsService.settings.datasetId);
     if (idx >= 0) {
       this.vm.selected = this.vm.cards[idx];
     } else {
@@ -135,14 +146,9 @@ export class IntroPage {
     if (this.vm.clearCount < 5) {
       return;
     }
-    const d = await Filesystem.readdir({ path: '.', directory: Directory.Data });
-    for (let file of d.files) {
-      console.log(`Delete file ${file.name}`);
-      await Filesystem.deleteFile({ path: file.name, directory: Directory.Data });
-    }
+    await this.db.clear();
     console.log('Done clearing');
-    this.settingsService.clearSelectedEvent();
-    this.settingsService.settings.lastDownload = '';
+    this.settingsService.clearSelectedEvent();    
     this.settingsService.save();
     document.location.href = '';
   }
@@ -175,10 +181,6 @@ export class IntroPage {
     }
   }
 
-  isCurrentYear() {
-    return this.vm.selected && this.vm.selected.year == this.vm.cards[0].year;
-  }
-
   isBurningMan() {
     return this.settingsService.settings.datasetId.includes('ttitd');
   }
@@ -187,7 +189,7 @@ export class IntroPage {
     try {
       if (!this.vm.selected) return;
 
-      const hasOffline = this.isCurrentYear() || this.settingsService.isOffline(this.settingsService.settings.datasetId);
+      const hasOffline = this.settingsService.isOffline(this.settingsService.settings.datasetId);
       if (!hasOffline) {
         const status = await Network.getStatus();
         if (!status.connected) {
@@ -205,10 +207,14 @@ export class IntroPage {
       this.vm.showMessage = false;
 
       console.warn(`populate ${this.settingsService.settings.datasetId} attempt ${attempt}`);
-      const revision = await this.db.init(this.settingsService.settings.datasetId);
-      console.warn(`sendDataToWorker ${this.settingsService.settings.datasetId}`);
-      const useData = await this.api.sendDataToWorker(revision, this.db.locationsHidden(), this.isBurningMan());
-      if (!useData) {
+      let result = await this.db.init(this.settingsService.settings.datasetId);
+      await this.db.getWorkerLogs();      
+      const sendResult: SendResult = await this.api.sendDataToWorker(result.revision, this.db.locationsHidden(), this.isBurningMan());
+      if (sendResult.datasetResult) {
+        // We downloaded a new dataset
+        result = sendResult.datasetResult;
+      }
+      if (!sendResult.success) {
         // Its a mess
         await this.cleanup();
         // It doesnt matter if we were able to cleanup the dataset by downloading again, we need to exit to relaunch
@@ -216,15 +222,16 @@ export class IntroPage {
           this.launch(attempt + 1);
         }
         return;
-      }
-      console.log(`sendDataToWorker completed`);
+      }      
       this.fav.init(this.settingsService.settings.datasetId);
-      const title = this.isCurrentYear() ? '' : this.vm.selected.year;
+      let showYear = (`${new Date().getFullYear()}` !== this.vm.selected.year) && this.vm.selected.year !== '0000';
+
+      const title = showYear ? this.vm.selected.year : '';
       this.db.selectedYear.set(title);
       this.db.selectedDataset.set(this.vm.selected);
 
       const hidden = [];
-      if (this.isBurningMan() && !['2024', '2023'].includes(this.vm.selected.year)) {
+      if (result.rsl == 0) {
         hidden.push('rsl');
       }
       if (!this.isBurningMan()) {
@@ -250,7 +257,7 @@ export class IntroPage {
     let success = true;
     try {
       this.vm.downloading = true;
-      await this.api.download(this.vm.selected, true);
+      await this.api.download(this.vm.selected, true, this.download);
     } catch {
       success = false;
     }
@@ -267,7 +274,7 @@ export class IntroPage {
   }
 
   save() {
-    this.settingsService.settings.datasetId = datasetFilename(this.vm.selected!);
+    this.settingsService.settings.datasetId = this.api.datasetId(this.vm.selected!);
     this.settingsService.settings.dataset = this.vm.selected;
     this.settingsService.settings.mapRotation = this.isBurningMan() ? 45 : 0; // Burning Mans map is rotate 45 degrees
     this.settingsService.settings.eventTitle = this.vm.selected!.title;

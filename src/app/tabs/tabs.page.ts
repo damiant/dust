@@ -62,7 +62,7 @@ export class TabsPage implements OnInit {
   }
 
   async ngOnInit() {
-    this.ready = true;    
+    this.ready = true;
 
     // Whenever app is resumed set signal called resume
     App.addListener('resume', async () => {
@@ -83,7 +83,9 @@ export class TabsPage implements OnInit {
 
     // When app is paused hide the keyboard
     App.addListener('pause', async () => {
-      await Keyboard.hide();
+      if (Capacitor.getPlatform() != 'web') {
+        await Keyboard.hide();
+      }
     });
 
     Network.addListener('networkStatusChange', (status) => {
@@ -125,7 +127,7 @@ export class TabsPage implements OnInit {
     if (Capacitor.isNativePlatform() && !this.ui.isAndroid()) {
       const isHidden = (this.currentTab == 'profile');
       if (isHidden) {
-      StatusBar.hide({ animation: Animation.Fade })
+        StatusBar.hide({ animation: Animation.Fade })
       } else {
         StatusBar.show({ animation: Animation.Fade })
       }
@@ -139,16 +141,16 @@ export class TabsPage implements OnInit {
   ionViewDidLeave() {
     this.propagateToActiveTab('ionViewDidLeave');
   }
-  
+
   ionViewWillEnter() {
     this.propagateToActiveTab('ionViewWillEnter');
   }
-  
+
   ionViewDidEnter() {
     this.propagateToActiveTab('ionViewDidEnter');
   }
 
-  private propagateToActiveTab(eventName: string) {    
+  private propagateToActiveTab(eventName: string) {
     if (this.activeTab) {
       this.activeTab.dispatchEvent(new CustomEvent(eventName));
     }

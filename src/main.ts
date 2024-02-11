@@ -1,4 +1,4 @@
-import { enableProdMode, isDevMode } from '@angular/core';
+import { APP_INITIALIZER, enableProdMode } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { RouteReuseStrategy, provideRouter, withComponentInputBinding } from '@angular/router';
 import { provideIonicAngular, IonicRouteStrategy } from '@ionic/angular/standalone';
@@ -7,22 +7,30 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
-import { provideServiceWorker } from '@angular/service-worker';
+//import { provideServiceWorker } from '@angular/service-worker';
+import { DbService } from './app/data/db.service';
 
 if (environment.production) {
   enableProdMode();
   window.console.log = () => { }
 }
 
+const appInitFactory =
+  (dbService: DbService): (() => Promise<void>) =>
+  async () =>
+    await dbService.initWorker();
+
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: APP_INITIALIZER, useFactory: appInitFactory, deps: [DbService], multi: true },
     provideIonicAngular({ mode: 'ios', swipeBackEnabled: false }),
     provideAnimations(),
     provideRouter(routes, withComponentInputBinding()),
-    provideServiceWorker('ngsw-worker.js', {
-        enabled: !isDevMode(),
-        registrationStrategy: 'registerWhenStable:30000'
-    })
+    // provideServiceWorker('ngsw-worker.js', {
+    //   // Service Worker seems to be causing problems
+    //     enabled: !isDevMode(),
+    //     registrationStrategy: 'registerWhenStable:30000'
+    // })
 ],
 });

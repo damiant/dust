@@ -27,9 +27,9 @@ import { SettingsService } from '../data/settings.service';
 import { ShareInfoType } from '../share/share.service';
 import { toMapPoint } from '../map/map.utils';
 import { getOrdinalNum } from '../utils/utils';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { addIcons } from 'ionicons';
 import { star, starOutline, shareOutline, locationOutline, calendarOutline } from 'ionicons/icons';
+import { CachedImgComponent } from '../cached-img/cached-img.component';
 
 @Component({
   selector: 'app-camp',
@@ -53,14 +53,8 @@ import { star, starOutline, shareOutline, locationOutline, calendarOutline } fro
     IonLabel,
     IonText,
     IonModal,
-  ],
-  animations: [
-    trigger('fade', [
-      state('visible', style({ opacity: 1 })),
-      state('hidden', style({ opacity: 0 })),
-      transition('visible <=> hidden', animate('0.3s ease-in-out')),
-    ]),
-  ],
+    CachedImgComponent
+  ]
 })
 export class CampPage implements OnInit {
   showEvent = false;
@@ -70,7 +64,6 @@ export class CampPage implements OnInit {
   eventId: string | undefined;
   rslEvents: RSLEvent[] = [];
   star = false;
-  isReady = false; // Image
   backText = 'Camps';
 
   constructor(
@@ -116,10 +109,6 @@ export class CampPage implements OnInit {
     if (message) {
       this.ui.presentToast(message, this.toastController);
     }
-  }
-
-  setReady() {
-    this.isReady = true;
   }
 
   private toDate(d: string): string {

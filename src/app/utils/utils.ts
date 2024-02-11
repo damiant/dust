@@ -1,18 +1,29 @@
 import { environment } from 'src/environments/environment';
 import { OccurrenceSet, TimeRange, TimeString } from '../data/models';
+import { Capacitor } from '@capacitor/core';
 
 export function sameDay(d1: Date, d2: Date) {
   return d1.getDate() === d2.getDate() && d1.getMonth() === d2.getMonth() && d1.getFullYear() === d2.getFullYear();
 }
 
 export const BurningManTimeZone = 'America/Los_Angeles';
-export const CurrentYear = 'ttitd-2023';
+//export const CurrentYear = 'ttitd-2023';
+
+// Data is for dust admin generated datasets
+export const data_dust_events = 'https://api.dust.events/data/'
+
+// Static data is for burning man datasets
+export const static_dust_events = 'https://api.dust.events/static/'
 
 export function now(): Date {
   if (!environment.simulatedTime) {
     return nowPST();
   }
-  return structuredClone(environment.simulatedTime);
+  return clone(environment.simulatedTime);
+}
+
+export function isWeb(): boolean {
+  return Capacitor.getPlatform() == 'web';
 }
 
 export function nowPST(): Date {
@@ -28,6 +39,14 @@ export function nowRange(): TimeRange {
   end.setTime(end.getTime() + 60 * minute);
   console.log(start, end);
   return { start, end };
+}
+
+export function clone(o: any): any {
+  if (typeof structuredClone === 'function') {
+    return structuredClone(o);
+  } else {
+    return JSON.parse(JSON.stringify(o));
+  }
 }
 
 export function timeRangeToString(timeRange: TimeRange | undefined): string {
@@ -52,6 +71,10 @@ export function compareStr(s1: string, s2: string): boolean {
 export function randomInt(min: number, max: number) {
   // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+export function hasValue(v: any): boolean {
+  return (v !== undefined && v !== null);
 }
 
 export function delay(ms: number): Promise<void> {

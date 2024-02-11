@@ -78,7 +78,7 @@ export class UiService {
       message,
       color: 'dark',
       duration: 2500,
-      position: 'middle',
+      position: 'top',
     });
 
     await toast.present();

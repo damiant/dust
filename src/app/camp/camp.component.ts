@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { Camp } from '../data/models';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import {
   IonCard,
   IonCardContent,
@@ -11,6 +10,7 @@ import {
   IonCardTitle,
   IonText,
 } from '@ionic/angular/standalone';
+import { CachedImgComponent } from '../cached-img/cached-img.component';
 
 @Component({
   selector: 'app-camp',
@@ -18,25 +18,12 @@ import {
   styleUrls: ['./camp.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, RouterModule, IonCard, IonCardHeader, IonCardSubtitle, IonText, IonCardTitle, IonCardContent],
-  animations: [
-    trigger('fade', [
-      state('visible', style({ opacity: 1 })),
-      state('hidden', style({ opacity: 0 })),
-      transition('visible <=> hidden', animate('0.3s ease-in-out')),
-    ]),
-  ],
+  imports: [CommonModule, RouterModule, IonCard, IonCardHeader, IonCardSubtitle, IonText, IonCardTitle, IonCardContent, CachedImgComponent],
 })
 export class CampComponent {
   @Input() camp!: Camp;
-  @Input() showImage = true;
   @Input() title = 'Camps';
   @Output() mapClick = new EventEmitter<any>();
-  isReady = false;
-
-  ready() {
-    this.isReady = true;
-  }
 
   map(camp: Camp, ev: any) {
     console.log('emit', camp);

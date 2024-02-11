@@ -7,6 +7,7 @@ import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { RouterFocusService } from './utils/focus.service';
 import { IntegrityService } from './data/integrity.service';
 import { DbService } from './data/db.service';
+import { ApiService } from './data/api.service';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +22,7 @@ export class AppComponent implements OnInit {
   constructor(
     private notificationService: NotificationService,
     private integrityService: IntegrityService,
+    private api: ApiService,
     private shareService: ShareService,
     private zone: NgZone,
     private focusService: RouterFocusService,
@@ -43,10 +45,10 @@ export class AppComponent implements OnInit {
           console.error('appUrlOpen', e);
         }
       });
-    });
+    });    
 
     // Test application integrity
-    setTimeout(() => {
+    setTimeout(() => {      
       this.integrityService.testIntegrity();
     }, 10000);
   }

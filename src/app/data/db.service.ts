@@ -4,7 +4,6 @@ import {
   Day,
   Camp,
   Art,
-  Pin,
   DataMethods,
   MapSet,
   GeoRef,
@@ -15,35 +14,54 @@ import {
   Link,
   DatasetResult,
   Dataset,
+  Names,
 } from './models';
 import { call, registerWorker } from './worker-interface';
-import { daysUntil, noDate, now } from '../utils/utils';
+import { clone, data_dust_events, daysUntil, noDate, now, static_dust_events } from '../utils/utils';
 import { GpsCoord, Point } from '../map/geo.utils';
 import { environment } from 'src/environments/environment';
+import { Network } from '@capacitor/network';
+import { Directory, Filesystem } from '@capacitor/filesystem';
+
+
+
+export interface GetOptions {
+  timeout?: number; // Timeout when reading live
+  onlyRead?: boolean; // Just read from cache, do not attempt to download
+  defaultValue?: any; // Return default value on failure
+  freshOnce?: boolean; // Download once then onlyRead afterwards
+  revision?: number; // This is used for cache busting
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class DbService {
-  private defaultDataset: Dataset = { name: '', year: '', id: '', title: '', start: '', end: '', lat: 0, long: 0 };
+  private defaultDataset: Dataset = { name: '', year: '', id: '', title: '', start: '', end: '', lat: 0, long: 0, imageUrl: '', timeZone: '' };
   public selectedDay = signal(noDate());
   public selectedYear = signal('');
   public selectedDataset = signal(this.defaultDataset);
-  public selectedImage = computed(() => `assets/datasets/${this.selectedDataset().id}.webp`);
+  public selectedImage = computed( () => {const r = `${this.selectedDataset().imageUrl}`; console.info(r); return r});
   public featuresHidden = signal(['']);
   public networkStatus = signal('');
   public resume = signal('');
   private initialized = false;
   private hideLocations = true;
+  private datasetsRead: string[] = [];
   private worker!: Worker;
 
-  public async init(dataset: string): Promise<number> {
+  public async initWorker(): Promise<void> {
     if (!this.initialized) {
+      console.log(`Initializing web worker...`);
       this.worker = new Worker(new URL('./app.worker', import.meta.url));
       registerWorker(this.worker);
+      console.log(`Initialized web worker`);
       this.initialized = true;
     }
+  }
 
+  public async init(dataset: string): Promise<DatasetResult> {
+    this.initWorker(); // Just to double check
     return await call(this.worker, DataMethods.Populate, dataset, this.hideLocations, environment);
   }
 
@@ -127,17 +145,91 @@ export class DbService {
       clock: '',
       x: point.x,
       y: point.y,
-      gps: structuredClone(gpsCoord),
+      gps: clone(gpsCoord),
       info: title ? { title, location: '', subtitle: '' } : undefined,
     };
   }
 
-  public async getPotties(): Promise<Pin[]> {
-    return await call(this.worker, DataMethods.GetPotties);
-  }
-
   public async getMapPoints(name: string): Promise<MapSet> {
     return await call(this.worker, DataMethods.GetMapPoints, name);
+  }
+
+  private async _read(key: string): Promise<any> {
+    return await call(this.worker, DataMethods.ReadData, key);
+  }
+
+  public async get(dataset: string, name: string, options: GetOptions): Promise<any> {
+    // TODO: Move this to a signal that responds to network change to improve perf
+    const status = await Network.getStatus();
+    try {
+      let onlyRead = !!options.onlyRead;
+      if (options.freshOnce) {
+        if (this.haveRead(this._getkey(dataset, name))) {
+          onlyRead = true;
+        }
+      }
+      if (!status.connected) {
+        onlyRead = true;
+      }
+      if (onlyRead) {
+        return await this._read(this._getkey(dataset, name));
+      } else {
+        let url = this.livePath(dataset, name);
+        if (options.revision) {
+          url += `?revision=${options.revision}`;
+
+        }
+        const result = await this._write(this._getkey(dataset, name), url, options.timeout ?? 30000);
+        this.markRead(this._getkey(dataset, name));
+        return result;
+      }
+    } catch (err) {
+      const error = `Failed to get dataset=${dataset} name=${name}`;
+      if (options.defaultValue) {
+        console.warn(`${error}. Return default vaule of ${options.defaultValue}`);
+        return options.defaultValue;
+      } else {
+        throw new Error(error);
+      }
+    }
+  }
+
+  private haveRead(key: string) {
+    return this.datasetsRead.includes(key);
+  }
+  private markRead(key: string) {
+    if (!this.datasetsRead.includes(key)) {
+      this.datasetsRead.push(key);
+    }
+  }
+
+  public async writeData(dataset: string, name: string, data: any): Promise<void> {
+    this._writeData(this._getkey(dataset, name), data);
+  }
+
+  private _getkey(dataset: string, name: string): string {
+    return `${dataset}-${name}`
+  }
+
+  private async _write(key: string, url: string, timeout = 30000): Promise<any> {
+    return await call(this.worker, DataMethods.Write, key, url, timeout);
+  }
+
+  private async _writeData(key: string, data: any): Promise<any> {
+    return await call(this.worker, DataMethods.WriteData, key, data);
+  }
+
+  private async clearIDB(): Promise<any> {
+    return await call(this.worker, DataMethods.Clear);
+  }
+
+  public async clear() {
+    const d = await Filesystem.readdir({ path: '.', directory: Directory.Data });
+    for (let file of d.files) {
+      console.log(`Delete file ${file.name}`);
+      await Filesystem.deleteFile({ path: file.name, directory: Directory.Data });
+    }
+    await this.clearIDB();
   }
 
   public async getPins(name: string): Promise<MapSet> {
@@ -192,7 +284,7 @@ export class DbService {
 
   public offsetGPS(gpsCoord: GpsCoord): GpsCoord {
     if (environment.latitudeOffset && environment.longitudeOffset) {
-      const before = structuredClone(gpsCoord);
+      const before = clone(gpsCoord);
       const after = { lat: gpsCoord.lat + environment.latitudeOffset, lng: gpsCoord.lng + environment.longitudeOffset };
       gpsCoord = after;
       console.error(`GPS Position was modified ${JSON.stringify(before)} to ${JSON.stringify(after)}`);
@@ -208,8 +300,8 @@ export class DbService {
     return await call(this.worker, DataMethods.FindCamp, uid);
   }
 
-  public async getDays(): Promise<Day[]> {
-    return await call(this.worker, DataMethods.GetDays);
+  public async getDays(name: Names): Promise<Day[]> {
+    return await call(this.worker, DataMethods.GetDays, name);
   }
 
   public async getEvents(idx: number, count: number): Promise<Event[]> {
@@ -235,4 +327,21 @@ export class DbService {
   public async getCamps(idx: number, count: number): Promise<Camp[]> {
     return await call(this.worker, DataMethods.GetCamps, idx, count);
   }
+
+  public livePath(dataset: string, name: string, ext?: string): string {
+    if (name == 'festivals') {
+      return `${data_dust_events}${dataset}.${ext ? ext : 'json'}`;
+    }
+    if (dataset.toLowerCase().includes('ttitd') || dataset == 'datasets') {
+      return `${static_dust_events}${dataset}/${name}.${ext ? ext : 'json'}`;
+    } else {
+      return `${data_dust_events}${dataset}/${name}.${ext ? ext : 'json'}`;
+    }
+  }
+
+  public async getLiveBinary(dataset: string, name: string, ext: string, revision: string): Promise<string> {
+    return this.livePath(dataset, name, ext) + `?${revision}`;
+  }
+
 }
+

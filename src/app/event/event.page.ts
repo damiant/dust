@@ -28,7 +28,6 @@ import { SettingsService } from '../data/settings.service';
 import { UiService } from '../ui/ui.service';
 import { toMapPoint } from '../map/map.utils';
 import { dateMatches, noDate, sameDay } from '../utils/utils';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { addIcons } from 'ionicons';
 import {
   shareOutline,
@@ -39,6 +38,7 @@ import {
   pricetagOutline,
   closeCircleOutline,
 } from 'ionicons/icons';
+import { CachedImgComponent } from '../cached-img/cached-img.component';
 
 @Component({
   selector: 'app-event',
@@ -64,14 +64,8 @@ import {
     IonBackButton,
     IonHeader,
     IonPopover,
-  ],
-  animations: [
-    trigger('fade', [
-      state('visible', style({ opacity: 1 })),
-      state('hidden', style({ opacity: 0 })),
-      transition('visible <=> hidden', animate('0.3s ease-in-out')),
-    ]),
-  ],
+    CachedImgComponent
+  ]
 })
 export class EventPage implements OnInit {
   public event: Event | undefined;
@@ -79,7 +73,6 @@ export class EventPage implements OnInit {
   @ViewChild(IonPopover) popover!: IonPopover;
   isOpen = false;
   ready = false;
-  isReady = false; // Image
   showMap = false;
   mapPoints: MapPoint[] = [];
   mapTitle = '';
@@ -147,10 +140,6 @@ export class EventPage implements OnInit {
     });
 
     await toast.present();
-  }
-
-  setReady() {
-    this.isReady = true;
   }
 
   closePopover() {

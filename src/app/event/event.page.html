@@ -30,12 +30,9 @@
   <ion-list lines="none">
     @if (event.imageUrl) {
     <div class="image">
-      <img
-        loading="lazy"
+      <app-cached-img
         class="image"
-        [@fade]="isReady ? 'visible' : 'hidden'"
-        alt="{{event.title}}"
-        (load)="setReady()"
+        [alt]="event.title"
         [src]="event.imageUrl"
       />
     </div>
