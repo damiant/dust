@@ -2,6 +2,7 @@ import { Directory, Filesystem } from '@capacitor/filesystem';
 
 export async function getCachedImage(imageUrl: string): Promise<string> {
   // Already converted?
+  if (!imageUrl) return imageUrl;
   if (imageUrl.startsWith('data:')) return imageUrl;
 
   const imageName = imageUrl.split('/').pop();
