@@ -293,6 +293,7 @@ export interface FullDataset {
   pins: string;
   links: string;
   rsl: string;
+  map: string;
   hideLocations: boolean;
 }
 

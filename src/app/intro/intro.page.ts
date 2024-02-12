@@ -64,7 +64,7 @@ function initialState(): IntroState {
 })
 export class IntroPage {
   vm: IntroState = initialState();
-  download: WritableSignal<boolean> = signal(false);
+  download: WritableSignal<string> = signal('');
 
   constructor(
     private db: DbService,
@@ -78,9 +78,9 @@ export class IntroPage {
     addIcons({ arrowForwardOutline });
     effect(() => {
       const downloading = this.download();
-      if (downloading) {
+      if (downloading !== '') {
         this.ui.presentDarkToast(
-          `Downloading ${this.vm.selected?.title}`,
+          `Downloading ${downloading}`,
           this.toastController,
         );
       }
@@ -124,7 +124,7 @@ export class IntroPage {
       await this.api.download(this.vm.selected, forceDownload, this.download);
     } finally {
       this.vm.downloading = false;
-      this.download.set(false);
+      this.download.set('');
     }
     console.log(`Auto starting = ${this.vm.eventAlreadySelected}...`);
     if (this.vm.eventAlreadySelected) {

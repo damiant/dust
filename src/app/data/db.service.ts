@@ -172,7 +172,7 @@ export class DbService {
     return await call(this.worker, DataMethods.ReadData, key);
   }
 
-  public async get(dataset: string, name: string, options: GetOptions): Promise<any> {
+  public async get(dataset: string, name: Names, options: GetOptions): Promise<any> {
     // TODO: Move this to a signal that responds to network change to improve perf
     const status = await Network.getStatus();
     try {
@@ -350,7 +350,7 @@ export class DbService {
     return await call(this.worker, DataMethods.GetCamps, idx, count);
   }
 
-  public livePath(dataset: string, name: string, ext?: string): string {
+  public livePath(dataset: string, name: Names, ext?: string): string {
     if (name == 'festivals') {
       return `${data_dust_events}${dataset}.${ext ? ext : 'json'}`;
     }
@@ -361,8 +361,8 @@ export class DbService {
     }
   }
 
-  public async getLiveBinary(dataset: string, name: string, ext: string, revision: string): Promise<string> {
-    return this.livePath(dataset, name, ext) + `?${revision}`;
+  public async getLiveBinary(dataset: string, filename: string, revision: string): Promise<string> {
+    return `${data_dust_events}${dataset}/${filename}?${revision}`;
   }
 
 }
