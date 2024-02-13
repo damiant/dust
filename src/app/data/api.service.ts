@@ -22,7 +22,7 @@ export interface SendResult {
 })
 export class ApiService {
   constructor(
-    private settingsService: SettingsService,    
+    private settingsService: SettingsService,
     private dbService: DbService,
   ) { }
 
@@ -40,7 +40,7 @@ export class ApiService {
         return { success: false };
       }
       const mapData: MapData = await this.dbService.get(ds, Names.map, { onlyRead: true, defaultValue: { filename: '', uri: '' } });
-      console.warn(`Get cached image for ${mapData.uri}`);
+      console.warn(`Get cached image for ${ds}`);
       const mapUri = await getCachedImage(mapData.uri);
       this.settingsService.settings.mapUri = mapIsOffline ? '' : mapUri;
       this.settingsService.save();
@@ -112,6 +112,7 @@ export class ApiService {
     for (const dataset of datasets) {
       if (dataset.imageUrl.includes('[@static]')) {
         dataset.imageUrl = dataset.imageUrl.replace('[@static]', static_dust_events);
+        dataset.active = true;
       } else {
         dataset.imageUrl = `${data_dust_events}${dataset.imageUrl}`;
       }
@@ -139,7 +140,10 @@ export class ApiService {
     try {
       // Gets it from netlify      
       const datasets: Dataset[] = await this.dbService.get(Names.datasets, Names.datasets, { freshOnce: true, timeout: 1000 });
-      dataset = this.datasetId(selected ? selected : datasets[0]);
+      if (!selected) {
+        selected = datasets[0];
+      }
+      dataset = this.datasetId(selected);
 
       console.log(`get revision live ${dataset}`);
       const currentRevision: Revision = await this.dbService.get(dataset, Names.revision, { onlyRead: true, defaultValue: { revision: 0 } });
@@ -193,12 +197,12 @@ export class ApiService {
     const camps = rCamps.status == 'fulfilled' ? rCamps.value : '';
     const map = rMap.status == 'fulfilled' ? rMap.value : '';
     console.log(`events=${rEvents.status} art=${rArt.status} camps=${rCamps.status} pins=${rPins.status} links=${rLinks.status} map=${rMap.status} geo=${rGeo.status} restrooms=${rRestrooms.status} ice=${rIce.status} medical=${rMedical.status} rsl=${rRSL.status}`);
-    let uri: string | undefined = undefined;  
-    if (map) {          
+    let uri: string | undefined = undefined;
+    if (map) {
       const ext = map.filename ? map.filename.split('.').pop() : 'svg';
-      console.info(`download.map ${map.filename} ext=${ext}`);      
+      console.info(`download.map ${map.filename} ext=${ext}`);
       uri = await this.dbService.getLiveBinary(dataset, map.filename, currentVersion);
-      console.info(`download.map uri=${uri}`);  
+      console.info(`download.map uri=${uri}`);
       uri = await getCachedImage(uri);
     }
 
@@ -213,7 +217,7 @@ export class ApiService {
 
 
     await this.dbService.writeData(dataset, Names.revision, revision);
-    await this.dbService.writeData(dataset, Names.version, { version: await this.getVersion() });    
+    await this.dbService.writeData(dataset, Names.version, { version: await this.getVersion() });
     map.uri = uri;
     await this.dbService.writeData(dataset, Names.map, map);
 

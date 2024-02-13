@@ -106,40 +106,10 @@ export class IntroPage {
     await this.load();
   }
 
-  async ionViewDidEnter() {
-    this.ui.setNavigationBar(ThemePrimaryColor);
-    await delay(500);
-    if (Capacitor.isNativePlatform()) {
-      await StatusBar.setStyle({ style: Style.Dark });
-      await this.ui.setStatusBarBackgroundColor();
-      await SplashScreen.hide();
-      await delay(200);
-      await this.ui.setStatusBarBackgroundColor();
-    }
-
-    try {
-      this.vm.downloading = true;
-      // If we are using a preview then force
-      const forceDownload = !!this.db.overrideDataset;
-      await this.api.download(this.vm.selected, forceDownload, this.download);
-    } finally {
-      this.vm.downloading = false;
-      this.download.set('');
-    }
-    console.log(`Auto starting = ${this.vm.eventAlreadySelected}...`);
-    if (this.vm.eventAlreadySelected) {
-      this.go();
-    }
-  }
-
   private async load() {
     const idx = this.vm.cards.findIndex((c) => this.api.datasetId(c) == this.settingsService.settings.datasetId);
     if (idx >= 0) {
       this.vm.selected = this.vm.cards[idx];
-    } else {
-      // First time in: select this year
-      this.vm.selected = this.vm.cards[0];
-      this.save();
     }
     const preview = this.db.overrideDataset;
     if (preview) {
@@ -156,6 +126,25 @@ export class IntroPage {
     }
   }
 
+
+  async ionViewDidEnter() {
+    this.ui.setNavigationBar(ThemePrimaryColor);
+    await delay(500);
+    if (Capacitor.isNativePlatform()) {
+      await StatusBar.setStyle({ style: Style.Dark });
+      await this.ui.setStatusBarBackgroundColor();
+      await SplashScreen.hide();
+      await delay(200);
+      await this.ui.setStatusBarBackgroundColor();
+    }
+
+    console.log(`Auto starting = ${this.vm.eventAlreadySelected}...`);
+    if (this.vm.eventAlreadySelected) {
+      await this.go();
+    }
+  }
+
+  
   public async clear() {
     this.vm.clearCount++;
     if (this.vm.clearCount < 5) {
@@ -170,6 +159,16 @@ export class IntroPage {
 
   async go() {
     if (!this.vm.selected) return;
+
+    try {
+      this.vm.downloading = true;
+      // If we are using a preview then force
+      const forceDownload = !!this.db.overrideDataset;
+      await this.api.download(this.vm.selected, forceDownload, this.download);
+    } finally {
+      this.vm.downloading = false;
+      this.download.set('');
+    }
 
     const start = new Date(this.vm.selected.start);
     const manBurns = addDays(start, 6);
@@ -192,7 +191,7 @@ export class IntroPage {
       this.vm.showMessage = true;
     } else {
       this.vm.showMessage = false;
-      this.launch();
+      await this.launch();
     }
   }
 

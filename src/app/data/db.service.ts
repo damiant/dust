@@ -354,15 +354,20 @@ export class DbService {
     if (name == 'festivals') {
       return `${data_dust_events}${dataset}.${ext ? ext : 'json'}`;
     }
-    if (dataset.toLowerCase().includes('ttitd') || dataset == 'datasets') {
+    if (this.isStatic(dataset)) {
       return `${static_dust_events}${dataset}/${name}.${ext ? ext : 'json'}`;
     } else {
       return `${data_dust_events}${dataset}/${this.prefix}${name}.${ext ? ext : 'json'}`;
     }
   }
 
+  private isStatic(dataset: string): boolean {
+    return (dataset.toLowerCase().includes('ttitd') || dataset == 'datasets');
+  }
+
   public async getLiveBinary(dataset: string, filename: string, revision: string): Promise<string> {
-    return `${data_dust_events}${dataset}/${filename}?${revision}`;
+    const domain = this.isStatic(dataset) ? static_dust_events : data_dust_events;
+    return `${domain}${dataset}/${filename}?${revision}`;
   }
 
 }
