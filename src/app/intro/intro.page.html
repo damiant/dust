@@ -9,20 +9,15 @@
       <ion-spinner [hidden]="!vm.downloading" name="dots" color="light"></ion-spinner>
     </div>
   </div>
-  <div [hidden]="vm.eventAlreadySelected" class="container" id="scroll-container">
+
+  <app-carousel [hidden]="vm.eventAlreadySelected" (slideChanged)="slideChanged($event)" #carousel>
     @for (card of vm.cards; track card.id) {
-      @if (card.active) {
-    <div role="button" attr.aria-label="{{card.title}}" class="card"
-      [ngClass]="(vm.selected?.id === card.id) ? 'select' : 'unselect'" (click)="open(card)">
-      <div class="card-container">
-        <app-cached-img [ngClass]="(vm.selected?.id === card.id) ? 'select' : 'unselect'"
-          [src]="card.imageUrl" />
+    <app-carousel-item (click)="open(card)">
+        <app-cached-img [ngClass]="(vm.selected?.id === card.id) ? 'select' : 'unselect'" [src]="card.imageUrl" />
         <p class="name" aria-hidden="true">{{card.title}}</p>
-      </div>
-    </div>
-  }
+    </app-carousel-item>
     }
-  </div>
+  </app-carousel>
 
   <div [hidden]="vm.eventAlreadySelected" class="footer">
     <ion-button [disabled]="!vm.ready" (click)="go()" size="large" shape="round">Get Dusty @if (!vm.ready) {

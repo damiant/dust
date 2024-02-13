@@ -1,4 +1,4 @@
-import { Component, WritableSignal, effect, signal } from '@angular/core';
+import { Component, ViewChild, WritableSignal, effect, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonButton, IonContent, IonIcon, IonSpinner, IonText, ToastController } from '@ionic/angular/standalone';
@@ -19,6 +19,8 @@ import { Network } from '@capacitor/network';
 import { addIcons } from 'ionicons';
 import { arrowForwardOutline } from 'ionicons/icons';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
+import { CarouselComponent, SlideSelect } from '../carousel/carousel.component';
+import { CarouselItemComponent } from '../carousel-item/carousel-item.component';
 
 interface IntroState {
   ready: boolean;
@@ -29,6 +31,7 @@ interface IntroState {
   selected: Dataset | undefined;
   message: string;
   clearCount: number;
+  scrollLeft: number;
 }
 
 function initialState(): IntroState {
@@ -41,6 +44,7 @@ function initialState(): IntroState {
     selected: undefined,
     message: '',
     clearCount: 0,
+    scrollLeft: 0
   };
 }
 
@@ -59,12 +63,15 @@ function initialState(): IntroState {
     IonIcon,
     IonText,
     IonContent,
-    CachedImgComponent
+    CachedImgComponent,
+    CarouselComponent,
+    CarouselItemComponent
   ],
 })
 export class IntroPage {
   vm: IntroState = initialState();
   download: WritableSignal<string> = signal('');
+  @ViewChild(CarouselComponent) carousel!: CarouselComponent;
 
   constructor(
     private db: DbService,
@@ -90,7 +97,7 @@ export class IntroPage {
   async ionViewWillEnter() {
     this.vm = initialState();
     // Whether the user has selected an event already
-    this.vm.eventAlreadySelected = !isWhiteSpace(this.settingsService.settings.datasetId);
+    this.vm.eventAlreadySelected = !isWhiteSpace(this.settingsService.settings.datasetId) && !this.settingsService.settings.preventAutoStart;
     if (this.settingsService.settings.dataset) {
       const end = new Date(this.settingsService.settings.dataset.end);
       const until = daysUntil(end, now());
@@ -107,9 +114,11 @@ export class IntroPage {
   }
 
   private async load() {
+    console.log(`Search for`, this.settingsService.settings.datasetId)
     const idx = this.vm.cards.findIndex((c) => this.api.datasetId(c) == this.settingsService.settings.datasetId);
     if (idx >= 0) {
       this.vm.selected = this.vm.cards[idx];
+      this.carousel.setScrollLeft(this.settingsService.settings.scrollLeft);
     }
     const preview = this.db.overrideDataset;
     if (preview) {
@@ -138,13 +147,13 @@ export class IntroPage {
       await this.ui.setStatusBarBackgroundColor();
     }
 
-    console.log(`Auto starting = ${this.vm.eventAlreadySelected}...`);
     if (this.vm.eventAlreadySelected) {
+      console.log(`Auto starting = ${this.vm.eventAlreadySelected}...`);
       await this.go();
     }
   }
 
-  
+
   public async clear() {
     this.vm.clearCount++;
     if (this.vm.clearCount < 5) {
@@ -152,7 +161,7 @@ export class IntroPage {
     }
     await this.db.clear();
     console.log('Done clearing');
-    this.settingsService.clearSelectedEvent();    
+    this.settingsService.clearSelectedEvent();
     this.settingsService.save();
     document.location.href = '';
   }
@@ -212,8 +221,7 @@ export class IntroPage {
             this.toastController,
           );
           this.vm.eventAlreadySelected = false;
-          this.vm.selected = this.vm.cards[0];
-          this.save();
+          this.open(this.vm.cards[0]);
           return;
         }
       }
@@ -222,7 +230,7 @@ export class IntroPage {
 
       console.warn(`populate ${this.settingsService.settings.datasetId} attempt ${attempt}`);
       let result = await this.db.init(this.settingsService.settings.datasetId);
-      await this.db.getWorkerLogs();      
+      await this.db.getWorkerLogs();
       const sendResult: SendResult = await this.api.sendDataToWorker(result.revision, this.db.locationsHidden(), this.isBurningMan());
       if (sendResult.datasetResult) {
         // We downloaded a new dataset
@@ -236,7 +244,7 @@ export class IntroPage {
           this.launch(attempt + 1);
         }
         return;
-      }      
+      }
       this.fav.init(this.settingsService.settings.datasetId);
       let showYear = (`${new Date().getFullYear()}` !== this.vm.selected.year) && this.vm.selected.year !== '0000';
 
@@ -287,11 +295,20 @@ export class IntroPage {
     this.save();
   }
 
+  slideChanged(slide: SlideSelect) {
+    if (!this.vm.ready) return;
+    if (slide.index < this.vm.cards.length - 1) {
+      this.vm.scrollLeft = slide.scrollLeft;
+      this.open(this.vm.cards[slide.index]);
+    }
+  }
+
   save() {
     this.settingsService.settings.datasetId = this.api.datasetId(this.vm.selected!);
     this.settingsService.settings.dataset = this.vm.selected;
     this.settingsService.settings.mapRotation = this.isBurningMan() ? 45 : 0; // Burning Mans map is rotate 45 degrees
     this.settingsService.settings.eventTitle = this.vm.selected!.title;
+    this.settingsService.settings.scrollLeft = this.vm.scrollLeft;
     this.settingsService.save();
   }
 }

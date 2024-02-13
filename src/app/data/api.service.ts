@@ -117,7 +117,7 @@ export class ApiService {
         dataset.imageUrl = `${data_dust_events}${dataset.imageUrl}`;
       }
     }
-    return datasets;
+    return datasets.filter(d => d.active);
   }
 
   private async getVersion(): Promise<string> {

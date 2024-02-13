@@ -157,9 +157,11 @@ export interface Settings {
   dataset: Dataset | undefined;
   eventTitle: string;  
   mapRotation: number;
+  scrollLeft: number;
   mapUri: string;
   locationEnabled: LocationEnabledStatus;
   longEvents: boolean;
+  preventAutoStart: boolean;
   offlineEvents: string[]; // List of all offline event ids
 }
 

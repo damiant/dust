@@ -47,50 +47,6 @@ p {
     text-align: center;
 }
 
-.container {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    overflow-y: hidden;
-    overflow-x: auto;
-    padding-top: 3rem;
-    scroll-snap-type: x mandatory;
-    scroll-padding-left: calc(15vw);
-    scroll-behavior: smooth;
-}
-
-.card {
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-
-    background-color: transparent;
-    min-width: calc(80vw - 30px);
-    min-height: calc(60vw + 30px);
-    max-width: calc(80vw - 30px);
-    max-height: calc(60vw + 30px);
-
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
-    padding-bottom: 2rem;
-    display: flex;
-    align-items: center;
-    align-self: flex-start;
-    justify-content: center;
-}
-
-@media screen and (min-width: 700px) {
-    .card {
-        min-width: 15rem !important;
-        min-height: 20rem !important;
-        max-width: 15rem !important;
-        max-height: 20rem !important;
-    }
-
-    .container {
-        justify-content: center;
-    }
-}
-
 .select {
     font-weight: bolder;
     transform: scale(1);
@@ -99,15 +55,6 @@ p {
 .unselect {
     opacity: 0.75;
     transform: scale(0.95);
-}
-
-.card-container {
-    overflow-y: scroll;
-
-}
-
-div::-webkit-scrollbar {
-    display: none;
 }
 
 app-cached-img {

@@ -29,7 +29,10 @@ export class SettingsService {
         eventTitle: '',
         locationEnabled: LocationEnabledStatus.Unknown,
         longEvents: false,
-        offlineEvents: []
+        preventAutoStart: false,
+        offlineEvents: [],
+        scrollLeft: 0
+
       };
     }
   }
