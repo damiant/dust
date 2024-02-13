@@ -1,5 +1,5 @@
 import { Injectable, WritableSignal } from '@angular/core';
-import { Art, Camp, Dataset, DatasetResult, MapData, Names, Revision } from './models';
+import { Art, Camp, Dataset, DatasetResult, FullDataset, MapData, Names, Revision } from './models';
 
 import { SettingsService } from './settings.service';
 import { data_dust_events, static_dust_events } from '../utils/utils';
@@ -22,7 +22,7 @@ export interface SendResult {
 })
 export class ApiService {
   constructor(
-    private settingsService: SettingsService,    
+    private settingsService: SettingsService,
     private dbService: DbService,
   ) { }
 
@@ -40,6 +40,7 @@ export class ApiService {
         return { success: false };
       }
       const mapData: MapData = await this.dbService.get(ds, Names.map, { onlyRead: true, defaultValue: { filename: '', uri: '' } });
+      console.warn(`Get cached image for ${ds}`);
       const mapUri = await getCachedImage(mapData.uri);
       this.settingsService.settings.mapUri = mapIsOffline ? '' : mapUri;
       this.settingsService.save();
@@ -60,8 +61,9 @@ export class ApiService {
     const pins = this.dbService.livePath(ds, Names.pins);
     const links = this.dbService.livePath(ds, Names.links);
     const rsl = this.dbService.livePath(ds, Names.rsl);
+    const map = this.dbService.livePath(ds, Names.map);
 
-    const datasetInfo = {
+    const datasetInfo: FullDataset = {
       dataset: ds,
       events,
       camps,
@@ -69,6 +71,7 @@ export class ApiService {
       pins,
       links,
       rsl,
+      map,
       hideLocations,
     };
     if (!environment.production) {
@@ -94,7 +97,9 @@ export class ApiService {
   }
 
   private badData(events: Event[], art: Art[], camps: Camp[]): boolean {
-    return !camps || camps.length == 0 || !art || !events || events.length == 0;
+    if (!camps || !art || !events) return true;
+    if (camps.length == 0 && art.length == 0 && events.length == 0) return true;
+    return false;
   }
 
   public async loadDatasets(): Promise<Dataset[]> {
@@ -107,11 +112,12 @@ export class ApiService {
     for (const dataset of datasets) {
       if (dataset.imageUrl.includes('[@static]')) {
         dataset.imageUrl = dataset.imageUrl.replace('[@static]', static_dust_events);
+        dataset.active = true;
       } else {
         dataset.imageUrl = `${data_dust_events}${dataset.imageUrl}`;
       }
     }
-    return datasets;
+    return datasets.filter(d => d.active);
   }
 
   private async getVersion(): Promise<string> {
@@ -128,13 +134,16 @@ export class ApiService {
     }
   }
 
-  public async download(selected: Dataset | undefined, force: boolean, downloadSignal: WritableSignal<boolean>): Promise<boolean> {
+  public async download(selected: Dataset | undefined, force: boolean, downloadSignal: WritableSignal<string>): Promise<boolean> {
     let dataset = '';
     let revision: Revision = { revision: 0 };
     try {
       // Gets it from netlify      
       const datasets: Dataset[] = await this.dbService.get(Names.datasets, Names.datasets, { freshOnce: true, timeout: 1000 });
-      dataset = this.datasetId(selected ? selected : datasets[0]);
+      if (!selected) {
+        selected = datasets[0];
+      }
+      dataset = this.datasetId(selected);
 
       console.log(`get revision live ${dataset}`);
       const currentRevision: Revision = await this.dbService.get(dataset, Names.revision, { onlyRead: true, defaultValue: { revision: 0 } });
@@ -166,7 +175,7 @@ export class ApiService {
       return false;
     }
 
-    downloadSignal.set(true);
+    downloadSignal.set(selected ? selected.title : ' ');
     const currentVersion = await this.getVersion();
 
     const [rEvents, rArt, rCamps, rPins, rLinks, rRSL, rMap, rGeo, rRestrooms, rIce, rMedical] = await Promise.allSettled([
@@ -188,29 +197,31 @@ export class ApiService {
     const camps = rCamps.status == 'fulfilled' ? rCamps.value : '';
     const map = rMap.status == 'fulfilled' ? rMap.value : '';
     console.log(`events=${rEvents.status} art=${rArt.status} camps=${rCamps.status} pins=${rPins.status} links=${rLinks.status} map=${rMap.status} geo=${rGeo.status} restrooms=${rRestrooms.status} ice=${rIce.status} medical=${rMedical.status} rsl=${rRSL.status}`);
-    
+    let uri: string | undefined = undefined;
+    if (map) {
+      const ext = map.filename ? map.filename.split('.').pop() : 'svg';
+      console.info(`download.map ${map.filename} ext=${ext}`);
+      uri = await this.dbService.getLiveBinary(dataset, map.filename, currentVersion);
+      console.info(`download.map uri=${uri}`);
+      uri = await getCachedImage(uri);
+    }
+
     if (this.badData(events, art, camps)) {
-      console.error(`Download failed`);
-      downloadSignal.set(false);
+      console.error(`Download has no events, art or camps and has failed.`);
+      downloadSignal.set('');
       return false;
     } else {
       console.log(`Data passed checks for events, art and camps`);
     }
-    let uri: string | undefined = undefined;
 
 
-    if (map) {
-      console.log(map);
-      const ext = map.filename ? map.filename.split('.').pop() : 'svg';
-      uri = await this.dbService.getLiveBinary(dataset, Names.map, ext, currentVersion);
-      uri = await getCachedImage(uri);
-    }
+
     await this.dbService.writeData(dataset, Names.revision, revision);
-    await this.dbService.writeData(dataset, Names.version, { version: await this.getVersion() });    
+    await this.dbService.writeData(dataset, Names.version, { version: await this.getVersion() });
     map.uri = uri;
     await this.dbService.writeData(dataset, Names.map, map);
 
-    downloadSignal.set(false);
+    downloadSignal.set('');
     return true;
   }
 }

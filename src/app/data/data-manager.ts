@@ -148,11 +148,14 @@ export class DataManager implements WorkerClass {
     this.revision = await this.loadRevision();
     this.rslEvents = await this.loadMusic();
     this.georeferences = await this.getGeoReferences();
+    const map = await this.loadMap();
     this.log(`Successful load in populate`);
     this.init(hideLocations);
-    return { events: this.events.length, art: this.art.length, pins: this.pins.length, 
+    return {
+      events: this.events.length, art: this.art.length, pins: this.pins.length,
       camps: this.camps.length, rsl: this.rslEvents.length, links: this.links.length,
-      revision: this.revision.revision };    
+      revision: this.revision.revision
+    };
   }
 
   private async clear() {
@@ -301,7 +304,14 @@ export class DataManager implements WorkerClass {
         const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
         camp.gpsCoord = gpsCoords;
         camp.pin = pin;
+      } else {
+        // If the camp has been placed with gps then use it and infer x,y
+        if ((camp.pin as any).lat) {
+          camp.gpsCoord = { lat: (camp.pin as any).lat, lng: (camp.pin as any).lng };
+          camp.pin = gpsToMap(camp.gpsCoord);
+        }
       }
+
       campIndex[camp.uid] = camp.name;
       locIndex[camp.uid] = camp.location_string;
       pinIndex[camp.uid] = camp.pin;
@@ -466,6 +476,7 @@ export class DataManager implements WorkerClass {
       this.links = await this.loadData(ds.links);
       this.pins = await this.loadData(ds.pins);
       this.rslEvents = await this.loadData(ds.rsl);
+      const map = await this.loadData(ds.map);
       this.consoleLog(
         `Setting dataset in worker: ${this.events.length} events, ${this.camps.length} camps, ${this.art.length} art`,
       );
@@ -1006,8 +1017,12 @@ export class DataManager implements WorkerClass {
   }
 
   private fixPins(camps: Camp[]) {
-    for (const camp of camps) {
-      camp.pin = this.parsePin(camp.pin as any);
+    try {
+      for (const camp of camps) {
+        camp.pin = this.parsePin(camp.pin as any);
+      }
+    } catch {
+      this.consoleError(`Failed to fix pins on camps`);
     }
   }
   public async write(key: string, url: string, timeout: number): Promise<any> {
@@ -1020,7 +1035,7 @@ export class DataManager implements WorkerClass {
       await set(key, json);
       return json;
     } catch (err) {
-      this.consoleError(err as any);
+      this.consoleError(`Failed write ${key} (url=${url})${err}`);
       throw new Error(`write ${key} ${url} failed`);
     }
   }
@@ -1056,6 +1071,13 @@ export class DataManager implements WorkerClass {
       for (let pin of pins) {
         const mp: MapPoint = { x: pin.x, y: pin.y, street: '', clock: '' };
         mp.gps = this.getMapPointGPS(mp);
+        // Pins with just GPS need this (eg imported from KML)
+        if (pin.gpsLat && pin.gpsLng) {
+          mp.gps = { lat: pin.gpsLat, lng: pin.gpsLng };
+          const pt = gpsToMap(mp.gps);
+          mp.x = pt.x;
+          mp.y = pt.y;
+        }
         if (pin.label == pinType) {
           mapSet.points.push(mp);
         }
@@ -1098,6 +1120,14 @@ export class DataManager implements WorkerClass {
   private async loadLinks(): Promise<Link[]> {
     try {
       return this.read(this.getId(Names.links), []);
+    } catch {
+      return [];
+    }
+  }
+
+  private async loadMap(): Promise<Link[]> {
+    try {
+      return this.read(this.getId(Names.map), []);
     } catch {
       return [];
     }

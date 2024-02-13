@@ -1,0 +1,24 @@
+.container {
+    display: flex;
+    align-items: center;
+    width: 100%;    
+    overflow-y: hidden;
+    overflow-x: auto;
+    padding-top: 3rem;
+    padding-left: calc(15vw - 30px);
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: calc(15vw);
+    scroll-behavior: smooth;
+}
+
+div::-webkit-scrollbar {
+    display: none;
+}
+
+@media screen and (min-width: 700px) {
+    .container {
+        justify-content: center;
+        flex-wrap: wrap;        
+    }
+}
+

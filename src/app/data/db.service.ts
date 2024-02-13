@@ -172,7 +172,7 @@ export class DbService {
     return await call(this.worker, DataMethods.ReadData, key);
   }
 
-  public async get(dataset: string, name: string, options: GetOptions): Promise<any> {
+  public async get(dataset: string, name: Names, options: GetOptions): Promise<any> {
     // TODO: Move this to a signal that responds to network change to improve perf
     const status = await Network.getStatus();
     try {
@@ -350,19 +350,24 @@ export class DbService {
     return await call(this.worker, DataMethods.GetCamps, idx, count);
   }
 
-  public livePath(dataset: string, name: string, ext?: string): string {
+  public livePath(dataset: string, name: Names, ext?: string): string {
     if (name == 'festivals') {
       return `${data_dust_events}${dataset}.${ext ? ext : 'json'}`;
     }
-    if (dataset.toLowerCase().includes('ttitd') || dataset == 'datasets') {
+    if (this.isStatic(dataset)) {
       return `${static_dust_events}${dataset}/${name}.${ext ? ext : 'json'}`;
     } else {
       return `${data_dust_events}${dataset}/${this.prefix}${name}.${ext ? ext : 'json'}`;
     }
   }
 
-  public async getLiveBinary(dataset: string, name: string, ext: string, revision: string): Promise<string> {
-    return this.livePath(dataset, name, ext) + `?${revision}`;
+  private isStatic(dataset: string): boolean {
+    return (dataset.toLowerCase().includes('ttitd') || dataset == 'datasets');
+  }
+
+  public async getLiveBinary(dataset: string, filename: string, revision: string): Promise<string> {
+    const domain = this.isStatic(dataset) ? static_dust_events : data_dust_events;
+    return `${domain}${dataset}/${filename}?${revision}`;
   }
 
 }

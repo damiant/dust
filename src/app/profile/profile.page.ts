@@ -144,7 +144,8 @@ export class ProfilePage implements OnInit {
   }
 
   home() {
-    this.settings.clearSelectedEvent();
+    //this.settings.clearSelectedEvent();
+    this.settings.settings.preventAutoStart = true;
     this.ui.home();
   }
 

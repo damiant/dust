@@ -12,7 +12,7 @@ import { DbService } from './app/data/db.service';
 
 if (environment.production) {
   enableProdMode();
-  window.console.log = () => { }
+  //window.console.log = () => { }
 }
 
 const appInitFactory =

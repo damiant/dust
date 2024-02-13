@@ -74,7 +74,7 @@ export function randomInt(min: number, max: number) {
 }
 
 export function hasValue(v: any): boolean {
-  return (v !== undefined && v !== null);
+  return (v !== undefined && v !== null && v !== '');
 }
 
 export function delay(ms: number): Promise<void> {
