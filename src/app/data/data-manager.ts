@@ -304,7 +304,14 @@ export class DataManager implements WorkerClass {
         const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
         camp.gpsCoord = gpsCoords;
         camp.pin = pin;
+      } else {
+        // If the camp has been placed with gps then use it and infer x,y
+        if ((camp.pin as any).lat) {
+          camp.gpsCoord = { lat: (camp.pin as any).lat, lng: (camp.pin as any).lng };
+          camp.pin = gpsToMap(camp.gpsCoord);
+        }
       }
+
       campIndex[camp.uid] = camp.name;
       locIndex[camp.uid] = camp.location_string;
       pinIndex[camp.uid] = camp.pin;
@@ -1064,6 +1071,13 @@ export class DataManager implements WorkerClass {
       for (let pin of pins) {
         const mp: MapPoint = { x: pin.x, y: pin.y, street: '', clock: '' };
         mp.gps = this.getMapPointGPS(mp);
+        // Pins with just GPS need this (eg imported from KML)
+        if (pin.gpsLat && pin.gpsLng) {
+          mp.gps = { lat: pin.gpsLat, lng: pin.gpsLng };
+          const pt = gpsToMap(mp.gps);
+          mp.x = pt.x;
+          mp.y = pt.y;
+        }
         if (pin.label == pinType) {
           mapSet.points.push(mp);
         }
