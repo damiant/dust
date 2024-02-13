@@ -75,7 +75,7 @@ export class TabsPage implements OnInit {
       if (this.db.locationsHidden() && !hide) {
         // Locations were unlocked
         this.db.setHideLocations(hide);
-        await this.db.init(this.settings.settings.datasetId);
+        await this.db.populate(this.settings.settings.datasetId);
       }
       this.ui.setStatusBarBasedOnTheme();
       this.db.resume.set(new Date().toISOString());

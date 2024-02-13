@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MapComponent } from '../map/map.component';
 import { DbService } from '../data/db.service';
-import { Art, MapPoint, MapSet, Names } from '../data/models';
+import { Art, MapPoint, MapSet, MapType, Names } from '../data/models';
 import { GpsCoord } from '../map/geo.utils';
 import { GeoService } from '../geolocation/geo.service';
 import { toMapPoint } from '../map/map.utils';
@@ -22,14 +22,6 @@ import {
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { compassOutline } from 'ionicons/icons';
-
-enum MapType {
-  Restrooms = 'restrooms',
-  Ice = 'ice',
-  Now = 'now',
-  Art = 'art',
-  Medical = 'medical',
-}
 
 @Component({
   selector: 'app-pin-map',

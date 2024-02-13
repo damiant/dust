@@ -136,7 +136,8 @@ export class ApiService {
 
   public async download(selected: Dataset | undefined, force: boolean, downloadSignal: WritableSignal<string>): Promise<boolean> {
     let dataset = '';
-    let revision: Revision = { revision: 0 };
+    let nextRevision: Revision | undefined; 
+    let myRevision: Revision | undefined; 
     try {
       // Gets it from netlify      
       const datasets: Dataset[] = await this.dbService.get(Names.datasets, Names.datasets, { freshOnce: true, timeout: 1000 });
@@ -146,26 +147,27 @@ export class ApiService {
       dataset = this.datasetId(selected);
 
       console.log(`get revision live ${dataset}`);
-      const currentRevision: Revision = await this.dbService.get(dataset, Names.revision, { onlyRead: true, defaultValue: { revision: 0 } });
-      console.log(`Current revision is ${JSON.stringify(currentRevision)} force is ${force}`);
-      console.log(`Live revision is ${JSON.stringify(revision)}`);
+      myRevision = await this.dbService.get(dataset, Names.revision, { onlyRead: true, defaultValue: { revision: 0 } });
+      nextRevision = await this.dbService.get(dataset, Names.revision, { onlyFresh: true, defaultValue: { revision: 0 } });
+      console.log(`Next revision is ${JSON.stringify(nextRevision)} force is ${force}`);
+      console.log(`My revision is ${JSON.stringify(myRevision)}`);
 
       // Check the current revision
       const version: Version = await this.dbService.get(dataset, Names.version, { onlyRead: true, defaultValue: { version: '' } });
-      const currentVersion = await this.getVersion();
+      const currentVersion = await this.getVersion();      
 
-      console.info(`${dataset}: force=${force} revision=${JSON.stringify(revision)} currentRevision=${JSON.stringify(currentRevision)}`)
+      console.info(`${dataset}: force=${force} revision=${JSON.stringify(myRevision)} currentRevision=${JSON.stringify(nextRevision)}`)
 
       if (
         !force &&
-        revision &&
-        currentRevision &&
-        currentRevision.revision !== null &&
-        revision.revision === currentRevision.revision &&
+        myRevision &&
+        nextRevision &&
+        nextRevision.revision !== null &&
+        myRevision?.revision === nextRevision.revision &&
         version?.version == currentVersion
       ) {
         console.log(
-          `Will not download data for ${dataset} as it is already at revision ${currentRevision.revision} and version is ${currentVersion}`,
+          `Will not download data for ${dataset} as it is already at revision ${nextRevision.revision} and version is ${currentVersion}`,
         );
         return true;
       }
@@ -174,10 +176,12 @@ export class ApiService {
       console.error('Unable to download', err);
       return false;
     }
+    console.log(`Will attempt download to ${JSON.stringify(nextRevision)}`);
+    if (!nextRevision) return false;
 
     downloadSignal.set(selected ? selected.title : ' ');
     const currentVersion = await this.getVersion();
-
+    const revision: Revision = nextRevision;
     const [rEvents, rArt, rCamps, rPins, rLinks, rRSL, rMap, rGeo, rRestrooms, rIce, rMedical] = await Promise.allSettled([
       this.dbService.get(dataset, Names.events, { revision: revision.revision, defaultValue: '' }),
       this.dbService.get(dataset, Names.art, { revision: revision.revision, defaultValue: '' }),
@@ -213,8 +217,6 @@ export class ApiService {
     } else {
       console.log(`Data passed checks for events, art and camps`);
     }
-
-
 
     await this.dbService.writeData(dataset, Names.revision, revision);
     await this.dbService.writeData(dataset, Names.version, { version: await this.getVersion() });

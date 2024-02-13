@@ -32,8 +32,14 @@ ion-button.tile {
     background-repeat: no-repeat;
     background-size: cover;
     height: 300px;
+    border-top-left-radius: 20px !important;
+    border-top-right-radius: 20px !important;
   }
 
   ion-toolbar {
     --background: none;
+  }
+
+  ion-fab-button {
+    --background: rgba(0,0,0,0.5) !important;
   }

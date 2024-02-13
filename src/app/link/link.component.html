@@ -1,0 +1,5 @@
+@if (simple()) {
+<ion-item (click)="link(url())" lines="none" detail="true"><ion-icon slot="start" [name]="icon()"></ion-icon>{{text()}}</ion-item>
+} @else {
+  <div (click)="link(url())" [innerHTML]="html()"></div>
+}

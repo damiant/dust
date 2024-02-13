@@ -229,7 +229,7 @@ export class IntroPage {
       this.vm.showMessage = false;
 
       console.warn(`populate ${this.settingsService.settings.datasetId} attempt ${attempt}`);
-      let result = await this.db.init(this.settingsService.settings.datasetId);
+      let result = await this.db.populate(this.settingsService.settings.datasetId);      
       await this.db.getWorkerLogs();
       const sendResult: SendResult = await this.api.sendDataToWorker(result.revision, this.db.locationsHidden(), this.isBurningMan());
       if (sendResult.datasetResult) {
@@ -297,7 +297,7 @@ export class IntroPage {
 
   slideChanged(slide: SlideSelect) {
     if (!this.vm.ready) return;
-    if (slide.index < this.vm.cards.length - 1) {
+    if (slide.index < this.vm.cards.length) {
       this.vm.scrollLeft = slide.scrollLeft;
       this.open(this.vm.cards[slide.index]);
     }
