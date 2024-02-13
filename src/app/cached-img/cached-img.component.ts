@@ -35,6 +35,7 @@ export class CachedImgComponent {
   }
 
   ready() {
+    this._change.markForCheck();
     this.isReady = true;
   }
 

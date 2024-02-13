@@ -6,5 +6,5 @@
 <div (click)="link(url())" [innerHTML]="html()"></div>
 </ion-card-content>
 } @else {
-<app-cached-img [src]="url()" [alt]="text()"></app-cached-img>
+<app-cached-img loading="eager" [src]="url()" [alt]="text()"></app-cached-img>
 }
