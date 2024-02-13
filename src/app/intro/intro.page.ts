@@ -297,7 +297,7 @@ export class IntroPage {
 
   slideChanged(slide: SlideSelect) {
     if (!this.vm.ready) return;
-    if (slide.index < this.vm.cards.length - 1) {
+    if (slide.index < this.vm.cards.length) {
       this.vm.scrollLeft = slide.scrollLeft;
       this.open(this.vm.cards[slide.index]);
     }

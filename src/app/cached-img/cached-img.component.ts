@@ -22,6 +22,7 @@ export class CachedImgComponent {
   @Input() alt: string = '';  
   src = input<string>();
   isReady = false;
+  @Input() loading = 'lazy';
 
   constructor(private _change: ChangeDetectorRef) {
     effect(async () => {
