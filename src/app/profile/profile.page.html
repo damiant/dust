@@ -1,55 +1,24 @@
 <ion-content [fullscreen]="true">
   <div class="header" [ngStyle]="{'background-image': 'url('+ imageUrl+')'}">
-    <ion-fab-button color="dark" style="position: absolute; top: 0.2rem; z-index: 1; right: 0.8rem; left: auto"
-      (click)="home()" size="small">
+    <ion-fab-button style="position: absolute; top: 0.2rem; z-index: 1; right: 0.8rem; left: auto" (click)="home()"
+      size="small">
       <ion-icon name="close-sharp"></ion-icon>
     </ion-fab-button>
+
+    <ion-fab slot="fixed" vertical="top" horizontal="end">
+      <ion-fab-button id="open-modal" style="position: absolute; top: 230px; z-index: 1; right: 0.2rem; left: auto"
+        size="small">
+        <ion-icon name="ellipsis-vertical-sharp"></ion-icon>
+      </ion-fab-button>
+
+    </ion-fab>
     <ion-title class="image-text" (click)="moreClick()" size="large">{{db.selectedDataset().title}}</ion-title>
   </div>
 
-  <app-tile-container>
-    <app-tile [hidden]="!hasRestrooms" title="Restrooms" routerLink="/map/restrooms" imgSrc="assets/icon/toilet.svg"></app-tile>
-    <app-tile [hidden]="!hasIce" title="Ice" routerLink="/map/ice" imgSrc="assets/icon/ice.svg"></app-tile>
-    <app-tile [hidden]="!hasMedical" title="Medical" routerLink="/map/medical" imgSrc="assets/icon/medical.svg"></app-tile>
-    @if (!db.locationsHidden() && !db.featuresHidden().includes('art')) {
-    <app-tile title="Art" routerLink="/map/art" imgSrc="assets/icon/art.svg"></app-tile>
-    } @if (!db.locationsHidden()) {
-    <app-tile title="Now" routerLink="/map/now" imgSrc="assets/icon/calendar.svg"></app-tile>
-    }
-    <app-tile title="Directions" [hidden]="!mapPin" (click)="directions()" iconName="compass-outline"></app-tile>
-  </app-tile-container>
-
-  @if (!db.featuresHidden().includes('friends')) {
-  <app-friends />
-  } @if (!db.featuresHidden().includes('private')) {
-  <app-private-events />
-  } @if (links.length > 0) {
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Links</ion-card-title>
-    </ion-card-header>
-
-    <ion-card-content>
-      <ion-list>
-        @for (link of links; track link) {
-        <ion-item (click)="visit(link.url)" detail="true">
-          <ion-icon slot="start" name="link-outline"></ion-icon>
-          {{link.title}}
-        </ion-item>
-        }
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
-  }
-
-  <ion-card>
-    <!-- <ion-card-header>
-      <ion-card-title>Options</ion-card-title>
-    </ion-card-header> -->
-
-    <ion-card-content>
-      <ion-list>
-        <ion-item href="mailto:damian@dust.events?subject=dust" detail="true">
+  <ion-modal #modal trigger="open-modal" [initialBreakpoint]="0.3">
+    <ng-template>
+      <ion-list class="ion-padding">
+        <ion-item (click)="feedback()" detail="true">
           <ion-icon slot="start" name="mail-unread-outline"></ion-icon>
           Feedback
         </ion-item>
@@ -63,18 +32,46 @@
           Rate
         </ion-item>
 
-        <ion-item routerLink="./about" detail="true">
+        <ion-item (click)="about()" detail="true">
           <ion-icon slot="start" name="information-circle-outline"></ion-icon>
           About
         </ion-item>
+      </ion-list>
+    </ng-template>
+  </ion-modal>
+  <app-tile-container>
+    <app-tile [hidden]="!hasRestrooms" title="Restrooms" routerLink="/map/restrooms"
+      imgSrc="assets/icon/toilet.svg"></app-tile>
+    <app-tile [hidden]="!hasIce" title="Ice" routerLink="/map/ice" imgSrc="assets/icon/ice.svg"></app-tile>
+    <app-tile [hidden]="!hasMedical" title="Medical" routerLink="/map/medical"
+      imgSrc="assets/icon/medical.svg"></app-tile>
+    @if (!db.locationsHidden() && !db.featuresHidden().includes('art')) {
+    <app-tile title="Art" routerLink="/map/art" imgSrc="assets/icon/art.svg"></app-tile>
+    } @if (!db.locationsHidden()) {
+    <app-tile title="Now" routerLink="/map/now" imgSrc="assets/icon/calendar.svg"></app-tile>
+    }
+    <app-tile title="Directions" [hidden]="!mapPin" (click)="directions()" iconName="compass-outline"></app-tile>
+  </app-tile-container>
 
-        <!-- <ion-item (click)="home()" detail="true">
-          <ion-icon slot="start" name="exit-outline"></ion-icon>
-          Select Event
-        </ion-item> -->
+  @if (!db.featuresHidden().includes('friends')) {
+  <app-friends />
+  } @if (!db.featuresHidden().includes('private')) {
+  <app-private-events />
+  }
+  @if (groups.length > 0) {
+  @for (group of groups; track group.id) {
+  <ion-card>
+    <ion-card-content>
+      <ion-list>
+        @for (link of group.links; track link) {
+        <app-link [url]="link.url" [text]="link.title"></app-link>
+        }
       </ion-list>
     </ion-card-content>
   </ion-card>
+  }
+  }
+
   <div class="pad-top" (click)="hiddenPanel = !hiddenPanel"></div>
   <div style="padding: 1rem">
     <ion-item [hidden]="!hiddenPanel" lines="none">

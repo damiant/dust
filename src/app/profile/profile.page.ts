@@ -18,11 +18,11 @@ import {
   IonFabButton,
   IonToggle,
   IonToolbar,
-  ToastController,
+  ToastController, IonFabList, IonModal
 } from '@ionic/angular/standalone';
 import { UiService } from '../ui/ui.service';
 import { Share } from '@capacitor/share';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FriendsComponent } from '../friends/friends.component';
 import { SettingsService } from '../data/settings.service';
 import { GPSPin, MapService } from '../map/map.service';
@@ -46,17 +46,24 @@ import {
   locateOutline,
   compassOutline,
   closeSharp,
+  ellipsisVerticalSharp
 } from 'ionicons/icons';
 import { Animation, StatusBar } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
 import { getCachedImage } from '../data/cache-store';
+import { LinkComponent } from '../link/link.component';
+
+interface Group {
+  id: number;
+  links: Link[];
+}
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
   standalone: true,
-  imports: [
+  imports: [IonModal, IonFabList,
     CommonModule,
     FormsModule,
     RouterModule,
@@ -80,6 +87,7 @@ import { getCachedImage } from '../data/cache-store';
     TileContainerComponent,
     TileComponent,
     PrivateEventsComponent,
+    LinkComponent
   ],
 })
 export class ProfilePage implements OnInit {
@@ -90,11 +98,13 @@ export class ProfilePage implements OnInit {
   hiddenPanel = false;
   imageUrl = '';
   mapPin: GPSPin | undefined;
-  links: Link[] = [];
+  groups: Group[] = [];
   @ViewChild(IonContent) ionContent!: IonContent;
+  @ViewChild(IonModal) ionModal!: IonModal;
   hasMedical = true;
   hasRestrooms = true;
   hasIce = true;
+  presentingElement: any;
 
   constructor(
     private ui: UiService,
@@ -102,6 +112,7 @@ export class ProfilePage implements OnInit {
     private map: MapService,
     private geo: GeoService,
     private toastController: ToastController,
+    private router: Router,
     public db: DbService,
   ) {
     addIcons({
@@ -114,7 +125,8 @@ export class ProfilePage implements OnInit {
       exitOutline,
       timeOutline,
       locateOutline,
-      closeSharp
+      closeSharp,
+      ellipsisVerticalSharp
     });
     effect(() => {
       this.ui.scrollUpContent('profile', this.ionContent);
@@ -122,20 +134,41 @@ export class ProfilePage implements OnInit {
   }
 
   async ngOnInit() {
+    this.presentingElement = document.querySelector('.ion-page');
     this.imageUrl = await getCachedImage(this.db.selectedImage());
     this.db.checkInit();
     const summary: DatasetResult = await this.db.get(this.settings.settings.datasetId, Names.summary, { onlyRead: true });
     console.log('sujmary', summary.pinTypes);
-    this.hasRestrooms = this.hasValue(summary.pinTypes,'Restrooms');
-    this.hasMedical = this.hasValue(summary.pinTypes,'Medical');
-    this.hasIce = this.hasValue(summary.pinTypes,'Ice');
+    this.hasRestrooms = this.hasValue(summary.pinTypes, 'Restrooms');
+    this.hasMedical = this.hasValue(summary.pinTypes, 'Medical');
+    this.hasIce = this.hasValue(summary.pinTypes, 'Ice');
     this.mapPin = this.getMapPin();
     this.longEvents = this.settings.settings.longEvents;
     this.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
-    this.links = await this.db.getLinks();
+    this.groups = this.group(await this.db.getLinks());
   }
 
-  hasValue(v: Record<string, number>, property: string): boolean {    
+  private group(links: Link[]): Group[] {
+    let groups: Group[] = [];
+    let group: Group = { id: 1, links: [] };
+    for (const link of links) {
+      if (link.title.startsWith('#')) {
+        link.title = link.title.substring(1);
+        if (group.links.length > 0) {
+          // Start a new group
+          groups.push(group);
+          group = { id: group.id + 1, links: [] };
+        }
+        group.links.push(link);
+      } else {
+        group.links.push(link);
+      }
+    }
+    groups.push(group);
+    return groups;
+  }
+
+  hasValue(v: Record<string, number>, property: string): boolean {
     return (v && v.hasOwnProperty(property) && v[property] > 0);
   }
 
@@ -161,18 +194,35 @@ export class ProfilePage implements OnInit {
     this.ui.home();
   }
 
-  public rate() {
+  public async rate() {
+    await this.dismiss();
     this.rated = true;
     RateApp.requestReview();
   }
 
   async share() {
+    await this.dismiss();
     await Share.share({
       title: 'Dust in Curious Places',
       text: 'Check out the dust app for Burning Man events, art and theme camps.',
       url: 'https://dust.events/',
       dialogTitle: 'Share dust with friends',
     });
+  }
+
+  async about() {
+    await this.dismiss();
+    this.router.navigateByUrl('/about');
+  }
+
+  async feedback() {
+    await this.dismiss();
+    const url = 'mailto:damian@dust.events?subject=dust';
+    this.ui.openUrl(url);
+  }
+
+  async dismiss() {
+    await this.ionModal.dismiss();
   }
 
   async toggleLongEvents(e: any) {

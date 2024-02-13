@@ -39,3 +39,7 @@ ion-button.tile {
   ion-toolbar {
     --background: none;
   }
+
+  ion-fab-button {
+    --background: rgba(0,0,0,0.5) !important;
+  }
