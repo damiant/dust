@@ -103,6 +103,8 @@ export class DataManager implements WorkerClass {
         return this.read(args[0], []);
       case DataMethods.Write:
         return this.write(args[0], args[1], args[2]);
+        case DataMethods.Fetch:
+          return this.fetch(args[0], args[1], args[2]);        
       case DataMethods.WriteData:
         return this.writeData(args[0], args[1]);
       case DataMethods.GetGPSPoints:
@@ -1057,6 +1059,16 @@ export class DataManager implements WorkerClass {
     } catch (err) {
       this.consoleError(`Failed write ${key} (url=${url})${err}`);
       throw new Error(`write ${key} ${url} failed`);
+    }
+  }
+
+  public async fetch(key: string, url: string, timeout: number): Promise<any> {
+    try {
+      const response = await webFetchWithTimeout(url, {}, timeout);
+      const json = await response.json();      
+      return json;
+    } catch (err) {
+      this.consoleError(`Failed fetch ${key} (url=${url})${err}`);      
     }
   }
 

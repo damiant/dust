@@ -30,6 +30,7 @@ export interface GetOptions {
   onlyRead?: boolean; // Just read from cache, do not attempt to download
   defaultValue?: any; // Return default value on failure
   freshOnce?: boolean; // Download once then onlyRead afterwards
+  onlyFresh?: boolean; // Download it fresh and dont cache
   revision?: number; // This is used for cache busting
 }
 
@@ -195,6 +196,10 @@ export class DbService {
           url += `?revision=${options.revision}`;
 
         }
+        if (!!options.onlyFresh) {
+          return await this.fetch(this._getkey(dataset, name), url, options.timeout ?? 30000);
+        }
+
         const result = await this._write(this._getkey(dataset, name), url, options.timeout ?? 30000);
         this.markRead(this._getkey(dataset, name));
         return result;
@@ -229,6 +234,10 @@ export class DbService {
 
   private async _write(key: string, url: string, timeout = 30000): Promise<any> {
     return await call(this.worker, DataMethods.Write, key, url, timeout);
+  }
+
+  private async fetch(key: string, url: string, timeout = 30000): Promise<any> {
+    return await call(this.worker, DataMethods.Fetch, key, url, timeout);
   }
 
   private async _writeData(key: string, data: any): Promise<any> {

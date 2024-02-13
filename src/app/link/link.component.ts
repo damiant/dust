@@ -25,7 +25,7 @@ export class LinkComponent {
       return 'mail-outline';
     } else if (url.includes('maps.')) {
       return 'compass-outline';
-    } else if (url.includes('youtu.')) {
+    } else if (url.includes('youtu.') || url.includes('youtube.')) {
       return 'tv-outline';
     }
     if (txt.includes('ticket')) {
