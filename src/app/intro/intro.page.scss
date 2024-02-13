@@ -39,7 +39,7 @@ ion-spinner {
 }
 
 ion-text {
-    font-size: x-large; 
+    font-size: x-large;
 }
 
 p {
@@ -53,9 +53,9 @@ p {
     width: 100%;
     overflow-y: hidden;
     overflow-x: auto;
-    padding-top: 2rem;
+    padding-top: 3rem;
     scroll-snap-type: x mandatory;
-    scroll-padding-left: 20px;
+    scroll-padding-left: calc(15vw);
     scroll-behavior: smooth;
 }
 
@@ -64,12 +64,13 @@ p {
     scroll-snap-stop: always;
 
     background-color: transparent;
-    min-width: calc(60vw - 30px);
+    min-width: calc(80vw - 30px);
     min-height: calc(60vw + 30px);
-    max-width: calc(60vw - 30px);
+    max-width: calc(80vw - 30px);
     max-height: calc(60vw + 30px);
 
     margin-left: 0.5rem;
+    margin-right: 0.5rem;
     padding-bottom: 2rem;
     display: flex;
     align-items: center;
@@ -90,20 +91,19 @@ p {
     }
 }
 
-
-
 .select {
     font-weight: bolder;
-    transform: scale(1.0);
+    transform: scale(1);
 }
 
 .unselect {
     opacity: 0.75;
-    transform: scale(0.9);
+    transform: scale(0.95);
 }
 
 .card-container {
     overflow-y: scroll;
+
 }
 
 div::-webkit-scrollbar {
