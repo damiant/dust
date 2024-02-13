@@ -148,14 +148,32 @@ export class DataManager implements WorkerClass {
     this.revision = await this.loadRevision();
     this.rslEvents = await this.loadMusic();
     this.georeferences = await this.getGeoReferences();
-    const map = await this.loadMap();
+    const map = await this.loadMap();    
     this.log(`Successful load in populate`);
     this.init(hideLocations);
     return {
       events: this.events.length, art: this.art.length, pins: this.pins.length,
       camps: this.camps.length, rsl: this.rslEvents.length, links: this.links.length,
-      revision: this.revision.revision
+      revision: this.revision.revision, pinTypes: await this.summarizePins(this.pins)
     };
+  }
+
+  private async summarizePins(pins: PlacedPin[]) {    
+    const types: Record<string, number> = {};
+    let r = await this.getGPSPoints(Names.restrooms, 'Restrooms');
+    types['Restrooms'] = r.points.length;
+    r = await this.getGPSPoints(Names.ice, 'Ice');
+    types['Ice'] = r.points.length;
+    r = await this.getGPSPoints(Names.medical, 'Medical');
+    types['Medical'] = r.points.length;
+    for (const pin of pins) {
+      if (!types[pin.label]) {
+        types[pin.label] = 0;
+      }
+      types[pin.label] = (types[pin.label]) + 1;
+    }
+    
+    return types;
   }
 
   private async clear() {
@@ -477,6 +495,7 @@ export class DataManager implements WorkerClass {
       this.pins = await this.loadData(ds.pins);
       this.rslEvents = await this.loadData(ds.rsl);
       const map = await this.loadData(ds.map);
+
       this.consoleLog(
         `Setting dataset in worker: ${this.events.length} events, ${this.camps.length} camps, ${this.art.length} art`,
       );
@@ -487,7 +506,8 @@ export class DataManager implements WorkerClass {
         pins: this.pins.length,
         links: this.links.length,
         rsl: this.rslEvents.length,
-        revision: this.revision.revision
+        revision: this.revision.revision,
+        pinTypes: await this.summarizePins(this.pins)
       };
     } catch (err) {
       this.consoleError(`Failed to setDataset: ${err}`);

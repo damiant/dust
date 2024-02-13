@@ -199,7 +199,16 @@ export enum Names {
   geo = 'geo', // Burning Man only
   ice = 'ice', // Burning Man only
   medical = 'medical', // Burning Man only
-  restrooms = 'restrooms' // Burning Man only
+  restrooms = 'restrooms', // Burning Man only
+  summary = 'summary' // Event summary (DatasetResult)
+}
+
+export enum MapType {
+  Restrooms = 'restrooms',
+  Ice = 'ice',
+  Now = 'now',
+  Art = 'art',
+  Medical = 'medical',
 }
 
 export interface Pin {
@@ -307,6 +316,7 @@ export interface DatasetResult {
   links: number;
   rsl: number;
   revision: number;
+  pinTypes: Record<string, number>;
 }
 
 export interface RSLOccurrence {

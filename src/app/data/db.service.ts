@@ -74,9 +74,11 @@ export class DbService {
     return undefined;
   }
 
-  public async init(dataset: string): Promise<DatasetResult> {
+  public async populate(dataset: string): Promise<DatasetResult> {
     this.initWorker(); // Just to double check
-    return await call(this.worker, DataMethods.Populate, dataset, this.hideLocations, environment);
+    const result: DatasetResult = await call(this.worker, DataMethods.Populate, dataset, this.hideLocations, environment);
+    await this.writeData(dataset, Names.summary, result)
+    return result;
   }
 
   public isHistorical(): boolean {

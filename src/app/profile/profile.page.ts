@@ -30,7 +30,7 @@ import { DbService } from '../data/db.service';
 import { TileContainerComponent } from '../tile-container/tile-container.component';
 import { TileComponent } from '../tile/tile.component';
 import { GeoService } from '../geolocation/geo.service';
-import { Link, LocationEnabledStatus } from '../data/models';
+import { DatasetResult, Link, LocationEnabledStatus, Names } from '../data/models';
 import { environment } from 'src/environments/environment';
 import { RateApp } from 'capacitor-rate-app';
 import { PrivateEventsComponent } from '../private-events/private-events.component';
@@ -92,6 +92,9 @@ export class ProfilePage implements OnInit {
   mapPin: GPSPin | undefined;
   links: Link[] = [];
   @ViewChild(IonContent) ionContent!: IonContent;
+  hasMedical = true;
+  hasRestrooms = true;
+  hasIce = true;
 
   constructor(
     private ui: UiService,
@@ -121,10 +124,19 @@ export class ProfilePage implements OnInit {
   async ngOnInit() {
     this.imageUrl = await getCachedImage(this.db.selectedImage());
     this.db.checkInit();
+    const summary: DatasetResult = await this.db.get(this.settings.settings.datasetId, Names.summary, { onlyRead: true });
+    console.log('sujmary', summary.pinTypes);
+    this.hasRestrooms = this.hasValue(summary.pinTypes,'Restrooms');
+    this.hasMedical = this.hasValue(summary.pinTypes,'Medical');
+    this.hasIce = this.hasValue(summary.pinTypes,'Ice');
     this.mapPin = this.getMapPin();
     this.longEvents = this.settings.settings.longEvents;
-    this.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;    
-    this.links = await this.db.getLinks();    
+    this.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
+    this.links = await this.db.getLinks();
+  }
+
+  hasValue(v: Record<string, number>, property: string): boolean {    
+    return (v && v.hasOwnProperty(property) && v[property] > 0);
   }
 
   visit(url: string) {
@@ -135,10 +147,10 @@ export class ProfilePage implements OnInit {
     this.moreClicks++;
     if (this.moreClicks == 5) {
       this.ui.presentToast('Locations now enabled', this.toastController);
-      environment.overrideLocations = true;      
+      environment.overrideLocations = true;
       this.settings.save();
       this.db.setHideLocations(false);
-      await this.db.init(this.settings.settings.datasetId);
+      await this.db.populate(this.settings.settings.datasetId);
       this.db.resume.set(new Date().toString());
     }
   }
@@ -187,8 +199,8 @@ export class ProfilePage implements OnInit {
   async ionViewWillEnter() {
     if (Capacitor.isNativePlatform() && !this.ui.isAndroid()) {
       await StatusBar.hide({ animation: Animation.Fade });
-    }    
-    
+    }
+
   }
 
   async ionViewWillLeave() {
@@ -198,12 +210,12 @@ export class ProfilePage implements OnInit {
   }
 
   private getMapPin(): GPSPin | undefined {
-    
+
     if (this.settings.settings.dataset?.lat) {
       return { lat: this.settings.settings.dataset.lat, long: this.settings.settings.dataset.long };
     } else {
       if (!this.settings.settings.dataset?.lat) {
-      return { lat: 40.753842, long: -119.277 };
+        return { lat: 40.753842, long: -119.277 };
       } else {
         return undefined;
       }

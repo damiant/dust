@@ -9,6 +9,7 @@ div::-webkit-scrollbar {
     justify-content: flex-start;
     align-items: center;
     width: 100%;
+    min-width: 100vw;
     overflow-y: hidden;
     overflow-x: auto;
     scroll-snap-type: x mandatory;

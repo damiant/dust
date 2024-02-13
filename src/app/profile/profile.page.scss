@@ -32,6 +32,8 @@ ion-button.tile {
     background-repeat: no-repeat;
     background-size: cover;
     height: 300px;
+    border-top-left-radius: 20px !important;
+    border-top-right-radius: 20px !important;
   }
 
   ion-toolbar {
