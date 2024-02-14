@@ -385,7 +385,7 @@ export class FavoritesService {
           // console.log(`Ends ${end} (${end.getTime()}), now=${now()} (${timeNow}), isHappening=${isHappening} isOld=${isOld}`);
           eventItem.old = isOld;
           eventItem.happening = isHappening;
-          const times = getOccurrenceTimeString(start, end, undefined);
+          const times = getOccurrenceTimeString(start, end, undefined, this.db.getTimeZone());
           eventItem.timeString = times ? times?.short : '';
           eventItem.longTimeString = times ? times?.long : '';
           if (!eventItem.old || historical) {

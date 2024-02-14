@@ -155,7 +155,7 @@ export class PinMapPage {
     }
     return {
       title,
-      description: `Map of ${allEvents.length} events happening ${timeRangeToString(timeRange)}`,
+      description: `Map of ${allEvents.length} events happening ${timeRangeToString(timeRange, this.db.getTimeZone())}`,
       points,
     };
   }

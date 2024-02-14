@@ -63,6 +63,7 @@ export class ApiService {
     const rsl = this.dbService.livePath(ds, Names.rsl);
     const map = this.dbService.livePath(ds, Names.map);
 
+
     const datasetInfo: FullDataset = {
       dataset: ds,
       events,
@@ -73,6 +74,7 @@ export class ApiService {
       rsl,
       map,
       hideLocations,
+      timezone: this.dbService.getTimeZone()
     };
     if (!environment.production) {
       console.warn(`Using non-production: ${JSON.stringify(environment)}`);
@@ -110,11 +112,11 @@ export class ApiService {
 
   private cleanNames(datasets: Dataset[]): Dataset[] {
     for (const dataset of datasets) {
-      if (dataset.imageUrl.includes('[@static]')) {
+      if (dataset.imageUrl?.includes('[@static]')) {
         dataset.imageUrl = dataset.imageUrl.replace('[@static]', static_dust_events);
         dataset.active = true;
       } else {
-        dataset.imageUrl = `${data_dust_events}${dataset.imageUrl}`;
+        dataset.imageUrl = dataset.imageUrl ? `${data_dust_events}${dataset.imageUrl}`: '';
       }
     }
     return datasets.filter(d => d.active);

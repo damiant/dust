@@ -1,6 +1,7 @@
 <ion-card class="item">
   @if (event.imageUrl) {
-    <img loading="lazy" class="image" alt="{{ event.artCar }}" [src]="event.imageUrl" />
+    <!-- <img loading="lazy" class="image" alt="{{ event.artCar }}" [src]="event.imageUrl" /> -->
+    <app-cached-img [alt]="event.artCar!" [src]="event.imageUrl"></app-cached-img>
   }
   <ion-card-header>
     @if (!event.artCar) {

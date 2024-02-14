@@ -17,7 +17,7 @@ import {
   Names,
 } from './models';
 import { call, registerWorker } from './worker-interface';
-import { clone, data_dust_events, daysUntil, noDate, now, static_dust_events } from '../utils/utils';
+import { BurningManTimeZone, clone, data_dust_events, daysUntil, noDate, now, static_dust_events } from '../utils/utils';
 import { GpsCoord, Point } from '../map/geo.utils';
 import { environment } from 'src/environments/environment';
 import { Network } from '@capacitor/network';
@@ -75,9 +75,18 @@ export class DbService {
     return undefined;
   }
 
-  public async populate(dataset: string): Promise<DatasetResult> {
+  public getTimeZone(): string {
+    let timezone = this.selectedDataset().timeZone;
+    if (!timezone) {
+      timezone = BurningManTimeZone;
+      console.error(`Shouldnt get an empty timezone`);
+    }
+    return timezone;
+  }
+
+  public async populate(dataset: string, timezone: string): Promise<DatasetResult> {
     this.initWorker(); // Just to double check
-    const result: DatasetResult = await call(this.worker, DataMethods.Populate, dataset, this.hideLocations, environment);
+    const result: DatasetResult = await call(this.worker, DataMethods.Populate, dataset, this.hideLocations, environment, timezone);
     await this.writeData(dataset, Names.summary, result)
     return result;
   }

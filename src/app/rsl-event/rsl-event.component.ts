@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 import { FavoritesService } from '../favs/favorites.service';
 import { addIcons } from 'ionicons';
 import { car, star, starOutline } from 'ionicons/icons';
+import { CachedImgComponent } from '../cached-img/cached-img.component';
 
 export interface ArtCarEvent {
   event: Event;
@@ -26,7 +27,8 @@ export interface ArtCarEvent {
   styleUrls: ['./rsl-event.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonIcon, IonText],
+  imports: [CommonModule, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, 
+    IonIcon, IonText, CachedImgComponent],
 })
 export class RslEventComponent {
   @Input() event!: RSLEvent;

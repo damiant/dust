@@ -49,11 +49,11 @@ export function clone(o: any): any {
   }
 }
 
-export function timeRangeToString(timeRange: TimeRange | undefined): string {
+export function timeRangeToString(timeRange: TimeRange | undefined, timeZone: string): string {
   if (!timeRange) {
     return '';
   }
-  return `${time(timeRange.start)}-${time(timeRange.end)}`;
+  return `${time(timeRange.start, timeZone)}-${time(timeRange.end, timeZone)}`;
 }
 
 /**
@@ -131,10 +131,10 @@ export function addDays(date: Date, days: number) {
   return result;
 }
 
-export function time(d: Date): string {
+export function time(d: Date, timeZone: string): string {
   // Burning Man is in PST timezone so report it that way in the UI (useful for people looking in other timezones)
   const s = d
-    .toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: BurningManTimeZone })
+    .toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone })
     .toLowerCase()
     .replace(' ', '')
     .replace(':00', '');
@@ -143,18 +143,18 @@ export function time(d: Date): string {
   return s;
 }
 
-export function getOccurrenceTimeString(start: Date, end: Date, day: Date | undefined): TimeString | undefined {
+export function getOccurrenceTimeString(start: Date, end: Date, day: Date | undefined, timeZone: string): TimeString | undefined {
   const startsToday = day && sameDay(start, day);
   const endsToday = day && sameDay(end, day);
   if (!day || startsToday || endsToday) {
     const day = start.toLocaleDateString([], { weekday: 'long' });
     const short =
       endsToday && !startsToday
-        ? `Until ${time(end)} (${timeBetween(end, start)})`
-        : `${time(start)} (${timeBetween(end, start)})`;
+        ? `Until ${time(end, timeZone)} (${timeBetween(end, start)})`
+        : `${time(start, timeZone)} (${timeBetween(end, start)})`;
 
     return {
-      long: `${day} ${time(start)}-${time(end)} (${timeBetween(end, start)})`,
+      long: `${day} ${time(start, timeZone)}-${time(end, timeZone)} (${timeBetween(end, start)})`,
       short,
     };
   }

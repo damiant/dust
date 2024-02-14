@@ -306,6 +306,7 @@ export interface FullDataset {
   rsl: string;
   map: string;
   hideLocations: boolean;
+  timezone: string;
 }
 
 export interface DatasetResult {

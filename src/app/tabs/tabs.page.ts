@@ -72,10 +72,11 @@ export class TabsPage implements OnInit {
       if (environment.overrideLocations) {
         hide = false;
       }
+      const timeZone = this.db.getTimeZone();
       if (this.db.locationsHidden() && !hide) {
         // Locations were unlocked
         this.db.setHideLocations(hide);
-        await this.db.populate(this.settings.settings.datasetId);
+        await this.db.populate(this.settings.settings.datasetId, timeZone);
       }
       this.ui.setStatusBarBasedOnTheme();
       this.db.resume.set(new Date().toISOString());

@@ -211,7 +211,10 @@ export class IntroPage {
   async launch(attempt: number = 1) {
     try {
       if (!this.vm.selected) return;
-
+      this.db.selectedDataset.set(this.vm.selected);
+      let showYear = (`${new Date().getFullYear()}` !== this.vm.selected.year) && this.vm.selected.year !== '0000';
+      const title = showYear ? this.vm.selected.year : '';
+      this.db.selectedYear.set(title);
       const hasOffline = this.settingsService.isOffline(this.settingsService.settings.datasetId);
       if (!hasOffline) {
         const status = await Network.getStatus();
@@ -228,8 +231,9 @@ export class IntroPage {
       this.vm.ready = false;
       this.vm.showMessage = false;
 
+
       console.warn(`populate ${this.settingsService.settings.datasetId} attempt ${attempt}`);
-      let result = await this.db.populate(this.settingsService.settings.datasetId);      
+      let result = await this.db.populate(this.settingsService.settings.datasetId, this.db.getTimeZone());
       await this.db.getWorkerLogs();
       const sendResult: SendResult = await this.api.sendDataToWorker(result.revision, this.db.locationsHidden(), this.isBurningMan());
       if (sendResult.datasetResult) {
@@ -246,11 +250,8 @@ export class IntroPage {
         return;
       }
       this.fav.init(this.settingsService.settings.datasetId);
-      let showYear = (`${new Date().getFullYear()}` !== this.vm.selected.year) && this.vm.selected.year !== '0000';
 
-      const title = showYear ? this.vm.selected.year : '';
-      this.db.selectedYear.set(title);
-      this.db.selectedDataset.set(this.vm.selected);
+
 
       const hidden = [];
       if (result.rsl == 0) {
