@@ -1,5 +1,10 @@
-@if (simple()) {
-<ion-item (click)="link(url())" lines="none" detail="true"><ion-icon slot="start" [name]="icon()"></ion-icon>{{text()}}</ion-item>
+@if (type() === 'simple') {
+<ion-item (click)="link(url())" lines="none" detail="true"><ion-icon slot="start"
+    [name]="icon()"></ion-icon>{{text()}}</ion-item>
+} @else if (type() === 'complex') {
+  <ion-card-content>
+<div (click)="link(url())" [innerHTML]="html()"></div>
+</ion-card-content>
 } @else {
-  <div (click)="link(url())" [innerHTML]="html()"></div>
+<app-cached-img loading="eager" [src]="url()" [alt]="text()"></app-cached-img>
 }

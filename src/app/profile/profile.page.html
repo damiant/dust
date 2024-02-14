@@ -61,13 +61,9 @@
   @if (groups.length > 0) {
   @for (group of groups; track group.id) {
   <ion-card>
-    <ion-card-content>
-      <ion-list>
-        @for (link of group.links; track link) {
-        <app-link [url]="link.url" [text]="link.title"></app-link>
-        }
-      </ion-list>
-    </ion-card-content>
+    @for (link of group.links; track link) {
+    <app-link [url]="link.url" [text]="link.title"></app-link>
+    }
   </ion-card>
   }
   }
