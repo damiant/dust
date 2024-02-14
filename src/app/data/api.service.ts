@@ -110,11 +110,11 @@ export class ApiService {
 
   private cleanNames(datasets: Dataset[]): Dataset[] {
     for (const dataset of datasets) {
-      if (dataset.imageUrl.includes('[@static]')) {
+      if (dataset.imageUrl?.includes('[@static]')) {
         dataset.imageUrl = dataset.imageUrl.replace('[@static]', static_dust_events);
         dataset.active = true;
       } else {
-        dataset.imageUrl = `${data_dust_events}${dataset.imageUrl}`;
+        dataset.imageUrl = dataset.imageUrl ? `${data_dust_events}${dataset.imageUrl}`: '';
       }
     }
     return datasets.filter(d => d.active);
