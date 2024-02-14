@@ -4,5 +4,5 @@ export const environment = {
   gps: { lng: -119.21121456711064, lat: 40.780501492435846 },
   latitudeOffset: undefined,
   longitudeOffset: undefined,
-  overrideLocations: true,
+  overrideLocations: true
 };

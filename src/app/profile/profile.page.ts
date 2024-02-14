@@ -183,7 +183,7 @@ export class ProfilePage implements OnInit {
       environment.overrideLocations = true;
       this.settings.save();
       this.db.setHideLocations(false);
-      await this.db.populate(this.settings.settings.datasetId);
+      await this.db.populate(this.settings.settings.datasetId, this.db.getTimeZone());
       this.db.resume.set(new Date().toString());
     }
   }

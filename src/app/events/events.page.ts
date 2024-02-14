@@ -245,7 +245,7 @@ export class EventsPage {
     }
 
     const timeRange = this.vm.isNow ? nowRange() : undefined;
-    this.vm.timeRange = timeRangeToString(timeRange);    
+    this.vm.timeRange = timeRangeToString(timeRange, this.db.getTimeZone());    
     this.vm.events = await this.db.findEvents(
       this.vm.search, // Search terms
       this.vm.day, // Selected day

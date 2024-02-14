@@ -17,11 +17,12 @@ import { FriendComponent } from '../friend/friend.component';
 import { FavoritesService } from '../favs/favorites.service';
 import { PrivateEvent } from '../data/models';
 import { CommonModule } from '@angular/common';
-import { BurningManTimeZone, clone, delay, getDayName } from '../utils/utils';
+import { clone, delay, getDayName } from '../utils/utils';
 import { PrivateEventComponent, PrivateEventResult } from '../private-event/private-event.component';
 import { UiService } from '../ui/ui.service';
 import { addIcons } from 'ionicons';
 import { add, calendar } from 'ionicons/icons';
+import { DbService } from '../data/db.service';
 
 @Component({
   selector: 'app-private-events',
@@ -51,6 +52,7 @@ export class PrivateEventsComponent implements OnInit {
     private modalCtrl: ModalController,
     private fav: FavoritesService,
     private ui: UiService,
+    private db: DbService,
     private toastController: ToastController,
   ) {
     addIcons({ add, calendar });
@@ -102,7 +104,7 @@ export class PrivateEventsComponent implements OnInit {
     for (let event of favs.privateEvents) {
       event.startDay = getDayName(event.start);
       event.startTime = new Date(event.start)
-        .toLocaleTimeString('en-US', { timeZone: BurningManTimeZone, hour: 'numeric', minute: '2-digit', hour12: true })
+        .toLocaleTimeString('en-US', { timeZone: this.db.getTimeZone(), hour: 'numeric', minute: '2-digit', hour12: true })
         .toLowerCase();
     }
     this.events = favs.privateEvents;

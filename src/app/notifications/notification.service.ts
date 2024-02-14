@@ -2,8 +2,9 @@ import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { Channel, LocalNotificationDescriptor, LocalNotifications } from '@capacitor/local-notifications';
 import { OccurrenceSet } from '../data/models';
-import { BurningManTimeZone, getDayName, noDate, now, randomInt, time } from '../utils/utils';
+import { getDayName, noDate, now, randomInt, time } from '../utils/utils';
 import { Capacitor } from '@capacitor/core';
+import { DbService } from '../data/db.service';
 
 export interface Reminder {
   title: string;
@@ -24,7 +25,7 @@ export interface ScheduleResult {
 })
 export class NotificationService {
   public hasNotification = signal('');
-  constructor(public router: Router) {}
+  constructor(public router: Router, private db: DbService) {}
 
   public async configure() {
     LocalNotifications.addListener('localNotificationActionPerformed', (notification) => {
@@ -60,8 +61,8 @@ export class NotificationService {
           if (!this.sameDate(last, reminder.when)) {
             await this.schedule(reminder);
             message = `You'll be notified ${reminder.comment} on ${getDayName(
-              reminder.when.toLocaleString('en-US', { timeZone: BurningManTimeZone }),
-            )} at ${time(reminder.when)}`;
+              reminder.when.toLocaleString('en-US', { timeZone: this.db.getTimeZone() }),
+            )} at ${time(reminder.when, this.db.getTimeZone())}`;
             count++;
           }
           last = reminder.when;

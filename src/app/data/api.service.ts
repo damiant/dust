@@ -63,6 +63,7 @@ export class ApiService {
     const rsl = this.dbService.livePath(ds, Names.rsl);
     const map = this.dbService.livePath(ds, Names.map);
 
+
     const datasetInfo: FullDataset = {
       dataset: ds,
       events,
@@ -73,6 +74,7 @@ export class ApiService {
       rsl,
       map,
       hideLocations,
+      timezone: this.dbService.getTimeZone()
     };
     if (!environment.production) {
       console.warn(`Using non-production: ${JSON.stringify(environment)}`);

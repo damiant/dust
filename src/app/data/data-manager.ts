@@ -53,6 +53,7 @@ export class DataManager implements WorkerClass {
   private revision: Revision = { revision: 0 };
   private allEventsOld = false;
   private dataset: string = '';
+  private timezone: string = BurningManTimeZone;
   private cache: TimeCache = {};
   private mapRadius = 5000;
   private logs: string[] = [];
@@ -66,7 +67,7 @@ export class DataManager implements WorkerClass {
         this.logs = [];
         return logs;
       case DataMethods.Populate:
-        return await this.populate(args[0], args[1], args[2]);
+        return await this.populate(args[0], args[1], args[2], args[3]);
       case DataMethods.GetDays:
         return this.getDays(args[0]);
       case DataMethods.GetCategories:
@@ -138,8 +139,9 @@ export class DataManager implements WorkerClass {
     }
   }
 
-  public async populate(dataset: string, hideLocations: boolean, env: any): Promise<DatasetResult> {
+  public async populate(dataset: string, hideLocations: boolean, env: any, timezone: string): Promise<DatasetResult> {
     this.dataset = dataset;
+    this.timezone = timezone;
     this.env = env;
     this.log(`Populate dataset=${dataset}`)
     this.events = await this.loadEvents();
@@ -442,7 +444,7 @@ export class DataManager implements WorkerClass {
             start.getDate(),
             end.getHours(),
             end.getMinutes(),
-          ).toLocaleString('en-US', { timeZone: BurningManTimeZone });
+          ).toLocaleString('en-US', { timeZone: this.timezone });
           end = new Date(occurrence.end_time);
         }
         if (hrs <= 6) {
@@ -490,6 +492,7 @@ export class DataManager implements WorkerClass {
     let result: DatasetResult | undefined;
     try {
       this.dataset = ds.dataset;
+      this.timezone = ds.timezone;
       this.events = await this.loadData(ds.events);
       this.camps = await this.loadData(ds.camps);
       this.art = await this.loadData(ds.art);
@@ -918,7 +921,7 @@ export class DataManager implements WorkerClass {
   private getOccurrenceTimeStringCached(start: Date, end: Date, day: Date | undefined): TimeString | undefined {
     const key = `${start.getTime()}-${end.getTime()}-${day}`;
     if (!(key in this.cache)) {
-      this.cache[key] = getOccurrenceTimeString(start, end, day);
+      this.cache[key] = getOccurrenceTimeString(start, end, day, this.timezone);
     }
     return this.cache[key];
   }
