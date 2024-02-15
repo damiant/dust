@@ -132,7 +132,12 @@ export class FavoritesService {
     const result = [];
     for (const eventOccurrence of eventOccurrences) {
       const oc = eventOccurrence.split('-');
-      result.push(oc[0]);
+      // events may start with u-[number]
+      if (oc[0] == 'u') {
+        result.push(oc[0] + '-' + oc[1]);
+      } else {
+        result.push(oc[0]);
+      }
     }
     return result;
   }
@@ -342,9 +347,8 @@ export class FavoritesService {
         gpsCoords: { lat: 0, lng: 0 },
         description: '',
         slug: this.rslId(rslEvent, o),
-        print_description: `${o.who} is playing ${party}${
-          rslEvent.artCar ? 'on the ' + rslEvent.artCar + ' mutant vehicle' : 'at ' + rslEvent.camp
-        }.`,
+        print_description: `${o.who} is playing ${party}${rslEvent.artCar ? 'on the ' + rslEvent.artCar + ' mutant vehicle' : 'at ' + rslEvent.camp
+          }.`,
         occurrence_set: [
           {
             start_time: o.startTime,

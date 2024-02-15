@@ -1,4 +1,10 @@
 ## Changes
+## 2.02
+- Fix for favorited events
+
+## 2.01
+- Fix for timezones (use timezone of event)
+
 ## 2.0
 - Use new datasets
 
