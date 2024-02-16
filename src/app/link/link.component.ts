@@ -19,7 +19,6 @@ export class LinkComponent {
   icon = computed(() => {
     let url: string = this.url();
     let txt: string = this.text();
-    console.log(url);
     if (url.includes('tel:') || url.includes('sms:')) {
       return 'call-outline';
     } else if (url.includes('mailto:')) {
@@ -57,8 +56,7 @@ export class LinkComponent {
     addIcons({ linkOutline, compass, compassOutline, callOutline, mailOutline, ticketOutline, tvOutline })
   }
 
-  link(url: string) {
-    console.log('click', url);
+  link(url: string) {    
     this.ui.openUrl(url);
   }
 

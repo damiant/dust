@@ -3,6 +3,7 @@
 - Fix to slow networks when opening the app
 - Fix on startup if state is bad causing app to not start
 - Fix iPad size layouts
+- Check version numbers and suggest updates
 
 ## 2.02
 - Fix for favorited events
