@@ -167,6 +167,10 @@ export class IntroPage {
   }
 
   async go() {
+    if (this.vm.eventAlreadySelected && !this.vm.selected) {
+      this.vm.eventAlreadySelected = false;
+      console.error('We should not get into this state but just in case we have bad state data we need to have the user select the event');
+    }
     if (!this.vm.selected) return;
 
     try {

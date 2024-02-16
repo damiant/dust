@@ -27,7 +27,7 @@ export class ApiService {
   ) { }
 
   public async sendDataToWorker(
-    defaultRevision: number,
+    currentRevision: number,
     hideLocations: boolean,
     mapIsOffline: boolean, // Are we using the built in map.svg
   ): Promise<SendResult> {
@@ -44,10 +44,10 @@ export class ApiService {
       const mapUri = await getCachedImage(mapData.uri);
       this.settingsService.settings.mapUri = mapIsOffline ? '' : mapUri;
       this.settingsService.save();
-      console.log(`Download? revision is ${revision.revision} and default is ${defaultRevision}`);
-      if (revision.revision <= defaultRevision) {
+      console.log(`Download? revision is ${revision.revision} and default is ${currentRevision}`);
+      if (revision.revision <= currentRevision) {
         console.warn(
-          `Did not read data from storage as it is at revision ${revision.revision} but current is ${defaultRevision}`,
+          `Did not read data from storage as it is at revision ${revision.revision} but current is ${currentRevision}`,
         );
         return { success: true };
       }
@@ -150,7 +150,7 @@ export class ApiService {
 
       console.log(`get revision live ${dataset}`);
       myRevision = await this.dbService.get(dataset, Names.revision, { onlyRead: true, defaultValue: { revision: 0 } });
-      nextRevision = await this.dbService.get(dataset, Names.revision, { onlyFresh: true, defaultValue: { revision: 0 } });
+      nextRevision = await this.dbService.get(dataset, Names.revision, { onlyFresh: true, timeout: 2000, defaultValue: { revision: 0 } });
       console.log(`Next revision is ${JSON.stringify(nextRevision)} force is ${force}`);
       console.log(`My revision is ${JSON.stringify(myRevision)}`);
 
