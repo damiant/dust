@@ -28,7 +28,7 @@ import {
   getDayNameFromDate,
   getOccurrenceTimeString,
   hasValue,
-  nowPST,
+  nowAtEvent,
   sameDay,
 } from '../utils/utils';
 import { defaultMapRadius, distance, formatDistance, locationStringToPin, mapPointToPoint } from '../map/map.utils';
@@ -196,15 +196,15 @@ export class DataManager implements WorkerClass {
     });
   }
 
-  private now(): Date {
+  private now(timeZone: string): Date {
     if (!this.env.simulatedTime) {
-      return nowPST();
+      return nowAtEvent(timeZone);
     }
     return this.env.simulatedTime;// clone(this.env.simulatedTime);
   }
 
   private checkEvents(): boolean {
-    const today = this.now();
+    const today = this.now(this.timezone);
     let hasLiveEvents = false;
     for (const event of this.events) {
       event.old = true;
@@ -664,7 +664,7 @@ export class DataManager implements WorkerClass {
       const result: RSLEvent[] = [];
       query = this.scrubQuery(query);
       const fDay = day ? this.toRSLDateFormat(day) : undefined;
-      const today = this.now();
+      const today = this.now(this.timezone);
       const campPins: any = {};
       for (let event of events) {
         // Place RSL Events at the camp pin
