@@ -137,8 +137,7 @@ export class ProfilePage implements OnInit {
     this.presentingElement = document.querySelector('.ion-page');
     this.imageUrl = await getCachedImage(this.db.selectedImage());
     this.db.checkInit();
-    const summary: DatasetResult = await this.db.get(this.settings.settings.datasetId, Names.summary, { onlyRead: true });
-    console.log('sujmary', summary.pinTypes);
+    const summary: DatasetResult = await this.db.get(this.settings.settings.datasetId, Names.summary, { onlyRead: true });    
     this.hasRestrooms = this.hasValue(summary.pinTypes, 'Restrooms');
     this.hasMedical = this.hasValue(summary.pinTypes, 'Medical');
     this.hasIce = this.hasValue(summary.pinTypes, 'Ice');

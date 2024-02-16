@@ -9,8 +9,6 @@
 - webp files don’t share
 
 ## Features
-- Add 2024 with coming soon
-- Use the timezone from the dataset
 - Show a message when map is shown for the first time "Use 2 fingers or double tap to zoom into the map"
 - PWA to Microsoft store: https://tech.lgbt/@lilPWA/111711138018508269
 - Art tour audio

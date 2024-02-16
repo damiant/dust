@@ -36,8 +36,7 @@ export function nowRange(): TimeRange {
   const end = now();
   const minute = 1000 * 60;
   start.setTime(start.getTime() - 20 * minute);
-  end.setTime(end.getTime() + 60 * minute);
-  console.log(start, end);
+  end.setTime(end.getTime() + 60 * minute);  
   return { start, end };
 }
 

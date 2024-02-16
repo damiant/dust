@@ -1,7 +1,7 @@
 import { Component, ViewChild, WritableSignal, effect, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonButton, IonContent, IonIcon, IonSpinner, IonText, ToastController } from '@ionic/angular/standalone';
+import { AlertController, IonButton, IonContent, IonIcon, IonSpinner, IonText, ToastController } from '@ionic/angular/standalone';
 import { Router, RouterModule } from '@angular/router';
 import { DbService } from '../data/db.service';
 import { SplashScreen } from '@capacitor/splash-screen';
@@ -21,6 +21,7 @@ import { arrowForwardOutline } from 'ionicons/icons';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { CarouselComponent, SlideSelect } from '../carousel/carousel.component';
 import { CarouselItemComponent } from '../carousel-item/carousel-item.component';
+import { UpdateService } from '../update.service';
 
 interface IntroState {
   ready: boolean;
@@ -79,7 +80,9 @@ export class IntroPage {
     private settingsService: SettingsService,
     private ui: UiService,
     private fav: FavoritesService,
+    private updateService: UpdateService,
     private router: Router,
+    private alertController: AlertController,
     private toastController: ToastController,
   ) {
     addIcons({ arrowForwardOutline });
@@ -109,11 +112,7 @@ export class IntroPage {
     }
 
     this.vm.cards = await this.api.loadDatasets();
-    // need to load
-    await this.load();
-  }
 
-  private async load() {
     console.log(`Search for`, this.settingsService.settings.datasetId)
     const idx = this.vm.cards.findIndex((c) => this.api.datasetId(c) == this.settingsService.settings.datasetId);
     if (idx >= 0) {
@@ -150,9 +149,11 @@ export class IntroPage {
     if (this.vm.eventAlreadySelected) {
       console.log(`Auto starting = ${this.vm.eventAlreadySelected}...`);
       await this.go();
+    } else {
+      // We are not auto starting with an event. We'll check versions (without await)
+      this.updateService.checkVersion(this.alertController);
     }
   }
-
 
   public async clear() {
     this.vm.clearCount++;
@@ -167,6 +168,10 @@ export class IntroPage {
   }
 
   async go() {
+    if (this.vm.eventAlreadySelected && !this.vm.selected) {
+      this.vm.eventAlreadySelected = false;
+      console.error('We should not get into this state but just in case we have bad state data we need to have the user select the event');
+    }
     if (!this.vm.selected) return;
 
     try {

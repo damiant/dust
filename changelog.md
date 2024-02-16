@@ -1,4 +1,16 @@
 ## Changes
+## 2.03
+- Fix to slow networks when opening the app
+- Fix on startup if state is bad causing app to not start
+- Fix iPad size layouts
+- Check version numbers and suggest updates
+
+## 2.02
+- Fix for favorited events
+
+## 2.01
+- Fix for timezones (use timezone of event)
+
 ## 2.0
 - Use new datasets
 
