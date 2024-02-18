@@ -1,4 +1,7 @@
 ## Changes
+## 2.04
+- Fix camp click from the music page
+
 ## 2.03
 - Fix to slow networks when opening the app
 - Fix on startup if state is bad causing app to not start

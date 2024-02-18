@@ -220,8 +220,10 @@ export class RslPage {
     this.vm.isOpen = true;
   }
 
-  public map(event: RSLEvent) {
-    this.vm.mapPoints = [toMapPoint(event.location)];
+  public async map(event: RSLEvent) {
+    const mp = toMapPoint(event.location, undefined, event.pin);
+    mp.gps = await this.db.getMapPointGPS(mp);
+    this.vm.mapPoints = [mp];
     this.vm.mapTitle = event.camp;
     this.vm.mapSubtitle = event.location;
     this.vm.showMap = true;
