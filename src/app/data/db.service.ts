@@ -102,7 +102,7 @@ export class DbService {
     // This is whether the event has not started yet
     const start = new Date(this.selectedDataset().start);
     const until = daysUntil(start, now());
-    return (until < 0);
+    return (until > 0);
   }
 
   public checkInit() {
