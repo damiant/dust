@@ -279,7 +279,7 @@ export interface GPSSet {
 }
 
 export interface RSLEvent {
-  id: string;
+  uid: string;
   camp: string;
   title?: string;
   location: string;

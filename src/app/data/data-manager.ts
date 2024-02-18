@@ -699,7 +699,7 @@ export class DataManager implements WorkerClass {
           }
           if (ids && ids.length > 0) {
             event.occurrences = event.occurrences.filter((o) => {
-              const id = `${event.id}-${o.id}`;
+              const id = `${event.uid}-${o.id}`;
               return ids.includes(id);
             });
             if (event.occurrences.length == 0) {

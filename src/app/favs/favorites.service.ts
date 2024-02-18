@@ -213,7 +213,7 @@ export class FavoritesService {
   }
 
   public rslId(event: RSLEvent, occurrence: RSLOccurrence): string {
-    return `${event.id}-${occurrence.id}`;
+    return `${event.uid}-${occurrence.id}`;
   }
 
   private eventId(event: Event, occurrence?: OccurrenceSet): string {

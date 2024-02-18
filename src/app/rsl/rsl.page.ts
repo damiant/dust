@@ -249,7 +249,7 @@ export class RslPage {
   }
 
   public eventsTrackBy(index: number, event: RSLEvent) {
-    return event.id;
+    return event.uid;
   }
 
   public searchEvents(value: string) {
