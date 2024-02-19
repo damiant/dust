@@ -135,7 +135,7 @@ export class PinMapPage {
   private async getEventsNow(): Promise<MapSet> {
     const title = 'Happening Now';
     this.title.set(title)
-    const timeRange = nowRange();
+    const timeRange = nowRange(this.db.getTimeZone());
     this.smallPins = true;
     const points = [];
     const allEvents = await this.db.findEvents('', undefined, '', undefined, timeRange, false);

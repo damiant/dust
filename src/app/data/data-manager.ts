@@ -28,7 +28,7 @@ import {
   getDayNameFromDate,
   getOccurrenceTimeString,
   hasValue,
-  nowPST,
+  nowAtEvent,
   sameDay,
 } from '../utils/utils';
 import { defaultMapRadius, distance, formatDistance, locationStringToPin, mapPointToPoint } from '../map/map.utils';
@@ -83,7 +83,7 @@ export class DataManager implements WorkerClass {
       case DataMethods.GetRSLEventList:
         return this.getRSLEventList(args[0], args[1]);
       case DataMethods.SearchRSLEvents:
-        return this.searchRSLEvents(args[0]);
+        return this.searchRSLEvents(args[0], args[1]);
       case DataMethods.GetCampList:
         return this.getCampList(args[0]);
       case DataMethods.GetArtList:
@@ -196,15 +196,15 @@ export class DataManager implements WorkerClass {
     });
   }
 
-  private now(): Date {
+  private now(timeZone: string): Date {
     if (!this.env.simulatedTime) {
-      return nowPST();
+      return nowAtEvent(timeZone);
     }
     return this.env.simulatedTime;// clone(this.env.simulatedTime);
   }
 
   private checkEvents(): boolean {
-    const today = this.now();
+    const today = this.now(this.timezone);
     let hasLiveEvents = false;
     for (const event of this.events) {
       event.old = true;
@@ -623,12 +623,12 @@ export class DataManager implements WorkerClass {
     return s == undefined || s == '';
   }
 
-  public async searchRSLEvents(query: string): Promise<Day[]> {
+  public async searchRSLEvents(query: string, isHistorical: boolean): Promise<Day[]> {
     function unique(value: string, index: number, data: string[]) {
       return data.indexOf(value) === index;
     }
 
-    const events = await this.getRSLEvents(query, undefined, undefined, [], undefined);
+    const events = await this.getRSLEvents(query, undefined, undefined, [], undefined, isHistorical);
     const found = events.map((e) => e.day).filter(unique);
     const days = this.getDays(Names.rsl);
     const result: Day[] = [];
@@ -656,15 +656,11 @@ export class DataManager implements WorkerClass {
     isHistorical?: boolean
   ): Promise<RSLEvent[]> {
     try {
-      const events = this.rslEvents;
-      if (!events || events.length == 0) {
-        this.log('No RSL Events');
-      }
-      // RSLEvent[] = await this.read(this.getId(Names.rsl), []);
+      const events: RSLEvent[] = await this.read(this.getId(Names.rsl), []);
       const result: RSLEvent[] = [];
       query = this.scrubQuery(query);
       const fDay = day ? this.toRSLDateFormat(day) : undefined;
-      const today = this.now();
+      const today = this.now(this.timezone);
       const campPins: any = {};
       for (let event of events) {
         // Place RSL Events at the camp pin
@@ -699,7 +695,7 @@ export class DataManager implements WorkerClass {
           }
           if (ids && ids.length > 0) {
             event.occurrences = event.occurrences.filter((o) => {
-              const id = `${event.id}-${o.id}`;
+              const id = `${event.uid}-${o.id}`;
               return ids.includes(id);
             });
             if (event.occurrences.length == 0) {

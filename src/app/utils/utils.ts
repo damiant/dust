@@ -15,9 +15,12 @@ export const data_dust_events = 'https://api.dust.events/data/'
 // Static data is for burning man datasets
 export const static_dust_events = 'https://api.dust.events/static/'
 
+/**
+ * @deprecated nowAtEvent should be used instead
+ */
 export function now(): Date {
   if (!environment.simulatedTime) {
-    return nowPST();
+    return nowAtEvent(BurningManTimeZone);
   }
   return clone(environment.simulatedTime);
 }
@@ -26,14 +29,14 @@ export function isWeb(): boolean {
   return Capacitor.getPlatform() == 'web';
 }
 
-export function nowPST(): Date {
-  let str = new Date().toLocaleString('en-US', { timeZone: BurningManTimeZone });
+export function nowAtEvent(timeZone: string): Date {
+  let str = new Date().toLocaleString('en-US', { timeZone });
   return new Date(str);
 }
 
-export function nowRange(): TimeRange {
-  const start = now();
-  const end = now();
+export function nowRange(timeZone: string): TimeRange {
+  const start = nowAtEvent(timeZone);
+  const end = nowAtEvent(timeZone);
   const minute = 1000 * 60;
   start.setTime(start.getTime() - 20 * minute);
   end.setTime(end.getTime() + 60 * minute);  

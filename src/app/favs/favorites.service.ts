@@ -213,7 +213,7 @@ export class FavoritesService {
   }
 
   public rslId(event: RSLEvent, occurrence: RSLOccurrence): string {
-    return `${event.id}-${occurrence.id}`;
+    return `${event.uid}-${occurrence.id}`;
   }
 
   private eventId(event: Event, occurrence?: OccurrenceSet): string {
@@ -422,7 +422,6 @@ export class FavoritesService {
     const id = DbId.favorites;
     const value = this.favorites;
     await Preferences.set({ key: `${this.dataset}-${id}`, value: JSON.stringify(value) });
-    console.log('saved', value);
     const i = this.changed();
     this.changed.set(i + 1);
   }
