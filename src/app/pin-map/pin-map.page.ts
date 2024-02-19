@@ -7,7 +7,7 @@ import { Art, MapPoint, MapSet, MapType, Names } from '../data/models';
 import { GpsCoord } from '../map/geo.utils';
 import { GeoService } from '../geolocation/geo.service';
 import { toMapPoint } from '../map/map.utils';
-import { nowRange, timeRangeToString } from '../utils/utils';
+import { localTimeZone, nowRange, timeRangeToString } from '../utils/utils';
 import {
   IonBackButton,
   IonButtons,
@@ -135,7 +135,8 @@ export class PinMapPage {
   private async getEventsNow(): Promise<MapSet> {
     const title = 'Happening Now';
     this.title.set(title)
-    const timeRange = nowRange(this.db.getTimeZone());
+    //const timeRange = nowRange(this.db.getTimeZone());
+    const timeRange = nowRange(localTimeZone());
     this.smallPins = true;
     const points = [];
     const allEvents = await this.db.findEvents('', undefined, '', undefined, timeRange, false);

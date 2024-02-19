@@ -51,10 +51,15 @@ export function clone(o: any): any {
   }
 }
 
+export function localTimeZone(): string {
+  return Intl.DateTimeFormat().resolvedOptions().timeZone;
+}
+
 export function timeRangeToString(timeRange: TimeRange | undefined, timeZone: string): string {
   if (!timeRange) {
     return '';
   }
+  
   return `${time(timeRange.start, timeZone)}-${time(timeRange.end, timeZone)}`;
 }
 
