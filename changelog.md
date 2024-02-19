@@ -1,6 +1,7 @@
 ## Changes
 ## 2.04
 - Fix camp click from the music page
+- Favorites page was not always updating
 
 ## 2.03
 - Fix to slow networks when opening the app

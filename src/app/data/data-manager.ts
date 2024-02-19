@@ -656,11 +656,7 @@ export class DataManager implements WorkerClass {
     isHistorical?: boolean
   ): Promise<RSLEvent[]> {
     try {
-      const events = this.rslEvents;
-      if (!events || events.length == 0) {
-        this.log('No RSL Events');
-      }
-      // RSLEvent[] = await this.read(this.getId(Names.rsl), []);
+      const events: RSLEvent[] = await this.read(this.getId(Names.rsl), []);
       const result: RSLEvent[] = [];
       query = this.scrubQuery(query);
       const fDay = day ? this.toRSLDateFormat(day) : undefined;

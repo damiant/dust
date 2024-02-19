@@ -110,14 +110,14 @@ export class FavsPage implements OnInit {
     private router: Router,
   ) {
     addIcons({ star, starOutline, mapOutline });
-    effect(() => {
+    effect(async () => {
       console.log('update favorite');
       this.fav.changed();
-      this.update();
+      await this.update();
     });
-    effect(() => {
+    effect(async () => {
       this.db.resume();
-      this.update();
+      await this.update();
     });
 
     effect(() => {
@@ -143,10 +143,7 @@ export class FavsPage implements OnInit {
   ];
 
   async ionViewWillEnter() {
-    // if (this.vm.events.length == 0) {
-    //   console.log('ionViewWillEnter.update');
-    //   this.update();
-    // }
+    await this.update();
   }
 
   home() {
@@ -174,7 +171,8 @@ export class FavsPage implements OnInit {
 
   private async update() {
     const favs = await this.fav.getFavorites();
-    const rslEvents = this.filterItems(Filter.Events, await this.fav.getRSLEventList(favs.rslEvents,));
+    const items = await this.fav.getRSLEventList(favs.rslEvents);
+    const rslEvents = this.filterItems(Filter.Events, items);
     const events = this.filterItems(
       Filter.Events,
       await this.fav.getEventList(favs.events, this.db.isHistorical(), rslEvents),
