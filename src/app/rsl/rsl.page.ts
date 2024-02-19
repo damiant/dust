@@ -171,7 +171,7 @@ export class RslPage {
       return;
     }
     const wasSearch = this.vm.search?.length > 0;
-    const days = await this.db.searchRSL(this.vm.search);
+    const days = await this.db.searchRSL(this.vm.search, this.db.isHistorical());
     if (days.length == 0) {
       this.vm.noEvents = this.vm.events.length == 0;
       this.vm.noEventsMessage = wasSearch
@@ -189,7 +189,7 @@ export class RslPage {
   private noEventsMessage() {
     return this.db.eventHasntBegun() ?
       'Events have not been added yet.' :
-      'All the events for this day have concluded.';
+      'All events for this day have concluded.';
   }
 
   private addEvents(count: number) {

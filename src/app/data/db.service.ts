@@ -17,7 +17,7 @@ import {
   Names,
 } from './models';
 import { call, registerWorker } from './worker-interface';
-import { BurningManTimeZone, clone, data_dust_events, daysUntil, noDate, now, static_dust_events } from '../utils/utils';
+import { BurningManTimeZone, clone, data_dust_events, daysUntil, noDate, now, nowAtEvent, static_dust_events } from '../utils/utils';
 import { GpsCoord, Point } from '../map/geo.utils';
 import { environment } from 'src/environments/environment';
 import { Network } from '@capacitor/network';
@@ -94,7 +94,7 @@ export class DbService {
   public isHistorical(): boolean {
     // This is whether the event is in the past
     const end = new Date(this.selectedDataset().end);
-    const until = daysUntil(end, now());
+    const until = daysUntil(end, nowAtEvent(this.getTimeZone()));
     return (until < 0);
   }
 
@@ -288,8 +288,8 @@ export class DbService {
     return r;
   }
 
-  public async searchRSL(terms: string): Promise<Day[]> {
-    return await call(this.worker, DataMethods.SearchRSLEvents, terms);
+  public async searchRSL(terms: string, isHistorical: boolean): Promise<Day[]> {
+    return await call(this.worker, DataMethods.SearchRSLEvents, terms, isHistorical);
   }
 
   public async getCategories(): Promise<string[]> {

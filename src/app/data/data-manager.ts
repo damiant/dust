@@ -83,7 +83,7 @@ export class DataManager implements WorkerClass {
       case DataMethods.GetRSLEventList:
         return this.getRSLEventList(args[0], args[1]);
       case DataMethods.SearchRSLEvents:
-        return this.searchRSLEvents(args[0]);
+        return this.searchRSLEvents(args[0], args[1]);
       case DataMethods.GetCampList:
         return this.getCampList(args[0]);
       case DataMethods.GetArtList:
@@ -623,12 +623,12 @@ export class DataManager implements WorkerClass {
     return s == undefined || s == '';
   }
 
-  public async searchRSLEvents(query: string): Promise<Day[]> {
+  public async searchRSLEvents(query: string, isHistorical: boolean): Promise<Day[]> {
     function unique(value: string, index: number, data: string[]) {
       return data.indexOf(value) === index;
     }
 
-    const events = await this.getRSLEvents(query, undefined, undefined, [], undefined);
+    const events = await this.getRSLEvents(query, undefined, undefined, [], undefined, isHistorical);
     const found = events.map((e) => e.day).filter(unique);
     const days = this.getDays(Names.rsl);
     const result: Day[] = [];
