@@ -1,4 +1,4 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, WritableSignal, computed, signal } from '@angular/core';
 import {
   Event,
   Day,
@@ -46,6 +46,7 @@ export class DbService {
   public featuresHidden = signal(['']);
   public networkStatus = signal('');
   public resume = signal('');
+  public restart: WritableSignal<string> = signal('');
   private initialized = false;
   private hideLocations = true;
   private prefix = '';
@@ -108,6 +109,11 @@ export class DbService {
   public checkInit() {
     if (!this.initialized) {
       document.location.href = '';
+    } else {
+      if (this.selectedDataset().name == '') {
+        // Restart if we dont have data
+        this.restart.set(Math.random().toString());
+      }
     }
   }
 

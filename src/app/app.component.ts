@@ -1,4 +1,4 @@
-import { Component, EnvironmentInjector, NgZone, OnInit, inject } from '@angular/core';
+import { Component, EnvironmentInjector, NgZone, OnInit, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NotificationService } from './notifications/notification.service';
 import { App, URLOpenListenerEvent } from '@capacitor/app';
@@ -8,6 +8,8 @@ import { RouterFocusService } from './utils/focus.service';
 import { IntegrityService } from './data/integrity.service';
 import { DbService } from './data/db.service';
 import { ApiService } from './data/api.service';
+import { UiService } from './ui/ui.service';
+import { SettingsService } from './data/settings.service';
 
 @Component({
   selector: 'app-root',
@@ -26,11 +28,19 @@ export class AppComponent implements OnInit {
     private shareService: ShareService,
     private zone: NgZone,
     private focusService: RouterFocusService,
-    private dbService: DbService
-  ) {}
+    private dbService: DbService,
+    private ui: UiService,
+    private settings: SettingsService
+  ) {
+    effect(() => {
+      const restart = this.dbService.restart();
+      if (restart == '') return;
+      this.settings.settings.preventAutoStart = true;
+      this.ui.home();
+    });
+  }
 
   async ngOnInit() {
-
     await this.notificationService.configure();
     App.addListener('appUrlOpen', (event: URLOpenListenerEvent) => {
       this.zone.run(() => {
