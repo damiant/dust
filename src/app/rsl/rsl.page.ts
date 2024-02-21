@@ -120,7 +120,7 @@ export class RslPage {
       this.db.checkInit();
       this.vm = initialState();
       this.init();
-    });
+    }, { allowSignalWrites: true});
     effect(async () => {
       const resumed = this.db.resume();
       if (resumed.length > 0) {

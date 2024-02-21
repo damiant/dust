@@ -102,7 +102,7 @@ export class CampsPage {
       this.db.checkInit();
       this.vm = initialState();
       this.update('');
-    });
+    }, { allowSignalWrites: true});
   }
 
   home() {

@@ -130,7 +130,7 @@ export class EventsPage {
       this.db.checkInit();
       this.vm = initialState();
       this.init();
-    });
+    }, { allowSignalWrites: true});
     effect(async () => {
       const _r = this.db.resume();
       this.setToday(now());

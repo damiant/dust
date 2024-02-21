@@ -1,4 +1,8 @@
 ## Changes
+## 2.05
+- For now events on map show correct time range
+- Fix for resuming when memory is wiped
+
 ## 2.04
 - Fix camp click from the music page
 - Favorites page was not always updating
