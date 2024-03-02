@@ -43,6 +43,7 @@ export class AppComponent implements OnInit {
   async ngOnInit() {
     await this.notificationService.configure();
     App.addListener('appUrlOpen', (event: URLOpenListenerEvent) => {
+      console.log('appUrlOpen', event);
       this.zone.run(() => {
         try {
           // url will come in like https://dust.events?art=1234

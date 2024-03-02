@@ -22,6 +22,7 @@ import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { CarouselComponent, SlideSelect } from '../carousel/carousel.component';
 import { CarouselItemComponent } from '../carousel-item/carousel-item.component';
 import { UpdateService } from '../update.service';
+import { ShareInfoType, ShareService } from '../share/share.service';
 
 interface IntroState {
   ready: boolean;
@@ -84,6 +85,7 @@ export class IntroPage {
     private router: Router,
     private alertController: AlertController,
     private toastController: ToastController,
+    private shareService: ShareService
   ) {
     addIcons({ arrowForwardOutline });
     effect(() => {
@@ -93,6 +95,14 @@ export class IntroPage {
           `Downloading ${downloading}`,
           this.toastController,
         );
+      }
+    });
+    effect(async () => {
+      const shareItem = this.shareService.hasShare();
+      if (shareItem.type == ShareInfoType.preview) {
+        this.db.overrideDataset = shareItem.id;
+        await this.ionViewWillEnter();
+        await this.ionViewDidEnter();
       }
     });
   }
@@ -121,14 +131,19 @@ export class IntroPage {
     }
     const preview = this.db.overrideDataset;
     if (preview) {
+      const all = await this.api.loadDatasets(true);
       console.info('overriding preview', preview);
-      await this.db.clear();
-      let p: Dataset = JSON.parse(JSON.stringify(this.vm.cards.find(d => d.name == preview)));
+      //await this.db.clear();
+      const found = all.find(d => d.name == preview);
+      if (!found) {
+        console.error(`${preview} not found in [${all.map(c => c.name).join(',')}]`)
+        return;
+      }
+      let p: Dataset = JSON.parse(JSON.stringify(found));
       this.settingsService.settings.dataset = p;
       this.settingsService.settings.datasetId = p.id;
       this.settingsService.settings.eventTitle = p.title;
       this.vm.eventAlreadySelected = true;
-      p.title += ' (Preview)';
       this.vm.selected = p;
       console.info(`Dataset selected`, p);
     }
@@ -150,6 +165,7 @@ export class IntroPage {
       console.log(`Auto starting = ${this.vm.eventAlreadySelected}...`);
       await this.go();
     } else {
+      console.log('Did not auto start');
       // We are not auto starting with an event. We'll check versions (without await)
       this.updateService.checkVersion(this.alertController);
     }

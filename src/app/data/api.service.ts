@@ -104,22 +104,22 @@ export class ApiService {
     return false;
   }
 
-  public async loadDatasets(): Promise<Dataset[]> {
+  public async loadDatasets(inactive?: boolean): Promise<Dataset[]> {
     const datasets = await this.dbService.get(Names.datasets, Names.datasets, { freshOnce: true, timeout: 5000 });
     const festivals = await this.dbService.get(Names.festivals, Names.festivals, { freshOnce: true, timeout: 5000 });
-    return this.cleanNames([...festivals, ...datasets]);
+    return this.cleanNames([...festivals, ...datasets], inactive);
   }
 
-  private cleanNames(datasets: Dataset[]): Dataset[] {
+  private cleanNames(datasets: Dataset[], inactive?: boolean): Dataset[] {
     for (const dataset of datasets) {
       if (dataset.imageUrl?.includes('[@static]')) {
         dataset.imageUrl = dataset.imageUrl.replace('[@static]', static_dust_events);
         dataset.active = true;
       } else {
-        dataset.imageUrl = dataset.imageUrl ? `${data_dust_events}${dataset.imageUrl}`: '';
+        dataset.imageUrl = dataset.imageUrl ? `${data_dust_events}${dataset.imageUrl}` : '';
       }
     }
-    return datasets.filter(d => d.active);
+    return datasets.filter(d => d.active || inactive);
   }
 
   private async getVersion(): Promise<string> {
@@ -138,8 +138,8 @@ export class ApiService {
 
   public async download(selected: Dataset | undefined, force: boolean, downloadSignal: WritableSignal<string>): Promise<boolean> {
     let dataset = '';
-    let nextRevision: Revision | undefined; 
-    let myRevision: Revision | undefined; 
+    let nextRevision: Revision | undefined;
+    let myRevision: Revision | undefined;
     try {
       // Gets it from netlify      
       const datasets: Dataset[] = await this.dbService.get(Names.datasets, Names.datasets, { freshOnce: true, timeout: 1000 });
@@ -156,7 +156,7 @@ export class ApiService {
 
       // Check the current revision
       const version: Version = await this.dbService.get(dataset, Names.version, { onlyRead: true, defaultValue: { version: '' } });
-      const currentVersion = await this.getVersion();      
+      const currentVersion = await this.getVersion();
 
       console.info(`${dataset}: force=${force} revision=${JSON.stringify(myRevision)} currentRevision=${JSON.stringify(nextRevision)}`)
 
@@ -206,10 +206,12 @@ export class ApiService {
     let uri: string | undefined = undefined;
     if (map) {
       const ext = map.filename ? map.filename.split('.').pop() : 'svg';
-      console.info(`download.map ${map.filename} ext=${ext}`);
-      uri = await this.dbService.getLiveBinary(dataset, map.filename, currentVersion);
-      console.info(`download.map uri=${uri}`);
-      uri = await getCachedImage(uri);
+      if (map.filename) {
+        console.info(`download.map ${map.filename} ext=${ext}`);
+        uri = await this.dbService.getLiveBinary(dataset, map.filename, currentVersion);
+        console.info(`download.map uri=${uri}`);
+        uri = await getCachedImage(uri);
+      }
     }
 
     if (this.badData(events, art, camps)) {
