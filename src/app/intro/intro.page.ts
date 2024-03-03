@@ -101,6 +101,7 @@ export class IntroPage {
       const shareItem = this.shareService.hasShare();
       if (shareItem.type == ShareInfoType.preview) {
         this.db.overrideDataset = shareItem.id;
+        console.log(`Override Dataset `, shareItem.id);
         await this.ionViewWillEnter();
         await this.ionViewDidEnter();
       }
@@ -288,6 +289,7 @@ export class IntroPage {
       this.settingsService.setOffline(this.settingsService.settings.datasetId);
       this.settingsService.save();
       this.ui.setStatusBarBasedOnTheme();
+      this.db.overrideDataset = undefined;
       await this.router.navigateByUrl('/tabs/profile');
     } finally {
       setTimeout(() => {
