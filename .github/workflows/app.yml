@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Setup
       uses: actions/setup-node@v4
@@ -23,11 +23,20 @@ jobs:
         node-version: 18.x
         cache: 'npm'
 
-    - name: Build Dust Preview
+    - name: Install bun      
+      uses: oven-sh/setup-bun@v1          
+
+    - name: Install deps
       run: |
-        npm ci
-        npm run lint
-        npm run build
+        bun install 
+
+    - name: Lint        
+      run: |
+        bun run lint
+
+    - name: Build
+      run: |
+        bun run build
 
     - name: Deploy preview.dust.events (Netlify website)
       uses: nwtgck/actions-netlify@v2.0
