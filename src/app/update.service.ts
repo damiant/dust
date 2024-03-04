@@ -30,7 +30,7 @@ export class UpdateService {
   }
 
   private async presentConfirm(alert: AlertController, message: string): Promise<boolean> {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async (resolve) => {
       const a = await alert.create({
         header: 'Confirm',
         message,
