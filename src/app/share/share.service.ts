@@ -10,6 +10,7 @@ export enum ShareInfoType {
   art = 'art',
   event = 'event',
   camp = 'camp',
+  preview = 'preview'
 }
 
 @Injectable({
