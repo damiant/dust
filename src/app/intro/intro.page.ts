@@ -1,7 +1,7 @@
 import { Component, ViewChild, WritableSignal, effect, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AlertController, IonButton, IonContent, IonIcon, IonSpinner, IonText, ToastController } from '@ionic/angular/standalone';
+import { AlertController, IonButton, IonContent, IonIcon, IonSpinner, IonText, ToastController, IonFab, IonFabButton, IonFabList, IonItem, IonList, IonPopover, IonRadioGroup, IonRadio } from '@ionic/angular/standalone';
 import { Router, RouterModule } from '@angular/router';
 import { DbService } from '../data/db.service';
 import { SplashScreen } from '@capacitor/splash-screen';
@@ -9,7 +9,7 @@ import { SettingsService } from '../data/settings.service';
 import { FavoritesService } from '../favs/favorites.service';
 import { MessageComponent } from '../message/message.component';
 import { addDays, daysUntil, delay, isWhiteSpace, now } from '../utils/utils';
-import { Dataset } from '../data/models';
+import { Dataset, DatasetFilter } from '../data/models';
 import { ApiService, SendResult } from '../data/api.service';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
@@ -17,7 +17,7 @@ import { ThemePrimaryColor, UiService } from '../ui/ui.service';
 import { environment } from 'src/environments/environment';
 import { Network } from '@capacitor/network';
 import { addIcons } from 'ionicons';
-import { arrowForwardOutline } from 'ionicons/icons';
+import { arrowForwardOutline, chevronUpOutline } from 'ionicons/icons';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { CarouselComponent, SlideSelect } from '../carousel/carousel.component';
 import { CarouselItemComponent } from '../carousel-item/carousel-item.component';
@@ -34,6 +34,7 @@ interface IntroState {
   message: string;
   clearCount: number;
   scrollLeft: number;
+  showing: DatasetFilter;
 }
 
 function initialState(): IntroState {
@@ -46,7 +47,8 @@ function initialState(): IntroState {
     selected: undefined,
     message: '',
     clearCount: 0,
-    scrollLeft: 0
+    scrollLeft: 0,
+    showing: 'all'
   };
 }
 
@@ -55,7 +57,7 @@ function initialState(): IntroState {
   templateUrl: './intro.page.html',
   styleUrls: ['./intro.page.scss'],
   standalone: true,
-  imports: [
+  imports: [IonRadio, IonRadioGroup, IonPopover, IonList, IonItem, IonFabList, IonFabButton, IonFab, 
     CommonModule,
     FormsModule,
     RouterModule,
@@ -74,6 +76,7 @@ export class IntroPage {
   vm: IntroState = initialState();
   download: WritableSignal<string> = signal('');
   @ViewChild(CarouselComponent) carousel!: CarouselComponent;
+  @ViewChild(IonFab) fab!: IonFab;
 
   constructor(
     private db: DbService,
@@ -87,7 +90,7 @@ export class IntroPage {
     private toastController: ToastController,
     private shareService: ShareService
   ) {
-    addIcons({ arrowForwardOutline });
+    addIcons({ arrowForwardOutline, chevronUpOutline });
     effect(() => {
       const downloading = this.download();
       if (downloading !== '') {
@@ -122,7 +125,7 @@ export class IntroPage {
       }
     }
 
-    this.vm.cards = await this.api.loadDatasets();
+    this.vm.cards = await this.api.loadDatasets(this.vm.showing);
 
     console.log(`Search for`, this.settingsService.settings.datasetId)
     const idx = this.vm.cards.findIndex((c) => this.api.datasetId(c) == this.settingsService.settings.datasetId);
@@ -132,7 +135,7 @@ export class IntroPage {
     }
     const preview = this.db.overrideDataset;
     if (preview) {
-      const all = await this.api.loadDatasets(true);
+      const all = await this.api.loadDatasets(this.vm.showing, true);
       console.info('overriding preview', preview);
       //await this.db.clear();
       const found = all.find(d => d.name == preview);
@@ -146,10 +149,17 @@ export class IntroPage {
       this.settingsService.settings.eventTitle = p.title;
       this.vm.eventAlreadySelected = true;
       this.vm.selected = p;
-      console.info(`Dataset selected`, p);
     }
   }
 
+  async selectedFilter(v: any) {
+    const name = v.detail.value;
+    this.vm.scrollLeft = 0;
+    this.vm.selected = undefined;    
+    this.vm.cards = await this.api.loadDatasets(name);
+    this.carousel.setScrollLeft(0);
+    this.fab.close();
+  }
 
   async ionViewDidEnter() {
     this.ui.setNavigationBar(ThemePrimaryColor);

@@ -18,7 +18,7 @@
   <ion-modal #modal trigger="open-modal" [initialBreakpoint]="0.3">
     <ng-template>
       <ion-list class="ion-padding">
-        <ion-item (click)="feedback()" detail="true">
+        <ion-item href="mailto:damian@dust.events?subject=dust" (click)="feedback()" detail="true">
           <ion-icon slot="start" name="mail-unread-outline"></ion-icon>
           Feedback
         </ion-item>

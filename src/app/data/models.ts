@@ -155,7 +155,7 @@ export enum LocationEnabledStatus {
 export interface Settings {
   datasetId: string;
   dataset: Dataset | undefined;
-  eventTitle: string;  
+  eventTitle: string;
   mapRotation: number;
   scrollLeft: number;
   mapUri: string;
@@ -164,6 +164,15 @@ export interface Settings {
   preventAutoStart: boolean;
   offlineEvents: string[]; // List of all offline event ids
 }
+
+
+/**
+ * Way to filter datasets
+ *
+ * @export
+ * @typedef {DatasetFilter}
+ */
+export type DatasetFilter = 'all' | 'regional' | 'bm';
 
 export interface Dataset {
   name: string; // Name
@@ -232,7 +241,7 @@ export interface PlacedPin {
   x: number;
   y: number;
   gpsLat?: number;
-  gpsLng?: number;  
+  gpsLng?: number;
   label: string;
 }
 
