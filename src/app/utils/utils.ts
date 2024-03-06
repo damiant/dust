@@ -39,7 +39,7 @@ export function nowRange(timeZone: string): TimeRange {
   const end = nowAtEvent(timeZone);
   const minute = 1000 * 60;
   start.setTime(start.getTime() - 20 * minute);
-  end.setTime(end.getTime() + 60 * minute);  
+  end.setTime(end.getTime() + 60 * minute);
   return { start, end };
 }
 
@@ -59,7 +59,7 @@ export function timeRangeToString(timeRange: TimeRange | undefined, timeZone: st
   if (!timeRange) {
     return '';
   }
-  
+
   return `${time(timeRange.start, timeZone)}-${time(timeRange.end, timeZone)}`;
 }
 
@@ -182,4 +182,19 @@ function timeBetween(d1: any, d2: any): string {
 
 export function secondsBetween(d1: any, d2: any): number {
   return Math.floor(Math.abs(d1 - d2) / 1000.0);
+}
+
+export function asNumber(s: string, defaultValue: number): number {
+  if (!s) return defaultValue;
+  const n = Number.parseFloat(s);
+  if (isNaN(n)) return defaultValue;
+  return n;
+}
+
+export function diffNumbers(a: number | undefined, b: number | undefined): number {
+  if (a && b) {
+    return a - b;
+  } else {
+    return 0;
+  }
 }

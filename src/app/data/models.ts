@@ -176,12 +176,23 @@ export interface Dataset {
   long: number; // Longitude (for directions)
   imageUrl: string; // Image
   timeZone: string; // Timezone
+  dist?: number; // Estimated calculated distance to event
   active: boolean; // Displayed publicly
 }
 
 export interface TimeString {
   short: string;
   long: string;
+}
+
+// Location object returned from the API
+export interface WebLocation {
+  city: string;
+  latitude: string;
+  longitude: string;
+  postalcode: string;
+  region: string;
+  timezone: string;
 }
 
 export enum Names {
@@ -196,6 +207,7 @@ export enum Names {
   pins = 'pins',
   links = 'links',
   map = 'map',
+  location = 'location',
   geo = 'geo', // Burning Man only
   ice = 'ice', // Burning Man only
   medical = 'medical', // Burning Man only

@@ -2,6 +2,11 @@
 # Roadmap
 
 ## Bugs
+- feedback doesnt launch email
+- map option for full screen full map with all points
+- Export to calendar
+- List sorted by dist
+- Filter by regional | big burn | past events
 - Favorites with 2 items fades one item
 - favorites should on home page ?
 - search on home page to search all events, camps, art, and music
