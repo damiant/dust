@@ -1,4 +1,12 @@
 ## Changes
+## 2.07
+- Filter for regionals or burn
+- Show closest event first
+- Fix the feedback link
+
+## 2.06
+- Fix for previews
+
 ## 2.05
 - For now events on map show correct time range
 - Fix for resuming when memory is wiped

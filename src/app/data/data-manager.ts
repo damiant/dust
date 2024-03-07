@@ -153,7 +153,7 @@ export class DataManager implements WorkerClass {
     this.rslEvents = await this.loadMusic();
     this.georeferences = await this.getGeoReferences();
     const map = await this.loadMap();    
-    this.log(`Successful load in populate`);
+    this.log(`Successful load in populate. map defined=${!!map}`);
     this.init(hideLocations);
     return {
       events: this.events.length, art: this.art.length, pins: this.pins.length,
@@ -502,7 +502,7 @@ export class DataManager implements WorkerClass {
       const map = await this.loadData(ds.map);
 
       this.consoleLog(
-        `Setting dataset in worker: ${this.events.length} events, ${this.camps.length} camps, ${this.art.length} art`,
+        `Setting dataset in worker: ${this.events.length} events, ${this.camps.length} camps, ${this.art.length} art, ${!!map} map`,
       );
       result = {
         events: this.events.length,

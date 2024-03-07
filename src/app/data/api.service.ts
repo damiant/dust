@@ -1,13 +1,14 @@
 import { Injectable, WritableSignal } from '@angular/core';
-import { Art, Camp, Dataset, DatasetResult, FullDataset, MapData, Names, Revision } from './models';
+import { Art, Camp, Dataset, DatasetFilter, DatasetResult, FullDataset, MapData, Names, Revision, WebLocation } from './models';
 
 import { SettingsService } from './settings.service';
-import { data_dust_events, static_dust_events } from '../utils/utils';
+import { asNumber, data_dust_events, diffNumbers, static_dust_events } from '../utils/utils';
 import { DbService } from './db.service';
 import { Capacitor } from '@capacitor/core';
 import { App } from '@capacitor/app';
 import { environment } from 'src/environments/environment';
 import { getCachedImage } from './cache-store';
+import { distance } from '../map/map.utils';
 
 interface Version {
   version: string;
@@ -104,13 +105,14 @@ export class ApiService {
     return false;
   }
 
-  public async loadDatasets(inactive?: boolean): Promise<Dataset[]> {
+  public async loadDatasets(filter: DatasetFilter, inactive?: boolean): Promise<Dataset[]> {
     const datasets = await this.dbService.get(Names.datasets, Names.datasets, { freshOnce: true, timeout: 5000 });
     const festivals = await this.dbService.get(Names.festivals, Names.festivals, { freshOnce: true, timeout: 5000 });
-    return this.cleanNames([...festivals, ...datasets], inactive);
+    const location: WebLocation = await this.dbService.get(Names.location, Names.location, { freshOnce: true, timeout: 1000 });
+    return this.cleanNames([...festivals, ...datasets], location, filter, inactive);
   }
 
-  private cleanNames(datasets: Dataset[], inactive?: boolean): Dataset[] {
+  private cleanNames(datasets: Dataset[], location: WebLocation, filter: DatasetFilter, inactive?: boolean): Dataset[] {
     for (const dataset of datasets) {
       if (dataset.imageUrl?.includes('[@static]')) {
         dataset.imageUrl = dataset.imageUrl.replace('[@static]', static_dust_events);
@@ -118,8 +120,22 @@ export class ApiService {
       } else {
         dataset.imageUrl = dataset.imageUrl ? `${data_dust_events}${dataset.imageUrl}` : '';
       }
+      dataset.dist = distance(
+        { lat: dataset.lat, lng: dataset.long },
+        { lat: asNumber(location.latitude, 0), lng: asNumber(location.longitude, 0) });
     }
-    return datasets.filter(d => d.active || inactive);
+    return datasets
+      .filter(d => d.active || inactive)
+      .filter(d => this.byType(d, filter))
+      .sort((a, b) => diffNumbers(a.dist, b.dist));
+  }
+
+  private byType(a: Dataset, filter: DatasetFilter): boolean {
+    switch (filter) {
+      case 'bm': return a.id.startsWith('ttitd');
+      case 'regional': return !a.id.startsWith('ttitd');
+      default: return true;
+    }
   }
 
   private async getVersion(): Promise<string> {

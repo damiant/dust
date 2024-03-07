@@ -155,7 +155,7 @@ export enum LocationEnabledStatus {
 export interface Settings {
   datasetId: string;
   dataset: Dataset | undefined;
-  eventTitle: string;  
+  eventTitle: string;
   mapRotation: number;
   scrollLeft: number;
   mapUri: string;
@@ -164,6 +164,15 @@ export interface Settings {
   preventAutoStart: boolean;
   offlineEvents: string[]; // List of all offline event ids
 }
+
+
+/**
+ * Way to filter datasets
+ *
+ * @export
+ * @typedef {DatasetFilter}
+ */
+export type DatasetFilter = 'all' | 'regional' | 'bm';
 
 export interface Dataset {
   name: string; // Name
@@ -176,12 +185,23 @@ export interface Dataset {
   long: number; // Longitude (for directions)
   imageUrl: string; // Image
   timeZone: string; // Timezone
+  dist?: number; // Estimated calculated distance to event
   active: boolean; // Displayed publicly
 }
 
 export interface TimeString {
   short: string;
   long: string;
+}
+
+// Location object returned from the API
+export interface WebLocation {
+  city: string;
+  latitude: string;
+  longitude: string;
+  postalcode: string;
+  region: string;
+  timezone: string;
 }
 
 export enum Names {
@@ -196,6 +216,7 @@ export enum Names {
   pins = 'pins',
   links = 'links',
   map = 'map',
+  location = 'location',
   geo = 'geo', // Burning Man only
   ice = 'ice', // Burning Man only
   medical = 'medical', // Burning Man only
@@ -220,7 +241,7 @@ export interface PlacedPin {
   x: number;
   y: number;
   gpsLat?: number;
-  gpsLng?: number;  
+  gpsLng?: number;
   label: string;
 }
 

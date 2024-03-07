@@ -216,8 +216,9 @@ export class ProfilePage implements OnInit {
 
   async feedback() {
     await this.dismiss();
-    const url = 'mailto:damian@dust.events?subject=dust';
-    this.ui.openUrl(url);
+    // This is not working. Seems to require href instead
+    // const url = 'mailto:damian@dust.events';
+    // this.ui.openUrl(url);
   }
 
   async dismiss() {

@@ -380,6 +380,9 @@ export class DbService {
     if (name == 'festivals') {
       return `${data_dust_events}${dataset}.${ext ? ext : 'json'}`;
     }
+    if (name == 'location') {
+      return `https://api.dust.events/location`;
+    }
     if (this.isStatic(dataset)) {
       return `${static_dust_events}${dataset}/${name}.${ext ? ext : 'json'}`;
     } else {

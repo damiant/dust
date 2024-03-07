@@ -13,11 +13,39 @@
   <app-carousel [hidden]="vm.eventAlreadySelected" (slideChanged)="slideChanged($event)" #carousel>
     @for (card of vm.cards; track card.id) {
     <app-carousel-item (click)="open(card)">
-        <app-cached-img [loading]="'eager'" [ngClass]="(vm.selected?.id === card.id) ? 'select' : 'unselect'" [src]="card.imageUrl" />
-        <p class="name" aria-hidden="true">{{card.title}}</p>
+      <app-cached-img [loading]="'eager'" [ngClass]="(vm.selected?.id === card.id) ? 'select' : 'unselect'"
+        [src]="card.imageUrl" />
+      <p class="name" aria-hidden="true">{{card.title}}</p>
     </app-carousel-item>
     }
   </app-carousel>
+
+
+  <ion-fab #fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button id="click-trigger">
+      <ion-icon name="chevron-up-outline"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list class="fab-list" side="top">
+          <ion-content class="ion-padding">
+            <ion-radio-group (ionChange)="selectedFilter($event)" [value]="vm.showing">
+              <ion-radio value="all">All</ion-radio><br />
+              <ion-radio value="regional">Regionals</ion-radio><br />
+              <ion-radio value="bm">Burning Man</ion-radio><br />              
+            </ion-radio-group>
+          </ion-content>
+      <!-- <ion-list>
+        <ion-item>
+          Regionals only
+        </ion-item>
+        <ion-item>
+          Burning Man
+        </ion-item>
+        <ion-item>
+          All
+        </ion-item>
+      </ion-list> -->
+    </ion-fab-list>
+  </ion-fab>
 
   <div [hidden]="vm.eventAlreadySelected" class="footer">
     <ion-button [disabled]="!vm.ready" (click)="go()" size="large" shape="round">Get Dusty @if (!vm.ready) {

@@ -68,3 +68,21 @@ app-cached-img.select {
 app-cached-img.unselect {
     --border: 3px solid transparent;
 }
+
+ion-radio {
+    font-family: 'Gelion Regular'; 
+    font-size: 1.2rem;
+    padding: 0.2rem;
+}
+
+ion-fab {
+    padding-bottom: 2rem;
+}
+
+.fab-list {
+    width: 11rem;
+    height: 8.5rem;
+    margin-left: -7rem;
+    overflow: hidden;
+    border-radius: 1rem;
+}
