@@ -114,7 +114,7 @@ export class MapComponent implements OnInit, OnDestroy {
   ngOnInit() {
     const darkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     this.src = darkMode ? 'assets/map-dark.svg' : 'assets/map.svg';
-    if (this.settings.settings.mapUri !== '') {      
+    if (this.settings.settings.mapUri !== '') {
       this.src = this.settings.settings.mapUri;
     }
   }
@@ -165,10 +165,11 @@ export class MapComponent implements OnInit, OnDestroy {
   async update() {
     this.setMapInformation();
     this.divs = [];
+    const blink = this.points.length == 1;
     for (let point of this._points) {
       const pin = mapPointToPin(point, defaultMapRadius);
       if (pin) {
-        const div = this.plotXY(pin.x, pin.y, 6, 0, point.info, undefined);
+        const div = this.plotXY(pin.x, pin.y, 6, 0, point.info, undefined, blink);
         this.divs.push(div);
       } else {
         console.error(`Point could not be converted to pin`);
@@ -305,15 +306,15 @@ export class MapComponent implements OnInit, OnDestroy {
     div.style.top = `${pt.y}px`;
   }
 
-  private plotXY(x: number, y: number, ox: number, oy: number, info?: MapInfo, bgColor?: string): HTMLDivElement {
+  private plotXY(x: number, y: number, ox: number, oy: number, info?: MapInfo, bgColor?: string, blink?: boolean): HTMLDivElement {
     const sz = info || bgColor ? (this.smallPins ? 5 : 10) : 8;
     if (info && info.location && !this.smallPins) {
       this.placeLabel(this.pointShift(x, y, 0, 0, -7), info);
     }
-    return this.createPin(sz, this.pointShift(x, y, sz, ox + (this.smallPins ? -2 : 0), oy), info, bgColor);
+    return this.createPin(sz, this.pointShift(x, y, sz, ox + (this.smallPins ? -2 : 0), oy), info, bgColor, blink);
   }
 
-  createPin(sz: number, pt: Point, info?: MapInfo, bgColor?: string): HTMLDivElement {
+  createPin(sz: number, pt: Point, info?: MapInfo, bgColor?: string, blink?: boolean): HTMLDivElement {
     const d = document.createElement('div');
     d.style.left = `${pt.x}px`;
     d.style.top = `${pt.y}px`;
@@ -321,9 +322,14 @@ export class MapComponent implements OnInit, OnDestroy {
     d.style.height = `${sz}px`;
     d.style.border = '1px solid var(--ion-color-dark)';
     d.style.borderRadius = `${sz}px`;
-    d.style.animationName = info ? '' : 'pulse';
-    if (!info) {
-      d.style.animationDuration = '3s';
+    let anim = info ? '' : 'pulse';
+    let animDuration = blink ? '1s' : '3s';
+    if (blink) {
+      anim = 'blink';
+    }
+    d.style.animationName = anim;
+    if (anim !== '') {
+      d.style.animationDuration = animDuration;
     }
     d.style.animationIterationCount = 'infinite';
     d.style.position = 'absolute';

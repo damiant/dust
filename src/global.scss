@@ -238,6 +238,26 @@ cdk-virtual-scroll-viewport {
     }
 }
 
+@keyframes blink {
+    0% {
+        transform: scale(1.0);
+        border-color: var(--ion-color-light);
+        background-color: var(--ion-color-primary);
+    }
+
+    50% {
+        transform: scale(3.0);
+        border-color: var(--ion-color-dark);
+        background-color: var(--ion-color-light);
+    }
+
+    100% {
+        transform: scale(1.0);
+        border-color: transparent;
+        background-color: var(--ion-color-primary);
+    }
+}
+
 @keyframes pin {
     0% {
         background-color: var(--ion-color-primary);
