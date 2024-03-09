@@ -180,6 +180,9 @@ export class ArtPage {
       coords = await this.geo.getPosition();
     }
     this.allArt = await this.db.findArts(search, coords);
+    const imageCount = this.allArt.filter(a => a.images && a.images.length > 0).length;
+    // Only show images if > 50% have images
+    this.vm.showImage = (imageCount / this.allArt.length > 0.5);
     this.vm.arts = [];
     this.addArt(10);
     this.updateAlphaIndex();
