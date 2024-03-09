@@ -256,8 +256,8 @@ export class FavsPage implements OnInit {
     const gps = await this.geo.getPosition();
     for (const art of this.vm.art) {
       const imageUrl: string = art.images?.length > 0 ? art.images[0].thumbnail_url! : '';
-      const mp = toMapPoint(art.location_string, { title: art.name, location: '', subtitle: '', imageUrl: imageUrl });
-      if (art.location.gps_latitude && art.location.gps_longitude) {
+      const mp = toMapPoint(art.location_string, { title: art.name, location: '', subtitle: '', imageUrl: imageUrl }, art.pin);
+      if (art.location?.gps_latitude && art.location?.gps_longitude) {
         mp.gps = { lat: art.location.gps_latitude, lng: art.location.gps_longitude };
         const dist = distance(gps, mp.gps);
         mp.info!.subtitle = formatDistanceMiles(dist);
