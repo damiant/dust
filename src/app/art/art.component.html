@@ -1,7 +1,7 @@
 <ion-card [ngClass]="{ pic: showImage }" class="item" (click)="click()">
   @if (showImage && art.images) {
     <div class="image">
-      <app-cached-img class="image" [src]="art.images.length > 0 ? art.images[0].thumbnail_url : undefined" />
+      <app-cached-img class="image" [src]="art.images[0].thumbnail_url" />
     </div>
   }
   <ion-card-header>

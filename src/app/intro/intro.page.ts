@@ -57,7 +57,7 @@ function initialState(): IntroState {
   templateUrl: './intro.page.html',
   styleUrls: ['./intro.page.scss'],
   standalone: true,
-  imports: [IonRadio, IonRadioGroup, IonPopover, IonList, IonItem, IonFabList, IonFabButton, IonFab, 
+  imports: [IonRadio, IonRadioGroup, IonPopover, IonList, IonItem, IonFabList, IonFabButton, IonFab,
     CommonModule,
     FormsModule,
     RouterModule,
@@ -155,7 +155,7 @@ export class IntroPage {
   async selectedFilter(v: any) {
     const name = v.detail.value;
     this.vm.scrollLeft = 0;
-    this.vm.selected = undefined;    
+    this.vm.selected = undefined;
     this.vm.cards = await this.api.loadDatasets(name);
     this.carousel.setScrollLeft(0);
     this.fab.close();
@@ -275,7 +275,7 @@ export class IntroPage {
       if (!sendResult.success) {
         // Its a mess
         await this.cleanup();
-        // It doesnt matter if we were able to cleanup the dataset by downloading again, we need to exit to relaunch
+        // It does not matter if we were able to cleanup the dataset by downloading again, we need to exit to relaunch
         if (attempt == 1) {
           this.launch(attempt + 1);
         }
@@ -286,12 +286,14 @@ export class IntroPage {
 
 
       const hidden = [];
+      // Hide music if there is none
       if (result.rsl == 0) {
         hidden.push('rsl');
       }
-      if (!this.isBurningMan()) {
-        //hidden.push('rsl');
+      if (result.art == 0) {
         hidden.push('art');
+      }
+      if (!this.isBurningMan()) {
         hidden.push('friends');
         hidden.push('private');
       }

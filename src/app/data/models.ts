@@ -35,7 +35,7 @@ export interface Event {
 export enum LocationName {
   Unavailable = 'Location Available Soon',
   Undefined = '',
-  Unplaced = 'Unplaced',
+  Unplaced = 'Unplaced'
 }
 
 export interface Revision {
@@ -113,6 +113,7 @@ export interface Art {
   images: Image[];
   location: ArtLocation;
   location_string?: string;
+  pin?: Pin; // Calculated if no gps
   name: string;
   program: string;
   self_guided_tour_map: number;

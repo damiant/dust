@@ -62,6 +62,7 @@ export class ArtItemPage implements OnInit {
   mapTitle = '';
   mapSubtitle = '';
   backText = 'Art';
+  hometown = '';
   star = false;
 
   constructor(
@@ -82,14 +83,18 @@ export class ArtItemPage implements OnInit {
     this.backText = tmp[1];
     this.art = await this.db.findArt(id);
     this.mapTitle = this.art.name;
+    this.hometown = this.art.hometown ? `(${this.art.hometown})` : '';
     this.mapSubtitle = this.art.location_string!;
-    let point = toMapPoint(this.art.location_string!);
-    if (this.art.location.gps_latitude && this.art.location.gps_longitude) {
+    const pin = this.art.pin;    
+    let point = toMapPoint(this.art.location_string!, undefined, pin);
+    console.log(point, pin);
+    if (this.art.location?.gps_latitude && this.art.location?.gps_longitude) {
       const gps = { lng: this.art.location.gps_longitude, lat: this.art.location.gps_latitude };
       point = await this.db.gpsToMapPoint(gps, undefined);
     }
     point.info = { title: this.art.name, subtitle: '', location: '' };
     this.mapPoints.push(point);
+    
     this.star = await this.fav.isFavArt(this.art.uid);
   }
 

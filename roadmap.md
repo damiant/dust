@@ -5,7 +5,6 @@
 - webp files don’t share
 - Favorites: art map is not launching
 - Only show the "Now" button if it is within the events date range
-- Larger map pins for art
 
 ## Features
 - map option for full screen full map with all points

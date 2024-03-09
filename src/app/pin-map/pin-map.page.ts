@@ -95,13 +95,13 @@ export class PinMapPage {
     const title = 'Art';
     this.title.set(title);
     let coords: GpsCoord | undefined = undefined;
-    this.smallPins = true;
     coords = await this.geo.getPosition();
 
     const allArt = await this.db.findArts(undefined, coords);
     const points = [];
+    this.smallPins = (allArt.length > 100);
     for (let art of allArt) {
-      if (art.location_string) {
+      if (art.location_string || art.pin?.x) {
         const point = await this.convertToPoint(art);
         if (point) points.push(point);
       }
@@ -114,13 +114,13 @@ export class PinMapPage {
   }
 
   private async convertToPoint(art: Art): Promise<MapPoint | undefined> {
-    let point = toMapPoint(art.location_string!);
+    let point = toMapPoint(art.location_string!, undefined, art.pin);
     if (point.street == 'unplaced') return undefined;
-    if (!art.location) {
+    if (!art.location && !art.pin?.x) {
       console.error(`Bad art found`, art)
     }
-    if (art.location.gps_latitude && art.location.gps_longitude) {
-      const gps = { lng: art.location.gps_longitude, lat: art.location.gps_latitude };
+    if (art.location?.gps_latitude && art.location?.gps_longitude) {
+      const gps = { lng: art.location?.gps_longitude, lat: art.location?.gps_latitude };
       point = await this.db.gpsToMapPoint(gps, undefined);
     }
     point.info = {

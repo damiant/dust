@@ -79,7 +79,7 @@
     </ion-buttons>
   </h1>
   } @for (art of vm.art; track artTrackBy($index, art)) {
-  <app-art (artClick)="artClick($event)" [showImage]="art.images && art.images.length > 0" title="Favorites" [art]="art" />
+  <app-art (artClick)="artClick($event)" [showImage]="true" title="Favorites" [art]="art" />
   }
   <div style="padding: 2.5rem"></div>
 </ion-content>
