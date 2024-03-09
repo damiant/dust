@@ -25,7 +25,7 @@ export interface ScheduleResult {
 })
 export class NotificationService {
   public hasNotification = signal('');
-  constructor(public router: Router, private db: DbService) {}
+  constructor(public router: Router, private db: DbService) { }
 
   public async configure() {
     LocalNotifications.addListener('localNotificationActionPerformed', (notification) => {
@@ -113,7 +113,7 @@ export class NotificationService {
     }
     status = await LocalNotifications.requestPermissions();
     if (status.display !== 'granted') {
-      return `Unable to schedule notifications due to permissions error: ${status.display}`;
+      return `This event has been added to your favorites but you won't be notified when it occurs because you denied permissions for notifications.`;
     }
     return undefined;
   }

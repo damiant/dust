@@ -104,8 +104,8 @@ export class DataManager implements WorkerClass {
         return this.read(args[0], []);
       case DataMethods.Write:
         return this.write(args[0], args[1], args[2]);
-        case DataMethods.Fetch:
-          return this.fetch(args[0], args[1], args[2]);        
+      case DataMethods.Fetch:
+        return this.fetch(args[0], args[1], args[2]);
       case DataMethods.WriteData:
         return this.writeData(args[0], args[1]);
       case DataMethods.GetGPSPoints:
@@ -152,7 +152,7 @@ export class DataManager implements WorkerClass {
     this.revision = await this.loadRevision();
     this.rslEvents = await this.loadMusic();
     this.georeferences = await this.getGeoReferences();
-    const map = await this.loadMap();    
+    const map = await this.loadMap();
     this.log(`Successful load in populate. map defined=${!!map}`);
     this.init(hideLocations);
     return {
@@ -162,7 +162,7 @@ export class DataManager implements WorkerClass {
     };
   }
 
-  private async summarizePins(pins: PlacedPin[]) {    
+  private async summarizePins(pins: PlacedPin[]) {
     const types: Record<string, number> = {};
     let r = await this.getGPSPoints(Names.restrooms, 'Restrooms');
     types['Restrooms'] = r.points.length;
@@ -176,7 +176,7 @@ export class DataManager implements WorkerClass {
       }
       types[pin.label] = (types[pin.label]) + 1;
     }
-    
+
     return types;
   }
 
@@ -354,10 +354,23 @@ export class DataManager implements WorkerClass {
         const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
         art.gpsCoords = gpsCoords;
         artGPS[art.uid] = art.gpsCoords;
+        art.pin = pin;
+      } else {
+        // If the art has been placed with gps then use it and infer x,y
+        if ((art.pin as any).lat) {
+          art.gpsCoords = { lat: (art.pin as any).lat, lng: (art.pin as any).lng };
+          art.pin = gpsToMap(art.gpsCoords);
+        }
       }
+
       if (!art.location_string) {
         art.location_string = LocationName.Unplaced;
+        if (art.pin?.x) {
+          art.location_string = undefined; // Its placed with x,y
+        }
       }
+
+
       if (hideLocations) {
         art.location_string = LocationName.Unavailable;
       }
@@ -1046,12 +1059,26 @@ export class DataManager implements WorkerClass {
       this.consoleError(`Failed to fix pins on camps`);
     }
   }
+
+  private fixArtPins(art: Art[]) {
+    try {
+      for (const item of art) {
+        item.pin = this.parsePin(item.pin as any);
+      }
+    } catch {
+      this.consoleError(`Failed to fix pins on art`);
+    }
+  }
+
   public async write(key: string, url: string, timeout: number): Promise<any> {
     try {
       const response = await webFetchWithTimeout(url, {}, timeout);
       const json = await response.json();
       if (key.includes(Names.camps)) {
         this.fixPins(json);
+      }
+      if (key.includes(Names.art)) {
+        this.fixArtPins(json);
       }
       await set(key, json);
       return json;
@@ -1064,10 +1091,10 @@ export class DataManager implements WorkerClass {
   public async fetch(key: string, url: string, timeout: number): Promise<any> {
     try {
       const response = await webFetchWithTimeout(url, {}, timeout);
-      const json = await response.json();      
+      const json = await response.json();
       return json;
     } catch (err) {
-      this.consoleError(`Failed fetch ${key} (url=${url})${err}`);      
+      this.consoleError(`Failed fetch ${key} (url=${url})${err}`);
     }
   }
 
