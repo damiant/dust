@@ -1,4 +1,9 @@
 ## Changes
+## 2.09
+- Fix for favorites art map not launching
+- Fix for art images shown or hidden
+- Larger pins for art
+
 ## 2.07
 - Filter for regionals or burn
 - Show closest event first
