@@ -1,5 +1,5 @@
 @if (type() === 'simple') {
-<ion-item (click)="link(url())" lines="none" detail="true"><ion-icon slot="start"
+<ion-item color="transparent" (click)="link(url())" lines="none" detail="true"><ion-icon slot="start"
     [name]="icon()"></ion-icon>{{text()}}</ion-item>
 } @else if (type() === 'complex') {
   <ion-card-content>
