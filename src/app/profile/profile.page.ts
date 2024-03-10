@@ -45,6 +45,7 @@ import {
   timeOutline,
   locateOutline,
   compassOutline,
+  calendarOutline,
   closeSharp,
   ellipsisVerticalSharp
 } from 'ionicons/icons';
@@ -52,6 +53,7 @@ import { Animation, StatusBar } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
 import { getCachedImage } from '../data/cache-store';
 import { LinkComponent } from '../link/link.component';
+import { CalendarService } from '../calendar.service';
 
 interface Group {
   id: number;
@@ -112,6 +114,7 @@ export class ProfilePage implements OnInit {
     private map: MapService,
     private geo: GeoService,
     private toastController: ToastController,
+    private calendar: CalendarService,
     private router: Router,
     public db: DbService,
   ) {
@@ -122,6 +125,7 @@ export class ProfilePage implements OnInit {
       starHalfOutline,
       informationCircleOutline,
       compassOutline,
+      calendarOutline,
       exitOutline,
       timeOutline,
       locateOutline,
@@ -207,6 +211,26 @@ export class ProfilePage implements OnInit {
       url: 'https://dust.events/',
       dialogTitle: 'Share dust with friends',
     });
+  }
+
+  async addCalendar() {    
+    await this.dismiss();
+    const success = await this.calendar.add(
+      { 
+        calendar: this.db.selectedDataset().title,
+        name: this.db.selectedDataset().title,
+        location: ' ',
+        start: this.db.selectedDataset().start,
+        end: this.db.selectedDataset().end,
+        timeZone: this.db.selectedDataset().timeZone,
+        description: '', // Need to get this from storage
+        lat: this.db.selectedDataset().lat,
+        lng: this.db.selectedDataset().long
+      }
+    );
+    if (success) {
+      this.ui.presentToast(`${this.db.selectedDataset().title} has been added to your calendar.`, this.toastController)
+    }
   }
 
   async about() {

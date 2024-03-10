@@ -11,7 +11,7 @@ import {
   IonIcon,
   IonText,
   IonTitle,
-  IonToolbar,
+  IonToolbar, IonList, IonItem, IonCard, IonCardTitle, IonCardContent, IonCardHeader
 } from '@ionic/angular/standalone';
 import { Router, RouterModule } from '@angular/router';
 import { Art, Camp, Event, MapPoint } from '../data/models';
@@ -28,6 +28,8 @@ import { distance, formatDistanceMiles, toMapPoint } from '../map/map.utils';
 import { GeoService } from '../geolocation/geo.service';
 import { addIcons } from 'ionicons';
 import { star, starOutline, mapOutline } from 'ionicons/icons';
+import { CalendarService } from '../calendar.service';
+import { ToastController } from '@ionic/angular';
 
 enum Filter {
   All = '',
@@ -75,7 +77,7 @@ function intitialState(): FavsState {
   templateUrl: './favs.page.html',
   styleUrls: ['./favs.page.scss'],
   standalone: true,
-  imports: [
+  imports: [IonCardHeader, IonCardContent, IonCardTitle, IonCard, IonItem, IonList,
     CommonModule,
     FormsModule,
     RouterModule,
@@ -106,7 +108,9 @@ export class FavsPage implements OnInit {
     private fav: FavoritesService,
     private ui: UiService,
     private geo: GeoService,
+    private calendar: CalendarService,
     public db: DbService,
+    private toastController: ToastController,
     private router: Router,
   ) {
     addIcons({ star, starOutline, mapOutline });
@@ -328,5 +332,29 @@ export class FavsPage implements OnInit {
 
   filterChanged() {
     this.update();
+  }
+
+  async syncCalendar(events: Event[]) {
+    const list: string[] = [];
+    for (const event of events) {
+      list.push(event.title);
+      console.log(event);
+      const location = event.location ? ` (${event.location})` : '';
+      const success = await this.calendar.add({
+        calendar: this.db.selectedDataset().title,
+        name: event.title,
+        description: event.description,
+        start: event.occurrence_set[0].start_time,
+        end: event.occurrence_set[0].end_time,
+        location: event.camp + location,
+        timeZone: this.db.selectedDataset().timeZone
+      });
+      if (!success) {
+        this.ui.presentDarkToast(`Unable to add events to the calendar. Check permissions.`, this.toastController);
+        return;
+      }
+    }
+    await this.calendar.deleteOld(this.db.selectedDataset().title, list);
+    await this.ui.presentToast(`${events.length} events synced with your ${this.db.selectedDataset().title} calendar.`, this.toastController);
   }
 }
