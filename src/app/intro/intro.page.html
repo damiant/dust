@@ -22,7 +22,7 @@
 
 
   <ion-fab #fab slot="fixed" vertical="bottom" horizontal="end">
-    <ion-fab-button id="click-trigger">
+    <ion-fab-button (ionBlur)="selectedFilter(undefined)" id="click-trigger">
       <ion-icon name="chevron-up-outline"></ion-icon>
     </ion-fab-button>
     <ion-fab-list class="fab-list" side="top">
