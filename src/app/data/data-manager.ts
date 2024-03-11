@@ -464,7 +464,7 @@ export class DataManager implements WorkerClass {
           allLong = false;
         }
 
-        // Change midnight to 11:49 so that it works with the sameday function
+        // Change midnight to 11:59 so that it works with the sameday function
         if (occurrence.end_time.endsWith('T00:00:00-07:00')) {
           const t = occurrence.start_time.split('T');
           occurrence.end_time = t[0] + 'T23:59:00-07:00';

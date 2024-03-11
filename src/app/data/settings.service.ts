@@ -19,7 +19,9 @@ export class SettingsService {
 
   public getSettings(): Settings {
     try {
-      return JSON.parse(localStorage['settings']);
+      const settings = JSON.parse(localStorage['settings']);
+      settings.longEvents = true;
+      return settings;
     } catch {
       return {
         datasetId: '',        
@@ -28,7 +30,7 @@ export class SettingsService {
         dataset: undefined,
         eventTitle: '',
         locationEnabled: LocationEnabledStatus.Unknown,
-        longEvents: false,
+        longEvents: true,
         preventAutoStart: false,
         offlineEvents: [],
         scrollLeft: 0

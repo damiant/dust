@@ -93,9 +93,9 @@ export function noDate(): Date {
 }
 
 export function dateMatches(d: Date, occurrence: OccurrenceSet): boolean {
-  const day = d.toISOString();
-  const ds = day.split('T');
-  return occurrence.start_time.startsWith(ds[0]) || occurrence.end_time.startsWith(ds[0]);
+  const startMatch = sameDay(d, new Date(occurrence.start_time));
+  const endMatch = sameDay(d, new Date(occurrence.end_time));
+  return (startMatch || endMatch);
 }
 
 export function uniqueId(prefix: string): string {
