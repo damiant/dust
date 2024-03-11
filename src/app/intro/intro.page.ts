@@ -153,6 +153,10 @@ export class IntroPage {
   }
 
   async selectedFilter(v: any) {
+    if (!v) {
+      this.fab.close();
+      return;
+    }
     const name = v.detail.value;
     this.vm.scrollLeft = 0;
     this.vm.selected = undefined;

@@ -119,12 +119,15 @@ export class EventPage implements OnInit {
       }
       this.mapPoints.push(mapPoint);
       const selectedDay = this.db.selectedDay();
-      this.event.occurrence_set = this.event.occurrence_set.filter((o) => {
-        if (!sameDay(selectedDay, noDate()) && !dateMatches(selectedDay, o)) {
+      const occurrences = JSON.parse(JSON.stringify(this.event.occurrence_set));
+      this.event.occurrence_set = occurrences.filter((o: any) => {
+        const isNoDate = sameDay(selectedDay, noDate());
+        const isSelectedDay = dateMatches(selectedDay, o);
+        if (!isNoDate && !isSelectedDay) {
           return false;
         }
         return !o.old;
-      });
+      });      
       await this.fav.setEventStars(this.event);
     } finally {
       this.ready = true;
