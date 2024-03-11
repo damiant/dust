@@ -2,13 +2,12 @@
 # Roadmap
 
 # Bugs
-- webp files don’t share
+- iOS: The filter on the home page for "regionals" etc cannot be dismissed by clicking elsewhere (works on Android)
+- Images are in `webp` but you when you use the share plugin these image types dont appear (at least on iOS). Maybe convert to png?
 - Only show the "Now" button if it is within the events date range
 
 ## Features
 - map option for full screen full map with all points
-- Export to calendar (for event)
-- Export to calendar (favorite events)
 - Favorites with 2 items fades one item
 - favorites should show on home page
 - search on home page to search all events, camps, art, and music
@@ -72,6 +71,7 @@
 ## Priority 5
 - email (contact camp)
 - Add notes to an event (eg invite)
+- Filter for burns by country
 
 ## Info
 - Audio Guide https://soundcloud.com/burningman/sets/2023-art-audio-guide
