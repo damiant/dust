@@ -1,4 +1,7 @@
 ## Changes
+## 2.11
+- Update to test privacy manifest requirements
+
 ## 2.09
 - Fix for favorites art map not launching
 - Fix for art images shown or hidden
