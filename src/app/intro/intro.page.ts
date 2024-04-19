@@ -75,6 +75,7 @@ function initialState(): IntroState {
 export class IntroPage {
   vm: IntroState = initialState();
   download: WritableSignal<string> = signal('');
+  subtitle: WritableSignal<string> = signal('');
   @ViewChild(CarouselComponent) carousel!: CarouselComponent;
   @ViewChild(IonFab) fab!: IonFab;
 
@@ -126,11 +127,11 @@ export class IntroPage {
     }
 
     this.vm.cards = await this.api.loadDatasets(this.vm.showing);
-
     console.log(`Search for`, this.settingsService.settings.datasetId)
     const idx = this.vm.cards.findIndex((c) => this.api.datasetId(c) == this.settingsService.settings.datasetId);
     if (idx >= 0) {
       this.vm.selected = this.vm.cards[idx];
+      this.subtitle.set(this.vm.selected.subTitle);
       this.carousel.setScrollLeft(this.settingsService.settings.scrollLeft);
     }
     const preview = this.db.overrideDataset;
@@ -149,6 +150,7 @@ export class IntroPage {
       this.settingsService.settings.eventTitle = p.title;
       this.vm.eventAlreadySelected = true;
       this.vm.selected = p;
+      this.subtitle.set(this.vm.selected.subTitle);
     }
   }
 
@@ -160,6 +162,7 @@ export class IntroPage {
     const name = v.detail.value;
     this.vm.scrollLeft = 0;
     this.vm.selected = undefined;
+    this.subtitle.set('');
     this.vm.cards = await this.api.loadDatasets(name);
     this.carousel.setScrollLeft(0);
     this.fab.close();
@@ -332,6 +335,7 @@ export class IntroPage {
 
   open(card: Dataset) {
     this.vm.selected = card;
+    this.subtitle.set(this.vm.selected.subTitle);
     this.save();
   }
 

@@ -98,6 +98,7 @@ export class ProfilePage implements OnInit {
   locationEnabled = false;
   longEvents = false;
   hiddenPanel = false;
+  eventIsHappening = false;
   imageUrl = '';
   mapPin: GPSPin | undefined;
   groups: Group[] = [];
@@ -141,12 +142,13 @@ export class ProfilePage implements OnInit {
     this.presentingElement = document.querySelector('.ion-page');
     this.imageUrl = await getCachedImage(this.db.selectedImage());
     this.db.checkInit();
-    const summary: DatasetResult = await this.db.get(this.settings.settings.datasetId, Names.summary, { onlyRead: true });    
+    const summary: DatasetResult = await this.db.get(this.settings.settings.datasetId, Names.summary, { onlyRead: true });
     this.hasRestrooms = this.hasValue(summary.pinTypes, 'Restrooms');
     this.hasMedical = this.hasValue(summary.pinTypes, 'Medical');
     this.hasIce = this.hasValue(summary.pinTypes, 'Ice');
     this.mapPin = this.getMapPin();
     this.longEvents = this.settings.settings.longEvents;
+    this.eventIsHappening = !this.db.eventHasntBegun() && !this.db.isHistorical();
     this.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
     this.groups = this.group(await this.db.getLinks());
   }
@@ -213,10 +215,10 @@ export class ProfilePage implements OnInit {
     });
   }
 
-  async addCalendar() {    
+  async addCalendar() {
     await this.dismiss();
     const success = await this.calendar.add(
-      { 
+      {
         calendar: this.db.selectedDataset().title,
         name: this.db.selectedDataset().title,
         location: ' ',
