@@ -10,6 +10,7 @@ ion-button {
     width: 100%;
     text-align: center;
     padding: 2rem;
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom));
 }
 
 h1 {
@@ -34,17 +35,18 @@ ion-spinner {
     max-height: 300px;
 }
 
+@media screen and (min-height: 667px) {
+    .rows {
+        height: 30%;
+    }
+}
+
 .full {
     height: 100vh;
 }
 
 ion-text {
     font-size: x-large;
-}
-
-p {
-    margin: 0;
-    text-align: center;
 }
 
 .select {
@@ -62,7 +64,7 @@ app-cached-img {
 }
 
 app-cached-img.select {
-    --border: 3px solid white;
+    --border: 0 solid transparent;
 }
 
 app-cached-img.unselect {
@@ -70,7 +72,7 @@ app-cached-img.unselect {
 }
 
 ion-radio {
-    font-family: 'Gelion Regular'; 
+    font-family: 'Gelion Regular';
     font-size: 1.2rem;
     padding: 0.2rem;
 }
@@ -81,8 +83,30 @@ ion-fab {
 
 .fab-list {
     width: 11.5rem;
-    height: 8.5rem;
+    height: 10.0rem;
     margin-left: -7rem;
     overflow: hidden;
     border-radius: 1rem;
+}
+
+p {
+    margin: 0;
+    text-align: center;
+    font-family: 'Gelion Regular';
+    font-size: 1.3rem;
+}
+
+.subtitle {
+    margin: 0;
+    white-space: nowrap;
+    font-size: 1rem;
+    font-family: 'Gelion Regular';
+    text-align: center;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 0.5rem;
+    padding-bottom: env(safe-area-inset-bottom);
 }

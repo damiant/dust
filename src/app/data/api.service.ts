@@ -2,7 +2,7 @@ import { Injectable, WritableSignal } from '@angular/core';
 import { Art, Camp, Dataset, DatasetFilter, DatasetResult, FullDataset, MapData, Names, Revision, WebLocation } from './models';
 
 import { SettingsService } from './settings.service';
-import { asNumber, data_dust_events, diffNumbers, static_dust_events } from '../utils/utils';
+import { asNumber, data_dust_events, daysUntil, diffNumbers, nowAtEvent, static_dust_events } from '../utils/utils';
 import { DbService } from './db.service';
 import { Capacitor } from '@capacitor/core';
 import { App } from '@capacitor/app';
@@ -123,6 +123,14 @@ export class ApiService {
       dataset.dist = distance(
         { lat: dataset.lat, lng: dataset.long },
         { lat: asNumber(location.latitude, 0), lng: asNumber(location.longitude, 0) });
+      const daysTilStart = daysUntil(new Date(dataset.start), nowAtEvent(dataset.timeZone)) - 1;
+      const hasEnded = daysUntil(new Date(dataset.end), nowAtEvent(dataset.timeZone)) < 0;
+      dataset.subTitle = `${daysTilStart} day${daysTilStart == 1 ? '' : 's'} until ${dataset.title}`;
+      if (hasEnded) {
+        dataset.subTitle = ``;
+      } else if (daysTilStart <= 0) {
+        dataset.subTitle = `${dataset.title} is happening now`;
+      }
     }
     return datasets
       .filter(d => d.active || inactive)
@@ -131,12 +139,22 @@ export class ApiService {
   }
 
   private byType(a: Dataset, filter: DatasetFilter): boolean {
+    const isPast = this.isPast(a);
     switch (filter) {
       case 'bm': return a.id.startsWith('ttitd');
-      case 'regional': return !a.id.startsWith('ttitd');
-      default: return true;
+      case 'past': return isPast;
+      case 'regional': return !isPast && !a.id.startsWith('ttitd');
+      default: return !isPast;
     }
   }
+
+  private isPast(a: Dataset): boolean {
+    // This is whether the event is in the past
+    const end = new Date(a.end);
+    const until = daysUntil(end, new Date());
+    return (until < -7); // 1 week grace period until we consider it past
+  }
+
 
   private async getVersion(): Promise<string> {
     if (Capacitor.getPlatform() == 'web') return `1.0.0.0`;

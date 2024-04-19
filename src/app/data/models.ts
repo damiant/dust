@@ -173,7 +173,7 @@ export interface Settings {
  * @export
  * @typedef {DatasetFilter}
  */
-export type DatasetFilter = 'all' | 'regional' | 'bm';
+export type DatasetFilter = 'all' | 'regional' | 'bm' | 'past';
 
 export interface Dataset {
   name: string; // Name
@@ -188,6 +188,7 @@ export interface Dataset {
   timeZone: string; // Timezone
   dist?: number; // Estimated calculated distance to event
   active: boolean; // Displayed publicly
+  subTitle: string; // Calculated
 }
 
 export interface TimeString {

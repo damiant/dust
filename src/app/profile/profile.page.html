@@ -12,7 +12,8 @@
       </ion-fab-button>
 
     </ion-fab>
-    <ion-title class="image-text" (click)="moreClick()" size="large">{{db.selectedDataset().title}}</ion-title>
+    <ion-title class="image-text" (click)="moreClick()" size="large"><span
+        class="back-title">{{db.selectedDataset().title}}</span></ion-title>
   </div>
 
   <ion-modal #modal trigger="open-modal" [initialBreakpoint]="0.3">
@@ -53,7 +54,7 @@
       imgSrc="assets/icon/medical.svg"></app-tile>
     @if (!db.locationsHidden() && !db.featuresHidden().includes('art')) {
     <app-tile title="Art" routerLink="/map/art" imgSrc="assets/icon/art.svg"></app-tile>
-    } @if (!db.locationsHidden()) {
+    } @if (!db.locationsHidden() && this.eventIsHappening) {
     <app-tile title="Now" routerLink="/map/now" imgSrc="assets/icon/calendar.svg"></app-tile>
     }
     <app-tile title="Directions" [hidden]="!mapPin" (click)="directions()" iconName="compass-outline"></app-tile>

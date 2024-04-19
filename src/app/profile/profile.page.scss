@@ -27,19 +27,27 @@ ion-button.tile {
     box-shadow: rgba(0, 0, 0, 0.12) 0px 4px 16px;
 }
 
-.header {    
+.header {
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
     height: 300px;
     border-top-left-radius: 20px !important;
     border-top-right-radius: 20px !important;
-  }
+}
 
-  ion-toolbar {
+ion-toolbar {
     --background: none;
-  }
+}
 
-  ion-fab-button {
-    --background: rgba(0,0,0,0.5) !important;
-  }
+ion-fab-button {
+    --background: rgba(0, 0, 0, 0.5) !important;
+}
+
+.back-title {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+
+}
