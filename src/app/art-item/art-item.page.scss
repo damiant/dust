@@ -1,4 +1,3 @@
-
 img {
     border-radius: 0.5rem;
 }
@@ -9,4 +8,8 @@ app-map {
 
 ion-fab {
     padding-top: 2rem;
+}
+
+app-cached-img {
+    --border-radius: 0.5rem;
 }
