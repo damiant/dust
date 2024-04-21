@@ -311,6 +311,9 @@ export class MapComponent implements OnInit, OnDestroy {
     if (info && info.location && !this.smallPins) {
       this.placeLabel(this.pointShift(x, y, 0, 0, -7), info);
     }
+    if (info?.bgColor) {
+      bgColor = info.bgColor;
+    }
     return this.createPin(sz, this.pointShift(x, y, sz, ox + (this.smallPins ? -2 : 0), oy), info, bgColor, blink);
   }
 

@@ -31,9 +31,8 @@
     </ion-item>
     <ion-item>
       <ion-icon slot="start" name="person-outline"></ion-icon>
-      <ion-label [color]="art.contact_email ? 'primary': ''" (click)="mailArtist()"
-        >{{art.artist}} {{hometown}}</ion-label
-      >
+      <ion-label [color]="art.contact_email ? 'primary': ''" (click)="mailArtist()">{{art.artist}}
+        {{hometown}}</ion-label>
     </ion-item>
     <ion-item>
       <ion-icon slot="start" name="location-outline"></ion-icon>
@@ -41,14 +40,13 @@
     </ion-item>
 
     <ion-item>
-      <ion-text style="padding-right: 1rem; white-space: pre-line" class="text selectable"
-        >{{art.description}}</ion-text
-      >
+      <ion-text style="padding-right: 1rem; white-space: pre-line"
+        class="text selectable">{{art.description}}</ion-text>
     </ion-item>
 
     <ion-item>
       @for (image of art.images; track image) {
-      <div [@fade]="image.ready ? 'visible' : 'hidden'" class="center">
+      <div class="center">
         @if (image.thumbnail_url) {
         <app-cached-img [src]="image.thumbnail_url" [alt]="art.name" />
         }

@@ -54,7 +54,11 @@
       imgSrc="assets/icon/medical.svg"></app-tile>
     @if (!db.locationsHidden() && !db.featuresHidden().includes('art')) {
     <app-tile title="Art" routerLink="/map/art" imgSrc="assets/icon/art.svg"></app-tile>
-    } @if (!db.locationsHidden() && this.eventIsHappening) {
+    }
+    @if (!db.locationsHidden()) {
+    <app-tile title="Map" routerLink="/map/all" imgSrc="assets/icon/map.svg"></app-tile>
+    }
+    @if (!db.locationsHidden() && this.eventIsHappening) {
     <app-tile title="Now" routerLink="/map/now" imgSrc="assets/icon/calendar.svg"></app-tile>
     }
     <app-tile title="Directions" [hidden]="!mapPin" (click)="directions()" iconName="compass-outline"></app-tile>

@@ -232,6 +232,7 @@ export enum MapType {
   Now = 'now',
   Art = 'art',
   Medical = 'medical',
+  All = 'all'
 }
 
 export interface Pin {
@@ -277,6 +278,7 @@ export interface MapInfo {
   subtitle: string;
   imageUrl?: string;
   href?: string;
+  bgColor?: string;
 }
 
 export interface PrivateEvent {

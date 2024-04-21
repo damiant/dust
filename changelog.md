@@ -1,5 +1,9 @@
 ## Changes
 
+## 2.13
+
+- Map icon to show all camps, art and points on the map
+
 ## 2.12
 
 - Show past events
