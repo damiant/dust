@@ -38,7 +38,7 @@ export interface GetOptions {
   providedIn: 'root',
 })
 export class DbService {
-  private defaultDataset: Dataset = { name: '', year: '', id: '', title: '', start: '', end: '', subTitle: '', lat: 0, long: 0, imageUrl: '', timeZone: '', active: false };
+  private defaultDataset: Dataset = { name: '', year: '', id: '', title: '', start: '', end: '', subTitle: '', lat: 0, long: 0, mapDirection: 0, imageUrl: '', timeZone: '', active: false };
   public selectedDay = signal(noDate());
   public selectedYear = signal('');
   public selectedDataset = signal(this.defaultDataset);

@@ -10,6 +10,7 @@
 ## Features
 
 - Map with all camps, art, and points
+- Map should show A for art, C for camp, R for restroom
 - Higher resolution map as theme camp names are too pixelated
 - print to pdf for favorited events
 - Drop a pin for own camp

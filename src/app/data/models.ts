@@ -187,6 +187,7 @@ export interface Dataset {
   imageUrl: string; // Image
   timeZone: string; // Timezone
   dist?: number; // Estimated calculated distance to event
+  mapDirection: number; // Compass rotation for North
   active: boolean; // Displayed publicly
   subTitle: string; // Calculated
 }
