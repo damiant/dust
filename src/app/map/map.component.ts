@@ -42,6 +42,7 @@ export class MapComponent implements OnInit, OnDestroy {
   info: MapInfo | undefined;
   src = 'assets/map.svg';
   showMessage = false;
+  pointsSet = false;
   pins: Pin[] = [];
   divs: HTMLDivElement[] = [];
   private geoInterval: any;
@@ -60,10 +61,16 @@ export class MapComponent implements OnInit, OnDestroy {
   @Input() smallPins: boolean = false;
   @Input() isHeader: boolean = false;
   @Input() set points(points: MapPoint[]) {
+    if (this.pointsSet) return;
+    for (let div of this.divs) {
+      div.remove();
+    }
     this._points = points;
     if (this._points.length > 0) {
       this.fixGPSAndUpdate();
+      this.pointsSet = true;
     }
+
   }
   get points() {
     return this._points;
@@ -128,7 +135,7 @@ export class MapComponent implements OnInit, OnDestroy {
       console.error(`Got compass heading but compass element is not defined`);
       return;
     }
-    const rotation = this.settings.settings.mapRotation; // Note: Burning Mans map is rotately from North 45 degrees
+    const rotation = this.settings.settings.mapRotation; // Note: Map may be rotated from North
     let degree = Math.trunc(heading.trueHeading) - rotation;
     if (degree < 0) {
       degree += 360;
@@ -311,6 +318,9 @@ export class MapComponent implements OnInit, OnDestroy {
     if (info && info.location && !this.smallPins) {
       this.placeLabel(this.pointShift(x, y, 0, 0, -7), info);
     }
+    if (info?.bgColor) {
+      bgColor = info.bgColor;
+    }
     return this.createPin(sz, this.pointShift(x, y, sz, ox + (this.smallPins ? -2 : 0), oy), info, bgColor, blink);
   }
 
@@ -383,7 +393,8 @@ export class MapComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  link(url: string) {
+  link(url: string | undefined) {
+    if (!url) return;
     this.isOpen = false;
     setTimeout(() => {
       this.router.navigateByUrl(url);

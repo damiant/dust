@@ -187,6 +187,7 @@ export interface Dataset {
   imageUrl: string; // Image
   timeZone: string; // Timezone
   dist?: number; // Estimated calculated distance to event
+  mapDirection: number; // Compass rotation for North
   active: boolean; // Displayed publicly
   subTitle: string; // Calculated
 }
@@ -232,6 +233,7 @@ export enum MapType {
   Now = 'now',
   Art = 'art',
   Medical = 'medical',
+  All = 'all'
 }
 
 export interface Pin {
@@ -277,6 +279,7 @@ export interface MapInfo {
   subtitle: string;
   imageUrl?: string;
   href?: string;
+  bgColor?: string;
 }
 
 export interface PrivateEvent {

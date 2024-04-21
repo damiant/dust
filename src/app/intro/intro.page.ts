@@ -350,7 +350,7 @@ export class IntroPage {
   save() {
     this.settingsService.settings.datasetId = this.api.datasetId(this.vm.selected!);
     this.settingsService.settings.dataset = this.vm.selected;
-    this.settingsService.settings.mapRotation = this.isBurningMan() ? 45 : 0; // Burning Mans map is rotate 45 degrees
+    this.settingsService.settings.mapRotation = this.isBurningMan() ? 45 : -(this.vm.selected!.mapDirection ?? 0); // Burning Mans map is rotate 45 degrees
     this.settingsService.settings.eventTitle = this.vm.selected!.title;
     this.settingsService.settings.scrollLeft = this.vm.scrollLeft;
     this.settingsService.save();

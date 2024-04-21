@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { Art, MapPoint } from '../data/models';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -35,7 +35,6 @@ import { CachedImgComponent } from '../cached-img/cached-img.component';
   styleUrls: ['./art-item.page.scss'],
   standalone: true,
   imports: [
-    CommonModule,
     IonTitle,
     FormsModule,
     RouterModule,
@@ -85,7 +84,7 @@ export class ArtItemPage implements OnInit {
     this.mapTitle = this.art.name;
     this.hometown = this.art.hometown ? `(${this.art.hometown})` : '';
     this.mapSubtitle = this.art.location_string!;
-    const pin = this.art.pin;    
+    const pin = this.art.pin;
     let point = toMapPoint(this.art.location_string!, undefined, pin);
     console.log(point, pin);
     if (this.art.location?.gps_latitude && this.art.location?.gps_longitude) {
@@ -94,7 +93,7 @@ export class ArtItemPage implements OnInit {
     }
     point.info = { title: this.art.name, subtitle: '', location: '' };
     this.mapPoints.push(point);
-    
+
     this.star = await this.fav.isFavArt(this.art.uid);
   }
 

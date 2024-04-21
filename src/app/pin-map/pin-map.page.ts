@@ -80,6 +80,8 @@ export class PinMapPage {
         return await this.fallback(await this.db.getMapPoints(Names.ice), 'Ice');
       case MapType.Medical:
         return await this.fallback(await this.db.getMapPoints(Names.medical), 'Medical');
+      case MapType.All:
+        return await this.getAll();
       default:
         return { title: ' ', description: '', points: [] };
     }
@@ -113,6 +115,64 @@ export class PinMapPage {
     };
   }
 
+  private async getAll(): Promise<MapSet> {
+
+    let coords: GpsCoord | undefined = undefined;
+    coords = await this.geo.getPosition();
+
+    const camps = await this.db.findCamps('', coords);
+    const points = [];
+    this.smallPins = (camps.length > 100);
+    for (let camp of camps) {
+      if (camp.location_string || camp.pin?.x) {
+        const point = toMapPoint(
+          camp.location_string!,
+          {
+            title: camp.name,
+            location: camp.location_string!,
+            subtitle: '',
+            imageUrl: camp.imageUrl,
+            href: '/camp/' + camp.uid + '+' + 'Map'
+          },
+          camp.pin,
+        );
+        if (point) points.push(point);
+      }
+    }
+    for (let type of [Names.restrooms, Names.ice, Names.medical, Names.art]) {
+      const map = await this.mapFor(type);
+      map.points.forEach((point, index) => {
+        if (!point.info) {
+          point.info = { title: map.title, location: '', subtitle: `${index + 1} of ${map.points.length}` };
+        }
+        point.info.bgColor = this.colorOf(type);
+      });
+      points.push(...map.points);
+    }
+    this.title.set('Map');
+    return {
+      title: this.title(),
+      description: '',
+      points,
+    };
+  }
+
+  private colorOf(type: string): string {
+    switch (type) {
+      case Names.restrooms:
+        return 'var(--ion-color-secondary)';
+      case Names.ice:
+        return 'var(--ion-color-tertiary)';
+      case Names.medical:
+        return 'var(--ion-color-success)';
+      case Names.art:
+        return 'var(--ion-color-warning)';
+      default:
+        return 'var(--ion-color-primary)';
+    }
+  }
+
+
   private async convertToPoint(art: Art): Promise<MapPoint | undefined> {
     let point = toMapPoint(art.location_string!, undefined, art.pin);
     if (point.street == 'unplaced') return undefined;
@@ -127,7 +187,8 @@ export class PinMapPage {
       title: art.name,
       subtitle: '',
       location: '',
-      imageUrl: art.images ? art.images[0].thumbnail_url : '',
+      imageUrl: art.images && art.images[0] ? art.images[0].thumbnail_url : '',
+      href: '/art/' + art.uid + '+' + this.title()
     };
     return point;
   }
