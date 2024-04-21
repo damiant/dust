@@ -386,7 +386,8 @@ export class MapComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  link(url: string) {
+  link(url: string | undefined) {
+    if (!url) return;
     this.isOpen = false;
     setTimeout(() => {
       this.router.navigateByUrl(url);

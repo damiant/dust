@@ -127,7 +127,13 @@ export class PinMapPage {
       if (camp.location_string || camp.pin?.x) {
         const point = toMapPoint(
           camp.location_string!,
-          { title: camp.name, location: camp.location_string!, subtitle: '', imageUrl: camp.imageUrl },
+          {
+            title: camp.name,
+            location: camp.location_string!,
+            subtitle: '',
+            imageUrl: camp.imageUrl,
+            href: '/camp/' + camp.uid + '+' + 'Map'
+          },
           camp.pin,
         );
         if (point) points.push(point);
@@ -182,6 +188,7 @@ export class PinMapPage {
       subtitle: '',
       location: '',
       imageUrl: art.images && art.images[0] ? art.images[0].thumbnail_url : '',
+      href: '/art/' + art.uid + '+' + this.title()
     };
     return point;
   }

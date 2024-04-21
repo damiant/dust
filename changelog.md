@@ -3,6 +3,9 @@
 ## 2.13
 
 - Map icon to show all camps, art and points on the map
+- Hide artist line if blank
+- Hide unnecessary background color on camp image
+- Art and camps can be clicked on the map
 
 ## 2.12
 
