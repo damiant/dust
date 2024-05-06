@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     namespace "nexus.concepts.dust"
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId "nexus.concepts.dust"
         minSdkVersion rootProject.ext.minSdkVersion
