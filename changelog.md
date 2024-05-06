@@ -3,6 +3,7 @@
 ## 2.14
 
 - Fix performance of first opening of the map (dont wait on GPS)
+- Fix overflowing text on events page
 
 ## 2.13
 
