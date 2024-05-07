@@ -2,7 +2,6 @@
 
 # Bugs
 
-- Some text overlap onto images for events
 - iOS: The filter on the home page for "regionals" etc cannot be dismissed by clicking elsewhere (works on Android)
 - Images are in `webp` but you when you use the share plugin these image types dont appear (at least on iOS). Maybe convert to png?
 - Only show the "Now" button if it is within the events date range
