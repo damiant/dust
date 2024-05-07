@@ -32,6 +32,7 @@ import { toMapPoint } from '../map/map.utils';
 import { FavoritesService } from '../favs/favorites.service';
 import { addIcons } from 'ionicons';
 import { compass, compassOutline } from 'ionicons/icons';
+import { SortComponent } from '../sort/sort.component';
 
 interface RSLState {
   byDist: boolean;
@@ -94,6 +95,7 @@ function initialState(): RSLState {
     IonInfiniteScroll,
     IonInfiniteScrollContent,
     IonText,
+    SortComponent,
     SearchComponent,
     MapModalComponent,
     SkeletonEventComponent,
@@ -120,7 +122,7 @@ export class RslPage {
       this.db.checkInit();
       this.vm = initialState();
       this.init();
-    }, { allowSignalWrites: true});
+    }, { allowSignalWrites: true });
     effect(async () => {
       const resumed = this.db.resume();
       if (resumed.length > 0) {
@@ -268,12 +270,13 @@ export class RslPage {
     return this.vm.days[0].date;
   }
 
-  toggleByDist() {
-    this.vm.byDist = !this.vm.byDist;
+  sortTypeChanged(e: string) {
+    this.vm.byDist = e === 'dist';
     if (this.vm.byDist && !this.vm.displayedDistMessage) {
       this.ui.presentToast(`Displaying events sorted by distance`, this.toastController);
       this.vm.displayedDistMessage = true;
     }
     this.update(true);
   }
+
 }

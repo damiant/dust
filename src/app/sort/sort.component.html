@@ -2,22 +2,10 @@
 <ion-popover [trigger]="id" size="auto" side="bottom" [dismissOnSelect]="true">
   <ng-template>
     <ion-content>
-      @if (showSortBy) {
-      <ion-item>Sort By</ion-item>
       <ion-radio-group (ionChange)="sortChanged($event)" [value]="sortType">
         @for (type of sortTypes; track type) {
         <ion-radio labelPlacement="end" justify="start" [value]="type.value">{{type.title}}</ion-radio>
         }
-      </ion-radio-group>
-
-      <ion-item>Event Type</ion-item>
-      }
-      <ion-radio-group (ionChange)="changed($event)" [value]="category">
-        <ion-radio labelPlacement="end" justify="start" value="">{{ allTitle }}</ion-radio><br />
-        @for (category of categories; track category) {
-        <ion-radio labelPlacement="end" justify="start" [value]="category">{{ category }}</ion-radio>
-        }
-        <br />
       </ion-radio-group>
     </ion-content>
   </ng-template>

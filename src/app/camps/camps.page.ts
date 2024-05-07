@@ -18,6 +18,7 @@ import { CommonModule } from '@angular/common';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { CampComponent } from '../camp/camp.component';
+import { SortComponent } from '../sort/sort.component';
 import { UiService } from '../ui/ui.service';
 import { SearchComponent } from '../search/search.component';
 import { isWhiteSpace } from '../utils/utils';
@@ -80,6 +81,7 @@ function initialState(): CampsState {
     CampComponent,
     SearchComponent,
     AlphabeticalScrollBarComponent,
+    SortComponent,
   ],
 })
 export class CampsPage {
@@ -102,11 +104,21 @@ export class CampsPage {
       this.db.checkInit();
       this.vm = initialState();
       this.update('');
-    }, { allowSignalWrites: true});
+    }, { allowSignalWrites: true });
   }
 
   home() {
     this.ui.home();
+  }
+
+  sortTypeChanged(e: string) {
+    this.vm.byDist = e === 'dist';
+    if (this.vm.byDist && !this.vm.displayedDistMessage) {
+      this.ui.presentToast(`Displaying camps sorted by distance`, this.toastController);
+      this.vm.displayedDistMessage = true;
+    }
+    this.ui.scrollUp('camps', this.virtualScroll);
+    this.update('');
   }
 
   enableScroll() {
@@ -118,16 +130,6 @@ export class CampsPage {
     if (idx >= 0) {
       this.virtualScroll.scrollToIndex(this.vm.alphaIndex[idx]);
     }
-  }
-
-  toggleByDist() {
-    this.vm.byDist = !this.vm.byDist;
-    if (this.vm.byDist && !this.vm.displayedDistMessage) {
-      this.ui.presentToast(`Displaying camps sorted by distance`, this.toastController);
-      this.vm.displayedDistMessage = true;
-    }
-    this.ui.scrollUp('camps', this.virtualScroll);
-    this.update('');
   }
 
   async ionViewDidEnter() {

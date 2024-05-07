@@ -4,26 +4,23 @@
 
 - iOS: The filter on the home page for "regionals" etc cannot be dismissed by clicking elsewhere (works on Android)
 - Images are in `webp` but you when you use the share plugin these image types dont appear (at least on iOS). Maybe convert to png?
-- Only show the "Now" button if it is within the events date range
 
 ## Features
 
-- Map should show A for art, C for camp, R for restroom
 - Higher resolution map as theme camp names are too pixelated
 - print to pdf for favorited events
 - Drop a pin for own camp
 - Verify timeout on start (or an offline button)
-- map option for full screen full map with all points
+
 - Favorites with 2 items fades one item
 - favorites should show on home page
 - search on home page to search all events, camps, art, and music
 - dark mode tooltips on the map need a visible border
 - Show a message when map is shown for the first time "Use 2 fingers or double tap to zoom into the map"
 - PWA to Microsoft store: https://tech.lgbt/@lilPWA/111711138018508269
+
 - Art tour audio
 - Group multiple parties on music into the one card
-
-# Ideas
 
 ## Check In
 

@@ -4,6 +4,7 @@
 
 - Fix performance of first opening of the map (dont wait on GPS)
 - Fix overflowing text on events page
+- Show drop down for sorting by distance rather than compass icon
 
 ## 2.13
 

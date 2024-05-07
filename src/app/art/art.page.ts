@@ -27,6 +27,7 @@ import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrollin
 import { GpsCoord } from '../map/geo.utils';
 import { GeoService } from '../geolocation/geo.service';
 import { AlphabeticalScrollBarComponent } from '../alpha/alpha.component';
+import { SortComponent } from '../sort/sort.component';
 
 interface ArtState {
   showImage: boolean;
@@ -77,6 +78,7 @@ function initialState(): ArtState {
     IonBadge,
     ArtComponent,
     SearchComponent,
+    SortComponent,
     SkeletonArtComponent,
   ],
 })
@@ -134,14 +136,15 @@ export class ArtPage {
     }
   }
 
-  toggleByDist() {
-    this.vm.byDist = !this.vm.byDist;
+
+  sortTypeChanged(e: string) {
+    this.vm.byDist = e === 'dist';
     if (this.vm.byDist && !this.vm.displayedDistMessage) {
       this.ui.presentToast(`Displaying art sorted by distance`, this.toastController);
       this.vm.displayedDistMessage = true;
     }
     this.ui.scrollUp('art', this.virtualScroll);
-    this.update(undefined);
+    this.update('');
   }
 
   async ionViewDidEnter() {
