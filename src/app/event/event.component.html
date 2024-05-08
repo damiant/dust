@@ -1,43 +1,38 @@
 @if (event.group) {
-  <h1 style="display: flex">
-    {{ event.group }}
-    <ion-buttons slot="end">
-      <ion-button (click)="group(event)">
-        <ion-icon slot="icon-only" name="map-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </h1>
+<h1 style="display: flex">
+  {{ event.group }}
+  <ion-buttons slot="end">
+    <ion-button (click)="group(event)">
+      <ion-icon slot="icon-only" name="map-outline"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</h1>
 }
 
 <ion-card role="button" (click)="detail()" [class]="variableHeight ? '' : 'item'">
   @if (showImage && event.imageUrl) {
-    <div class="image">
-      <app-cached-img        
-        class="image"
-        [alt]="event.title"
-        [src]="event.imageUrl"
-      />
-    </div>
+  <div class="image">
+    <app-cached-img class="image" [alt]="event.title" [src]="event.imageUrl" />
+  </div>
   }
   @if (event.happening) {
-    <p class="badge">NOW</p>
+  <p class="badge">NOW</p>
   }
   <ion-card-header>
-    <ion-card-title aria-hidden="true" [routerLink]="'/event/' + event.uid + '+' + title"
-      >{{ event.title }}
+    <ion-card-title [class]="showImage && event.imageUrl ? 'title' : ''" aria-hidden="true"
+      [routerLink]="'/event/' + event.uid + '+' + title">{{ event.title
+      }}
     </ion-card-title>
-    <ion-card-subtitle aria-hidden="true" color="primary" (click)="map(event, $event)">
+    <ion-card-subtitle [class]="showImage && event.imageUrl ? 'title' : ''" aria-hidden="true" color="primary"
+      (click)="map(event, $event)">
       {{ event.camp }} {{ event.location ? '(' + event.location + ')' : '' }} {{ event.distanceInfo }}
     </ion-card-subtitle>
   </ion-card-header>
 
-  <ion-card-content
-    attr.aria-label="{{ event.title }} at {{ event.camp }} located at {{ event.location }} "
-    (click)="detail()"
-  >
+  <ion-card-content attr.aria-label="{{ event.title }} at {{ event.camp }} located at {{ event.location }} "
+    (click)="detail()">
     <ion-text aria-hidden="true" class="clamp">{{ event.description }}</ion-text>
     <ion-text aria-hidden="true" class="clamp1">
-      {{ longTime ? event.longTimeString : event.timeString }} {{ event.event_type.label }}</ion-text
-    >
+      {{ longTime ? event.longTimeString : event.timeString }} {{ event.event_type.label }}</ion-text>
   </ion-card-content>
 </ion-card>

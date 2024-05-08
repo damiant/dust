@@ -20,7 +20,7 @@ export class GeoService {
   private hasPermission = false;
   private centerOfMap: GpsCoord | undefined;
 
-  constructor(private db: DbService) {}
+  constructor(private db: DbService) { }
 
   // Returns true if you are granted permission
   public async checkPermissions(): Promise<boolean> {
@@ -80,6 +80,7 @@ export class GeoService {
     }
 
     console.timeEnd('geo.permissions');
+
     if (environment.gps) {
       console.error(`Fake GPS position was returned ${environment.gps}`);
       this.gpsPosition.set(timeStampGPS(environment.gps));
@@ -91,14 +92,15 @@ export class GeoService {
     }
 
     this.gpsBusy.set(true);
-    const position = await Geolocation.getCurrentPosition({ enableHighAccuracy: true });
-    this.gpsBusy.set(false);
-    let gps = { lat: position.coords.latitude, lng: position.coords.longitude };
-    gps = this.db.offsetGPS(gps);
-    this.lastGpsUpdate = new Date();
-    this.gpsPosition.set(timeStampGPS(gps));
-    this.hasPermission = true;
-    return gps;
+    Geolocation.getCurrentPosition({ enableHighAccuracy: true }).then((position) => {
+      this.gpsBusy.set(false);
+      let gps = { lat: position.coords.latitude, lng: position.coords.longitude };
+      gps = this.db.offsetGPS(gps);
+      this.lastGpsUpdate = new Date();
+      this.gpsPosition.set(timeStampGPS(gps));
+      this.hasPermission = true;
+    });
+    return this.gpsPosition();
   }
 
   public async gpsToPoint(coord: GpsCoord): Promise<Point> {

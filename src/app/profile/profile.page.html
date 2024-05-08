@@ -52,11 +52,11 @@
     <app-tile [hidden]="!hasIce" title="Ice" routerLink="/map/ice" imgSrc="assets/icon/ice.svg"></app-tile>
     <app-tile [hidden]="!hasMedical" title="Medical" routerLink="/map/medical"
       imgSrc="assets/icon/medical.svg"></app-tile>
-    @if (!db.locationsHidden() && !db.featuresHidden().includes('art')) {
-    <app-tile title="Art" routerLink="/map/art" imgSrc="assets/icon/art.svg"></app-tile>
-    }
     @if (!db.locationsHidden()) {
     <app-tile title="Map" routerLink="/map/all" imgSrc="assets/icon/map.svg"></app-tile>
+    }
+    @if (!db.locationsHidden() && !db.featuresHidden().includes('art')) {
+    <app-tile title="Art" routerLink="/map/art" imgSrc="assets/icon/art.svg"></app-tile>
     }
     @if (!db.locationsHidden() && this.eventIsHappening) {
     <app-tile title="Now" routerLink="/map/now" imgSrc="assets/icon/calendar.svg"></app-tile>

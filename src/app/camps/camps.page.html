@@ -2,9 +2,7 @@
   <ion-toolbar>
     <ion-title> Camps </ion-title>
     <ion-buttons class="b-pad-r" slot="end">
-      <ion-button (click)="toggleByDist()" fill="clear"
-        ><ion-icon [name]="vm.byDist ? 'compass' : 'compass-outline'"></ion-icon
-      ></ion-button>
+      <app-sort id="camps-sort" (sortTypeChange)="sortTypeChanged($event)" slot="end"></app-sort>
     </ion-buttons>
     @if (db.selectedYear() !== '') {
     <ion-badge class="pad-right" (click)="home()" slot="end">{{db.selectedYear()}}</ion-badge>
@@ -13,28 +11,13 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="app-page">
-  <app-alphabetical-scroll-bar
-    [hidden]="vm.byDist"
-    [alphabet]="'#ABCDEFGHIJKLMNOPQRSTUVWXYZ'"
-    [disableInvalidLetters]="false"
-    [prioritizeHidingInvalidLetters]="true"
-    [letterMagnification]="true"
-    [magnifyDividers]="true"
-    [magnificationMultiplier]="2"
-    [magnificationCurve]="[1, .7, .6, .4, .2, 0]"
-    [exactX]="false"
-    [navigateOnHover]="true"
-    [letterSpacing]="'0.5%'"
-    [offsetSizeCheckInterval]="100"
-    (letterChange)="goToLetterGroup($event)"
-    (isActive)="!$event && enableScroll()"
-  ></app-alphabetical-scroll-bar>
-  <div
-    [class.disable-scroll]="isScrollDisabled"
-    [class.side]="!vm.byDist"
-    class="virtual-scroll-container ion-content-scroll-host"
-    cdkVirtualScrollingElement
-  >
+  <app-alphabetical-scroll-bar [hidden]="vm.byDist" [alphabet]="'#ABCDEFGHIJKLMNOPQRSTUVWXYZ'"
+    [disableInvalidLetters]="false" [prioritizeHidingInvalidLetters]="true" [letterMagnification]="true"
+    [magnifyDividers]="true" [magnificationMultiplier]="2" [magnificationCurve]="[1, .7, .6, .4, .2, 0]"
+    [exactX]="false" [navigateOnHover]="true" [letterSpacing]="'0.5%'" [offsetSizeCheckInterval]="100"
+    (letterChange)="goToLetterGroup($event)" (isActive)="!$event && enableScroll()"></app-alphabetical-scroll-bar>
+  <div [class.disable-scroll]="isScrollDisabled" [class.side]="!vm.byDist"
+    class="virtual-scroll-container ion-content-scroll-host" cdkVirtualScrollingElement>
     <ion-header collapse="condense">
       <ion-toolbar>
         <ion-title class="page-focus" size="large">Camps</ion-title>
@@ -43,24 +26,16 @@
         <app-search placeholder="Find Camps" (search)="search($event)" />
       </ion-toolbar>
     </ion-header>
-    <app-map-modal
-      [title]="vm.mapTitle"
-      [subtitle]="vm.mapSubtitle"
-      [(show)]="vm.showMap"
-      [points]="vm.mapPoints"
-    ></app-map-modal>
+    <app-map-modal [title]="vm.mapTitle" [subtitle]="vm.mapSubtitle" [(show)]="vm.showMap"
+      [points]="vm.mapPoints"></app-map-modal>
     @if (vm.camps.length === 0) {
     <div class="center pad-top">
       <ion-text class="large" color="medium">{{vm.noCampsMessage}}</ion-text>
     </div>
     }
     <cdk-virtual-scroll-viewport itemSize="180" [minBufferPx]="vm.minBufferPx" maxBufferPx="1350">
-      <app-camp
-        [camp]="camp"
-        title="Camps"
-        (mapClick)="map($event)"
-        *cdkVirtualFor="let camp of vm.camps; trackBy: campsTrackBy"
-      />
+      <app-camp [camp]="camp" title="Camps" (mapClick)="map($event)"
+        *cdkVirtualFor="let camp of vm.camps; trackBy: campsTrackBy" />
     </cdk-virtual-scroll-viewport>
   </div>
 </ion-content>

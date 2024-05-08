@@ -12,7 +12,7 @@ $RECYCLE.BIN/
 
 *.log
 log.txt
-
+/.nx
 
 /.sourcemaps
 /.versions

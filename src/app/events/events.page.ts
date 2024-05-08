@@ -130,7 +130,7 @@ export class EventsPage {
       this.db.checkInit();
       this.vm = initialState();
       this.init();
-    }, { allowSignalWrites: true});
+    }, { allowSignalWrites: true });
     effect(async () => {
       const _r = this.db.resume();
       this.setToday(now());
@@ -154,6 +154,15 @@ export class EventsPage {
   }
 
   public categoryChanged() {
+    this.update(true);
+  }
+
+  public sortTypeChanged(e: string) {
+    this.vm.byDist = (e == 'dist');
+    if (this.vm.byDist && !this.vm.displayedDistMessage) {
+      this.ui.presentToast(`Displaying events sorted by distance`, this.toastController);
+      this.vm.displayedDistMessage = true;
+    }
     this.update(true);
   }
 
@@ -245,7 +254,7 @@ export class EventsPage {
     }
 
     const timeRange = this.vm.isNow ? nowRange(this.db.getTimeZone()) : undefined;
-    this.vm.timeRange = timeRangeToString(timeRange, this.db.getTimeZone());    
+    this.vm.timeRange = timeRangeToString(timeRange, this.db.getTimeZone());
     this.vm.events = await this.db.findEvents(
       this.vm.search, // Search terms
       this.vm.day, // Selected day
@@ -269,7 +278,7 @@ export class EventsPage {
       return `There are no events starting ${this.vm.timeRange}`;
     }
     return this.db.eventHasntBegun() ?
-    'Events have not been added yet.' : 
-    'All the events for this day have concluded.';    
+      'Events have not been added yet.' :
+      'All the events for this day have concluded.';
   }
 }
