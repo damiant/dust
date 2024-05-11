@@ -1,4 +1,4 @@
-import { Component, Input, Signal, WritableSignal, computed, signal } from '@angular/core';
+import { Component, Signal, WritableSignal, computed, signal, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MapComponent } from '../map/map.component';
@@ -18,7 +18,7 @@ import {
   IonTitle,
   IonToolbar,
   IonSpinner,
-  IonIcon
+  IonIcon,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { compassOutline } from 'ionicons/icons';
@@ -41,11 +41,11 @@ import { compassOutline } from 'ionicons/icons';
     IonBackButton,
     IonText,
     IonIcon,
-    IonSpinner
+    IonSpinner,
   ],
 })
 export class PinMapPage {
-  @Input() mapType = '';
+  mapType = input('');
   points: MapPoint[] = [];
   smallPins: boolean = false;
   busy: Signal<boolean> = computed(() => {
@@ -62,7 +62,7 @@ export class PinMapPage {
   }
 
   async ionViewWillEnter() {
-    const mapSet = await this.mapFor(this.mapType);
+    const mapSet = await this.mapFor(this.mapType());
     this.points = mapSet.points;
     this.title.set(mapSet.title);
     this.description = mapSet.description;
@@ -101,7 +101,7 @@ export class PinMapPage {
 
     const allArt = await this.db.findArts(undefined, coords);
     const points = [];
-    this.smallPins = (allArt.length > 100);
+    this.smallPins = allArt.length > 100;
     for (let art of allArt) {
       if (art.location_string || art.pin?.x) {
         const point = await this.convertToPoint(art);
@@ -116,13 +116,12 @@ export class PinMapPage {
   }
 
   private async getAll(): Promise<MapSet> {
-
     let coords: GpsCoord | undefined = undefined;
     coords = await this.geo.getPosition();
 
     const camps = await this.db.findCamps('', coords);
     const points = [];
-    this.smallPins = (camps.length > 100);
+    this.smallPins = camps.length > 100;
     for (let camp of camps) {
       if (camp.location_string || camp.pin?.x) {
         const point = toMapPoint(
@@ -132,7 +131,7 @@ export class PinMapPage {
             location: camp.location_string!,
             subtitle: '',
             imageUrl: camp.imageUrl,
-            href: '/camp/' + camp.uid + '+' + 'Map'
+            href: '/camp/' + camp.uid + '+' + 'Map',
           },
           camp.pin,
         );
@@ -172,12 +171,11 @@ export class PinMapPage {
     }
   }
 
-
   private async convertToPoint(art: Art): Promise<MapPoint | undefined> {
     let point = toMapPoint(art.location_string!, undefined, art.pin);
     if (point.street == 'unplaced') return undefined;
     if (!art.location && !art.pin?.x) {
-      console.error(`Bad art found`, art)
+      console.error(`Bad art found`, art);
     }
     if (art.location?.gps_latitude && art.location?.gps_longitude) {
       const gps = { lng: art.location?.gps_longitude, lat: art.location?.gps_latitude };
@@ -188,14 +186,14 @@ export class PinMapPage {
       subtitle: '',
       location: '',
       imageUrl: art.images && art.images[0] ? art.images[0].thumbnail_url : '',
-      href: '/art/' + art.uid + '+' + this.title()
+      href: '/art/' + art.uid + '+' + this.title(),
     };
     return point;
   }
 
   private async getEventsNow(): Promise<MapSet> {
     const title = 'Happening Now';
-    this.title.set(title)
+    this.title.set(title);
     //const timeRange = nowRange(this.db.getTimeZone());
     const timeRange = nowRange(localTimeZone());
     this.smallPins = true;

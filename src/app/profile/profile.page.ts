@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, effect } from '@angular/core';
+import { Component, OnInit, effect, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -18,7 +18,9 @@ import {
   IonFabButton,
   IonToggle,
   IonToolbar,
-  ToastController, IonFabList, IonModal
+  ToastController,
+  IonFabList,
+  IonModal,
 } from '@ionic/angular/standalone';
 import { UiService } from '../ui/ui.service';
 import { Share } from '@capacitor/share';
@@ -47,7 +49,7 @@ import {
   compassOutline,
   calendarOutline,
   closeSharp,
-  ellipsisVerticalSharp
+  ellipsisVerticalSharp,
 } from 'ionicons/icons';
 import { Animation, StatusBar } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
@@ -65,7 +67,9 @@ interface Group {
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
   standalone: true,
-  imports: [IonModal, IonFabList,
+  imports: [
+    IonModal,
+    IonFabList,
     CommonModule,
     FormsModule,
     RouterModule,
@@ -89,7 +93,7 @@ interface Group {
     TileContainerComponent,
     TileComponent,
     PrivateEventsComponent,
-    LinkComponent
+    LinkComponent,
   ],
 })
 export class ProfilePage implements OnInit {
@@ -102,8 +106,8 @@ export class ProfilePage implements OnInit {
   imageUrl = '';
   mapPin: GPSPin | undefined;
   groups: Group[] = [];
-  @ViewChild(IonContent) ionContent!: IonContent;
-  @ViewChild(IonModal) ionModal!: IonModal;
+  ionContent = viewChild.required(IonContent);
+  ionModal = viewChild.required(IonModal);
   hasMedical = true;
   hasRestrooms = true;
   hasIce = true;
@@ -131,10 +135,10 @@ export class ProfilePage implements OnInit {
       timeOutline,
       locateOutline,
       closeSharp,
-      ellipsisVerticalSharp
+      ellipsisVerticalSharp,
     });
     effect(() => {
-      this.ui.scrollUpContent('profile', this.ionContent);
+      this.ui.scrollUpContent('profile', this.ionContent());
     });
   }
 
@@ -142,7 +146,9 @@ export class ProfilePage implements OnInit {
     this.presentingElement = document.querySelector('.ion-page');
     this.imageUrl = await getCachedImage(this.db.selectedImage());
     this.db.checkInit();
-    const summary: DatasetResult = await this.db.get(this.settings.settings.datasetId, Names.summary, { onlyRead: true });
+    const summary: DatasetResult = await this.db.get(this.settings.settings.datasetId, Names.summary, {
+      onlyRead: true,
+    });
     this.hasRestrooms = this.hasValue(summary.pinTypes, 'Restrooms');
     this.hasMedical = this.hasValue(summary.pinTypes, 'Medical');
     this.hasIce = this.hasValue(summary.pinTypes, 'Ice');
@@ -174,7 +180,7 @@ export class ProfilePage implements OnInit {
   }
 
   hasValue(v: Record<string, number>, property: string): boolean {
-    return (v && v.hasOwnProperty(property) && v[property] > 0);
+    return v && v.hasOwnProperty(property) && v[property] > 0;
   }
 
   visit(url: string) {
@@ -217,21 +223,19 @@ export class ProfilePage implements OnInit {
 
   async addCalendar() {
     await this.dismiss();
-    const success = await this.calendar.add(
-      {
-        calendar: this.db.selectedDataset().title,
-        name: this.db.selectedDataset().title,
-        location: ' ',
-        start: this.db.selectedDataset().start,
-        end: this.db.selectedDataset().end,
-        timeZone: this.db.selectedDataset().timeZone,
-        description: '', // Need to get this from storage
-        lat: this.db.selectedDataset().lat,
-        lng: this.db.selectedDataset().long
-      }
-    );
+    const success = await this.calendar.add({
+      calendar: this.db.selectedDataset().title,
+      name: this.db.selectedDataset().title,
+      location: ' ',
+      start: this.db.selectedDataset().start,
+      end: this.db.selectedDataset().end,
+      timeZone: this.db.selectedDataset().timeZone,
+      description: '', // Need to get this from storage
+      lat: this.db.selectedDataset().lat,
+      lng: this.db.selectedDataset().long,
+    });
     if (success) {
-      this.ui.presentToast(`${this.db.selectedDataset().title} has been added to your calendar.`, this.toastController)
+      this.ui.presentToast(`${this.db.selectedDataset().title} has been added to your calendar.`, this.toastController);
     }
   }
 
@@ -248,7 +252,7 @@ export class ProfilePage implements OnInit {
   }
 
   async dismiss() {
-    await this.ionModal.dismiss();
+    await this.ionModal().dismiss();
   }
 
   async toggleLongEvents(e: any) {
@@ -276,7 +280,6 @@ export class ProfilePage implements OnInit {
     if (Capacitor.isNativePlatform() && !this.ui.isAndroid()) {
       await StatusBar.hide({ animation: Animation.Fade });
     }
-
   }
 
   async ionViewWillLeave() {
@@ -286,7 +289,6 @@ export class ProfilePage implements OnInit {
   }
 
   private getMapPin(): GPSPin | undefined {
-
     if (this.settings.settings.dataset?.lat) {
       return { lat: this.settings.settings.dataset.lat, long: this.settings.settings.dataset.long };
     } else {
@@ -299,7 +301,7 @@ export class ProfilePage implements OnInit {
   }
 
   async directions() {
-    // Default comes from https://burningman.org/event/preparation/getting-there-and-back/    
+    // Default comes from https://burningman.org/event/preparation/getting-there-and-back/
     if (!this.mapPin) return;
     if (await this.map.canOpenMapApp('google')) {
       await this.map.openGoogleMapDirections(this.mapPin);

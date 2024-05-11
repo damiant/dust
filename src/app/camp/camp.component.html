@@ -1,19 +1,18 @@
-<ion-card role="button" [routerLink]="'/camp/' + camp.uid + '+' + title" class="item">
-  @if (camp.imageUrl) {
+<ion-card role="button" [routerLink]="'/camp/' + camp().uid + '+' + title()" class="item">
+  @if (camp().imageUrl) {
   <div class="image">
-    <app-cached-img class="image" [alt]="camp.name" [src]="camp.imageUrl" />
+    <app-cached-img class="image" [alt]="camp().name" [src]="camp().imageUrl" />
   </div>
   }
 
   <ion-card-header>
-    <ion-card-title [class]="camp.imageUrl ? 'title' : ''" aria-hidden="true">{{ camp.name }}</ion-card-title>
-    <ion-card-subtitle [class]="camp.imageUrl ? 'title' : ''" aria-hidden="true" color="primary"
-      (click)="map(camp, $event)">{{ camp.location_string }} {{
-      camp.distanceInfo }}</ion-card-subtitle>
+    <ion-card-title [class]="camp().imageUrl ? 'title' : ''" aria-hidden="true">{{ camp().name }}</ion-card-title>
+    <ion-card-subtitle [class]="camp().imageUrl ? 'title' : ''" aria-hidden="true" color="primary"
+      (click)="map(camp(), $event)">{{ camp().location_string }} {{ camp().distanceInfo }}</ion-card-subtitle>
   </ion-card-header>
 
-  <ion-card-content attr.aria-label="{{ camp.name }} at {{ camp.location_string }}.{{ camp.description }}">
-    <ion-text aria-hidden="true" class="clamp3">{{ camp.description }}</ion-text>
+  <ion-card-content attr.aria-label="{{ camp().name }} at {{ camp().location_string }}.{{ camp().description }}">
+    <ion-text aria-hidden="true" class="clamp3">{{ camp().description }}</ion-text>
     <ion-text aria-hidden="true" color="primary"></ion-text>
   </ion-card-content>
 </ion-card>

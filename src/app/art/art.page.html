@@ -11,11 +11,22 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="app-page">
-  <app-alphabetical-scroll-bar [hidden]="vm.byDist" [alphabet]="'#ABCDEFGHIJKLMNOPQRSTUVWXYZ'"
-    [disableInvalidLetters]="false" [prioritizeHidingInvalidLetters]="true" [letterMagnification]="true"
-    [magnifyDividers]="true" [magnificationMultiplier]="2" [magnificationCurve]="[1, .7, .6, .4, .2, 0]"
-    [exactX]="false" [navigateOnHover]="true" [letterSpacing]="'0.5%'" [offsetSizeCheckInterval]="100"
-    (letterChange)="goToLetterGroup($event)" (isActive)="!$event"></app-alphabetical-scroll-bar>
+  <app-alphabetical-scroll-bar
+    [hidden]="vm.byDist"
+    [alphabet]="'#ABCDEFGHIJKLMNOPQRSTUVWXYZ'"
+    [disableInvalidLetters]="false"
+    [prioritizeHidingInvalidLetters]="true"
+    [letterMagnification]="true"
+    [magnifyDividers]="true"
+    [magnificationMultiplier]="2"
+    [magnificationCurve]="[1, .7, .6, .4, .2, 0]"
+    [exactX]="false"
+    [navigateOnHover]="true"
+    [letterSpacing]="'0.5%'"
+    [offsetSizeCheckInterval]="100"
+    (letterChange)="goToLetterGroup($event)"
+    (isActive)="!$event"
+  ></app-alphabetical-scroll-bar>
   <div [class.side]="!vm.byDist" class="virtual-scroll-container ion-content-scroll-host" cdkVirtualScrollingElement>
     <ion-header collapse="condense">
       <ion-toolbar>
@@ -34,8 +45,11 @@
       <app-skeleton-art />
       <app-skeleton-art />
     </div>
-    <cdk-virtual-scroll-viewport [minBufferPx]="vm.minBufferPx" [itemSize]="vm.showImage ? 390 : 180"
-      maxBufferPx="2350">
+    <cdk-virtual-scroll-viewport
+      [minBufferPx]="vm.minBufferPx"
+      [itemSize]="vm.showImage ? 390 : 180"
+      maxBufferPx="2350"
+    >
       @for (art of vm.arts; track artTrackBy($index, art)) {
       <app-art (artClick)="click($event)" [showImage]="vm.showImage" [art]="art" />
       }

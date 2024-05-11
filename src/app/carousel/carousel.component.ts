@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ContentChildren, ElementRef, EventEmitter, OnDestroy, Output, QueryList, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, output, contentChildren, viewChild } from '@angular/core';
 import { CarouselItemComponent } from '../carousel-item/carousel-item.component';
 
 export interface SlideSelect {
@@ -12,25 +12,26 @@ export interface SlideSelect {
   standalone: true,
 })
 export class CarouselComponent implements AfterViewInit, OnDestroy {
-
-  @Output() slideChanged = new EventEmitter<SlideSelect>();
+  slideChanged = output<SlideSelect>();
   private interval: any;
   private lastValue = -1;
-  @ContentChildren(CarouselItemComponent) children!: QueryList<CarouselItemComponent>;
-  @ViewChild('container') container!: ElementRef;
+  children = contentChildren(CarouselItemComponent);
+  container = viewChild.required<ElementRef>('container');
 
   public setScrollLeft(left: number) {
-    setTimeout(() => { this.container.nativeElement.scrollLeft = left; }, 50);
+    setTimeout(() => {
+      this.container().nativeElement.scrollLeft = left;
+    }, 50);
   }
 
   constructor() { }
 
   ngAfterViewInit() {
     this.interval = setInterval(() => {
-      const padding = parseInt(getComputedStyle(this.container.nativeElement).scrollPaddingLeft);
-      const l = this.container.nativeElement.scrollLeft;
+      const padding = parseInt(getComputedStyle(this.container().nativeElement).scrollPaddingLeft);
+      const l = this.container().nativeElement.scrollLeft;
       let itemWidth = 200;
-      this.children.map(c => {
+      this.children().map((c) => {
         itemWidth = c.width;
       });
       const current = Math.trunc((l + padding) / itemWidth);
@@ -39,12 +40,10 @@ export class CarouselComponent implements AfterViewInit, OnDestroy {
         this.slideChanged.emit({ index: current, scrollLeft: l });
         this.lastValue = current;
       }
-
     }, 1000);
   }
 
   ngOnDestroy() {
     clearInterval(this.interval);
   }
-
 }

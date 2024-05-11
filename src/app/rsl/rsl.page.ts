@@ -1,4 +1,4 @@
-import { Component, ViewChild, effect } from '@angular/core';
+import { Component, effect, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -104,8 +104,8 @@ function initialState(): RSLState {
 export class RslPage {
   vm: RSLState = initialState();
   allEvents: RSLEvent[] = [];
-  @ViewChild(IonContent) ionContent!: IonContent;
-  @ViewChild('popover') popover: any;
+  ionContent = viewChild.required(IonContent);
+  popover = viewChild<any>('popover');
   constructor(
     private ui: UiService,
     private db: DbService,
@@ -115,14 +115,17 @@ export class RslPage {
   ) {
     addIcons({ compass, compassOutline });
     effect(() => {
-      this.ui.scrollUpContent('rsl', this.ionContent);
+      this.ui.scrollUpContent('rsl', this.ionContent());
     });
-    effect(() => {
-      const _year = this.db.selectedYear();
-      this.db.checkInit();
-      this.vm = initialState();
-      this.init();
-    }, { allowSignalWrites: true });
+    effect(
+      () => {
+        const _year = this.db.selectedYear();
+        this.db.checkInit();
+        this.vm = initialState();
+        this.init();
+      },
+      { allowSignalWrites: true },
+    );
     effect(async () => {
       const resumed = this.db.resume();
       if (resumed.length > 0) {
@@ -162,7 +165,7 @@ export class RslPage {
     this.addEvents(50);
     await this.handleNoEvents();
     if (scrollToTop) {
-      this.ui.scrollUpContent('rsl', this.ionContent);
+      this.ui.scrollUpContent('rsl', this.ionContent());
     }
   }
 
@@ -189,9 +192,7 @@ export class RslPage {
   }
 
   private noEventsMessage() {
-    return this.db.eventHasntBegun() ?
-      'Events have not been added yet.' :
-      'All events for this day have concluded.';
+    return this.db.eventHasntBegun() ? 'Events have not been added yet.' : 'All events for this day have concluded.';
   }
 
   private addEvents(count: number) {
@@ -217,7 +218,7 @@ export class RslPage {
   }
 
   async presentPopover(e: Event, message: string) {
-    this.popover.event = e;
+    this.popover().event = e;
     this.vm.message = message;
     this.vm.isOpen = true;
   }
@@ -278,5 +279,4 @@ export class RslPage {
     }
     this.update(true);
   }
-
 }

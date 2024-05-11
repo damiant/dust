@@ -1,10 +1,17 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title> {{vm.title}} </ion-title>
-    <ion-buttons class="b-pad-r" slot="end">∂
-      <app-category [showSortBy]="true" id="event-categories" allTitle="All Events" [(category)]="vm.category"
-        (categoryChange)="categoryChanged()" (sortTypeChange)="sortTypeChanged($event)" [categories]="vm.categories"
-        slot="end"></app-category>
+    <ion-buttons class="b-pad-r" slot="end">
+      <app-category
+        [showSortBy]="true"
+        id="event-categories"
+        allTitle="All Events"
+        [(category)]="vm.category"
+        (categoryChange)="categoryChanged()"
+        (sortTypeChange)="sortTypeChanged($event)"
+        [categories]="vm.categories"
+        slot="end"
+      ></app-category>
     </ion-buttons>
     @if (db.selectedYear() !== '') {
     <ion-badge (click)="home()" class="pad-right" slot="end">{{db.selectedYear()}}</ion-badge>
@@ -36,8 +43,12 @@
         </ion-segment>
       </ion-toolbar>
     </ion-header>
-    <app-map-modal [title]="vm.mapTitle" [subtitle]="vm.mapSubtitle" [(show)]="vm.showMap"
-      [points]="vm.mapPoints"></app-map-modal>
+    <app-map-modal
+      [title]="vm.mapTitle"
+      [subtitle]="vm.mapSubtitle"
+      [(show)]="vm.showMap"
+      [points]="vm.mapPoints"
+    ></app-map-modal>
     @if (!vm.noEvents && this.vm.events.length === 0) {
     <div>
       <app-skeleton-event></app-skeleton-event>
@@ -49,8 +60,15 @@
     <div class="message large"><ion-text>{{vm.noEventsMessage}}</ion-text></div>
     }
     <cdk-virtual-scroll-viewport [minBufferPx]="vm.minBufferPx" itemSize="180" maxBufferPx="2350">
-      <app-event [showImage]="true" [title]="vm.title" [longTime]="!vm.day" [day]="vm.day" [event]="event"
-        (mapClick)="map($event)" *cdkVirtualFor="let event of vm.events; trackBy: eventsTrackBy" />
+      <app-event
+        [showImage]="true"
+        [title]="vm.title"
+        [longTime]="!vm.day"
+        [day]="vm.day"
+        [event]="event"
+        (mapClick)="map($event)"
+        *cdkVirtualFor="let event of vm.events; trackBy: eventsTrackBy"
+      />
     </cdk-virtual-scroll-viewport>
   </div>
 </ion-content>

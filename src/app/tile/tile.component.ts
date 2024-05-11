@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { IonButton, IonIcon, IonText } from '@ionic/angular/standalone';
 
 @Component({
@@ -9,8 +9,8 @@ import { IonButton, IonIcon, IonText } from '@ionic/angular/standalone';
   standalone: true,
 })
 export class TileComponent {
-  @Input() title = 'tile';
-  @Input() imgSrc = '';
-  @Input() iconName: string | undefined;
+  title = input('tile');
+  imgSrc = input('');
+  iconName = input<string>();
   constructor() {}
 }

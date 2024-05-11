@@ -7,12 +7,11 @@ import {
   Component,
   DoCheck,
   ElementRef,
-  EventEmitter,
   HostListener,
   Input,
   OnDestroy,
-  Output,
-  ViewChild,
+  output,
+  viewChild,
 } from '@angular/core';
 import { fromEvent, interval, Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -27,10 +26,9 @@ import { Haptics, ImpactStyle } from '@capacitor/haptics';
   standalone: true,
 })
 export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, OnDestroy {
-  constructor(private _cdr: ChangeDetectorRef) {}
+  constructor(private _cdr: ChangeDetectorRef) { }
 
-  @ViewChild('alphabetContainer', { static: true })
-  alphabetContainer!: ElementRef;
+  alphabetContainer = viewChild.required<ElementRef>('alphabetContainer');
   hiddenLetterValue = 'zz';
 
   get alphabet(): any {
@@ -164,9 +162,9 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
   private _letterSpacing: number | string | null = '1%';
 
   //Output event when a letter selected
-  @Output() letterChange = new EventEmitter<string>();
+  letterChange = output<string>();
   //Emitted when scrollbar is activated or deactivated
-  @Output() isActive = new EventEmitter<boolean>();
+  isActive = output<boolean>();
 
   private _lastEmittedActive = false;
   private _isComponentActive = false;
@@ -203,7 +201,7 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
   }
 
   checkVisibleLetters(force?: boolean): void {
-    let height = this.alphabetContainer.nativeElement.clientHeight;
+    let height = this.alphabetContainer().nativeElement.clientHeight;
     if (!force && height === this._lastHeight) {
       return;
     }
@@ -213,7 +211,7 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
     let newAlphabet = this.alphabet;
     let letterSpacing = 0;
     let letterSize = this.stringToNumber(
-      getComputedStyle(this.alphabetContainer.nativeElement).getPropertyValue('font-size'),
+      getComputedStyle(this.alphabetContainer().nativeElement).getPropertyValue('font-size'),
     );
 
     if (this.letterMagnification) {
@@ -355,8 +353,8 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
 
   private setLetterFromCoordinates(x: number, y: number): void {
     if (this.exactX) {
-      const rightX = this.alphabetContainer.nativeElement.getBoundingClientRect().right;
-      const leftX = this.alphabetContainer.nativeElement.getBoundingClientRect().left;
+      const rightX = this.alphabetContainer().nativeElement.getBoundingClientRect().right;
+      const leftX = this.alphabetContainer().nativeElement.getBoundingClientRect().left;
 
       this._isComponentActive = x > leftX && x < rightX;
       if (!this._isComponentActive) {
@@ -365,9 +363,9 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
       }
     }
 
-    const height = this.alphabetContainer.nativeElement.clientHeight;
+    const height = this.alphabetContainer().nativeElement.clientHeight;
     //Letters drew outside the viewport or host padding may cause values outsize height boundries (Usage of min/max)
-    const top = Math.min(Math.max(0, y - this.alphabetContainer.nativeElement.getBoundingClientRect().top), height);
+    const top = Math.min(Math.max(0, y - this.alphabetContainer().nativeElement.getBoundingClientRect().top), height);
 
     let topRelative = (top / height) * (this.visibleLetters.length - 1);
     const preferNext = Math.round(topRelative) < topRelative;
@@ -398,14 +396,14 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
 
     return validLettersAsNumbers.length > 0
       ? validLettersAsNumbers.reduce((prev, curr) =>
-          preferNext
-            ? Math.abs(curr - visualLetterIndex) > Math.abs(prev - visualLetterIndex)
-              ? prev
-              : curr
-            : Math.abs(curr - visualLetterIndex) < Math.abs(prev - visualLetterIndex)
-              ? curr
-              : prev,
-        )
+        preferNext
+          ? Math.abs(curr - visualLetterIndex) > Math.abs(prev - visualLetterIndex)
+            ? prev
+            : curr
+          : Math.abs(curr - visualLetterIndex) < Math.abs(prev - visualLetterIndex)
+            ? curr
+            : prev,
+      )
       : 0;
   }
 

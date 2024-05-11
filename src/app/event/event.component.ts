@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { Event } from '../data/models';
 import { CommonModule } from '@angular/common';
@@ -33,19 +33,19 @@ import { CachedImgComponent } from '../cached-img/cached-img.component';
     IonCardSubtitle,
     IonCardContent,
     IonText,
-    CachedImgComponent
-  ]
+    CachedImgComponent,
+  ],
 })
 export class EventComponent {
-  @Input() event!: Event;
-  @Input() title = 'Events';
-  @Input() day: Date | undefined;
-  @Input() showImage = true;
-  @Input() longTime = false;
-  @Input() variableHeight = false;
-  @Output() mapClick = new EventEmitter<any>();
-  @Output() groupClick = new EventEmitter<Event>();
-  @Output() rslClick = new EventEmitter<string>();
+  event = input.required<Event>();
+  title = input('Events');
+  day = input<Date>();
+  showImage = input(true);
+  longTime = input(false);
+  variableHeight = input(false);
+  mapClick = output<any>();
+  groupClick = output<Event>();
+  rslClick = output<string>();
   isReady = false;
 
   constructor(private router: Router) {
@@ -62,14 +62,14 @@ export class EventComponent {
   }
 
   getDay() {
-    return this.day;
+    return this.day();
   }
 
   detail() {
-    if (this.event.uid === '') {
-      this.rslClick.emit(this.event.slug);
+    if (this.event().uid === '') {
+      this.rslClick.emit(this.event().slug);
       return;
     }
-    this.router.navigateByUrl('/event/' + this.event.uid + '+' + this.title);
+    this.router.navigateByUrl('/event/' + this.event().uid + '+' + this.title());
   }
 }

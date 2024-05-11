@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormControl } from '@angular/forms';
 import { Capacitor } from '@capacitor/core';
@@ -13,12 +13,12 @@ import { IonSearchbar } from '@ionic/angular/standalone';
   imports: [ReactiveFormsModule, IonSearchbar],
 })
 export class SearchComponent {
-  @Input() placeholder = '';
-  @Output() search = new EventEmitter<string>();
+  placeholder = input('');
+  search = output<string>();
   form = new FormGroup({
     search: new FormControl(''),
   });
-  constructor() { }
+  constructor() {}
 
   onSubmit() {
     if (this.form.value.search) {

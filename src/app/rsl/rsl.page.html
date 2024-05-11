@@ -34,8 +34,12 @@
       <ion-content class="ion-padding"> {{vm.message}} </ion-content>
     </ng-template>
   </ion-popover>
-  <app-map-modal [title]="vm.mapTitle" [subtitle]="vm.mapSubtitle" [(show)]="vm.showMap"
-    [points]="vm.mapPoints"></app-map-modal>
+  <app-map-modal
+    [title]="vm.mapTitle"
+    [subtitle]="vm.mapSubtitle"
+    [(show)]="vm.showMap"
+    [points]="vm.mapPoints"
+  ></app-map-modal>
   @if (!vm.noEvents && this.vm.events.length === 0) {
   <div>
     <app-skeleton-event></app-skeleton-event>

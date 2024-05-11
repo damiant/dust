@@ -1,5 +1,5 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, effect, input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, input } from '@angular/core';
 import { getCachedImage } from '../data/cache-store';
 
 @Component({
@@ -14,15 +14,14 @@ import { getCachedImage } from '../data/cache-store';
       transition('visible <=> hidden', animate('0.3s ease-in-out')),
     ]),
   ],
-  standalone: true
-
+  standalone: true,
 })
 export class CachedImgComponent {
   _src: string | undefined;
-  @Input() alt: string = '';  
+  alt = input<string>('');
   src = input<string>();
   isReady = false;
-  @Input() loading = 'lazy';
+  loading = input('lazy');
 
   constructor(private _change: ChangeDetectorRef) {
     effect(async () => {
@@ -38,8 +37,4 @@ export class CachedImgComponent {
     this._change.markForCheck();
     this.isReady = true;
   }
-
-
-
-
 }

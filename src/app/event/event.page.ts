@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, signal } from '@angular/core';
+import { Component, OnInit, signal, input, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -64,13 +64,13 @@ import { CachedImgComponent } from '../cached-img/cached-img.component';
     IonBackButton,
     IonHeader,
     IonPopover,
-    CachedImgComponent
-  ]
+    CachedImgComponent,
+  ],
 })
 export class EventPage implements OnInit {
   public event: Event | undefined;
   public back = signal('Back');
-  @ViewChild(IonPopover) popover!: IonPopover;
+  popover = viewChild.required(IonPopover);
   isOpen = false;
   ready = false;
   showMap = false;
@@ -79,7 +79,7 @@ export class EventPage implements OnInit {
   mapSubtitle = '';
   campDescription = '';
   private day: Date | undefined;
-  @Input() eventId: string | undefined;
+  eventId = input<string>();
   constructor(
     private route: ActivatedRoute,
     private db: DbService,
@@ -95,7 +95,7 @@ export class EventPage implements OnInit {
     this.db.checkInit();
     try {
       this.ready = false;
-      const eventId = this.eventId ? this.eventId + '+' : this.route.snapshot.paramMap.get('id');
+      const eventId = this.eventId() ? this.eventId()! + '+' : this.route.snapshot.paramMap.get('id');
 
       let tmp = eventId?.split('+');
 
@@ -127,7 +127,7 @@ export class EventPage implements OnInit {
           return false;
         }
         return !o.old;
-      });      
+      });
       await this.fav.setEventStars(this.event);
     } finally {
       this.ready = true;
@@ -150,7 +150,7 @@ export class EventPage implements OnInit {
   }
 
   async showCamp(e: any) {
-    this.popover.event = e;
+    this.popover().event = e;
     const camp = await this.db.findCamp(this.event?.hosted_by_camp!);
     if (camp) {
       this.campDescription = camp.description!;
@@ -158,15 +158,15 @@ export class EventPage implements OnInit {
     }
   }
 
-  noop() {}
+  noop() { }
 
   share() {
     const url = `https://dust.events?${ShareInfoType.event}=${this.event?.uid}`;
     this.ui.share({
       title: this.event?.title,
       dialogTitle: this.event?.title,
-      text: `Check out ${this.event?.title} at ${this.event?.camp} (${this.event
-        ?.location}) ${this.settings.eventTitle()} using the dust app.`,
+      text: `Check out ${this.event?.title} at ${this.event?.camp} (${this.event?.location
+        }) ${this.settings.eventTitle()} using the dust app.`,
       url,
     });
   }

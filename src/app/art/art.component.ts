@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { Art } from '../data/models';
 import { CommonModule } from '@angular/common';
 import {
@@ -16,17 +16,25 @@ import { CachedImgComponent } from '../cached-img/cached-img.component';
   templateUrl: './art.component.html',
   styleUrls: ['./art.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,  
-  imports: [CommonModule, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent,
-    CachedImgComponent, IonText],
+  standalone: true,
+  imports: [
+    CommonModule,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardSubtitle,
+    IonCardContent,
+    CachedImgComponent,
+    IonText,
+  ],
 })
 export class ArtComponent {
-  @Input() art!: Art;
-  @Input() title = 'Art';
-  @Input() showImage = true;
-  @Output() artClick = new EventEmitter<Art>();
+  art = input.required<Art>();
+  title = input('Art');
+  showImage = input(true);
+  artClick = output<Art>();
 
   click() {
-    this.artClick.emit(this.art);
+    this.artClick.emit(this.art());
   }
 }

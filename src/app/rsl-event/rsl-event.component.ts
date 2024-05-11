@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import {
   IonCard,
   IonCardContent,
@@ -27,13 +27,22 @@ export interface ArtCarEvent {
   styleUrls: ['./rsl-event.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, 
-    IonIcon, IonText, CachedImgComponent],
+  imports: [
+    CommonModule,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardSubtitle,
+    IonCardContent,
+    IonIcon,
+    IonText,
+    CachedImgComponent,
+  ],
 })
 export class RslEventComponent {
-  @Input() event!: RSLEvent;
-  @Output() mapClick = new EventEmitter<RSLEvent>();
-  @Output() artCarClick = new EventEmitter<ArtCarEvent>();
+  event = input.required<RSLEvent>();
+  mapClick = output<RSLEvent>();
+  artCarClick = output<ArtCarEvent>();
 
   constructor(
     private fav: FavoritesService,
@@ -48,14 +57,14 @@ export class RslEventComponent {
 
   public async toggleStar(occurrence: RSLOccurrence) {
     occurrence.star = !occurrence.star;
-    const message = await this.fav.starRSLEvent(occurrence.star, this.event, occurrence);
+    const message = await this.fav.starRSLEvent(occurrence.star, this.event(), occurrence);
     if (message) {
       this.presentToast(message, 'bottom');
     }
   }
 
   public carClick(e: Event) {
-    this.artCarClick.emit({ event: e, artCar: this.event.artCar! });
+    this.artCarClick.emit({ event: e, artCar: this.event().artCar! });
   }
 
   private async presentToast(message: string, position: any) {
@@ -69,11 +78,11 @@ export class RslEventComponent {
   }
 
   public wheelchair() {
-    if (this.event.wa) {
-      this.presentToast('This camp is wheelchair accessible. ' + this.event.waNotes, 'top');
+    if (this.event().wa) {
+      this.presentToast('This camp is wheelchair accessible. ' + this.event().waNotes, 'top');
     } else {
-      if (this.event.waNotes) {
-        this.presentToast(this.event.waNotes, 'top');
+      if (this.event().waNotes) {
+        this.presentToast(this.event().waNotes, 'top');
       } else {
         this.presentToast('This camp may not be wheelchair accessible. They did not provide information.', 'top');
       }

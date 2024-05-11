@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit, model } from '@angular/core';
 import {
   IonButton,
   IonButtons,
@@ -61,13 +61,13 @@ export class PrivateEventComponent implements OnInit {
   public startEvent = new Date(new Date().getFullYear(), 7, 20).toISOString();
   public endEvent = new Date(new Date().getFullYear(), 8, 10).toISOString();
 
-  @Input() event: PrivateEvent = {
+  event = model<PrivateEvent>({
     title: '',
     id: uniqueId('pe'),
     start: this.initialTime,
     address: this.noAddress,
     notes: '',
-  };
+  });
   constructor(
     private streetService: StreetService,
     private modalCtrl: ModalController,
@@ -84,13 +84,13 @@ export class PrivateEventComponent implements OnInit {
     {
       text: 'Confirm',
       handler: (value: any) => {
-        this.event.address = `${value.hour.value}:${value.minute.value} & ${value.street.value}`;
+        this.event().address = `${value.hour.value}:${value.minute.value} & ${value.street.value}`;
       },
     },
   ];
 
   ngOnInit() {
-    this.streetService.setAddress(this.event.address, this.addresses);
+    this.streetService.setAddress(this.event().address, this.addresses);
   }
 
   cancel() {
@@ -98,23 +98,23 @@ export class PrivateEventComponent implements OnInit {
   }
 
   confirm() {
-    if (this.event.title.length == 0) {
+    if (this.event().title.length == 0) {
       this.presentToast(`Specify name`);
       return;
     }
-    if (this.event.address == this.noAddress) {
+    if (this.event().address == this.noAddress) {
       this.presentToast(`Select an address`);
       return;
     }
-    if (this.event.start == this.initialTime) {
+    if (this.event().start == this.initialTime) {
       this.presentToast(`Select a date and time when the event starts`);
       return;
     }
-    return this.modalCtrl.dismiss(this.event, PrivateEventResult.confirm);
+    return this.modalCtrl.dismiss(this.event(), PrivateEventResult.confirm);
   }
 
   deleteEvent() {
-    return this.modalCtrl.dismiss(this.event, PrivateEventResult.delete);
+    return this.modalCtrl.dismiss(this.event(), PrivateEventResult.delete);
   }
 
   async presentToast(message: string) {

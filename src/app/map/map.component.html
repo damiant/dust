@@ -1,31 +1,41 @@
 <ion-popover #popover [isOpen]="isOpen" (didDismiss)="isOpen = false">
   <ng-template>
     @if (info) {
-    <ion-content class="ion-padding">
-      <b>{{ info.title }}</b><br />{{ info.location }}<br />{{ info.subtitle }}
-      <div class="center">
-        @if (info.imageUrl) {
-        <app-cached-img class="pop" [src]="info.imageUrl" [alt]="info.title" (click)="link(info.href)" />
-        }
-      </div>
-      <div class="center">
-        @if (info.href) {
-        <ion-button [disabled]="!isOpen" (click)="link(info.href)" size="small" shape="round">View</ion-button>
-        }
-      </div>
-    </ion-content>
+      <ion-content class="ion-padding">
+        <b>{{ info.title }}</b
+        ><br />{{ info.location }}<br />{{ info.subtitle }}
+        <div class="center">
+          @if (info.imageUrl) {
+            <app-cached-img class="pop" [src]="info.imageUrl" [alt]="info.title" (click)="link(info.href)" />
+          }
+        </div>
+        <div class="center">
+          @if (info.href) {
+            <ion-button [disabled]="!isOpen" (click)="link(info.href)" size="small" shape="round">View</ion-button>
+          }
+        </div>
+      </ion-content>
     }
   </ng-template>
 </ion-popover>
-<app-message (dismissed)="enableGeoLocation()" [show]="showMessage" [title]="'Geolocation'"
-  message="By enabling geolocation you can see where you are on the map."></app-message>
+<app-message
+  (dismissed)="enableGeoLocation()"
+  [show]="showMessage"
+  [title]="'Geolocation'"
+  message="By enabling geolocation you can see where you are on the map."
+></app-message>
 @if (footer) {
-<div [style.paddingBottom.px]="footerPadding" [ngClass]="isHeader ? 'header' : 'footer'">
-  <ion-text>{{ footer }}</ion-text>
-</div>
+  <div [style.paddingBottom.px]="footerPadding()" [ngClass]="isHeader() ? 'header' : 'footer'">
+    <ion-text>{{ footer }}</ion-text>
+  </div>
 }
-<pinch-zoom [backgroundColor]="'var(--ion-background-color)'" #zoom [style]="height" [limit-zoom]="30"
-  [double-tap-scale]="4">
+<pinch-zoom
+  [backgroundColor]="'var(--ion-background-color)'"
+  #zoom
+  [style]="height()"
+  [limit-zoom]="30"
+  [double-tap-scale]="4"
+>
   <div #mapc style="height: 100%">
     <img #map (contextmenu)="mapPoint($event)" [src]="src" />
   </div>

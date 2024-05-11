@@ -30,11 +30,7 @@
   <ion-list lines="none">
     @if (event.imageUrl) {
     <div class="image">
-      <app-cached-img
-        class="image"
-        [alt]="event.title"
-        [src]="event.imageUrl"
-      />
+      <app-cached-img class="image" [alt]="event.title" [src]="event.imageUrl" />
     </div>
     }
     <ion-item>

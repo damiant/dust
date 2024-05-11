@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, effect } from '@angular/core';
+import { Component, OnInit, effect, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -11,7 +11,13 @@ import {
   IonIcon,
   IonText,
   IonTitle,
-  IonToolbar, IonList, IonItem, IonCard, IonCardTitle, IonCardContent, IonCardHeader
+  IonToolbar,
+  IonList,
+  IonItem,
+  IonCard,
+  IonCardTitle,
+  IonCardContent,
+  IonCardHeader,
 } from '@ionic/angular/standalone';
 import { Router, RouterModule } from '@angular/router';
 import { Art, Camp, Event, MapPoint } from '../data/models';
@@ -77,7 +83,13 @@ function intitialState(): FavsState {
   templateUrl: './favs.page.html',
   styleUrls: ['./favs.page.scss'],
   standalone: true,
-  imports: [IonCardHeader, IonCardContent, IonCardTitle, IonCard, IonItem, IonList,
+  imports: [
+    IonCardHeader,
+    IonCardContent,
+    IonCardTitle,
+    IonCard,
+    IonItem,
+    IonList,
     CommonModule,
     FormsModule,
     RouterModule,
@@ -102,7 +114,7 @@ function intitialState(): FavsState {
 export class FavsPage implements OnInit {
   vm: FavsState = intitialState();
 
-  @ViewChild(IonContent) ionContent!: IonContent;
+  ionContent = viewChild.required(IonContent);
 
   constructor(
     private fav: FavoritesService,
@@ -125,7 +137,7 @@ export class FavsPage implements OnInit {
     });
 
     effect(() => {
-      this.ui.scrollUpContent('favs', this.ionContent);
+      this.ui.scrollUpContent('favs', this.ionContent());
     });
   }
 
@@ -260,7 +272,11 @@ export class FavsPage implements OnInit {
     const gps = await this.geo.getPosition();
     for (const art of this.vm.art) {
       const imageUrl: string = art.images?.length > 0 ? art.images[0].thumbnail_url! : '';
-      const mp = toMapPoint(art.location_string, { title: art.name, location: '', subtitle: '', imageUrl: imageUrl }, art.pin);
+      const mp = toMapPoint(
+        art.location_string,
+        { title: art.name, location: '', subtitle: '', imageUrl: imageUrl },
+        art.pin,
+      );
       if (art.location?.gps_latitude && art.location?.gps_longitude) {
         mp.gps = { lat: art.location.gps_latitude, lng: art.location.gps_longitude };
         const dist = distance(gps, mp.gps);
@@ -347,7 +363,7 @@ export class FavsPage implements OnInit {
         start: event.occurrence_set[0].start_time,
         end: event.occurrence_set[0].end_time,
         location: event.camp + location,
-        timeZone: this.db.selectedDataset().timeZone
+        timeZone: this.db.selectedDataset().timeZone,
       });
       if (!success) {
         this.ui.presentDarkToast(`Unable to add events to the calendar. Check permissions.`, this.toastController);
@@ -355,6 +371,9 @@ export class FavsPage implements OnInit {
       }
     }
     await this.calendar.deleteOld(this.db.selectedDataset().title, list);
-    await this.ui.presentToast(`${events.length} events synced with your ${this.db.selectedDataset().title} calendar.`, this.toastController);
+    await this.ui.presentToast(
+      `${events.length} events synced with your ${this.db.selectedDataset().title} calendar.`,
+      this.toastController,
+    );
   }
 }
