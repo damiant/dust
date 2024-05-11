@@ -1,4 +1,4 @@
-import { Component, Signal, WritableSignal, computed, signal, input } from '@angular/core';
+import { Component, Signal, WritableSignal, computed, signal, input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MapComponent } from '../map/map.component';
@@ -45,6 +45,8 @@ import { compassOutline } from 'ionicons/icons';
   ],
 })
 export class PinMapPage {
+  private db = inject(DbService);
+  private geo = inject(GeoService);
   mapType = input('');
   points: MapPoint[] = [];
   smallPins: boolean = false;
@@ -53,10 +55,7 @@ export class PinMapPage {
   });
   title: WritableSignal<string> = signal(' ');
   description = '';
-  constructor(
-    private db: DbService,
-    private geo: GeoService,
-  ) {
+  constructor() {
     addIcons({ compassOutline });
     this.db.checkInit();
   }

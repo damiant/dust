@@ -16,7 +16,6 @@ export class MapModalComponent {
   subtitle = input('');
   showChange = output<boolean>();
   points = input<MapPoint[]>([]);
-  constructor() {}
 
   close() {
     this.show.set(false);

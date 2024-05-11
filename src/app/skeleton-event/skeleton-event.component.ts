@@ -15,6 +15,4 @@ import {
   standalone: true,
   imports: [IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonSkeletonText, IonCardContent],
 })
-export class SkeletonEventComponent {
-  constructor() {}
-}
+export class SkeletonEventComponent {}

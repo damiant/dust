@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
 import {
   Event,
   Favorites,
@@ -24,6 +24,9 @@ enum DbId {
   providedIn: 'root',
 })
 export class FavoritesService {
+  private notificationService = inject(NotificationService);
+  private settingsService = inject(SettingsService);
+  private db = inject(DbService);
   private ready: Promise<void> | undefined;
   public changed = signal(1);
   private dataset: string = '';
@@ -32,11 +35,7 @@ export class FavoritesService {
 
   private favorites: Favorites = { art: [], events: [], camps: [], friends: [], rslEvents: [], privateEvents: [] };
 
-  constructor(
-    private notificationService: NotificationService,
-    private settingsService: SettingsService,
-    private db: DbService,
-  ) {
+  constructor() {
     this.init(this.settingsService.settings.datasetId);
   }
 
@@ -347,8 +346,9 @@ export class FavoritesService {
         gpsCoords: { lat: 0, lng: 0 },
         description: '',
         slug: this.rslId(rslEvent, o),
-        print_description: `${o.who} is playing ${party}${rslEvent.artCar ? 'on the ' + rslEvent.artCar + ' mutant vehicle' : 'at ' + rslEvent.camp
-          }.`,
+        print_description: `${o.who} is playing ${party}${
+          rslEvent.artCar ? 'on the ' + rslEvent.artCar + ' mutant vehicle' : 'at ' + rslEvent.camp
+        }.`,
         occurrence_set: [
           {
             start_time: o.startTime,

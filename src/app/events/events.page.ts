@@ -1,4 +1,4 @@
-import { Component, effect, viewChild } from '@angular/core';
+import { Component, effect, viewChild, inject } from '@angular/core';
 import {
   IonBadge,
   IonButton,
@@ -110,17 +110,16 @@ function initialState(): EventsState {
   ],
 })
 export class EventsPage {
+  public db = inject(DbService);
+  private ui = inject(UiService);
+  private settings = inject(SettingsService);
+  private toastController = inject(ToastController);
+  private geo = inject(GeoService);
   vm: EventsState = initialState();
 
   virtualScroll = viewChild.required(CdkVirtualScrollViewport);
 
-  constructor(
-    public db: DbService,
-    private ui: UiService,
-    private settings: SettingsService,
-    private toastController: ToastController,
-    private geo: GeoService,
-  ) {
+  constructor() {
     addIcons({ compass, compassOutline });
     effect(() => {
       this.ui.scrollUp('events', this.virtualScroll());

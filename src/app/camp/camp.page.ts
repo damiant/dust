@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -53,10 +53,16 @@ import { CachedImgComponent } from '../cached-img/cached-img.component';
     IonLabel,
     IonText,
     IonModal,
-    CachedImgComponent
-  ]
+    CachedImgComponent,
+  ],
 })
 export class CampPage implements OnInit {
+  private route = inject(ActivatedRoute);
+  private db = inject(DbService);
+  private fav = inject(FavoritesService);
+  private settings = inject(SettingsService);
+  private toastController = inject(ToastController);
+  private ui = inject(UiService);
   showEvent = false;
   camp: Camp | undefined;
   mapPoints: MapPoint[] = [];
@@ -66,14 +72,7 @@ export class CampPage implements OnInit {
   star = false;
   backText = 'Camps';
 
-  constructor(
-    private route: ActivatedRoute,
-    private db: DbService,
-    private fav: FavoritesService,
-    private settings: SettingsService,
-    private toastController: ToastController,
-    private ui: UiService,
-  ) {
+  constructor() {
     addIcons({ star, starOutline, shareOutline, locationOutline, calendarOutline });
   }
 

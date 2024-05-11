@@ -1,8 +1,16 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, inject } from '@angular/core';
 import { UiService } from '../ui/ui.service';
-import { IonItem, IonIcon, IonCard, IonCardContent } from "@ionic/angular/standalone";
+import { IonItem, IonIcon, IonCard, IonCardContent } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { compass, compassOutline, linkOutline, callOutline, mailOutline, ticketOutline, tvOutline } from 'ionicons/icons';
+import {
+  compass,
+  compassOutline,
+  linkOutline,
+  callOutline,
+  mailOutline,
+  ticketOutline,
+  tvOutline,
+} from 'ionicons/icons';
 import { CommonModule } from '@angular/common';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 @Component({
@@ -10,10 +18,10 @@ import { CachedImgComponent } from '../cached-img/cached-img.component';
   templateUrl: './link.component.html',
   styleUrls: ['./link.component.scss'],
   standalone: true,
-  imports: [IonCardContent, IonCard, IonIcon, IonItem, CommonModule, CachedImgComponent]
+  imports: [IonCardContent, IonCard, IonIcon, IonItem, CommonModule, CachedImgComponent],
 })
 export class LinkComponent {
-
+  private ui = inject(UiService);
   text = input('');
   url = input('');
   icon = computed(() => {
@@ -31,13 +39,19 @@ export class LinkComponent {
     if (txt.includes('ticket')) {
       return 'ticket-outline';
     }
-    return 'link-outline'
+    return 'link-outline';
   });
 
   type = computed(() => {
     let txt: string = this.text();
     let url: string = this.url();
-    if (url.endsWith('.jpeg') || url.endsWith('.jpg') || url.endsWith('.webp') || url.endsWith('.gif') || url.endsWith('.png')) {
+    if (
+      url.endsWith('.jpeg') ||
+      url.endsWith('.jpg') ||
+      url.endsWith('.webp') ||
+      url.endsWith('.gif') ||
+      url.endsWith('.png')
+    ) {
       return 'image';
     }
     if (txt.includes('<')) {
@@ -49,14 +63,31 @@ export class LinkComponent {
   html = computed(() => {
     let txt: string = this.text();
 
-    return this.removeTagsExceptAllowed(txt, ['b', 'h1', 'h2', 'h3', 'h4', 'code', 'img', 'small', 'br', 'center', 'p', 'i', 'u', 'ul', 'li', 'ol']);
+    return this.removeTagsExceptAllowed(txt, [
+      'b',
+      'h1',
+      'h2',
+      'h3',
+      'h4',
+      'code',
+      'img',
+      'small',
+      'br',
+      'center',
+      'p',
+      'i',
+      'u',
+      'ul',
+      'li',
+      'ol',
+    ]);
   });
 
-  constructor(private ui: UiService) {
-    addIcons({ linkOutline, compass, compassOutline, callOutline, mailOutline, ticketOutline, tvOutline })
+  constructor() {
+    addIcons({ linkOutline, compass, compassOutline, callOutline, mailOutline, ticketOutline, tvOutline });
   }
 
-  link(url: string) {    
+  link(url: string) {
     this.ui.openUrl(url);
   }
 
@@ -78,6 +109,9 @@ export class LinkComponent {
     });
   }
   private replaceAll(str: string, str1: string, str2: string, ignore = true) {
-    return str.replace(new RegExp(str1.replace(/([\/\,\!\\\^\$\{\}\[\]\(\)\.\*\+\?\|\<\>\-\&])/g, "\\$&"), (ignore ? "gi" : "g")), (typeof (str2) == "string") ? str2.replace(/\$/g, "$$$$") : str2);
-  };
+    return str.replace(
+      new RegExp(str1.replace(/([\/\,\!\\\^\$\{\}\[\]\(\)\.\*\+\?\|\<\>\-\&])/g, '\\$&'), ignore ? 'gi' : 'g'),
+      typeof str2 == 'string' ? str2.replace(/\$/g, '$$$$') : str2,
+    );
+  }
 }

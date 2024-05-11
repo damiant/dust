@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output, inject } from '@angular/core';
 import {
   IonCard,
   IonCardContent,
@@ -40,14 +40,13 @@ export interface ArtCarEvent {
   ],
 })
 export class RslEventComponent {
+  private fav = inject(FavoritesService);
+  private toast = inject(ToastController);
   event = input.required<RSLEvent>();
   mapClick = output<RSLEvent>();
   artCarClick = output<ArtCarEvent>();
 
-  constructor(
-    private fav: FavoritesService,
-    private toast: ToastController,
-  ) {
+  constructor() {
     addIcons({ car, star, starOutline });
   }
 

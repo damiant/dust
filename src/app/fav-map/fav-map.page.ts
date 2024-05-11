@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MapComponent } from '../map/map.component';
@@ -34,13 +34,11 @@ import {
   ],
 })
 export class FavMapPage {
+  private fav = inject(FavoritesService);
+  private db = inject(DbService);
   isToastOpen = false;
   points: MapPoint[] = [];
   title = '';
-  constructor(
-    private fav: FavoritesService,
-    private db: DbService,
-  ) {}
 
   ionViewWillEnter() {
     this.title = this.fav.getMapPointsTitle();

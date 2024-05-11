@@ -12,6 +12,7 @@ import {
   OnDestroy,
   output,
   viewChild,
+  inject,
 } from '@angular/core';
 import { fromEvent, interval, Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -26,8 +27,7 @@ import { Haptics, ImpactStyle } from '@capacitor/haptics';
   standalone: true,
 })
 export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, OnDestroy {
-  constructor(private _cdr: ChangeDetectorRef) { }
-
+  private _cdr = inject(ChangeDetectorRef);
   alphabetContainer = viewChild.required<ElementRef>('alphabetContainer');
   hiddenLetterValue = 'zz';
 
@@ -396,14 +396,14 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
 
     return validLettersAsNumbers.length > 0
       ? validLettersAsNumbers.reduce((prev, curr) =>
-        preferNext
-          ? Math.abs(curr - visualLetterIndex) > Math.abs(prev - visualLetterIndex)
-            ? prev
-            : curr
-          : Math.abs(curr - visualLetterIndex) < Math.abs(prev - visualLetterIndex)
-            ? curr
-            : prev,
-      )
+          preferNext
+            ? Math.abs(curr - visualLetterIndex) > Math.abs(prev - visualLetterIndex)
+              ? prev
+              : curr
+            : Math.abs(curr - visualLetterIndex) < Math.abs(prev - visualLetterIndex)
+              ? curr
+              : prev,
+        )
       : 0;
   }
 

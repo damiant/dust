@@ -1,4 +1,4 @@
-import { Component, OnInit, model } from '@angular/core';
+import { Component, OnInit, model, inject } from '@angular/core';
 import {
   IonButton,
   IonButtons,
@@ -54,6 +54,9 @@ export enum PrivateEventResult {
   standalone: true,
 })
 export class PrivateEventComponent implements OnInit {
+  private streetService = inject(StreetService);
+  private modalCtrl = inject(ModalController);
+  private toastController = inject(ToastController);
   noAddress = 'Choose Address';
   initialTime = now().toISOString();
   public addresses: PickerColumn[];
@@ -68,11 +71,7 @@ export class PrivateEventComponent implements OnInit {
     address: this.noAddress,
     notes: '',
   });
-  constructor(
-    private streetService: StreetService,
-    private modalCtrl: ModalController,
-    private toastController: ToastController,
-  ) {
+  constructor() {
     this.addresses = this.streetService.getAddresses();
   }
 

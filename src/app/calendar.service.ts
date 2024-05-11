@@ -3,33 +3,30 @@ import { Calendar } from '@awesome-cordova-plugins/calendar';
 import { Capacitor } from '@capacitor/core';
 
 export interface CalendarEvent {
-  calendar: string,
-  name: string,
-  location: string | undefined,
-  description: string,
-  start: string,
-  end: string,
-  timeZone: string,
-  lat?: number
-  lng?: number
+  calendar: string;
+  name: string;
+  location: string | undefined;
+  description: string;
+  start: string;
+  end: string;
+  timeZone: string;
+  lat?: number;
+  lng?: number;
 }
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CalendarService {
-
-  constructor() { }
-
   async add(event: CalendarEvent): Promise<boolean> {
     try {
       const hasPermission = await Calendar.hasReadWritePermission();
-      console.log('hasPermission', hasPermission);      
+      console.log('hasPermission', hasPermission);
       await this.init(event.calendar);
       const startDate = new Date(event.start);
       const endDate = new Date(event.end);
       let events = [];
       try {
-        if (Capacitor.getPlatform() == 'android') {          
+        if (Capacitor.getPlatform() == 'android') {
           const found = await Calendar.findEvent(event.name, undefined, undefined, startDate, endDate);
           console.log('Found is', found);
           events = [];
@@ -56,9 +53,14 @@ export class CalendarService {
       }
       console.log(`adding event ${event.name} ${startDate}-${endDate}...`);
 
-
       const calendarId = await Calendar.createEventWithOptions(
-        event.name, this.getLocation(event), event.description, startDate, endDate, { calendarName: event.calendar });
+        event.name,
+        this.getLocation(event),
+        event.description,
+        startDate,
+        endDate,
+        { calendarName: event.calendar },
+      );
       console.log(`Id of event ${event.name} added to calendar ${event.calendar}`, calendarId);
 
       return hasPermission;
@@ -66,7 +68,7 @@ export class CalendarService {
       console.error(e);
       return false;
     }
-  }  
+  }
 
   async deleteOld(calendarName: string, titles: string[]): Promise<boolean> {
     try {
@@ -119,15 +121,15 @@ export class CalendarService {
   }
 
   changeTimeZone(date: Date, timeZone: string) {
-
     // suppose the date is 12:00 UTC
-    var d = new Date(date.toLocaleString('en-US', {
-      timeZone
-    }));
+    var d = new Date(
+      date.toLocaleString('en-US', {
+        timeZone,
+      }),
+    );
 
-    var diff = - (date.getTime() - d.getTime());
+    var diff = -(date.getTime() - d.getTime());
 
     return new Date(date.getTime() - diff); // needs to subtract
-
   }
 }

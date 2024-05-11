@@ -1,5 +1,5 @@
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
 import { randomInt } from '../utils/utils';
 import { IonContent, NavController, ToastController } from '@ionic/angular/standalone';
 import { StatusBar, Style } from '@capacitor/status-bar';
@@ -15,11 +15,9 @@ export const ThemePrimaryColor = '#F61067';
   providedIn: 'root',
 })
 export class UiService {
+  private router = inject(Router);
+  public navCtrl = inject(NavController);
   private clickedTab = signal('');
-  constructor(
-    private router: Router,
-    public navCtrl: NavController,
-  ) {}
 
   public scrollUp(name: string, virtualScroll: CdkVirtualScrollViewport) {
     const tab = this.clickedTab();

@@ -1,4 +1,4 @@
-import { Component, WritableSignal, effect, signal, viewChild } from '@angular/core';
+import { Component, WritableSignal, effect, signal, viewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -97,24 +97,23 @@ function initialState(): IntroState {
   ],
 })
 export class IntroPage {
+  private db = inject(DbService);
+  private api = inject(ApiService);
+  private settingsService = inject(SettingsService);
+  private ui = inject(UiService);
+  private fav = inject(FavoritesService);
+  private updateService = inject(UpdateService);
+  private router = inject(Router);
+  private alertController = inject(AlertController);
+  private toastController = inject(ToastController);
+  private shareService = inject(ShareService);
   vm: IntroState = initialState();
   download: WritableSignal<string> = signal('');
   subtitle: WritableSignal<string> = signal('');
   carousel = viewChild.required(CarouselComponent);
   fab = viewChild.required(IonFab);
 
-  constructor(
-    private db: DbService,
-    private api: ApiService,
-    private settingsService: SettingsService,
-    private ui: UiService,
-    private fav: FavoritesService,
-    private updateService: UpdateService,
-    private router: Router,
-    private alertController: AlertController,
-    private toastController: ToastController,
-    private shareService: ShareService,
-  ) {
+  constructor() {
     addIcons({ arrowForwardOutline, chevronUpOutline });
     effect(() => {
       const downloading = this.download();

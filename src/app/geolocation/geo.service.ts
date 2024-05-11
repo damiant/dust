@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
 import { Geolocation } from '@capacitor/geolocation';
 import { GpsCoord, NoGPSCoord, Point, timeStampGPS } from '../map/geo.utils';
 import { DbService } from '../data/db.service';
@@ -13,15 +13,13 @@ import { MapPoint } from '../data/models';
   providedIn: 'root',
 })
 export class GeoService {
+  private db = inject(DbService);
   public gpsPosition = signal(NoGPSCoord());
   public heading = signal(this.noCompassHeading());
   public gpsBusy = signal(false);
   private lastGpsUpdate: Date = noDate();
   private hasPermission = false;
   private centerOfMap: GpsCoord | undefined;
-
-  constructor(private db: DbService) { }
-
   // Returns true if you are granted permission
   public async checkPermissions(): Promise<boolean> {
     if (!Capacitor.isNativePlatform()) {

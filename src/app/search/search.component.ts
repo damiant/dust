@@ -18,7 +18,6 @@ export class SearchComponent {
   form = new FormGroup({
     search: new FormControl(''),
   });
-  constructor() {}
 
   onSubmit() {
     if (this.form.value.search) {

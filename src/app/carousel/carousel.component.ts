@@ -24,8 +24,6 @@ export class CarouselComponent implements AfterViewInit, OnDestroy {
     }, 50);
   }
 
-  constructor() { }
-
   ngAfterViewInit() {
     this.interval = setInterval(() => {
       const padding = parseInt(getComputedStyle(this.container().nativeElement).scrollPaddingLeft);

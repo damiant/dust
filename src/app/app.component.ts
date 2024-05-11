@@ -19,19 +19,18 @@ import { SettingsService } from './data/settings.service';
   imports: [IonApp, IonRouterOutlet, CommonModule],
 })
 export class AppComponent implements OnInit {
+  private notificationService = inject(NotificationService);
+  private integrityService = inject(IntegrityService);
+  private api = inject(ApiService);
+  private shareService = inject(ShareService);
+  private zone = inject(NgZone);
+  private focusService = inject(RouterFocusService);
+  private dbService = inject(DbService);
+  private ui = inject(UiService);
+  private settings = inject(SettingsService);
   public environmentInjector = inject(EnvironmentInjector);
 
-  constructor(
-    private notificationService: NotificationService,
-    private integrityService: IntegrityService,
-    private api: ApiService,
-    private shareService: ShareService,
-    private zone: NgZone,
-    private focusService: RouterFocusService,
-    private dbService: DbService,
-    private ui: UiService,
-    private settings: SettingsService
-  ) {
+  constructor() {
     effect(() => {
       const restart = this.dbService.restart();
       if (restart == '') return;
@@ -56,15 +55,15 @@ export class AppComponent implements OnInit {
           console.error('appUrlOpen', e);
         }
       });
-    });    
+    });
 
     // Test application integrity
-    setTimeout(() => {      
+    setTimeout(() => {
       this.integrityService.testIntegrity();
     }, 10000);
   }
 
-  stackChanged() {    
+  stackChanged() {
     this.dbService.getWorkerLogs();
     this.focusService.focus();
   }

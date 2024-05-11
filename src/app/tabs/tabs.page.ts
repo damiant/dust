@@ -25,18 +25,17 @@ import { Animation, StatusBar } from '@capacitor/status-bar';
   imports: [CommonModule, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel],
 })
 export class TabsPage implements OnInit {
+  public db = inject(DbService);
+  private ui = inject(UiService);
+  private notificationService = inject(NotificationService);
+  private shareService = inject(ShareService);
+  private settings = inject(SettingsService);
+  private router = inject(Router);
   ready = false;
   currentTab: string | undefined;
   private activeTab?: HTMLElement;
   public environmentInjector = inject(EnvironmentInjector);
-  constructor(
-    public db: DbService,
-    private ui: UiService,
-    private notificationService: NotificationService,
-    private shareService: ShareService,
-    private settings: SettingsService,
-    private router: Router
-  ) {
+  constructor() {
     addIcons({ musicalNotesOutline, ellipsisVertical });
     effect(() => {
       const eventId = this.notificationService.hasNotification();
@@ -126,11 +125,11 @@ export class TabsPage implements OnInit {
     this.activeTab = tabsRef.outlet.activatedView?.element;
     this.currentTab = tabsRef.getSelected();
     if (Capacitor.isNativePlatform() && !this.ui.isAndroid()) {
-      const isHidden = (this.currentTab == 'profile');
+      const isHidden = this.currentTab == 'profile';
       if (isHidden) {
-        StatusBar.hide({ animation: Animation.Fade })
+        StatusBar.hide({ animation: Animation.Fade });
       } else {
-        StatusBar.show({ animation: Animation.Fade })
+        StatusBar.show({ animation: Animation.Fade });
       }
     }
   }

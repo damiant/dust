@@ -1,5 +1,5 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, input, inject } from '@angular/core';
 import { getCachedImage } from '../data/cache-store';
 
 @Component({
@@ -17,13 +17,14 @@ import { getCachedImage } from '../data/cache-store';
   standalone: true,
 })
 export class CachedImgComponent {
+  private _change = inject(ChangeDetectorRef);
   _src: string | undefined;
   alt = input<string>('');
   src = input<string>();
   isReady = false;
   loading = input('lazy');
 
-  constructor(private _change: ChangeDetectorRef) {
+  constructor() {
     effect(async () => {
       const src = this.src();
       if (src) {

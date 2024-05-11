@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, input, viewChild } from '@angular/core';
+import { Component, OnInit, signal, input, viewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -68,6 +68,12 @@ import { CachedImgComponent } from '../cached-img/cached-img.component';
   ],
 })
 export class EventPage implements OnInit {
+  private route = inject(ActivatedRoute);
+  private db = inject(DbService);
+  private fav = inject(FavoritesService);
+  private settings = inject(SettingsService);
+  private ui = inject(UiService);
+  private toastController = inject(ToastController);
   public event: Event | undefined;
   public back = signal('Back');
   popover = viewChild.required(IonPopover);
@@ -80,14 +86,7 @@ export class EventPage implements OnInit {
   campDescription = '';
   private day: Date | undefined;
   eventId = input<string>();
-  constructor(
-    private route: ActivatedRoute,
-    private db: DbService,
-    private fav: FavoritesService,
-    private settings: SettingsService,
-    private ui: UiService,
-    private toastController: ToastController,
-  ) {
+  constructor() {
     addIcons({ shareOutline, locationOutline, timeOutline, star, starOutline, pricetagOutline, closeCircleOutline });
   }
 
@@ -158,15 +157,16 @@ export class EventPage implements OnInit {
     }
   }
 
-  noop() { }
+  noop() {}
 
   share() {
     const url = `https://dust.events?${ShareInfoType.event}=${this.event?.uid}`;
     this.ui.share({
       title: this.event?.title,
       dialogTitle: this.event?.title,
-      text: `Check out ${this.event?.title} at ${this.event?.camp} (${this.event?.location
-        }) ${this.settings.eventTitle()} using the dust app.`,
+      text: `Check out ${this.event?.title} at ${this.event?.camp} (${
+        this.event?.location
+      }) ${this.settings.eventTitle()} using the dust app.`,
       url,
     });
   }

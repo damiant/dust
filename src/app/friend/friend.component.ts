@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   IonButton,
@@ -46,6 +46,9 @@ export enum FriendResult {
   standalone: true,
 })
 export class FriendComponent implements OnInit {
+  private modalCtrl = inject(ModalController);
+  private toastController = inject(ToastController);
+  private streetService = inject(StreetService);
   noAddress = 'Choose Address';
   friend: Friend = { name: '', notes: '', address: this.noAddress };
   isEdit: boolean = false;
@@ -65,11 +68,7 @@ export class FriendComponent implements OnInit {
     },
   ];
 
-  constructor(
-    private modalCtrl: ModalController,
-    private toastController: ToastController,
-    private streetService: StreetService,
-  ) {
+  constructor() {
     addIcons({ add, person });
     this.addresses = this.streetService.getAddresses();
   }

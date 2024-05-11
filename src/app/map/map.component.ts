@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, Input, OnDestroy, OnInit, effect, input, viewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, effect, input, viewChild, inject } from '@angular/core';
 import { PinchZoomModule } from '@meddv/ngx-pinch-zoom';
 import { LocationEnabledStatus, MapInfo, MapPoint, Pin } from '../data/models';
 import { defaultMapRadius, distance, formatDistanceMiles, mapPointToPin } from './map.utils';
@@ -45,6 +45,9 @@ const youOffsetY = 4;
   standalone: true,
 })
 export class MapComponent implements OnInit, OnDestroy {
+  private geo = inject(GeoService);
+  private router = inject(Router);
+  private settings = inject(SettingsService);
   _points: MapPoint[];
   isOpen = false;
   footer: string | undefined;
@@ -103,11 +106,7 @@ export class MapComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructor(
-    private geo: GeoService,
-    private router: Router,
-    private settings: SettingsService,
-  ) {
+  constructor() {
     this._points = [];
     effect(async () => {
       const gpsPos = this.geo.gpsPosition();

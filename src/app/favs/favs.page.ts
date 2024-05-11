@@ -1,4 +1,4 @@
-import { Component, OnInit, effect, viewChild } from '@angular/core';
+import { Component, OnInit, effect, viewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -60,7 +60,7 @@ interface FavsState {
   mapPoints: MapPoint[];
 }
 
-function intitialState(): FavsState {
+function initialState(): FavsState {
   return {
     filter: '',
     events: [],
@@ -112,19 +112,18 @@ function intitialState(): FavsState {
   ],
 })
 export class FavsPage implements OnInit {
-  vm: FavsState = intitialState();
+  private fav = inject(FavoritesService);
+  private ui = inject(UiService);
+  private geo = inject(GeoService);
+  private calendar = inject(CalendarService);
+  public db = inject(DbService);
+  private toastController = inject(ToastController);
+  private router = inject(Router);
+  vm: FavsState = initialState();
 
   ionContent = viewChild.required(IonContent);
 
-  constructor(
-    private fav: FavoritesService,
-    private ui: UiService,
-    private geo: GeoService,
-    private calendar: CalendarService,
-    public db: DbService,
-    private toastController: ToastController,
-    private router: Router,
-  ) {
+  constructor() {
     addIcons({ star, starOutline, mapOutline });
     effect(async () => {
       console.log('update favorite');

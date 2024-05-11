@@ -1,4 +1,4 @@
-import { Component, effect, viewChild } from '@angular/core';
+import { Component, effect, viewChild, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {
   IonBadge,
@@ -85,16 +85,15 @@ function initialState(): CampsState {
   ],
 })
 export class CampsPage {
+  public db = inject(DbService);
+  private ui = inject(UiService);
+  private toastController = inject(ToastController);
+  private geo = inject(GeoService);
   vm: CampsState = initialState();
   isScrollDisabled = false;
   virtualScroll = viewChild.required(CdkVirtualScrollViewport);
 
-  constructor(
-    public db: DbService,
-    private ui: UiService,
-    private toastController: ToastController,
-    private geo: GeoService,
-  ) {
+  constructor() {
     addIcons({ compass, compassOutline });
     effect(() => {
       this.ui.scrollUp('camps', this.virtualScroll());

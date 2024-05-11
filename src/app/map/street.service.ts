@@ -10,8 +10,6 @@ export class StreetService {
   private allHours = ['2', '3', '4', '5', '6', '7', '8', '9', '10'];
   private allMinutes = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55'];
 
-  constructor() {}
-
   public getAddresses(): PickerColumn[] {
     const streets: Array<PickerColumnItem> = [];
     for (let street of this.allStreets) {

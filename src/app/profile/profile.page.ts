@@ -1,4 +1,4 @@
-import { Component, OnInit, effect, viewChild } from '@angular/core';
+import { Component, OnInit, effect, viewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -97,6 +97,14 @@ interface Group {
   ],
 })
 export class ProfilePage implements OnInit {
+  private ui = inject(UiService);
+  private settings = inject(SettingsService);
+  private map = inject(MapService);
+  private geo = inject(GeoService);
+  private toastController = inject(ToastController);
+  private calendar = inject(CalendarService);
+  private router = inject(Router);
+  public db = inject(DbService);
   moreClicks = 0;
   rated = false;
   locationEnabled = false;
@@ -113,16 +121,7 @@ export class ProfilePage implements OnInit {
   hasIce = true;
   presentingElement: any;
 
-  constructor(
-    private ui: UiService,
-    private settings: SettingsService,
-    private map: MapService,
-    private geo: GeoService,
-    private toastController: ToastController,
-    private calendar: CalendarService,
-    private router: Router,
-    public db: DbService,
-  ) {
+  constructor() {
     addIcons({
       linkOutline,
       mailUnreadOutline,

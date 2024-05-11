@@ -1,4 +1,4 @@
-import { Component, effect, viewChild } from '@angular/core';
+import { Component, effect, viewChild, inject } from '@angular/core';
 import {
   InfiniteScrollCustomEvent,
   IonBadge,
@@ -83,17 +83,16 @@ function initialState(): ArtState {
   ],
 })
 export class ArtPage {
+  public db = inject(DbService);
+  private ui = inject(UiService);
+  private router = inject(Router);
+  private geo = inject(GeoService);
+  private toastController = inject(ToastController);
   vm: ArtState = initialState();
   private allArt: Art[] = [];
   virtualScroll = viewChild.required(CdkVirtualScrollViewport);
 
-  constructor(
-    public db: DbService,
-    private ui: UiService,
-    private router: Router,
-    private geo: GeoService,
-    private toastController: ToastController,
-  ) {
+  constructor() {
     effect(() => {
       this.ui.scrollUp('art', this.virtualScroll());
     });
@@ -103,7 +102,7 @@ export class ArtPage {
       this.vm = initialState();
       this.vm.showImage = true; // this.isThisYear();
       this.init();
-    });
+    }, { allowSignalWrites: true });
   }
 
   isThisYear(): boolean {

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { Event } from '../data/models';
 import { CommonModule } from '@angular/common';
@@ -37,6 +37,7 @@ import { CachedImgComponent } from '../cached-img/cached-img.component';
   ],
 })
 export class EventComponent {
+  private router = inject(Router);
   event = input.required<Event>();
   title = input('Events');
   day = input<Date>();
@@ -48,7 +49,7 @@ export class EventComponent {
   rslClick = output<string>();
   isReady = false;
 
-  constructor(private router: Router) {
+  constructor() {
     addIcons({ mapOutline });
   }
 

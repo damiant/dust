@@ -12,5 +12,4 @@ export class TileComponent {
   title = input('tile');
   imgSrc = input('');
   iconName = input<string>();
-  constructor() {}
 }

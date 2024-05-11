@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {
   IonCard,
   IonCardContent,
@@ -45,16 +45,15 @@ import { DbService } from '../data/db.service';
   standalone: true,
 })
 export class PrivateEventsComponent implements OnInit {
+  private modalCtrl = inject(ModalController);
+  private fav = inject(FavoritesService);
+  private ui = inject(UiService);
+  private db = inject(DbService);
+  private toastController = inject(ToastController);
   public events: PrivateEvent[] = [];
   private editingPrivateEvent: PrivateEvent | undefined;
 
-  constructor(
-    private modalCtrl: ModalController,
-    private fav: FavoritesService,
-    private ui: UiService,
-    private db: DbService,
-    private toastController: ToastController,
-  ) {
+  constructor() {
     addIcons({ add, calendar });
   }
 
@@ -104,7 +103,12 @@ export class PrivateEventsComponent implements OnInit {
     for (let event of favs.privateEvents) {
       event.startDay = getDayName(event.start);
       event.startTime = new Date(event.start)
-        .toLocaleTimeString('en-US', { timeZone: this.db.getTimeZone(), hour: 'numeric', minute: '2-digit', hour12: true })
+        .toLocaleTimeString('en-US', {
+          timeZone: this.db.getTimeZone(),
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true,
+        })
         .toLowerCase();
     }
     this.events = favs.privateEvents;

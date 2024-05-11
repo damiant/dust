@@ -4,12 +4,9 @@ import { AppUpdate, AppUpdateAvailability } from '@capawesome/capacitor-app-upda
 import { AlertController } from '@ionic/angular/standalone';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UpdateService {
-
-  constructor() { }
-
   public async checkVersion(alert: AlertController) {
     if (Capacitor.getPlatform() == 'web') return;
     const result = await AppUpdate.getAppUpdateInfo();
@@ -34,16 +31,21 @@ export class UpdateService {
       const a = await alert.create({
         header: 'Confirm',
         message,
-        buttons: [{
-          text: 'Update',role: 'cancel', handler: () => {
-            resolve(true);
-          }
-        },
-        {
-          text: 'Skip', handler: () => {
-            resolve(false);
-          }
-        }],
+        buttons: [
+          {
+            text: 'Update',
+            role: 'cancel',
+            handler: () => {
+              resolve(true);
+            },
+          },
+          {
+            text: 'Skip',
+            handler: () => {
+              resolve(false);
+            },
+          },
+        ],
       });
 
       await a.present();

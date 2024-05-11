@@ -24,7 +24,7 @@ export class SettingsService {
       return settings;
     } catch {
       return {
-        datasetId: '',        
+        datasetId: '',
         mapRotation: 0,
         mapUri: '',
         dataset: undefined,
@@ -33,8 +33,7 @@ export class SettingsService {
         longEvents: true,
         preventAutoStart: false,
         offlineEvents: [],
-        scrollLeft: 0
-
+        scrollLeft: 0,
       };
     }
   }

@@ -1,5 +1,16 @@
-import { Injectable, WritableSignal } from '@angular/core';
-import { Art, Camp, Dataset, DatasetFilter, DatasetResult, FullDataset, MapData, Names, Revision, WebLocation } from './models';
+import { Injectable, WritableSignal, inject } from '@angular/core';
+import {
+  Art,
+  Camp,
+  Dataset,
+  DatasetFilter,
+  DatasetResult,
+  FullDataset,
+  MapData,
+  Names,
+  Revision,
+  WebLocation,
+} from './models';
 
 import { SettingsService } from './settings.service';
 import { asNumber, data_dust_events, daysUntil, diffNumbers, nowAtEvent, static_dust_events } from '../utils/utils';
@@ -15,17 +26,15 @@ interface Version {
 }
 
 export interface SendResult {
-  datasetResult?: DatasetResult,
+  datasetResult?: DatasetResult;
   success: boolean;
 }
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  constructor(
-    private settingsService: SettingsService,
-    private dbService: DbService,
-  ) { }
+  private settingsService = inject(SettingsService);
+  private dbService = inject(DbService);
 
   public async sendDataToWorker(
     currentRevision: number,
@@ -40,7 +49,10 @@ export class ApiService {
         console.warn(`Read from app storage`);
         return { success: false };
       }
-      const mapData: MapData = await this.dbService.get(ds, Names.map, { onlyRead: true, defaultValue: { filename: '', uri: '' } });
+      const mapData: MapData = await this.dbService.get(ds, Names.map, {
+        onlyRead: true,
+        defaultValue: { filename: '', uri: '' },
+      });
       console.warn(`Get cached image for ${ds}`);
       const mapUri = await getCachedImage(mapData.uri);
       this.settingsService.settings.mapUri = mapIsOffline ? '' : mapUri;
@@ -64,7 +76,6 @@ export class ApiService {
     const rsl = this.dbService.livePath(ds, Names.rsl);
     const map = this.dbService.livePath(ds, Names.map);
 
-
     const datasetInfo: FullDataset = {
       dataset: ds,
       events,
@@ -75,7 +86,7 @@ export class ApiService {
       rsl,
       map,
       hideLocations,
-      timezone: this.dbService.getTimeZone()
+      timezone: this.dbService.getTimeZone(),
     };
     if (!environment.production) {
       console.warn(`Using non-production: ${JSON.stringify(environment)}`);
@@ -88,7 +99,7 @@ export class ApiService {
     const isPreview = !!this.dbService.overrideDataset;
     if (!result || (hasNoData && !isPreview)) {
       console.error(`dbService.setDataset complete but bad data ${JSON.stringify(result)}`);
-      console.log(`Bad data. Will redownload`)
+      console.log(`Bad data. Will redownload`);
       return { success: false };
     }
     console.info(`dbService.setDataset complete ${JSON.stringify(result)}`);
@@ -108,7 +119,10 @@ export class ApiService {
   public async loadDatasets(filter: DatasetFilter, inactive?: boolean): Promise<Dataset[]> {
     const datasets = await this.dbService.get(Names.datasets, Names.datasets, { freshOnce: true, timeout: 5000 });
     const festivals = await this.dbService.get(Names.festivals, Names.festivals, { freshOnce: true, timeout: 5000 });
-    const location: WebLocation = await this.dbService.get(Names.location, Names.location, { freshOnce: true, timeout: 1000 });
+    const location: WebLocation = await this.dbService.get(Names.location, Names.location, {
+      freshOnce: true,
+      timeout: 1000,
+    });
     return this.cleanNames([...festivals, ...datasets], location, filter, inactive);
   }
 
@@ -122,7 +136,8 @@ export class ApiService {
       }
       dataset.dist = distance(
         { lat: dataset.lat, lng: dataset.long },
-        { lat: asNumber(location.latitude, 0), lng: asNumber(location.longitude, 0) });
+        { lat: asNumber(location.latitude, 0), lng: asNumber(location.longitude, 0) },
+      );
       const daysTilStart = daysUntil(new Date(dataset.start), nowAtEvent(dataset.timeZone)) - 1;
       const hasEnded = daysUntil(new Date(dataset.end), nowAtEvent(dataset.timeZone)) < 0;
       dataset.subTitle = `${daysTilStart} day${daysTilStart == 1 ? '' : 's'} until ${dataset.title}`;
@@ -133,18 +148,22 @@ export class ApiService {
       }
     }
     return datasets
-      .filter(d => d.active || inactive)
-      .filter(d => this.byType(d, filter))
+      .filter((d) => d.active || inactive)
+      .filter((d) => this.byType(d, filter))
       .sort((a, b) => diffNumbers(a.dist, b.dist));
   }
 
   private byType(a: Dataset, filter: DatasetFilter): boolean {
     const isPast = this.isPast(a);
     switch (filter) {
-      case 'bm': return a.id.startsWith('ttitd');
-      case 'past': return isPast;
-      case 'regional': return !isPast && !a.id.startsWith('ttitd');
-      default: return !isPast;
+      case 'bm':
+        return a.id.startsWith('ttitd');
+      case 'past':
+        return isPast;
+      case 'regional':
+        return !isPast && !a.id.startsWith('ttitd');
+      default:
+        return !isPast;
     }
   }
 
@@ -152,9 +171,8 @@ export class ApiService {
     // This is whether the event is in the past
     const end = new Date(a.end);
     const until = daysUntil(end, new Date());
-    return (until < -7); // 1 week grace period until we consider it past
+    return until < -7; // 1 week grace period until we consider it past
   }
-
 
   private async getVersion(): Promise<string> {
     if (Capacitor.getPlatform() == 'web') return `1.0.0.0`;
@@ -170,13 +188,20 @@ export class ApiService {
     }
   }
 
-  public async download(selected: Dataset | undefined, force: boolean, downloadSignal: WritableSignal<string>): Promise<boolean> {
+  public async download(
+    selected: Dataset | undefined,
+    force: boolean,
+    downloadSignal: WritableSignal<string>,
+  ): Promise<boolean> {
     let dataset = '';
     let nextRevision: Revision | undefined;
     let myRevision: Revision | undefined;
     try {
-      // Gets it from netlify      
-      const datasets: Dataset[] = await this.dbService.get(Names.datasets, Names.datasets, { freshOnce: true, timeout: 1000 });
+      // Gets it from netlify
+      const datasets: Dataset[] = await this.dbService.get(Names.datasets, Names.datasets, {
+        freshOnce: true,
+        timeout: 1000,
+      });
       if (!selected) {
         selected = datasets[0];
       }
@@ -184,15 +209,24 @@ export class ApiService {
 
       console.log(`get revision live ${dataset}`);
       myRevision = await this.dbService.get(dataset, Names.revision, { onlyRead: true, defaultValue: { revision: 0 } });
-      nextRevision = await this.dbService.get(dataset, Names.revision, { onlyFresh: true, timeout: 2000, defaultValue: { revision: 0 } });
+      nextRevision = await this.dbService.get(dataset, Names.revision, {
+        onlyFresh: true,
+        timeout: 2000,
+        defaultValue: { revision: 0 },
+      });
       console.log(`Next revision is ${JSON.stringify(nextRevision)} force is ${force}`);
       console.log(`My revision is ${JSON.stringify(myRevision)}`);
 
       // Check the current revision
-      const version: Version = await this.dbService.get(dataset, Names.version, { onlyRead: true, defaultValue: { version: '' } });
+      const version: Version = await this.dbService.get(dataset, Names.version, {
+        onlyRead: true,
+        defaultValue: { version: '' },
+      });
       const currentVersion = await this.getVersion();
 
-      console.info(`${dataset}: force=${force} revision=${JSON.stringify(myRevision)} currentRevision=${JSON.stringify(nextRevision)}`)
+      console.info(
+        `${dataset}: force=${force} revision=${JSON.stringify(myRevision)} currentRevision=${JSON.stringify(nextRevision)}`,
+      );
 
       if (
         !force &&
@@ -218,25 +252,28 @@ export class ApiService {
     downloadSignal.set(selected ? selected.title : ' ');
     const currentVersion = await this.getVersion();
     const revision: Revision = nextRevision;
-    const [rEvents, rArt, rCamps, rPins, rLinks, rRSL, rMap, rGeo, rRestrooms, rIce, rMedical] = await Promise.allSettled([
-      this.dbService.get(dataset, Names.events, { revision: revision.revision, defaultValue: '' }),
-      this.dbService.get(dataset, Names.art, { revision: revision.revision, defaultValue: '' }),
-      this.dbService.get(dataset, Names.camps, { revision: revision.revision, defaultValue: '' }),
-      this.dbService.get(dataset, Names.pins, { revision: revision.revision, defaultValue: '' }),
-      this.dbService.get(dataset, Names.links, { revision: revision.revision, defaultValue: '' }),
-      this.dbService.get(dataset, Names.rsl, { revision: revision.revision, defaultValue: '' }),
-      this.dbService.get(dataset, Names.map, { revision: revision.revision, defaultValue: '' }),
-      this.dbService.get(dataset, Names.geo, { revision: revision.revision, defaultValue: '' }),
-      this.dbService.get(dataset, Names.restrooms, { revision: revision.revision, defaultValue: '' }),
-      this.dbService.get(dataset, Names.ice, { revision: revision.revision, defaultValue: '' }),
-      this.dbService.get(dataset, Names.medical, { revision: revision.revision, defaultValue: '' }),
-    ]);
+    const [rEvents, rArt, rCamps, rPins, rLinks, rRSL, rMap, rGeo, rRestrooms, rIce, rMedical] =
+      await Promise.allSettled([
+        this.dbService.get(dataset, Names.events, { revision: revision.revision, defaultValue: '' }),
+        this.dbService.get(dataset, Names.art, { revision: revision.revision, defaultValue: '' }),
+        this.dbService.get(dataset, Names.camps, { revision: revision.revision, defaultValue: '' }),
+        this.dbService.get(dataset, Names.pins, { revision: revision.revision, defaultValue: '' }),
+        this.dbService.get(dataset, Names.links, { revision: revision.revision, defaultValue: '' }),
+        this.dbService.get(dataset, Names.rsl, { revision: revision.revision, defaultValue: '' }),
+        this.dbService.get(dataset, Names.map, { revision: revision.revision, defaultValue: '' }),
+        this.dbService.get(dataset, Names.geo, { revision: revision.revision, defaultValue: '' }),
+        this.dbService.get(dataset, Names.restrooms, { revision: revision.revision, defaultValue: '' }),
+        this.dbService.get(dataset, Names.ice, { revision: revision.revision, defaultValue: '' }),
+        this.dbService.get(dataset, Names.medical, { revision: revision.revision, defaultValue: '' }),
+      ]);
 
     const events = rEvents.status == 'fulfilled' ? rEvents.value : '';
     const art: Art[] = rArt.status == 'fulfilled' ? rArt.value : '';
     const camps = rCamps.status == 'fulfilled' ? rCamps.value : '';
     const map = rMap.status == 'fulfilled' ? rMap.value : '';
-    console.log(`events=${rEvents.status} art=${rArt.status} camps=${rCamps.status} pins=${rPins.status} links=${rLinks.status} map=${rMap.status} geo=${rGeo.status} restrooms=${rRestrooms.status} ice=${rIce.status} medical=${rMedical.status} rsl=${rRSL.status}`);
+    console.log(
+      `events=${rEvents.status} art=${rArt.status} camps=${rCamps.status} pins=${rPins.status} links=${rLinks.status} map=${rMap.status} geo=${rGeo.status} restrooms=${rRestrooms.status} ice=${rIce.status} medical=${rMedical.status} rsl=${rRSL.status}`,
+    );
     let uri: string | undefined = undefined;
     if (map) {
       const ext = map.filename ? map.filename.split('.').pop() : 'svg';

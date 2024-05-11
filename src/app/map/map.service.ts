@@ -11,8 +11,6 @@ export interface GPSPin {
   providedIn: 'root',
 })
 export class MapService {
-  constructor() {}
-
   async openAppleMap(pin: GPSPin) {
     if (await this.canOpenMapApp('apple')) {
       // Apple seems to always return true when checking URL for Apple Maps...regardless if the app is actually installed

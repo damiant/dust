@@ -1,4 +1,4 @@
-import { Component, effect, viewChild } from '@angular/core';
+import { Component, effect, viewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -102,17 +102,16 @@ function initialState(): RSLState {
   ],
 })
 export class RslPage {
+  private ui = inject(UiService);
+  private db = inject(DbService);
+  private geo = inject(GeoService);
+  private fav = inject(FavoritesService);
+  private toastController = inject(ToastController);
   vm: RSLState = initialState();
   allEvents: RSLEvent[] = [];
   ionContent = viewChild.required(IonContent);
   popover = viewChild<any>('popover');
-  constructor(
-    private ui: UiService,
-    private db: DbService,
-    private geo: GeoService,
-    private fav: FavoritesService,
-    private toastController: ToastController,
-  ) {
+  constructor() {
     addIcons({ compass, compassOutline });
     effect(() => {
       this.ui.scrollUpContent('rsl', this.ionContent());
