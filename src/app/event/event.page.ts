@@ -38,7 +38,7 @@ import {
   pricetagOutline,
   closeCircleOutline,
 } from 'ionicons/icons';
-import { CachedImgComponent } from '../cached-img/cached-img.component';
+import { CachedImgComponent, ImageLocation } from '../cached-img/cached-img.component';
 
 @Component({
   selector: 'app-event',
@@ -86,6 +86,7 @@ export class EventPage implements OnInit {
   campDescription = '';
   private day: Date | undefined;
   eventId = input<string>();
+  imageLocation = input<ImageLocation>('top');
   constructor() {
     addIcons({ shareOutline, locationOutline, timeOutline, star, starOutline, pricetagOutline, closeCircleOutline });
   }
@@ -157,16 +158,15 @@ export class EventPage implements OnInit {
     }
   }
 
-  noop() {}
+  noop() { }
 
   share() {
     const url = `https://dust.events?${ShareInfoType.event}=${this.event?.uid}`;
     this.ui.share({
       title: this.event?.title,
       dialogTitle: this.event?.title,
-      text: `Check out ${this.event?.title} at ${this.event?.camp} (${
-        this.event?.location
-      }) ${this.settings.eventTitle()} using the dust app.`,
+      text: `Check out ${this.event?.title} at ${this.event?.camp} (${this.event?.location
+        }) ${this.settings.eventTitle()} using the dust app.`,
       url,
     });
   }

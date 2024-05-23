@@ -2,6 +2,8 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, input, inject } from '@angular/core';
 import { getCachedImage } from '../data/cache-store';
 
+export type ImageLocation = 'top' | 'bottom';
+
 @Component({
   selector: 'app-cached-img',
   templateUrl: './cached-img.component.html',

@@ -23,6 +23,12 @@
   </ion-popover>
   @if (ready && event) {
   <ion-list lines="none">
+    @if (event.imageUrl && imageLocation() !== 'bottom') {
+    <div class="image">
+      <app-cached-img class="image" [alt]="event.title" [src]="event.imageUrl" />
+    </div>
+    }
+
     <ion-item>
       <h1 class="page-focus">{{event.title}}</h1>
     </ion-item>
@@ -68,7 +74,7 @@
       }
     </div>
     }
-    @if (event.imageUrl) {
+    @if (event.imageUrl && imageLocation() === 'bottom') {
     <div class="image">
       <app-cached-img class="image" [alt]="event.title" [src]="event.imageUrl" />
     </div>
