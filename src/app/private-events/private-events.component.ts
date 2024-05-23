@@ -68,9 +68,9 @@ export class PrivateEventsComponent implements OnInit {
       presentingElement: e,
       componentProps: event
         ? {
-            event: event,
-            isEdit: event,
-          }
+          event: event,
+          isEdit: event,
+        }
         : undefined,
     });
     modal.present();

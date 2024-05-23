@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { PickerColumn } from '@ionic/angular/standalone';
-import { PickerColumnItem } from '@ionic/core';
 
 @Injectable({
   providedIn: 'root',
@@ -11,17 +10,17 @@ export class StreetService {
   private allMinutes = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55'];
 
   public getAddresses(): PickerColumn[] {
-    const streets: Array<PickerColumnItem> = [];
+    const streets: Array<any> = [];
     for (let street of this.allStreets) {
       streets.push({ text: street, value: street });
     }
 
-    const hours: Array<PickerColumnItem> = [];
+    const hours: Array<any> = [];
     for (let hour of this.allHours) {
       hours.push({ text: hour, value: hour });
     }
 
-    const minutes: Array<PickerColumnItem> = [];
+    const minutes: Array<any> = [];
     for (let minute of this.allMinutes) {
       minutes.push({ text: minute, value: minute });
     }
@@ -43,7 +42,7 @@ export class StreetService {
       addresses[0].selectedIndex = this.allHours.indexOf(hour);
       addresses[1].selectedIndex = this.allMinutes.indexOf(minutes);
       addresses[2].selectedIndex = this.allStreets.indexOf(street);
-    } catch {}
+    } catch { }
   }
 
   public indexOfHour(hour: string): number {

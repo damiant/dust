@@ -50,7 +50,7 @@
     "@capacitor/splash-screen": "^6.0.0",
     "@capacitor/status-bar": "^6.0.0",
     "@capawesome/capacitor-app-update": "6.0.0",
-    "@ionic/angular": "7.7.3",
+    "@ionic/angular": "8.2.0",
     "@mauricewegner/capacitor-navigation-bar": "2.0.3",
     "@meddv/ngx-pinch-zoom": "17.0.0",
     "capacitor-print-webview": "6.0.3",
