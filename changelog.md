@@ -4,6 +4,7 @@
 
 - Print option for favorites
 - Fix for error when trying to download maps that are > 5mb
+- Move event images to bottom of popover so you can access information
 
 ## 2.14
 
