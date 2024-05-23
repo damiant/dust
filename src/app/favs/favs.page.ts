@@ -1,4 +1,4 @@
-import { Component, OnInit, effect, viewChild, inject } from '@angular/core';
+import { Component, OnInit, effect, viewChild, inject, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -33,9 +33,12 @@ import { SearchComponent } from '../search/search.component';
 import { distance, formatDistanceMiles, toMapPoint } from '../map/map.utils';
 import { GeoService } from '../geolocation/geo.service';
 import { addIcons } from 'ionicons';
-import { star, starOutline, mapOutline } from 'ionicons/icons';
+import { star, starOutline, mapOutline, printOutline } from 'ionicons/icons';
 import { CalendarService } from '../calendar.service';
 import { ToastController } from '@ionic/angular';
+import { PrintWebview } from 'capacitor-print-webview';
+import { delay } from '../utils/utils';
+
 
 enum Filter {
   All = '',
@@ -122,9 +125,10 @@ export class FavsPage implements OnInit {
   vm: FavsState = initialState();
 
   ionContent = viewChild.required(IonContent);
+  @ViewChild('printSection', { read: ElementRef }) printSection!: ElementRef;
 
   constructor() {
-    addIcons({ star, starOutline, mapOutline });
+    addIcons({ star, starOutline, mapOutline, printOutline });
     effect(async () => {
       console.log('update favorite');
       this.fav.changed();
@@ -374,5 +378,14 @@ export class FavsPage implements OnInit {
       `${events.length} events synced with your ${this.db.selectedDataset().title} calendar.`,
       this.toastController,
     );
+  }
+
+  async print() {
+
+    const r = document.documentElement;
+    r.style.setProperty('--body-height', `${this.printSection.nativeElement.offsetHeight * 2}px`);
+    r.style.setProperty('--zoom', '0.5');
+    delay(500);
+    await PrintWebview.print();
   }
 }

@@ -190,7 +190,7 @@ ion-back-button {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    width: 100%;    
+    width: 100%;
     height: 100vh;
 }
 
@@ -318,4 +318,83 @@ cdk-virtual-scroll-viewport {
 
 .page-focus:focus-visible {
     outline: none;
+}
+
+
+:root {
+    --zoom: 1;
+}
+
+
+@media print {
+
+    ion-header,
+    ion-backdrop,
+    .tabbar,
+    ion-footer,
+    ion-content::part(background) {
+        display: none !important;
+    }
+
+    ion-nav {
+        contain: none;
+        overflow: visible;
+    }
+
+    ion-split-pane {
+        display: block;
+    }
+
+    .scroll-content,
+    ion-modal,
+    ion-modal .modal-wrapper,
+    ion-modal .ion-page,
+    ion-modal .ion-page>ion-content,
+    .ion-page,
+    .ion-page>ion-content,
+    ion-split-pane,
+    ion-tab,
+    ion-tabs,
+    ion-router-outlet,
+    .app-root,
+    ion-content::part(scroll),
+    body {
+        contain: none;
+        position: initial;
+        height: auto !important; // auto !important;
+        overflow: visible !important;
+        max-height: initial !important;
+    }
+
+    body {
+        height: var(--body-height) !important;
+        max-height: unset !important;
+        zoom: var(--zoom);
+    }
+
+    ion-content {
+        --offset-bottom: unset !important;
+        display: unset !important;
+        ;
+        position: unset !important;
+        ;
+        height: unset !important;
+        contain: none !important;
+    }
+
+    ion-tab-bar {
+        display: none;
+    }
+
+    ion-router-outlet {
+        overflow: auto !important;
+        contain: none !important;
+        position: initial !important;
+    }
+
+    .fixed-content,
+    .scroll-content {
+        margin-top: 0 !important;
+    }
+
 }
