@@ -1,5 +1,10 @@
 ## Changes
 
+## 2.15
+
+- Print option for favorites
+- Fix for error when trying to download maps that are > 5mb
+
 ## 2.14
 
 - Fix performance of first opening of the map (dont wait on GPS)
