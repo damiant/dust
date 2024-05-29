@@ -28,12 +28,14 @@
   <ion-card-content>
     <div class="rsl-container">
       @for (occurrence of event().occurrences; track occurrence) {
-      <div class="rsl-item" (click)="toggleStar(occurrence)">
+      <div (click)="toggleStar(occurrence)">
         <!-- <ion-button size="small" fill="clear" (click)="toggleStar(occurrence)" slot="icon"> -->
         <!-- <ion-icon *ngIf="!occurrence.star" name="star-outline"></ion-icon> -->
         <!-- </ion-button> -->
         <ion-text [class.old]="occurrence.old" class="one-line">
-          <span class="time">{{ occurrence.timeRange }}</span> {{ occurrence.who }}
+          <span class="time">{{ occurrence.timeRange.length > 10 ? occurrence.time : occurrence.timeRange }}</span>{{
+          occurrence.who }}
+
           <ion-icon class="star" color="primary" [hidden]="!occurrence.star" name="star"></ion-icon>
         </ion-text>
       </div>
