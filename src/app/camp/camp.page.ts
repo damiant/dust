@@ -126,10 +126,11 @@ export class CampPage implements OnInit {
     this.showEvent = true;
   }
 
-  noop() {}
+  noop() { }
 
   share() {
-    const url = `https://dust.events?${ShareInfoType.camp}=${this.camp?.uid}`;
+    //const url = `https://dust.events?${ShareInfoType.camp}=${this.camp?.uid}`;
+    const url = `https://${this.settings.settings.dataset!.id}.dust.events/camp/${this.camp?.uid}`;
     this.ui.share({
       title: this.camp?.name,
       dialogTitle: this.camp?.name,
