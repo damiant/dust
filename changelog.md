@@ -7,6 +7,7 @@
 - Move event images to bottom of popover so you can access information
 - Fix for private event editing which was previously blank
 - Fix for music times overlapping text
+- Labels fo the map
 
 ## 2.14
 

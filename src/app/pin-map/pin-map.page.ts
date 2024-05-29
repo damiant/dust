@@ -130,6 +130,7 @@ export class PinMapPage {
             location: camp.location_string!,
             subtitle: '',
             imageUrl: camp.imageUrl,
+            label: this.initials(camp.name, camp.label),
             href: '/camp/' + camp.uid + '+' + 'Map',
           },
           camp.pin,
@@ -141,7 +142,8 @@ export class PinMapPage {
       const map = await this.mapFor(type);
       map.points.forEach((point, index) => {
         if (!point.info) {
-          point.info = { title: map.title, location: '', subtitle: `${index + 1} of ${map.points.length}` };
+          const label = type == Names.restrooms ? '🧻' : undefined;
+          point.info = { title: map.title, location: '', subtitle: `${index + 1} of ${map.points.length}`, label };
         }
         point.info.bgColor = this.colorOf(type);
       });
@@ -184,10 +186,17 @@ export class PinMapPage {
       title: art.name,
       subtitle: '',
       location: '',
+      label: this.initials(art.name, art.label),
       imageUrl: art.images && art.images[0] ? art.images[0].thumbnail_url : '',
       href: '/art/' + art.uid + '+' + this.title(),
     };
     return point;
+  }
+
+  private initials(name: string, defaultValue: string | undefined): string {
+    if (defaultValue) return defaultValue;
+    let inits = name.split(' ').map((s) => s.charAt(0)).join('');
+    return inits.substring(0, 2).toUpperCase();
   }
 
   private async getEventsNow(): Promise<MapSet> {

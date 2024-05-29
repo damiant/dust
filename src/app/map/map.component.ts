@@ -184,7 +184,7 @@ export class MapComponent implements OnInit, OnDestroy {
     for (let point of this._points) {
       const pin = mapPointToPin(point, defaultMapRadius);
       if (pin) {
-        const div = this.plotXY(pin.x, pin.y, 6, 0, point.info, undefined, blink);
+        const div = this.plotXY(pin.x, pin.y, 6, 6, point.info, undefined, blink);
         this.divs.push(div);
       } else {
         console.error(`Point could not be converted to pin`);
@@ -367,6 +367,21 @@ export class MapComponent implements OnInit, OnDestroy {
       };
     }
     const c: HTMLElement = this.mapc().nativeElement;
+    if (info?.label) {
+      const p = document.createElement('p');
+      const t = document.createTextNode(info?.label);
+      p.style.margin = '0';
+      p.style.marginTop = '-3px';
+      p.style.marginLeft = '-7px';
+      p.style.color = 'white';
+      p.style.width = `22px`;
+      p.style.textAlign = 'center';
+      p.style.fontSize = '11px';
+      p.style.fontWeight = 'bold';
+      p.style.transform = 'scale(0.3)';
+      p.appendChild(t);
+      d.appendChild(p);
+    }
     c.insertBefore(d, c.firstChild);
     return d;
   }
@@ -379,7 +394,6 @@ export class MapComponent implements OnInit, OnDestroy {
     d.style.top = `${pt.y}px`;
     d.style.position = 'absolute';
     d.style.fontSize = '3px';
-    d.style.padding = '1px';
     d.style.borderRadius = '3px';
     d.style.color = `var(--ion-color-light)`;
     d.style.backgroundColor = `var(--ion-color-dark)`;

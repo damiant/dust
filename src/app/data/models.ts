@@ -77,6 +77,7 @@ export interface Camp {
   uid: string;
   url?: string;
   imageUrl?: string; // Added by dust
+  label?: string; // Added by dust
   gpsCoord: GpsCoord;
   pin: Pin;
   distance: number;
@@ -117,6 +118,7 @@ export interface Art {
   name: string;
   program: string;
   self_guided_tour_map: number;
+  label?: string; // Added by dust
   uid: string;
   url?: string;
   year: number;
@@ -280,6 +282,7 @@ export interface MapInfo {
   imageUrl?: string;
   href?: string;
   bgColor?: string;
+  label?: string;
 }
 
 export interface PrivateEvent {

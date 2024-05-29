@@ -24,7 +24,7 @@ import { EventPage } from '../event/event.page';
 import { FavoritesService } from '../favs/favorites.service';
 import { UiService } from '../ui/ui.service';
 import { SettingsService } from '../data/settings.service';
-import { ShareInfoType } from '../share/share.service';
+//import { ShareInfoType } from '../share/share.service';
 import { toMapPoint } from '../map/map.utils';
 import { getOrdinalNum } from '../utils/utils';
 import { addIcons } from 'ionicons';
