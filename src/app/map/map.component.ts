@@ -65,6 +65,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private mapInformation: MapInformation | undefined;
   private compass: HTMLImageElement | undefined;
   private _viewReady = false;
+  private selected: HTMLDivElement | undefined;
 
   zoom = viewChild.required<ElementRef>('zoom');
   map = viewChild.required<ElementRef>('map');
@@ -137,7 +138,15 @@ export class MapComponent implements OnInit, OnDestroy {
   public triggerClick(pointIdx: number): boolean {
     try {
       const div = this.divs[pointIdx];
+      div.style.animationName = `pulse`;
+      div.style.animationDuration = '2s';
       div.click();
+      if (this.selected) {
+        // Deselect the previous selected
+        this.selected.style.animationName = '';
+        this.selected.style.animationDuration = '';
+      }
+      this.selected = div;
       return true;
     } catch (err) {
       console.error(`Error in triggerClick: ${err}`);
