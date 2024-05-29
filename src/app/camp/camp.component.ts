@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { Camp } from '../data/models';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -18,12 +18,22 @@ import { CachedImgComponent } from '../cached-img/cached-img.component';
   styleUrls: ['./camp.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, RouterModule, IonCard, IonCardHeader, IonCardSubtitle, IonText, IonCardTitle, IonCardContent, CachedImgComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    IonCard,
+    IonCardHeader,
+    IonCardSubtitle,
+    IonText,
+    IonCardTitle,
+    IonCardContent,
+    CachedImgComponent,
+  ],
 })
 export class CampComponent {
-  @Input() camp!: Camp;
-  @Input() title = 'Camps';
-  @Output() mapClick = new EventEmitter<any>();
+  camp = input.required<Camp>();
+  title = input('Camps');
+  mapClick = output<any>();
 
   map(camp: Camp, ev: any) {
     console.log('emit', camp);

@@ -6,6 +6,4 @@ import { Component } from '@angular/core';
   styleUrls: ['./tile-container.component.scss'],
   standalone: true,
 })
-export class TileContainerComponent {
-  constructor() {}
-}
+export class TileContainerComponent {}

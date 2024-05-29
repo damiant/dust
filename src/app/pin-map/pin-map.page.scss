@@ -1,9 +1,18 @@
 .rotate {
-    animation:rotate 2s  infinite;
+    animation: rotate 2s infinite;
 }
 
 @keyframes rotate {
-    from { -webkit-transform: rotate(0deg) } 
-    to { -webkit-transform: rotate(360deg) } 
+    from {
+        -webkit-transform: rotate(0deg)
+    }
+
+    to {
+        -webkit-transform: rotate(360deg)
+    }
 }
 
+app-search {
+    margin-top: 0.5rem;
+    width: 150px;
+}

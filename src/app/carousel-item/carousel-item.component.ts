@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, viewChild } from '@angular/core';
 
 @Component({
   selector: 'app-carousel-item',
@@ -7,13 +7,11 @@ import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
   standalone: true,
 })
 export class CarouselItemComponent implements AfterViewInit {
-
-  @ViewChild('item') item!: ElementRef;
+  item = viewChild.required<ElementRef>('item');
 
   width = 0;
 
   ngAfterViewInit() {
-    this.width = this.item.nativeElement.clientWidth;
+    this.width = this.item().nativeElement.clientWidth;
   }
-
 }

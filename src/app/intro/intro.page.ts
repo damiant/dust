@@ -1,7 +1,23 @@
-import { Component, ViewChild, WritableSignal, effect, signal } from '@angular/core';
+import { Component, WritableSignal, effect, signal, viewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AlertController, IonButton, IonContent, IonIcon, IonSpinner, IonText, ToastController, IonFab, IonFabButton, IonFabList, IonItem, IonList, IonPopover, IonRadioGroup, IonRadio } from '@ionic/angular/standalone';
+import {
+  AlertController,
+  IonButton,
+  IonContent,
+  IonIcon,
+  IonSpinner,
+  IonText,
+  ToastController,
+  IonFab,
+  IonFabButton,
+  IonFabList,
+  IonItem,
+  IonList,
+  IonPopover,
+  IonRadioGroup,
+  IonRadio,
+} from '@ionic/angular/standalone';
 import { Router, RouterModule } from '@angular/router';
 import { DbService } from '../data/db.service';
 import { SplashScreen } from '@capacitor/splash-screen';
@@ -48,7 +64,7 @@ function initialState(): IntroState {
     message: '',
     clearCount: 0,
     scrollLeft: 0,
-    showing: 'all'
+    showing: 'all',
   };
 }
 
@@ -57,7 +73,15 @@ function initialState(): IntroState {
   templateUrl: './intro.page.html',
   styleUrls: ['./intro.page.scss'],
   standalone: true,
-  imports: [IonRadio, IonRadioGroup, IonPopover, IonList, IonItem, IonFabList, IonFabButton, IonFab,
+  imports: [
+    IonRadio,
+    IonRadioGroup,
+    IonPopover,
+    IonList,
+    IonItem,
+    IonFabList,
+    IonFabButton,
+    IonFab,
     CommonModule,
     FormsModule,
     RouterModule,
@@ -69,36 +93,32 @@ function initialState(): IntroState {
     IonContent,
     CachedImgComponent,
     CarouselComponent,
-    CarouselItemComponent
+    CarouselItemComponent,
   ],
 })
 export class IntroPage {
+  private db = inject(DbService);
+  private api = inject(ApiService);
+  private settingsService = inject(SettingsService);
+  private ui = inject(UiService);
+  private fav = inject(FavoritesService);
+  private updateService = inject(UpdateService);
+  private router = inject(Router);
+  private alertController = inject(AlertController);
+  private toastController = inject(ToastController);
+  private shareService = inject(ShareService);
   vm: IntroState = initialState();
   download: WritableSignal<string> = signal('');
   subtitle: WritableSignal<string> = signal('');
-  @ViewChild(CarouselComponent) carousel!: CarouselComponent;
-  @ViewChild(IonFab) fab!: IonFab;
+  carousel = viewChild.required(CarouselComponent);
+  fab = viewChild.required(IonFab);
 
-  constructor(
-    private db: DbService,
-    private api: ApiService,
-    private settingsService: SettingsService,
-    private ui: UiService,
-    private fav: FavoritesService,
-    private updateService: UpdateService,
-    private router: Router,
-    private alertController: AlertController,
-    private toastController: ToastController,
-    private shareService: ShareService
-  ) {
+  constructor() {
     addIcons({ arrowForwardOutline, chevronUpOutline });
     effect(() => {
       const downloading = this.download();
       if (downloading !== '') {
-        this.ui.presentDarkToast(
-          `Downloading ${downloading}`,
-          this.toastController,
-        );
+        this.ui.presentDarkToast(`Downloading ${downloading}`, this.toastController);
       }
     });
     effect(async () => {
@@ -115,7 +135,8 @@ export class IntroPage {
   async ionViewWillEnter() {
     this.vm = initialState();
     // Whether the user has selected an event already
-    this.vm.eventAlreadySelected = !isWhiteSpace(this.settingsService.settings.datasetId) && !this.settingsService.settings.preventAutoStart;
+    this.vm.eventAlreadySelected =
+      !isWhiteSpace(this.settingsService.settings.datasetId) && !this.settingsService.settings.preventAutoStart;
     if (this.settingsService.settings.dataset) {
       const end = new Date(this.settingsService.settings.dataset.end);
       const until = daysUntil(end, now());
@@ -127,21 +148,21 @@ export class IntroPage {
     }
 
     this.vm.cards = await this.api.loadDatasets(this.vm.showing);
-    console.log(`Search for`, this.settingsService.settings.datasetId)
+    console.log(`Search for`, this.settingsService.settings.datasetId);
     const idx = this.vm.cards.findIndex((c) => this.api.datasetId(c) == this.settingsService.settings.datasetId);
     if (idx >= 0) {
       this.vm.selected = this.vm.cards[idx];
       this.subtitle.set(this.vm.selected.subTitle);
-      this.carousel.setScrollLeft(this.settingsService.settings.scrollLeft);
+      this.carousel().setScrollLeft(this.settingsService.settings.scrollLeft);
     }
     const preview = this.db.overrideDataset;
     if (preview) {
       const all = await this.api.loadDatasets(this.vm.showing, true);
       console.info('overriding preview', preview);
       //await this.db.clear();
-      const found = all.find(d => d.name == preview);
+      const found = all.find((d) => d.name == preview);
       if (!found) {
-        console.error(`${preview} not found in [${all.map(c => c.name).join(',')}]`)
+        console.error(`${preview} not found in [${all.map((c) => c.name).join(',')}]`);
         return;
       }
       let p: Dataset = JSON.parse(JSON.stringify(found));
@@ -156,7 +177,7 @@ export class IntroPage {
 
   async selectedFilter(v: any) {
     if (!v) {
-      this.fab.close();
+      this.fab().close();
       return;
     }
     const name = v.detail.value;
@@ -164,8 +185,8 @@ export class IntroPage {
     this.vm.selected = undefined;
     this.subtitle.set('');
     this.vm.cards = await this.api.loadDatasets(name);
-    this.carousel.setScrollLeft(0);
-    this.fab.close();
+    this.carousel().setScrollLeft(0);
+    this.fab().close();
   }
 
   async ionViewDidEnter() {
@@ -204,7 +225,9 @@ export class IntroPage {
   async go() {
     if (this.vm.eventAlreadySelected && !this.vm.selected) {
       this.vm.eventAlreadySelected = false;
-      console.error('We should not get into this state but just in case we have bad state data we need to have the user select the event');
+      console.error(
+        'We should not get into this state but just in case we have bad state data we need to have the user select the event',
+      );
     }
     if (!this.vm.selected) return;
 
@@ -251,7 +274,7 @@ export class IntroPage {
     try {
       if (!this.vm.selected) return;
       this.db.selectedDataset.set(this.vm.selected);
-      let showYear = (`${new Date().getFullYear()}` !== this.vm.selected.year) && this.vm.selected.year !== '0000';
+      let showYear = `${new Date().getFullYear()}` !== this.vm.selected.year && this.vm.selected.year !== '0000';
       const title = showYear ? this.vm.selected.year : '';
       this.db.selectedYear.set(title);
       const hasOffline = this.settingsService.isOffline(this.settingsService.settings.datasetId);
@@ -270,11 +293,14 @@ export class IntroPage {
       this.vm.ready = false;
       this.vm.showMessage = false;
 
-
       console.warn(`populate ${this.settingsService.settings.datasetId} attempt ${attempt}`);
       let result = await this.db.populate(this.settingsService.settings.datasetId, this.db.getTimeZone());
       await this.db.getWorkerLogs();
-      const sendResult: SendResult = await this.api.sendDataToWorker(result.revision, this.db.locationsHidden(), this.isBurningMan());
+      const sendResult: SendResult = await this.api.sendDataToWorker(
+        result.revision,
+        this.db.locationsHidden(),
+        this.isBurningMan(),
+      );
       if (sendResult.datasetResult) {
         // We downloaded a new dataset
         result = sendResult.datasetResult;
@@ -289,8 +315,6 @@ export class IntroPage {
         return;
       }
       this.fav.init(this.settingsService.settings.datasetId);
-
-
 
       const hidden = [];
       // Hide music if there is none
@@ -325,8 +349,7 @@ export class IntroPage {
       await this.api.download(this.vm.selected, true, this.download);
     } catch {
       success = false;
-    }
-    finally {
+    } finally {
       this.vm.downloading = false;
     }
     this.vm.eventAlreadySelected = false; // Show intro page

@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, enableProdMode } from '@angular/core';
+import { APP_INITIALIZER, enableProdMode, provideZoneChangeDetection } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { RouteReuseStrategy, provideRouter, withComponentInputBinding } from '@angular/router';
 import { provideIonicAngular, IonicRouteStrategy } from '@ionic/angular/standalone';
@@ -17,13 +17,14 @@ if (environment.production) {
 
 const appInitFactory =
   (dbService: DbService): (() => Promise<void>) =>
-  async () =>
-    await dbService.initWorker();
+    async () =>
+      await dbService.initWorker();
 
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: APP_INITIALIZER, useFactory: appInitFactory, deps: [DbService], multi: true },
+    provideZoneChangeDetection({ eventCoalescing: true }),
     provideIonicAngular({ mode: 'ios', swipeBackEnabled: false }),
     provideAnimations(),
     provideRouter(routes, withComponentInputBinding()),
@@ -32,5 +33,5 @@ bootstrapApplication(AppComponent, {
     //     enabled: !isDevMode(),
     //     registrationStrategy: 'registerWhenStable:30000'
     // })
-],
+  ],
 });

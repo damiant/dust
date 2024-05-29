@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, model, output } from '@angular/core';
 import { IonButton, IonIcon, IonModal, IonText } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { arrowForwardOutline } from 'ionicons/icons';
@@ -11,17 +11,17 @@ import { arrowForwardOutline } from 'ionicons/icons';
   imports: [IonModal, IonButton, IonText, IonIcon],
 })
 export class MessageComponent {
-  @Input() show = false;
+  show = model(false);
 
-  @Input() message = '';
-  @Input() title = '';
-  @Output() dismissed = new EventEmitter<void>();
+  message = input('');
+  title = input('');
+  dismissed = output<void>();
   constructor() {
     addIcons({ arrowForwardOutline });
   }
 
   close() {
-    this.show = false;
+    this.show.set(false);
   }
 
   dismiss() {

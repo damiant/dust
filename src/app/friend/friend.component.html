@@ -11,23 +11,13 @@
 </ion-header>
 <ion-content class="ion-padding">
   <ion-item>
-    <ion-input
-      autocapitalize="words"
-      name="Playa Name"
-      id="Playa Name"
-      label="Name"
-      [(ngModel)]="friend.name"
-      placeholder="Your friends name"
-    ></ion-input>
+    <ion-input autocapitalize="words" name="Playa Name" id="Playa Name" label="Name" [(ngModel)]="friend.name"
+      placeholder="Your friends name"></ion-input>
   </ion-item>
 
   <ion-item id="pick-address">
-    <ion-input
-      label="Address"
-      [class.button]="friend.address === 'Choose Address'"
-      [value]="friend.address"
-      [readonly]="true"
-    >
+    <ion-input label="Address" [class.button]="friend.address === 'Choose Address'" [value]="friend.address"
+      [readonly]="true">
     </ion-input>
   </ion-item>
   <ion-item>
@@ -35,9 +25,9 @@
   </ion-item>
 
   @if (isEdit) {
-    <div class="center">
-      <ion-button (click)="deleteFriend()" shape="round">Delete</ion-button>
-    </div>
+  <div class="center">
+    <ion-button (click)="deleteFriend()" shape="round">Delete</ion-button>
+  </div>
   }
-  <ion-picker trigger="pick-address" [columns]="addresses" [buttons]="pickerButtons"></ion-picker>
+  <ion-picker-legacy trigger="pick-address" [columns]="addresses" [buttons]="pickerButtons"></ion-picker-legacy>
 </ion-content>

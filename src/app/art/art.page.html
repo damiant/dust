@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-title> Art </ion-title>
     <ion-buttons class="b-pad-r" slot="end">
-      <app-sort id="art-sort" (sortTypeChange)="sortTypeChanged($event)" slot="end"></app-sort>
+      <app-sort id="art-sort" (sortTypeChange)="sortTypeChanged($event)"></app-sort>
     </ion-buttons>
     @if (db.selectedYear() !== '') {
     <ion-badge class="pad-right" (click)="home()" slot="end">{{db.selectedYear()}}</ion-badge>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { Art, MapPoint } from '../data/models';
@@ -51,10 +51,15 @@ import { CachedImgComponent } from '../cached-img/cached-img.component';
     IonIcon,
     IonLabel,
     IonText,
-    CachedImgComponent
-  ]
+    CachedImgComponent,
+  ],
 })
 export class ArtItemPage implements OnInit {
+  private route = inject(ActivatedRoute);
+  private ui = inject(UiService);
+  private db = inject(DbService);
+  private settings = inject(SettingsService);
+  private fav = inject(FavoritesService);
   art: Art | undefined;
   showMap = false;
   mapPoints: MapPoint[] = [];
@@ -64,13 +69,7 @@ export class ArtItemPage implements OnInit {
   hometown = '';
   star = false;
 
-  constructor(
-    private route: ActivatedRoute,
-    private ui: UiService,
-    private db: DbService,
-    private settings: SettingsService,
-    private fav: FavoritesService,
-  ) {
+  constructor() {
     addIcons({ star, starOutline, shareOutline, personOutline, locateOutline, locationOutline });
   }
 

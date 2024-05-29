@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Channel, LocalNotificationDescriptor, LocalNotifications } from '@capacitor/local-notifications';
 import { OccurrenceSet } from '../data/models';
@@ -24,8 +24,9 @@ export interface ScheduleResult {
   providedIn: 'root',
 })
 export class NotificationService {
+  public router = inject(Router);
+  private db = inject(DbService);
   public hasNotification = signal('');
-  constructor(public router: Router, private db: DbService) { }
 
   public async configure() {
     LocalNotifications.addListener('localNotificationActionPerformed', (notification) => {

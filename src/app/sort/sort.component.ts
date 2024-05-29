@@ -1,5 +1,14 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { IonButton, IonContent, IonIcon, IonPopover, IonRadio, IonRadioGroup, IonTitle, IonItem } from '@ionic/angular/standalone';
+import { Component, input, model, output } from '@angular/core';
+import {
+  IonButton,
+  IonContent,
+  IonIcon,
+  IonPopover,
+  IonRadio,
+  IonRadioGroup,
+  IonTitle,
+  IonItem,
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronDown } from 'ionicons/icons';
 
@@ -11,18 +20,21 @@ import { chevronDown } from 'ionicons/icons';
   imports: [IonItem, IonTitle, IonButton, IonPopover, IonContent, IonRadioGroup, IonRadio, IonIcon],
 })
 export class SortComponent {
-  sortTypes = [{ title: 'Sort by Distance', value: 'dist' }, { title: 'Sort Alphabetically', value: 'alpha' }];
-  @Input() id = '';
-  @Input() allTitle: string = '';
-  @Input() sortType: string = 'alpha';
-  @Output() sortTypeChange = new EventEmitter<string>();
+  sortTypes = [
+    { title: 'Sort by Distance', value: 'dist' },
+    { title: 'Sort Alphabetically', value: 'alpha' },
+  ];
+  id = input('');
+  allTitle = input<string>('');
+  sortType = model<string>('alpha');
+  sortTypeChange = output<string>();
 
   constructor() {
     addIcons({ chevronDown });
   }
 
   sortChanged(e: any) {
-    this.sortType = e.detail.value;
-    this.sortTypeChange.emit(this.sortType);
+    this.sortType.set(e.detail.value);
+    this.sortTypeChange.emit(this.sortType());
   }
 }

@@ -24,7 +24,7 @@ export class SettingsService {
       return settings;
     } catch {
       return {
-        datasetId: '',        
+        datasetId: '',
         mapRotation: 0,
         mapUri: '',
         dataset: undefined,
@@ -33,8 +33,7 @@ export class SettingsService {
         longEvents: true,
         preventAutoStart: false,
         offlineEvents: [],
-        scrollLeft: 0
-
+        scrollLeft: 0,
       };
     }
   }
@@ -51,6 +50,9 @@ export class SettingsService {
   }
 
   public save() {
+    if (this.settings.mapUri.length > 5000000) {
+      this.settings.mapUri = '';
+    }
     localStorage['settings'] = JSON.stringify(this.settings);
   }
 

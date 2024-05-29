@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {
   IonCard,
   IonCardContent,
@@ -41,13 +41,12 @@ import { add, person } from 'ionicons/icons';
   standalone: true,
 })
 export class FriendsComponent implements OnInit {
+  private modalCtrl = inject(ModalController);
+  private fav = inject(FavoritesService);
   public friends: Friend[] = [];
   private editingFriend: Friend | undefined;
 
-  constructor(
-    private modalCtrl: ModalController,
-    private fav: FavoritesService,
-  ) {
+  constructor() {
     addIcons({ add, person });
   }
 

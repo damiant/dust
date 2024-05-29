@@ -24,6 +24,8 @@ PODS:
     - Capacitor
   - CapacitorPreferences (6.0.0):
     - Capacitor
+  - CapacitorPrintWebview (6.0.3):
+    - Capacitor
   - CapacitorRateApp (4.0.3):
     - Capacitor
   - CapacitorScreenReader (6.0.0):
@@ -55,6 +57,7 @@ DEPENDENCIES:
   - "CapacitorLocalNotifications (from `../../node_modules/@capacitor/local-notifications`)"
   - "CapacitorNetwork (from `../../node_modules/@capacitor/network`)"
   - "CapacitorPreferences (from `../../node_modules/@capacitor/preferences`)"
+  - CapacitorPrintWebview (from `../../node_modules/capacitor-print-webview`)
   - CapacitorRateApp (from `../../node_modules/capacitor-rate-app`)
   - "CapacitorScreenReader (from `../../node_modules/@capacitor/screen-reader`)"
   - "CapacitorShare (from `../../node_modules/@capacitor/share`)"
@@ -91,6 +94,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/network"
   CapacitorPreferences:
     :path: "../../node_modules/@capacitor/preferences"
+  CapacitorPrintWebview:
+    :path: "../../node_modules/capacitor-print-webview"
   CapacitorRateApp:
     :path: "../../node_modules/capacitor-rate-app"
   CapacitorScreenReader:
@@ -122,6 +127,7 @@ SPEC CHECKSUMS:
   CapacitorLocalNotifications: 4ab68f0be5f697a579558fadd307d823a9ec1c26
   CapacitorNetwork: f15a94c16a33cba7c47a17814cb6bcfe3ea34ded
   CapacitorPreferences: c9b839a80baa72e4ed4bdb117618e1950d3046b5
+  CapacitorPrintWebview: d2c9d1cf8b058cce3bf19e20d3567e3378f6be15
   CapacitorRateApp: 896df7ec6a237fea72d1955e0cb26394654b00db
   CapacitorScreenReader: 039da921b443a37ecf4f3f1b39a8a6869a3f58ce
   CapacitorShare: a771200d3b924a5d7ad9d9fecbac517e4c0aa74f
@@ -131,6 +137,6 @@ SPEC CHECKSUMS:
   CordovaPlugins: 93665d85a8d738b6f74a459d9d4fde62c6b3eaa2
   MauricewegnerCapacitorNavigationBar: 37f1308a961a8d8cd00f6362e30bad03a73728f7
 
-PODFILE CHECKSUM: 2f9b94437b18ea2ca081128334a5eb9c7115b43a
+PODFILE CHECKSUM: 6e5d9c07bfb64974f43eb3d32586563ce274d381
 
 COCOAPODS: 1.15.2

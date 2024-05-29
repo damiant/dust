@@ -1,4 +1,4 @@
-import { Component, ViewChild, effect } from '@angular/core';
+import { Component, effect, viewChild, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {
   IonBadge,
@@ -85,26 +85,28 @@ function initialState(): CampsState {
   ],
 })
 export class CampsPage {
+  public db = inject(DbService);
+  private ui = inject(UiService);
+  private toastController = inject(ToastController);
+  private geo = inject(GeoService);
   vm: CampsState = initialState();
   isScrollDisabled = false;
-  @ViewChild(CdkVirtualScrollViewport) virtualScroll!: CdkVirtualScrollViewport;
+  virtualScroll = viewChild.required(CdkVirtualScrollViewport);
 
-  constructor(
-    public db: DbService,
-    private ui: UiService,
-    private toastController: ToastController,
-    private geo: GeoService,
-  ) {
+  constructor() {
     addIcons({ compass, compassOutline });
     effect(() => {
-      this.ui.scrollUp('camps', this.virtualScroll);
+      this.ui.scrollUp('camps', this.virtualScroll());
     });
-    effect(() => {
-      const _year = this.db.selectedYear();
-      this.db.checkInit();
-      this.vm = initialState();
-      this.update('');
-    }, { allowSignalWrites: true });
+    effect(
+      () => {
+        const _year = this.db.selectedYear();
+        this.db.checkInit();
+        this.vm = initialState();
+        this.update('');
+      },
+      { allowSignalWrites: true },
+    );
   }
 
   home() {
@@ -117,7 +119,7 @@ export class CampsPage {
       this.ui.presentToast(`Displaying camps sorted by distance`, this.toastController);
       this.vm.displayedDistMessage = true;
     }
-    this.ui.scrollUp('camps', this.virtualScroll);
+    this.ui.scrollUp('camps', this.virtualScroll());
     this.update('');
   }
 
@@ -128,7 +130,7 @@ export class CampsPage {
   goToLetterGroup(e: string) {
     const idx = this.vm.alphaValues.indexOf(e);
     if (idx >= 0) {
-      this.virtualScroll.scrollToIndex(this.vm.alphaIndex[idx]);
+      this.virtualScroll().scrollToIndex(this.vm.alphaIndex[idx]);
     }
   }
 
@@ -138,7 +140,7 @@ export class CampsPage {
   }
 
   search(value: string) {
-    this.virtualScroll.scrollToOffset(0);
+    this.virtualScroll().scrollToOffset(0);
     this.update(value);
   }
 

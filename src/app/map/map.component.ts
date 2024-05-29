@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild, effect } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, effect, input, viewChild, inject } from '@angular/core';
 import { PinchZoomModule } from '@meddv/ngx-pinch-zoom';
 import { LocationEnabledStatus, MapInfo, MapPoint, Pin } from '../data/models';
 import { defaultMapRadius, distance, formatDistanceMiles, mapPointToPin } from './map.utils';
@@ -31,14 +31,27 @@ const youOffsetY = 4;
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
-  imports: [PinchZoomModule, RouterModule, CommonModule, MessageComponent, IonPopover, IonContent, IonText, IonButton, CachedImgComponent],
-  standalone: true
+  imports: [
+    PinchZoomModule,
+    RouterModule,
+    CommonModule,
+    MessageComponent,
+    IonPopover,
+    IonContent,
+    IonText,
+    IonButton,
+    CachedImgComponent,
+  ],
+  standalone: true,
 })
 export class MapComponent implements OnInit, OnDestroy {
+  private geo = inject(GeoService);
+  private router = inject(Router);
+  private settings = inject(SettingsService);
   _points: MapPoint[];
   isOpen = false;
   footer: string | undefined;
-  @ViewChild('popover') popover: any;
+  popover = viewChild<any>('popover');
   info: MapInfo | undefined;
   src = 'assets/map.svg';
   showMessage = false;
@@ -52,14 +65,15 @@ export class MapComponent implements OnInit, OnDestroy {
   private mapInformation: MapInformation | undefined;
   private compass: HTMLImageElement | undefined;
   private _viewReady = false;
+  private selected: HTMLDivElement | undefined;
 
-  @ViewChild('zoom') zoom!: ElementRef;
-  @ViewChild('map') map!: ElementRef;
-  @ViewChild('mapc') mapc!: ElementRef;
-  @Input() height: string = 'height: 100%';
-  @Input() footerPadding: number = 0;
-  @Input() smallPins: boolean = false;
-  @Input() isHeader: boolean = false;
+  zoom = viewChild.required<ElementRef>('zoom');
+  map = viewChild.required<ElementRef>('map');
+  mapc = viewChild.required<ElementRef>('mapc');
+  height = input<string>('height: 100%');
+  footerPadding = input<number>(0);
+  smallPins = input<boolean>(false);
+  isHeader = input<boolean>(false);
   @Input() set points(points: MapPoint[]) {
     if (this.pointsSet) return;
     for (let div of this.divs) {
@@ -70,7 +84,6 @@ export class MapComponent implements OnInit, OnDestroy {
       this.fixGPSAndUpdate();
       this.pointsSet = true;
     }
-
   }
   get points() {
     return this._points;
@@ -94,11 +107,7 @@ export class MapComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructor(
-    private geo: GeoService,
-    private router: Router,
-    private settings: SettingsService,
-  ) {
+  constructor() {
     this._points = [];
     effect(async () => {
       const gpsPos = this.geo.gpsPosition();
@@ -123,6 +132,25 @@ export class MapComponent implements OnInit, OnDestroy {
     this.src = darkMode ? 'assets/map-dark.svg' : 'assets/map.svg';
     if (this.settings.settings.mapUri !== '') {
       this.src = this.settings.settings.mapUri;
+    }
+  }
+
+  public triggerClick(pointIdx: number): boolean {
+    try {
+      const div = this.divs[pointIdx];
+      div.style.animationName = `pulse`;
+      div.style.animationDuration = '2s';
+      div.click();
+      if (this.selected) {
+        // Deselect the previous selected
+        this.selected.style.animationName = '';
+        this.selected.style.animationDuration = '';
+      }
+      this.selected = div;
+      return true;
+    } catch (err) {
+      console.error(`Error in triggerClick: ${err}`);
+      return false;
     }
   }
 
@@ -161,7 +189,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   private setMapInformation() {
-    const el: HTMLElement = this.map.nativeElement;
+    const el: HTMLElement = this.map().nativeElement;
     const rect = el.getBoundingClientRect();
     this.mapInformation = {
       width: rect.width,
@@ -176,7 +204,7 @@ export class MapComponent implements OnInit, OnDestroy {
     for (let point of this._points) {
       const pin = mapPointToPin(point, defaultMapRadius);
       if (pin) {
-        const div = this.plotXY(pin.x, pin.y, 6, 0, point.info, undefined, blink);
+        const div = this.plotXY(pin.x, pin.y, 6, 6, point.info, undefined, blink);
         this.divs.push(div);
       } else {
         console.error(`Point could not be converted to pin`);
@@ -313,15 +341,23 @@ export class MapComponent implements OnInit, OnDestroy {
     div.style.top = `${pt.y}px`;
   }
 
-  private plotXY(x: number, y: number, ox: number, oy: number, info?: MapInfo, bgColor?: string, blink?: boolean): HTMLDivElement {
-    const sz = info || bgColor ? (this.smallPins ? 5 : 10) : 8;
-    if (info && info.location && !this.smallPins) {
+  private plotXY(
+    x: number,
+    y: number,
+    ox: number,
+    oy: number,
+    info?: MapInfo,
+    bgColor?: string,
+    blink?: boolean,
+  ): HTMLDivElement {
+    const sz = info || bgColor ? (this.smallPins() ? 5 : 10) : 8;
+    if (info && info.location && !this.smallPins()!) {
       this.placeLabel(this.pointShift(x, y, 0, 0, -7), info);
     }
     if (info?.bgColor) {
       bgColor = info.bgColor;
     }
-    return this.createPin(sz, this.pointShift(x, y, sz, ox + (this.smallPins ? -2 : 0), oy), info, bgColor, blink);
+    return this.createPin(sz, this.pointShift(x, y, sz, ox + (this.smallPins() ? -2 : 0), oy), info, bgColor, blink);
   }
 
   createPin(sz: number, pt: Point, info?: MapInfo, bgColor?: string, blink?: boolean): HTMLDivElement {
@@ -350,7 +386,22 @@ export class MapComponent implements OnInit, OnDestroy {
         this.presentPopover(e);
       };
     }
-    const c: HTMLElement = this.mapc.nativeElement;
+    const c: HTMLElement = this.mapc().nativeElement;
+    if (info?.label) {
+      const p = document.createElement('p');
+      const t = document.createTextNode(info?.label);
+      p.style.margin = '0';
+      p.style.marginTop = '-3px';
+      p.style.marginLeft = '-7px';
+      p.style.color = 'white';
+      p.style.width = `22px`;
+      p.style.textAlign = 'center';
+      p.style.fontSize = '11px';
+      p.style.fontWeight = 'bold';
+      p.style.transform = 'scale(0.3)';
+      p.appendChild(t);
+      d.appendChild(p);
+    }
     c.insertBefore(d, c.firstChild);
     return d;
   }
@@ -363,7 +414,6 @@ export class MapComponent implements OnInit, OnDestroy {
     d.style.top = `${pt.y}px`;
     d.style.position = 'absolute';
     d.style.fontSize = '3px';
-    d.style.padding = '1px';
     d.style.borderRadius = '3px';
     d.style.color = `var(--ion-color-light)`;
     d.style.backgroundColor = `var(--ion-color-dark)`;
@@ -371,13 +421,13 @@ export class MapComponent implements OnInit, OnDestroy {
       this.info = info;
       this.presentPopover(e);
     };
-    const c: HTMLElement = this.mapc.nativeElement;
+    const c: HTMLElement = this.mapc().nativeElement;
     c.insertBefore(d, c.firstChild);
     return d;
   }
 
   async presentPopover(e: Event) {
-    this.popover.event = e;
+    this.popover().event = e;
     this.isOpen = true;
   }
 
@@ -385,7 +435,7 @@ export class MapComponent implements OnInit, OnDestroy {
   mapPoint(event: any) {
     const x = event.clientX;
     const y = event.clientY;
-    const el: HTMLElement = this.map.nativeElement;
+    const el: HTMLElement = this.map().nativeElement;
     const r = el.getBoundingClientRect();
     const rx = ((x - r.x) * 10000) / r.width;
     const ry = ((y - r.y) * 10000) / r.height;

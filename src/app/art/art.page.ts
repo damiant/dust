@@ -1,4 +1,4 @@
-import { Component, ViewChild, effect } from '@angular/core';
+import { Component, effect, viewChild, inject } from '@angular/core';
 import {
   InfiniteScrollCustomEvent,
   IonBadge,
@@ -83,27 +83,26 @@ function initialState(): ArtState {
   ],
 })
 export class ArtPage {
+  public db = inject(DbService);
+  private ui = inject(UiService);
+  private router = inject(Router);
+  private geo = inject(GeoService);
+  private toastController = inject(ToastController);
   vm: ArtState = initialState();
   private allArt: Art[] = [];
-  @ViewChild(CdkVirtualScrollViewport) virtualScroll!: CdkVirtualScrollViewport;
+  virtualScroll = viewChild.required(CdkVirtualScrollViewport);
 
-  constructor(
-    public db: DbService,
-    private ui: UiService,
-    private router: Router,
-    private geo: GeoService,
-    private toastController: ToastController,
-  ) {
+  constructor() {
     effect(() => {
-      this.ui.scrollUp('art', this.virtualScroll);
+      this.ui.scrollUp('art', this.virtualScroll());
     });
     effect(() => {
       const _year = this.db.selectedYear();
       this.db.checkInit();
       this.vm = initialState();
-      this.vm.showImage = true;// this.isThisYear();
+      this.vm.showImage = true; // this.isThisYear();
       this.init();
-    });
+    }, { allowSignalWrites: true });
   }
 
   isThisYear(): boolean {
@@ -121,7 +120,7 @@ export class ArtPage {
     setTimeout(() => {
       const idx = this.vm.alphaValues.indexOf(e);
       if (idx >= 0) {
-        this.virtualScroll.scrollToIndex(this.vm.alphaIndex[idx]);
+        this.virtualScroll().scrollToIndex(this.vm.alphaIndex[idx]);
       }
     }, 1);
   }
@@ -136,14 +135,13 @@ export class ArtPage {
     }
   }
 
-
   sortTypeChanged(e: string) {
     this.vm.byDist = e === 'dist';
     if (this.vm.byDist && !this.vm.displayedDistMessage) {
       this.ui.presentToast(`Displaying art sorted by distance`, this.toastController);
       this.vm.displayedDistMessage = true;
     }
-    this.ui.scrollUp('art', this.virtualScroll);
+    this.ui.scrollUp('art', this.virtualScroll());
     this.update('');
   }
 
@@ -163,7 +161,7 @@ export class ArtPage {
   }
 
   search(val: string) {
-    this.virtualScroll.scrollToOffset(0, 'smooth');
+    this.virtualScroll().scrollToOffset(0, 'smooth');
     this.vm.noArtMessage = isWhiteSpace(val) ? `No art were found.` : `No art were found matching "${val}"`;
     this.update(val.toLowerCase());
   }
@@ -183,8 +181,8 @@ export class ArtPage {
       coords = await this.geo.getPosition();
     }
     this.allArt = await this.db.findArts(search, coords);
-    const count = this.allArt.filter(a => a.images && a.images.length > 0).length;
-    this.vm.showImage = (count / this.allArt.length > 0.5);
+    const count = this.allArt.filter((a) => a.images && a.images.length > 0).length;
+    this.vm.showImage = count / this.allArt.length > 0.5;
     this.vm.arts = [];
     this.addArt(10);
     this.updateAlphaIndex();

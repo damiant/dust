@@ -2,6 +2,12 @@
   <ion-toolbar>
     <ion-title>Favorites</ion-title>
     <ion-buttons class="b-pad-r" slot="end">
+      <ion-button fill="clear" (click)="print()"><ion-icon name="print-outline"></ion-icon></ion-button>
+      @if (vm.events.length > 0) {
+      <ion-button fill="clear" (click)="syncCalendar(this.vm.events)"><ion-icon
+          name="calendar-outline"></ion-icon></ion-button>
+      }
+
       <app-category id="fav-categories" allTitle="All" (categoryChange)="filterChanged()" [(category)]="vm.filter"
         [categories]="vm.filters" slot="end"></app-category>
     </ion-buttons>
@@ -11,7 +17,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="app-page">
+<ion-content #printSection [fullscreen]="true" class="app-page">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Favorites</ion-title>
@@ -59,16 +65,6 @@
   } @for (art of vm.art; track artTrackBy($index, art)) {
   <app-art (artClick)="artClick($event)" [showImage]="art.images && art.images.length > 0" title="Favorites"
     [art]="art" />
-  }
-  @if (vm.events.length > 0) {
-  <ion-card (click)="syncCalendar(this.vm.events)" class="ion-activatable ripple-parent rectangle">
-    <ion-card-header>
-      <ion-card-title color="primary">Sync with Calendar</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      Sync your favorite events with the calendar on your phone.
-    </ion-card-content>
-  </ion-card>
   }
   <div style="padding: 2.5rem"></div>
 </ion-content>

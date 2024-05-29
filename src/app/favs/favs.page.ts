@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, effect } from '@angular/core';
+import { Component, OnInit, effect, viewChild, inject, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -11,7 +11,13 @@ import {
   IonIcon,
   IonText,
   IonTitle,
-  IonToolbar, IonList, IonItem, IonCard, IonCardTitle, IonCardContent, IonCardHeader
+  IonToolbar,
+  IonList,
+  IonItem,
+  IonCard,
+  IonCardTitle,
+  IonCardContent,
+  IonCardHeader,
 } from '@ionic/angular/standalone';
 import { Router, RouterModule } from '@angular/router';
 import { Art, Camp, Event, MapPoint } from '../data/models';
@@ -27,9 +33,12 @@ import { SearchComponent } from '../search/search.component';
 import { distance, formatDistanceMiles, toMapPoint } from '../map/map.utils';
 import { GeoService } from '../geolocation/geo.service';
 import { addIcons } from 'ionicons';
-import { star, starOutline, mapOutline } from 'ionicons/icons';
+import { star, starOutline, mapOutline, printOutline } from 'ionicons/icons';
 import { CalendarService } from '../calendar.service';
 import { ToastController } from '@ionic/angular';
+import { PrintWebview } from 'capacitor-print-webview';
+import { delay } from '../utils/utils';
+
 
 enum Filter {
   All = '',
@@ -54,7 +63,7 @@ interface FavsState {
   mapPoints: MapPoint[];
 }
 
-function intitialState(): FavsState {
+function initialState(): FavsState {
   return {
     filter: '',
     events: [],
@@ -77,7 +86,13 @@ function intitialState(): FavsState {
   templateUrl: './favs.page.html',
   styleUrls: ['./favs.page.scss'],
   standalone: true,
-  imports: [IonCardHeader, IonCardContent, IonCardTitle, IonCard, IonItem, IonList,
+  imports: [
+    IonCardHeader,
+    IonCardContent,
+    IonCardTitle,
+    IonCard,
+    IonItem,
+    IonList,
     CommonModule,
     FormsModule,
     RouterModule,
@@ -100,20 +115,20 @@ function intitialState(): FavsState {
   ],
 })
 export class FavsPage implements OnInit {
-  vm: FavsState = intitialState();
+  private fav = inject(FavoritesService);
+  private ui = inject(UiService);
+  private geo = inject(GeoService);
+  private calendar = inject(CalendarService);
+  public db = inject(DbService);
+  private toastController = inject(ToastController);
+  private router = inject(Router);
+  vm: FavsState = initialState();
 
-  @ViewChild(IonContent) ionContent!: IonContent;
+  ionContent = viewChild.required(IonContent);
+  @ViewChild('printSection', { read: ElementRef }) printSection!: ElementRef;
 
-  constructor(
-    private fav: FavoritesService,
-    private ui: UiService,
-    private geo: GeoService,
-    private calendar: CalendarService,
-    public db: DbService,
-    private toastController: ToastController,
-    private router: Router,
-  ) {
-    addIcons({ star, starOutline, mapOutline });
+  constructor() {
+    addIcons({ star, starOutline, mapOutline, printOutline });
     effect(async () => {
       console.log('update favorite');
       this.fav.changed();
@@ -125,7 +140,7 @@ export class FavsPage implements OnInit {
     });
 
     effect(() => {
-      this.ui.scrollUpContent('favs', this.ionContent);
+      this.ui.scrollUpContent('favs', this.ionContent());
     });
   }
 
@@ -260,7 +275,11 @@ export class FavsPage implements OnInit {
     const gps = await this.geo.getPosition();
     for (const art of this.vm.art) {
       const imageUrl: string = art.images?.length > 0 ? art.images[0].thumbnail_url! : '';
-      const mp = toMapPoint(art.location_string, { title: art.name, location: '', subtitle: '', imageUrl: imageUrl }, art.pin);
+      const mp = toMapPoint(
+        art.location_string,
+        { title: art.name, location: '', subtitle: '', imageUrl: imageUrl },
+        art.pin,
+      );
       if (art.location?.gps_latitude && art.location?.gps_longitude) {
         mp.gps = { lat: art.location.gps_latitude, lng: art.location.gps_longitude };
         const dist = distance(gps, mp.gps);
@@ -347,7 +366,7 @@ export class FavsPage implements OnInit {
         start: event.occurrence_set[0].start_time,
         end: event.occurrence_set[0].end_time,
         location: event.camp + location,
-        timeZone: this.db.selectedDataset().timeZone
+        timeZone: this.db.selectedDataset().timeZone,
       });
       if (!success) {
         this.ui.presentDarkToast(`Unable to add events to the calendar. Check permissions.`, this.toastController);
@@ -355,6 +374,18 @@ export class FavsPage implements OnInit {
       }
     }
     await this.calendar.deleteOld(this.db.selectedDataset().title, list);
-    await this.ui.presentToast(`${events.length} events synced with your ${this.db.selectedDataset().title} calendar.`, this.toastController);
+    await this.ui.presentToast(
+      `${events.length} events synced with your ${this.db.selectedDataset().title} calendar.`,
+      this.toastController,
+    );
+  }
+
+  async print() {
+
+    const r = document.documentElement;
+    r.style.setProperty('--body-height', `${this.printSection.nativeElement.offsetHeight * 2}px`);
+    r.style.setProperty('--zoom', '0.5');
+    delay(500);
+    await PrintWebview.print();
   }
 }

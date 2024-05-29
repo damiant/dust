@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, model, output } from '@angular/core';
 import { MapComponent } from '../map/map.component';
 import { MapPoint } from '../data/models';
 import { IonModal, IonText } from '@ionic/angular/standalone';
@@ -11,20 +11,19 @@ import { IonModal, IonText } from '@ionic/angular/standalone';
   imports: [MapComponent, IonModal, IonText],
 })
 export class MapModalComponent {
-  @Input() show = false;
-  @Input() title = '';
-  @Input() subtitle = '';
-  @Output() showChange = new EventEmitter<boolean>();
-  @Input() points: MapPoint[] = [];
-  constructor() {}
+  show = model(false);
+  title = input('');
+  subtitle = input('');
+  showChange = output<boolean>();
+  points = input<MapPoint[]>([]);
 
   close() {
-    this.show = false;
-    this.showChange.emit(this.show);
+    this.show.set(false);
+    this.showChange.emit(this.show());
   }
 
   open() {
-    this.show = true;
-    this.showChange.emit(this.show);
+    this.show.set(true);
+    this.showChange.emit(this.show());
   }
 }

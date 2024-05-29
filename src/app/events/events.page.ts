@@ -1,4 +1,4 @@
-import { Component, ViewChild, effect } from '@angular/core';
+import { Component, effect, viewChild, inject } from '@angular/core';
 import {
   IonBadge,
   IonButton,
@@ -110,27 +110,29 @@ function initialState(): EventsState {
   ],
 })
 export class EventsPage {
+  public db = inject(DbService);
+  private ui = inject(UiService);
+  private settings = inject(SettingsService);
+  private toastController = inject(ToastController);
+  private geo = inject(GeoService);
   vm: EventsState = initialState();
 
-  @ViewChild(CdkVirtualScrollViewport) virtualScroll!: CdkVirtualScrollViewport;
+  virtualScroll = viewChild.required(CdkVirtualScrollViewport);
 
-  constructor(
-    public db: DbService,
-    private ui: UiService,
-    private settings: SettingsService,
-    private toastController: ToastController,
-    private geo: GeoService,
-  ) {
+  constructor() {
     addIcons({ compass, compassOutline });
     effect(() => {
-      this.ui.scrollUp('events', this.virtualScroll);
+      this.ui.scrollUp('events', this.virtualScroll());
     });
-    effect(() => {
-      const _year = this.db.selectedYear();
-      this.db.checkInit();
-      this.vm = initialState();
-      this.init();
-    }, { allowSignalWrites: true });
+    effect(
+      () => {
+        const _year = this.db.selectedYear();
+        this.db.checkInit();
+        this.vm = initialState();
+        this.init();
+      },
+      { allowSignalWrites: true },
+    );
     effect(async () => {
       const _r = this.db.resume();
       this.setToday(now());
@@ -158,7 +160,7 @@ export class EventsPage {
   }
 
   public sortTypeChanged(e: string) {
-    this.vm.byDist = (e == 'dist');
+    this.vm.byDist = e == 'dist';
     if (this.vm.byDist && !this.vm.displayedDistMessage) {
       this.ui.presentToast(`Displaying events sorted by distance`, this.toastController);
       this.vm.displayedDistMessage = true;
@@ -267,7 +269,7 @@ export class EventsPage {
     this.vm.noEventsMessage = this.noEventsMessage();
     if (scrollToTop) {
       this.hack();
-      this.virtualScroll.scrollToOffset(0, 'smooth');
+      this.virtualScroll().scrollToOffset(0, 'smooth');
     }
   }
 
@@ -277,8 +279,8 @@ export class EventsPage {
     } else if (this.vm.isNow) {
       return `There are no events starting ${this.vm.timeRange}`;
     }
-    return this.db.eventHasntBegun() ?
-      'Events have not been added yet.' :
-      'All the events for this day have concluded.';
+    return this.db.eventHasntBegun()
+      ? 'Events have not been added yet.'
+      : 'All the events for this day have concluded.';
   }
 }

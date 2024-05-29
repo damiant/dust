@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -24,7 +24,7 @@ import { EventPage } from '../event/event.page';
 import { FavoritesService } from '../favs/favorites.service';
 import { UiService } from '../ui/ui.service';
 import { SettingsService } from '../data/settings.service';
-import { ShareInfoType } from '../share/share.service';
+//import { ShareInfoType } from '../share/share.service';
 import { toMapPoint } from '../map/map.utils';
 import { getOrdinalNum } from '../utils/utils';
 import { addIcons } from 'ionicons';
@@ -53,10 +53,16 @@ import { CachedImgComponent } from '../cached-img/cached-img.component';
     IonLabel,
     IonText,
     IonModal,
-    CachedImgComponent
-  ]
+    CachedImgComponent,
+  ],
 })
 export class CampPage implements OnInit {
+  private route = inject(ActivatedRoute);
+  private db = inject(DbService);
+  private fav = inject(FavoritesService);
+  private settings = inject(SettingsService);
+  private toastController = inject(ToastController);
+  private ui = inject(UiService);
   showEvent = false;
   camp: Camp | undefined;
   mapPoints: MapPoint[] = [];
@@ -66,14 +72,7 @@ export class CampPage implements OnInit {
   star = false;
   backText = 'Camps';
 
-  constructor(
-    private route: ActivatedRoute,
-    private db: DbService,
-    private fav: FavoritesService,
-    private settings: SettingsService,
-    private toastController: ToastController,
-    private ui: UiService,
-  ) {
+  constructor() {
     addIcons({ star, starOutline, shareOutline, locationOutline, calendarOutline });
   }
 
@@ -127,10 +126,11 @@ export class CampPage implements OnInit {
     this.showEvent = true;
   }
 
-  noop() {}
+  noop() { }
 
   share() {
-    const url = `https://dust.events?${ShareInfoType.camp}=${this.camp?.uid}`;
+    //const url = `https://dust.events?${ShareInfoType.camp}=${this.camp?.uid}`;
+    const url = `https://${this.settings.settings.dataset!.id}.dust.events/camp/${this.camp?.uid}`;
     this.ui.share({
       title: this.camp?.name,
       dialogTitle: this.camp?.name,
