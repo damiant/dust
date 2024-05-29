@@ -8,6 +8,7 @@
 - Fix for private event editing which was previously blank
 - Fix for music times overlapping text
 - Labels fo the map
+- Search for the map
 
 ## 2.14
 

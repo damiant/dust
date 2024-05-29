@@ -134,6 +134,17 @@ export class MapComponent implements OnInit, OnDestroy {
     }
   }
 
+  public triggerClick(pointIdx: number): boolean {
+    try {
+      const div = this.divs[pointIdx];
+      div.click();
+      return true;
+    } catch (err) {
+      console.error(`Error in triggerClick: ${err}`);
+      return false;
+    }
+  }
+
   private async updateLocation() {
     await this.geo.getPosition();
   }

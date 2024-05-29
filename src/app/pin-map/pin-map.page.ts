@@ -1,4 +1,4 @@
-import { Component, Signal, WritableSignal, computed, signal, input, inject } from '@angular/core';
+import { Component, Signal, WritableSignal, computed, signal, input, inject, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MapComponent } from '../map/map.component';
@@ -22,6 +22,7 @@ import {
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { compassOutline } from 'ionicons/icons';
+import { SearchComponent } from '../search/search.component';
 
 @Component({
   selector: 'app-pin-map',
@@ -42,6 +43,7 @@ import { compassOutline } from 'ionicons/icons';
     IonText,
     IonIcon,
     IonSpinner,
+    SearchComponent
   ],
 })
 export class PinMapPage {
@@ -50,11 +52,15 @@ export class PinMapPage {
   mapType = input('');
   points: MapPoint[] = [];
   smallPins: boolean = false;
+  showSearch: Signal<boolean> = computed(() => {
+    return this.mapType() == MapType.All || this.mapType() == MapType.Art;
+  });
   busy: Signal<boolean> = computed(() => {
     return this.geo.gpsBusy();
   });
   title: WritableSignal<string> = signal(' ');
   description = '';
+  @ViewChild(MapComponent) map!: MapComponent;
   constructor() {
     addIcons({ compassOutline });
     this.db.checkInit();
@@ -65,6 +71,27 @@ export class PinMapPage {
     this.points = mapSet.points;
     this.title.set(mapSet.title);
     this.description = mapSet.description;
+  }
+
+  public search(value: string) {
+    if (value == '') return;
+    let idx = 0;
+    let found = -1;
+    for (let p of this.points) {
+      if (p.info) {
+        if (p.info?.title.toLowerCase().includes(value.toLowerCase())) {
+          found = idx;
+        };
+        if (p.info?.subtitle.toLowerCase().includes(value.toLowerCase())) {
+          found = idx;
+        };
+      }
+      idx++;
+    }
+    if (found != -1) {
+      this.map.triggerClick(found);
+    }
+
   }
 
   private async mapFor(mapType: string): Promise<MapSet> {
