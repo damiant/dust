@@ -6,8 +6,10 @@
   <ion-card-header>
     @if (!event().artCar) {
     <ion-card-title>{{ event().camp }}
-      <ion-icon [color]="event().wa ? 'primary' : 'medium'" (click)="wheelchair()" class="wheelchair" size="small"
-        [src]="'assets/icon/wheelchair.svg'"></ion-icon></ion-card-title>
+      <!-- Turning off wheelchair accessible as we do not have data for it yet -->
+      <!-- <ion-icon [color]="event().wa ? 'primary' : 'medium'" (click)="wheelchair()" class="wheelchair" size="small"
+        [src]="'assets/icon/wheelchair.svg'"></ion-icon> -->
+    </ion-card-title>
     <ion-card-subtitle color="primary" (click)="map(event())">{{ event().location }} {{ event().distanceInfo }}<span>{{
         event().title }}</span></ion-card-subtitle>
     } @else {
@@ -33,7 +35,8 @@
         <!-- <ion-icon *ngIf="!occurrence.star" name="star-outline"></ion-icon> -->
         <!-- </ion-button> -->
         <ion-text [class.old]="occurrence.old" class="one-line">
-          <span class="time">{{ occurrence.timeRange.length > 10 ? occurrence.time : occurrence.timeRange }}</span>{{
+          <span class="time">{{ occurrence.timeRange.length > 10 ? occurrence.time : occurrence.timeRange
+            }}</span>{{
           occurrence.who }}
 
           <ion-icon class="star" color="primary" [hidden]="!occurrence.star" name="star"></ion-icon>
