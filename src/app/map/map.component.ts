@@ -350,7 +350,7 @@ export class MapComponent implements OnInit, OnDestroy {
     bgColor?: string,
     blink?: boolean,
   ): HTMLDivElement {
-    const sz = info || bgColor ? (this.smallPins() ? 5 : 10) : 8;
+    const sz = info || bgColor ? (this.smallPins() ? 8 : 10) : 8;
     if (info && info.location && !this.smallPins()!) {
       this.placeLabel(this.pointShift(x, y, 0, 0, -7), info);
     }
@@ -391,12 +391,12 @@ export class MapComponent implements OnInit, OnDestroy {
       const p = document.createElement('p');
       const t = document.createTextNode(info?.label);
       p.style.margin = '0';
-      p.style.marginTop = '-3px';
-      p.style.marginLeft = '-7px';
+      p.style.marginTop = this.smallPins() ? '-3.5px' : '-3px';
+      p.style.marginLeft = this.smallPins() ? '-8px' : '-7px';
       p.style.color = 'white';
       p.style.width = `22px`;
       p.style.textAlign = 'center';
-      p.style.fontSize = '11px';
+      p.style.fontSize = this.smallPins() ? '10px' : '11px';
       p.style.fontWeight = 'bold';
       p.style.transform = 'scale(0.3)';
       p.appendChild(t);
