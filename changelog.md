@@ -1,5 +1,9 @@
 ## Changes
 
+## 2.16
+
+- Zoom level for map fixed
+
 ## 2.15
 
 - Print option for favorites
