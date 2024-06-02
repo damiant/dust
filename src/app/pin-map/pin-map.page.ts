@@ -147,7 +147,8 @@ export class PinMapPage {
 
     const camps = await this.db.findCamps('', coords);
     const points = [];
-    this.smallPins = camps.length > 100;
+
+
     for (let camp of camps) {
       if (camp.location_string || camp.pin?.x) {
         const point = toMapPoint(
@@ -165,6 +166,7 @@ export class PinMapPage {
         if (point) points.push(point);
       }
     }
+
     for (let type of [Names.restrooms, Names.ice, Names.medical, Names.art]) {
       const map = await this.mapFor(type);
       map.points.forEach((point, index) => {
@@ -177,6 +179,7 @@ export class PinMapPage {
       points.push(...map.points);
     }
     this.title.set('Map');
+    this.smallPins = points.length > 100;
     return {
       title: this.title(),
       description: '',
