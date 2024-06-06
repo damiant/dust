@@ -16,6 +16,7 @@ import { addIcons } from 'ionicons';
 import { musicalNotesOutline, ellipsisVertical } from 'ionicons/icons';
 import { Capacitor } from '@capacitor/core';
 import { Animation, StatusBar } from '@capacitor/status-bar';
+import { ScreenOrientation } from '@capacitor/screen-orientation';
 
 @Component({
   selector: 'app-tabs',
@@ -88,11 +89,15 @@ export class TabsPage implements OnInit {
       }
     });
 
-    Network.addListener('networkStatusChange', (status) => {
+    await Network.addListener('networkStatusChange', (status) => {
       this.db.networkStatus.set(status.connectionType);
     });
     const status = await Network.getStatus();
     this.db.networkStatus.set(status.connectionType);
+
+    if (Capacitor.getPlatform() !== 'web') {
+      await ScreenOrientation.lock({ orientation: 'portrait' });
+    }
   }
 
   public async daysUntilStarts(): Promise<number> {

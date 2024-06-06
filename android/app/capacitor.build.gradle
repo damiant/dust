@@ -20,6 +20,7 @@ dependencies {
     implementation project(':capacitor-local-notifications')
     implementation project(':capacitor-network')
     implementation project(':capacitor-preferences')
+    implementation project(':capacitor-screen-orientation')
     implementation project(':capacitor-screen-reader')
     implementation project(':capacitor-share')
     implementation project(':capacitor-splash-screen')

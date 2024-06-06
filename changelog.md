@@ -1,5 +1,10 @@
 ## Changes
 
+## 2.17
+
+- Lock orientation to portrait
+- Handle multiple event types
+
 ## 2.16
 
 - Zoom level for map fixed

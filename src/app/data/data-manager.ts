@@ -382,8 +382,11 @@ export class DataManager implements WorkerClass {
 
     for (let event of this.events) {
       let allLong = true;
-      if (!this.categories.includes(event.event_type.label)) {
-        this.categories.push(event.event_type.label);
+      const labels = event.event_type.label.split(',');
+      for (let label of labels) {
+        if (!this.categories.includes(label.trim())) {
+          this.categories.push(label.trim());
+        }
       }
       if (event.imageUrl) {
         event.imageUrl = `${data_dust_events}${event.imageUrl}`;
@@ -911,7 +914,8 @@ export class DataManager implements WorkerClass {
 
   private eventIsCategory(category: string, event: Event): boolean {
     if (category === '') return true;
-    return event.event_type?.label === category;
+    if (!event.event_type?.label) return true;
+    return event.event_type?.label.includes(category);
   }
 
   private getTimeString(event: Event, day: Date | undefined): TimeString {
