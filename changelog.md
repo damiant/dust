@@ -3,6 +3,7 @@
 ## 2.17
 
 - Lock orientation to portrait
+- Handle multiple event types
 
 ## 2.16
 
