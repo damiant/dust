@@ -95,7 +95,9 @@ export class TabsPage implements OnInit {
     const status = await Network.getStatus();
     this.db.networkStatus.set(status.connectionType);
 
-    await ScreenOrientation.lock({ orientation: 'portrait' });
+    if (Capacitor.getPlatform() !== 'web') {
+      await ScreenOrientation.lock({ orientation: 'portrait' });
+    }
   }
 
   public async daysUntilStarts(): Promise<number> {
