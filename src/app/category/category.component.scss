@@ -11,7 +11,10 @@ ion-popover {
     --min-width: 300px;
 }
 
-ion-item {
+ion-item .bold {
     font-weight: bold;
-    ;
+}
+
+ion-toolbar {
+    padding-bottom: env(safe-area-inset-bottom);
 }

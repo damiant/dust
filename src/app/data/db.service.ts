@@ -132,7 +132,7 @@ export class DbService {
   public async findEvents(
     query: string,
     day: Date | undefined,
-    category: string,
+    category: any,
     coords: GpsCoord | undefined,
     timeRange: TimeRange | undefined,
     allDay: boolean,

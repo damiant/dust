@@ -8,8 +8,8 @@
           name="calendar-outline"></ion-icon></ion-button>
       }
 
-      <app-category id="fav-categories" allTitle="All" (categoryChange)="filterChanged()" [(category)]="vm.filter"
-        [categories]="vm.filters" slot="end"></app-category>
+      <!-- <app-category id="fav-categories" allTitle="All" (categoryChange)="filterChanged()" [(category)]="vm.filter"
+        [categories]="vm.filters" slot="end"></app-category> -->
     </ion-buttons>
     @if (db.selectedYear() !== '') {
     <ion-badge class="pad-right" (click)="home()" slot="end">{{db.selectedYear()}}</ion-badge>

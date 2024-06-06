@@ -785,7 +785,7 @@ export class DataManager implements WorkerClass {
   public findEvents(
     query: string,
     day: Date | undefined,
-    category: string,
+    category: any,
     coords: GpsCoord | undefined,
     timeRange: TimeRange | undefined,
     allDay: boolean,
@@ -909,9 +909,9 @@ export class DataManager implements WorkerClass {
     return result;
   }
 
-  private eventIsCategory(category: string, event: Event): boolean {
-    if (category === '') return true;
-    return event.event_type?.label === category;
+  private eventIsCategory(category: any, event: Event): boolean {
+    if (category == undefined) return true;
+    return category[event.event_type?.label] == true;
   }
 
   private getTimeString(event: Event, day: Date | undefined): TimeString {

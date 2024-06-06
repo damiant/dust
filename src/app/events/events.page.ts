@@ -36,7 +36,8 @@ import { compass, compassOutline } from 'ionicons/icons';
 interface EventsState {
   title: string;
   defaultDay: any;
-  category: string;
+  category: any;
+  categoryList: string;
   events: Event[];
   days: Day[];
   categories: string[];
@@ -60,7 +61,8 @@ function initialState(): EventsState {
   return {
     title: 'Events',
     defaultDay: 'all',
-    category: '',
+    category: undefined,
+    categoryList: '',
     events: [],
     days: [],
     categories: ['All Events'],
@@ -155,7 +157,15 @@ export class EventsPage {
     await this.update();
   }
 
-  public categoryChanged() {
+  public categoryChanged(selected: any) {
+    if (!selected) {
+      this.vm.category = undefined;
+      this.vm.categoryList = '';
+    } else {
+      const list = Object.getOwnPropertyNames(selected).filter((x) => selected[x] == true).join(', ');
+      this.vm.category = selected;
+      this.vm.categoryList = list;
+    }
     this.update(true);
   }
 
