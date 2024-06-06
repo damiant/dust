@@ -45,6 +45,7 @@
     "@capacitor/local-notifications": "^6.0.0",
     "@capacitor/network": "^6.0.0",
     "@capacitor/preferences": "^6.0.0",
+    "@capacitor/screen-orientation": "6.0.0",
     "@capacitor/screen-reader": "^6.0.0",
     "@capacitor/share": "^6.0.0",
     "@capacitor/splash-screen": "^6.0.0",
