@@ -1,5 +1,9 @@
 ## Changes
 
+## 2.18
+
+- Fix to prevent repeated messaging about geolocation when user denies access
+
 ## 2.17
 
 - Lock orientation to portrait

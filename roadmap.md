@@ -1,5 +1,9 @@
 # Roadmap
 
+# Feedback
+
+- Events should show [time] - [camp] instead of at the bottom (Sideburn)
+
 # Bugs
 
 - iOS: The filter on the home page for "regionals" etc cannot be dismissed by clicking elsewhere (works on Android)
