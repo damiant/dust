@@ -3,6 +3,7 @@
 ## 2.18
 
 - Fix to prevent repeated messaging about geolocation when user denies access
+- Put time into the event title rather than after the description
 
 ## 2.17
 
