@@ -153,15 +153,17 @@ export function time(d: Date, timeZone: string): string {
 export function getOccurrenceTimeString(start: Date, end: Date, day: Date | undefined, timeZone: string): TimeString | undefined {
   const startsToday = day && sameDay(start, day);
   const endsToday = day && sameDay(end, day);
+  const tz = localTimeZone();
+  // Note: We ignore timeZone so that times in the app show as timezone of the event
   if (!day || startsToday || endsToday) {
     const day = start.toLocaleDateString([], { weekday: 'long' });
     const short =
       endsToday && !startsToday
-        ? `Until ${time(end, timeZone)} (${timeBetween(end, start)})`
-        : `${time(start, timeZone)} (${timeBetween(end, start)})`;
+        ? `Until ${time(end, tz)} (${timeBetween(end, start)})`
+        : `${time(start, tz)} (${timeBetween(end, start)})`;
 
     return {
-      long: `${day} ${time(start, timeZone)}-${time(end, timeZone)} (${timeBetween(end, start)})`,
+      long: `${day} ${time(start, tz)}-${time(end, tz)} (${timeBetween(end, start)})`,
       short,
     };
   }

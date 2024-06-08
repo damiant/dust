@@ -2,7 +2,16 @@
 
 # Feedback
 
-- Events should show [time] - [camp] instead of at the bottom (Sideburn)
+- Events ending at midnight treated as the next day
+- Timetable view (something like Google Calendar)
+- Be able to see past events with a toggle
+- Events longer than 4 hours should be hidden or at the bottom of the list.
+- Show favorited events on the main listing (ie star)
+- Be able to favorite from the main listing
+
+# Difficult to solve
+
+- Overlapping events are hard to see - Maybe some indicator of this
 
 # Bugs
 

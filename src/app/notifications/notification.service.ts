@@ -57,8 +57,10 @@ export class NotificationService {
           `for this day=${isValid} selected=${selectedDay} start=${occurrence.start_time} end=${occurrence.end_time}`,
         );
         if (isValid) {
-          const start = new Date(occurrence.start_time);
-          reminder.when = this.reminderTime(start);
+          const startHere = new Date(occurrence.start_time);
+          const startThere = this.changeTimezone(startHere, this.db.getTimeZone());
+          console.log(`startHere=${startHere} startThere=${startThere}`);
+          reminder.when = this.reminderTime(startThere);
           if (!this.sameDate(last, reminder.when)) {
             await this.schedule(reminder);
             message = `You'll be notified ${reminder.comment} on ${getDayName(
@@ -74,6 +76,19 @@ export class NotificationService {
       }
     }
     return { notifications: count, message };
+  }
+
+  private changeTimezone(date: Date, timeZone: string): Date {
+
+    // suppose the date is 12:00 UTC
+    var invDate = new Date(date.toLocaleString('en-US', {
+      timeZone: timeZone
+    }));
+
+    var diff = date.getTime() - invDate.getTime();
+
+    // so 12:00 in Toronto is 17:00 UTC
+    return new Date(date.getTime() + diff);
   }
 
   public async unscheduleAll(eventId: string) {

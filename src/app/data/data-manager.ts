@@ -453,16 +453,16 @@ export class DataManager implements WorkerClass {
         let end: Date = new Date(occurrence.end_time);
         this.addDay(start);
         const hrs = this.hoursBetween(start, end);
-        if (hrs > 24) {
-          occurrence.end_time = new Date(
-            start.getFullYear(),
-            start.getMonth(),
-            start.getDate(),
-            end.getHours(),
-            end.getMinutes(),
-          ).toLocaleString('en-US', { timeZone: this.timezone });
-          end = new Date(occurrence.end_time);
-        }
+        // if (hrs > 24) {
+        //   occurrence.end_time = new Date(
+        //     start.getFullYear(),
+        //     start.getMonth(),
+        //     start.getDate(),
+        //     end.getHours(),
+        //     end.getMinutes(),
+        //   ).toLocaleString('en-US', { timeZone: this.timezone });
+        //   end = new Date(occurrence.end_time);
+        // }
         if (hrs <= 6) {
           allLong = false;
         }
@@ -479,6 +479,7 @@ export class DataManager implements WorkerClass {
       const timeString = this.getTimeString(event, undefined);
       event.timeString = timeString.short;
       event.longTimeString = timeString.long;
+
       event.all_day = allLong;
     }
     for (const rslEvent of this.rslEvents) {
