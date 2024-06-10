@@ -1,5 +1,11 @@
 ## Changes
 
+## 2.18
+
+- Show times in the events timezone
+- Fix to prevent repeated messaging about geolocation when user denies access
+- Put time into the event title rather than after the description
+
 ## 2.17
 
 - Lock orientation to portrait

@@ -226,7 +226,10 @@ export class MapComponent implements OnInit, OnDestroy {
 
     const hasGeo = await this.geo.checkPermissions();
     if (!hasGeo) {
-      this.showMessage = true;
+      if (!await this.geo.isDenied()) {
+        // Only show message again if the user has not denied geolocation access
+        this.showMessage = true;
+      }
       return;
     }
 

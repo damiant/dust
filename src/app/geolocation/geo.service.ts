@@ -30,6 +30,14 @@ export class GeoService {
     return status.location == 'granted' || status.coarseLocation == 'granted';
   }
 
+  public async isDenied(): Promise<boolean> {
+    if (!Capacitor.isNativePlatform()) {
+      return false;
+    }
+    const status = await Geolocation.checkPermissions();
+    return status.location == 'denied' || status.coarseLocation == 'denied';
+  }
+
   public async getPermission(): Promise<boolean> {
     if (!Capacitor.isNativePlatform()) {
       return true;
