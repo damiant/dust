@@ -1,4 +1,4 @@
-import { Component, OnInit, model, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {
   IonButton,
   IonButtons,

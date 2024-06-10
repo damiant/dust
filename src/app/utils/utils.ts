@@ -150,6 +150,7 @@ export function time(d: Date, timeZone: string): string {
   return s;
 }
 
+// eslint-disable-next-line unused-imports/no-unused-vars
 export function getOccurrenceTimeString(start: Date, end: Date, day: Date | undefined, timeZone: string): TimeString | undefined {
   const startsToday = day && sameDay(start, day);
   const endsToday = day && sameDay(end, day);
