@@ -33,7 +33,7 @@
   <ion-card-content attr.aria-label="{{ event().title }} at {{ event().camp }} located at {{ event().location }} "
     (click)="detail()">
     <ion-text aria-hidden="true" class="clamp">{{ event().description }}</ion-text>
-    <ion-text aria-hidden="true" class="clamp1">
+    <ion-text aria-hidden="true" class="clamp1 type">
       {{ event().event_type.label }}</ion-text>
   </ion-card-content>
 </ion-card>
