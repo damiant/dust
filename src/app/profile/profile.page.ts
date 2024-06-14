@@ -106,6 +106,7 @@ export class ProfilePage implements OnInit {
   private router = inject(Router);
   public db = inject(DbService);
   moreClicks = 0;
+  moreOpen = false;
   rated = false;
   locationEnabled = false;
   longEvents = false;
