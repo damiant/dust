@@ -27,11 +27,20 @@ ion-button.tile {
     box-shadow: rgba(0, 0, 0, 0.12) 0px 4px 16px;
 }
 
+.close-btn {
+    position: absolute;
+    top: 0.2rem;
+    z-index: 1;
+    right: 0.8rem;
+    left: auto
+}
+
 .header {
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
-    height: 300px;
+    height: 100vw; //300px;
+    max-height: 430px;
     border-top-left-radius: 20px !important;
     border-top-right-radius: 20px !important;
 }

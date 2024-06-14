@@ -1,5 +1,13 @@
 ## Changes
 
+## 2.19
+
+- Fix for order of items on the home page
+- Fix for displaying events at art on the now page
+- Fix events ending at midnight to prevent wrong day
+- Feature to show past events
+- Move more button to swipe
+
 ## 2.18
 
 - Show times in the events timezone

@@ -46,7 +46,13 @@
       <app-skeleton-event></app-skeleton-event>
     </div>
     } @if (vm.noEvents) {
-    <div class="message large"><ion-text>{{vm.noEventsMessage}}</ion-text></div>
+    <div class="message large"><ion-text>{{vm.noEventsMessage}}</ion-text>
+    </div>
+    @if (vm.pastEventOption) {
+    <div class="center">
+      <ion-button fill="clear" shape="round" (click)="showPastEvents()">Show Past Events</ion-button>
+    </div>
+    }
     }
     <cdk-virtual-scroll-viewport [minBufferPx]="vm.minBufferPx" itemSize="180" maxBufferPx="2350">
       <app-event [showImage]="true" [title]="vm.title" [longTime]="!vm.day" [day]="vm.day" [event]="event"

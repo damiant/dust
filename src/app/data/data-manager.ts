@@ -117,7 +117,7 @@ export class DataManager implements WorkerClass {
       case DataMethods.CheckEvents:
         return this.checkEvents();
       case DataMethods.FindEvents:
-        return this.findEvents(args[0], args[1], args[2], args[3], args[4], args[5]);
+        return this.findEvents(args[0], args[1], args[2], args[3], args[4], args[5], args[6]);
       case DataMethods.FindCamps:
         return this.findCamps(args[0], args[1]);
       case DataMethods.FindEvent:
@@ -362,6 +362,7 @@ export class DataManager implements WorkerClass {
           art.pin = gpsToMap(art.gpsCoords);
         }
       }
+      pinIndex[art.uid] = art.pin;
 
       if (!art.location_string) {
         art.location_string = LocationName.Unplaced;
@@ -429,6 +430,22 @@ export class DataManager implements WorkerClass {
         try {
           event.gpsCoords = artGPS[event.located_at_art];
           event.location = artLocationNames[event.located_at_art];
+          const placed = pinIndex[event.located_at_art];
+          let pin = undefined;
+
+          if (placed) {
+            event.pin = placed;
+            pin = placed;
+          }
+
+          if (pin) {
+            const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
+            event.gpsCoords = gpsCoords;
+          } else {
+            if (!this.env.production) {
+              this.consoleError(`Unable to find art ${event.located_at_art} for event ${event.title} ${placed}`);
+            }
+          }
         } catch (err) {
           this.consoleError(`Failed GPS: ${event.title} hosted at art ${event.located_at_art}`);
         }
@@ -467,10 +484,10 @@ export class DataManager implements WorkerClass {
           allLong = false;
         }
 
-        // Change midnight to 11:59 so that it works with the sameday function
-        if (occurrence.end_time.endsWith('T00:00:00-07:00')) {
+        // Change midnight to 11:59 so that it works with the sameday function        
+        if (occurrence.end_time.endsWith('T00:00:00')) {
           const t = occurrence.start_time.split('T');
-          occurrence.end_time = t[0] + 'T23:59:00-07:00';
+          occurrence.end_time = t[0] + 'T23:59:00';
           end = new Date(occurrence.end_time);
         }
         const res = this.getOccurrenceTimeStringCached(start, end, undefined);
@@ -793,6 +810,7 @@ export class DataManager implements WorkerClass {
     coords: GpsCoord | undefined,
     timeRange: TimeRange | undefined,
     allDay: boolean,
+    showPast: boolean
   ): Event[] {
     const result: Event[] = [];
     if (query) {
@@ -803,7 +821,7 @@ export class DataManager implements WorkerClass {
       if (
         this.eventContains(query, event, allDay) &&
         this.eventIsCategory(category, event) &&
-        this.onDay(day, event, timeRange)
+        this.onDay(day, event, timeRange, showPast)
       ) {
 
         const timeString = this.getTimeString(event, day);
@@ -970,14 +988,14 @@ export class DataManager implements WorkerClass {
     );
   }
 
-  private onDay(day: Date | undefined, event: Event, timeRange: TimeRange | undefined): boolean {
+  private onDay(day: Date | undefined, event: Event, timeRange: TimeRange | undefined, showPast: boolean): boolean {
     if (!day && !timeRange) return true;
     for (let occurrence of event.occurrence_set) {
       const start = new Date(occurrence.start_time);
       const end = new Date(occurrence.end_time);
 
       if (day) {
-        if (!occurrence.old && (sameDay(start, day) || sameDay(end, day))) {
+        if ((!occurrence.old || showPast) && (sameDay(start, day) || sameDay(end, day))) {
           return true;
         }
       } else if (timeRange) {

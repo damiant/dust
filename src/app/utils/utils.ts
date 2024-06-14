@@ -30,6 +30,9 @@ export function isWeb(): boolean {
 }
 
 export function nowAtEvent(timeZone: string): Date {
+  // if (environment.simulatedTime) {
+  //   return clone(environment.simulatedTime);
+  // }
   let str = new Date().toLocaleString('en-US', { timeZone });
   return new Date(str);
 }
