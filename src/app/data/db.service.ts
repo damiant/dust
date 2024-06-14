@@ -47,6 +47,7 @@ export class DbService {
   public networkStatus = signal('');
   public resume = signal('');
   public restart: WritableSignal<string> = signal('');
+  public showPastEvents = false;
   private initialized = false;
   private hideLocations = true;
   private prefix = '';
@@ -136,8 +137,9 @@ export class DbService {
     coords: GpsCoord | undefined,
     timeRange: TimeRange | undefined,
     allDay: boolean,
+    showPast: boolean
   ): Promise<Event[]> {
-    return await call(this.worker, DataMethods.FindEvents, query, day, category, coords, timeRange, allDay);
+    return await call(this.worker, DataMethods.FindEvents, query, day, category, coords, timeRange, allDay, showPast);
   }
 
   public async getEventList(ids: string[]): Promise<Event[]> {

@@ -117,7 +117,7 @@ export class DataManager implements WorkerClass {
       case DataMethods.CheckEvents:
         return this.checkEvents();
       case DataMethods.FindEvents:
-        return this.findEvents(args[0], args[1], args[2], args[3], args[4], args[5]);
+        return this.findEvents(args[0], args[1], args[2], args[3], args[4], args[5], args[6]);
       case DataMethods.FindCamps:
         return this.findCamps(args[0], args[1]);
       case DataMethods.FindEvent:
@@ -810,6 +810,7 @@ export class DataManager implements WorkerClass {
     coords: GpsCoord | undefined,
     timeRange: TimeRange | undefined,
     allDay: boolean,
+    showPast: boolean
   ): Event[] {
     const result: Event[] = [];
     if (query) {
@@ -820,7 +821,7 @@ export class DataManager implements WorkerClass {
       if (
         this.eventContains(query, event, allDay) &&
         this.eventIsCategory(category, event) &&
-        this.onDay(day, event, timeRange)
+        this.onDay(day, event, timeRange, showPast)
       ) {
 
         const timeString = this.getTimeString(event, day);
@@ -987,14 +988,14 @@ export class DataManager implements WorkerClass {
     );
   }
 
-  private onDay(day: Date | undefined, event: Event, timeRange: TimeRange | undefined): boolean {
+  private onDay(day: Date | undefined, event: Event, timeRange: TimeRange | undefined, showPast: boolean): boolean {
     if (!day && !timeRange) return true;
     for (let occurrence of event.occurrence_set) {
       const start = new Date(occurrence.start_time);
       const end = new Date(occurrence.end_time);
 
       if (day) {
-        if (!occurrence.old && (sameDay(start, day) || sameDay(end, day))) {
+        if ((!occurrence.old || showPast) && (sameDay(start, day) || sameDay(end, day))) {
           return true;
         }
       } else if (timeRange) {

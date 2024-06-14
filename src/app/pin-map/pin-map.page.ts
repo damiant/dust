@@ -236,7 +236,7 @@ export class PinMapPage {
     const timeRange = nowRange(localTimeZone());
     this.smallPins = true;
     const points = [];
-    const allEvents = await this.db.findEvents('', undefined, '', undefined, timeRange, false);
+    const allEvents = await this.db.findEvents('', undefined, '', undefined, timeRange, false, false);
     for (let event of allEvents) {
       const mapPoint = toMapPoint(
         event.location,

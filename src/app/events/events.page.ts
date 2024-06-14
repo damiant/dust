@@ -11,7 +11,7 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
-  ToastController,
+  ToastController
 } from '@ionic/angular/standalone';
 import { DbService } from '../data/db.service';
 import { Day, Event, MapPoint, Names } from '../data/models';
@@ -42,6 +42,7 @@ interface EventsState {
   categories: string[];
   search: string;
   noEvents: boolean;
+  pastEventOption: boolean;
   noEventsMessage: string;
   screenHeight: number;
   day: Date | undefined;
@@ -66,6 +67,7 @@ function initialState(): EventsState {
     categories: ['All Events'],
     search: '',
     noEvents: false,
+    pastEventOption: false,
     noEventsMessage: '',
     screenHeight: window.screen.height,
     day: undefined,
@@ -249,6 +251,11 @@ export class EventsPage {
     this.vm.showMap = true;
   }
 
+  showPastEvents() {
+    this.db.showPastEvents = true;
+    this.update(true);
+  }
+
   async update(scrollToTop?: boolean) {
     let coords: GpsCoord | undefined = undefined;
     if (this.vm.byDist) {
@@ -264,9 +271,11 @@ export class EventsPage {
       coords, // Geolocation
       timeRange, // Time Range
       this.settings.settings.longEvents, // Filter events > 6 hrs
+      this.db.showPastEvents
     );
     this.vm.noEvents = this.vm.events.length == 0;
     this.vm.noEventsMessage = this.noEventsMessage();
+    this.vm.pastEventOption = !this.vm.isNow && (this.vm.search?.length <= 0) && !this.db.eventHasntBegun() && !this.db.showPastEvents;
     if (scrollToTop) {
       this.hack();
       this.virtualScroll().scrollToOffset(0, 'smooth');
@@ -279,6 +288,7 @@ export class EventsPage {
     } else if (this.vm.isNow) {
       return `There are no events from ${this.vm.timeRange.replace('-', ' to ')}`;
     }
+
     return this.db.eventHasntBegun()
       ? 'Events have not been added yet.'
       : 'All the events for this day have concluded.';
