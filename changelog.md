@@ -4,6 +4,7 @@
 
 - Fix for order of items on the home page
 - Fix for displaying events at art on the now page
+- Fix events ending at midnight to prevent wrong day
 
 ## 2.18
 
