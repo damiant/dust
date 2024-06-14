@@ -277,7 +277,7 @@ export class EventsPage {
     if (this.vm.search?.length > 0) {
       return `There are no events matching "${this.vm.search}".`;
     } else if (this.vm.isNow) {
-      return `There are no events starting ${this.vm.timeRange}`;
+      return `There are no events from ${this.vm.timeRange.replace('-', ' to ')}`;
     }
     return this.db.eventHasntBegun()
       ? 'Events have not been added yet.'

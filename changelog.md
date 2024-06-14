@@ -1,5 +1,10 @@
 ## Changes
 
+## 2.19
+
+- Fix for order of items on the home page
+- Fix for displaying events at art on the now page
+
 ## 2.18
 
 - Show times in the events timezone

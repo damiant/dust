@@ -1,25 +1,18 @@
 <ion-content [fullscreen]="true">
   <div class="header" [ngStyle]="{'background-image': 'url('+ imageUrl+')'}">
-    <ion-fab-button
-      style="position: absolute; top: 0.2rem; z-index: 1; right: 0.8rem; left: auto"
-      (click)="home()"
-      size="small"
-    >
+    <ion-fab-button style="position: absolute; top: 0.2rem; z-index: 1; right: 0.8rem; left: auto" (click)="home()"
+      size="small">
       <ion-icon name="close-sharp"></ion-icon>
     </ion-fab-button>
 
     <ion-fab slot="fixed" vertical="top" horizontal="end">
-      <ion-fab-button
-        id="open-modal"
-        style="position: absolute; top: 230px; z-index: 1; right: 0.2rem; left: auto"
-        size="small"
-      >
+      <ion-fab-button id="open-modal" style="position: absolute; top: 230px; z-index: 1; right: 0.2rem; left: auto"
+        size="small">
         <ion-icon name="ellipsis-vertical-sharp"></ion-icon>
       </ion-fab-button>
     </ion-fab>
-    <ion-title class="image-text" (click)="moreClick()" size="large"
-      ><span class="back-title">{{db.selectedDataset().title}}</span></ion-title
-    >
+    <ion-title class="image-text" (click)="moreClick()" size="large"><span
+        class="back-title">{{db.selectedDataset().title}}</span></ion-title>
   </div>
 
   <ion-modal #modal trigger="open-modal" [initialBreakpoint]="0.3">
@@ -53,26 +46,21 @@
     </ng-template>
   </ion-modal>
   <app-tile-container>
-    <app-tile
-      [hidden]="!hasRestrooms"
-      title="Restrooms"
-      routerLink="/map/restrooms"
-      imgSrc="assets/icon/toilet.svg"
-    ></app-tile>
-    <app-tile [hidden]="!hasIce" title="Ice" routerLink="/map/ice" imgSrc="assets/icon/ice.svg"></app-tile>
-    <app-tile
-      [hidden]="!hasMedical"
-      title="Medical"
-      routerLink="/map/medical"
-      imgSrc="assets/icon/medical.svg"
-    ></app-tile>
     @if (!db.locationsHidden()) {
     <app-tile title="Map" routerLink="/map/all" imgSrc="assets/icon/map.svg"></app-tile>
-    } @if (!db.locationsHidden() && !db.featuresHidden().includes('art')) {
-    <app-tile title="Art" routerLink="/map/art" imgSrc="assets/icon/art.svg"></app-tile>
-    } @if (!db.locationsHidden() && this.eventIsHappening) {
+    }
+    <app-tile [hidden]="!hasMedical" title="Medical" routerLink="/map/medical"
+      imgSrc="assets/icon/medical.svg"></app-tile>
+
+    @if (!db.locationsHidden() && this.eventIsHappening) {
     <app-tile title="Now" routerLink="/map/now" imgSrc="assets/icon/calendar.svg"></app-tile>
     }
+    <app-tile [hidden]="!hasRestrooms" title="Restrooms" routerLink="/map/restrooms"
+      imgSrc="assets/icon/toilet.svg"></app-tile>
+    @if (!db.locationsHidden() && !db.featuresHidden().includes('art')) {
+    <app-tile title="Art" routerLink="/map/art" imgSrc="assets/icon/art.svg"></app-tile>
+    }
+    <app-tile [hidden]="!hasIce" title="Ice" routerLink="/map/ice" imgSrc="assets/icon/ice.svg"></app-tile>
     <app-tile title="Directions" [hidden]="!mapPin" (click)="directions()" iconName="compass-outline"></app-tile>
   </app-tile-container>
 

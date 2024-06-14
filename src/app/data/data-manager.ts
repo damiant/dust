@@ -362,6 +362,7 @@ export class DataManager implements WorkerClass {
           art.pin = gpsToMap(art.gpsCoords);
         }
       }
+      pinIndex[art.uid] = art.pin;
 
       if (!art.location_string) {
         art.location_string = LocationName.Unplaced;
@@ -429,6 +430,22 @@ export class DataManager implements WorkerClass {
         try {
           event.gpsCoords = artGPS[event.located_at_art];
           event.location = artLocationNames[event.located_at_art];
+          const placed = pinIndex[event.located_at_art];
+          let pin = undefined;
+
+          if (placed) {
+            event.pin = placed;
+            pin = placed;
+          }
+
+          if (pin) {
+            const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
+            event.gpsCoords = gpsCoords;
+          } else {
+            if (!this.env.production) {
+              this.consoleError(`Unable to find art ${event.located_at_art} for event ${event.title} ${placed}`);
+            }
+          }
         } catch (err) {
           this.consoleError(`Failed GPS: ${event.title} hosted at art ${event.located_at_art}`);
         }
