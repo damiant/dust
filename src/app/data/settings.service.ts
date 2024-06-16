@@ -50,7 +50,7 @@ export class SettingsService {
   }
 
   public save() {
-    if (this.settings.mapUri.length > 5000000) {
+    if (!this.settings.mapUri || this.settings.mapUri.length > 5000000) {
       this.settings.mapUri = '';
     }
     localStorage['settings'] = JSON.stringify(this.settings);
