@@ -4,8 +4,8 @@
       <ion-icon name="close-sharp"></ion-icon>
     </ion-fab-button>
 
-    <ion-title class="image-text" (click)="moreClick()" size="large"><span
-        class="back-title">{{db.selectedDataset().title}}</span></ion-title>
+    <!-- <ion-title class="image-text" (click)="moreClick()" size="large"><span
+      class="back-title">{{db.selectedDataset().title}}</span></ion-title> -->
   </div>
 
   <ion-modal [isOpen]="moreOpen" (didDismiss)="moreOpen = false" #modal [initialBreakpoint]="0.3">
@@ -70,7 +70,7 @@
   </ion-card>
   } }
 
-  <div class="pad-top" (click)="hiddenPanel = !hiddenPanel"></div>
+  <div (click)="moreClick()" class="pad-top" (click)="hiddenPanel = !hiddenPanel"></div>
   <div style="padding: 1rem">
     <ion-item [hidden]="!hiddenPanel" lines="none">
       <ion-icon slot="start" name="time-outline"></ion-icon>
