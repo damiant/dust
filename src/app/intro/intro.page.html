@@ -1,26 +1,19 @@
 <ion-content color="primary" [fullscreen]="true">
-  <app-message
-    (dismissed)="launch()"
-    [show]="vm.showMessage"
-    [title]="'About '+vm.selected?.year"
-    [message]="vm.message"
-  ></app-message>
+  <app-message (dismissed)="launch()" [show]="vm.showMessage" [title]="'About '+vm.selected?.year"
+    [message]="vm.message"></app-message>
   <div [class.full]="vm.eventAlreadySelected" class="vcenter rows">
     <h1 (click)="clear()">dust.</h1>
     <ion-text role="text"><strong>dust</strong> is a guide for burners to find events, camps and art.</ion-text>
-    <div style="min-height: 40px">
+    <!-- <div style="min-height: 40px">
       <ion-spinner [hidden]="!vm.downloading" name="dots" color="light"></ion-spinner>
-    </div>
+    </div> -->
   </div>
 
   <app-carousel [hidden]="vm.eventAlreadySelected" (slideChanged)="slideChanged($event)" #carousel>
     @for (card of vm.cards; track card.id) {
     <app-carousel-item (click)="open(card)">
-      <app-cached-img
-        [loading]="'eager'"
-        [ngClass]="(vm.selected?.id === card.id) ? 'select' : 'unselect'"
-        [src]="card.imageUrl"
-      />
+      <app-cached-img [loading]="'eager'" [ngClass]="(vm.selected?.id === card.id) ? 'select' : 'unselect'"
+        [src]="card.imageUrl" />
 
       <p class="name" aria-hidden="true">{{card.title}}</p>
     </app-carousel-item>
@@ -40,28 +33,25 @@
           <ion-radio value="bm">Burning Man</ion-radio><br />
         </ion-radio-group>
       </ion-content>
-      <!-- <ion-list>
-        <ion-item>
-          Regionals only
-        </ion-item>
-        <ion-item>
-          Burning Man
-        </ion-item>
-        <ion-item>
-          All
-        </ion-item>
-      </ion-list> -->
     </ion-fab-list>
   </ion-fab>
 
+  <!-- @if (vm.downloading) {
+  <ion-fab #fab slot="fixed" vertical="bottom" horizontal="start">
+    <ion-fab-button>
+      <ion-spinner name="crescent"></ion-spinner>      
+    </ion-fab-button>
+  </ion-fab>
+  } -->
+
   <div [hidden]="vm.eventAlreadySelected" class="footer">
-    <ion-button [disabled]="!vm.ready" (click)="go()" size="large" shape="round"
-      >Get Dusty @if (!vm.ready) {
+
+    <ion-button [disabled]="!vm.ready" (click)="go()" size="large" shape="round">Get Dusty @if (!vm.ready ||
+      vm.downloading) {
       <ion-spinner style="margin-left: 0.5rem" color="light" name="circular"></ion-spinner>
-      } @if (vm.ready) {
+      } @if (vm.ready && !vm.downloading) {
       <ion-icon name="arrow-forward-outline"></ion-icon>
-      }</ion-button
-    >
+      }</ion-button>
   </div>
   <p class="subtitle">{{subtitle()}}</p>
 </ion-content>

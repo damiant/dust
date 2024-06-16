@@ -33,7 +33,7 @@ import { ThemePrimaryColor, UiService } from '../ui/ui.service';
 import { environment } from 'src/environments/environment';
 import { Network } from '@capacitor/network';
 import { addIcons } from 'ionicons';
-import { arrowForwardOutline, chevronUpOutline } from 'ionicons/icons';
+import { arrowForwardOutline, chevronUpOutline, cloudDownloadOutline } from 'ionicons/icons';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { CarouselComponent, SlideSelect } from '../carousel/carousel.component';
 import { CarouselItemComponent } from '../carousel-item/carousel-item.component';
@@ -114,11 +114,11 @@ export class IntroPage {
   fab = viewChild.required(IonFab);
 
   constructor() {
-    addIcons({ arrowForwardOutline, chevronUpOutline });
+    addIcons({ arrowForwardOutline, chevronUpOutline, cloudDownloadOutline });
     effect(() => {
       const downloading = this.download();
       if (downloading !== '') {
-        this.ui.presentDarkToast(`Downloading ${downloading}`, this.toastController);
+        //this.ui.presentDarkToast(`Downloading ${downloading}`, this.toastController);
       }
     });
     effect(async () => {
@@ -222,6 +222,27 @@ export class IntroPage {
     document.location.href = '';
   }
 
+  async preDownload() {
+    try {
+      if (this.api.hasStarted(this.vm.selected!)) {
+        const status = await Network.getStatus();
+        if (status.connectionType == 'cellular') {
+          console.log(`Avoiding downloading because event has started and we are on cell service`);
+          return;
+        }
+      }
+
+      this.vm.downloading = true;
+      // If we are using a preview then force
+      const forceDownload = !!this.db.overrideDataset;
+      await this.api.download(this.vm.selected, forceDownload, this.download);
+
+    } finally {
+      this.vm.downloading = false;
+      this.download.set('');
+    }
+  }
+
   async go() {
     if (this.vm.eventAlreadySelected && !this.vm.selected) {
       this.vm.eventAlreadySelected = false;
@@ -231,15 +252,21 @@ export class IntroPage {
     }
     if (!this.vm.selected) return;
 
-    try {
-      this.vm.downloading = true;
-      // If we are using a preview then force
-      const forceDownload = !!this.db.overrideDataset;
-      await this.api.download(this.vm.selected, forceDownload, this.download);
-    } finally {
-      this.vm.downloading = false;
-      this.download.set('');
-    }
+    // If event has started (hasStarted)
+    // and network is cell
+    await this.preDownload();
+
+    /*  We now predownload the data instead  
+        try {
+          this.vm.downloading = true;
+          // If we are using a preview then force
+          const forceDownload = !!this.db.overrideDataset;
+          await this.api.download(this.vm.selected, forceDownload, this.download);
+        } finally {
+          this.vm.downloading = false;
+          this.download.set('');
+        }
+          */
 
     const start = new Date(this.vm.selected.start);
     const manBurns = addDays(start, 6);

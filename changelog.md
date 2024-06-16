@@ -1,5 +1,9 @@
 ## Changes
 
+## 2.20
+
+- Prevent downloading updates when the event has started and cell network is used
+
 ## 2.19
 
 - Fix for order of items on the home page

@@ -95,7 +95,7 @@ export class ApiService {
     const result = await this.dbService.setDataset(datasetInfo);
     await this.reportWorkerLogs();
 
-    const hasNoData = result.events == 0 && result.camps == 0 && result.pins == 0;
+    const hasNoData = !result || (result.events == 0 && result.camps == 0 && result.pins == 0);
     const isPreview = !!this.dbService.overrideDataset;
     if (!result || (hasNoData && !isPreview)) {
       console.error(`dbService.setDataset complete but bad data ${JSON.stringify(result)}`);
@@ -104,6 +104,14 @@ export class ApiService {
     }
     console.info(`dbService.setDataset complete ${JSON.stringify(result)}`);
     return { success: true, datasetResult: result };
+  }
+
+  public hasStarted(a: Dataset): boolean {
+    // This is whether the event is in the past
+    const start = new Date(a.start);
+    const until = daysUntil(start, new Date());
+    console.log(`There are ${until} days until the event starts`);
+    return until <= 0;
   }
 
   private async reportWorkerLogs() {
@@ -136,7 +144,7 @@ export class ApiService {
       }
       dataset.dist = distance(
         { lat: dataset.lat, lng: dataset.long },
-        { lat: asNumber(location.latitude, 0), lng: asNumber(location.longitude, 0) },
+        { lat: asNumber(location?.latitude, 0), lng: asNumber(location?.longitude, 0) },
       );
       const daysTilStart = daysUntil(new Date(dataset.start), nowAtEvent(dataset.timeZone)) - 1;
       const hasEnded = daysUntil(new Date(dataset.end), nowAtEvent(dataset.timeZone)) < 0;
