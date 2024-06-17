@@ -135,6 +135,10 @@ export function minutesBetween(date2: Date, date1: Date) {
   return Math.abs(Math.round(differenceValue));
 }
 
+export function isAfter(date2: Date, date1: Date) {
+  return (date2.getTime() - date1.getTime()) > 0;
+}
+
 export function addDays(date: Date, days: number) {
   var result = new Date(date);
   result.setDate(result.getDate() + days);

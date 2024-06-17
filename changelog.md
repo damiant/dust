@@ -3,6 +3,7 @@
 ## 2.21
 
 - Option to download update added to the more menu
+- Show Burning Man first in the list if it starts earlier than the closest regional burn
 
 ## 2.20
 

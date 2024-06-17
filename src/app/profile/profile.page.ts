@@ -61,7 +61,6 @@ import { EventsCardComponent } from '../events-card/events-card.component';
 import { FavoritesService } from '../favs/favorites.service';
 import { ApiService } from '../data/api.service';
 import { delay } from '../utils/utils';
-import { Network } from '@capacitor/network';
 
 interface Group {
   id: number;

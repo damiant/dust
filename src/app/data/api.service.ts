@@ -13,7 +13,7 @@ import {
 } from './models';
 
 import { SettingsService } from './settings.service';
-import { asNumber, data_dust_events, daysUntil, diffNumbers, nowAtEvent, static_dust_events } from '../utils/utils';
+import { asNumber, data_dust_events, daysUntil, diffNumbers, isAfter, nowAtEvent, static_dust_events } from '../utils/utils';
 import { DbService } from './db.service';
 import { Capacitor } from '@capacitor/core';
 import { App } from '@capacitor/app';
@@ -157,10 +157,28 @@ export class ApiService {
         dataset.subTitle = `${dataset.title} is happening now`;
       }
     }
-    return datasets
+    const list = datasets
       .filter((d) => d.active || inactive)
       .filter((d) => this.byType(d, filter))
-      .sort((a, b) => diffNumbers(a.dist, b.dist));
+      .sort((a, b) => this.sortEvents(a, b, filter));
+    if (list.length > 1 && filter == 'all' && isAfter(new Date(list[0].start), new Date(list[1].start))) {
+      // Make Burning Man first if the closest regional is after it.
+      const tmp = { ...list[0] };
+      list[0] = list[1];
+      list[1] = tmp;
+    }
+    return list;
+  }
+
+  private sortEvents(a: Dataset, b: Dataset, filter: DatasetFilter): number {
+    const diff = diffNumbers(a.dist, b.dist);
+    if (filter === 'all') {
+      if (a.id.startsWith('ttitd')) {
+        return -1;
+      }
+    }
+
+    return diff;
   }
 
   private byType(a: Dataset, filter: DatasetFilter): boolean {
