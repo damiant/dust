@@ -1,5 +1,9 @@
 ## Changes
 
+## 2.21
+
+- Option to download update added to the more menu
+
 ## 2.20
 
 - Prevent downloading updates when the event has started and cell network is used

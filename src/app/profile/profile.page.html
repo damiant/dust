@@ -31,6 +31,11 @@
           Rate
         </ion-item>
 
+        <ion-item (click)="downloadUpdate()" detail="true">
+          <ion-icon slot="start" name="cloud-download-outline"></ion-icon>
+          Download Update
+        </ion-item>
+
         <ion-item (click)="about()" detail="true">
           <ion-icon slot="start" name="information-circle-outline"></ion-icon>
           About
@@ -69,6 +74,12 @@
     }
   </ion-card>
   } }
+
+  @if (downloading) {
+  <ion-card><ion-card-content>
+      Downloading new content for {{db.selectedDataset().title}}
+      <ion-spinner name="dots" color="light"></ion-spinner></ion-card-content></ion-card>
+  }
 
   <app-events-card [events]="favEventsToday"></app-events-card>
 

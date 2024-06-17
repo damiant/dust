@@ -21,6 +21,8 @@ import { environment } from 'src/environments/environment';
 import { getCachedImage } from './cache-store';
 import { distance } from '../map/map.utils';
 
+export type DownloadResult = 'success' | 'error' | 'already-updated';
+
 interface Version {
   version: string;
 }
@@ -200,7 +202,7 @@ export class ApiService {
     selected: Dataset | undefined,
     force: boolean,
     downloadSignal: WritableSignal<string>,
-  ): Promise<boolean> {
+  ): Promise<DownloadResult> {
     let dataset = '';
     let nextRevision: Revision | undefined;
     let myRevision: Revision | undefined;
@@ -247,15 +249,15 @@ export class ApiService {
         console.log(
           `Will not download data for ${dataset} as it is already at revision ${nextRevision.revision} and version is ${currentVersion}`,
         );
-        return true;
+        return 'already-updated';
       }
     } catch (err) {
       console.log('Possible CORs error as document location is ', document.location.href);
       console.error('Unable to download', err);
-      return false;
+      return 'error';
     }
     console.log(`Will attempt download to ${JSON.stringify(nextRevision)}`);
-    if (!nextRevision) return false;
+    if (!nextRevision) return 'error';
 
     downloadSignal.set(selected ? selected.title : ' ');
     const currentVersion = await this.getVersion();
@@ -296,7 +298,7 @@ export class ApiService {
     if (this.badData(events, art, camps)) {
       console.error(`Download has no events, art or camps and has failed.`);
       downloadSignal.set('');
-      return false;
+      return 'error';
     } else {
       console.log(`Data passed checks for events, art and camps`);
     }
@@ -307,6 +309,6 @@ export class ApiService {
     await this.dbService.writeData(dataset, Names.map, map);
 
     downloadSignal.set('');
-    return true;
+    return 'success';
   }
 }

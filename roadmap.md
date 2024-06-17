@@ -2,11 +2,10 @@
 
 # Feedback
 
-- Events ending at midnight treated as the next day
+- Option to download update from the main menu
+- Feature to highlight downloading an update in the week before the event if it was updated more than a week ago
 - Timetable view (something like Google Calendar)
-- Be able to see past events with a toggle
 - Events longer than 4 hours should be hidden or at the bottom of the list.
-- Show favorited events on the main listing (ie star)
 - Be able to favorite from the main listing
 
 # Difficult to solve

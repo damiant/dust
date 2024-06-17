@@ -1,4 +1,4 @@
-import { Component, OnInit, effect, viewChild, inject } from '@angular/core';
+import { Component, OnInit, effect, viewChild, inject, WritableSignal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -20,7 +20,7 @@ import {
   IonToolbar,
   ToastController,
   IonFabList,
-  IonModal,
+  IonModal, IonSpinner
 } from '@ionic/angular/standalone';
 import { UiService } from '../ui/ui.service';
 import { Share } from '@capacitor/share';
@@ -48,6 +48,7 @@ import {
   locateOutline,
   compassOutline,
   calendarOutline,
+  cloudDownloadOutline,
   closeSharp,
   ellipsisVerticalSharp,
 } from 'ionicons/icons';
@@ -58,6 +59,9 @@ import { LinkComponent } from '../link/link.component';
 import { CalendarService } from '../calendar.service';
 import { EventsCardComponent } from '../events-card/events-card.component';
 import { FavoritesService } from '../favs/favorites.service';
+import { ApiService } from '../data/api.service';
+import { delay } from '../utils/utils';
+import { Network } from '@capacitor/network';
 
 interface Group {
   id: number;
@@ -70,6 +74,7 @@ interface Group {
   styleUrls: ['./profile.page.scss'],
   standalone: true,
   imports: [
+    IonSpinner,
     IonModal,
     IonFabList,
     CommonModule,
@@ -115,6 +120,7 @@ export class ProfilePage implements OnInit {
   locationEnabled = false;
   longEvents = false;
   hiddenPanel = false;
+  downloading = false;
   eventIsHappening = false;
   favEventsToday: Event[] = [];
   imageUrl = '';
@@ -126,7 +132,8 @@ export class ProfilePage implements OnInit {
   hasRestrooms = true;
   hasIce = true;
   presentingElement: any;
-
+  download: WritableSignal<string> = signal('');
+  api = inject(ApiService);
   constructor() {
     addIcons({
       linkOutline,
@@ -139,6 +146,7 @@ export class ProfilePage implements OnInit {
       exitOutline,
       timeOutline,
       locateOutline,
+      cloudDownloadOutline,
       closeSharp,
       ellipsisVerticalSharp,
     });
@@ -326,6 +334,34 @@ export class ProfilePage implements OnInit {
       await this.map.openGoogleMapDirections(this.mapPin);
     } else if (await this.map.canOpenMapApp('apple')) {
       await this.map.openAppleMapDirections(this.mapPin);
+    }
+  }
+
+  async downloadUpdate() {
+    try {
+      await this.dismiss();
+      this.downloading = true;
+      if (this.db.networkStatus() == 'none') {
+        this.ui.presentToast('No network connection. Maybe turn off airplane mode?', this.toastController);
+        return;
+      }
+      await delay(1000);
+      const dataset = this.db.selectedDataset();
+      const result = await this.api.download(dataset, false, this.download);
+      switch (result) {
+        case 'success': {
+          this.downloading = false;
+          this.ui.presentToast('Update complete', this.toastController);
+          this.home();
+          return;
+        }
+        case 'already-updated': {
+          this.ui.presentToast('Already up to date', this.toastController);
+        }
+      }
+    } finally {
+
+      this.downloading = false;
     }
   }
 }
