@@ -182,7 +182,6 @@ export class ProfilePage implements OnInit {
 
   async update() {
     this.favEventsToday = await this.favs.getFavoriteEventsToday();
-    console.log('favEventsToday', this.favEventsToday);
   }
 
   private group(links: Link[]): Group[] {

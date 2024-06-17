@@ -4,7 +4,7 @@
       <ion-back-button [text]="backText"></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button (click)="toggleStar()" slot="icon">
+      <ion-button (click)="toggleStar()">
         @if (star) {
         <ion-icon name="star"></ion-icon>
         } @if (!star) {
@@ -45,6 +45,11 @@
       <ion-text style="padding-right: 1rem; white-space: pre-line"
         class="text selectable">{{art.description}}</ion-text>
     </ion-item>
+
+    <div class="center" [hidden]="star">
+      <ion-button size="large" style="padding-bottom: 1rem" (click)="toggleStar()" shape="round">Add To
+        Favorites</ion-button>
+    </div>
 
     <ion-item>
       @for (image of art.images; track image) {
