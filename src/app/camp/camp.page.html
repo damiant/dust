@@ -87,7 +87,7 @@
       </ion-item>
       @for (occurrence of event.occurrences; track occurrence) {
       <ion-item class="small" (click)="toggleRSLStar(occurrence, event)">
-        <ion-label class="pad-left text">
+        <ion-label class="text">
           <span class="time">{{occurrence.timeRange}}</span> {{occurrence.who}}<ion-icon class="star" color="primary"
             [hidden]="!occurrence.star" name="star"></ion-icon></ion-label>
       </ion-item>
