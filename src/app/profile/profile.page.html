@@ -67,7 +67,7 @@
   <app-friends />
   } @if (!db.featuresHidden().includes('private')) {
   <app-private-events />
-  } @if (groups.length > 0) { @for (group of groups; track group.id) {
+  } @if (groups.length > 0 && db.featuresHidden().includes('private')) { @for (group of groups; track group.id) {
   <ion-card class="ion-padding-bottom">
     @for (link of group.links; track link) {
     <app-link [url]="link.url" [text]="link.title"></app-link>

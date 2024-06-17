@@ -83,7 +83,7 @@ export class CampPage implements OnInit {
     const id = tmp[0];
     this.backText = tmp[1];
     this.camp = await this.db.findCamp(id);
-    this.star = await this.fav.isFavCamp(this.camp.uid);
+    this.star = this.camp && await this.fav.isFavCamp(this.camp.uid);
     this.events = await this.db.getCampEvents(id);
 
     const rslEvents = await this.db.getCampRSLEvents(id);

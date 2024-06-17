@@ -167,6 +167,7 @@ export interface Settings {
   longEvents: boolean;
   preventAutoStart: boolean;
   offlineEvents: string[]; // List of all offline event ids
+  lastGeoAlert: number | undefined;
 }
 
 

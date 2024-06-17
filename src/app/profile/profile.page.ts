@@ -288,7 +288,7 @@ export class ProfilePage implements OnInit {
   async toggleLocation(e: any) {
     const turnedOn = e.detail.checked;
     if (turnedOn) {
-      const success = await this.geo.getPermission();
+      const success = await this.geo.requestPermission();
       if (success) {
         this.locationEnabled = turnedOn;
       }
