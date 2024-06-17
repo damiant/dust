@@ -130,7 +130,6 @@ export class FavsPage implements OnInit {
   constructor() {
     addIcons({ star, starOutline, mapOutline, printOutline });
     effect(async () => {
-      console.log('update favorite');
       this.fav.changed();
       await this.update();
     });
@@ -194,7 +193,7 @@ export class FavsPage implements OnInit {
     const rslEvents = this.filterItems(Filter.Events, items);
     const events = this.filterItems(
       Filter.Events,
-      await this.fav.getEventList(favs.events, this.db.isHistorical(), rslEvents),
+      await this.fav.getEventList(favs.events, this.db.isHistorical(), rslEvents, false),
     );
     const camps = this.filterItems(Filter.Camps, await this.db.getCampList(favs.camps));
     const art = this.filterItems(Filter.Art, await this.db.getArtList(favs.art));

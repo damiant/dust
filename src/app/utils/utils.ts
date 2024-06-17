@@ -164,8 +164,9 @@ export function getOccurrenceTimeString(start: Date, end: Date, day: Date | unde
     const short =
       endsToday && !startsToday
         ? `Until ${time(end, tz)} (${timeBetween(end, start)})`
-        : `${time(start, tz)} (${timeBetween(end, start)})`;
+        : `${time(start, tz)}`;
 
+    // Length of time: `${time(start, tz)} (${timeBetween(end, start)})`;
     return {
       long: `${day} ${time(start, tz)}-${time(end, tz)} (${timeBetween(end, start)})`,
       short,

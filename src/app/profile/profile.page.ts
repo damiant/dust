@@ -32,7 +32,7 @@ import { DbService } from '../data/db.service';
 import { TileContainerComponent } from '../tile-container/tile-container.component';
 import { TileComponent } from '../tile/tile.component';
 import { GeoService } from '../geolocation/geo.service';
-import { DatasetResult, Link, LocationEnabledStatus, Names } from '../data/models';
+import { DatasetResult, Event, Link, LocationEnabledStatus, Names } from '../data/models';
 import { environment } from 'src/environments/environment';
 import { RateApp } from 'capacitor-rate-app';
 import { PrivateEventsComponent } from '../private-events/private-events.component';
@@ -56,6 +56,8 @@ import { Capacitor } from '@capacitor/core';
 import { getCachedImage } from '../data/cache-store';
 import { LinkComponent } from '../link/link.component';
 import { CalendarService } from '../calendar.service';
+import { EventsCardComponent } from '../events-card/events-card.component';
+import { FavoritesService } from '../favs/favorites.service';
 
 interface Group {
   id: number;
@@ -92,6 +94,7 @@ interface Group {
     IonFab,
     TileContainerComponent,
     TileComponent,
+    EventsCardComponent,
     PrivateEventsComponent,
     LinkComponent,
   ],
@@ -102,6 +105,7 @@ export class ProfilePage implements OnInit {
   private map = inject(MapService);
   private geo = inject(GeoService);
   private toastController = inject(ToastController);
+  private favs = inject(FavoritesService);
   private calendar = inject(CalendarService);
   private router = inject(Router);
   public db = inject(DbService);
@@ -112,6 +116,7 @@ export class ProfilePage implements OnInit {
   longEvents = false;
   hiddenPanel = false;
   eventIsHappening = false;
+  favEventsToday: Event[] = [];
   imageUrl = '';
   mapPin: GPSPin | undefined;
   groups: Group[] = [];
@@ -140,9 +145,18 @@ export class ProfilePage implements OnInit {
     effect(() => {
       this.ui.scrollUpContent('profile', this.ionContent());
     });
+    effect(async () => {
+      this.favs.changed();
+      await this.update();
+    });
   }
 
   async ngOnInit() {
+    await this.init();
+    //await this.update();
+  }
+
+  async init() {
     this.presentingElement = document.querySelector('.ion-page');
     this.imageUrl = await getCachedImage(this.db.selectedImage());
     this.db.checkInit();
@@ -157,6 +171,11 @@ export class ProfilePage implements OnInit {
     this.eventIsHappening = !this.db.eventHasntBegun() && !this.db.isHistorical();
     this.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
     this.groups = this.group(await this.db.getLinks());
+  }
+
+  async update() {
+    this.favEventsToday = await this.favs.getFavoriteEventsToday();
+    console.log('favEventsToday', this.favEventsToday);
   }
 
   private group(links: Link[]): Group[] {

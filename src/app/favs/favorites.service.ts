@@ -13,7 +13,7 @@ import { NotificationService, ScheduleResult } from '../notifications/notificati
 import { Preferences } from '@capacitor/preferences';
 import { SettingsService } from '../data/settings.service';
 import { DbService } from '../data/db.service';
-import { clone, getDayName, getOccurrenceTimeString, now } from '../utils/utils';
+import { clone, getDayName, getOccurrenceTimeString, now, sameDay } from '../utils/utils';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 
 enum DbId {
@@ -309,10 +309,16 @@ export class FavoritesService {
     }
   }
 
-  public async getEventList(ids: string[], historical: boolean, rslEvents: RSLEvent[]): Promise<Event[]> {
-    const events = await this.db.getEventList(this.eventsFrom(ids));
+  public async getFavoriteEventsToday(): Promise<Event[]> {
+    const favs = await this.getFavorites();
+    return this.getEventList(favs.events, false, [], true);
+  }
+
+  public async getEventList(ids: string[], historical: boolean, rslEvents: RSLEvent[], today: boolean): Promise<Event[]> {
+    let events = await this.db.getEventList(this.eventsFrom(ids));
+
     // Group events and Set event time string to favorited event occurrence
-    const eventItems = await this.splitEvents(events, historical);
+    let eventItems = await this.splitEvents(events, historical, today);
     for (let rslEvent of rslEvents) {
       this.toEvent(rslEvent, eventItems);
     }
@@ -333,6 +339,7 @@ export class FavoritesService {
         camp: rslEvent.artCar ? `${rslEvent.artCar} mutant vehicle` : rslEvent.camp,
         timeString: o.timeRange,
         start: new Date(o.startTime),
+        end: new Date(o.endTime),
         location: rslEvent.artCar ? 'playa' : rslEvent.location,
         longTimeString: o.timeRange,
         old: false,
@@ -346,9 +353,8 @@ export class FavoritesService {
         gpsCoords: { lat: 0, lng: 0 },
         description: '',
         slug: this.rslId(rslEvent, o),
-        print_description: `${o.who} is playing ${party}${
-          rslEvent.artCar ? 'on the ' + rslEvent.artCar + ' mutant vehicle' : 'at ' + rslEvent.camp
-        }.`,
+        print_description: `${o.who} is playing ${party}${rslEvent.artCar ? 'on the ' + rslEvent.artCar + ' mutant vehicle' : 'at ' + rslEvent.camp
+          }.`,
         occurrence_set: [
           {
             start_time: o.startTime,
@@ -368,7 +374,7 @@ export class FavoritesService {
     }
   }
 
-  private async splitEvents(events: Event[], historical: boolean): Promise<Event[]> {
+  private async splitEvents(events: Event[], historical: boolean, today: boolean): Promise<Event[]> {
     const eventItems: Event[] = [];
     const timeNow = now().getTime();
     for (let event of events) {
@@ -392,7 +398,10 @@ export class FavoritesService {
           const times = getOccurrenceTimeString(start, end, undefined, this.db.getTimeZone());
           eventItem.timeString = times ? times?.short : '';
           eventItem.longTimeString = times ? times?.long : '';
-          if (!eventItem.old || historical) {
+          const isToday = sameDay(start, now() || sameDay(end, now()));
+          let filteredOut = today && !isToday;
+          if (eventItem.old && !historical) filteredOut = true;
+          if (!filteredOut) {
             eventItems.push(eventItem);
           }
         }

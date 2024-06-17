@@ -1,0 +1,12 @@
+@if (events().length > 0) {
+<ion-card class="ion-padding-bottom">
+  <ion-card-header>
+    <ion-card-title>Today's Favorite Events</ion-card-title>
+  </ion-card-header>
+  @for (event of events(); track event.uid; let index = $index) {
+  <ion-item color="transparent" detail="true" [routerLink]="'/event/' + event.uid + '+' + 'Home'"
+    [lines]="items()[index].lines">
+    <span slot="start">{{items()[index].time}}</span>{{event.title}}</ion-item>
+  }
+</ion-card>
+}

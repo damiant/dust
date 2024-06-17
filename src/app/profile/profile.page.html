@@ -70,6 +70,8 @@
   </ion-card>
   } }
 
+  <app-events-card [events]="favEventsToday"></app-events-card>
+
   <div (click)="moreClick()" class="pad-top" (click)="hiddenPanel = !hiddenPanel"></div>
   <div style="padding: 1rem">
     <ion-item [hidden]="!hiddenPanel" lines="none">
