@@ -148,7 +148,7 @@ export class ApiService {
         { lat: dataset.lat, lng: dataset.long },
         { lat: asNumber(location?.latitude, 0), lng: asNumber(location?.longitude, 0) },
       );
-      const daysTilStart = daysUntil(new Date(dataset.start), nowAtEvent(dataset.timeZone)) - 1;
+      const daysTilStart = daysUntil(new Date(dataset.start), nowAtEvent(dataset.timeZone));
       const hasEnded = daysUntil(new Date(dataset.end), nowAtEvent(dataset.timeZone)) < 0;
       dataset.subTitle = `${daysTilStart} day${daysTilStart == 1 ? '' : 's'} until ${dataset.title}`;
       if (hasEnded) {
