@@ -44,8 +44,9 @@
   </ion-fab>
   } -->
 
+  <app-pin-entry [correctPin]="vm.selected ? vm.selected.pin : ''" (dismissed)="closePin()"
+    [show]="vm.showPinModal"></app-pin-entry>
   <div [hidden]="vm.eventAlreadySelected" class="footer">
-
     <ion-button [disabled]="!vm.ready" (click)="go()" size="large" shape="round">Get Dusty @if (!vm.ready ||
       vm.downloading) {
       <ion-spinner style="margin-left: 0.5rem" color="light" name="circular"></ion-spinner>

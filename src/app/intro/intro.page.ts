@@ -16,8 +16,9 @@ import {
   IonList,
   IonPopover,
   IonRadioGroup,
-  IonRadio,
+  IonRadio
 } from '@ionic/angular/standalone';
+import { PinEntryComponent } from '../pin-entry/pin-entry.component';
 import { Router, RouterModule } from '@angular/router';
 import { DbService } from '../data/db.service';
 import { SplashScreen } from '@capacitor/splash-screen';
@@ -44,6 +45,8 @@ interface IntroState {
   ready: boolean;
   showMessage: boolean;
   downloading: boolean;
+  showPinModal: boolean;
+  pinPromise: Promise<boolean> | undefined;
   eventAlreadySelected: boolean;
   cards: Dataset[];
   selected: Dataset | undefined;
@@ -58,10 +61,12 @@ function initialState(): IntroState {
     ready: true,
     showMessage: false,
     downloading: false,
+    showPinModal: false,
     eventAlreadySelected: true,
     cards: [],
     selected: undefined,
     message: '',
+    pinPromise: undefined,
     clearCount: 0,
     scrollLeft: 0,
     showing: 'all',
@@ -94,6 +99,7 @@ function initialState(): IntroState {
     CachedImgComponent,
     CarouselComponent,
     CarouselItemComponent,
+    PinEntryComponent
   ],
 })
 export class IntroPage {
@@ -107,6 +113,7 @@ export class IntroPage {
   private alertController = inject(AlertController);
   private toastController = inject(ToastController);
   private shareService = inject(ShareService);
+  private pinEntry = viewChild.required(PinEntryComponent);
   vm: IntroState = initialState();
   download: WritableSignal<string> = signal('');
   subtitle: WritableSignal<string> = signal('');
@@ -255,6 +262,11 @@ export class IntroPage {
     // If event has started (hasStarted)
     // and network is cell
     await this.preDownload();
+    if (this.vm.selected.pin !== '') {
+      if (!await this.verifyPin()) {
+        return;
+      }
+    }
 
     /*  We now predownload the data instead  
         try {
@@ -404,5 +416,27 @@ export class IntroPage {
     this.settingsService.settings.eventTitle = this.vm.selected!.title;
     this.settingsService.settings.scrollLeft = this.vm.scrollLeft;
     this.settingsService.save();
+  }
+
+  async verifyPin(): Promise<boolean> {
+    if (this.vm.selected && await this.settingsService.pinPassed(this.vm.selected.id, this.vm.selected.pin)) {
+      return true;
+    };
+    this.vm.showPinModal = true;
+    this.vm.pinPromise = new Promise<boolean>((resolve) => {
+      this.pinEntry().dismissed.subscribe(async (match) => {
+        if (match) {
+          await this.settingsService.setPin(this.vm.selected!.id, this.vm.selected!.pin);
+        }
+        this.vm.pinPromise = undefined;
+        resolve(match);
+      });
+    });
+    return this.vm.pinPromise;
+  }
+
+  async closePin() {
+    this.vm.showPinModal = false;
+
   }
 }

@@ -1,5 +1,9 @@
 ## Changes
 
+## 2.23
+
+- Support PIN locked events
+
 ## 2.22
 
 - Fix to event page to show favorite button

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LocationEnabledStatus, Settings } from './models';
+import { Preferences } from '@capacitor/preferences';
 
 @Injectable({
   providedIn: 'root',
@@ -75,5 +76,14 @@ export class SettingsService {
 
   public isOffline(datasetId: string) {
     return this.settings.offlineEvents.includes(datasetId);
+  }
+
+  public async pinPassed(datasetId: string, pin: string): Promise<boolean> {
+    const value = await Preferences.get({ key: `${datasetId}-pin` });
+    return value.value === pin;
+  }
+
+  public async setPin(datasetId: string, pin: string): Promise<void> {
+    await Preferences.set({ key: `${datasetId}-pin`, value: pin });
   }
 }
