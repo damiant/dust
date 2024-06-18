@@ -86,6 +86,7 @@ export class EventPage implements OnInit {
   campDescription = '';
   private day: Date | undefined;
   eventId = input<string>();
+  filterDays = input<boolean>(true); // Whether to filter by day
   imageLocation = input<ImageLocation>('top');
   constructor() {
     addIcons({ shareOutline, locationOutline, timeOutline, star, starOutline, pricetagOutline, closeCircleOutline });
@@ -124,7 +125,9 @@ export class EventPage implements OnInit {
         const isNoDate = sameDay(selectedDay, noDate());
         const isSelectedDay = dateMatches(selectedDay, o);
         if (!isNoDate && !isSelectedDay) {
-          return false;
+          if (this.filterDays()) {
+            return false;
+          }
         }
         return !o.old;
       });
