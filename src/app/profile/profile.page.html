@@ -31,6 +31,11 @@
           Rate
         </ion-item>
 
+        <ion-item (click)="downloadUpdate()" detail="true">
+          <ion-icon slot="start" name="cloud-download-outline"></ion-icon>
+          Download Update
+        </ion-item>
+
         <ion-item (click)="about()" detail="true">
           <ion-icon slot="start" name="information-circle-outline"></ion-icon>
           About
@@ -62,13 +67,21 @@
   <app-friends />
   } @if (!db.featuresHidden().includes('private')) {
   <app-private-events />
-  } @if (groups.length > 0) { @for (group of groups; track group.id) {
+  } @if (groups.length > 0 && db.featuresHidden().includes('private')) { @for (group of groups; track group.id) {
   <ion-card class="ion-padding-bottom">
     @for (link of group.links; track link) {
     <app-link [url]="link.url" [text]="link.title"></app-link>
     }
   </ion-card>
   } }
+
+  @if (downloading) {
+  <ion-card><ion-card-content>
+      Downloading new content for {{db.selectedDataset().title}}
+      <ion-spinner name="dots" color="light"></ion-spinner></ion-card-content></ion-card>
+  }
+
+  <app-events-card [events]="favEventsToday"></app-events-card>
 
   <div (click)="moreClick()" class="pad-top" (click)="hiddenPanel = !hiddenPanel"></div>
   <div style="padding: 1rem">

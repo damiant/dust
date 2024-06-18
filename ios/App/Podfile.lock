@@ -1,46 +1,46 @@
 PODS:
-  - Capacitor (6.0.0):
+  - Capacitor (6.1.0):
     - CapacitorCordova
   - CapacitorApp (6.0.0):
     - Capacitor
-  - CapacitorAppLauncher (6.0.0):
+  - CapacitorAppLauncher (6.0.1):
     - Capacitor
-  - CapacitorBrowser (6.0.0):
+  - CapacitorBrowser (6.0.1):
     - Capacitor
   - CapacitorCommunityPlayIntegrity (6.0.0):
     - Capacitor
-  - CapacitorCordova (6.0.0)
+  - CapacitorCordova (6.1.0)
   - CapacitorFilesystem (6.0.0):
     - Capacitor
   - CapacitorGeolocation (6.0.0):
     - Capacitor
   - CapacitorHaptics (6.0.0):
     - Capacitor
-  - CapacitorKeyboard (6.0.0):
+  - CapacitorKeyboard (6.0.1):
     - Capacitor
   - CapacitorLocalNotifications (6.0.0):
     - Capacitor
-  - CapacitorNetwork (6.0.0):
+  - CapacitorNetwork (6.0.1):
     - Capacitor
-  - CapacitorPreferences (6.0.0):
+  - CapacitorPreferences (6.0.1):
     - Capacitor
   - CapacitorPrintWebview (6.0.3):
     - Capacitor
   - CapacitorRateApp (4.0.3):
     - Capacitor
-  - CapacitorScreenOrientation (6.0.0):
+  - CapacitorScreenOrientation (6.0.1):
     - Capacitor
-  - CapacitorScreenReader (6.0.0):
+  - CapacitorScreenReader (6.0.1):
     - Capacitor
-  - CapacitorShare (6.0.0):
+  - CapacitorShare (6.0.1):
     - Capacitor
-  - CapacitorSplashScreen (6.0.0):
+  - CapacitorSplashScreen (6.0.1):
     - Capacitor
   - CapacitorStatusBar (6.0.0):
     - Capacitor
   - CapawesomeCapacitorAppUpdate (6.0.0):
     - Capacitor
-  - CordovaPlugins (6.0.0):
+  - CordovaPlugins (6.1.0):
     - CapacitorCordova
   - MauricewegnerCapacitorNavigationBar (2.0.3):
     - Capacitor
@@ -119,28 +119,28 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@mauricewegner/capacitor-navigation-bar"
 
 SPEC CHECKSUMS:
-  Capacitor: 559d073c4ca6c27f8e7002c807eea94c3ba435a9
+  Capacitor: 187bd7847b6f71467015a20200a1a071be3e5f14
   CapacitorApp: 9d53aec7101f7b030a950c5bdc4df8612576b279
-  CapacitorAppLauncher: 24ce4be152a84883378d22114ffe6c492056ced2
-  CapacitorBrowser: 7e1e2cdbb3e372f09f0bad0c4c21a6d187b679ad
+  CapacitorAppLauncher: ca97e232064f293cc23a0083f237af74a2976add
+  CapacitorBrowser: 473c7fd70ddbe541608ff09ec1be14da0078279e
   CapacitorCommunityPlayIntegrity: 26ad626ed53773a9189e0b12f16ea90f609c00ef
-  CapacitorCordova: 8c4bfdf69368512e85b1d8b724dd7546abeb30af
+  CapacitorCordova: be703980ca797f847c3356f78fa175d21c8330c2
   CapacitorFilesystem: 60e59ba274c234a979e7a3be2552feaadcee4263
   CapacitorGeolocation: 1f12bbe372b65116e851bd8e3a94cf0ef9bacebb
   CapacitorHaptics: 9ebc9363f0e9b8eb4295088a0b474530acf1859b
-  CapacitorKeyboard: deacbd09d8d1029c3681197fb05d206b721d5f73
+  CapacitorKeyboard: 5f32a712adf41e07a61caafb82cf29fb6d8ba123
   CapacitorLocalNotifications: 4ab68f0be5f697a579558fadd307d823a9ec1c26
-  CapacitorNetwork: f15a94c16a33cba7c47a17814cb6bcfe3ea34ded
-  CapacitorPreferences: c9b839a80baa72e4ed4bdb117618e1950d3046b5
+  CapacitorNetwork: 5c94acfdddc22043f2ffaff224ce9b4aa5a179f0
+  CapacitorPreferences: 72909b165bc7807103778ddbb86d5d8ce06abf71
   CapacitorPrintWebview: d2c9d1cf8b058cce3bf19e20d3567e3378f6be15
   CapacitorRateApp: 896df7ec6a237fea72d1955e0cb26394654b00db
-  CapacitorScreenOrientation: d78ce2b710bfcd1c32d3a090d32b6686c1c95e4f
-  CapacitorScreenReader: 039da921b443a37ecf4f3f1b39a8a6869a3f58ce
-  CapacitorShare: a771200d3b924a5d7ad9d9fecbac517e4c0aa74f
-  CapacitorSplashScreen: 5431ab8d19c1c6e95777d53bfaa7a36a6c3d94c7
+  CapacitorScreenOrientation: 3d4965dcbda5d901b6a48350a5d270ad7d404e05
+  CapacitorScreenReader: 9a4c2a09b61e88292e94075f88d3e5cff020d24f
+  CapacitorShare: 02222f2457ff003e642370a9c1ecd101baaa27c8
+  CapacitorSplashScreen: 61645214e8f955ff2b80f16a6a3648960fe4c89f
   CapacitorStatusBar: 2e4369f99166125435641b1908d05f561eaba6f6
   CapawesomeCapacitorAppUpdate: 3c05b5c8e42f9c6a88d666093406e9336d9bfdb1
-  CordovaPlugins: 93665d85a8d738b6f74a459d9d4fde62c6b3eaa2
+  CordovaPlugins: 5fa16804a61e808249f31c9b8a358977e6777483
   MauricewegnerCapacitorNavigationBar: 37f1308a961a8d8cd00f6362e30bad03a73728f7
 
 PODFILE CHECKSUM: e40d62d2d96e6ee4aa458e81c0429a2600fa831e

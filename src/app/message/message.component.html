@@ -1,12 +1,18 @@
 <ion-modal #modal [isOpen]="show()" (willDismiss)="close()" [initialBreakpoint]="0.5" [breakpoints]="[0.5]">
   <ng-template>
     <div class="center tall">
-      <h2>{{ title() }}</h2>
-      <ion-text>{{ message() }}</ion-text>
+      <div class="pad">
+        <h2>{{ title() }}</h2>
+        <ion-text>{{ message() }}</ion-text>
+      </div>
+      <div>
+        <ion-button [hidden]="secondButton() === ''" color="primary" (click)="dismiss(false); modal.dismiss()"
+          size="large" fill="outline" shape="round" class="pad-right">{{secondButton()}}
+        </ion-button>
 
-      <ion-button color="primary" (click)="dismiss(); modal.dismiss()" size="large" shape="round"
-        >Continue<ion-icon name="arrow-forward-outline"></ion-icon
-      ></ion-button>
+        <ion-button color="primary" (click)="dismiss(true); modal.dismiss()" size="large"
+          shape="round">Continue<ion-icon name="arrow-forward-outline"></ion-icon></ion-button>
+      </div>
     </div>
   </ng-template>
 </ion-modal>

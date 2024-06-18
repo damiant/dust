@@ -7,13 +7,16 @@ import { Capacitor } from '@capacitor/core';
 import { noDate, secondsBetween } from '../utils/utils';
 import { toMapPoint } from '../map/map.utils';
 import { CompassHeading } from '../map/compass';
-import { MapPoint } from '../data/models';
+import { LocationEnabledStatus, MapPoint } from '../data/models';
+import { SettingsService } from '../data/settings.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GeoService {
   private db = inject(DbService);
+  private settings = inject(SettingsService);
+  public gpsPermission = signal('');
   public gpsPosition = signal(NoGPSCoord());
   public heading = signal(this.noCompassHeading());
   public gpsBusy = signal(false);
@@ -26,23 +29,17 @@ export class GeoService {
       return true;
     }
     const status = await Geolocation.checkPermissions();
-    console.log(status);
+    console.log('checkPermissions', status);
+    this.gpsPermission.set(status.location);
     return status.location == 'granted' || status.coarseLocation == 'granted';
   }
 
-  public async isDenied(): Promise<boolean> {
-    if (!Capacitor.isNativePlatform()) {
-      return false;
-    }
-    const status = await Geolocation.checkPermissions();
-    return status.location == 'denied' || status.coarseLocation == 'denied';
-  }
-
-  public async getPermission(): Promise<boolean> {
+  public async requestPermission(): Promise<boolean> {
     if (!Capacitor.isNativePlatform()) {
       return true;
     }
     const status = await Geolocation.requestPermissions({ permissions: ['location'] });
+    this.gpsPermission.set(status.location);
     return status.location == 'granted';
   }
 
@@ -77,11 +74,20 @@ export class GeoService {
     console.time('geo.permissions');
     if (!this.hasPermission) {
       if (!(await this.checkPermissions())) {
-        if (!(await this.getPermission())) {
-          console.error(`User geolocation permission denied.`);
+        if (!this.settings.shouldGeoAlert()) {
+          console.error(`User not accepted geolocation yet.`);
           this.gpsPosition.set(NoGPSCoord());
           return NoGPSCoord();
         }
+        console.error(`Requesting permissions.`);
+        if (!(await this.requestPermission())) {
+          console.error(`User geolocation permission denied.`);
+          this.settings.settings.locationEnabled = LocationEnabledStatus.Disabled;
+          this.settings.save();
+          this.gpsPosition.set(NoGPSCoord());
+          return NoGPSCoord();
+        }
+
       }
     }
 

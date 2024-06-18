@@ -281,8 +281,8 @@ export class IntroPage {
     console.debug(`Event starts ${start}, today is ${now()} and there are ${until} days until then`);
     this.db.setHideLocations(hideLocations);
     if (hideLocations && !this.vm.eventAlreadySelected) {
-      if (x < 50) {
-        this.vm.message = `Locations for camps and art will be released in the app when gates open. There are ${x} days until the man burns.`;
+      if (x < 80) {
+        this.vm.message = `Locations for camps and art will be released in the app shortly before gates open. There are ${x} days until the man burns.`;
       } else {
         this.vm.message = `Camps, Art and Events will be released in the app closer to the event. There are ${x} days until the man burns.`;
       }

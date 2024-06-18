@@ -1,4 +1,4 @@
-import { Component, OnInit, effect, viewChild, inject } from '@angular/core';
+import { Component, OnInit, effect, viewChild, inject, WritableSignal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -20,7 +20,7 @@ import {
   IonToolbar,
   ToastController,
   IonFabList,
-  IonModal,
+  IonModal, IonSpinner
 } from '@ionic/angular/standalone';
 import { UiService } from '../ui/ui.service';
 import { Share } from '@capacitor/share';
@@ -32,7 +32,7 @@ import { DbService } from '../data/db.service';
 import { TileContainerComponent } from '../tile-container/tile-container.component';
 import { TileComponent } from '../tile/tile.component';
 import { GeoService } from '../geolocation/geo.service';
-import { DatasetResult, Link, LocationEnabledStatus, Names } from '../data/models';
+import { DatasetResult, Event, Link, LocationEnabledStatus, Names } from '../data/models';
 import { environment } from 'src/environments/environment';
 import { RateApp } from 'capacitor-rate-app';
 import { PrivateEventsComponent } from '../private-events/private-events.component';
@@ -48,6 +48,7 @@ import {
   locateOutline,
   compassOutline,
   calendarOutline,
+  cloudDownloadOutline,
   closeSharp,
   ellipsisVerticalSharp,
 } from 'ionicons/icons';
@@ -56,6 +57,10 @@ import { Capacitor } from '@capacitor/core';
 import { getCachedImage } from '../data/cache-store';
 import { LinkComponent } from '../link/link.component';
 import { CalendarService } from '../calendar.service';
+import { EventsCardComponent } from '../events-card/events-card.component';
+import { FavoritesService } from '../favs/favorites.service';
+import { ApiService } from '../data/api.service';
+import { delay } from '../utils/utils';
 
 interface Group {
   id: number;
@@ -68,6 +73,7 @@ interface Group {
   styleUrls: ['./profile.page.scss'],
   standalone: true,
   imports: [
+    IonSpinner,
     IonModal,
     IonFabList,
     CommonModule,
@@ -92,6 +98,7 @@ interface Group {
     IonFab,
     TileContainerComponent,
     TileComponent,
+    EventsCardComponent,
     PrivateEventsComponent,
     LinkComponent,
   ],
@@ -102,6 +109,7 @@ export class ProfilePage implements OnInit {
   private map = inject(MapService);
   private geo = inject(GeoService);
   private toastController = inject(ToastController);
+  private favs = inject(FavoritesService);
   private calendar = inject(CalendarService);
   private router = inject(Router);
   public db = inject(DbService);
@@ -111,7 +119,9 @@ export class ProfilePage implements OnInit {
   locationEnabled = false;
   longEvents = false;
   hiddenPanel = false;
+  downloading = false;
   eventIsHappening = false;
+  favEventsToday: Event[] = [];
   imageUrl = '';
   mapPin: GPSPin | undefined;
   groups: Group[] = [];
@@ -121,7 +131,8 @@ export class ProfilePage implements OnInit {
   hasRestrooms = true;
   hasIce = true;
   presentingElement: any;
-
+  download: WritableSignal<string> = signal('');
+  api = inject(ApiService);
   constructor() {
     addIcons({
       linkOutline,
@@ -134,15 +145,25 @@ export class ProfilePage implements OnInit {
       exitOutline,
       timeOutline,
       locateOutline,
+      cloudDownloadOutline,
       closeSharp,
       ellipsisVerticalSharp,
     });
     effect(() => {
       this.ui.scrollUpContent('profile', this.ionContent());
     });
+    effect(async () => {
+      this.favs.changed();
+      await this.update();
+    });
   }
 
   async ngOnInit() {
+    await this.init();
+    //await this.update();
+  }
+
+  async init() {
     this.presentingElement = document.querySelector('.ion-page');
     this.imageUrl = await getCachedImage(this.db.selectedImage());
     this.db.checkInit();
@@ -157,6 +178,10 @@ export class ProfilePage implements OnInit {
     this.eventIsHappening = !this.db.eventHasntBegun() && !this.db.isHistorical();
     this.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
     this.groups = this.group(await this.db.getLinks());
+  }
+
+  async update() {
+    this.favEventsToday = await this.favs.getFavoriteEventsToday();
   }
 
   private group(links: Link[]): Group[] {
@@ -263,7 +288,7 @@ export class ProfilePage implements OnInit {
   async toggleLocation(e: any) {
     const turnedOn = e.detail.checked;
     if (turnedOn) {
-      const success = await this.geo.getPermission();
+      const success = await this.geo.requestPermission();
       if (success) {
         this.locationEnabled = turnedOn;
       }
@@ -307,6 +332,34 @@ export class ProfilePage implements OnInit {
       await this.map.openGoogleMapDirections(this.mapPin);
     } else if (await this.map.canOpenMapApp('apple')) {
       await this.map.openAppleMapDirections(this.mapPin);
+    }
+  }
+
+  async downloadUpdate() {
+    try {
+      await this.dismiss();
+      this.downloading = true;
+      if (this.db.networkStatus() == 'none') {
+        this.ui.presentToast('No network connection. Maybe turn off airplane mode?', this.toastController);
+        return;
+      }
+      await delay(1000);
+      const dataset = this.db.selectedDataset();
+      const result = await this.api.download(dataset, false, this.download);
+      switch (result) {
+        case 'success': {
+          this.downloading = false;
+          this.ui.presentToast('Update complete', this.toastController);
+          this.home();
+          return;
+        }
+        case 'already-updated': {
+          this.ui.presentToast('Already up to date', this.toastController);
+        }
+      }
+    } finally {
+
+      this.downloading = false;
     }
   }
 }

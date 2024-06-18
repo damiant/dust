@@ -32,6 +32,7 @@ export class SettingsService {
         locationEnabled: LocationEnabledStatus.Unknown,
         longEvents: true,
         preventAutoStart: false,
+        lastGeoAlert: undefined,
         offlineEvents: [],
         scrollLeft: 0,
       };
@@ -54,6 +55,16 @@ export class SettingsService {
       this.settings.mapUri = '';
     }
     localStorage['settings'] = JSON.stringify(this.settings);
+  }
+
+  public setLastGeoAlert() {
+    this.settings.lastGeoAlert = Date.now();
+    this.save();
+  }
+
+  public shouldGeoAlert(): boolean {
+    const lastGeoAlert = this.settings.lastGeoAlert ?? 0;
+    return (Date.now() - lastGeoAlert > 86400000);
   }
 
   public setOffline(datasetId: string) {

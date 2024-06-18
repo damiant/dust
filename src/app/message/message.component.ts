@@ -1,5 +1,5 @@
 import { Component, input, model, output } from '@angular/core';
-import { IonButton, IonIcon, IonModal, IonText } from '@ionic/angular/standalone';
+import { IonButton, IonIcon, IonModal, IonText, IonButtons } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { arrowForwardOutline } from 'ionicons/icons';
 
@@ -8,14 +8,15 @@ import { arrowForwardOutline } from 'ionicons/icons';
   templateUrl: './message.component.html',
   styleUrls: ['./message.component.scss'],
   standalone: true,
-  imports: [IonModal, IonButton, IonText, IonIcon],
+  imports: [IonButtons, IonModal, IonButton, IonText, IonIcon],
 })
 export class MessageComponent {
   show = model(false);
+  secondButton = input('');
 
   message = input('');
   title = input('');
-  dismissed = output<void>();
+  dismissed = output<boolean>();
   constructor() {
     addIcons({ arrowForwardOutline });
   }
@@ -24,8 +25,8 @@ export class MessageComponent {
     this.show.set(false);
   }
 
-  dismiss() {
+  dismiss(okPressed: boolean) {
     this.close();
-    this.dismissed.emit();
+    this.dismissed.emit(okPressed);
   }
 }

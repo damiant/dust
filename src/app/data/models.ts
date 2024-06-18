@@ -4,6 +4,7 @@ export interface Event {
   camp: string; // Calculated
   timeString: string; // Calculated
   start: Date; // Calculated
+  end: Date; // Calculated
   location: string; // Calculated
   longTimeString: string; // Calculated
   old: boolean; // Calculated (whether the event has already passed)
@@ -166,6 +167,7 @@ export interface Settings {
   longEvents: boolean;
   preventAutoStart: boolean;
   offlineEvents: string[]; // List of all offline event ids
+  lastGeoAlert: number | undefined;
 }
 
 

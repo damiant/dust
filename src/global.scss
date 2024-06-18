@@ -70,6 +70,19 @@
 
 h1 {
     font-family: 'Gelion Bold';
+    font-size: 2rem !important;
+}
+
+h2 {
+    font-size: 1.5rem !important;
+}
+
+p {
+    font-family: 'Gelion Regular' !important;
+}
+
+p.large {
+    font-size: 1.3rem !important;
 }
 
 ion-card-header {
@@ -154,6 +167,10 @@ ion-title {
 
 ion-badge.pad-right {
     margin-right: 0.8rem;
+}
+
+ion-item {
+    font-size: 1.2rem;
 }
 
 ion-label {

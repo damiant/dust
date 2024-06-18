@@ -66,6 +66,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private compass: HTMLImageElement | undefined;
   private _viewReady = false;
   private selected: HTMLDivElement | undefined;
+  private disabledMessage = 'Location is disabled';
 
   zoom = viewChild.required<ElementRef>('zoom');
   map = viewChild.required<ElementRef>('map');
@@ -99,11 +100,26 @@ export class MapComponent implements OnInit, OnDestroy {
     this.update();
   }
 
-  async enableGeoLocation() {
-    if (await this.geo.getPermission()) {
-      this.settings.settings.locationEnabled = LocationEnabledStatus.Enabled;
-      this.settings.save();
-      this.checkGeolocation();
+  async locationClick() {
+    if (this.settings.settings.locationEnabled === LocationEnabledStatus.Enabled) return;
+    await this.geo.checkPermissions();
+    if (this.geo.gpsPermission() == 'denied') {
+      this.footer = 'Location services need to be enabled in settings on your device';
+      return;
+    }
+    this.showMessage = true;
+  }
+
+  async enableGeoLocation(now: boolean) {
+    console.log('enableGeoLocation', now);
+    if (now) {
+      if (await this.geo.requestPermission()) {
+        this.settings.settings.locationEnabled = LocationEnabledStatus.Enabled;
+        this.settings.save();
+        this.checkGeolocation();
+      }
+    } else {
+      this.settings.setLastGeoAlert();
     }
   }
 
@@ -118,6 +134,15 @@ export class MapComponent implements OnInit, OnDestroy {
       const heading = this.geo.heading();
       await this.viewReady();
       this.displayCompass(heading);
+    });
+    effect(() => {
+      const change = this.geo.gpsPermission();
+      if (change !== 'denied' && this.footer == this.disabledMessage) {
+        this.footer = '';
+      }
+      if (change === 'denied') {
+        this.footer = this.disabledMessage;
+      }
     });
   }
 
@@ -216,7 +241,9 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private async checkGeolocation() {
     if (this.settings.settings.locationEnabled === LocationEnabledStatus.Unknown) {
-      this.showMessage = true;
+      if (this.settings.shouldGeoAlert()) {
+        this.showMessage = true;
+      }
       return;
     }
     if (this.settings.settings.locationEnabled === LocationEnabledStatus.Disabled) {
@@ -224,10 +251,13 @@ export class MapComponent implements OnInit, OnDestroy {
       return;
     }
 
+    if (!this.settings.shouldGeoAlert()) {
+      return;
+    }
+
     const hasGeo = await this.geo.checkPermissions();
     if (!hasGeo) {
-      if (!await this.geo.isDenied()) {
-        // Only show message again if the user has not denied geolocation access
+      if (this.settings.shouldGeoAlert()) {
         this.showMessage = true;
       }
       return;
@@ -236,7 +266,7 @@ export class MapComponent implements OnInit, OnDestroy {
     try {
       // Used the cached location if available
       this.displayYourLocation(this.geo.gpsPosition());
-      // This doesnt call await so that it will show immediately
+      // This does not call await so that it will show immediately
       this.updateLocation();
 
       this.geoInterval = setInterval(async () => {
@@ -280,7 +310,11 @@ export class MapComponent implements OnInit, OnDestroy {
       const prefix = this._points.length > 1 ? 'The closest is ' : '';
       const dist = formatDistanceMiles(least);
       if (least > 50) {
-        this.footer = 'You are outside of the Event';
+        if (this.settings.settings.locationEnabled === LocationEnabledStatus.Enabled) {
+          this.footer = 'You are outside of the Event';
+        } else {
+          this.footer = this.disabledMessage;
+        }
       } else {
         if (dist != '') {
           this.footer = `${prefix}${dist} away.`;
@@ -291,6 +325,7 @@ export class MapComponent implements OnInit, OnDestroy {
       }
     }
   }
+
 
   private setupCompass(div: HTMLDivElement) {
     this.compass = this.createCompass(div);
