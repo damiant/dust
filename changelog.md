@@ -3,6 +3,7 @@
 ## 2.23
 
 - Support PIN locked events
+- Enable swipe back on most routes (unless the map is shown)
 
 ## 2.22
 

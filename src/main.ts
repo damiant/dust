@@ -25,7 +25,7 @@ bootstrapApplication(AppComponent, {
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: APP_INITIALIZER, useFactory: appInitFactory, deps: [DbService], multi: true },
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideIonicAngular({ mode: 'ios', swipeBackEnabled: false }),
+    provideIonicAngular({ mode: 'ios', swipeBackEnabled: true }),
     provideAnimations(),
     provideRouter(routes, withComponentInputBinding()),
     // provideServiceWorker('ngsw-worker.js', {
