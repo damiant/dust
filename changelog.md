@@ -1,5 +1,10 @@
 ## Changes
 
+## 2.22
+
+- Fix to event page to show favorite button
+- Fix day counter until event
+
 ## 2.21
 
 - Option to download update added to the more menu
