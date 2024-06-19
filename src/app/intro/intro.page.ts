@@ -51,6 +51,7 @@ interface IntroState {
   cards: Dataset[];
   selected: Dataset | undefined;
   message: string;
+  cardLoaded: any;
   clearCount: number;
   scrollLeft: number;
   showing: DatasetFilter;
@@ -67,6 +68,7 @@ function initialState(): IntroState {
     selected: undefined,
     message: '',
     pinPromise: undefined,
+    cardLoaded: {},
     clearCount: 0,
     scrollLeft: 0,
     showing: 'all',
