@@ -262,7 +262,7 @@ export class IntroPage {
     // If event has started (hasStarted)
     // and network is cell
     await this.preDownload();
-    if (this.vm.selected.pin !== '') {
+    if (!isWhiteSpace(this.vm.selected.pin)) {
       if (!await this.verifyPin()) {
         return;
       }

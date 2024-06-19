@@ -4,6 +4,7 @@
 
 - Support PIN locked events
 - Enable swipe back on most routes (unless the map is shown)
+- Fix gray border under art images
 
 ## 2.22
 
