@@ -1,8 +1,8 @@
 # Roadmap
 
-# Feedback: Requested Features
+- When going to the map for the first time on Android it shows the location dialog, but it should be the soft dialog first. Found on Samsung S10e
 
-- Art not showing a favorite button
+# Feedback: Requested Features
 
 - Feature to highlight downloading an update in the week before the event if it was updated more than a week ago
 - Timetable view (something like Google Calendar)

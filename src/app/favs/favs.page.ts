@@ -296,24 +296,6 @@ export class FavsPage implements OnInit {
     this.router.navigate(['tabs/favs/map']);
   }
 
-  // map() {
-  //   const points: MapPoint[] = [];
-  //   for (const event of this.events) {
-  //     points.push(toMapPoint(event.location,
-  //       { title: event.title, location: event.location, subtitle: event.longTimeString }));
-  //   }
-  //   for (const art of this.art) {
-  //     const imageUrl: string = art.images?.length > 0 ? art.images[0].thumbnail_url! : '';
-  //     points.push(toMapPoint(art.location_string,
-  //       { title: art.name, location: art.location_string!, subtitle: '', imageUrl: imageUrl }));
-  //   }
-  //   for (const camp of this.camps) {
-  //     points.push(toMapPoint(camp.location_string,
-  //       { title: camp.name, location: camp.location_string!, subtitle: '' }));
-  //   }
-  //   this.fav.setMapPoints(points);
-  //   this.router.navigate(['tabs/favs/map']);
-  // }
   ngOnInit() {
     this.db.checkInit();
   }
@@ -354,22 +336,31 @@ export class FavsPage implements OnInit {
 
   async syncCalendar(events: Event[]) {
     const list: string[] = [];
-    for (const event of events) {
-      list.push(event.title);
-      console.log(event);
-      const location = event.location ? ` (${event.location})` : '';
-      const success = await this.calendar.add({
-        calendar: this.db.selectedDataset().title,
-        name: event.title,
-        description: event.description,
-        start: event.occurrence_set[0].start_time,
-        end: event.occurrence_set[0].end_time,
-        location: event.camp + location,
-        timeZone: this.db.selectedDataset().timeZone,
-      });
-      if (!success) {
-        this.ui.presentDarkToast(`Unable to add events to the calendar. Check permissions.`, this.toastController);
-        return;
+    let attempts = 1;
+    while (attempts < 2) {
+      for (const event of events) {
+        list.push(event.title);
+        console.log(event);
+        const location = event.location ? ` (${event.location})` : '';
+        const success = await this.calendar.add({
+          calendar: this.db.selectedDataset().title,
+          name: event.title,
+          description: event.description,
+          start: event.occurrence_set[0].start_time,
+          end: event.occurrence_set[0].end_time,
+          location: event.camp + location,
+          timeZone: this.db.selectedDataset().timeZone,
+        });
+        if (!success) {
+          if (attempts == 1) {
+            // On Android it will fail the first time, but succeed the second time
+            await delay(1000);
+            attempts++;
+          } else {
+            this.ui.presentDarkToast(`Unable to add events to the calendar. Check permissions.`, this.toastController);
+            return;
+          }
+        }
       }
     }
     await this.calendar.deleteOld(this.db.selectedDataset().title, list);

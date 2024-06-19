@@ -5,6 +5,7 @@
 - Support PIN locked events
 - Enable swipe back on most routes (unless the map is shown)
 - Fix gray border under art images
+- Fix for calendar sync on Android permission error on first try
 
 ## 2.22
 
