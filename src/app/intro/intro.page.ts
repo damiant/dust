@@ -236,8 +236,13 @@ export class IntroPage {
       if (this.api.hasStarted(this.vm.selected!)) {
         const status = await Network.getStatus();
         if (status.connectionType == 'cellular') {
-          console.log(`Avoiding downloading because event has started and we are on cell service`);
-          return;
+          const hasEveryDownloaded = await this.api.hasEverDownloaded(this.vm.selected!);
+          if (hasEveryDownloaded) {
+            console.log(`Avoiding downloading because event has started and we are on cell service`);
+            return;
+          } else {
+            // We are forced to download because we have never downloaded this event
+          }
         }
       }
 

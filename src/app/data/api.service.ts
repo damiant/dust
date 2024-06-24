@@ -216,6 +216,12 @@ export class ApiService {
     }
   }
 
+  public async hasEverDownloaded(selected: Dataset) {
+    const dataset = this.datasetId(selected);
+    const myRevision = await this.dbService.get(dataset, Names.revision, { onlyRead: true, defaultValue: { revision: 0 } });
+    return (myRevision > 0);
+  }
+
   public async download(
     selected: Dataset | undefined,
     force: boolean,
