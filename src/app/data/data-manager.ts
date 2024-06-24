@@ -999,7 +999,13 @@ export class DataManager implements WorkerClass {
           return true;
         }
       } else if (timeRange) {
-        if (start > timeRange.start && start < timeRange.end) {
+        // if event starts after range start and ends before range end
+        // if event is before timeRange.start then not now
+        // if event starts after timeRange.end then not now
+        if (start > timeRange.end || end < timeRange.start) {
+          // Not now
+          this.consoleLog(`Event ${event.title} is not now ${start} - ${end}`);
+        } else {
           return true;
         }
       }

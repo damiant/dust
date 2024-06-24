@@ -2,6 +2,7 @@
 
 ## 2.23
 
+- Fix for the map showing events happening now
 - Support PIN locked events
 - Enable swipe back on most routes (unless the map is shown)
 - Fix gray border under art images
