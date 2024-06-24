@@ -16,8 +16,9 @@ import {
   IonList,
   IonPopover,
   IonRadioGroup,
-  IonRadio,
+  IonRadio
 } from '@ionic/angular/standalone';
+import { PinEntryComponent } from '../pin-entry/pin-entry.component';
 import { Router, RouterModule } from '@angular/router';
 import { DbService } from '../data/db.service';
 import { SplashScreen } from '@capacitor/splash-screen';
@@ -44,10 +45,13 @@ interface IntroState {
   ready: boolean;
   showMessage: boolean;
   downloading: boolean;
+  showPinModal: boolean;
+  pinPromise: Promise<boolean> | undefined;
   eventAlreadySelected: boolean;
   cards: Dataset[];
   selected: Dataset | undefined;
   message: string;
+  cardLoaded: any;
   clearCount: number;
   scrollLeft: number;
   showing: DatasetFilter;
@@ -58,10 +62,13 @@ function initialState(): IntroState {
     ready: true,
     showMessage: false,
     downloading: false,
+    showPinModal: false,
     eventAlreadySelected: true,
     cards: [],
     selected: undefined,
     message: '',
+    pinPromise: undefined,
+    cardLoaded: {},
     clearCount: 0,
     scrollLeft: 0,
     showing: 'all',
@@ -94,6 +101,7 @@ function initialState(): IntroState {
     CachedImgComponent,
     CarouselComponent,
     CarouselItemComponent,
+    PinEntryComponent
   ],
 })
 export class IntroPage {
@@ -107,6 +115,7 @@ export class IntroPage {
   private alertController = inject(AlertController);
   private toastController = inject(ToastController);
   private shareService = inject(ShareService);
+  private pinEntry = viewChild.required(PinEntryComponent);
   vm: IntroState = initialState();
   download: WritableSignal<string> = signal('');
   subtitle: WritableSignal<string> = signal('');
@@ -147,7 +156,14 @@ export class IntroPage {
       }
     }
 
+    this.vm.downloading = true;
     this.vm.cards = await this.api.loadDatasets(this.vm.showing);
+    if (this.vm.cards.length == 0) {
+      this.vm.message = `Check your network connection and try starting again.`;
+      this.vm.showMessage = true;
+      return;
+    }
+    this.vm.downloading = false;
     console.log(`Search for`, this.settingsService.settings.datasetId);
     const idx = this.vm.cards.findIndex((c) => this.api.datasetId(c) == this.settingsService.settings.datasetId);
     if (idx >= 0) {
@@ -227,8 +243,13 @@ export class IntroPage {
       if (this.api.hasStarted(this.vm.selected!)) {
         const status = await Network.getStatus();
         if (status.connectionType == 'cellular') {
-          console.log(`Avoiding downloading because event has started and we are on cell service`);
-          return;
+          const hasEveryDownloaded = await this.api.hasEverDownloaded(this.vm.selected!);
+          if (hasEveryDownloaded) {
+            console.log(`Avoiding downloading because event has started and we are on cell service`);
+            return;
+          } else {
+            // We are forced to download because we have never downloaded this event
+          }
         }
       }
 
@@ -255,6 +276,11 @@ export class IntroPage {
     // If event has started (hasStarted)
     // and network is cell
     await this.preDownload();
+    if (!isWhiteSpace(this.vm.selected.pin)) {
+      if (!await this.verifyPin()) {
+        return;
+      }
+    }
 
     /*  We now predownload the data instead  
         try {
@@ -404,5 +430,27 @@ export class IntroPage {
     this.settingsService.settings.eventTitle = this.vm.selected!.title;
     this.settingsService.settings.scrollLeft = this.vm.scrollLeft;
     this.settingsService.save();
+  }
+
+  async verifyPin(): Promise<boolean> {
+    if (this.vm.selected && await this.settingsService.pinPassed(this.vm.selected.id, this.vm.selected.pin)) {
+      return true;
+    };
+    this.vm.showPinModal = true;
+    this.vm.pinPromise = new Promise<boolean>((resolve) => {
+      this.pinEntry().dismissed.subscribe(async (match) => {
+        if (match) {
+          await this.settingsService.setPin(this.vm.selected!.id, this.vm.selected!.pin);
+        }
+        this.vm.pinPromise = undefined;
+        resolve(match);
+      });
+    });
+    return this.vm.pinPromise;
+  }
+
+  async closePin() {
+    this.vm.showPinModal = false;
+
   }
 }

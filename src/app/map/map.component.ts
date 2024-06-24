@@ -11,7 +11,7 @@ import { CompassError, CompassHeading } from './compass';
 import { GpsCoord, Point } from './geo.utils';
 import { Router, RouterModule } from '@angular/router';
 import { environment } from 'src/environments/environment';
-import { IonButton, IonContent, IonPopover, IonText } from '@ionic/angular/standalone';
+import { IonButton, IonContent, IonPopover, IonRouterOutlet, IonText } from '@ionic/angular/standalone';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 
 interface MapInformation {
@@ -41,6 +41,7 @@ const youOffsetY = 4;
     IonText,
     IonButton,
     CachedImgComponent,
+    IonRouterOutlet
   ],
   standalone: true,
 })
@@ -72,6 +73,7 @@ export class MapComponent implements OnInit, OnDestroy {
   map = viewChild.required<ElementRef>('map');
   mapc = viewChild.required<ElementRef>('mapc');
   height = input<string>('height: 100%');
+  routerOutlet: IonRouterOutlet = inject(IonRouterOutlet)
   footerPadding = input<number>(0);
   smallPins = input<boolean>(false);
   isHeader = input<boolean>(false);
@@ -153,6 +155,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.routerOutlet.swipeGesture = false;
     const darkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     this.src = darkMode ? 'assets/map-dark.svg' : 'assets/map.svg';
     if (this.settings.settings.mapUri !== '') {
@@ -343,6 +346,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.routerOutlet.swipeGesture = true;
     if (this.watchId) {
       (navigator as any).compass.clearWatch(this.watchId);
       this.watchId = undefined;

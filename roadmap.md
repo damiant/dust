@@ -1,8 +1,13 @@
 # Roadmap
 
-# Feedback: Requested Features
+- On todays favorite events show bold for happening now, grey if completed
+- As the time changes, update todays events
+- Error: white screened the events page after a day had passed
+- Error: no festival images on intro page (had to restart app) but had labels
 
-- Art not showing a favorite button
+- When going to the map for the first time on Android it shows the location dialog, but it should be the soft dialog first. Found on Samsung S10e
+
+# Feedback: Requested Features
 
 - Feature to highlight downloading an update in the week before the event if it was updated more than a week ago
 - Timetable view (something like Google Calendar)

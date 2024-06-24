@@ -1,0 +1,41 @@
+.tall {
+    min-height: 40vh;
+
+    padding-top: 0;
+    padding-bottom: 2rem;
+    flex-direction: column;
+}
+
+.pad {
+    padding-left: 10vw;
+    padding-right: 10vw;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 2rem;
+}
+
+ion-input {
+    border: 2px solid var(--ion-color-medium);
+    font-family: 'Gelion Regular';
+    font-size: 2rem;
+    margin-top: 1rem;
+    border-radius: 0.5rem;
+}
+
+ion-button {
+    padding-top: 2rem;
+}
+
+ion-text {
+    font-size: larger;
+}
+
+.pad-right {
+    padding-right: 0.5rem;
+}

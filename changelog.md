@@ -1,5 +1,20 @@
 ## Changes
 
+## 2.23
+
+- Fix for the map showing events happening now
+- Support PIN locked events
+- Enable swipe back on most routes (unless the map is shown)
+- Fix gray border under art images
+- Fix for calendar sync on Android permission error on first try
+- Fix Intro page loading container
+- Fix dust font on main page
+- Fix to show geolocation dialog before native geolocation dialog
+- Fix for when you have never opened an event but it has started and you are on cellular
+- Fix for startup when the network is giving 100% errors
+- Fix for sorting events to show Burning Man first
+- Fix when no network connection on first startup
+
 ## 2.22
 
 - Fix to event page to show favorite button

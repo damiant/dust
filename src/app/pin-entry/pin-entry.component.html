@@ -1,0 +1,20 @@
+<ion-modal #modal [isOpen]="show()" (willDismiss)="close()" [initialBreakpoint]="0.5" [breakpoints]="[0.5]">
+  <ng-template>
+    <div class="center tall">
+      <div class="pad">
+        <h2>PIN Required</h2>
+        <ion-text>A PIN is required to access this event.</ion-text>
+        <ion-input type="number" autofocus="true" inputmode="numeric" enterkeyhint="go" [(ngModel)]="enteredPin"
+          name="pin" placeholder="0000" maxlength="4" autocomplete="off" />
+        <div>
+          <ion-button color="primary" (click)="dismiss(); modal.dismiss()" size="large" fill="outline" shape="round"
+            class="pad-right">Cancel
+          </ion-button>
+
+          <ion-button color="primary" (click)="tryPin(modal);" size="large" shape="round">Continue<ion-icon
+              name="arrow-forward-outline"></ion-icon></ion-button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ion-modal>

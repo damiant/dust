@@ -127,17 +127,20 @@ export class ApiService {
   }
 
   public async loadDatasets(filter: DatasetFilter, inactive?: boolean): Promise<Dataset[]> {
-    const datasets = await this.dbService.get(Names.datasets, Names.datasets, { freshOnce: true, timeout: 5000 });
-    const festivals = await this.dbService.get(Names.festivals, Names.festivals, { freshOnce: true, timeout: 5000 });
-    const location: WebLocation = await this.dbService.get(Names.location, Names.location, {
-      freshOnce: true,
-      timeout: 1000,
-    });
+    const [rDatasets, rFestivals, rLocation] = await Promise.allSettled([
+      this.dbService.get(Names.festivals, Names.festivals, { freshOnce: true, timeout: 5000 }),
+      this.dbService.get(Names.datasets, Names.datasets, { freshOnce: true, timeout: 5000 }),
+      this.dbService.get(Names.location, Names.location, { freshOnce: true, timeout: 1000 })
+    ]);
+    const location: WebLocation = rLocation.status == 'fulfilled' ? rLocation.value : {};
+    const festivals = rFestivals.status == 'fulfilled' ? rFestivals.value : [];
+    const datasets = rDatasets.status == 'fulfilled' ? rDatasets.value : [];
     return this.cleanNames([...festivals, ...datasets], location, filter, inactive);
   }
 
   private cleanNames(datasets: Dataset[], location: WebLocation, filter: DatasetFilter, inactive?: boolean): Dataset[] {
     for (const dataset of datasets) {
+      console.log(`dataset=${dataset.name}`);
       if (dataset.imageUrl?.includes('[@static]')) {
         dataset.imageUrl = dataset.imageUrl.replace('[@static]', static_dust_events);
         dataset.active = true;
@@ -157,10 +160,12 @@ export class ApiService {
         dataset.subTitle = `${dataset.title} is happening now`;
       }
     }
+    console.log(`before filter sort`);
     const list = datasets
       .filter((d) => d.active || inactive)
       .filter((d) => this.byType(d, filter))
       .sort((a, b) => this.sortEvents(a, b, filter));
+    console.log('dataset sorted list', list);
     if (list.length > 1 && filter == 'all' && isAfter(new Date(list[0].start), new Date(list[1].start))) {
       // Make Burning Man first if the closest regional is after it.
       const tmp = { ...list[0] };
@@ -173,8 +178,11 @@ export class ApiService {
   private sortEvents(a: Dataset, b: Dataset, filter: DatasetFilter): number {
     const diff = diffNumbers(a.dist, b.dist);
     if (filter === 'all') {
-      if (a.id.startsWith('ttitd')) {
+      if (a.id.toLowerCase().startsWith('ttitd')) {
         return -1;
+      }
+      if (b.id.toLowerCase().startsWith('ttitd')) {
+        return 1;
       }
     }
 
@@ -214,6 +222,12 @@ export class ApiService {
     } else {
       return `${dataset.name.toLowerCase()}`;
     }
+  }
+
+  public async hasEverDownloaded(selected: Dataset) {
+    const dataset = this.datasetId(selected);
+    const myRevision = await this.dbService.get(dataset, Names.revision, { onlyRead: true, defaultValue: { revision: 0 } });
+    return (myRevision > 0);
   }
 
   public async download(
