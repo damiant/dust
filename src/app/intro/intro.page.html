@@ -1,5 +1,5 @@
 <ion-content color="primary" [fullscreen]="true">
-  <app-message (dismissed)="launch()" [show]="vm.showMessage" [title]="'About '+vm.selected?.year"
+  <app-message (dismissed)="launch()" [show]="vm.showMessage" [title]="vm.selected ? 'About '+vm.selected.year : ''"
     [message]="vm.message"></app-message>
   <div [class.full]="vm.eventAlreadySelected" class="vcenter rows">
     <h1 (click)="clear()">dust.</h1>

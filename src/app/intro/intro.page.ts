@@ -156,7 +156,14 @@ export class IntroPage {
       }
     }
 
+    this.vm.downloading = true;
     this.vm.cards = await this.api.loadDatasets(this.vm.showing);
+    if (this.vm.cards.length == 0) {
+      this.vm.message = `Check your network connection and try starting again.`;
+      this.vm.showMessage = true;
+      return;
+    }
+    this.vm.downloading = false;
     console.log(`Search for`, this.settingsService.settings.datasetId);
     const idx = this.vm.cards.findIndex((c) => this.api.datasetId(c) == this.settingsService.settings.datasetId);
     if (idx >= 0) {
