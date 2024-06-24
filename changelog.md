@@ -9,6 +9,7 @@
 - Fix for calendar sync on Android permission error on first try
 - Fix Intro page loading container
 - Fix dust font on main page
+- Fix to show geolocation dialog before native geolocation dialog
 - Fix for when you have never opened an event but it has started and you are on cellular
 
 ## 2.22

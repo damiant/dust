@@ -65,6 +65,7 @@ export class SettingsService {
 
   public shouldGeoAlert(): boolean {
     const lastGeoAlert = this.settings.lastGeoAlert ?? 0;
+    if (lastGeoAlert == 0) return true;
     return (Date.now() - lastGeoAlert > 86400000);
   }
 

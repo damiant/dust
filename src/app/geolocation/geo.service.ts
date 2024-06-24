@@ -28,8 +28,9 @@ export class GeoService {
     if (!Capacitor.isNativePlatform()) {
       return true;
     }
+
     const status = await Geolocation.checkPermissions();
-    console.log('checkPermissions', status);
+
     this.gpsPermission.set(status.location);
     return status.location == 'granted' || status.coarseLocation == 'granted';
   }
