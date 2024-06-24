@@ -188,7 +188,11 @@ export function isWhiteSpace(s: string): boolean {
 function timeBetween(d1: any, d2: any): string {
   const hrs = Math.ceil(Math.abs(d1 - d2) / 36e5);
   const mins = Math.floor(Math.abs(d1 - d2) / 1000 / 60);
-  return mins < 60 ? `${mins}mins` : `${hrs}hrs`;
+  return mins < 60 ? `${mins}min${plural(mins)}` : `${hrs}hr${plural(hrs)}`;
+}
+
+function plural(v: number): string {
+  return v === 1 ? "" : "s";
 }
 
 export function secondsBetween(d1: any, d2: any): number {

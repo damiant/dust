@@ -1,7 +1,5 @@
 # Roadmap
 
-- Now map is showing wrong events. At 8:21am Saturday E11 it wasn't showing Hobbiton's Yoga.
-- Long time function should show as 1hr and not 1hrs.
 - On todays favorite events show bold for happening now, grey if completed
 - As the time changes, update todays events
 - Error: white screened the events page after a day had passed
