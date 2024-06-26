@@ -192,6 +192,7 @@ export interface Dataset {
   timeZone: string; // Timezone
   dist?: number; // Estimated calculated distance to event
   mapDirection: number; // Compass rotation for North
+  directions: string | undefined; // Directions text
   pin: string;
   active: boolean; // Displayed publicly
   subTitle: string; // Calculated

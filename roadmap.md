@@ -1,9 +1,9 @@
 # Roadmap
 
+- Next/Prev buttons on events/art/camps (feature request)
 - On todays favorite events show bold for happening now, grey if completed
 - As the time changes, update todays events
 - Error: white screened the events page after a day had passed
-- Error: no festival images on intro page (had to restart app) but had labels
 
 - When going to the map for the first time on Android it shows the location dialog, but it should be the soft dialog first. Found on Samsung S10e
 

@@ -1,5 +1,9 @@
 ## Changes
 
+## 2.24
+
+- Support for text based directions
+
 ## 2.23
 
 - Fix for the map showing events happening now

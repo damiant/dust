@@ -20,7 +20,7 @@ import {
   IonToolbar,
   ToastController,
   IonFabList,
-  IonModal, IonSpinner
+  IonModal, IonSpinner, IonText
 } from '@ionic/angular/standalone';
 import { UiService } from '../ui/ui.service';
 import { Share } from '@capacitor/share';
@@ -72,7 +72,7 @@ interface Group {
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
   standalone: true,
-  imports: [
+  imports: [IonText,
     IonSpinner,
     IonModal,
     IonFabList,
@@ -120,6 +120,7 @@ export class ProfilePage implements OnInit {
   longEvents = false;
   hiddenPanel = false;
   downloading = false;
+  directionsOpen = false;
   eventIsHappening = false;
   favEventsToday: Event[] = [];
   imageUrl = '';
@@ -132,6 +133,7 @@ export class ProfilePage implements OnInit {
   hasIce = true;
   presentingElement: any;
   download: WritableSignal<string> = signal('');
+  directionText: WritableSignal<string> = signal('');
   api = inject(ApiService);
   constructor() {
     addIcons({
@@ -325,9 +327,18 @@ export class ProfilePage implements OnInit {
     }
   }
 
+  private getDirectionText(): string {
+    return this.settings.settings.dataset?.directions ?? '';
+  }
+
   async directions() {
     // Default comes from https://burningman.org/event/preparation/getting-there-and-back/
     if (!this.mapPin) return;
+    if (this.getDirectionText()) {
+      this.directionText.set(this.getDirectionText());
+      this.directionsOpen = true;
+      return;
+    }
     if (await this.map.canOpenMapApp('google')) {
       await this.map.openGoogleMapDirections(this.mapPin);
     } else if (await this.map.canOpenMapApp('apple')) {
