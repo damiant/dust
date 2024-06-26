@@ -7,7 +7,7 @@ import { Art, MapPoint, MapSet, MapType, Names } from '../data/models';
 import { GpsCoord } from '../map/geo.utils';
 import { GeoService } from '../geolocation/geo.service';
 import { toMapPoint } from '../map/map.utils';
-import { localTimeZone, nowRange, timeRangeToString } from '../utils/utils';
+import { nowRange, timeRangeToString } from '../utils/utils';
 import {
   IonBackButton,
   IonButtons,
