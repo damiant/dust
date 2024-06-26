@@ -43,6 +43,15 @@
       </ion-list>
     </ng-template>
   </ion-modal>
+  <ion-modal [isOpen]="directionsOpen" (didDismiss)="directionsOpen = false" #modal [initialBreakpoint]="0.75"
+    [breakpoints]="[0.25, 0.5, 0.75, 1]">
+    <ng-template>
+      <div class="ion-padding txt">
+        <h2>Directions</h2>
+        {{directionText()}}
+      </div>
+    </ng-template>
+  </ion-modal>
   <app-tile-container>
     @if (!db.locationsHidden()) {
     <app-tile title="Map" routerLink="/map/all" imgSrc="assets/icon/map.svg"></app-tile>

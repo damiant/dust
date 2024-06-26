@@ -140,7 +140,6 @@ export class ApiService {
 
   private cleanNames(datasets: Dataset[], location: WebLocation, filter: DatasetFilter, inactive?: boolean): Dataset[] {
     for (const dataset of datasets) {
-      console.log(`dataset=${dataset.name}`);
       if (dataset.imageUrl?.includes('[@static]')) {
         dataset.imageUrl = dataset.imageUrl.replace('[@static]', static_dust_events);
         dataset.active = true;
@@ -160,12 +159,11 @@ export class ApiService {
         dataset.subTitle = `${dataset.title} is happening now`;
       }
     }
-    console.log(`before filter sort`);
+
     const list = datasets
       .filter((d) => d.active || inactive)
       .filter((d) => this.byType(d, filter))
       .sort((a, b) => this.sortEvents(a, b, filter));
-    console.log('dataset sorted list', list);
     if (list.length > 1 && filter == 'all' && isAfter(new Date(list[0].start), new Date(list[1].start))) {
       // Make Burning Man first if the closest regional is after it.
       const tmp = { ...list[0] };

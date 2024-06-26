@@ -59,3 +59,9 @@ ion-fab-button {
     padding-left: 1rem;
     padding-right: 1rem;
 }
+
+.txt {
+    white-space: pre-line; // Adds breaks with /n
+    line-height: 150%;
+    font-size: 0.75rem;
+}
