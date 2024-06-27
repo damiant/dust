@@ -62,8 +62,7 @@ export function timeRangeToString(timeRange: TimeRange | undefined, timeZone: st
   if (!timeRange) {
     return '';
   }
-
-  return `${time(timeRange.start, timeZone)}-${time(timeRange.end, timeZone)}`;
+  return getTimeRange(time(timeRange.start, timeZone), time(timeRange.end, timeZone));
 }
 
 /**
@@ -172,11 +171,20 @@ export function getOccurrenceTimeString(start: Date, end: Date, day: Date | unde
 
     // Length of time: `${time(start, tz)} (${timeBetween(end, start)})`;
     return {
-      long: `${day} ${time(start, tz)}-${time(end, tz)} (${timeBetween(end, start)})`,
+      long: `${day} ${getTimeRange(time(start, tz), time(end, tz))} (${timeBetween(end, start)})`,
       short,
     };
   }
   return undefined;
+}
+
+function getTimeRange(from: string, to: string): string {
+  if (from.endsWith('pm') && to.endsWith('pm')) {
+    return `${from.replace('pm', '')}-${to}`;
+  } else if (from.endsWith('am') && to.endsWith('am')) {
+    return `${from.replace('am', '')}-${to}`;
+  }
+  return `${from}-${to}`;
 }
 
 export function isWhiteSpace(s: string): boolean {

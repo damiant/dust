@@ -1,5 +1,9 @@
 ## Changes
 
+## 2.25
+
+- Extra space for time ranges on Music tab
+
 ## 2.24
 
 - Support for text based directions
