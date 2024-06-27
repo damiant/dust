@@ -2,6 +2,7 @@
 
 ## 2.25
 
+- Easier to click on map when clicking a music item
 - Extra space for time ranges on Music tab
 
 ## 2.24
