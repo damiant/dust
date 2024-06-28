@@ -20,7 +20,8 @@ import {
   IonToolbar,
   ToastController,
   IonFabList,
-  IonModal, IonSpinner, IonText
+  IonModal, IonSpinner, IonText,
+  Platform
 } from '@ionic/angular/standalone';
 import { UiService } from '../ui/ui.service';
 import { Share } from '@capacitor/share';
@@ -135,6 +136,7 @@ export class ProfilePage implements OnInit {
   download: WritableSignal<string> = signal('');
   directionText: WritableSignal<string> = signal('');
   api = inject(ApiService);
+  platform = inject(Platform);
   constructor() {
     addIcons({
       linkOutline,
@@ -262,7 +264,8 @@ export class ProfilePage implements OnInit {
       lng: this.db.selectedDataset().long,
     });
     if (success) {
-      this.ui.presentToast(`${this.db.selectedDataset().title} has been added to your calendar.`, this.toastController);
+      const device = (this.platform.is('iphone') || this.platform.is('android')) ? 'phone' : 'device';
+      this.ui.presentToast(`${this.db.selectedDataset().title} has been added to your ${device}'s calendar.`, this.toastController);
     }
   }
 

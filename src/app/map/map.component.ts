@@ -157,7 +157,7 @@ export class MapComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.routerOutlet.swipeGesture = false;
     const darkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    this.src = darkMode ? 'assets/map-dark.svg' : 'assets/map.svg';
+    this.src = darkMode ? 'assets/map-dark-2024.svg' : 'assets/map-2024.svg';
     if (this.settings.settings.mapUri !== '') {
       this.src = this.settings.settings.mapUri;
     }
