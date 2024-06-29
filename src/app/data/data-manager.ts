@@ -52,6 +52,7 @@ export class DataManager implements WorkerClass {
   private georeferences: GeoRef[] = [];
   private revision: Revision = { revision: 0 };
   private allEventsOld = false;
+  private hasGeoPoints = false;
   private dataset: string = '';
   private timezone: string = BurningManTimeZone;
   private cache: TimeCache = {};
@@ -70,6 +71,8 @@ export class DataManager implements WorkerClass {
         return await this.populate(args[0], args[1], args[2], args[3]);
       case DataMethods.GetDays:
         return this.getDays(args[0]);
+      case DataMethods.HasGeoPoints:
+        return this.hasGeoPoints;
       case DataMethods.GetCategories:
         return this.categories;
       case DataMethods.SetDataset:
@@ -273,6 +276,7 @@ export class DataManager implements WorkerClass {
         this.consoleLog(`No data in geo.json`);
       }
     }
+    this.hasGeoPoints = gpsCoords.length == 3;
     if (gpsCoords.length != 3) {
       this.consoleError(`This dataset does not have the required 3 geolocation points.`);
       return;

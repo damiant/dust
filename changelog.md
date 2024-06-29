@@ -7,6 +7,9 @@
 - Easier to click on map when clicking a music item
 - Extra space for time ranges on Music tab
 - Extra space for more menu
+- Fix for hiding the compass when geolocation is disabled
+- Fix to show soft geolocation request on first use
+- Fix to prevent geolocation on maps with no GPS points
 
 ## 2.24
 

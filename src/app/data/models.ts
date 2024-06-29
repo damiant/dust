@@ -402,6 +402,7 @@ export enum DataMethods {
   SearchRSLEvents = 'searchRSLEvents',
   GetMapPointGPS = 'getMapPointGPS',
   SetMapPointsGPS = 'setMapPointsGPS',
+  HasGeoPoints = 'hasGeoPoints',
   ConsoleLog = 'consoleLog',
   Write = 'write',
   Fetch = 'fetch',
