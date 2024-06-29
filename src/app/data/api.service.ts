@@ -14,7 +14,7 @@ import {
 
 import { SettingsService } from './settings.service';
 import { asNumber, data_dust_events, daysUntil, diffNumbers, isAfter, nowAtEvent, static_dust_events } from '../utils/utils';
-import { DbService } from './db.service';
+import { DbService, GetOptions } from './db.service';
 import { Capacitor } from '@capacitor/core';
 import { App } from '@capacitor/app';
 import { environment } from 'src/environments/environment';
@@ -126,11 +126,14 @@ export class ApiService {
     return false;
   }
 
-  public async loadDatasets(filter: DatasetFilter, inactive?: boolean): Promise<Dataset[]> {
+  public async loadDatasets(filter: DatasetFilter, inactive?: boolean, cached?: boolean): Promise<Dataset[]> {
+    const options: GetOptions = cached ?
+      { onlyRead: true, defaultValue: [] } :
+      { freshOnce: true, timeout: 5000 };
     const [rDatasets, rFestivals, rLocation] = await Promise.allSettled([
-      this.dbService.get(Names.festivals, Names.festivals, { freshOnce: true, timeout: 5000 }),
-      this.dbService.get(Names.datasets, Names.datasets, { freshOnce: true, timeout: 5000 }),
-      this.dbService.get(Names.location, Names.location, { freshOnce: true, timeout: 1000 })
+      this.dbService.get(Names.festivals, Names.festivals, options),
+      this.dbService.get(Names.datasets, Names.datasets, options),
+      this.dbService.get(Names.location, Names.location, options)
     ]);
     const location: WebLocation = rLocation.status == 'fulfilled' ? rLocation.value : {};
     const festivals = rFestivals.status == 'fulfilled' ? rFestivals.value : [];

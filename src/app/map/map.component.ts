@@ -13,6 +13,7 @@ import { Router, RouterModule } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { IonButton, IonContent, IonPopover, IonRouterOutlet, IonText } from '@ionic/angular/standalone';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
+import { DbService } from '../data/db.service';
 
 interface MapInformation {
   width: number; // Width of the map
@@ -47,6 +48,7 @@ const youOffsetY = 4;
 })
 export class MapComponent implements OnInit, OnDestroy {
   private geo = inject(GeoService);
+  private db = inject(DbService)
   private router = inject(Router);
   private settings = inject(SettingsService);
   _points: MapPoint[];
@@ -56,6 +58,7 @@ export class MapComponent implements OnInit, OnDestroy {
   info: MapInfo | undefined;
   src = 'assets/map.svg';
   showMessage = false;
+  hideCompass = false;
   pointsSet = false;
   pins: Pin[] = [];
   divs: HTMLDivElement[] = [];
@@ -98,6 +101,7 @@ export class MapComponent implements OnInit, OnDestroy {
         point.gps = await this.geo.getMapPointToGPS(point);
       }
     }
+    this.hideCompass = !await this.db.hasGeoPoints();
     await delay(150);
     this.update();
   }
@@ -145,6 +149,9 @@ export class MapComponent implements OnInit, OnDestroy {
       if (change === 'denied') {
         this.footer = this.disabledMessage;
       }
+      if (change === 'none') {
+        this.footer = undefined;
+      }
     });
   }
 
@@ -157,7 +164,7 @@ export class MapComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.routerOutlet.swipeGesture = false;
     const darkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    this.src = darkMode ? 'assets/map-dark.svg' : 'assets/map.svg';
+    this.src = darkMode ? 'assets/map-dark-2024.svg' : 'assets/map-2024.svg';
     if (this.settings.settings.mapUri !== '') {
       this.src = this.settings.settings.mapUri;
     }
@@ -197,12 +204,16 @@ export class MapComponent implements OnInit, OnDestroy {
       degree += 360;
     }
     this.compass.style.transform = `rotate(${degree}deg)`;
-    this.compass.style.visibility = 'visible';
+    this.compass.style.visibility = this.hideCompass ? 'hidden' : 'visible';
   }
 
   private async displayYourLocation(gpsCoord: GpsCoord) {
     //this.gpsCoord = await this.geo.getPosition();
     const pt = await this.geo.gpsToPoint(gpsCoord);
+    if (this.hideCompass) {
+      pt.x -= 1000;
+    }
+
     if (!this.you) {
       // First time setup
       this.you = this.plotXY(pt.x, pt.y, youOffsetX, youOffsetY, undefined, 'var(--ion-color-secondary)');
@@ -244,7 +255,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private async checkGeolocation() {
     if (this.settings.settings.locationEnabled === LocationEnabledStatus.Unknown) {
-      if (this.settings.shouldGeoAlert()) {
+      if (this.settings.shouldGeoAlert() && !this.hideCompass) {
         this.showMessage = true;
       }
       return;
@@ -257,11 +268,18 @@ export class MapComponent implements OnInit, OnDestroy {
     if (!this.settings.shouldGeoAlert()) {
       return;
     }
+    if (this.hideCompass) {
+      return;
+    }
+
 
     const hasGeo = await this.geo.checkPermissions();
+
     if (!hasGeo) {
       if (this.settings.shouldGeoAlert()) {
-        this.showMessage = true;
+        if (await this.db.hasGeoPoints()) {
+          this.showMessage = true;
+        }
       }
       return;
     }
@@ -310,6 +328,10 @@ export class MapComponent implements OnInit, OnDestroy {
         div.style.animationDuration = '2s';
       }
 
+      if (this.hideCompass) {
+        this.footer = ``;
+        return;
+      }
       const prefix = this._points.length > 1 ? 'The closest is ' : '';
       const dist = formatDistanceMiles(least);
       if (least > 50) {

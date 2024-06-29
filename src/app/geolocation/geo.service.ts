@@ -29,6 +29,10 @@ export class GeoService {
       return true;
     }
 
+    if (!await this.db.hasGeoPoints()) {
+      this.gpsPermission.set('none');
+      return false;
+    }
     const status = await Geolocation.checkPermissions();
 
     this.gpsPermission.set(status.location);
@@ -39,6 +43,11 @@ export class GeoService {
     if (!Capacitor.isNativePlatform()) {
       return true;
     }
+    if (!await this.db.hasGeoPoints()) {
+      this.gpsPermission.set('none');
+      return false;
+    }
+
     const status = await Geolocation.requestPermissions({ permissions: ['location'] });
     this.gpsPermission.set(status.location);
     return status.location == 'granted';
@@ -72,10 +81,14 @@ export class GeoService {
       return this.gpsPosition();
     }
 
+    if (this.settings.shouldGeoAlert() || !await this.db.hasGeoPoints()) {
+      this.gpsPosition.set(NoGPSCoord());
+      return NoGPSCoord();
+    }
     console.time('geo.permissions');
     if (!this.hasPermission) {
       if (!(await this.checkPermissions())) {
-        if (!this.settings.shouldGeoAlert()) {
+        if (this.settings.shouldGeoAlert()) {
           console.error(`User not accepted geolocation yet.`);
           this.gpsPosition.set(NoGPSCoord());
           return NoGPSCoord();

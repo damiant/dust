@@ -148,7 +148,7 @@ export class RslPage {
     this.addEvents(50);
     setTimeout(() => {
       (ev as InfiniteScrollCustomEvent).target.complete();
-    }, 10);
+    }, 1);
   }
 
   private async update(scrollToTop?: boolean) {
@@ -223,6 +223,7 @@ export class RslPage {
   }
 
   public async map(event: RSLEvent) {
+    console.log('map', event);
     const mp = toMapPoint(event.location, undefined, event.pin);
     mp.gps = await this.db.getMapPointGPS(mp);
     this.vm.mapPoints = [mp];

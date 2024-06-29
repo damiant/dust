@@ -49,7 +49,7 @@
   <app-rsl-event [event]="event" (mapClick)="map($event)" (artCarClick)="artCar($event)"></app-rsl-event>
   }
   <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
-    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
   </ion-infinite-scroll>
   <div class="pad-top"></div>
 </ion-content>

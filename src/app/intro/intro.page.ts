@@ -157,6 +157,9 @@ export class IntroPage {
     }
 
     this.vm.downloading = true;
+    // Get Cached Values
+    this.vm.cards = await this.api.loadDatasets(this.vm.showing, undefined, true);
+    // Get Live Values (ie if updated)
     this.vm.cards = await this.api.loadDatasets(this.vm.showing);
     if (this.vm.cards.length == 0) {
       this.vm.message = `Check your network connection and try starting again.`;

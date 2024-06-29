@@ -8,7 +8,8 @@
       class="back-title">{{db.selectedDataset().title}}</span></ion-title> -->
   </div>
 
-  <ion-modal [isOpen]="moreOpen" (didDismiss)="moreOpen = false" #modal [initialBreakpoint]="0.3">
+  <ion-modal [isOpen]="moreOpen" (didDismiss)="moreOpen = false" #modal [initialBreakpoint]="0.5"
+    [breakpoints]="[0.25, 0.5, 0.75, 1]">
     <ng-template>
       <ion-list class="ion-padding">
         <ion-item href="mailto:damian@dust.events?subject=dust" (click)="feedback()" detail="true">

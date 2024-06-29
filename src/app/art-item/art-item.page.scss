@@ -13,3 +13,34 @@ ion-fab {
 app-cached-img {
     --border-radius: 0.5rem;
 }
+
+ion-item.event {
+    font-weight: bold;
+    --padding-top: 1rem;
+    --padding-bottom: 0px;
+    --min-height: unset;
+}
+
+ion-icon.event-icon {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+ion-item.small {
+    --padding-top: 0px;
+    --padding-bottom: 0px;
+    --min-height: unset;
+}
+
+ion-label {
+    margin-top: 0.1rem;
+    margin-bottom: 0.1rem;
+}
+
+ion-label.text {
+    opacity: 0.5;
+}
+
+.pad-left {
+    padding-left: 2.9rem;
+}

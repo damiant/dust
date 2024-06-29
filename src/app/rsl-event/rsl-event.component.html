@@ -5,7 +5,7 @@
   }
   <ion-card-header>
     @if (!event().artCar) {
-    <ion-card-title>{{ event().camp }}
+    <ion-card-title (click)="map(event())">{{ event().camp }}
       <!-- Turning off wheelchair accessible as we do not have data for it yet -->
       <!-- <ion-icon [color]="event().wa ? 'primary' : 'medium'" (click)="wheelchair()" class="wheelchair" size="small"
         [src]="'assets/icon/wheelchair.svg'"></ion-icon> -->

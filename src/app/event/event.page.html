@@ -33,7 +33,8 @@
       <h1 class="page-focus">{{event.title}}</h1>
     </ion-item>
     <ion-item (click)="showCamp($event)">
-      <ion-icon aria-hidden="true" color="primary" slot="start" [src]="'assets/icon/camp.svg'"></ion-icon>
+      <ion-icon aria-hidden="true" [color]="!!event.other_location ? 'dark' : 'primary'" slot="start"
+        [src]="!!event.other_location ? 'assets/icon/map.svg' :'assets/icon/camp.svg'"></ion-icon>
       <ion-label attr.aria-label="{{event.camp}}" role="button">{{event.camp}}</ion-label>
     </ion-item>
     @if (event.location) {

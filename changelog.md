@@ -1,5 +1,19 @@
 ## Changes
 
+## 2.25
+
+- Show events that are at art
+- Map for 2024 for Burning Man
+- Icon for events in open camping is no longer clickable
+- Handling of all day events
+- Handle bad network on startup
+- Easier to click on map when clicking a music item
+- Extra space for time ranges on Music tab
+- Extra space for more menu
+- Fix for hiding the compass when geolocation is disabled
+- Fix to show soft geolocation request on first use
+- Fix to prevent geolocation on maps with no GPS points
+
 ## 2.24
 
 - Support for text based directions

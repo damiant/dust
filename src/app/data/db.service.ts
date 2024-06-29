@@ -154,6 +154,11 @@ export class DbService {
     return await call(this.worker, DataMethods.GetGeoReferences);
   }
 
+  // True if the dataset has geo points. False if we avoid geolocation
+  public async hasGeoPoints(): Promise<boolean> {
+    return await call(this.worker, DataMethods.HasGeoPoints);
+  }
+
   public async gpsToPoint(gpsCoord: GpsCoord): Promise<Point> {
     return await call(this.worker, DataMethods.GpsToPoint, gpsCoord);
   }
@@ -368,6 +373,10 @@ export class DbService {
 
   public async getCampEvents(campId: string): Promise<Event[]> {
     return await call(this.worker, DataMethods.GetCampEvents, campId);
+  }
+
+  public async getArtEvents(artId: string): Promise<Event[]> {
+    return await call(this.worker, DataMethods.GetArtEvents, artId);
   }
 
   public async getCampRSLEvents(campId: string): Promise<RSLEvent[]> {
