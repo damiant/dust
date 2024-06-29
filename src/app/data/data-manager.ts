@@ -842,6 +842,9 @@ export class DataManager implements WorkerClass {
 
   private sortEvents(events: Event[]) {
     events.sort((a: Event, b: Event) => {
+      if (!!a.all_day) {
+        return 99999; // All day events go to the bottom
+      }
       return a.start.getTime() - b.start.getTime();
     });
   }

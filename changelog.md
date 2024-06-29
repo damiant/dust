@@ -3,6 +3,7 @@
 ## 2.25
 
 - Map for 2024 for Burning Man
+- Handling of all day events
 - Easier to click on map when clicking a music item
 - Extra space for time ranges on Music tab
 - Extra space for more menu
