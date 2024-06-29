@@ -81,7 +81,7 @@ export class GeoService {
       return this.gpsPosition();
     }
 
-    if (this.settings.shouldGeoAlert()) {
+    if (this.settings.shouldGeoAlert() || !await this.db.hasGeoPoints()) {
       this.gpsPosition.set(NoGPSCoord());
       return NoGPSCoord();
     }

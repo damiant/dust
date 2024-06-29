@@ -255,7 +255,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private async checkGeolocation() {
     if (this.settings.settings.locationEnabled === LocationEnabledStatus.Unknown) {
-      if (this.settings.shouldGeoAlert()) {
+      if (this.settings.shouldGeoAlert() && !this.hideCompass) {
         this.showMessage = true;
       }
       return;
@@ -265,7 +265,7 @@ export class MapComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (!this.settings.shouldGeoAlert()) {
+    if (!this.settings.shouldGeoAlert() || !this.hideCompass) {
       return;
     }
 
