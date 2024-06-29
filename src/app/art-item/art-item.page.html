@@ -19,6 +19,12 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <ion-modal [isOpen]="showEvent" (didDismiss)="showEvent = false" [initialBreakpoint]="0.9"
+    [breakpoints]="[0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]">
+    <ng-template>
+      <app-event [filterDays]="false" imageLocation="bottom" class="pad" [eventId]="eventId"></app-event>
+    </ng-template>
+  </ion-modal>
   <app-map-modal [title]="mapTitle" [subtitle]="mapSubtitle" [(show)]="showMap" [points]="mapPoints"></app-map-modal>
   @if (art) {
   <ion-list lines="none">
@@ -51,6 +57,26 @@
         Favorites</ion-button>
     </div>
 
+    @if (events.length > 0) {
+    <ion-list lines="none">
+      <ion-item>
+        <h1>Events</h1>
+      </ion-item>
+      @for (event of events; track event) {
+      <div>
+        <ion-item class="event">
+          <ion-icon aria-hidden="true" class="event-icon" slot="start" name="calendar-outline"></ion-icon>
+          <ion-label role="button" class="bold" color="primary" (click)="show(event)">{{event.title}}</ion-label>
+        </ion-item>
+        @for (occurrence of event.occurrence_set; track occurrence) {
+        <ion-item class="small">
+          <ion-label class="pad-left text" (click)="show(event)">{{occurrence.longTimeString}}</ion-label>
+        </ion-item>
+        }
+      </div>
+      }
+    </ion-list>
+    }
     <ion-item>
       @for (image of art.images; track image) {
       <div class="center">

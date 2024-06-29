@@ -131,6 +131,8 @@ export class DataManager implements WorkerClass {
         return this.getGeoReferences();
       case DataMethods.GetCampEvents:
         return this.getCampEvents(args[0]);
+      case DataMethods.GetArtEvents:
+        return this.getArtEvents(args[0]);
       case DataMethods.GetCampRSLEvents:
         return await this.getRSLEvents('', undefined, undefined, undefined, args[0]);
       case DataMethods.GetCamps:
@@ -876,6 +878,18 @@ export class DataManager implements WorkerClass {
 
     for (let event of this.events) {
       if (event.hosted_by_camp == campId) {
+        result.push(event);
+      }
+    }
+    this.sortEvents(result);
+    return result;
+  }
+
+  public getArtEvents(artId: string): Event[] {
+    const result: Event[] = [];
+
+    for (let event of this.events) {
+      if (event.located_at_art == artId) {
         result.push(event);
       }
     }

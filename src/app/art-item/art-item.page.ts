@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
-import { Art, MapPoint } from '../data/models';
+import { Art, Event, MapPoint } from '../data/models';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { DbService } from '../data/db.service';
 import { MapComponent } from '../map/map.component';
@@ -23,18 +23,19 @@ import {
   IonList,
   IonText,
   IonTitle,
-  IonToolbar,
+  IonToolbar, IonModal
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { star, starOutline, shareOutline, personOutline, locateOutline, locationOutline } from 'ionicons/icons';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
+import { EventPage } from '../event/event.page';
 
 @Component({
   selector: 'app-art-item',
   templateUrl: './art-item.page.html',
   styleUrls: ['./art-item.page.scss'],
   standalone: true,
-  imports: [
+  imports: [IonModal,
     IonTitle,
     FormsModule,
     RouterModule,
@@ -52,6 +53,7 @@ import { CachedImgComponent } from '../cached-img/cached-img.component';
     IonLabel,
     IonText,
     CachedImgComponent,
+    EventPage
   ],
 })
 export class ArtItemPage implements OnInit {
@@ -63,6 +65,9 @@ export class ArtItemPage implements OnInit {
   art: Art | undefined;
   showMap = false;
   mapPoints: MapPoint[] = [];
+  events: Event[] = [];
+  eventId: string | undefined;
+  showEvent = false;
   mapTitle = '';
   mapSubtitle = '';
   backText = 'Art';
@@ -90,6 +95,7 @@ export class ArtItemPage implements OnInit {
       const gps = { lng: this.art.location.gps_longitude, lat: this.art.location.gps_latitude };
       point = await this.db.gpsToMapPoint(gps, undefined);
     }
+    this.events = await this.db.getArtEvents(id);
     point.info = { title: this.art.name, subtitle: '', location: '' };
     this.mapPoints.push(point);
 
@@ -98,6 +104,11 @@ export class ArtItemPage implements OnInit {
 
   open(url: string) {
     this.ui.openUrl(url);
+  }
+
+  show(event: Event) {
+    this.eventId = event.uid;
+    this.showEvent = true;
   }
 
   map() {

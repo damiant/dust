@@ -2,6 +2,7 @@
 
 ## 2.25
 
+- Show events that are at art
 - Map for 2024 for Burning Man
 - Handling of all day events
 - Easier to click on map when clicking a music item
