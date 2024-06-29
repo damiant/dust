@@ -5,6 +5,7 @@
 - Show events that are at art
 - Map for 2024 for Burning Man
 - Handling of all day events
+- Handle bad network on startup
 - Easier to click on map when clicking a music item
 - Extra space for time ranges on Music tab
 - Extra space for more menu

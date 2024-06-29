@@ -265,15 +265,21 @@ export class MapComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (!this.settings.shouldGeoAlert() || !this.hideCompass) {
+    if (!this.settings.shouldGeoAlert()) {
       return;
     }
+    if (this.hideCompass) {
+      return;
+    }
+
 
     const hasGeo = await this.geo.checkPermissions();
 
     if (!hasGeo) {
       if (this.settings.shouldGeoAlert()) {
-        this.showMessage = true;
+        if (await this.db.hasGeoPoints()) {
+          this.showMessage = true;
+        }
       }
       return;
     }
