@@ -1,5 +1,10 @@
 ## Changes
 
+## 2.26
+
+- Fix sorting for all day events
+- Favorite events from the events page
+
 ## 2.25
 
 - Show events that are at art

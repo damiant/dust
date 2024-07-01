@@ -53,13 +53,9 @@ export class NotificationService {
           // User has selected a particular day
           isValid = true; // dateMatches(selectedDay, occurrence);
         }
-        console.log(
-          `for this day=${isValid} selected=${selectedDay} start=${occurrence.start_time} end=${occurrence.end_time}`,
-        );
         if (isValid) {
           const startHere = new Date(occurrence.start_time);
           const startThere = this.changeTimezone(startHere, this.db.getTimeZone());
-          console.log(`startHere=${startHere} startThere=${startThere}`);
           reminder.when = this.reminderTime(startThere);
           if (!this.sameDate(last, reminder.when)) {
             await this.schedule(reminder);

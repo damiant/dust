@@ -34,6 +34,11 @@
     (click)="detail()">
     <ion-text aria-hidden="true" class="clamp">{{ event().description }}</ion-text>
     <ion-text aria-hidden="true" class="clamp1 type">
+      @if (star && showStar) {
+      <ion-icon name="star" (click)="emitStar(false)"></ion-icon>
+      } @else if (showStar) {
+      <ion-icon name="star-outline" (click)="emitStar(true)"></ion-icon>
+      }
       {{ event().event_type.label }}</ion-text>
   </ion-card-content>
 </ion-card>
