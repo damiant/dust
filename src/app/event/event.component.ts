@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output, inject, effect } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { Event } from '../data/models';
 import { CommonModule } from '@angular/common';
@@ -13,8 +13,10 @@ import {
   IonText,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { mapOutline } from 'ionicons/icons';
+import { mapOutline, starOutline, star } from 'ionicons/icons';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
+import { FavoritesService } from '../favs/favorites.service';
+import { DbService } from '../data/db.service';
 
 @Component({
   selector: 'app-event',
@@ -38,19 +40,38 @@ import { CachedImgComponent } from '../cached-img/cached-img.component';
 })
 export class EventComponent {
   private router = inject(Router);
+  private fav = inject(FavoritesService);
+  private db = inject(DbService);
+  private emitting = 0;
+
   event = input.required<Event>();
   title = input('Events');
   day = input<Date>();
+  showStar = true;
   showImage = input(true);
   longTime = input(false);
   variableHeight = input(false);
+  star = false;
   mapClick = output<any>();
+  starClick = output<boolean>();
   groupClick = output<Event>();
   rslClick = output<string>();
   isReady = false;
 
   constructor() {
-    addIcons({ mapOutline });
+    addIcons({ mapOutline, starOutline, star });
+    effect(async () => {
+      const e = this.event();
+      this.checkStarred(e);
+    });
+  }
+
+  private async checkStarred(e: Event) {
+    await this.fav.setEventStars(e);
+    const occurrence = this.fav.selectOccurrence(e, this.db.selectedDay());
+    this.showStar = !!occurrence;
+    const starred = occurrence ? await this.fav.isFavEventOccurrence(e.uid, occurrence) : false;
+    this.star = starred;
   }
 
   map(event: Event, ev: any) {
@@ -66,7 +87,17 @@ export class EventComponent {
     return this.day();
   }
 
+  emitStar(star: boolean) {
+    this.emitting = 3;
+    this.starClick.emit(star);
+    this.checkStarred(this.event());
+  }
+
   detail() {
+    this.emitting = this.emitting - 1;
+    if (this.emitting > 0) {
+      return;
+    }
     if (this.event().uid === '') {
       this.rslClick.emit(this.event().slug);
       return;

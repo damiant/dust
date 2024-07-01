@@ -32,6 +32,7 @@ import { GeoService } from '../geolocation/geo.service';
 import { SettingsService } from '../data/settings.service';
 import { addIcons } from 'ionicons';
 import { compass, compassOutline } from 'ionicons/icons';
+import { FavoritesService } from '../favs/favorites.service';
 
 interface EventsState {
   title: string;
@@ -114,6 +115,7 @@ function initialState(): EventsState {
 export class EventsPage {
   public db = inject(DbService);
   private ui = inject(UiService);
+  private fav = inject(FavoritesService);
   private settings = inject(SettingsService);
   private toastController = inject(ToastController);
   private geo = inject(GeoService);
@@ -168,6 +170,14 @@ export class EventsPage {
       this.vm.displayedDistMessage = true;
     }
     this.update(true);
+  }
+
+  public async star(event: Event, star: boolean) {
+    const occurrence = this.fav.selectOccurrence(event, this.db.selectedDay());
+    const message = await this.fav.starEvent(star, event, this.db.selectedDay(), occurrence);
+    if (message) {
+      this.ui.presentToast(message, this.toastController);
+    }
   }
 
   toggleByDist() {

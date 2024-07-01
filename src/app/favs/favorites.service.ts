@@ -141,6 +141,18 @@ export class FavoritesService {
     return result;
   }
 
+  public selectOccurrence(event: Event, selectedDay: Date): OccurrenceSet | undefined {
+    if (event.occurrence_set.length == 1) {
+      return event.occurrence_set[0];
+    }
+    for (const occurrence of event.occurrence_set) {
+      if (sameDay(new Date(occurrence.start_time), selectedDay)) {
+        return occurrence;
+      }
+    }
+    return undefined;
+  }
+
   public async starEvent(
     star: boolean,
     event: Event,
@@ -149,7 +161,7 @@ export class FavoritesService {
   ): Promise<string | undefined> {
     const id = this.eventId(event, occurrence);
     this.favorites.events = this.include(star, id, this.favorites.events);
-    console.log('starEvent', star, JSON.stringify(this.favorites));
+
     await this.saveFavorites();
 
     if (star) {

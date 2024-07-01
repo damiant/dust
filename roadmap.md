@@ -5,13 +5,10 @@
 - As the time changes, update todays events
 - Error: white screened the events page after a day had passed
 
-- When going to the map for the first time on Android it shows the location dialog, but it should be the soft dialog first. Found on Samsung S10e
-
 # Feedback: Requested Features
 
 - Feature to highlight downloading an update in the week before the event if it was updated more than a week ago
 - Timetable view (something like Google Calendar)
-- Events longer than 4 hours should be hidden or at the bottom of the list.
 - Be able to favorite from the main listing
 
 # Map

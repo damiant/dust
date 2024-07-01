@@ -850,6 +850,8 @@ export class DataManager implements WorkerClass {
     events.sort((a: Event, b: Event) => {
       if (!!a.all_day) {
         return 99999; // All day events go to the bottom
+      } else if (!!b.all_day) {
+        return -99999;
       }
       return a.start.getTime() - b.start.getTime();
     });
