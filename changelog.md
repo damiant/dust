@@ -4,6 +4,7 @@
 
 - Fix for events ending at midnight for Burning Man
 - Fix for labelling of all day events
+- FIx for showing all day events on the now page
 
 ## 2.26
 
