@@ -1,5 +1,9 @@
 ## Changes
 
+## 2.27
+
+- Fix for events ending at midnight for Burning Man
+
 ## 2.26
 
 - Fix sorting for all day events
