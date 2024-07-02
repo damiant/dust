@@ -53,6 +53,7 @@ interface EventsState {
   mapPoints: MapPoint[];
   minBufferPx: number;
   byDist: boolean;
+  shownLongEventMessage: boolean;
   isNow: boolean;
   timeRange: string;
   displayedDistMessage: boolean;
@@ -73,6 +74,7 @@ function initialState(): EventsState {
     screenHeight: window.screen.height,
     day: undefined,
     showMap: false,
+    shownLongEventMessage: false,
     mapTitle: '',
     mapSubtitle: '',
     mapPoints: [],
@@ -178,6 +180,14 @@ export class EventsPage {
     if (message) {
       this.ui.presentToast(message, this.toastController);
     }
+  }
+
+  public longEvent(length: number) {
+    if (this.vm.shownLongEventMessage) {
+      return;
+    }
+    this.vm.shownLongEventMessage = true;
+    this.ui.presentToast(`Long events are displayed at the bottom of the list.`, this.toastController);
   }
 
   toggleByDist() {

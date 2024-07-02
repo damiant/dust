@@ -491,7 +491,7 @@ export class DataManager implements WorkerClass {
         }
 
         // Change midnight to 11:59 so that it works with the sameday function        
-        if (occurrence.end_time.endsWith('T00:00:00')) {
+        if (occurrence.end_time.includes('T00:00:00')) {
           const t = occurrence.start_time.split('T');
           occurrence.end_time = t[0] + 'T23:59:00';
           end = new Date(occurrence.end_time);
@@ -1024,12 +1024,16 @@ export class DataManager implements WorkerClass {
       } else if (timeRange) {
         // if event starts after range start and ends before range end
         // if event is before timeRange.start then not now
-        // if event starts after timeRange.end then not now
-        if (start > timeRange.end || end < timeRange.start) {
-          // Not now
-          this.consoleLog(`Event ${event.title} is not now ${start} - ${end}`);
-        } else {
-          return true;
+        // if event starts after timeRange.end then not now     
+
+        if (start < timeRange.start && end > timeRange.end) {
+          return true; // Event is overlapping time range
+        }
+        if (start > timeRange.start && start < timeRange.end) {
+          return true; // Event is overlapping the start of the time range
+        }
+        if (end > timeRange.start && end < timeRange.end) {
+          return true; // Event is overlapping the end of the time range
         }
       }
     }

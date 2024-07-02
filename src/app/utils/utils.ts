@@ -171,7 +171,7 @@ export function getOccurrenceTimeString(start: Date, end: Date, day: Date | unde
     const timeRange = getTimeRange(time(start, tz), time(end, tz));
     if (timeRange == 'All Day') {
       return {
-        long: timeRange,
+        long: `${timeRange} ${day}`,
         short: timeRange
       }
     }
