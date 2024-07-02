@@ -56,6 +56,7 @@ export class EventComponent {
   starClick = output<boolean>();
   groupClick = output<Event>();
   rslClick = output<string>();
+  longEvent = output<number>();
   isReady = false;
 
   constructor() {
@@ -72,6 +73,16 @@ export class EventComponent {
     this.showStar = !!occurrence;
     const starred = occurrence ? await this.fav.isFavEventOccurrence(e.uid, occurrence) : false;
     this.star = starred;
+    if (occurrence) {
+      const length = this.hoursBetween(new Date(occurrence.end_time), new Date(occurrence.start_time));
+      if (length > 5) {
+        this.longEvent.emit(length);
+      }
+    }
+  }
+
+  private hoursBetween(d1: any, d2: any): number {
+    return Math.ceil(Math.abs(d1 - d2) / 36e5);
   }
 
   map(event: Event, ev: any) {
