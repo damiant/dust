@@ -3,7 +3,7 @@
     <div class="center tall">
       <div class="pad">
         <h2>PIN Required</h2>
-        <ion-text>A PIN is required to access this event.</ion-text>
+        <ion-text>{{message()}}</ion-text>
         <ion-input type="number" autofocus="true" inputmode="numeric" enterkeyhint="go" [(ngModel)]="enteredPin"
           name="pin" placeholder="0000" maxlength="4" autocomplete="off" />
         <div>

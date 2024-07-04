@@ -14,6 +14,7 @@ export class PinEntryComponent {
   show = model(false);
   dismissed = output<boolean>();
   correctPin = input<string>('');
+  message = input<string>('A PIN is required to access this event. This is delivered by email or at greeters.');
   enteredPin = '';
   constructor() { }
 

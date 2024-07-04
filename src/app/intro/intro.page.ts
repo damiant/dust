@@ -246,8 +246,8 @@ export class IntroPage {
       if (this.api.hasStarted(this.vm.selected!)) {
         const status = await Network.getStatus();
         if (status.connectionType == 'cellular') {
-          const hasEveryDownloaded = await this.api.hasEverDownloaded(this.vm.selected!);
-          if (hasEveryDownloaded) {
+          const hasEverDownloaded = await this.api.hasEverDownloaded(this.vm.selected!);
+          if (hasEverDownloaded) {
             console.log(`Avoiding downloading because event has started and we are on cell service`);
             return;
           } else {
@@ -260,6 +260,10 @@ export class IntroPage {
       // If we are using a preview then force
       const forceDownload = !!this.db.overrideDataset;
       await this.api.download(this.vm.selected, forceDownload, this.download);
+
+      // Need to save this otherwise it will think we cant start this event
+      this.settingsService.setOffline(this.settingsService.settings.datasetId);
+      this.settingsService.save();
 
     } finally {
       this.vm.downloading = false;
@@ -281,6 +285,9 @@ export class IntroPage {
     await this.preDownload();
     if (!isWhiteSpace(this.vm.selected.pin)) {
       if (!await this.verifyPin()) {
+        this.settingsService.settings.preventAutoStart = false;
+        this.vm.eventAlreadySelected = false;
+        this.settingsService.save();
         return;
       }
     }
