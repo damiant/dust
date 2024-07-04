@@ -1,5 +1,13 @@
 ## Changes
 
+## 2.29
+
+-
+
+## 2.28
+
+- Fix for burns with a PIN to download data before the PIN entry
+
 ## 2.27
 
 - Fix for events ending at midnight for Burning Man
