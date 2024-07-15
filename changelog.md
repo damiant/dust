@@ -2,7 +2,7 @@
 
 ## 2.29
 
--
+- Move Map URI from localStorage to IndexedDB to get around 5mb limit
 
 ## 2.28
 

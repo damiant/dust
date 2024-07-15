@@ -162,7 +162,6 @@ export interface Settings {
   eventTitle: string;
   mapRotation: number;
   scrollLeft: number;
-  mapUri: string;
   locationEnabled: LocationEnabledStatus;
   longEvents: boolean;
   preventAutoStart: boolean;

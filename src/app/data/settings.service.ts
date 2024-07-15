@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LocationEnabledStatus, Settings } from './models';
 import { Preferences } from '@capacitor/preferences';
+import { set, get } from 'idb-keyval';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +19,14 @@ export class SettingsService {
     }
   }
 
+  public async getMapURI(): Promise<string | undefined> {
+    return await get('mapUri');
+  }
+
+  public async setMapURI(uri: string) {
+    await set('mapUri', uri);
+  }
+
   public getSettings(): Settings {
     try {
       const settings = JSON.parse(localStorage['settings']);
@@ -27,7 +36,6 @@ export class SettingsService {
       return {
         datasetId: '',
         mapRotation: 0,
-        mapUri: '',
         dataset: undefined,
         eventTitle: '',
         locationEnabled: LocationEnabledStatus.Unknown,
@@ -52,9 +60,6 @@ export class SettingsService {
   }
 
   public save() {
-    if (!this.settings.mapUri || this.settings.mapUri.length > 5000000) {
-      this.settings.mapUri = '';
-    }
     localStorage['settings'] = JSON.stringify(this.settings);
   }
 
