@@ -111,10 +111,11 @@ export class CampPage implements OnInit {
   }
 
   private toDate(d: string): string {
-    const t = d.split('-');
-    const day = parseInt(t[2]);
-    const date = new Date(`${d}T00:00:00`);
-    return date.toLocaleDateString('en-US', { weekday: 'long', timeZone: 'UTC' }) + ` ${getOrdinalNum(day)}`;
+    // const t = d.split('-');
+    // const day = parseInt(t[2]);
+    // const date = new Date(`${d}T00:00:00`);
+    const date = new Date(d);
+    return date.toLocaleDateString([], { weekday: 'long' }) + ` ${getOrdinalNum(date.getDate())}`;
   }
 
   open(url: string) {
