@@ -115,7 +115,6 @@ export class CampPage implements OnInit {
     const t = d.split('-');
     const day = parseInt(t[2]);
     const date = new Date(parseInt(t[0]), parseInt(t[1]) - 1, parseInt(t[2]));
-    console.log(d);
     return date.toLocaleDateString([], { weekday: 'long' }) + ` ${getOrdinalNum(day)}`;
   }
 
