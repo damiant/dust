@@ -5,6 +5,7 @@
 - Move Map URI from localStorage to IndexedDB to get around 5mb limit
 - Fix issue with name of day when used in a different timezone
 - Fix issue with favorite star showing on music on the camp page
+- Search for art now works via description or location
 
 ## 2.28
 

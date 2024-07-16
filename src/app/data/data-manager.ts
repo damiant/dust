@@ -942,7 +942,7 @@ export class DataManager implements WorkerClass {
         art.distance = distance(coords, art.gpsCoords);
         art.distanceInfo = formatDistance(art.distance);
       }
-      if (!query || art.name.toLowerCase().includes(query.toLowerCase())) {
+      if (!query || this.artMatches(query.toLowerCase(), art)) {
         result.push(art);
       }
     }
@@ -952,6 +952,15 @@ export class DataManager implements WorkerClass {
       this.sortArt(result);
     }
     return result;
+  }
+
+  private artMatches(query: string, art: Art): boolean {
+    return (
+      art.name.toLowerCase().includes(query) ||
+      art.location_string?.toLowerCase().includes(query) ||
+      art.description?.toLowerCase().includes(query) ||
+      false
+    );
   }
 
   private eventIsCategory(category: string, event: Event): boolean {
