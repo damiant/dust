@@ -1,5 +1,16 @@
 ## Changes
 
+## 2.29
+
+- Move Map URI from localStorage to IndexedDB to get around 5mb limit
+- Fix issue with name of day when used in a different timezone
+- Fix issue with favorite star showing on music on the camp page
+- Search for art now works via description or location
+
+## 2.28
+
+- Fix for burns with a PIN to download data before the PIN entry
+
 ## 2.27
 
 - Fix for events ending at midnight for Burning Man

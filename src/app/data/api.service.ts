@@ -57,8 +57,7 @@ export class ApiService {
       });
       console.warn(`Get cached image for ${ds}`);
       const mapUri = await getCachedImage(mapData.uri);
-      this.settingsService.settings.mapUri = mapIsOffline ? '' : mapUri;
-      this.settingsService.save();
+      await this.settingsService.setMapURI(mapIsOffline ? '' : mapUri);
       console.log(`Download? revision is ${revision.revision} and default is ${currentRevision}`);
       if (revision.revision <= currentRevision) {
         console.warn(
