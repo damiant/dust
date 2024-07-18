@@ -1,4 +1,5 @@
 import { GpsCoord } from '../map/geo.utils';
+import { PinColor } from '../map/map-model';
 
 export interface Event {
   camp: string; // Calculated
@@ -284,7 +285,7 @@ export interface MapInfo {
   subtitle: string;
   imageUrl?: string;
   href?: string;
-  bgColor?: string;
+  bgColor?: PinColor;
   label?: string;
 }
 

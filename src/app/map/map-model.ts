@@ -16,7 +16,8 @@ export interface MapResult {
     setNearest: (nearest: string) => void;
 }
 
-export type PinColor = 'primary' | 'secondary' | 'tertiary' | 'compass';
+export type PinColor = 'primary' | 'secondary' | 'tertiary' | 'compass' | 'warning';
+
 export interface MapPin {
     uuid: string;
     x: number;

@@ -63,20 +63,13 @@ export class MapComponent implements OnInit, OnDestroy {
   hideCompass = false;
   pointsSet = false;
   pins: Pin[] = [];
-  //divs: HTMLDivElement[] = [];
   private geoInterval: any;
   private nearestPoint: number | undefined;
-  //private you: HTMLDivElement | undefined;
   private watchId: any;
-  private mapInformation: MapInformation | undefined;
   private mapResult: MapResult | undefined;
   private _viewReady = false;
-  //private selected: HTMLDivElement | undefined;
   private disabledMessage = 'Location is disabled';
   container = viewChild.required<ElementRef>('container');
-  zoom = viewChild.required<ElementRef>('zoom');
-  // map = viewChild.required<ElementRef>('map');
-  // mapc = viewChild.required<ElementRef>('mapc');
   height = input<string>('height: 100%');
   routerOutlet: IonRouterOutlet = inject(IonRouterOutlet)
   footerPadding = input<number>(0);
@@ -85,10 +78,8 @@ export class MapComponent implements OnInit, OnDestroy {
 
   @Input() set points(points: MapPoint[]) {
     if (this.pointsSet) return;
-    // for (let div of this.divs) {
-    //   div.remove();
-    // }
     this._points = points;
+    console.log('points', this._points);
     if (this._points.length > 0) {
       this.fixGPSAndUpdate();
       this.pointsSet = true;
@@ -172,23 +163,9 @@ export class MapComponent implements OnInit, OnDestroy {
     }
   }
 
-  public triggerClick(pointIdx: number): boolean {
-    try {
-      // const div = this.divs[pointIdx];
-      // div.style.animationName = `pulse`;
-      // div.style.animationDuration = '2s';
-      // div.click();
-      //if (this.selected) {
-      // Deselect the previous selected
-      // this.selected.style.animationName = '';
-      // this.selected.style.animationDuration = '';
-      // }
-      // this.selected = div;
-      return true;
-    } catch (err) {
-      console.error(`Error in triggerClick: ${err}`);
-      return false;
-    }
+  // This is called when searching on the map
+  public triggerClick(pointIdx: number) {
+    this.pinClicked(`${pointIdx}`);
   }
 
   private async updateLocation() {
@@ -237,11 +214,11 @@ export class MapComponent implements OnInit, OnDestroy {
   private setMapInformation() {
     const el: HTMLElement = this.container().nativeElement;
     const rect = el.getBoundingClientRect();
-    this.mapInformation = {
-      width: rect.width,
-      height: rect.height,
-      circleRadius: rect.width / 2,
-    };
+    // this.mapInformation = {
+    //   width: rect.width,
+    //   height: rect.height,
+    //   circleRadius: rect.width / 2,
+    // };
   }
   async update() {
     this.setMapInformation();
@@ -258,11 +235,12 @@ export class MapComponent implements OnInit, OnDestroy {
     const blink = this.points.length == 1;
     for (const [i, point] of this._points.entries()) {
       const pin = mapPointToPin(point, defaultMapRadius);
+
       if (pin) {
         map.pins.push({
           uuid: `${i}`,
           x: pin.x, z: pin.y,
-          color: 'primary', animated: blink, size: map.defaultPinSize, label: point.info?.label ?? 'x'
+          color: point.info?.bgColor ?? 'primary', animated: blink, size: map.defaultPinSize, label: point.info?.label ?? '+'
         });
         // const div = this.plotXY(pin.x, pin.y, 6, 6, point.info, undefined, blink);
         // this.divs.push(div);
@@ -277,7 +255,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.setupCompass();
   }
 
-  private pinClicked(pinUUID: string, event: PointerEvent) {
+  private pinClicked(pinUUID: string, event?: PointerEvent) {
     const point = this._points[parseInt(pinUUID)];
     this.info = point?.info;
     this.popover().event = event;

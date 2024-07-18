@@ -23,6 +23,7 @@ import {
 import { addIcons } from 'ionicons';
 import { compassOutline } from 'ionicons/icons';
 import { SearchComponent } from '../search/search.component';
+import { PinColor } from '../map/map-model';
 
 @Component({
   selector: 'app-pin-map',
@@ -171,7 +172,12 @@ export class PinMapPage {
       const map = await this.mapFor(type);
       map.points.forEach((point, index) => {
         if (!point.info) {
-          const label = type == Names.restrooms ? '🧻' : undefined;
+          let label = undefined;
+          switch (type) {
+            case Names.restrooms: label = 'R'; break;
+            case Names.ice: label = 'I'; break;
+            case Names.medical: label = '+'; break;
+          }
           point.info = { title: map.title, location: '', subtitle: `${index + 1} of ${map.points.length}`, label };
         }
         point.info.bgColor = this.colorOf(type);
@@ -187,18 +193,18 @@ export class PinMapPage {
     };
   }
 
-  private colorOf(type: string): string {
+  private colorOf(type: string): PinColor {
     switch (type) {
       case Names.restrooms:
-        return 'var(--ion-color-secondary)';
+        return 'tertiary';
       case Names.ice:
-        return 'var(--ion-color-tertiary)';
+        return 'warning';
       case Names.medical:
-        return 'var(--ion-color-success)';
+        return 'warning';
       case Names.art:
-        return 'var(--ion-color-warning)';
+        return 'secondary';
       default:
-        return 'var(--ion-color-primary)';
+        return 'primary';
     }
   }
 

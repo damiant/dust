@@ -159,13 +159,15 @@ function scaleToMap(pin: MapPin, width: number, height: number) {
 function getMaterial(pinColor: PinColor): MeshBasicMaterial {
     switch (pinColor) {
         case 'primary':
-            return new MeshBasicMaterial({ color: 0xff0000, transparent: true });
+            return new MeshBasicMaterial({ color: 0xF61067, transparent: true });
         case 'secondary':
-            return new MeshBasicMaterial({ color: 0x00ff00, transparent: true });
+            return new MeshBasicMaterial({ color: 0x2196F3, transparent: true });
         case 'tertiary':
-            return new MeshBasicMaterial({ color: 0x0000ff, transparent: true });
+            return new MeshBasicMaterial({ color: 0x2dd36f, transparent: true });
+        case 'warning':
+            return new MeshBasicMaterial({ color: 0xffc409, transparent: true });
         case 'compass':
-            return new MeshBasicMaterial({ color: 0x0000ff });
+            return new MeshBasicMaterial({ color: 0x5260ff });
         default:
             return new MeshBasicMaterial({ color: 0x000000 });
     }
