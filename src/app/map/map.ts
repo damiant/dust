@@ -8,27 +8,16 @@ import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
 import { MapModel, MapPin, MapResult, PinColor } from './map-model';
 
-
-let camera: PerspectiveCamera,
-    controls: any,
-    scene: Scene,
-    renderer: WebGLRenderer,
-    clock: Clock,
-    mixers: AnimationMixer[] = [];
-
-
 async function mapImage(map: MapModel): Promise<Mesh> {
     const texture = await loadTexture(map.image);
     map.width = texture.image.width;
     map.height = texture.image.height;
-    //const scale = 10000 / (10000 - texture.image.width);
-    const material1 = new MeshBasicMaterial({ color: 0xffffff, map: texture });
-    const geometry1 = new PlaneGeometry(texture.image.width, texture.image.height);
-    //const geometry1 = new PlaneGeometry(texture.image.width * scale, texture.image.height * scale);
-    const mesh1 = new Mesh(geometry1, material1);
-    mesh1.rotation.x = - Math.PI / 2;
-    mesh1.uuid = 'map';
-    return mesh1;
+    const material = new MeshBasicMaterial({ color: 0xffffff, map: texture });
+    const geometry = new PlaneGeometry(texture.image.width, texture.image.height);
+    const mesh = new Mesh(geometry, material);
+    mesh.rotation.x = - Math.PI / 2;
+    mesh.uuid = 'map';
+    return mesh;
 }
 
 export async function init3D(container: HTMLElement, map: MapModel): Promise<MapResult> {
@@ -36,24 +25,35 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         rotateCompass: (rotation: number) => { },
         setNearest: (pin: string) => { }
     };
-    scene = new Scene();
+    const scene = new Scene();
     scene.background = new Color(0x999999);
     scene.add(await mapImage(map));
 
     const w = container.clientWidth;
     const h = container.clientHeight;
 
-    renderer = new WebGLRenderer({ antialias: true });
+    const renderer = new WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(w, h);
-    renderer.setAnimationLoop(animate);
+
     container.appendChild(renderer.domElement);
 
-    camera = new PerspectiveCamera(70, w / h, 1, 10000);
+    const renderFn = () => {
+        const delta = clock.getDelta();
+        for (const mixer of mixers) {
+            mixer.update(delta);
+        }
+
+        renderer.render(scene, camera);
+    };
+
+    renderer.setAnimationLoop(renderFn);
+
+    const camera = new PerspectiveCamera(70, w / h, 1, 10000);
     camera.position.set(0, map.height, 40);
 
     // controls
-    controls = new MapControls(camera, renderer.domElement);
+    const controls = new MapControls(camera, renderer.domElement);
 
     //controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
     controls.enableDamping = false; // an animation loop is required when either damping or auto-rotation are enabled
@@ -68,7 +68,8 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
 
     controls.maxPolarAngle = Math.PI / 2;
 
-    clock = new Clock();
+    const mixers: AnimationMixer[] = [];
+    const clock = new Clock();
 
     const font = await loadFont('assets/helvetiker_regular.typeface.json');
 
@@ -79,16 +80,16 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
     for (const pin of map.pins) {
         scaleToMap(pin, map.width, map.height);
         const material = getMaterial(pin.color);
-        await addPin(pin, material, font, 0, map.width);
+        await addPin(pin, material, font, 0, map.width, mixers, scene);
     }
 
     if (map.compass) {
         scaleToMap(map.compass, map.width, map.height);
-        const compass = await addPin(map.compass, getMaterial('compass'), font, 0, map.width);
+        const compass = await addPin(map.compass, getMaterial('compass'), font, 0, map.width, mixers, scene);
 
         result.rotateCompass = (rotation: number) => {
             compass.rotation.z = rotation;
-            render();
+            renderFn();
         }
     }
 
@@ -154,7 +155,7 @@ function getMaterial(pinColor: PinColor): MeshBasicMaterial {
     }
 }
 
-function animateMesh(mesh: Mesh) {
+function animateMesh(mesh: Mesh, mixers: AnimationMixer[]) {
     const duration = 2;
     const track = new NumberKeyframeTrack('.material.opacity', [0, 1, 2], [1, 0, 1]);
     const clip = new AnimationClip('scaleAnimation', duration, [track]);
@@ -165,7 +166,7 @@ function animateMesh(mesh: Mesh) {
     mixers.push(mixer);
 }
 
-async function addPin(pin: MapPin, material: Material, font: any, rotation: number, mapWidth: number): Promise<Object3D> {
+async function addPin(pin: MapPin, material: Material, font: any, rotation: number, mapWidth: number, mixers: AnimationMixer[], scene: Scene): Promise<Object3D> {
     const geometry = new CircleGeometry(pin.size, 24);
     //geometry.translate(0, 0.5, 0);
     const mesh = new Mesh(geometry, material);
@@ -178,7 +179,7 @@ async function addPin(pin: MapPin, material: Material, font: any, rotation: numb
     mesh.matrixAutoUpdate = false;
     mesh.uuid = pin.uuid;
     if (pin.animated) {
-        animateMesh(mesh);
+        animateMesh(mesh, mixers);
     }
     scene.add(mesh);
 
@@ -268,17 +269,4 @@ function addText(message: string, font: any, size: number): Mesh {
     text.position.y = 5;
     text.rotation.x = - Math.PI / 2;
     return text;
-}
-
-function animate() {
-    render();
-}
-
-function render() {
-    const delta = clock.getDelta();
-    for (const mixer of mixers) {
-        mixer.update(delta);
-    }
-
-    renderer.render(scene, camera);
 }
