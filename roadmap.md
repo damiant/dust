@@ -10,6 +10,7 @@
 - Feature to highlight downloading an update in the week before the event if it was updated more than a week ago
 - Timetable view (something like Google Calendar)
 - Be able to favorite from the main listing
+- Share/Colllaborate with friends on your favorites list
 
 # Map
 

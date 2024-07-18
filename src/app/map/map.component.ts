@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, Input, OnDestroy, OnInit, effect, input, viewChild, inject } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, effect, input, viewChild, inject, signal } from '@angular/core';
 import { PinchZoomModule } from '@meddv/ngx-pinch-zoom';
 import { LocationEnabledStatus, MapInfo, MapPoint, Pin } from '../data/models';
 import { defaultMapRadius, distance, formatDistanceMiles, mapPointToPin } from './map.utils';
@@ -8,12 +8,14 @@ import { GeoService } from '../geolocation/geo.service';
 import { SettingsService } from '../data/settings.service';
 import { MessageComponent } from '../message/message.component';
 import { CompassError, CompassHeading } from './compass';
-import { GpsCoord, Point } from './geo.utils';
+import { GpsCoord } from './geo.utils';
 import { Router, RouterModule } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { IonButton, IonContent, IonPopover, IonRouterOutlet, IonText } from '@ionic/angular/standalone';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { DbService } from '../data/db.service';
+import { MapModel, MapResult } from './map-model';
+import { init3D } from './map';
 
 interface MapInformation {
   width: number; // Width of the map
@@ -61,30 +63,32 @@ export class MapComponent implements OnInit, OnDestroy {
   hideCompass = false;
   pointsSet = false;
   pins: Pin[] = [];
-  divs: HTMLDivElement[] = [];
+  //divs: HTMLDivElement[] = [];
   private geoInterval: any;
   private nearestPoint: number | undefined;
-  private you: HTMLDivElement | undefined;
+  //private you: HTMLDivElement | undefined;
   private watchId: any;
   private mapInformation: MapInformation | undefined;
+  private mapResult: MapResult | undefined;
   private compass: HTMLImageElement | undefined;
   private _viewReady = false;
-  private selected: HTMLDivElement | undefined;
+  //private selected: HTMLDivElement | undefined;
   private disabledMessage = 'Location is disabled';
-
+  container = viewChild.required<ElementRef>('container');
   zoom = viewChild.required<ElementRef>('zoom');
-  map = viewChild.required<ElementRef>('map');
-  mapc = viewChild.required<ElementRef>('mapc');
+  // map = viewChild.required<ElementRef>('map');
+  // mapc = viewChild.required<ElementRef>('mapc');
   height = input<string>('height: 100%');
   routerOutlet: IonRouterOutlet = inject(IonRouterOutlet)
   footerPadding = input<number>(0);
   smallPins = input<boolean>(false);
   isHeader = input<boolean>(false);
+  click = signal('');
   @Input() set points(points: MapPoint[]) {
     if (this.pointsSet) return;
-    for (let div of this.divs) {
-      div.remove();
-    }
+    // for (let div of this.divs) {
+    //   div.remove();
+    // }
     this._points = points;
     if (this._points.length > 0) {
       this.fixGPSAndUpdate();
@@ -112,7 +116,6 @@ export class MapComponent implements OnInit, OnDestroy {
       this.footer = 'Location services need to be enabled in settings on your device';
       return;
     }
-    if (this.geo.gpsPermission() == 'granted') return;
     this.showMessage = true;
   }
 
@@ -173,16 +176,16 @@ export class MapComponent implements OnInit, OnDestroy {
 
   public triggerClick(pointIdx: number): boolean {
     try {
-      const div = this.divs[pointIdx];
-      div.style.animationName = `pulse`;
-      div.style.animationDuration = '2s';
-      div.click();
-      if (this.selected) {
-        // Deselect the previous selected
-        this.selected.style.animationName = '';
-        this.selected.style.animationDuration = '';
-      }
-      this.selected = div;
+      // const div = this.divs[pointIdx];
+      // div.style.animationName = `pulse`;
+      // div.style.animationDuration = '2s';
+      // div.click();
+      //if (this.selected) {
+      // Deselect the previous selected
+      // this.selected.style.animationName = '';
+      // this.selected.style.animationDuration = '';
+      // }
+      // this.selected = div;
       return true;
     } catch (err) {
       console.error(`Error in triggerClick: ${err}`);
@@ -209,30 +212,28 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   private async displayYourLocation(gpsCoord: GpsCoord) {
-
     //this.gpsCoord = await this.geo.getPosition();
     const pt = await this.geo.gpsToPoint(gpsCoord);
     if (this.hideCompass) {
       pt.x -= 1000;
     }
-    if (!this.you) {
-      // First time setup
-      this.you = this.plotXY(pt.x, pt.y, youOffsetX, youOffsetY, undefined, 'var(--ion-color-secondary)');
-      this.setupCompass(this.you);
-      // Displays using cached value if available
-      this.displayCompass(this.geo.heading());
-    } else {
-      if (this.compass == null) {
-        this.setupCompass(this.you);
-      }
-      const sz = parseInt(this.you.style.width.replace('px', ''));
-      this.movePoint(this.you, this.pointShift(pt.x, pt.y, sz, youOffsetX, youOffsetY));
-    }
+
+    console.error('TODO: Implement displayYourLocation', pt);
+    // if (!this.you) {
+    //   // First time setup
+    //   this.you = this.plotXY(pt.x, pt.y, youOffsetX, youOffsetY, undefined, 'var(--ion-color-secondary)');
+    //   this.setupCompass(this.you);
+    //   // Displays using cached value if available
+    //   this.displayCompass(this.geo.heading());
+    // } else {
+    //   const sz = parseInt(this.you.style.width.replace('px', ''));
+    //   this.movePoint(this.you, this.pointShift(pt.x, pt.y, sz, youOffsetX, youOffsetY));
+    // }
     await this.calculateNearest(gpsCoord);
   }
 
   private setMapInformation() {
-    const el: HTMLElement = this.map().nativeElement;
+    const el: HTMLElement = this.container().nativeElement;
     const rect = el.getBoundingClientRect();
     this.mapInformation = {
       width: rect.width,
@@ -242,19 +243,41 @@ export class MapComponent implements OnInit, OnDestroy {
   }
   async update() {
     this.setMapInformation();
-    this.divs = [];
+    const map: MapModel = {
+      image: this.src,// 'assets/map2.webp',
+      width: 0,
+      height: 0,
+      defaultPinSize: 80,
+      pins: [],
+      compass: { uuid: 'compass', x: 1, z: 1, color: 'tertiary', size: 80, label: '' },
+      click: this.click
+    }
+
     const blink = this.points.length == 1;
-    for (let point of this._points) {
+    for (const [i, point] of this._points.entries()) {
       const pin = mapPointToPin(point, defaultMapRadius);
       if (pin) {
-        const div = this.plotXY(pin.x, pin.y, 6, 6, point.info, undefined, blink);
-        this.divs.push(div);
+        map.pins.push({
+          uuid: `pin-${i}`,
+          x: pin.x, z: pin.y,
+          color: 'primary', animated: blink, size: map.defaultPinSize, label: point.info?.label ?? 'x'
+        });
+        // const div = this.plotXY(pin.x, pin.y, 6, 6, point.info, undefined, blink);
+        // this.divs.push(div);
       } else {
         console.error(`Point could not be converted to pin`);
       }
     }
+    console.log('init3D', map)
+    this.mapResult = await init3D(this.container().nativeElement, map);
     this._viewReady = true;
     await this.checkGeolocation();
+    setInterval(() => {
+      const rotation = Math.random() * Math.PI * 2;
+      if (this.mapResult) {
+        this.mapResult.rotateCompass(rotation);
+      }
+    }, 100);
   }
 
   private async checkGeolocation() {
@@ -327,9 +350,12 @@ export class MapComponent implements OnInit, OnDestroy {
       this.nearestPoint = closestIdx;
 
       if (this.nearestPoint) {
-        const div = this.divs[this.nearestPoint];
-        div.style.animationName = `pin`;
-        div.style.animationDuration = '2s';
+        if (this.mapResult) {
+          this.mapResult.setNearest(closest.info?.label ?? ' ');
+        }
+        // const div = this.divs[this.nearestPoint];
+        // div.style.animationName = `pin`;
+        // div.style.animationDuration = '2s';
       }
 
       if (this.hideCompass) {
@@ -398,101 +424,101 @@ export class MapComponent implements OnInit, OnDestroy {
     console.error(error);
   }
 
-  private pointShift(x: number, y: number, sz: number, ox: number, oy: number): Point {
-    const px = (x / 10000.0) * this.mapInformation!.width;
-    const py = (y / 10000.0) * this.mapInformation!.height;
-    return { x: px - sz + ox, y: py - sz + oy };
-  }
+  // private pointShift(x: number, y: number, sz: number, ox: number, oy: number): Point {
+  //   const px = (x / 10000.0) * this.mapInformation!.width;
+  //   const py = (y / 10000.0) * this.mapInformation!.height;
+  //   return { x: px - sz + ox, y: py - sz + oy };
+  // }
 
-  private movePoint(div: HTMLDivElement, pt: Point) {
-    div.style.left = `${pt.x}px`;
-    div.style.top = `${pt.y}px`;
-  }
+  // private movePoint(div: HTMLDivElement, pt: Point) {
+  //   div.style.left = `${pt.x}px`;
+  //   div.style.top = `${pt.y}px`;
+  // }
 
-  private plotXY(
-    x: number,
-    y: number,
-    ox: number,
-    oy: number,
-    info?: MapInfo,
-    bgColor?: string,
-    blink?: boolean,
-  ): HTMLDivElement {
-    const sz = info || bgColor ? (this.smallPins() ? 8 : 10) : 8;
-    if (info && info.location && !this.smallPins()!) {
-      this.placeLabel(this.pointShift(x, y, 0, 0, -7), info);
-    }
-    if (info?.bgColor) {
-      bgColor = info.bgColor;
-    }
-    return this.createPin(sz, this.pointShift(x, y, sz, ox + (this.smallPins() ? -2 : 0), oy), info, bgColor, blink);
-  }
+  // private plotXY(
+  //   x: number,
+  //   y: number,
+  //   ox: number,
+  //   oy: number,
+  //   info?: MapInfo,
+  //   bgColor?: string,
+  //   blink?: boolean,
+  // ): HTMLDivElement {
+  //   const sz = info || bgColor ? (this.smallPins() ? 8 : 10) : 8;
+  //   if (info && info.location && !this.smallPins()!) {
+  //     this.placeLabel(this.pointShift(x, y, 0, 0, -7), info);
+  //   }
+  //   if (info?.bgColor) {
+  //     bgColor = info.bgColor;
+  //   }
+  //   return this.createPin(sz, this.pointShift(x, y, sz, ox + (this.smallPins() ? -2 : 0), oy), info, bgColor, blink);
+  // }
 
-  createPin(sz: number, pt: Point, info?: MapInfo, bgColor?: string, blink?: boolean): HTMLDivElement {
-    const d = document.createElement('div');
-    d.style.left = `${pt.x}px`;
-    d.style.top = `${pt.y}px`;
-    d.style.width = `${sz}px`;
-    d.style.height = `${sz}px`;
-    d.style.border = '1px solid var(--ion-color-dark)';
-    d.style.borderRadius = `${sz}px`;
-    let anim = info ? '' : 'pulse';
-    let animDuration = blink ? '1s' : '3s';
-    if (blink) {
-      anim = 'blink';
-    }
-    d.style.animationName = anim;
-    if (anim !== '') {
-      d.style.animationDuration = animDuration;
-    }
-    d.style.animationIterationCount = 'infinite';
-    d.style.position = 'absolute';
-    d.style.backgroundColor = bgColor ? bgColor : `var(--ion-color-primary)`;
-    if (info) {
-      d.onclick = (e) => {
-        this.info = info;
-        this.presentPopover(e);
-      };
-    }
-    const c: HTMLElement = this.mapc().nativeElement;
-    if (info?.label) {
-      const p = document.createElement('p');
-      const t = document.createTextNode(info?.label);
-      p.style.margin = '0';
-      p.style.marginTop = this.smallPins() ? '-3.5px' : '-3px';
-      p.style.marginLeft = this.smallPins() ? '-8px' : '-7px';
-      p.style.color = 'white';
-      p.style.width = `22px`;
-      p.style.textAlign = 'center';
-      p.style.fontSize = this.smallPins() ? '10px' : '11px';
-      p.style.fontWeight = 'bold';
-      p.style.transform = 'scale(0.3)';
-      p.appendChild(t);
-      d.appendChild(p);
-    }
-    c.insertBefore(d, c.firstChild);
-    return d;
-  }
+  // createPin(sz: number, pt: Point, info?: MapInfo, bgColor?: string, blink?: boolean): HTMLDivElement {
+  //   const d = document.createElement('div');
+  //   d.style.left = `${pt.x}px`;
+  //   d.style.top = `${pt.y}px`;
+  //   d.style.width = `${sz}px`;
+  //   d.style.height = `${sz}px`;
+  //   d.style.border = '1px solid var(--ion-color-dark)';
+  //   d.style.borderRadius = `${sz}px`;
+  //   let anim = info ? '' : 'pulse';
+  //   let animDuration = blink ? '1s' : '3s';
+  //   if (blink) {
+  //     anim = 'blink';
+  //   }
+  //   d.style.animationName = anim;
+  //   if (anim !== '') {
+  //     d.style.animationDuration = animDuration;
+  //   }
+  //   d.style.animationIterationCount = 'infinite';
+  //   d.style.position = 'absolute';
+  //   d.style.backgroundColor = bgColor ? bgColor : `var(--ion-color-primary)`;
+  //   if (info) {
+  //     d.onclick = (e) => {
+  //       this.info = info;
+  //       this.presentPopover(e);
+  //     };
+  //   }
+  //   const c: HTMLElement = this.mapc().nativeElement;
+  //   if (info?.label) {
+  //     const p = document.createElement('p');
+  //     const t = document.createTextNode(info?.label);
+  //     p.style.margin = '0';
+  //     p.style.marginTop = this.smallPins() ? '-3.5px' : '-3px';
+  //     p.style.marginLeft = this.smallPins() ? '-8px' : '-7px';
+  //     p.style.color = 'white';
+  //     p.style.width = `22px`;
+  //     p.style.textAlign = 'center';
+  //     p.style.fontSize = this.smallPins() ? '10px' : '11px';
+  //     p.style.fontWeight = 'bold';
+  //     p.style.transform = 'scale(0.3)';
+  //     p.appendChild(t);
+  //     d.appendChild(p);
+  //   }
+  //   c.insertBefore(d, c.firstChild);
+  //   return d;
+  // }
 
-  private placeLabel(pt: Point, info?: MapInfo): HTMLDivElement {
-    const d = document.createElement('p');
-    const node = document.createTextNode(info!.location);
-    d.appendChild(node);
-    d.style.left = `${pt.x}px`;
-    d.style.top = `${pt.y}px`;
-    d.style.position = 'absolute';
-    d.style.fontSize = '3px';
-    d.style.borderRadius = '3px';
-    d.style.color = `var(--ion-color-light)`;
-    d.style.backgroundColor = `var(--ion-color-dark)`;
-    d.onclick = (e) => {
-      this.info = info;
-      this.presentPopover(e);
-    };
-    const c: HTMLElement = this.mapc().nativeElement;
-    c.insertBefore(d, c.firstChild);
-    return d;
-  }
+  // private placeLabel(pt: Point, info?: MapInfo): HTMLDivElement {
+  //   const d = document.createElement('p');
+  //   const node = document.createTextNode(info!.location);
+  //   d.appendChild(node);
+  //   d.style.left = `${pt.x}px`;
+  //   d.style.top = `${pt.y}px`;
+  //   d.style.position = 'absolute';
+  //   d.style.fontSize = '3px';
+  //   d.style.borderRadius = '3px';
+  //   d.style.color = `var(--ion-color-light)`;
+  //   d.style.backgroundColor = `var(--ion-color-dark)`;
+  //   d.onclick = (e) => {
+  //     this.info = info;
+  //     this.presentPopover(e);
+  //   };
+  //   const c: HTMLElement = this.mapc().nativeElement;
+  //   c.insertBefore(d, c.firstChild);
+  //   return d;
+  // }
 
   async presentPopover(e: Event) {
     this.popover().event = e;
@@ -500,16 +526,16 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   // This is used for clicking on the map and finding the corresponding x,y coordinates
-  mapPoint(event: any) {
-    const x = event.clientX;
-    const y = event.clientY;
-    const el: HTMLElement = this.map().nativeElement;
-    const r = el.getBoundingClientRect();
-    const rx = ((x - r.x) * 10000) / r.width;
-    const ry = ((y - r.y) * 10000) / r.height;
-    this.store(Math.ceil(rx), Math.ceil(ry));
-    return false;
-  }
+  // mapPoint(event: any) {
+  //   const x = event.clientX;
+  //   const y = event.clientY;
+  //   const el: HTMLElement = this.map().nativeElement;
+  //   const r = el.getBoundingClientRect();
+  //   const rx = ((x - r.x) * 10000) / r.width;
+  //   const ry = ((y - r.y) * 10000) / r.height;
+  //   this.store(Math.ceil(rx), Math.ceil(ry));
+  //   return false;
+  // }
 
   link(url: string | undefined) {
     if (!url) return;
