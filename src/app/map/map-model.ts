@@ -7,11 +7,12 @@ export interface MapModel {
     compass: MapPin | undefined;
 
     // When a user clicks a pin this signal emits the uuid
-    pinClicked: (pinUUID: string) => void;
+    pinClicked: (pinUUID: string, event: PointerEvent) => void;
 }
 
 export interface MapResult {
     rotateCompass: (rotation: number) => void;
+    myPosition: (x: number, y: number) => void;
     setNearest: (nearest: string) => void;
 }
 

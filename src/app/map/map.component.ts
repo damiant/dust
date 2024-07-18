@@ -70,7 +70,6 @@ export class MapComponent implements OnInit, OnDestroy {
   private watchId: any;
   private mapInformation: MapInformation | undefined;
   private mapResult: MapResult | undefined;
-  private compass: HTMLImageElement | undefined;
   private _viewReady = false;
   //private selected: HTMLDivElement | undefined;
   private disabledMessage = 'Location is disabled';
@@ -120,7 +119,6 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   async enableGeoLocation(now: boolean) {
-    console.log('enableGeoLocation', now);
     if (now) {
       if (await this.geo.requestPermission()) {
         this.settings.settings.locationEnabled = LocationEnabledStatus.Enabled;
@@ -198,17 +196,17 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   private displayCompass(heading: CompassHeading) {
-    if (!this.compass) {
-      console.error(`Got compass heading but compass element is not defined`);
-      return;
-    }
     const rotation = this.settings.settings.mapRotation; // Note: Map may be rotated from North
     let degree = Math.trunc(heading.trueHeading) - rotation;
     if (degree < 0) {
       degree += 360;
     }
-    this.compass.style.transform = `rotate(${degree}deg)`;
-    this.compass.style.visibility = this.hideCompass ? 'hidden' : 'visible';
+    console.log(`Compass heading is ${degree}`);
+    if (this.mapResult) {
+      this.mapResult.rotateCompass(degree);
+    }
+    // this.compass.style.transform = `rotate(${degree}deg)`;
+    // this.compass.style.visibility = this.hideCompass ? 'hidden' : 'visible';
   }
 
   private async displayYourLocation(gpsCoord: GpsCoord) {
@@ -250,7 +248,7 @@ export class MapComponent implements OnInit, OnDestroy {
       defaultPinSize: 80,
       pins: [],
       compass: { uuid: 'compass', x: 1, z: 1, color: 'tertiary', size: 80, label: '' },
-      pinClicked: this.pinClicked.bind(this)
+      pinClicked: this.pinClicked.bind(this),
     }
 
     const blink = this.points.length == 1;
@@ -272,25 +270,14 @@ export class MapComponent implements OnInit, OnDestroy {
     this.mapResult = await init3D(this.container().nativeElement, map);
     this._viewReady = true;
     await this.checkGeolocation();
-    setInterval(() => {
-      const rotation = Math.random() * Math.PI * 2;
-      if (this.mapResult) {
-        this.mapResult.rotateCompass(rotation);
-      }
-    }, 100);
+    this.setupCompass();
   }
 
-  private pinClicked(pinUUID: string) {
-    console.log('pinClicked', pinUUID);
-    console.log('points', this._points);
+  private pinClicked(pinUUID: string, event: PointerEvent) {
     const point = this._points[parseInt(pinUUID)];
-    console.log('pinClicked', point);
-    this.info = point.info;
+    this.info = point?.info;
+    this.popover().event = event;
     this.isOpen = true;
-    //    this.presentPopover(undefined);
-
-
-
   }
 
   private async checkGeolocation() {
@@ -395,9 +382,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
 
-  private setupCompass(div: HTMLDivElement) {
-    this.compass = this.createCompass(div);
-
+  private setupCompass() {
     // Plugin is undefined on web
     if (!(navigator as any).compass) return;
 
@@ -533,10 +518,10 @@ export class MapComponent implements OnInit, OnDestroy {
   //   return d;
   // }
 
-  async presentPopover(e: Event) {
-    this.popover().event = e;
-    this.isOpen = true;
-  }
+  // async presentPopover(e: Event) {
+  //   this.popover().event = e;
+  //   this.isOpen = true;
+  // }
 
   // This is used for clicking on the map and finding the corresponding x,y coordinates
   // mapPoint(event: any) {

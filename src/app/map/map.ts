@@ -23,6 +23,7 @@ async function mapImage(map: MapModel): Promise<Mesh> {
 export async function init3D(container: HTMLElement, map: MapModel): Promise<MapResult> {
     const result: MapResult = {
         rotateCompass: (rotation: number) => { },
+        myPosition: (x: number, y: number) => { },
         setNearest: (pin: string) => { }
     };
     const scene = new Scene();
@@ -88,7 +89,8 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         const compass = await addPin(map.compass, getMaterial('compass'), font, 0, map.width, mixers, scene);
 
         result.rotateCompass = (rotation: number) => {
-            compass.rotation.z = rotation;
+            // Rotation is 0 - 360. Convert to 2π
+            compass.rotation.z = Math.PI * 2 * (rotation / 360);
             renderFn();
         }
     }
@@ -122,7 +124,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         const intersects = raycaster.intersectObjects(scene.children, true);
         intersects.forEach((hit) => {
             if (hit.object.uuid !== 'map') {
-                map.pinClicked(hit.object.uuid);
+                map.pinClicked(hit.object.uuid, e);
             }
         });
     });
