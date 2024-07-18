@@ -1,5 +1,9 @@
 ## Changes
 
+## 2.30
+
+- Fix GPS for map
+
 ## 2.29
 
 - Move Map URI from localStorage to IndexedDB to get around 5mb limit
