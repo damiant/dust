@@ -8,6 +8,11 @@ import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
 import { MapModel, MapPin, MapResult, PinColor } from './map-model';
 
+interface AddPinResult {
+    pin: Object3D;
+    background: Object3D;
+}
+
 async function mapImage(map: MapModel): Promise<Mesh> {
     const texture = await loadTexture(map.image);
     map.width = texture.image.width;
@@ -86,11 +91,20 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
 
     if (map.compass) {
         scaleToMap(map.compass, map.width, map.height);
-        const compass = await addPin(map.compass, getMaterial('compass'), font, 0, map.width, mixers, scene);
+        const { pin: compass, background: background } = await addPin(map.compass, getMaterial('compass'), font, 0, map.width, mixers, scene);
 
         result.rotateCompass = (rotation: number) => {
             // Rotation is 0 - 360. Convert to 2π
             compass.rotation.z = Math.PI * 2 * (rotation / 360);
+            renderFn();
+        }
+        result.myPosition = (x: number, y: number) => {
+            const nx = Math.trunc(x * map.width / 10000);
+            const nz = Math.trunc(y * map.height / 10000);
+            background.position.x = nx;
+            background.position.z = nz;
+            compass.position.x = nx;
+            compass.position.z = nz;
             renderFn();
         }
     }
@@ -168,7 +182,7 @@ function animateMesh(mesh: Mesh, mixers: AnimationMixer[]) {
     mixers.push(mixer);
 }
 
-async function addPin(pin: MapPin, material: Material, font: any, rotation: number, mapWidth: number, mixers: AnimationMixer[], scene: Scene): Promise<Object3D> {
+async function addPin(pin: MapPin, material: Material, font: any, rotation: number, mapWidth: number, mixers: AnimationMixer[], scene: Scene): Promise<AddPinResult> {
     const geometry = new CircleGeometry(pin.size, 24);
     //geometry.translate(0, 0.5, 0);
     const mesh = new Mesh(geometry, material);
@@ -176,29 +190,24 @@ async function addPin(pin: MapPin, material: Material, font: any, rotation: numb
     mesh.position.y = 3;
     mesh.position.z = pin.z;
     mesh.rotation.x = - Math.PI / 2;
-
-    mesh.updateMatrix();
-    mesh.matrixAutoUpdate = false;
     mesh.uuid = pin.uuid;
     if (pin.animated) {
         animateMesh(mesh, mixers);
     }
     scene.add(mesh);
-
     if (pin.label === '') {
         const scale = 0.2 * (mapWidth / 10000);
         const p = await addSVG('assets/compass.svg', scale, rotation);
         p.position.x = mesh.position.x;
         p.position.z = mesh.position.z;
         scene.add(p);
-        return p;
+        return { pin: p, background: mesh };
     } else {
         const txt = addText(pin.label, font, pin.size);
         txt.position.x = mesh.position.x;
         txt.position.z = mesh.position.z;
         scene.add(txt);
-
-        return txt;
+        return { pin: txt, background: mesh };
     }
 }
 

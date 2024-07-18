@@ -216,7 +216,11 @@ export class MapComponent implements OnInit, OnDestroy {
       pt.x -= 1000;
     }
 
-    console.error('TODO: Implement displayYourLocation', pt);
+    if (this.mapResult) {
+      console.log('set my position', pt, gpsCoord);
+      this.mapResult.myPosition(pt.x, pt.y);
+    }
+
     // if (!this.you) {
     //   // First time setup
     //   this.you = this.plotXY(pt.x, pt.y, youOffsetX, youOffsetY, undefined, 'var(--ion-color-secondary)');
