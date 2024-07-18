@@ -1,5 +1,3 @@
-import { WritableSignal } from "@angular/core";
-
 export interface MapModel {
     image: string;
     width: number;
@@ -9,13 +7,14 @@ export interface MapModel {
     compass: MapPin | undefined;
 
     // When a user clicks a pin this signal emits the uuid
-    click: WritableSignal<string>;
+    pinClicked: (pinUUID: string) => void;
 }
 
 export interface MapResult {
     rotateCompass: (rotation: number) => void;
     setNearest: (nearest: string) => void;
 }
+
 export type PinColor = 'primary' | 'secondary' | 'tertiary' | 'compass';
 export interface MapPin {
     uuid: string;

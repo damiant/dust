@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, Input, OnDestroy, OnInit, effect, input, viewChild, inject, signal } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, effect, input, viewChild, inject } from '@angular/core';
 import { PinchZoomModule } from '@meddv/ngx-pinch-zoom';
 import { LocationEnabledStatus, MapInfo, MapPoint, Pin } from '../data/models';
 import { defaultMapRadius, distance, formatDistanceMiles, mapPointToPin } from './map.utils';
@@ -83,7 +83,7 @@ export class MapComponent implements OnInit, OnDestroy {
   footerPadding = input<number>(0);
   smallPins = input<boolean>(false);
   isHeader = input<boolean>(false);
-  click = signal('');
+
   @Input() set points(points: MapPoint[]) {
     if (this.pointsSet) return;
     // for (let div of this.divs) {
@@ -250,7 +250,7 @@ export class MapComponent implements OnInit, OnDestroy {
       defaultPinSize: 80,
       pins: [],
       compass: { uuid: 'compass', x: 1, z: 1, color: 'tertiary', size: 80, label: '' },
-      click: this.click
+      pinClicked: this.pinClicked.bind(this)
     }
 
     const blink = this.points.length == 1;
@@ -258,7 +258,7 @@ export class MapComponent implements OnInit, OnDestroy {
       const pin = mapPointToPin(point, defaultMapRadius);
       if (pin) {
         map.pins.push({
-          uuid: `pin-${i}`,
+          uuid: `${i}`,
           x: pin.x, z: pin.y,
           color: 'primary', animated: blink, size: map.defaultPinSize, label: point.info?.label ?? 'x'
         });
@@ -278,6 +278,19 @@ export class MapComponent implements OnInit, OnDestroy {
         this.mapResult.rotateCompass(rotation);
       }
     }, 100);
+  }
+
+  private pinClicked(pinUUID: string) {
+    console.log('pinClicked', pinUUID);
+    console.log('points', this._points);
+    const point = this._points[parseInt(pinUUID)];
+    console.log('pinClicked', point);
+    this.info = point.info;
+    this.isOpen = true;
+    //    this.presentPopover(undefined);
+
+
+
   }
 
   private async checkGeolocation() {

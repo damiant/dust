@@ -27,7 +27,7 @@ async function mapImage(map: MapModel): Promise<Mesh> {
     //const geometry1 = new PlaneGeometry(texture.image.width * scale, texture.image.height * scale);
     const mesh1 = new Mesh(geometry1, material1);
     mesh1.rotation.x = - Math.PI / 2;
-
+    mesh1.uuid = 'map';
     return mesh1;
 }
 
@@ -120,9 +120,8 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         raycaster.setFromCamera(mouse, camera)
         const intersects = raycaster.intersectObjects(scene.children, true);
         intersects.forEach((hit) => {
-            if (hit.object.uuid.startsWith('pin')) {
-                map.click.set(hit.object.uuid);
-                console.log(hit.object.uuid);
+            if (hit.object.uuid !== 'map') {
+                map.pinClicked(hit.object.uuid);
             }
         });
     });
