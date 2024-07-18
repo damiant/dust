@@ -107,12 +107,12 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   async locationClick() {
-    if (this.settings.settings.locationEnabled === LocationEnabledStatus.Enabled) return;
     await this.geo.checkPermissions();
     if (this.geo.gpsPermission() == 'denied') {
       this.footer = 'Location services need to be enabled in settings on your device';
       return;
     }
+    if (this.geo.gpsPermission() == 'granted') return;
     this.showMessage = true;
   }
 
@@ -209,12 +209,12 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   private async displayYourLocation(gpsCoord: GpsCoord) {
+
     //this.gpsCoord = await this.geo.getPosition();
     const pt = await this.geo.gpsToPoint(gpsCoord);
     if (this.hideCompass) {
       pt.x -= 1000;
     }
-
     if (!this.you) {
       // First time setup
       this.you = this.plotXY(pt.x, pt.y, youOffsetX, youOffsetY, undefined, 'var(--ion-color-secondary)');
@@ -222,6 +222,9 @@ export class MapComponent implements OnInit, OnDestroy {
       // Displays using cached value if available
       this.displayCompass(this.geo.heading());
     } else {
+      if (this.compass == null) {
+        this.setupCompass(this.you);
+      }
       const sz = parseInt(this.you.style.width.replace('px', ''));
       this.movePoint(this.you, this.pointShift(pt.x, pt.y, sz, youOffsetX, youOffsetY));
     }
@@ -333,7 +336,7 @@ export class MapComponent implements OnInit, OnDestroy {
         this.footer = ``;
         return;
       }
-      const prefix = this._points.length > 1 ? 'The closest is ' : '';
+      const prefix = this._points.length > 1 ? 'Closest point is ' : '';
       const dist = formatDistanceMiles(least);
       if (least > 50) {
         if (this.settings.settings.locationEnabled === LocationEnabledStatus.Enabled) {

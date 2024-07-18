@@ -1,4 +1,5 @@
-<ion-modal #modal [isOpen]="show()" (willDismiss)="close()" [initialBreakpoint]="0.5" [breakpoints]="[0.5]">
+<ion-modal #modal [isOpen]="show()" (willDismiss)="close()" [initialBreakpoint]="0.6"
+  [breakpoints]="[0.25, 0.5, 0.6, 0.75]">
   <ng-template>
     <div class="center tall">
       <div class="pad">
@@ -6,7 +7,9 @@
         <ion-text>{{message()}}</ion-text>
         <ion-input type="number" autofocus="true" inputmode="numeric" enterkeyhint="go" [(ngModel)]="enteredPin"
           name="pin" placeholder="0000" maxlength="4" autocomplete="off" />
-        <div>
+      </div>
+      <div>
+        <div class="pad-top">
           <ion-button color="primary" (click)="dismiss(); modal.dismiss()" size="large" fill="outline" shape="round"
             class="pad-right">Cancel
           </ion-button>

@@ -36,6 +36,7 @@ export class GeoService {
     const status = await Geolocation.checkPermissions();
 
     this.gpsPermission.set(status.location);
+
     return status.location == 'granted' || status.coarseLocation == 'granted';
   }
 
@@ -81,7 +82,7 @@ export class GeoService {
       return this.gpsPosition();
     }
 
-    if (this.settings.shouldGeoAlert() || !await this.db.hasGeoPoints()) {
+    if ((!this.settings.shouldGeoAlert() && this.settings.settings.locationEnabled !== LocationEnabledStatus.Enabled) || !await this.db.hasGeoPoints()) {
       this.gpsPosition.set(NoGPSCoord());
       return NoGPSCoord();
     }
@@ -101,7 +102,6 @@ export class GeoService {
           this.gpsPosition.set(NoGPSCoord());
           return NoGPSCoord();
         }
-
       }
     }
 
