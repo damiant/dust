@@ -2,7 +2,7 @@ import {
     Scene, PerspectiveCamera, WebGLRenderer, TextureLoader, MeshBasicMaterial, PlaneGeometry, Color,
     Mesh, AnimationMixer, Clock, Raycaster, Vector2, AmbientLight, DirectionalLight, NumberKeyframeTrack,
     AnimationClip, LoopRepeat, Material, CircleGeometry, Group, DoubleSide, ShapeGeometry,
-    BufferGeometry
+    BufferGeometry,
 } from 'three';
 import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
@@ -18,6 +18,7 @@ async function mapImage(map: MapModel, disposables: any[]): Promise<Mesh> {
     const texture = await loadTexture(map.image);
     map.width = texture.image.width;
     map.height = texture.image.height;
+
     const material = new MeshBasicMaterial({ color: 0xffffff, map: texture });
     const geometry = new PlaneGeometry(texture.image.width, texture.image.height);
     const mesh = new Mesh(geometry, material);
@@ -64,7 +65,9 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
     renderer.setAnimationLoop(renderFn);
 
     const camera = new PerspectiveCamera(130, w / h, 1, 10000);
-    camera.position.set(0, map.height / 2, 100);
+    camera.position.set(0, map.height / 4, 20);
+
+
 
     // controls
     const controls = new MapControls(camera, renderer.domElement);
@@ -72,14 +75,11 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
     //controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
     controls.enableDamping = false; // an animation loop is required when either damping or auto-rotation are enabled
     controls.dampingFactor = 0.05;
-
     controls.screenSpacePanning = false;
     controls.zoomToCursor = true;
     controls.enableRotate = false;
-
     controls.minDistance = 100;
     controls.maxDistance = map.height;
-
     controls.maxPolarAngle = Math.PI / 2;
 
     const mixers: AnimationMixer[] = [];
@@ -95,14 +95,14 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
 
     // lights
     const dirLight1 = new DirectionalLight(0xffffff, 3);
-    dirLight1.position.set(1, 1, 1);
+    dirLight1.position.set(1, 50, 1);
     scene.add(dirLight1);
 
     const dirLight2 = new DirectionalLight(0x002288, 3);
-    dirLight2.position.set(- 1, - 1, - 1);
+    dirLight2.position.set(-1, - 1, - 1);
     scene.add(dirLight2);
 
-    const ambientLight = new AmbientLight(0x555555);
+    const ambientLight = new AmbientLight(0x333333);
     scene.add(ambientLight);
 
     window.addEventListener('resize', () => {

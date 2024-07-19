@@ -56,7 +56,7 @@ export class MapComponent implements OnInit, OnDestroy {
   _points: MapPoint[];
   isOpen = false;
   footer: string | undefined;
-  popover = viewChild<any>('popover');
+  popover = viewChild.required<ElementRef>('popover');
   info: MapInfo | undefined;
   src = 'assets/map.svg';
   showMessage = false;
@@ -71,7 +71,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private disabledMessage = 'Location is disabled';
   container = viewChild.required<ElementRef>('container');
   height = input<string>('height: 100%');
-  routerOutlet: IonRouterOutlet = inject(IonRouterOutlet)
+  routerOutlet: IonRouterOutlet = inject(IonRouterOutlet);
   footerPadding = input<number>(0);
   smallPins = input<boolean>(false);
   isHeader = input<boolean>(false);
@@ -246,8 +246,12 @@ export class MapComponent implements OnInit, OnDestroy {
   private pinClicked(pinUUID: string, event?: PointerEvent) {
     const point = this._points[parseInt(pinUUID)];
     this.info = point?.info;
-    this.popover().event = event;
-    this.isOpen = true;
+    //this.popover().event = event;
+    //    this.popover().event = event;
+    console.log('pinClicked', event);
+    setTimeout(() => {
+      this.isOpen = true;
+    }, 100);
   }
 
   private async checkGeolocation() {
@@ -360,6 +364,28 @@ export class MapComponent implements OnInit, OnDestroy {
       this.compassError,
       { frequency: 1000 },
     );
+  }
+
+  mapClick(event: MouseEvent) {
+    this.isOpen = false;
+    console.log('this.popover().nativeElement', this.popover().nativeElement);
+    let left = event.clientX - 100;
+    if (left < 0) { left = 0; }
+    if (left + 200 > window.innerWidth) {
+      left = window.innerWidth - 200;
+    }
+    let top = event.clientY;
+    if (top + 300 > window.innerHeight) {
+      top = window.innerHeight - 300;
+      if (top < 0) { top = 0; }
+    }
+    this.popover().nativeElement.style.setProperty('left', `${left}px`);
+    this.popover().nativeElement.style.setProperty('top', `${top}px`);
+    console.log('mapClick', event);
+  }
+
+  popReady() {
+
   }
 
   ngOnDestroy(): void {

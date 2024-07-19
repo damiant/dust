@@ -1,34 +1,29 @@
-<ion-popover #popover [isOpen]="isOpen" (didDismiss)="isOpen = false">
-  <ng-template>
-    @if (info) {
-    <ion-content class="ion-padding">
-      <b>{{ info.title }}</b><br />{{ info.location }}<br />{{ info.subtitle }}
-      <div class="center">
-        @if (info.imageUrl) {
-        <app-cached-img class="pop" [src]="info.imageUrl" [alt]="info.title" (click)="link(info.href)" />
-        }
-      </div>
-      <div class="center">
-        @if (info.href) {
-        <ion-button [disabled]="!isOpen" (click)="link(info.href)" size="small" shape="round">View</ion-button>
-        }
-      </div>
-    </ion-content>
+<div [hidden]="!isOpen" class="popover" z-index="1" #popover>
+  @if (info) {
+  <!-- <ion-content class="ion-padding"> -->
+  <b>{{ info.title }}</b><br />{{ info.location }}<br />{{ info.subtitle }}
+  <div class="center">
+    @if (info.imageUrl) {
+    <app-cached-img (loaded)="popReady()" class="pop" [src]="info.imageUrl" [alt]="info.title"
+      (click)="link(info.href)" />
     }
-  </ng-template>
-</ion-popover>
+  </div>
+  <div class="center">
+    @if (info.href) {
+    <ion-button [disabled]="!isOpen" (click)="link(info.href)" size="small" shape="round">View</ion-button>
+    }
+  </div>
+  <!-- </ion-content> -->
+  }
+</div>
+
 <app-message [secondButton]="'Not Now'" (dismissed)="enableGeoLocation($event)" [show]="showMessage"
   [title]="'Geolocation'" message="By enabling geolocation you can see where you are on the map."></app-message>
 
-<div #container [style]="height()" style="width:100%;">
+<div #container (click)="mapClick($event)" [style]="height()" style="width:100%;">
+
 </div>
 
-<!-- <pinch-zoom [backgroundColor]="'var(--ion-background-color)'" #zoom [style]="height()" [limit-zoom]="6"
-  [double-tap-scale]="4">
-  <div #mapc style="height: 100%">
-    <img #map (contextmenu)="mapPoint($event)" [src]="src" />
-  </div>
-</pinch-zoom> -->
 @if (footer) {
 <div [style.paddingBottom.px]="footerPadding()" [ngClass]="isHeader() ? 'header' : 'footer'">
   <ion-text (click)="locationClick()">{{ footer }}</ion-text>
