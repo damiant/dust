@@ -1,7 +1,8 @@
 import {
     Scene, PerspectiveCamera, WebGLRenderer, TextureLoader, MeshBasicMaterial, PlaneGeometry, Color,
     Mesh, AnimationMixer, Clock, Raycaster, Vector2, AmbientLight, DirectionalLight, NumberKeyframeTrack,
-    AnimationClip, LoopRepeat, Material, Object3D, CircleGeometry, Group, DoubleSide, ShapeGeometry
+    AnimationClip, LoopRepeat, Material, CircleGeometry, Group, DoubleSide, ShapeGeometry,
+    BufferGeometry
 } from 'three';
 import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
@@ -9,11 +10,11 @@ import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
 import { MapModel, MapPin, MapResult, PinColor } from './map-model';
 
 interface AddPinResult {
-    pin: Object3D;
-    background: Object3D;
+    pin: Mesh | Group;
+    background: Mesh;
 }
 
-async function mapImage(map: MapModel): Promise<Mesh> {
+async function mapImage(map: MapModel, disposables: any[]): Promise<Mesh> {
     const texture = await loadTexture(map.image);
     map.width = texture.image.width;
     map.height = texture.image.height;
@@ -22,27 +23,34 @@ async function mapImage(map: MapModel): Promise<Mesh> {
     const mesh = new Mesh(geometry, material);
     mesh.rotation.x = - Math.PI / 2;
     mesh.uuid = 'map';
+    disposables.push(mesh.geometry);
+    disposables.push(texture);
     return mesh;
 }
+
+type MapDisposable = BufferGeometry | Material | Material[];
 
 export async function init3D(container: HTMLElement, map: MapModel): Promise<MapResult> {
     const result: MapResult = {
         rotateCompass: (rotation: number) => { },
         myPosition: (x: number, y: number) => { },
-        setNearest: (pin: string) => { }
+        setNearest: (pin: string) => { },
+        dispose: () => { }
     };
+    let disposables: MapDisposable[] = [];
     const scene = new Scene();
     scene.background = new Color(0x999999);
-    scene.add(await mapImage(map));
+    scene.add(await mapImage(map, disposables));
 
     const w = container.clientWidth;
     const h = container.clientHeight;
 
-    const renderer = new WebGLRenderer({ antialias: true });
+
+    let renderer = new WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(w, h);
 
-    container.appendChild(renderer.domElement);
+    let dom = container.appendChild(renderer.domElement);
 
     const renderFn = () => {
         const delta = clock.getDelta();
@@ -55,8 +63,8 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
 
     renderer.setAnimationLoop(renderFn);
 
-    const camera = new PerspectiveCamera(70, w / h, 1, 10000);
-    camera.position.set(0, map.height, 40);
+    const camera = new PerspectiveCamera(130, w / h, 1, 10000);
+    camera.position.set(0, map.height / 2, 100);
 
     // controls
     const controls = new MapControls(camera, renderer.domElement);
@@ -83,31 +91,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
     const mouse = new Vector2()
 
 
-    for (const pin of map.pins) {
-        scaleToMap(pin, map.width, map.height);
-        const material = getMaterial(pin.color);
-        await addPin(pin, material, font, 0, map.width, mixers, scene);
-    }
-
-    if (map.compass) {
-        scaleToMap(map.compass, map.width, map.height);
-        const { pin: compass, background: background } = await addPin(map.compass, getMaterial('compass'), font, 0, map.width, mixers, scene);
-
-        result.rotateCompass = (rotation: number) => {
-            // Rotation is 0 - 360. Convert to 2π
-            compass.rotation.z = Math.PI * 2 * (rotation / 360);
-            renderFn();
-        }
-        result.myPosition = (x: number, y: number) => {
-            const nx = Math.trunc(x * map.width / 10000);
-            const nz = Math.trunc(y * map.height / 10000);
-            background.position.x = nx;
-            background.position.z = nz;
-            compass.position.x = nx;
-            compass.position.z = nz;
-            renderFn();
-        }
-    }
+    await createScene(map, font, scene, mixers, disposables, renderFn, result);
 
     // lights
     const dirLight1 = new DirectionalLight(0xffffff, 3);
@@ -142,7 +126,55 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
             }
         });
     });
+    result.dispose = () => {
+        for (let d of disposables) {
+            if (Array.isArray(d)) {
+                for (let d2 of d) {
+                    d2.dispose();
+
+                }
+            } else {
+                d.dispose();
+            }
+        }
+        disposables = [];
+        controls.dispose();
+        ambientLight.dispose();
+        dirLight2.dispose();
+        dirLight1.dispose();
+        console.log('after dispose', renderer.info);
+        renderer.renderLists.dispose();
+        renderer.dispose();
+        dom.remove();
+    }
     return result;
+}
+
+async function createScene(map: MapModel, font: any, scene: Scene, mixers: AnimationMixer[], disposables: MapDisposable[], renderFn: () => void, result: MapResult) {
+    for (const pin of map.pins) {
+        scaleToMap(pin, map.width, map.height);
+        const material = getMaterial(pin.color);
+        await addPin(pin, material, font, 0, map.width, mixers, scene, disposables);
+    }
+
+    if (map.compass) {
+        scaleToMap(map.compass, map.width, map.height);
+        const { pin: compass, background: background } = await addPin(map.compass, getMaterial('compass'), font, 0, map.width, mixers, scene, disposables);
+        result.rotateCompass = (rotation: number) => {
+            // Rotation is 0 - 360. Convert to 2π
+            compass.rotation.z = Math.PI * 2 * (rotation / 360);
+            renderFn();
+        }
+        result.myPosition = (x: number, y: number) => {
+            const nx = Math.trunc(x * map.width / 10000);
+            const nz = Math.trunc(y * map.height / 10000);
+            background.position.x = nx;
+            background.position.z = nz;
+            compass.position.x = nx;
+            compass.position.z = nz;
+            renderFn();
+        }
+    }
 }
 
 // Pins are sized to a 10,000 x 10,000 grid. Scale this to the map size.
@@ -184,7 +216,11 @@ function animateMesh(mesh: Mesh, mixers: AnimationMixer[]) {
     mixers.push(mixer);
 }
 
-async function addPin(pin: MapPin, material: Material, font: any, rotation: number, mapWidth: number, mixers: AnimationMixer[], scene: Scene): Promise<AddPinResult> {
+async function addPin(
+    pin: MapPin, material: Material, font: any,
+    rotation: number, mapWidth: number,
+    mixers: AnimationMixer[],
+    scene: Scene, disposables: MapDisposable[]): Promise<AddPinResult> {
     const geometry = new CircleGeometry(pin.size, 24);
     //geometry.translate(0, 0.5, 0);
     const mesh = new Mesh(geometry, material);
@@ -196,16 +232,18 @@ async function addPin(pin: MapPin, material: Material, font: any, rotation: numb
     if (pin.animated) {
         animateMesh(mesh, mixers);
     }
+    disposables.push(mesh.geometry);
+    disposables.push(mesh.material);
     scene.add(mesh);
     if (pin.label === '') {
         const scale = 0.2 * (mapWidth / 10000);
-        const p = await addSVG('assets/compass.svg', scale, rotation);
+        const p = await addSVG('assets/compass.svg', scale, rotation, disposables);
         p.position.x = mesh.position.x;
         p.position.z = mesh.position.z;
         scene.add(p);
         return { pin: p, background: mesh };
     } else {
-        const txt = addText(pin.label, font, pin.size);
+        const txt = addText(pin.label, font, pin.size, disposables);
         txt.position.x = mesh.position.x;
         txt.position.z = mesh.position.z;
         scene.add(txt);
@@ -241,7 +279,7 @@ async function loadTexture(name: string): Promise<any> {
     });
 }
 
-async function addSVG(name: string, scale: number, rotation: number): Promise<Group> {
+async function addSVG(name: string, scale: number, rotation: number, disposables: MapDisposable[]): Promise<Group> {
     const svg = await loadSVG(name);
     const group = new Group();
 
@@ -258,6 +296,8 @@ async function addSVG(name: string, scale: number, rotation: number): Promise<Gr
         const d = 512 * scale * 0.5; // SVG size is 512 x 512
         geometry.translate(-d, -d, 0);
         const mesh = new Mesh(geometry, material);
+        disposables.push(mesh.geometry);
+        disposables.push(mesh.material);
         group.add(mesh);
     }
     group.position.y = 5;
@@ -266,19 +306,21 @@ async function addSVG(name: string, scale: number, rotation: number): Promise<Gr
     return group;
 }
 
-function addText(message: string, font: any, size: number): Mesh {
+function addText(message: string, font: any, size: number, disposables: MapDisposable[]): Mesh {
     const shapes = font.generateShapes(message, size * 0.7);
     const geometry = new ShapeGeometry(shapes);
     geometry.computeBoundingBox();
     const xMid = - 0.5 * (geometry.boundingBox!.max.x - geometry.boundingBox!.min.x);
     const yMid = - 0.5 * (geometry.boundingBox!.max.y - geometry.boundingBox!.min.y);
     geometry.translate(xMid, yMid, 0);
-    const matLite = new MeshBasicMaterial({
+    const material = new MeshBasicMaterial({
         color: 0xFFFFFF,
         side: DoubleSide
     });
 
-    const text = new Mesh(geometry, matLite);
+    disposables.push(geometry);
+    disposables.push(material);
+    const text = new Mesh(geometry, material);
     text.position.y = 5;
     text.rotation.x = - Math.PI / 2;
     return text;

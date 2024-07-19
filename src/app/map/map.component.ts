@@ -198,16 +198,6 @@ export class MapComponent implements OnInit, OnDestroy {
       this.mapResult.myPosition(pt.x, pt.y);
     }
 
-    // if (!this.you) {
-    //   // First time setup
-    //   this.you = this.plotXY(pt.x, pt.y, youOffsetX, youOffsetY, undefined, 'var(--ion-color-secondary)');
-    //   this.setupCompass(this.you);
-    //   // Displays using cached value if available
-    //   this.displayCompass(this.geo.heading());
-    // } else {
-    //   const sz = parseInt(this.you.style.width.replace('px', ''));
-    //   this.movePoint(this.you, this.pointShift(pt.x, pt.y, sz, youOffsetX, youOffsetY));
-    // }
     await this.calculateNearest(gpsCoord);
   }
 
@@ -242,8 +232,6 @@ export class MapComponent implements OnInit, OnDestroy {
           x: pin.x, z: pin.y,
           color: point.info?.bgColor ?? 'primary', animated: blink, size: map.defaultPinSize, label: point.info?.label ?? '+'
         });
-        // const div = this.plotXY(pin.x, pin.y, 6, 6, point.info, undefined, blink);
-        // this.divs.push(div);
       } else {
         console.error(`Point could not be converted to pin`);
       }
@@ -335,9 +323,6 @@ export class MapComponent implements OnInit, OnDestroy {
         if (this.mapResult) {
           this.mapResult.setNearest(closest.info?.label ?? ' ');
         }
-        // const div = this.divs[this.nearestPoint];
-        // div.style.animationName = `pin`;
-        // div.style.animationDuration = '2s';
       }
 
       if (this.hideCompass) {
@@ -386,136 +371,15 @@ export class MapComponent implements OnInit, OnDestroy {
     if (this.geoInterval) {
       clearInterval(this.geoInterval);
     }
+    if (this.mapResult) {
+      this.mapResult.dispose();
+    }
   }
 
-  private createCompass(div: HTMLDivElement) {
-    let img = document.createElement('img');
-    img.src = 'assets/icon/compass.svg';
-    img.width = 10;
-    img.style.position = 'absolute';
-    img.style.padding = '1px';
-    img.style.visibility = 'hidden';
-    img.style.transition = '300ms linear all';
-    div.appendChild(img);
-    return img;
-  }
 
   private compassError(error: CompassError) {
     console.error(error);
   }
-
-  // private pointShift(x: number, y: number, sz: number, ox: number, oy: number): Point {
-  //   const px = (x / 10000.0) * this.mapInformation!.width;
-  //   const py = (y / 10000.0) * this.mapInformation!.height;
-  //   return { x: px - sz + ox, y: py - sz + oy };
-  // }
-
-  // private movePoint(div: HTMLDivElement, pt: Point) {
-  //   div.style.left = `${pt.x}px`;
-  //   div.style.top = `${pt.y}px`;
-  // }
-
-  // private plotXY(
-  //   x: number,
-  //   y: number,
-  //   ox: number,
-  //   oy: number,
-  //   info?: MapInfo,
-  //   bgColor?: string,
-  //   blink?: boolean,
-  // ): HTMLDivElement {
-  //   const sz = info || bgColor ? (this.smallPins() ? 8 : 10) : 8;
-  //   if (info && info.location && !this.smallPins()!) {
-  //     this.placeLabel(this.pointShift(x, y, 0, 0, -7), info);
-  //   }
-  //   if (info?.bgColor) {
-  //     bgColor = info.bgColor;
-  //   }
-  //   return this.createPin(sz, this.pointShift(x, y, sz, ox + (this.smallPins() ? -2 : 0), oy), info, bgColor, blink);
-  // }
-
-  // createPin(sz: number, pt: Point, info?: MapInfo, bgColor?: string, blink?: boolean): HTMLDivElement {
-  //   const d = document.createElement('div');
-  //   d.style.left = `${pt.x}px`;
-  //   d.style.top = `${pt.y}px`;
-  //   d.style.width = `${sz}px`;
-  //   d.style.height = `${sz}px`;
-  //   d.style.border = '1px solid var(--ion-color-dark)';
-  //   d.style.borderRadius = `${sz}px`;
-  //   let anim = info ? '' : 'pulse';
-  //   let animDuration = blink ? '1s' : '3s';
-  //   if (blink) {
-  //     anim = 'blink';
-  //   }
-  //   d.style.animationName = anim;
-  //   if (anim !== '') {
-  //     d.style.animationDuration = animDuration;
-  //   }
-  //   d.style.animationIterationCount = 'infinite';
-  //   d.style.position = 'absolute';
-  //   d.style.backgroundColor = bgColor ? bgColor : `var(--ion-color-primary)`;
-  //   if (info) {
-  //     d.onclick = (e) => {
-  //       this.info = info;
-  //       this.presentPopover(e);
-  //     };
-  //   }
-  //   const c: HTMLElement = this.mapc().nativeElement;
-  //   if (info?.label) {
-  //     const p = document.createElement('p');
-  //     const t = document.createTextNode(info?.label);
-  //     p.style.margin = '0';
-  //     p.style.marginTop = this.smallPins() ? '-3.5px' : '-3px';
-  //     p.style.marginLeft = this.smallPins() ? '-8px' : '-7px';
-  //     p.style.color = 'white';
-  //     p.style.width = `22px`;
-  //     p.style.textAlign = 'center';
-  //     p.style.fontSize = this.smallPins() ? '10px' : '11px';
-  //     p.style.fontWeight = 'bold';
-  //     p.style.transform = 'scale(0.3)';
-  //     p.appendChild(t);
-  //     d.appendChild(p);
-  //   }
-  //   c.insertBefore(d, c.firstChild);
-  //   return d;
-  // }
-
-  // private placeLabel(pt: Point, info?: MapInfo): HTMLDivElement {
-  //   const d = document.createElement('p');
-  //   const node = document.createTextNode(info!.location);
-  //   d.appendChild(node);
-  //   d.style.left = `${pt.x}px`;
-  //   d.style.top = `${pt.y}px`;
-  //   d.style.position = 'absolute';
-  //   d.style.fontSize = '3px';
-  //   d.style.borderRadius = '3px';
-  //   d.style.color = `var(--ion-color-light)`;
-  //   d.style.backgroundColor = `var(--ion-color-dark)`;
-  //   d.onclick = (e) => {
-  //     this.info = info;
-  //     this.presentPopover(e);
-  //   };
-  //   const c: HTMLElement = this.mapc().nativeElement;
-  //   c.insertBefore(d, c.firstChild);
-  //   return d;
-  // }
-
-  // async presentPopover(e: Event) {
-  //   this.popover().event = e;
-  //   this.isOpen = true;
-  // }
-
-  // This is used for clicking on the map and finding the corresponding x,y coordinates
-  // mapPoint(event: any) {
-  //   const x = event.clientX;
-  //   const y = event.clientY;
-  //   const el: HTMLElement = this.map().nativeElement;
-  //   const r = el.getBoundingClientRect();
-  //   const rx = ((x - r.x) * 10000) / r.width;
-  //   const ry = ((y - r.y) * 10000) / r.height;
-  //   this.store(Math.ceil(rx), Math.ceil(ry));
-  //   return false;
-  // }
 
   link(url: string | undefined) {
     if (!url) return;
