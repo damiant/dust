@@ -5,7 +5,7 @@ import {
     BufferGeometry,
     CylinderGeometry,
     DirectionalLight,
-    MeshPhongMaterial,
+    MeshPhongMaterial
 } from 'three';
 import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
@@ -67,7 +67,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         renderer.render(scene, camera);
     };
 
-    renderer.setAnimationLoop(renderFn);
+
 
     const camera = new PerspectiveCamera(130, w / h, 1, 10000);
     camera.position.set(0, map.height / 4, 20);
@@ -87,14 +87,16 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
 
     const mixers: AnimationMixer[] = [];
     const clock = new Clock();
-
     const font = await loadFont('assets/helvetiker_regular.typeface.json');
-
     const raycaster = new Raycaster()
     const mouse = new Vector2()
 
+    const p = await createScene(map, font, scene, mixers, disposables, renderFn, result);
 
-    await createScene(map, font, scene, mixers, disposables, renderFn, result);
+    if (map.pins.length == 1 && p) {
+        // Positions the camera over the pin
+        camera.position.set(p.pin.position.x, map.height / 4, p.pin.position.z + 20);
+    }
 
     // lights
     const dirLight1 = new DirectionalLight(0xffffff, 3);
@@ -132,6 +134,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
             }
         });
     });
+    renderer.setAnimationLoop(renderFn);
     result.dispose = () => {
         for (let d of disposables) {
             if (Array.isArray(d)) {
@@ -157,10 +160,11 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
 }
 
 async function createScene(map: MapModel, font: any, scene: Scene, mixers: AnimationMixer[], disposables: MapDisposable[], renderFn: () => void, result: MapResult) {
+    let p = undefined;
     for (const pin of map.pins) {
         scaleToMap(pin, map.width, map.height);
         const material = getMaterial(pin.color);
-        await addPin(pin, material, font, 0, map.width, mixers, scene, disposables);
+        p = await addPin(pin, material, font, 0, map.width, mixers, scene, disposables);
     }
 
     if (map.compass) {
@@ -181,6 +185,7 @@ async function createScene(map: MapModel, font: any, scene: Scene, mixers: Anima
             renderFn();
         }
     }
+    return p;
 }
 
 // Pins are sized to a 10,000 x 10,000 grid. Scale this to the map size.
@@ -247,12 +252,10 @@ async function addPin(
     scene: Scene, disposables: MapDisposable[]): Promise<AddPinResult> {
     //const geometry = new CircleGeometry(pin.size, 24);
     const geometry = new CylinderGeometry(pin.size, pin.size, 3, 24);
-    //geometry.translate(0, 0.5, 0);
     const mesh = new Mesh(geometry, material);
     mesh.position.x = pin.x;
     mesh.position.y = 3;
     mesh.position.z = pin.z;
-    //mesh.rotation.x = - Math.PI / 2;
     mesh.uuid = pin.uuid;
     if (pin.animated) {
         animateMesh(mesh, mixers);
