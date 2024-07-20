@@ -1,8 +1,11 @@
 import {
     Scene, PerspectiveCamera, WebGLRenderer, TextureLoader, MeshBasicMaterial, PlaneGeometry, Color,
-    Mesh, AnimationMixer, Clock, Raycaster, Vector2, AmbientLight, DirectionalLight, NumberKeyframeTrack,
-    AnimationClip, LoopRepeat, Material, CircleGeometry, Group, DoubleSide, ShapeGeometry,
+    Mesh, AnimationMixer, Clock, Raycaster, Vector2, NumberKeyframeTrack,
+    AnimationClip, LoopRepeat, Material, Group, DoubleSide, ShapeGeometry,
     BufferGeometry,
+    CylinderGeometry,
+    DirectionalLight,
+    MeshLambertMaterial,
 } from 'three';
 import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
@@ -49,7 +52,6 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
     const w = container.clientWidth;
     const h = container.clientHeight;
 
-
     let renderer = new WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(w, h);
@@ -69,8 +71,6 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
 
     const camera = new PerspectiveCamera(130, w / h, 1, 10000);
     camera.position.set(0, map.height / 4, 20);
-
-
 
     // controls
     const controls = new MapControls(camera, renderer.domElement);
@@ -97,9 +97,9 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
     await createScene(map, font, scene, mixers, disposables, renderFn, result);
 
     // lights
-    // const dirLight1 = new DirectionalLight(0xffffff, 3);
-    // dirLight1.position.set(1, 50, 1);
-    // scene.add(dirLight1);
+    const dirLight1 = new DirectionalLight(0xffffff, 3);
+    dirLight1.position.set(10, 50, 1).normalize();
+    scene.add(dirLight1);
 
     // const dirLight2 = new DirectionalLight(0x002288, 3);
     // dirLight2.position.set(-1, - 1, - 1);
@@ -122,10 +122,13 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         const box = container.getBoundingClientRect();
         mouse.set(((e.clientX - box.left) / width) * 2 - 1, -((e.clientY - box.top) / height) * 2 + 1)
         raycaster.setFromCamera(mouse, camera)
+        unhighlight(result);
         const intersects = raycaster.intersectObjects(scene.children, true);
         intersects.forEach((hit) => {
-            if (hit.object.uuid !== 'map') {
+            if (hit.object.uuid !== 'map' && hit.object.uuid !== 'txt') {
+                highlight(hit.object as any, result);
                 map.pinClicked(hit.object.uuid, e);
+                return;
             }
         });
     });
@@ -144,7 +147,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         controls.dispose();
         // ambientLight.dispose();
         // dirLight2.dispose();
-        // dirLight1.dispose();
+        dirLight1.dispose();
         console.log('after dispose', renderer.info);
         renderer.renderLists.dispose();
         renderer.dispose();
@@ -191,27 +194,42 @@ function scaleToMap(pin: MapPin, width: number, height: number) {
     pin.z -= height / 2;
 }
 
-function getMaterial(pinColor: PinColor): MeshBasicMaterial {
+function highlight(mesh: Mesh, result: MapResult) {
+    result.currentHex = (mesh.material as MeshLambertMaterial).emissive.getHex();
+    result.currentObject = mesh;
+    (mesh.material as MeshLambertMaterial).emissive.setHex(0x999999)
+}
+
+function unhighlight(result: MapResult) {
+    if (result.currentObject) {
+        (result.currentObject.material as MeshLambertMaterial).emissive.setHex(result.currentHex);
+        console.log('unhighlight', result.currentHex);
+        result.currentObject = undefined;
+        result.currentHex = undefined;
+    }
+}
+
+function getMaterial(pinColor: PinColor): MeshLambertMaterial {
     switch (pinColor) {
         case 'primary':
-            return new MeshBasicMaterial({ color: 0xF61067, transparent: true });
+            return new MeshLambertMaterial({ color: 0xF61067, transparent: true });
         case 'secondary':
-            return new MeshBasicMaterial({ color: 0x2196F3, transparent: true });
+            return new MeshLambertMaterial({ color: 0x2196F3, transparent: true });
         case 'tertiary':
-            return new MeshBasicMaterial({ color: 0x2dd36f, transparent: true });
+            return new MeshLambertMaterial({ color: 0x2dd36f, transparent: true });
         case 'warning':
-            return new MeshBasicMaterial({ color: 0xffc409, transparent: true });
+            return new MeshLambertMaterial({ color: 0xffc409, transparent: true });
         case 'compass':
-            return new MeshBasicMaterial({ color: 0x5260ff });
+            return new MeshLambertMaterial({ color: 0x5260ff });
         default:
-            return new MeshBasicMaterial({ color: 0x000000 });
+            return new MeshLambertMaterial({ color: 0x000000 });
     }
 }
 
 function animateMesh(mesh: Mesh, mixers: AnimationMixer[]) {
     const duration = 2;
     const track = new NumberKeyframeTrack('.material.opacity', [0, 1, 2], [1, 0, 1]);
-    const clip = new AnimationClip('scaleAnimation', duration, [track]);
+    const clip = new AnimationClip('anim', duration, [track]);
     const mixer = new AnimationMixer(mesh);
     const action = mixer.clipAction(clip);
     action.setLoop(LoopRepeat, 9999);
@@ -224,13 +242,14 @@ async function addPin(
     rotation: number, mapWidth: number,
     mixers: AnimationMixer[],
     scene: Scene, disposables: MapDisposable[]): Promise<AddPinResult> {
-    const geometry = new CircleGeometry(pin.size, 24);
+    //const geometry = new CircleGeometry(pin.size, 24);
+    const geometry = new CylinderGeometry(pin.size, pin.size, 3, 24);
     //geometry.translate(0, 0.5, 0);
     const mesh = new Mesh(geometry, material);
     mesh.position.x = pin.x;
     mesh.position.y = 3;
     mesh.position.z = pin.z;
-    mesh.rotation.x = - Math.PI / 2;
+    //mesh.rotation.x = - Math.PI / 2;
     mesh.uuid = pin.uuid;
     if (pin.animated) {
         animateMesh(mesh, mixers);
@@ -250,6 +269,7 @@ async function addPin(
             const txt = addText(pin.label, font, pin.size, disposables);
             txt.position.x = mesh.position.x;
             txt.position.z = mesh.position.z;
+            txt.uuid = 'txt';
             scene.add(txt);
             return { pin: txt, background: mesh };
         } else {
@@ -266,7 +286,6 @@ function loadFont(name: string): Promise<any> {
         });
     });
 }
-
 
 async function loadSVG(name: string): Promise<any> {
     return new Promise((resolve) => {

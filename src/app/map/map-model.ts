@@ -15,6 +15,8 @@ export interface MapResult {
     myPosition: (x: number, y: number) => void;
     setNearest: (nearest: string) => void;
     dispose: () => void;
+    currentHex?: any;
+    currentObject?: any;
 }
 
 export type PinColor = 'primary' | 'secondary' | 'tertiary' | 'compass' | 'warning';
