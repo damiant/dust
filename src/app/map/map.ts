@@ -14,7 +14,10 @@ interface AddPinResult {
     background: Mesh;
 }
 
-async function mapImage(map: MapModel, disposables: any[]): Promise<Mesh> {
+async function mapImage(map: MapModel, disposables: any[]): Promise<Mesh | Group> {
+    if (map.image.endsWith('.svg')) {
+        map.image = map.image.replace('.svg', '.png');
+    }
     const texture = await loadTexture(map.image);
     map.width = texture.image.width;
     map.height = texture.image.height;
@@ -94,16 +97,16 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
     await createScene(map, font, scene, mixers, disposables, renderFn, result);
 
     // lights
-    const dirLight1 = new DirectionalLight(0xffffff, 3);
-    dirLight1.position.set(1, 50, 1);
-    scene.add(dirLight1);
+    // const dirLight1 = new DirectionalLight(0xffffff, 3);
+    // dirLight1.position.set(1, 50, 1);
+    // scene.add(dirLight1);
 
-    const dirLight2 = new DirectionalLight(0x002288, 3);
-    dirLight2.position.set(-1, - 1, - 1);
-    scene.add(dirLight2);
+    // const dirLight2 = new DirectionalLight(0x002288, 3);
+    // dirLight2.position.set(-1, - 1, - 1);
+    // scene.add(dirLight2);
 
-    const ambientLight = new AmbientLight(0x333333);
-    scene.add(ambientLight);
+    // const ambientLight = new AmbientLight(0x333333);
+    // scene.add(ambientLight);
 
     window.addEventListener('resize', () => {
         const w = container.clientWidth;
@@ -139,9 +142,9 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         }
         disposables = [];
         controls.dispose();
-        ambientLight.dispose();
-        dirLight2.dispose();
-        dirLight1.dispose();
+        // ambientLight.dispose();
+        // dirLight2.dispose();
+        // dirLight1.dispose();
         console.log('after dispose', renderer.info);
         renderer.renderLists.dispose();
         renderer.dispose();
@@ -243,11 +246,15 @@ async function addPin(
         scene.add(p);
         return { pin: p, background: mesh };
     } else {
-        const txt = addText(pin.label, font, pin.size, disposables);
-        txt.position.x = mesh.position.x;
-        txt.position.z = mesh.position.z;
-        scene.add(txt);
-        return { pin: txt, background: mesh };
+        if (pin.label && pin.label.length > 0) {
+            const txt = addText(pin.label, font, pin.size, disposables);
+            txt.position.x = mesh.position.x;
+            txt.position.z = mesh.position.z;
+            scene.add(txt);
+            return { pin: txt, background: mesh };
+        } else {
+            return { pin: mesh, background: mesh };
+        }
     }
 }
 
