@@ -5,7 +5,7 @@ import {
     BufferGeometry,
     CylinderGeometry,
     DirectionalLight,
-    MeshLambertMaterial,
+    MeshPhongMaterial,
 } from 'three';
 import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
@@ -195,41 +195,44 @@ function scaleToMap(pin: MapPin, width: number, height: number) {
 }
 
 function highlight(mesh: Mesh, result: MapResult) {
-    result.currentHex = (mesh.material as MeshLambertMaterial).emissive.getHex();
+    result.currentHex = (mesh.material as MeshPhongMaterial).emissive.getHex();
     result.currentObject = mesh;
-    (mesh.material as MeshLambertMaterial).emissive.setHex(0x999999)
+    (mesh.material as MeshPhongMaterial).emissive.setHex(0x999999)
 }
 
 function unhighlight(result: MapResult) {
     if (result.currentObject) {
-        (result.currentObject.material as MeshLambertMaterial).emissive.setHex(result.currentHex);
+        (result.currentObject.material as MeshPhongMaterial).emissive.setHex(result.currentHex);
         console.log('unhighlight', result.currentHex);
         result.currentObject = undefined;
         result.currentHex = undefined;
     }
 }
 
-function getMaterial(pinColor: PinColor): MeshLambertMaterial {
+function getMaterial(pinColor: PinColor): MeshPhongMaterial {
     switch (pinColor) {
         case 'primary':
-            return new MeshLambertMaterial({ color: 0xF61067, transparent: true });
+            return new MeshPhongMaterial({ color: 0xF61067, transparent: true });
         case 'secondary':
-            return new MeshLambertMaterial({ color: 0x2196F3, transparent: true });
+            return new MeshPhongMaterial({ color: 0x2196F3, transparent: true });
         case 'tertiary':
-            return new MeshLambertMaterial({ color: 0x2dd36f, transparent: true });
+            return new MeshPhongMaterial({ color: 0x2dd36f, transparent: true });
         case 'warning':
-            return new MeshLambertMaterial({ color: 0xffc409, transparent: true });
+            return new MeshPhongMaterial({ color: 0xffc409, transparent: true });
         case 'compass':
-            return new MeshLambertMaterial({ color: 0x5260ff });
+            return new MeshPhongMaterial({ color: 0x5260ff });
         default:
-            return new MeshLambertMaterial({ color: 0x000000 });
+            return new MeshPhongMaterial({ color: 0x000000 });
     }
 }
 
 function animateMesh(mesh: Mesh, mixers: AnimationMixer[]) {
     const duration = 2;
-    const track = new NumberKeyframeTrack('.material.opacity', [0, 1, 2], [1, 0, 1]);
-    const clip = new AnimationClip('anim', duration, [track]);
+
+    //const track = new NumberKeyframeTrack('.material.opacity', [0, 1, 2], [1, 0, 1]);
+    const trackX = new NumberKeyframeTrack('.scale[x]', [0, 1, 2], [1, 2, 1]);
+    const trackZ = new NumberKeyframeTrack('.scale[z]', [0, 1, 2], [1, 2, 1]);
+    const clip = new AnimationClip('anim', duration, [trackX, trackZ]);
     const mixer = new AnimationMixer(mesh);
     const action = mixer.clipAction(clip);
     action.setLoop(LoopRepeat, 9999);
