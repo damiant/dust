@@ -273,7 +273,7 @@ async function addPin(
         p.position.x = mesh.position.x;
         p.position.z = mesh.position.z;
         if (pin.animated) {
-            animateMesh(p, mixers, 1, 3.5);
+            animateMesh(p, mixers, 1, 2);
         }
         scene.add(p);
         return { pin: p, background: mesh };
