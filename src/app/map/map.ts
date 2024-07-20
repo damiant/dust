@@ -260,9 +260,13 @@ async function addPin(
     disposables.push(mesh.geometry);
     disposables.push(mesh.material);
     scene.add(mesh);
-    if (pin.label === '') {
+    let svg = undefined;
+    if (pin.label === '') svg = 'assets/compass.svg';
+    if (pin.label === '+') svg = 'assets/medical.svg';
+
+    if (svg) {
         const scale = 0.2 * (mapWidth / 10000);
-        const p = await addSVG('assets/compass.svg', scale, rotation, disposables);
+        const p = await addSVG(svg, scale, rotation, disposables, 'txt');
         p.position.x = mesh.position.x;
         p.position.z = mesh.position.z;
         scene.add(p);
@@ -308,17 +312,17 @@ async function loadTexture(name: string): Promise<any> {
     });
 }
 
-async function addSVG(name: string, scale: number, rotation: number, disposables: MapDisposable[]): Promise<Group> {
+async function addSVG(name: string, scale: number, rotation: number, disposables: MapDisposable[], uuid: string): Promise<Group> {
     const svg = await loadSVG(name);
     const group = new Group();
+
 
     for (const path of svg.paths) {
         const material = new MeshBasicMaterial({
             color: path.color,
-            side: DoubleSide,
-            depthWrite: false
+            // side: DoubleSide,
+            // depthWrite: false
         });
-
         const shapes = SVGLoader.createShapes(path);
         const geometry = new ShapeGeometry(shapes);
         geometry.scale(scale, scale, scale);
@@ -327,6 +331,7 @@ async function addSVG(name: string, scale: number, rotation: number, disposables
         const mesh = new Mesh(geometry, material);
         disposables.push(mesh.geometry);
         disposables.push(mesh.material);
+        mesh.uuid = uuid;
         group.add(mesh);
     }
     group.position.y = 5;

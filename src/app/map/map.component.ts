@@ -79,7 +79,6 @@ export class MapComponent implements OnInit, OnDestroy {
   @Input() set points(points: MapPoint[]) {
     if (this.pointsSet) return;
     this._points = points;
-    console.log('points', this._points);
     if (this._points.length > 0) {
       this.fixGPSAndUpdate();
       this.pointsSet = true;
