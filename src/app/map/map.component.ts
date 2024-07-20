@@ -229,7 +229,7 @@ export class MapComponent implements OnInit, OnDestroy {
         map.pins.push({
           uuid: `${i}`,
           x: pin.x, z: pin.y,
-          color: point.info?.bgColor ?? 'primary', animated: blink, size: map.defaultPinSize, label: point.info?.label ?? '+'
+          color: point.info?.bgColor ?? 'primary', animated: blink, size: map.defaultPinSize, label: point.info?.label ?? '^'
         });
       } else {
         console.error(`Point could not be converted to pin`);

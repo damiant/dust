@@ -81,7 +81,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
     controls.screenSpacePanning = false;
     controls.zoomToCursor = true;
     controls.enableRotate = false;
-    controls.minDistance = 100;
+    controls.minDistance = 50;
     controls.maxDistance = map.height;
     controls.maxPolarAngle = Math.PI / 2;
 
@@ -226,12 +226,12 @@ function getMaterial(pinColor: PinColor): MeshPhongMaterial {
     }
 }
 
-function animateMesh(mesh: Mesh, mixers: AnimationMixer[]) {
+function animateMesh(mesh: Mesh | Group, mixers: AnimationMixer[], scaleFrom = 1, scaleTo = 2) {
     const duration = 2;
 
     //const track = new NumberKeyframeTrack('.material.opacity', [0, 1, 2], [1, 0, 1]);
-    const trackX = new NumberKeyframeTrack('.scale[x]', [0, 1, 2], [1, 2, 1]);
-    const trackZ = new NumberKeyframeTrack('.scale[z]', [0, 1, 2], [1, 2, 1]);
+    const trackX = new NumberKeyframeTrack('.scale[x]', [0, 1, 2], [scaleFrom, scaleTo, scaleFrom]);
+    const trackZ = new NumberKeyframeTrack('.scale[z]', [0, 1, 2], [scaleFrom, scaleTo, scaleFrom]);
     const clip = new AnimationClip('anim', duration, [trackX, trackZ]);
     const mixer = new AnimationMixer(mesh);
     const action = mixer.clipAction(clip);
@@ -261,14 +261,20 @@ async function addPin(
     disposables.push(mesh.material);
     scene.add(mesh);
     let svg = undefined;
-    if (pin.label === '') svg = 'assets/compass.svg';
-    if (pin.label === '+') svg = 'assets/medical.svg';
+    switch (pin.label) {
+        case '^': svg = 'assets/location.svg'; rotation = Math.PI; break;
+        case '+': svg = 'assets/medical.svg'; break;
+        case '': svg = 'assets/compass.svg'; break;
+    }
 
     if (svg) {
         const scale = 0.2 * (mapWidth / 10000);
         const p = await addSVG(svg, scale, rotation, disposables, 'txt');
         p.position.x = mesh.position.x;
         p.position.z = mesh.position.z;
+        if (pin.animated) {
+            animateMesh(p, mixers, 1, 3.5);
+        }
         scene.add(p);
         return { pin: p, background: mesh };
     } else {
