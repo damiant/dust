@@ -1,5 +1,10 @@
 ## Changes
 
+## 2.31
+
+- New Map!
+- Remember filter for events
+
 ## 2.30
 
 - Fix GPS for map

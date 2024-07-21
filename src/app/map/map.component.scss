@@ -26,3 +26,19 @@ pinch-zoom {
 app-cached-img {
     --border-radius: 0.5rem;
 }
+
+.popover {
+    position: absolute;
+    background-color: var(--ion-color-light);
+    width: 200px;
+    //height: 300px;
+    border-radius: 1rem;
+    padding: 1rem;
+    text-align: center;
+    overflow: auto;
+    box-shadow: rgba(149, 157, 165, 0.6) 0px 8px 24px;
+}
+
+ion-content {
+    border-radius: 0.5rem;
+}

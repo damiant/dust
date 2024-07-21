@@ -1,4 +1,5 @@
 import { GpsCoord } from '../map/geo.utils';
+import { PinColor } from '../map/map-model';
 
 export interface Event {
   camp: string; // Calculated
@@ -163,6 +164,7 @@ export interface Settings {
   mapRotation: number;
   scrollLeft: number;
   locationEnabled: LocationEnabledStatus;
+  datasetFilter: DatasetFilter;
   longEvents: boolean;
   preventAutoStart: boolean;
   offlineEvents: string[]; // List of all offline event ids
@@ -284,7 +286,7 @@ export interface MapInfo {
   subtitle: string;
   imageUrl?: string;
   href?: string;
-  bgColor?: string;
+  bgColor?: PinColor;
   label?: string;
 }
 

@@ -323,7 +323,8 @@ export class ProfilePage implements OnInit {
       return { lat: this.settings.settings.dataset.lat, long: this.settings.settings.dataset.long };
     } else {
       if (!this.settings.settings.dataset?.lat) {
-        return { lat: 40.753842, long: -119.277 };
+        // Golden Spike at Burning Man
+        return { lat: 40.786969, long: -119.204101 };
       } else {
         return undefined;
       }

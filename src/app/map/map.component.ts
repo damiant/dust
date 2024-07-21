@@ -8,12 +8,14 @@ import { GeoService } from '../geolocation/geo.service';
 import { SettingsService } from '../data/settings.service';
 import { MessageComponent } from '../message/message.component';
 import { CompassError, CompassHeading } from './compass';
-import { GpsCoord, Point } from './geo.utils';
+import { GpsCoord } from './geo.utils';
 import { Router, RouterModule } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { IonButton, IonContent, IonPopover, IonRouterOutlet, IonText } from '@ionic/angular/standalone';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { DbService } from '../data/db.service';
+import { MapModel, MapResult } from './map-model';
+import { init3D } from './map';
 
 interface MapInformation {
   width: number; // Width of the map
@@ -54,37 +56,28 @@ export class MapComponent implements OnInit, OnDestroy {
   _points: MapPoint[];
   isOpen = false;
   footer: string | undefined;
-  popover = viewChild<any>('popover');
+  popover = viewChild.required<ElementRef>('popover');
   info: MapInfo | undefined;
   src = 'assets/map.svg';
   showMessage = false;
   hideCompass = false;
   pointsSet = false;
   pins: Pin[] = [];
-  divs: HTMLDivElement[] = [];
   private geoInterval: any;
   private nearestPoint: number | undefined;
-  private you: HTMLDivElement | undefined;
   private watchId: any;
-  private mapInformation: MapInformation | undefined;
-  private compass: HTMLImageElement | undefined;
+  private mapResult: MapResult | undefined;
   private _viewReady = false;
-  private selected: HTMLDivElement | undefined;
   private disabledMessage = 'Location is disabled';
-
-  zoom = viewChild.required<ElementRef>('zoom');
-  map = viewChild.required<ElementRef>('map');
-  mapc = viewChild.required<ElementRef>('mapc');
+  container = viewChild.required<ElementRef>('container');
   height = input<string>('height: 100%');
-  routerOutlet: IonRouterOutlet = inject(IonRouterOutlet)
+  routerOutlet: IonRouterOutlet = inject(IonRouterOutlet);
   footerPadding = input<number>(0);
   smallPins = input<boolean>(false);
   isHeader = input<boolean>(false);
+
   @Input() set points(points: MapPoint[]) {
     if (this.pointsSet) return;
-    for (let div of this.divs) {
-      div.remove();
-    }
     this._points = points;
     if (this._points.length > 0) {
       this.fixGPSAndUpdate();
@@ -112,12 +105,10 @@ export class MapComponent implements OnInit, OnDestroy {
       this.footer = 'Location services need to be enabled in settings on your device';
       return;
     }
-    if (this.geo.gpsPermission() == 'granted') return;
     this.showMessage = true;
   }
 
   async enableGeoLocation(now: boolean) {
-    console.log('enableGeoLocation', now);
     if (now) {
       if (await this.geo.requestPermission()) {
         this.settings.settings.locationEnabled = LocationEnabledStatus.Enabled;
@@ -171,23 +162,9 @@ export class MapComponent implements OnInit, OnDestroy {
     }
   }
 
-  public triggerClick(pointIdx: number): boolean {
-    try {
-      const div = this.divs[pointIdx];
-      div.style.animationName = `pulse`;
-      div.style.animationDuration = '2s';
-      div.click();
-      if (this.selected) {
-        // Deselect the previous selected
-        this.selected.style.animationName = '';
-        this.selected.style.animationDuration = '';
-      }
-      this.selected = div;
-      return true;
-    } catch (err) {
-      console.error(`Error in triggerClick: ${err}`);
-      return false;
-    }
+  // This is called when searching on the map
+  public triggerClick(pointIdx: number) {
+    this.pinClicked(`${pointIdx}`);
   }
 
   private async updateLocation() {
@@ -195,66 +172,85 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   private displayCompass(heading: CompassHeading) {
-    if (!this.compass) {
-      console.error(`Got compass heading but compass element is not defined`);
-      return;
-    }
     const rotation = this.settings.settings.mapRotation; // Note: Map may be rotated from North
     let degree = Math.trunc(heading.trueHeading) - rotation;
     if (degree < 0) {
       degree += 360;
     }
-    this.compass.style.transform = `rotate(${degree}deg)`;
-    this.compass.style.visibility = this.hideCompass ? 'hidden' : 'visible';
+    console.log(`Compass heading is ${degree}`);
+    if (this.mapResult) {
+      this.mapResult.rotateCompass(degree);
+    }
+    // this.compass.style.transform = `rotate(${degree}deg)`;
+    // this.compass.style.visibility = this.hideCompass ? 'hidden' : 'visible';
   }
 
   private async displayYourLocation(gpsCoord: GpsCoord) {
-
     //this.gpsCoord = await this.geo.getPosition();
     const pt = await this.geo.gpsToPoint(gpsCoord);
     if (this.hideCompass) {
       pt.x -= 1000;
     }
-    if (!this.you) {
-      // First time setup
-      this.you = this.plotXY(pt.x, pt.y, youOffsetX, youOffsetY, undefined, 'var(--ion-color-secondary)');
-      this.setupCompass(this.you);
-      // Displays using cached value if available
-      this.displayCompass(this.geo.heading());
-    } else {
-      if (this.compass == null) {
-        this.setupCompass(this.you);
-      }
-      const sz = parseInt(this.you.style.width.replace('px', ''));
-      this.movePoint(this.you, this.pointShift(pt.x, pt.y, sz, youOffsetX, youOffsetY));
+
+    if (this.mapResult) {
+      console.log('set my position', pt, gpsCoord);
+      this.mapResult.myPosition(pt.x, pt.y);
     }
+
     await this.calculateNearest(gpsCoord);
   }
 
   private setMapInformation() {
-    const el: HTMLElement = this.map().nativeElement;
+    const el: HTMLElement = this.container().nativeElement;
     const rect = el.getBoundingClientRect();
-    this.mapInformation = {
-      width: rect.width,
-      height: rect.height,
-      circleRadius: rect.width / 2,
-    };
+    // this.mapInformation = {
+    //   width: rect.width,
+    //   height: rect.height,
+    //   circleRadius: rect.width / 2,
+    // };
   }
   async update() {
     this.setMapInformation();
-    this.divs = [];
+    const map: MapModel = {
+      image: this.src,// 'assets/map2.webp',
+      width: 0,
+      height: 0,
+      defaultPinSize: 80,
+      pins: [],
+      compass: { uuid: 'compass', x: 1, z: 1, color: 'tertiary', size: 80, label: '' },
+      pinClicked: this.pinClicked.bind(this),
+    }
+
     const blink = this.points.length == 1;
-    for (let point of this._points) {
+    for (const [i, point] of this._points.entries()) {
       const pin = mapPointToPin(point, defaultMapRadius);
+
       if (pin) {
-        const div = this.plotXY(pin.x, pin.y, 6, 6, point.info, undefined, blink);
-        this.divs.push(div);
+        map.pins.push({
+          uuid: `${i}`,
+          x: pin.x, z: pin.y,
+          color: point.info?.bgColor ?? 'primary', animated: blink, size: map.defaultPinSize, label: point.info?.label ?? '^'
+        });
       } else {
         console.error(`Point could not be converted to pin`);
       }
     }
+    console.log('init3D', map)
+    this.mapResult = await init3D(this.container().nativeElement, map);
     this._viewReady = true;
     await this.checkGeolocation();
+    this.setupCompass();
+  }
+
+  private pinClicked(pinUUID: string, event?: PointerEvent) {
+    const point = this._points[parseInt(pinUUID)];
+    this.info = point?.info;
+    //this.popover().event = event;
+    //    this.popover().event = event;
+    console.log('pinClicked', event);
+    setTimeout(() => {
+      this.isOpen = true;
+    }, 100);
   }
 
   private async checkGeolocation() {
@@ -327,9 +323,9 @@ export class MapComponent implements OnInit, OnDestroy {
       this.nearestPoint = closestIdx;
 
       if (this.nearestPoint) {
-        const div = this.divs[this.nearestPoint];
-        div.style.animationName = `pin`;
-        div.style.animationDuration = '2s';
+        if (this.mapResult) {
+          this.mapResult.setNearest(closest.info?.label ?? ' ');
+        }
       }
 
       if (this.hideCompass) {
@@ -356,9 +352,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
 
-  private setupCompass(div: HTMLDivElement) {
-    this.compass = this.createCompass(div);
-
+  private setupCompass() {
     // Plugin is undefined on web
     if (!(navigator as any).compass) return;
 
@@ -371,6 +365,28 @@ export class MapComponent implements OnInit, OnDestroy {
     );
   }
 
+  mapClick(event: MouseEvent) {
+    this.isOpen = false;
+    console.log('this.popover().nativeElement', this.popover().nativeElement);
+    let left = event.clientX - 100;
+    if (left < 0) { left = 0; }
+    if (left + 200 > window.innerWidth) {
+      left = window.innerWidth - 200;
+    }
+    let top = event.clientY;
+    if (top + 300 > window.innerHeight) {
+      top = window.innerHeight - 300;
+      if (top < 0) { top = 0; }
+    }
+    this.popover().nativeElement.style.setProperty('left', `${left}px`);
+    this.popover().nativeElement.style.setProperty('top', `${top}px`);
+    console.log('mapClick', event);
+  }
+
+  popReady() {
+
+  }
+
   ngOnDestroy(): void {
     this.routerOutlet.swipeGesture = true;
     if (this.watchId) {
@@ -380,135 +396,14 @@ export class MapComponent implements OnInit, OnDestroy {
     if (this.geoInterval) {
       clearInterval(this.geoInterval);
     }
+    if (this.mapResult) {
+      this.mapResult.dispose();
+    }
   }
 
-  private createCompass(div: HTMLDivElement) {
-    let img = document.createElement('img');
-    img.src = 'assets/icon/compass.svg';
-    img.width = 10;
-    img.style.position = 'absolute';
-    img.style.padding = '1px';
-    img.style.visibility = 'hidden';
-    img.style.transition = '300ms linear all';
-    div.appendChild(img);
-    return img;
-  }
 
   private compassError(error: CompassError) {
     console.error(error);
-  }
-
-  private pointShift(x: number, y: number, sz: number, ox: number, oy: number): Point {
-    const px = (x / 10000.0) * this.mapInformation!.width;
-    const py = (y / 10000.0) * this.mapInformation!.height;
-    return { x: px - sz + ox, y: py - sz + oy };
-  }
-
-  private movePoint(div: HTMLDivElement, pt: Point) {
-    div.style.left = `${pt.x}px`;
-    div.style.top = `${pt.y}px`;
-  }
-
-  private plotXY(
-    x: number,
-    y: number,
-    ox: number,
-    oy: number,
-    info?: MapInfo,
-    bgColor?: string,
-    blink?: boolean,
-  ): HTMLDivElement {
-    const sz = info || bgColor ? (this.smallPins() ? 8 : 10) : 8;
-    if (info && info.location && !this.smallPins()!) {
-      this.placeLabel(this.pointShift(x, y, 0, 0, -7), info);
-    }
-    if (info?.bgColor) {
-      bgColor = info.bgColor;
-    }
-    return this.createPin(sz, this.pointShift(x, y, sz, ox + (this.smallPins() ? -2 : 0), oy), info, bgColor, blink);
-  }
-
-  createPin(sz: number, pt: Point, info?: MapInfo, bgColor?: string, blink?: boolean): HTMLDivElement {
-    const d = document.createElement('div');
-    d.style.left = `${pt.x}px`;
-    d.style.top = `${pt.y}px`;
-    d.style.width = `${sz}px`;
-    d.style.height = `${sz}px`;
-    d.style.border = '1px solid var(--ion-color-dark)';
-    d.style.borderRadius = `${sz}px`;
-    let anim = info ? '' : 'pulse';
-    let animDuration = blink ? '1s' : '3s';
-    if (blink) {
-      anim = 'blink';
-    }
-    d.style.animationName = anim;
-    if (anim !== '') {
-      d.style.animationDuration = animDuration;
-    }
-    d.style.animationIterationCount = 'infinite';
-    d.style.position = 'absolute';
-    d.style.backgroundColor = bgColor ? bgColor : `var(--ion-color-primary)`;
-    if (info) {
-      d.onclick = (e) => {
-        this.info = info;
-        this.presentPopover(e);
-      };
-    }
-    const c: HTMLElement = this.mapc().nativeElement;
-    if (info?.label) {
-      const p = document.createElement('p');
-      const t = document.createTextNode(info?.label);
-      p.style.margin = '0';
-      p.style.marginTop = this.smallPins() ? '-3.5px' : '-3px';
-      p.style.marginLeft = this.smallPins() ? '-8px' : '-7px';
-      p.style.color = 'white';
-      p.style.width = `22px`;
-      p.style.textAlign = 'center';
-      p.style.fontSize = this.smallPins() ? '10px' : '11px';
-      p.style.fontWeight = 'bold';
-      p.style.transform = 'scale(0.3)';
-      p.appendChild(t);
-      d.appendChild(p);
-    }
-    c.insertBefore(d, c.firstChild);
-    return d;
-  }
-
-  private placeLabel(pt: Point, info?: MapInfo): HTMLDivElement {
-    const d = document.createElement('p');
-    const node = document.createTextNode(info!.location);
-    d.appendChild(node);
-    d.style.left = `${pt.x}px`;
-    d.style.top = `${pt.y}px`;
-    d.style.position = 'absolute';
-    d.style.fontSize = '3px';
-    d.style.borderRadius = '3px';
-    d.style.color = `var(--ion-color-light)`;
-    d.style.backgroundColor = `var(--ion-color-dark)`;
-    d.onclick = (e) => {
-      this.info = info;
-      this.presentPopover(e);
-    };
-    const c: HTMLElement = this.mapc().nativeElement;
-    c.insertBefore(d, c.firstChild);
-    return d;
-  }
-
-  async presentPopover(e: Event) {
-    this.popover().event = e;
-    this.isOpen = true;
-  }
-
-  // This is used for clicking on the map and finding the corresponding x,y coordinates
-  mapPoint(event: any) {
-    const x = event.clientX;
-    const y = event.clientY;
-    const el: HTMLElement = this.map().nativeElement;
-    const r = el.getBoundingClientRect();
-    const rx = ((x - r.x) * 10000) / r.width;
-    const ry = ((y - r.y) * 10000) / r.height;
-    this.store(Math.ceil(rx), Math.ceil(ry));
-    return false;
   }
 
   link(url: string | undefined) {

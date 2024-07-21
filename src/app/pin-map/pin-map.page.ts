@@ -23,6 +23,7 @@ import {
 import { addIcons } from 'ionicons';
 import { compassOutline } from 'ionicons/icons';
 import { SearchComponent } from '../search/search.component';
+import { PinColor } from '../map/map-model';
 
 @Component({
   selector: 'app-pin-map',
@@ -67,6 +68,7 @@ export class PinMapPage {
   }
 
   async ionViewWillEnter() {
+
     const mapSet = await this.mapFor(this.mapType());
     this.points = mapSet.points;
     this.title.set(mapSet.title);
@@ -101,11 +103,11 @@ export class PinMapPage {
       case MapType.Now:
         return await this.getEventsNow();
       case MapType.Restrooms:
-        return await this.fallback(await this.db.getGPSPoints(Names.restrooms, 'Block of restrooms'), 'Restrooms');
+        return await this.fallback(await this.db.getGPSPoints(Names.restrooms, 'Block of restrooms'), 'Restrooms', mapType);
       case MapType.Ice:
-        return await this.fallback(await this.db.getMapPoints(Names.ice), 'Ice');
+        return await this.fallback(await this.db.getMapPoints(Names.ice), 'Ice', mapType);
       case MapType.Medical:
-        return await this.fallback(await this.db.getMapPoints(Names.medical), 'Medical');
+        return await this.fallback(await this.db.getMapPoints(Names.medical), 'Medical', mapType);
       case MapType.All:
         return await this.getAll();
       default:
@@ -113,10 +115,13 @@ export class PinMapPage {
     }
   }
 
-  private async fallback(mapSet: MapSet, pinType: string): Promise<MapSet> {
+  private async fallback(mapSet: MapSet, pinType: string, mapType: string): Promise<MapSet> {
     this.title.set(pinType);
+    this.applyMapType(mapType, mapSet);
     if (mapSet.points.length > 0) return mapSet;
-    return await this.db.getPins(pinType);
+    const ms = await this.db.getPins(pinType);
+    this.applyMapType(mapType, ms);
+    return ms;
   }
 
   private async getArt(): Promise<MapSet> {
@@ -169,13 +174,7 @@ export class PinMapPage {
 
     for (let type of [Names.restrooms, Names.ice, Names.medical, Names.art]) {
       const map = await this.mapFor(type);
-      map.points.forEach((point, index) => {
-        if (!point.info) {
-          const label = type == Names.restrooms ? '🧻' : undefined;
-          point.info = { title: map.title, location: '', subtitle: `${index + 1} of ${map.points.length}`, label };
-        }
-        point.info.bgColor = this.colorOf(type);
-      });
+      this.applyMapType(type, map);
       points.push(...map.points);
     }
     this.title.set('Map');
@@ -187,18 +186,33 @@ export class PinMapPage {
     };
   }
 
-  private colorOf(type: string): string {
+  private applyMapType(type: string, map: MapSet) {
+    map.points.forEach((point, index) => {
+      if (!point.info) {
+        let label = undefined;
+        switch (type) {
+          case Names.restrooms: label = 'R'; break;
+          case Names.ice: label = 'I'; break;
+          case Names.medical: label = '+'; break;
+        }
+        point.info = { title: map.title, location: '', subtitle: `${index + 1} of ${map.points.length}`, label };
+      }
+      point.info.bgColor = this.colorOf(type);
+    });
+  }
+
+  private colorOf(type: string): PinColor {
     switch (type) {
       case Names.restrooms:
-        return 'var(--ion-color-secondary)';
+        return 'tertiary';
       case Names.ice:
-        return 'var(--ion-color-tertiary)';
+        return 'warning';
       case Names.medical:
-        return 'var(--ion-color-success)';
+        return 'compass';
       case Names.art:
-        return 'var(--ion-color-warning)';
+        return 'secondary';
       default:
-        return 'var(--ion-color-primary)';
+        return 'primary';
     }
   }
 

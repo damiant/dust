@@ -143,6 +143,7 @@ export class IntroPage {
 
   async ionViewWillEnter() {
     this.vm = initialState();
+    this.vm.showing = this.settingsService.settings.datasetFilter ?? 'all';
     // Whether the user has selected an event already
     this.vm.eventAlreadySelected =
       !isWhiteSpace(this.settingsService.settings.datasetId) && !this.settingsService.settings.preventAutoStart;
@@ -204,6 +205,8 @@ export class IntroPage {
     this.vm.selected = undefined;
     this.subtitle.set('');
     this.vm.cards = await this.api.loadDatasets(name);
+    this.settingsService.settings.datasetFilter = name;
+    this.settingsService.save();
     this.carousel().setScrollLeft(0);
     this.fab().close();
   }
