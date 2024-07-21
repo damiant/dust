@@ -67,8 +67,6 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         renderer.render(scene, camera);
     };
 
-
-
     const camera = new PerspectiveCamera(130, w / h, 1, 10000);
     camera.position.set(0, map.height / 4, 20);
 
@@ -93,9 +91,11 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
 
     const p = await createScene(map, font, scene, mixers, disposables, renderFn, result);
 
+    // Positions the camera over the pin
     if (map.pins.length == 1 && p) {
-        // Positions the camera over the pin
+        console.log(JSON.stringify(camera));
         camera.position.set(p.pin.position.x, map.height / 4, p.pin.position.z + 20);
+        controls.target.set(p.pin.position.x, 0, p.pin.position.z);
     }
 
     // lights
@@ -253,9 +253,7 @@ async function addPin(
     //const geometry = new CircleGeometry(pin.size, 24);
     const geometry = new CylinderGeometry(pin.size, pin.size, 3, 24);
     const mesh = new Mesh(geometry, material);
-    mesh.position.x = pin.x;
-    mesh.position.y = 3;
-    mesh.position.z = pin.z;
+    mesh.position.set(pin.x, 3, pin.z);
     mesh.uuid = pin.uuid;
     if (pin.animated) {
         animateMesh(mesh, mixers);
