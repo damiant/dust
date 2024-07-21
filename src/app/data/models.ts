@@ -164,6 +164,7 @@ export interface Settings {
   mapRotation: number;
   scrollLeft: number;
   locationEnabled: LocationEnabledStatus;
+  datasetFilter: DatasetFilter;
   longEvents: boolean;
   preventAutoStart: boolean;
   offlineEvents: string[]; // List of all offline event ids

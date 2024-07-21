@@ -40,6 +40,7 @@ export class SettingsService {
         eventTitle: '',
         locationEnabled: LocationEnabledStatus.Unknown,
         longEvents: true,
+        datasetFilter: 'all',
         preventAutoStart: false,
         lastGeoAlert: undefined,
         offlineEvents: [],
