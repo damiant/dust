@@ -172,7 +172,7 @@ async function createScene(map: MapModel, font: any, scene: Scene, mixers: Anima
         const { pin: compass, background: background } = await addPin(map.compass, getMaterial('compass'), font, 0, map.width, mixers, scene, disposables);
         result.rotateCompass = (rotation: number) => {
             // Rotation is 0 - 360. Convert to 2π
-            compass.rotation.z = Math.PI + (Math.PI * 2 * (rotation / 360));
+            compass.rotation.z = (Math.PI + (Math.PI * 2 * ((360 - rotation) / 360)));
             renderFn();
         }
         result.myPosition = (x: number, y: number) => {
