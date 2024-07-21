@@ -172,12 +172,12 @@ async function createScene(map: MapModel, font: any, scene: Scene, mixers: Anima
         const { pin: compass, background: background } = await addPin(map.compass, getMaterial('compass'), font, 0, map.width, mixers, scene, disposables);
         result.rotateCompass = (rotation: number) => {
             // Rotation is 0 - 360. Convert to 2π
-            compass.rotation.z = Math.PI * 2 * (rotation / 360);
+            compass.rotation.z = Math.PI + (Math.PI * 2 * (rotation / 360));
             renderFn();
         }
         result.myPosition = (x: number, y: number) => {
-            const nx = Math.trunc(x * map.width / 10000);
-            const nz = Math.trunc(y * map.height / 10000);
+            const nx = Math.trunc(x * map.width / 10000) - map.width / 2;
+            const nz = Math.trunc(y * map.height / 10000) - map.height / 2;
             background.position.x = nx;
             background.position.z = nz;
             compass.position.x = nx;
