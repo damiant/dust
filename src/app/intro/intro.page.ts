@@ -143,7 +143,7 @@ export class IntroPage {
 
   async ionViewWillEnter() {
     this.vm = initialState();
-    this.vm.showing = this.settingsService.settings.datasetFilter;
+    this.vm.showing = this.settingsService.settings.datasetFilter ?? 'all';
     // Whether the user has selected an event already
     this.vm.eventAlreadySelected =
       !isWhiteSpace(this.settingsService.settings.datasetId) && !this.settingsService.settings.preventAutoStart;
