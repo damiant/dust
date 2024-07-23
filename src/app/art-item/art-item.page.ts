@@ -29,6 +29,7 @@ import { addIcons } from 'ionicons';
 import { star, starOutline, shareOutline, personOutline, locateOutline, locationOutline } from 'ionicons/icons';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { EventPage } from '../event/event.page';
+import { canCreate } from '../map/map';
 
 @Component({
   selector: 'app-art-item',
@@ -112,6 +113,7 @@ export class ArtItemPage implements OnInit {
   }
 
   map() {
+    if (!canCreate()) return;
     this.showMap = true;
   }
 

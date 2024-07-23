@@ -30,6 +30,7 @@ import { getOrdinalNum } from '../utils/utils';
 import { addIcons } from 'ionicons';
 import { star, starOutline, shareOutline, locationOutline, calendarOutline } from 'ionicons/icons';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
+import { canCreate } from '../map/map';
 
 @Component({
   selector: 'app-camp',
@@ -70,6 +71,7 @@ export class CampPage implements OnInit {
   eventId: string | undefined;
   rslEvents: RSLEvent[] = [];
   star = false;
+  showMap = false;
   backText = 'Camps';
 
   constructor() {
@@ -100,6 +102,7 @@ export class CampPage implements OnInit {
       this.camp.pin,
     );
     this.mapPoints = [mp];
+    this.showMap = canCreate();
   }
 
   public async toggleRSLStar(occurrence: RSLOccurrence, rslEvent: RSLEvent) {
@@ -116,6 +119,10 @@ export class CampPage implements OnInit {
     const day = parseInt(t[2]);
     const date = new Date(parseInt(t[0]), parseInt(t[1]) - 1, parseInt(t[2]));
     return date.toLocaleDateString([], { weekday: 'long' }) + ` ${getOrdinalNum(day)}`;
+  }
+
+  canCreate() {
+    return canCreate();
   }
 
   open(url: string) {
