@@ -37,7 +37,19 @@ async function mapImage(map: MapModel, disposables: any[]): Promise<Mesh | Group
 
 type MapDisposable = BufferGeometry | Material | Material[];
 
+let renderer: WebGLRenderer;
+let camera: PerspectiveCamera;
+let controls: MapControls;
+let depth = 0;
+
+export function canCreate(): boolean {
+    console.log('canCreate', depth);
+    return depth == 0;
+}
+
 export async function init3D(container: HTMLElement, map: MapModel): Promise<MapResult> {
+    depth++;
+    console.log('init3D', depth);
     const result: MapResult = {
         rotateCompass: (rotation: number) => { },
         myPosition: (x: number, y: number) => { },
@@ -45,16 +57,20 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         dispose: () => { }
     };
     let disposables: MapDisposable[] = [];
+
     const scene = new Scene();
     scene.background = new Color(0x999999);
     scene.add(await mapImage(map, disposables));
 
+
     const w = container.clientWidth;
     const h = container.clientHeight;
 
-    let renderer = new WebGLRenderer({ antialias: true });
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(w, h);
+    if (!renderer) {
+        renderer = new WebGLRenderer({ antialias: true });
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(w, h);
+    }
 
     let dom = container.appendChild(renderer.domElement);
 
@@ -67,21 +83,27 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         renderer.render(scene, camera);
     };
 
-    const camera = new PerspectiveCamera(130, w / h, 1, 10000);
+    if (!camera) {
+        camera = new PerspectiveCamera(130, w / h, 1, 10000);
+    }
     camera.position.set(0, map.height / 4, 20);
 
     // controls
-    const controls = new MapControls(camera, renderer.domElement);
+    if (!controls) {
+        controls = new MapControls(camera, renderer.domElement);
 
-    //controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
-    controls.enableDamping = false; // an animation loop is required when either damping or auto-rotation are enabled
-    controls.dampingFactor = 0.05;
-    controls.screenSpacePanning = false;
-    controls.zoomToCursor = true;
-    controls.enableRotate = false;
-    controls.minDistance = 50;
-    controls.maxDistance = map.height;
-    controls.maxPolarAngle = Math.PI / 2;
+        //controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
+        controls.enableDamping = false; // an animation loop is required when either damping or auto-rotation are enabled
+        controls.dampingFactor = 0.05;
+        controls.screenSpacePanning = false;
+        controls.zoomToCursor = true;
+        controls.enableRotate = false;
+        controls.minDistance = 50;
+        controls.maxDistance = map.height;
+        controls.maxPolarAngle = Math.PI / 2;
+    }
+
+    controls.target.set(0, 0, 0);
 
     const mixers: AnimationMixer[] = [];
     const clock = new Clock();
@@ -136,6 +158,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
     });
     renderer.setAnimationLoop(renderFn);
     result.dispose = () => {
+        depth--;
         for (let d of disposables) {
             if (Array.isArray(d)) {
                 for (let d2 of d) {
@@ -147,14 +170,20 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
             }
         }
         disposables = [];
-        controls.dispose();
+        scene.clear();
+        //controls.dispose();
+
         // ambientLight.dispose();
         // dirLight2.dispose();
         dirLight1.dispose();
         console.log('after dispose', renderer.info);
-        renderer.renderLists.dispose();
-        renderer.dispose();
-        dom.remove();
+        //renderer.renderLists.dispose();
+        //renderer.dispose();
+        //dom.remove();
+
+        try {
+            console.log((performance as any).memory.usedJSHeapSize);
+        } catch (e) { }
     }
     return result;
 }
