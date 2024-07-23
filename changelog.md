@@ -1,5 +1,9 @@
 ## Changes
 
+## 2.32
+
+- Handle memory leak
+
 ## 2.31
 
 - New Map!
