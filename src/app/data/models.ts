@@ -286,6 +286,7 @@ export interface MapPoint {
   y?: number;
   gps?: GpsCoord; // Used as additional info when displaying the map
   info?: MapInfo;
+  animated?: boolean;
 }
 
 export interface MapInfo {

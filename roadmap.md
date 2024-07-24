@@ -19,10 +19,11 @@
 
 # Drop a Pin
 
-- Drop a pin with choice of "Bike", "My Camp", or Other (freeform text)
-- Drops using current GPS onto the map
-- Lets the user modify where the pin is dropped
+- Label should show distance to pin (in meters)
+- Label should show direction: left/right/behind/ahead
 - Always appears on the map with a different color (and icon if camp/bike)
+- Drop a pin with choice of "Bike", "My Camp", or Other (freeform text)
+- Lets the user modify where the pin is dropped
 
 ## Other Features
 

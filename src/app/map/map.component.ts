@@ -221,7 +221,10 @@ export class MapComponent implements OnInit, OnDestroy {
       pinClicked: this.pinClicked.bind(this),
     }
 
-    const blink = this.points.length == 1;
+    if (this.points.length == 1) {
+      this.points[0].animated = true;
+    }
+
     for (const [i, point] of this._points.entries()) {
       const pin = mapPointToPin(point, defaultMapRadius);
 
@@ -229,13 +232,16 @@ export class MapComponent implements OnInit, OnDestroy {
         map.pins.push({
           uuid: `${i}`,
           x: pin.x, z: pin.y,
-          color: point.info?.bgColor ?? 'primary', animated: blink, size: map.defaultPinSize, label: point.info?.label ?? '^'
+          color: point.info?.bgColor ?? 'primary',
+          animated: point.animated,
+          size: map.defaultPinSize,
+          label: point.info?.label ?? '^'
         });
       } else {
         console.error(`Point could not be converted to pin`);
       }
     }
-    console.log('init3D', map)
+
     this.mapResult = await init3D(this.container().nativeElement, map);
     this.mapResult.scrolled = (deltaY: number) => {
       this.scrolled.emit(deltaY);

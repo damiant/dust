@@ -80,13 +80,11 @@ export class PinMapPage {
       const g = this.geo.gpsPosition();
       if (g.lat != 0) {
         if (this.isGettingGPS) {
-          console.log('Got PIN GPS', g);
           this.isGettingGPS = false;
           await this.favs.setThingPosition(this.thingName(), g);
           this.ui.presentToast(`Saved location of ${this.thingName()}`, this.toast);
           this.location.back();
         }
-        console.log('PIN GPS', g);
       }
 
     });
@@ -175,10 +173,6 @@ export class PinMapPage {
   }
 
   private async getThings(): Promise<MapSet> {
-    //let coords: GpsCoord | undefined = undefined;
-    //coords = await this.geo.getPosition();
-
-    console.log(this.thingName());
     const result: MapSet = await this.getAll();
     result.title = this.thingName();
     for (let thing of this.favs.things()) {
@@ -187,12 +181,14 @@ export class PinMapPage {
           this.isGettingGPS = true;
         } else {
           this.canClearThing = true;
+
           this.clearLabel = ['My Camp', 'My Bike'].includes(this.thingName()) ?
             'Clear' : 'Delete';
         }
       }
       if (thing.gps) {
         const pt = await this.db.gpsToMapPoint(thing.gps, undefined);
+        pt.animated = thing.name == this.thingName();
         pt.info = {
           title: thing.name,
           label: this.iconFor(thing.name),
