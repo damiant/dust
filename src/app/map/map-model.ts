@@ -14,6 +14,7 @@ export interface MapResult {
     rotateCompass: (rotation: number) => void;
     myPosition: (x: number, y: number) => void;
     setNearest: (nearest: string) => void;
+    scrolled: (deltaY: number) => void;
     dispose: () => void;
     currentHex?: any;
     currentObject?: any;

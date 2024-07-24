@@ -14,8 +14,6 @@
 
 # Map
 
-- Higher resolution map as theme camp names are too pixelated
-- Use WebGL for map
 - Distance - use km and meters if region (or setting)
 - Distance/Direction - Show distance and direction to a point
 

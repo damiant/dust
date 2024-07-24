@@ -1,5 +1,9 @@
 ## Changes
 
+## 2.33
+
+- Allow scroll up on event and camp page with the map
+
 ## 2.32
 
 - Handle memory leak

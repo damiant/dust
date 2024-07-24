@@ -41,6 +41,7 @@ let renderer: WebGLRenderer;
 let camera: PerspectiveCamera;
 let controls: MapControls;
 let depth = 0;
+let mouseY = 0;
 
 export function canCreate(): boolean {
     console.log('canCreate', depth);
@@ -54,6 +55,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         rotateCompass: (rotation: number) => { },
         myPosition: (x: number, y: number) => { },
         setNearest: (pin: string) => { },
+        scrolled: (deltaY: number) => { },
         dispose: () => { }
     };
     let disposables: MapDisposable[] = [];
@@ -99,7 +101,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         controls.zoomToCursor = true;
         controls.enableRotate = false;
         controls.minDistance = 50;
-        controls.maxDistance = map.height;
+        controls.maxDistance = map.height / 4;
         controls.maxPolarAngle = Math.PI / 2;
     }
 
@@ -140,6 +142,15 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         renderer.setSize(w, h);
     });
 
+    container.addEventListener('pointerdown', async (e: any) => {
+        mouseY = e.clientY;
+        console.log('mousedown', e);
+    });
+    container.addEventListener('pointerup', async (e: any) => {
+        const deltaY = e.clientY - mouseY;
+        console.log('deltaY', deltaY);
+        result.scrolled(deltaY);
+    });
     container.addEventListener('click', (e: any) => {
         const width = container.clientWidth
         const height = container.clientHeight;

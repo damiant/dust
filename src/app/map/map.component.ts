@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, Input, OnDestroy, OnInit, effect, input, viewChild, inject } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, effect, input, viewChild, inject, output } from '@angular/core';
 import { PinchZoomModule } from '@meddv/ngx-pinch-zoom';
 import { LocationEnabledStatus, MapInfo, MapPoint, Pin } from '../data/models';
 import { defaultMapRadius, distance, formatDistanceMiles, mapPointToPin } from './map.utils';
@@ -75,6 +75,7 @@ export class MapComponent implements OnInit, OnDestroy {
   footerPadding = input<number>(0);
   smallPins = input<boolean>(false);
   isHeader = input<boolean>(false);
+  scrolled = output<number>();
 
   @Input() set points(points: MapPoint[]) {
     if (this.pointsSet) return;
@@ -237,6 +238,9 @@ export class MapComponent implements OnInit, OnDestroy {
     }
     console.log('init3D', map)
     this.mapResult = await init3D(this.container().nativeElement, map);
+    this.mapResult.scrolled = (deltaY: number) => {
+      this.scrolled.emit(deltaY);
+    }
     this._viewReady = true;
     await this.checkGeolocation();
     this.setupCompass();

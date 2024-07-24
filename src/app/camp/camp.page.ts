@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -64,6 +64,7 @@ export class CampPage implements OnInit {
   private settings = inject(SettingsService);
   private toastController = inject(ToastController);
   private ui = inject(UiService);
+  content = viewChild.required(IonContent);
   showEvent = false;
   camp: Camp | undefined;
   mapPoints: MapPoint[] = [];
@@ -145,6 +146,13 @@ export class CampPage implements OnInit {
       text: `Check out ${this.camp?.name} at ${this.settings.eventTitle()} using the dust app.`,
       url,
     });
+  }
+
+  scrolled(deltaY: number) {
+    console.log('scrolled on camp', deltaY);
+    if (deltaY > 100) {
+      this.content().scrollToTop(500);
+    }
   }
 
   rslInfo() {
