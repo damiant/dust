@@ -118,8 +118,9 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
     // Positions the camera over the pin
     if (map.pins.length == 1 && p) {
         console.log(JSON.stringify(camera));
-        camera.position.set(p.pin.position.x, map.height / 4, p.pin.position.z + 20);
-        controls.target.set(p.pin.position.x, 0, p.pin.position.z);
+        const z = p.pin.position.z + map.height / 4;
+        camera.position.set(p.pin.position.x, map.height / 4, z + 20);
+        controls.target.set(p.pin.position.x, 0, z);
     }
 
     // lights

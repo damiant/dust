@@ -3,6 +3,7 @@
 ## 2.33
 
 - Allow scroll up on event and camp page with the map
+- Improve centering on map
 
 ## 2.32
 
