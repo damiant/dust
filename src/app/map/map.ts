@@ -305,10 +305,13 @@ async function addPin(
     let svg = undefined;
     switch (pin.label) {
         case '^': svg = 'assets/location.svg'; rotation = Math.PI; break;
+        case '-': svg = 'assets/camp.svg'; rotation = Math.PI; break;
+        case ':': svg = 'assets/bike.svg'; rotation = Math.PI; break;
         case '+': svg = 'assets/medical.svg'; break;
         case '': svg = 'assets/compass.svg'; break;
     }
 
+    console.log(pin, svg);
     if (svg) {
         const scale = 0.2 * (mapWidth / 10000);
         const p = await addSVG(svg, scale, rotation, disposables, 'txt');

@@ -5,6 +5,9 @@
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-icon [hidden]="!busy()" class="rotate" color="primary" name="compass-outline"></ion-icon>
+      @if (canClearThing) {
+      <ion-button (click)="clearThing()" color="danger">{{clearLabel}}</ion-button>
+      }
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -23,5 +26,6 @@
       <ion-text class="text">{{description}}</ion-text>
     </ion-item>
   </div>
+  <ion-loading spinner="circular" [isOpen]="isGettingGPS" message="Getting Location"></ion-loading>
   <app-map [smallPins]="smallPins" [points]="points"></app-map>
 </ion-content>

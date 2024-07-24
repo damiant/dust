@@ -93,6 +93,8 @@
 
   <app-events-card [events]="favEventsToday"></app-events-card>
 
+  <app-pins-card (clickThing)="clickThing($event)" [things]="things"></app-pins-card>
+
   <div (click)="moreClick()" class="pad-top" (click)="hiddenPanel = !hiddenPanel"></div>
   <div style="padding: 1rem">
     <ion-item [hidden]="!hiddenPanel" lines="none">
@@ -104,5 +106,6 @@
       <ion-toggle (ionChange)="toggleLocation($event)" [checked]="locationEnabled">Show My Location</ion-toggle>
     </ion-item>
   </div>
+
   <div class="pad-top"></div>
 </ion-content>

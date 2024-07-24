@@ -194,7 +194,6 @@ export class MapComponent implements OnInit, OnDestroy {
     }
 
     if (this.mapResult) {
-      console.log('set my position', pt, gpsCoord);
       this.mapResult.myPosition(pt.x, pt.y);
     }
 

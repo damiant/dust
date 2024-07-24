@@ -1,0 +1,13 @@
+<ion-card class="ion-padding-bottom">
+  <ion-card-header>
+    <ion-card-title>Find</ion-card-title>
+    <ion-fab-button style="position: absolute; top: 0.2rem; z-index: 1; right: 0.2rem; left: auto" (click)="addThing()"
+      size="small"><ion-icon name="add"></ion-icon></ion-fab-button>
+  </ion-card-header>
+  @for (thing of things(); track thing.name; let index = $index) {
+  <ion-item (click)="doClickThing(thing)" lines="none" color="transparent" detail="true">
+    <ion-icon slot="start" name="location-outline"></ion-icon> {{thing.name}}
+    <ion-note slot="end">{{thing.gps ? '' : 'Location not set'}}</ion-note>
+  </ion-item>
+  }
+</ion-card>

@@ -4,6 +4,7 @@
 
 - Allow scroll up on event and camp page with the map
 - Improve centering on map
+- Add option to drop pin
 
 ## 2.32
 

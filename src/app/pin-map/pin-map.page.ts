@@ -1,5 +1,5 @@
-import { Component, Signal, WritableSignal, computed, signal, input, inject, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Signal, WritableSignal, computed, signal, input, inject, ViewChild, effect } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MapComponent } from '../map/map.component';
 import { DbService } from '../data/db.service';
@@ -18,19 +18,23 @@ import {
   IonTitle,
   IonToolbar,
   IonSpinner,
-  IonIcon,
+  IonIcon, IonButton, IonLoading
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { compassOutline } from 'ionicons/icons';
 import { SearchComponent } from '../search/search.component';
 import { PinColor } from '../map/map-model';
+import { FavoritesService } from '../favs/favorites.service';
+import { UiService } from '../ui/ui.service';
+import { ToastController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-pin-map',
   templateUrl: './pin-map.page.html',
   styleUrls: ['./pin-map.page.scss'],
   standalone: true,
-  imports: [
+  imports: [IonLoading, IonButton,
     CommonModule,
     FormsModule,
     MapComponent,
@@ -49,10 +53,17 @@ import { PinColor } from '../map/map-model';
 })
 export class PinMapPage {
   private db = inject(DbService);
+  private ui = inject(UiService);
   private geo = inject(GeoService);
+  private favs = inject(FavoritesService);
+  private toast = inject(ToastController);
   mapType = input('');
+  thingName = input('');
   points: MapPoint[] = [];
   smallPins: boolean = false;
+  isGettingGPS = false;
+  canClearThing = false;
+  clearLabel = 'Clear';
   showSearch: Signal<boolean> = computed(() => {
     return this.mapType() == MapType.All || this.mapType() == MapType.Art;
   });
@@ -62,9 +73,23 @@ export class PinMapPage {
   title: WritableSignal<string> = signal(' ');
   description = '';
   @ViewChild(MapComponent) map!: MapComponent;
-  constructor() {
+  constructor(private location: Location) {
     addIcons({ compassOutline });
     this.db.checkInit();
+    effect(async () => {
+      const g = this.geo.gpsPosition();
+      if (g.lat != 0) {
+        if (this.isGettingGPS) {
+          console.log('Got PIN GPS', g);
+          this.isGettingGPS = false;
+          await this.favs.setThingPosition(this.thingName(), g);
+          this.ui.presentToast(`Saved location of ${this.thingName()}`, this.toast);
+          this.location.back();
+        }
+        console.log('PIN GPS', g);
+      }
+
+    });
   }
 
   async ionViewWillEnter() {
@@ -97,6 +122,7 @@ export class PinMapPage {
   }
 
   private async mapFor(mapType: string): Promise<MapSet> {
+    console.log(`Map for ${mapType}`);
     switch (mapType) {
       case MapType.Art:
         return await this.getArt();
@@ -108,6 +134,8 @@ export class PinMapPage {
         return await this.fallback(await this.db.getMapPoints(Names.ice), 'Ice', mapType);
       case MapType.Medical:
         return await this.fallback(await this.db.getMapPoints(Names.medical), 'Medical', mapType);
+      case MapType.Things:
+        return await this.getThings();
       case MapType.All:
         return await this.getAll();
       default:
@@ -146,13 +174,70 @@ export class PinMapPage {
     };
   }
 
+  private async getThings(): Promise<MapSet> {
+    //let coords: GpsCoord | undefined = undefined;
+    //coords = await this.geo.getPosition();
+
+    console.log(this.thingName());
+    const result: MapSet = await this.getAll();
+    result.title = this.thingName();
+    for (let thing of this.favs.things()) {
+      if (thing.name == this.thingName()) {
+        if (!thing.gps) {
+          this.isGettingGPS = true;
+        } else {
+          this.canClearThing = true;
+          this.clearLabel = ['My Camp', 'My Bike'].includes(this.thingName()) ?
+            'Clear' : 'Delete';
+        }
+      }
+      if (thing.gps) {
+        const pt = await this.db.gpsToMapPoint(thing.gps, undefined);
+        pt.info = {
+          title: thing.name,
+          label: this.iconFor(thing.name),
+          location: '',
+          subtitle: `Saved ${this.since(thing.lastChanged)}. ${thing.notes}`
+        };
+        result.points.push(pt);
+        console.log(`thing.${thing.name} is ${thing.gps.lat}, ${thing.gps.lng}. x=${pt.x}, y=${pt.y}`);
+      }
+    }
+
+    return result;
+  }
+
+  private iconFor(name: string): string {
+    if (name.includes('Camp')) return '-';
+    if (name.includes('Bike')) return ':';
+    return '^';
+  }
+
+  private since(v: number | undefined): string {
+    if (!v) return '';
+    const now = new Date().getTime();
+    var differenceValue = (now - v) / 1000;
+    differenceValue /= 60;
+    const mins = Math.abs(Math.round(differenceValue));
+    if (mins > 60) {
+      const hrs = Math.round(mins / 60);
+      return `${hrs} hr${hrs == 1 ? '' : 's'} ago`;
+    }
+    return `${mins} min${mins == 1 ? '' : 's'} ago`;
+  }
+
+  public async clearThing() {
+    await this.favs.clearThing(this.thingName());
+    this.ui.presentToast(`Removed ${this.thingName()}`, this.toast);
+    this.location.back();
+  }
+
   private async getAll(): Promise<MapSet> {
     let coords: GpsCoord | undefined = undefined;
     coords = await this.geo.getPosition();
 
     const camps = await this.db.findCamps('', coords);
     const points = [];
-
 
     for (let camp of camps) {
       if (camp.location_string || camp.pin?.x) {

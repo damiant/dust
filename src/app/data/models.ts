@@ -69,6 +69,13 @@ export interface TimeRange {
   end: Date;
 }
 
+export interface Thing {
+  name: string;
+  notes: string;
+  gps?: GpsCoord;
+  lastChanged?: number;
+}
+
 export interface Camp {
   contact_email?: string;
   description?: string;
@@ -240,6 +247,7 @@ export enum MapType {
   Now = 'now',
   Art = 'art',
   Medical = 'medical',
+  Things = 'things',
   All = 'all'
 }
 
