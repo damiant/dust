@@ -1,4 +1,3 @@
-import { compass } from 'ionicons/icons';
 import { MapInfo, MapPoint, Pin } from '../data/models';
 import { GpsCoord } from './geo.utils';
 
