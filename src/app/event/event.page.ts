@@ -39,6 +39,7 @@ import {
   closeCircleOutline,
 } from 'ionicons/icons';
 import { CachedImgComponent, ImageLocation } from '../cached-img/cached-img.component';
+import { canCreate } from '../map/map';
 
 @Component({
   selector: 'app-event',
@@ -135,6 +136,7 @@ export class EventPage implements OnInit {
       await this.fav.setEventStars(this.event);
     } finally {
       this.ready = true;
+      this.showMap = canCreate();
     }
   }
 

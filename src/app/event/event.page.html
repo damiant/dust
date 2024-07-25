@@ -83,7 +83,7 @@
   </ion-list>
   }
   <div class="pad"></div>
-  @if (ready && event) {
+  @if (ready && event && showMap) {
   <app-map (scrolled)="scrolled($event)" aria-hidden="true" [points]="mapPoints"></app-map>
   }
 </ion-content>
