@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, Input, OnDestroy, OnInit, effect, input, viewChild, inject, output } from '@angular/core';
 import { PinchZoomModule } from '@meddv/ngx-pinch-zoom';
 import { LocationEnabledStatus, MapInfo, MapPoint, Pin } from '../data/models';
-import { defaultMapRadius, distance, formatDistanceMiles, mapPointToPin } from './map.utils';
+import { calculateRelativePosition, defaultMapRadius, distance, formatDistanceNice, mapPointToPin } from './map.utils';
 import { delay } from '../utils/utils';
 import { GeoService } from '../geolocation/geo.service';
 import { SettingsService } from '../data/settings.service';
@@ -17,18 +17,8 @@ import { DbService } from '../data/db.service';
 import { MapModel, MapResult } from './map-model';
 import { init3D } from './map';
 
-interface MapInformation {
-  width: number; // Width of the map
-  height: number; // Height of the map
-  circleRadius: number; // Half width
-}
-
 // How often is the map updated with a new location
 const geolocateInterval = 10000;
-
-// Offset x,y in pixel of the "you are here" pin
-const youOffsetX = 6;
-const youOffsetY = 4;
 
 @Component({
   selector: 'app-map',
@@ -62,6 +52,7 @@ export class MapComponent implements OnInit, OnDestroy {
   showMessage = false;
   hideCompass = false;
   pointsSet = false;
+  selectedPoint: MapPoint | undefined;
   pins: Pin[] = [];
   private geoInterval: any;
   private nearestPoint: number | undefined;
@@ -77,6 +68,7 @@ export class MapComponent implements OnInit, OnDestroy {
   isHeader = input<boolean>(false);
   scrolled = output<number>();
 
+
   @Input() set points(points: MapPoint[]) {
     if (this.pointsSet) return;
     this._points = points;
@@ -90,10 +82,20 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   private async fixGPSAndUpdate() {
+    this.selectedPoint = undefined;
+    let foundPoints = 0;
     for (let point of this._points) {
       if (!point.gps) {
         point.gps = await this.geo.getMapPointToGPS(point);
       }
+      if (point.animated) {
+        this.selectedPoint = point;
+        foundPoints++;
+      }
+    }
+    if (foundPoints > 1) {
+      // Only select one point
+      this.selectedPoint = undefined;
     }
     this.hideCompass = !await this.db.hasGeoPoints();
     await delay(150);
@@ -178,7 +180,9 @@ export class MapComponent implements OnInit, OnDestroy {
     if (degree < 0) {
       degree += 360;
     }
-    console.log(`Compass heading is ${degree}`);
+
+    // Because the label shows left/right ahead we need to update the location
+    this.displayYourLocation(this.geo.gpsPosition());
     if (this.mapResult) {
       this.mapResult.rotateCompass(degree);
     }
@@ -197,7 +201,7 @@ export class MapComponent implements OnInit, OnDestroy {
       this.mapResult.myPosition(pt.x, pt.y);
     }
 
-    await this.calculateNearest(gpsCoord);
+    await this.calculateNearest(gpsCoord, this.geo.heading());
   }
 
   private setMapInformation() {
@@ -307,12 +311,13 @@ export class MapComponent implements OnInit, OnDestroy {
     }
   }
 
-  private async calculateNearest(you: GpsCoord) {
+  private async calculateNearest(you: GpsCoord, compass: CompassHeading) {
     let least = 999999;
     let closest: MapPoint | undefined;
     let closestIdx = 0;
+    let name = 'Closest point';
     let idx = 0;
-    for (let point of this._points) {
+    for (let point of this.selectedPoint ? [this.selectedPoint] : this._points) {
       if (!point.gps || !point.gps.lat) {
         if (!environment.production) {
           console.error(`MapPoint is missing gps coordinate: ${JSON.stringify(point)}`);
@@ -324,6 +329,7 @@ export class MapComponent implements OnInit, OnDestroy {
           least = dist;
           closest = point;
           closestIdx = idx;
+          name = point.info?.title.replace('My ', 'Your ') ?? '';
         }
       }
       idx++;
@@ -341,17 +347,18 @@ export class MapComponent implements OnInit, OnDestroy {
         this.footer = ``;
         return;
       }
-      const prefix = this._points.length > 1 ? 'Closest point is ' : '';
-      const dist = formatDistanceMiles(least);
+      const prefix = this._points.length > 1 ? `${name} is ` : '';
+      const dist = formatDistanceNice(least);
       if (least > 50) {
         if (this.settings.settings.locationEnabled === LocationEnabledStatus.Enabled) {
-          this.footer = 'You are outside of the Event';
+          this.footer = (you.lat == 0) ? 'Calculating location' : 'You are outside of the Event';
         } else {
           this.footer = this.disabledMessage;
         }
       } else {
         if (dist != '') {
-          this.footer = `${prefix}${dist} away.`;
+          const direction = closest.gps ? calculateRelativePosition(you, closest.gps, compass.trueHeading) : 'away';
+          this.footer = `${prefix}${dist} ${direction}`;
         } else {
           this.footer = ``;
           console.error(`Unable to find a close point`);

@@ -5,6 +5,7 @@
 - Allow scroll up on event and camp page with the map
 - Improve centering on map
 - Add option to drop pin
+- Map shows location down to feet and whether it is left, right, ahead or behind you
 
 ## 2.32
 

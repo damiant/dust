@@ -1,3 +1,4 @@
+import { compass } from 'ionicons/icons';
 import { MapInfo, MapPoint, Pin } from '../data/models';
 import { GpsCoord } from './geo.utils';
 
@@ -139,6 +140,18 @@ export function formatDistanceMiles(dist: number): string {
   return `${rounded} miles`;
 }
 
+export function formatDistanceNice(dist: number): string {
+  return (dist >= 0.25) ? formatDistanceMiles(dist) : formatDistanceFt(dist);
+}
+
+export function formatDistanceFt(dist: number): string {
+  if (dist == maxDistance) {
+    return '';
+  }
+  const rounded = Math.round(dist * 5280.0);
+  return `${rounded} ft`;
+}
+
 export function mapPointToPin(point: MapPoint, mapRadius: number): Pin | undefined {
   if (point.x && point.y) {
     return {
@@ -152,7 +165,7 @@ export function mapPointToPin(point: MapPoint, mapRadius: number): Pin | undefin
         point.clock = '5:00';
       } else if (point.street == 'none' || point.street == 'mobile') {
         return undefined;
-      } else {        
+      } else {
         console.error('Invalid Point', point);
         return undefined;
       }
@@ -171,6 +184,7 @@ export function mapPointToPin(point: MapPoint, mapRadius: number): Pin | undefin
   }
   return undefined;
 }
+
 export function locationStringToPin(location: string, mapRadius: number): Pin | undefined {
   if (!location) return undefined;
   if (location.toLowerCase().includes('center camp')) {
@@ -220,6 +234,86 @@ export function toClock(clock: string): number {
   const tmp = clock.split(':');
   const v = parseInt(tmp[1]) / 60.0; // eg 2:45 => 45/60 => 0.75
   return parseInt(tmp[0]) + v;
+}
+
+export function calculateRelativePosition(you: GpsCoord, pin: GpsCoord, compassRotation: number): string {
+  // Radius of the Earth in meters
+  const R = 6371000;
+
+  // Convert degrees to radians
+  const degToRad = (degrees: number) => degrees * (Math.PI / 180);
+  const radToDeg = (radians: number) => radians * (180 / Math.PI);
+
+  // Convert degrees to radians
+  const userLat = degToRad(you.lat);
+  const userLon = degToRad(you.lng);
+  const pinLat = degToRad(pin.lat);
+  const pinLon = degToRad(pin.lng);
+
+  // Haversine formula to calculate distance
+  const dLat = pinLat - userLat;
+  const dLon = pinLon - userLon;
+  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(userLat) * Math.cos(pinLat) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = R * c;
+
+  // Bearing formula
+  const y = Math.sin(pinLon - userLon) * Math.cos(pinLat);
+  const x = Math.cos(userLat) * Math.sin(pinLat) -
+    Math.sin(userLat) * Math.cos(pinLat) * Math.cos(pinLon - userLon);
+  const bearingToPin = Math.atan2(y, x);
+
+  // Convert bearing to degrees
+  let bearingToPinDeg = radToDeg(bearingToPin);
+  if (bearingToPinDeg < 0) bearingToPinDeg += 360;
+
+  // Calculate difference between bearing and heading
+  let angleDiff = bearingToPinDeg - compassRotation;
+  angleDiff = (angleDiff + 180) % 360 - 180;
+  console.log(`compass=${compassRotation} angleDiff=${angleDiff} bearingToPinDeg=${bearingToPinDeg} bearingToPin=${bearingToPin}`);
+
+  // Determine relative position
+  if (angleDiff > -45 && angleDiff <= 45) {
+    return 'ahead of you';
+  } else if (angleDiff > 45 && angleDiff <= 135) {
+    return 'to the right';
+  } else if (angleDiff > 135 || angleDiff <= -135) {
+    return 'behind you';
+  } else {
+    return 'to the left';
+  }
+  // Convert degrees to radians
+  // const toRadians = (degrees: number) => (degrees * Math.PI) / 180;
+
+  // // Calculate difference in longitude
+  // const deltaLong = toRadians(pin.lng - you.lng);
+
+  // // Convert latitudes to radians
+  // const phi1 = toRadians(you.lat);
+  // const phi2 = toRadians(pin.lat);
+
+  // // Calculate bearing angle
+  // const bearingAngle = Math.atan2(
+  //   Math.sin(deltaLong),
+  //   Math.cos(phi2) * Math.tan(phi1) - Math.sin(phi2) * Math.cos(deltaLong)
+  // );
+
+  // // Adjust for compass rotation
+  // const adjustedAngle = (bearingAngle * 180) / Math.PI - compassRotation;
+
+  // console.log(`compass=${compassRotation} adjusted=${adjustedAngle} bearing2=${(bearingAngle * 180) / Math.PI} bearing=${bearingAngle}`);
+  // // Interpret the result
+  // if (adjustedAngle >= 0 && adjustedAngle < 180) {
+  //   return 'ahead';
+  // } else if (adjustedAngle >= 180 && adjustedAngle < 360) {
+  //   return 'behind';
+  // } else if (Math.abs(adjustedAngle - 90) < 10 || Math.abs(adjustedAngle - 270) < 10) {
+  //   return 'to the left';
+  // } else {
+  //   return 'to the right';
+  // }
 }
 
 function convertArt(l: string, info?: MapInfo): MapPoint {
