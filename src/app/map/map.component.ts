@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, Input, OnDestroy, OnInit, effect, input, viewChild, inject, output } from '@angular/core';
-import { PinchZoomModule } from '@meddv/ngx-pinch-zoom';
 import { LocationEnabledStatus, MapInfo, MapPoint, Pin } from '../data/models';
 import { calculateRelativePosition, defaultMapRadius, distance, formatDistanceNice, mapPointToPin } from './map.utils';
 import { delay } from '../utils/utils';
@@ -25,7 +24,6 @@ const geolocateInterval = 10000;
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
   imports: [
-    PinchZoomModule,
     RouterModule,
     CommonModule,
     MessageComponent,
