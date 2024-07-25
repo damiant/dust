@@ -1,4 +1,4 @@
-import { Injectable, signal, inject } from '@angular/core';
+import { Injectable, signal, inject, WritableSignal } from '@angular/core';
 import {
   Event,
   Favorites,
@@ -8,6 +8,7 @@ import {
   PrivateEvent,
   RSLEvent,
   RSLOccurrence,
+  Thing,
 } from '../data/models';
 import { NotificationService, ScheduleResult } from '../notifications/notification.service';
 import { Preferences } from '@capacitor/preferences';
@@ -15,9 +16,11 @@ import { SettingsService } from '../data/settings.service';
 import { DbService } from '../data/db.service';
 import { clone, getDayName, getOccurrenceTimeString, now, sameDay } from '../utils/utils';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
+import { GpsCoord } from '../map/geo.utils';
 
 enum DbId {
   favorites = 'favorites',
+  things = 'things'
 }
 
 @Injectable({
@@ -32,6 +35,7 @@ export class FavoritesService {
   private dataset: string = '';
   private mapPointsTitle: string = '';
   private mapPoints: MapPoint[] = [];
+  public things: WritableSignal<Thing[]> = signal([]);
 
   private favorites: Favorites = { art: [], events: [], camps: [], friends: [], rslEvents: [], privateEvents: [] };
 
@@ -326,6 +330,70 @@ export class FavoritesService {
     return this.getEventList(favs.events, false, [], true);
   }
 
+  public async getThings(): Promise<void> {
+    const things: Thing[] = [];
+    const result = await Preferences.get({ key: `${this.dataset}-${DbId.things}` });
+    if (result.value) {
+      things.push(...JSON.parse(result.value));
+    }
+    if (things.length == 0) {
+      things.push({ name: 'My Camp', notes: '' });
+      things.push({ name: 'My Bike', notes: '' });
+    }
+    this.things.update(() => [...things]);
+  }
+
+  public async addThing(thing: Thing) {
+    const things = this.things();
+    things.push(thing);
+    this.things.update(() => [...things]);
+    await this.saveThings(this.things());
+  }
+
+  public async deleteThing(thing: Thing) {
+    const things = this.things();
+    for (let t of things) {
+      if (t.name == thing.name) {
+        things.splice(things.indexOf(t), 1);
+      }
+    }
+    this.things.update(() => [...things]);
+    await this.saveThings(this.things());
+  }
+
+  public async clearThing(name: string) {
+    let things = this.things();
+    if (['My Camp', 'My Bike'].includes(name)) {
+      for (let thing of things) {
+        if (thing.name == name) {
+          thing.gps = undefined;
+        }
+      }
+    } else {
+      things = things.filter(t => t.name != name);
+    }
+    this.things.update(() => [...things]);
+    await this.saveThings(this.things());
+  }
+
+  public async setThingPosition(name: string, gps: GpsCoord) {
+    await this.getThings();
+
+    let things = this.things();
+    for (let thing of things) {
+      if (thing.name == name) {
+        thing.gps = gps;
+        thing.lastChanged = new Date().getTime();
+      }
+    }
+    await this.saveThings(things);
+    this.things.set(things);
+  }
+
+  private async saveThings(things: Thing[]) {
+    await Preferences.set({ key: `${this.dataset}-${DbId.things}`, value: JSON.stringify(things) });
+  }
+
   public async getEventList(ids: string[], historical: boolean, rslEvents: RSLEvent[], today: boolean): Promise<Event[]> {
     let events = await this.db.getEventList(this.eventsFrom(ids));
 
@@ -462,6 +530,7 @@ export class FavoritesService {
   private async load() {
     try {
       this.favorites = JSON.parse(await this.get(DbId.favorites, this.favorites));
+      await this.getThings();
     } catch {
       this.favorites = this.noData();
     }

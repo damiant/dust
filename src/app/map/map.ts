@@ -41,6 +41,7 @@ let renderer: WebGLRenderer;
 let camera: PerspectiveCamera;
 let controls: MapControls;
 let depth = 0;
+let mouseY = 0;
 
 export function canCreate(): boolean {
     console.log('canCreate', depth);
@@ -54,6 +55,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         rotateCompass: (rotation: number) => { },
         myPosition: (x: number, y: number) => { },
         setNearest: (pin: string) => { },
+        scrolled: (deltaY: number) => { },
         dispose: () => { }
     };
     let disposables: MapDisposable[] = [];
@@ -99,7 +101,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         controls.zoomToCursor = true;
         controls.enableRotate = false;
         controls.minDistance = 50;
-        controls.maxDistance = map.height;
+        controls.maxDistance = map.height / 4;
         controls.maxPolarAngle = Math.PI / 2;
     }
 
@@ -116,8 +118,9 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
     // Positions the camera over the pin
     if (map.pins.length == 1 && p) {
         console.log(JSON.stringify(camera));
-        camera.position.set(p.pin.position.x, map.height / 4, p.pin.position.z + 20);
-        controls.target.set(p.pin.position.x, 0, p.pin.position.z);
+        const z = p.pin.position.z + map.height / 4;
+        camera.position.set(p.pin.position.x, map.height / 4, z + 20);
+        controls.target.set(p.pin.position.x, 0, z);
     }
 
     // lights
@@ -140,6 +143,15 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         renderer.setSize(w, h);
     });
 
+    container.addEventListener('pointerdown', async (e: any) => {
+        mouseY = e.clientY;
+        console.log('mousedown', e);
+    });
+    container.addEventListener('pointerup', async (e: any) => {
+        const deltaY = e.clientY - mouseY;
+        console.log('deltaY', deltaY);
+        result.scrolled(deltaY);
+    });
     container.addEventListener('click', (e: any) => {
         const width = container.clientWidth
         const height = container.clientHeight;
@@ -293,10 +305,13 @@ async function addPin(
     let svg = undefined;
     switch (pin.label) {
         case '^': svg = 'assets/location.svg'; rotation = Math.PI; break;
+        case '-': svg = 'assets/camp.svg'; rotation = Math.PI; break;
+        case ':': svg = 'assets/bike.svg'; rotation = Math.PI; break;
         case '+': svg = 'assets/medical.svg'; break;
         case '': svg = 'assets/compass.svg'; break;
     }
 
+    console.log(pin, svg);
     if (svg) {
         const scale = 0.2 * (mapWidth / 10000);
         const p = await addSVG(svg, scale, rotation, disposables, 'txt');

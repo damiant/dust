@@ -101,6 +101,6 @@
   }
   <div class="pad"></div>
   @if (showMap) {
-  <app-map aria-hidden="true" [points]="mapPoints"></app-map>
+  <app-map (scrolled)="scrolled($event)" aria-hidden="true" [points]="mapPoints"></app-map>
   }
 </ion-content>

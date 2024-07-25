@@ -26,6 +26,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pin-map/pin-map.page').then((m) => m.PinMapPage),
   },
   {
+    path: 'map/:mapType/:thingName',
+    loadComponent: () => import('./pin-map/pin-map.page').then((m) => m.PinMapPage),
+  },
+
+  {
     path: 'intro',
     loadComponent: () => import('./intro/intro.page').then((m) => m.IntroPage),
   },

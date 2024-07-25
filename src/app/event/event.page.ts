@@ -77,6 +77,7 @@ export class EventPage implements OnInit {
   public event: Event | undefined;
   public back = signal('Back');
   popover = viewChild.required(IonPopover);
+  content = viewChild.required(IonContent);
   isOpen = false;
   ready = false;
   showMap = false;
@@ -158,6 +159,13 @@ export class EventPage implements OnInit {
     if (camp) {
       this.campDescription = camp.description!;
       this.isOpen = true;
+    }
+  }
+
+  scrolled(deltaY: number) {
+    console.log('scrolled on event', deltaY);
+    if (deltaY > 100) {
+      this.content().scrollToTop(500);
     }
   }
 

@@ -33,7 +33,7 @@ import { DbService } from '../data/db.service';
 import { TileContainerComponent } from '../tile-container/tile-container.component';
 import { TileComponent } from '../tile/tile.component';
 import { GeoService } from '../geolocation/geo.service';
-import { DatasetResult, Event, Link, LocationEnabledStatus, Names } from '../data/models';
+import { DatasetResult, Event, Link, LocationEnabledStatus, Names, Thing } from '../data/models';
 import { environment } from 'src/environments/environment';
 import { RateApp } from 'capacitor-rate-app';
 import { PrivateEventsComponent } from '../private-events/private-events.component';
@@ -62,6 +62,7 @@ import { EventsCardComponent } from '../events-card/events-card.component';
 import { FavoritesService } from '../favs/favorites.service';
 import { ApiService } from '../data/api.service';
 import { delay } from '../utils/utils';
+import { PinsCardComponent } from '../pins-card/pins-card.component';
 
 interface Group {
   id: number;
@@ -101,6 +102,7 @@ interface Group {
     TileComponent,
     EventsCardComponent,
     PrivateEventsComponent,
+    PinsCardComponent,
     LinkComponent,
   ],
 })
@@ -127,6 +129,7 @@ export class ProfilePage implements OnInit {
   imageUrl = '';
   mapPin: GPSPin | undefined;
   groups: Group[] = [];
+  things: Thing[] = [];
   ionContent = viewChild.required(IonContent);
   ionModal = viewChild.required(IonModal);
   hasMedical = true;
@@ -160,6 +163,10 @@ export class ProfilePage implements OnInit {
       this.favs.changed();
       await this.update();
     });
+    effect(() => {
+      const things = this.favs.things();
+      this.things = things;
+    });
   }
 
   async ngOnInit() {
@@ -182,10 +189,16 @@ export class ProfilePage implements OnInit {
     this.eventIsHappening = !this.db.eventHasntBegun() && !this.db.isHistorical();
     this.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
     this.groups = this.group(await this.db.getLinks());
+    await this.favs.getThings();
+    this.things = this.favs.things();
   }
 
   async update() {
     this.favEventsToday = await this.favs.getFavoriteEventsToday();
+  }
+
+  clickThing(thing: Thing) {
+    this.router.navigateByUrl(`/map/things/${thing.name}`);
   }
 
   private group(links: Link[]): Group[] {

@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+    </ion-buttons>
+    <ion-title>Pin</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="confirm()" [strong]="true">Save</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-input autocapitalize="words" name="Name" id="Name" label="Name" [(ngModel)]="thing.name"
+      placeholder="Name of the pin"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input label="Notes" [(ngModel)]="thing.notes" placeholder=""></ion-input>
+  </ion-item>
+
+  @if (isEdit) {
+  <div class="center">
+    <ion-button (click)="deleteThing()" shape="round">Delete</ion-button>
+  </div>
+  }
+</ion-content>
