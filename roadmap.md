@@ -1,5 +1,8 @@
 # Roadmap
 
+- Location hints from BM into the app
+- Distance - use km and meters if region (or setting)
+
 - Next/Prev buttons on events/art/camps (feature request)
 - On todays favorite events show bold for happening now, grey if completed
 - As the time changes, update todays events
@@ -12,18 +15,11 @@
 - Be able to favorite from the main listing
 - Share/Colllaborate with friends on your favorites list
 
-# Map
-
-- Distance - use km and meters if region (or setting)
-- Distance/Direction - Show distance and direction to a point
-
 # Drop a Pin
 
-- Label should show distance to pin (in meters)
-- Label should show direction: left/right/behind/ahead
-- Always appears on the map with a different color (and icon if camp/bike)
-- Drop a pin with choice of "Bike", "My Camp", or Other (freeform text)
-- Lets the user modify where the pin is dropped
+- If pin is dropped and location is not on the map then give message
+- If pin dropped and location not on map then ask for street location and use that to guess
+- Share my location - have URL which includes location and camp name and person name. Use for facebook / media
 
 ## Other Features
 
