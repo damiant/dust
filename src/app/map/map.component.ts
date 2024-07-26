@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, Input, OnDestroy, OnInit, effect, input, viewChild, inject, output } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, effect, input, viewChild, inject, output, model } from '@angular/core';
 import { LocationEnabledStatus, MapInfo, MapPoint, Pin } from '../data/models';
 import { calculateRelativePosition, defaultMapRadius, distance, formatDistanceNice, mapPointToPin } from './map.utils';
 import { delay } from '../utils/utils';
@@ -64,6 +64,8 @@ export class MapComponent implements OnInit, OnDestroy {
   footerPadding = input<number>(0);
   smallPins = input<boolean>(false);
   isHeader = input<boolean>(false);
+  loadingDialog = model<boolean>(false);
+  wasLoadingDialog = false;
   scrolled = output<number>();
 
 
@@ -107,14 +109,33 @@ export class MapComponent implements OnInit, OnDestroy {
       return;
     }
     this.showMessage = true;
+    this.hideLoadingDialog();
+  }
+
+  private hideLoadingDialog() {
+    if (this.loadingDialog()) {
+      this.wasLoadingDialog = true;
+    }
+    this.loadingDialog.set(false);
   }
 
   async enableGeoLocation(now: boolean) {
+    if (this.wasLoadingDialog) {
+      // Show the loading dialog again
+      this.loadingDialog.set(true);
+      this.wasLoadingDialog = false;
+    }
+
     if (now) {
       if (await this.geo.requestPermission()) {
         this.settings.settings.locationEnabled = LocationEnabledStatus.Enabled;
         this.settings.save();
         this.checkGeolocation();
+      } else {
+        // User denied location so hide the loading dialog if shown
+        if (this.loadingDialog()) {
+          this.hideLoadingDialog();
+        }
       }
     } else {
       this.settings.setLastGeoAlert();
@@ -268,6 +289,7 @@ export class MapComponent implements OnInit, OnDestroy {
     if (this.settings.settings.locationEnabled === LocationEnabledStatus.Unknown) {
       if (this.settings.shouldGeoAlert() && !this.hideCompass) {
         this.showMessage = true;
+        this.hideLoadingDialog();
       }
       return;
     }
@@ -290,6 +312,7 @@ export class MapComponent implements OnInit, OnDestroy {
       if (this.settings.shouldGeoAlert()) {
         if (await this.db.hasGeoPoints()) {
           this.showMessage = true;
+          this.hideLoadingDialog();
         }
       }
       return;

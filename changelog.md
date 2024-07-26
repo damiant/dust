@@ -1,5 +1,8 @@
 ## Changes
 
+## 2.34
+- Fix when visiting events on the now map
+
 ## 2.33
 
 - Allow scroll up on event and camp page with the map
