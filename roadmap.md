@@ -1,56 +1,53 @@
 # Roadmap
 
-- Location hints from BM into the app
-- Multiple pins in the one location should allow flipping between the items
-- Distance - use km and meters if region (or setting)
+- 🔴 Multiple pins in the one location should allow flipping between the items
+- 🔴 Distance - use km and meters if region (or setting)
+- 🔴 Now map needs music
 
-- Next/Prev buttons on events/art/camps (feature request)
-- On todays favorite events show bold for happening now, grey if completed
-- As the time changes, update todays events
-- Error: white screened the events page after a day had passed
+- 🟠 Next/Prev buttons on events/art/camps (feature request)
+- 🟠 On todays favorite events show bold for happening now, grey if completed
+- 🟠 As the time changes, update todays events
+- 🟠 Error: white screened the events page after a day had passed
 
 # Feedback: Requested Features
 
-- Feature to highlight downloading an update in the week before the event if it was updated more than a week ago
-- Timetable view (something like Google Calendar)
-- Be able to favorite from the main listing
-- Share/Colllaborate with friends on your favorites list
+- 🔵 Feature to highlight downloading an update in the week before the event if it was updated more than a week ago
+- 🔵 Timetable view (something like Google Calendar)
+- 🟠 Share/Colllaborate with friends on your favorites list
 
 # Drop a Pin
 
-- If pin is dropped and location is not on the map then give message
-- If pin dropped and location not on map then ask for street location and use that to guess
-- Share my location - have URL which includes location and camp name and person name. Use for facebook / media
+- 🟠 If pin is dropped and location is not on the map then give message
+- 🟠 If pin dropped and location not on map then ask for street location and use that to guess
+- 🟠 Share my location - have URL which includes location and camp name and person name. Use for facebook / media
 
 ## Other Features
 
-- print to pdf for favorited events
-- Favorites with 2 items fades one item
+- 🟠 Print to pdf for favorited events
+- 🔵 Favorites with 2 items fades one item
 - search on home page to search all events, camps, art, and music
-- dark mode tooltips on the map need a visible border
-- Show a message when map is shown for the first time "Use 2 fingers or double tap to zoom into the map"
-- Art tour audio
-- Group multiple parties on music into the one card
-- After adding a favorite show the badge count on the fav tab increase (and disappear after opening it)
-- If an event has a long durations (>3hrs) then let user choose notification hour
-- Pressing the tab again should clear search
-- "Not Interested" button for Events
-- If day is burn night show animation of burn
-- Show/collapse fav group
-- Notification for gates open
-- Notification for week before (daily) ^these give chance to download data
-- Search keyboard hint should be "search" instead of "go"
-- When clicking back, highlight previous item that was viewed
-- Long press to fav
-- Notes page with items as checkboxes (ie check list)
-- Censor toggle for "Mature Audiences"
-- Show days until event
-- Show QR Code for profile
-- share profile
-- Route planner: show from 1...x with lines between on map
-- email (contact camp)
-- Add notes to an event (eg invite)
-- Filter for burns by country
+- 🔵 Dark mode tooltips on the map need a visible border
+- 🔵 Show a message when map is shown for the first time "Use 2 fingers or double tap to zoom into the map"
+- 🔵 Art tour audio
+- 🔵 Group multiple parties on music into the one card
+- 🔵 After adding a favorite show the badge count on the fav tab increase (and disappear after opening it)
+- 🔵 If an event has a long durations (>3hrs) then let user choose notification hour
+- 🔵 Pressing the tab again should clear search
+- 🔵 "Not Interested" button for Events
+- 🔵 If day is burn night show animation of burn
+- 🔵 Show/collapse fav group
+- 🔵 Notification for gates open
+- 🔵 Notification for week before (daily) ^these give chance to download data
+- 🔵 Search keyboard hint should be "search" instead of "go"
+- 🔵 When clicking back, highlight previous item that was viewed
+- 🔵 Notes page with items as checkboxes (ie check list)
+- 🔵 Censor toggle for "Mature Audiences"
+- 🔵 Show QR Code for profile
+- 🔵 Share profile
+- 🔵 Route planner: show from 1...x with lines between on map
+- 🔵 Email (contact camp)
+- 🔵 Add notes to an event (eg invite)
+- 🔵 Filter for burns by country
 
 # Difficult to solve
 

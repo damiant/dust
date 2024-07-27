@@ -2,6 +2,7 @@
 
 ## 2.35
 - Fix for private event adding on Android
+- Add landmarks for Burning Man camps
 
 ## 2.34
 - Fix when visiting events on the now map

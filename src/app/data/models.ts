@@ -88,6 +88,7 @@ export interface Camp {
   imageUrl?: string; // Added by dust
   label?: string; // Added by dust
   gpsCoord: GpsCoord;
+  landmark: string;
   pin: Pin;
   distance: number;
   distanceInfo: string;
