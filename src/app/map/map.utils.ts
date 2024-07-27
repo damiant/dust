@@ -122,21 +122,32 @@ export function formatDistance(dist: number): string {
   if (dist == maxDistance) {
     return '';
   }
+  if (!imperial()) {
+    dist = dist * 1.60934;
+  }
   const rounded = Math.round(dist * 10) / 10;
   if (rounded == 0.0) {
     return '(near)';
   } else if (rounded > 100) {
     return '(far)';
   }
-  return `(${rounded}mi)`;
+  return `(${rounded}${imperial() ? 'mi' : 'km'})`;
+}
+
+export function imperial(): boolean {
+  return navigator.language.toLowerCase().includes('-us');
 }
 
 export function formatDistanceMiles(dist: number): string {
   if (dist == maxDistance) {
     return '';
   }
-  const rounded = Math.round(dist * 10) / 10;
-  return `${rounded} miles`;
+  if (imperial()) {
+    return `${Math.round(dist * 10) / 10} miles`;
+  } else {
+    const km = dist * 1.60934;
+    return `${Math.round(km * 10) / 10} km`;
+  }
 }
 
 export function formatDistanceNice(dist: number): string {
@@ -147,8 +158,13 @@ export function formatDistanceFt(dist: number): string {
   if (dist == maxDistance) {
     return '';
   }
-  const rounded = Math.round(dist * 5280.0);
-  return `${rounded} ft`;
+  if (imperial()) {
+    const rounded = Math.round(dist * 5280.0);
+    return `${rounded} ft`;
+  } else {
+    const metres = Math.round(dist * 1.60934 * 1000);
+    return `${metres} m`;
+  }
 }
 
 export function mapPointToPin(point: MapPoint, mapRadius: number): Pin | undefined {
