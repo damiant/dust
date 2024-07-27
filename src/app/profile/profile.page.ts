@@ -35,7 +35,7 @@ import { TileComponent } from '../tile/tile.component';
 import { GeoService } from '../geolocation/geo.service';
 import { DatasetResult, Event, Link, LocationEnabledStatus, Names, Thing } from '../data/models';
 import { environment } from 'src/environments/environment';
-import { RateApp } from 'capacitor-rate-app';
+import { InAppReview } from '@capacitor-community/in-app-review';
 import { PrivateEventsComponent } from '../private-events/private-events.component';
 import { addIcons } from 'ionicons';
 import {
@@ -250,7 +250,7 @@ export class ProfilePage implements OnInit {
   public async rate() {
     await this.dismiss();
     this.rated = true;
-    RateApp.requestReview();
+    await InAppReview.requestReview();
   }
 
   async share() {

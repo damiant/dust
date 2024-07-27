@@ -23,14 +23,17 @@
   </ion-item>
   <ion-item>
     <ion-label>Time</ion-label>
-    <ion-datetime-button datetime="datetime"></ion-datetime-button>
+    <!-- <ion-datetime-button datetime="datetime"></ion-datetime-button> -->
+    <ion-datetime color="primary" [showDefaultButtons]="false" [min]="startEvent" [max]="endEvent"
+      minuteValues="0,15,30,45" [(ngModel)]="event.start" id="datetime"></ion-datetime>
   </ion-item>
-  <ion-modal [keepContentsMounted]="true">
+  <!-- <ion-modal [keepContentsMounted]="true">
     <ng-template>
       <ion-datetime [showDefaultButtons]="true" [min]="startEvent" [max]="endEvent" minuteValues="0,15,30,45"
         [(ngModel)]="event.start" id="datetime"></ion-datetime>
     </ng-template>
-  </ion-modal>
+  </ion-modal> -->
+
   <ion-item>
     <ion-input label="Notes" [(ngModel)]="event.notes" placeholder=""></ion-input>
   </ion-item>

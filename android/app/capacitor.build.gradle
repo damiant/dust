@@ -9,6 +9,7 @@ android {
 
 apply from: "../capacitor-cordova-android-plugins/cordova.variables.gradle"
 dependencies {
+    implementation project(':capacitor-community-in-app-review')
     implementation project(':capacitor-community-play-integrity')
     implementation project(':capacitor-app')
     implementation project(':capacitor-app-launcher')
@@ -28,7 +29,6 @@ dependencies {
     implementation project(':capawesome-capacitor-app-update')
     implementation project(':mauricewegner-capacitor-navigation-bar')
     implementation project(':capacitor-print-webview')
-    implementation project(':capacitor-rate-app')
 
 }
 

@@ -1,6 +1,7 @@
 # Roadmap
 
 - Location hints from BM into the app
+- Multiple pins in the one location should allow flipping between the items
 - Distance - use km and meters if region (or setting)
 
 - Next/Prev buttons on events/art/camps (feature request)
