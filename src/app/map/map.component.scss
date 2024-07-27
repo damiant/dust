@@ -8,6 +8,8 @@
     bottom: calc(env(safe-area-inset-bottom, 0.5vh) + 0.5rem);
     width: 100%;
     text-align: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 .header {
