@@ -1,7 +1,6 @@
 # Roadmap
 
 - 🔴 Multiple pins in the one location should allow flipping between the items
-- 🔴 Distance - use km and meters if region (or setting)
 - 🔴 Now map needs music
 
 - 🟠 Next/Prev buttons on events/art/camps (feature request)
