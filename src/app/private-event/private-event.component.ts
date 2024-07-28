@@ -58,6 +58,7 @@ export class PrivateEventComponent implements OnInit {
   private modalCtrl = inject(ModalController);
   private toastController = inject(ToastController);
   noAddress = 'Choose Address';
+  dtReady = false;
   initialTime = now().toISOString();
   public addresses: PickerColumn[];
   public isEdit = false;
@@ -90,6 +91,7 @@ export class PrivateEventComponent implements OnInit {
 
   ngOnInit() {
     this.streetService.setAddress(this.event.address, this.addresses);
+    setTimeout(() => { this.dtReady = true }, 300);
   }
 
   cancel() {
