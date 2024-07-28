@@ -54,9 +54,9 @@ export class NotificationService {
           isValid = true; // dateMatches(selectedDay, occurrence);
         }
         if (isValid) {
-          const startHere = new Date(occurrence.start_time);
-          const startThere = this.changeTimezone(startHere, this.db.getTimeZone());
-          reminder.when = this.reminderTime(startThere);
+          const startAtEvent = new Date(occurrence.start_time);
+          const startHere = this.changeTimezone(startAtEvent, this.db.getTimeZone());
+          reminder.when = this.reminderTime(startHere);
           if (!this.sameDate(last, reminder.when)) {
             await this.schedule(reminder);
             message = `You'll be notified ${reminder.comment} on ${getDayName(
