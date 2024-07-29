@@ -45,7 +45,11 @@
     <ion-item (click)="noop()">
       <ion-icon aria-hidden="true" slot="start" name="location-outline"></ion-icon>
       <div role="text" attr.aria-label="Located at {{camp.location_string}}">
-        <ion-label aria-hidden="true">{{camp.location_string}}</ion-label>
+        <ion-label aria-hidden="true">{{camp.location_string}}
+          @if (camp.landmark) {
+          (Look for {{camp.landmark}})
+          }
+        </ion-label>
       </div>
     </ion-item>
     }

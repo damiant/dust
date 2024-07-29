@@ -1,5 +1,10 @@
 ## Changes
 
+## 2.35
+- Fix for private event adding on Android
+- Add landmarks for Burning Man camps
+- Use Km or metres when phone is set to non-US
+
 ## 2.34
 - Fix when visiting events on the now map
 
