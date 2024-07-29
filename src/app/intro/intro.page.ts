@@ -422,7 +422,14 @@ export class IntroPage {
     return success;
   }
 
-  open(card: Dataset) {
+  open(card: Dataset, isClick?: boolean) {
+    if (isClick && this.vm.selected && this.vm.selected.id == card.id) {
+      // Already selected so treat it like you pressed get dusty button
+      if (this.vm.ready) {
+        this.go();
+      }
+      return;
+    }
     this.vm.selected = card;
     this.subtitle.set(this.vm.selected.subTitle);
     this.save();

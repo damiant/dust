@@ -1,5 +1,8 @@
 ## Changes
 
+## 2.36
+- Tap on an event will now open it
+
 ## 2.35
 - Fix for private event adding on Android
 - Add landmarks for Burning Man camps
