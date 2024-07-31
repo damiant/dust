@@ -145,6 +145,7 @@ export class EventPage implements OnInit {
       message,
       color: 'primary',
       duration: 3500,
+      swipeGesture: 'vertical',
       position: 'bottom',
     });
 

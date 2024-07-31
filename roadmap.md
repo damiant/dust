@@ -1,6 +1,5 @@
 # Roadmap
 
-- 🔴 Ability to swipe away toast messages (like notifications)  (Borderland feedback)
 - 🔴 Print favorites only prints one page (Borderland feedback)
 - 🔴 Multiple pins in the one location should allow flipping between the items
 - 🟠 Now map needs music
@@ -16,13 +15,21 @@
 
 - 🔵 Feature to highlight downloading an update in the week before the event if it was updated more than a week ago
 - 🔵 Timetable view (something like Google Calendar)
-- 🟠 Share/Colllaborate with friends on your favorites list
+- 🟠 Share/Collaborate with friends on your favorites list
 
 # Drop a Pin
 
 - 🟠 If pin is dropped and location is not on the map then give message
 - 🟠 If pin dropped and location not on map then ask for street location and use that to guess
 - 🟠 Share my location - have URL which includes location and camp name and person name. Use for facebook / media
+
+# Share Events
+- Share button - shows a 6 digit PIN that you can share with other users (a stored device id)
+- This will save your fav events to the server
+- If you accept a share it will also add any favorites from others
+- server will store data in R2 as JSON objects
+- App will store your PIN, and shared PINs
+- 
 
 ## Other Features
 

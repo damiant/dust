@@ -2,6 +2,7 @@
 
 ## 2.36
 - Tap on an event will now open it
+- Toast messages can be swiped away
 
 ## 2.35
 - Fix for private event adding on Android
