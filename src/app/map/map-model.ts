@@ -10,11 +10,16 @@ export interface MapModel {
     pinClicked: (pinUUID: string, event: PointerEvent) => void;
 }
 
+export interface ScrollResult {
+    deltaX: number;
+    deltaY: number;
+}
+
 export interface MapResult {
     rotateCompass: (rotation: number) => void;
     myPosition: (x: number, y: number) => void;
     setNearest: (nearest: string) => void;
-    scrolled: (deltaY: number) => void;
+    scrolled: (result: ScrollResult) => void;
     dispose: () => void;
     currentHex?: any;
     currentObject?: any;

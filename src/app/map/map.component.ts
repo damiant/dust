@@ -13,7 +13,7 @@ import { environment } from 'src/environments/environment';
 import { IonButton, IonContent, IonPopover, IonRouterOutlet, IonText } from '@ionic/angular/standalone';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { DbService } from '../data/db.service';
-import { MapModel, MapResult } from './map-model';
+import { MapModel, MapResult, ScrollResult } from './map-model';
 import { init3D } from './map';
 
 // How often is the map updated with a new location
@@ -66,7 +66,7 @@ export class MapComponent implements OnInit, OnDestroy {
   isHeader = input<boolean>(false);
   loadingDialog = model<boolean>(false);
   wasLoadingDialog = false;
-  scrolled = output<number>();
+  scrolled = output<ScrollResult>();
 
 
   @Input() set points(points: MapPoint[]) {
@@ -266,8 +266,8 @@ export class MapComponent implements OnInit, OnDestroy {
     }
 
     this.mapResult = await init3D(this.container().nativeElement, map);
-    this.mapResult.scrolled = (deltaY: number) => {
-      this.scrolled.emit(deltaY);
+    this.mapResult.scrolled = (result: ScrollResult) => {
+      this.scrolled.emit(result);
     }
     this._viewReady = true;
     await this.checkGeolocation();
@@ -404,7 +404,6 @@ export class MapComponent implements OnInit, OnDestroy {
 
   mapClick(event: MouseEvent) {
     this.isOpen = false;
-    console.log('this.popover().nativeElement', this.popover().nativeElement);
     let left = event.clientX - 100;
     if (left < 0) { left = 0; }
     if (left + 200 > window.innerWidth) {
@@ -417,7 +416,6 @@ export class MapComponent implements OnInit, OnDestroy {
     }
     this.popover().nativeElement.style.setProperty('left', `${left}px`);
     this.popover().nativeElement.style.setProperty('top', `${top}px`);
-    console.log('mapClick', event);
   }
 
   popReady() {

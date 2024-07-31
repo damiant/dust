@@ -10,7 +10,8 @@ import {
 import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
-import { MapModel, MapPin, MapResult, PinColor } from './map-model';
+import { MapModel, MapPin, MapResult, PinColor, ScrollResult } from './map-model';
+
 
 interface AddPinResult {
     pin: Mesh | Group;
@@ -42,6 +43,8 @@ let camera: PerspectiveCamera;
 let controls: MapControls;
 let depth = 0;
 let mouseY = 0;
+let mouseX = 0;
+let mouseChange = 0;
 
 export function canCreate(): boolean {
     console.log('canCreate', depth);
@@ -55,7 +58,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         rotateCompass: (rotation: number) => { },
         myPosition: (x: number, y: number) => { },
         setNearest: (pin: string) => { },
-        scrolled: (deltaY: number) => { },
+        scrolled: (result: ScrollResult) => { },
         dispose: () => { }
     };
     let disposables: MapDisposable[] = [];
@@ -143,15 +146,34 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         renderer.setSize(w, h);
     });
 
+    container.addEventListener('pointermove', async (e: any) => {
+        if (new Date().getTime() - mouseChange > 200) {
+            const deltaY = e.clientY - mouseY;
+            const deltaX = e.clientX - mouseX;
+
+            if (mouseX !== 0) {
+                if (deltaX > 100 || deltaY > 100) {
+                    result.scrolled({ deltaY, deltaX });
+                }
+            }
+            mouseChange = new Date().getTime();
+            mouseY = e.clientY;
+            mouseX = e.clientX;
+        }
+    });
+
     container.addEventListener('pointerdown', async (e: any) => {
         mouseY = e.clientY;
-        console.log('mousedown', e);
+        mouseX = e.clientX;
     });
     container.addEventListener('pointerup', async (e: any) => {
         const deltaY = e.clientY - mouseY;
-        console.log('deltaY', deltaY);
-        result.scrolled(deltaY);
+        const deltaX = e.clientX - mouseX;
+        if (deltaX > 100 || deltaY > 100) {
+            result.scrolled({ deltaY, deltaX });
+        }
     });
+
     container.addEventListener('click', (e: any) => {
         const width = container.clientWidth
         const height = container.clientHeight;
