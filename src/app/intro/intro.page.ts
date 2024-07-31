@@ -168,7 +168,6 @@ export class IntroPage {
       return;
     }
     this.vm.downloading = false;
-    console.log(`Search for`, this.settingsService.settings.datasetId);
     const idx = this.vm.cards.findIndex((c) => this.api.datasetId(c) == this.settingsService.settings.datasetId);
     if (idx >= 0) {
       this.vm.selected = this.vm.cards[idx];
