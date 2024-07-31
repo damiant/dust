@@ -279,7 +279,6 @@ export class MapComponent implements OnInit, OnDestroy {
     this.info = point?.info;
     //this.popover().event = event;
     //    this.popover().event = event;
-    console.log('pinClicked', event);
     setTimeout(() => {
       this.isOpen = true;
     }, 100);

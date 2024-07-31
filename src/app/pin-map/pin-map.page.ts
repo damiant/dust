@@ -147,7 +147,23 @@ export class PinMapPage {
     if (mapSet.points.length > 0) return mapSet;
     const ms = await this.db.getPins(pinType);
     this.applyMapType(mapType, ms);
+    this.exportForBM(ms);
     return ms;
+  }
+
+  // Used to export restrooms placed on a test map and use it for Burning Man dataset
+  private exportForBM(ms: MapSet) {
+    const js = {
+      "title": "Restrooms",
+      "description": "Tip: At night, look for the blue light on poles marking porta potty banks.",
+      "points": []
+    };
+    for (const pin of ms.points) {
+      if (pin.gps) {
+        (js.points as any).push({ lat: pin.gps.lat, lng: pin.gps.lng });
+      }
+    }
+    console.log(JSON.stringify(js));
   }
 
   private async getArt(): Promise<MapSet> {
