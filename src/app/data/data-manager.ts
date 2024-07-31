@@ -1164,7 +1164,6 @@ export class DataManager implements WorkerClass {
   }
 
   public async writeData(key: string, data: any): Promise<void> {
-    this.consoleLog(`writeData ${key}: data=${data}`);
     await set(key, data);
   }
 

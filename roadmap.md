@@ -4,7 +4,6 @@
 - 🔴 Multiple pins in the one location should allow flipping between the items
 - 🟠 Now map needs music
 - 🟠 For music show the star outline to indicate that music can be starred (Borderland feedback)
-- 🟠 Swipe back on pages that have a map
 
 - 🟠 Next/Prev buttons on events/art/camps (feature request)
 - 🟠 On todays favorite events show bold for happening now, grey if completed
