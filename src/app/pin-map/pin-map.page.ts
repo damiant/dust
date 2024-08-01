@@ -23,7 +23,7 @@ import {
 import { addIcons } from 'ionicons';
 import { compassOutline } from 'ionicons/icons';
 import { SearchComponent } from '../search/search.component';
-import { PinColor } from '../map/map-model';
+import { PinColor, ScrollResult } from '../map/map-model';
 import { FavoritesService } from '../favs/favorites.service';
 import { UiService } from '../ui/ui.service';
 import { ToastController } from '@ionic/angular';
@@ -57,6 +57,7 @@ export class PinMapPage {
   private geo = inject(GeoService);
   private favs = inject(FavoritesService);
   private toast = inject(ToastController);
+  private location = inject(Location);
   mapType = input('');
   thingName = input('');
   points: MapPoint[] = [];
@@ -73,7 +74,7 @@ export class PinMapPage {
   title: WritableSignal<string> = signal(' ');
   description = '';
   @ViewChild(MapComponent) map!: MapComponent;
-  constructor(private location: Location) {
+  constructor() {
     addIcons({ compassOutline });
     this.db.checkInit();
     effect(async () => {
@@ -367,5 +368,11 @@ export class PinMapPage {
       description: `Map of ${allEvents.length} events happening ${timeRangeToString(timeRange, this.db.getTimeZone())}`,
       points,
     };
+  }
+
+  scrolled(result: ScrollResult) {
+    if (result.deltaX > 200) {
+      this.location.back();
+    }
   }
 }

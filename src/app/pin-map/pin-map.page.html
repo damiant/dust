@@ -27,5 +27,6 @@
     </ion-item>
   </div>
   <ion-loading spinner="circular" [isOpen]="isGettingGPS" message="Getting Location"></ion-loading>
-  <app-map [(loadingDialog)]="isGettingGPS" [smallPins]="smallPins" [points]="points"></app-map>
+  <app-map (scrolled)="scrolled($event)" [(loadingDialog)]="isGettingGPS" [smallPins]="smallPins"
+    [points]="points"></app-map>
 </ion-content>
