@@ -15,6 +15,8 @@
 - 🔵 Feature to highlight downloading an update in the week before the event if it was updated more than a week ago
 - 🔵 Timetable view (something like Google Calendar)
 - 🟠 Share/Collaborate with friends on your favorites list
+- 🟠 Notes - ability to write notes for things
+- 🟠 Option to predownload all content (images etc)
 
 # Drop a Pin
 

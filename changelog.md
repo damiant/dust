@@ -4,6 +4,7 @@
 - Tap on an event will now open it
 - Toast messages can be swiped away
 - Swipe back now works on pages with maps
+- Fix for private events displaying in the wrong timezone
 
 ## 2.35
 - Fix for private event adding on Android
