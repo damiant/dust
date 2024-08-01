@@ -35,7 +35,7 @@ export function registerWorkerClass(workerClass: WorkerClass) {
       response.ms = performance.now() - response.ms;
       if (!environment.production) {
         const msg = `${call.method} ${Math.trunc(response.ms)}ms (args ${call.arguments})`;
-        if (response.ms > 100) {
+        if (response.ms > 300) {
           console.warn(msg);
         } else {
           //console.info(msg);

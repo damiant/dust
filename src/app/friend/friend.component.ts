@@ -94,6 +94,7 @@ export class FriendComponent implements OnInit {
       message,
       color: 'primary',
       duration: 1500,
+      swipeGesture: 'vertical',
       position: 'bottom',
     });
 

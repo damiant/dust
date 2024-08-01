@@ -65,6 +65,7 @@ export class UiService {
       message,
       color: 'primary',
       duration: 1500,
+      swipeGesture: 'vertical',
       position: position ? position : 'top',
     });
 
@@ -76,6 +77,7 @@ export class UiService {
       message,
       color: 'dark',
       duration: 2500,
+      swipeGesture: 'vertical',
       position: 'top',
     });
 

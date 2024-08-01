@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, viewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
   IonBackButton,
@@ -31,6 +31,7 @@ import { addIcons } from 'ionicons';
 import { star, starOutline, shareOutline, locationOutline, calendarOutline } from 'ionicons/icons';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { canCreate } from '../map/map';
+import { ScrollResult } from '../map/map-model';
 
 @Component({
   selector: 'app-camp',
@@ -64,6 +65,7 @@ export class CampPage implements OnInit {
   private settings = inject(SettingsService);
   private toastController = inject(ToastController);
   private ui = inject(UiService);
+  private location = inject(Location);
   content = viewChild.required(IonContent);
   showEvent = false;
   camp: Camp | undefined;
@@ -97,12 +99,16 @@ export class CampPage implements OnInit {
       rsl.camp = this.toDate(rsl.day);
     }
     this.rslEvents = rslEvents;
-    const mp = toMapPoint(
-      this.camp.location_string!,
-      { title: this.camp.name, location: this.camp.location_string!, subtitle: '', imageUrl: this.camp.imageUrl },
-      this.camp.pin,
-    );
-    this.mapPoints = [mp];
+    if (this.camp) {
+      const mp = toMapPoint(
+        this.camp.location_string!,
+        { title: this.camp.name, location: this.camp.location_string!, subtitle: '', imageUrl: this.camp.imageUrl },
+        this.camp.pin,
+      );
+      this.mapPoints = [mp];
+    } else {
+      this.mapPoints = [];
+    }
     this.showMap = canCreate();
   }
 
@@ -148,10 +154,12 @@ export class CampPage implements OnInit {
     });
   }
 
-  scrolled(deltaY: number) {
-    console.log('scrolled on camp', deltaY);
-    if (deltaY > 100) {
+  scrolled(result: ScrollResult) {
+    if (result.deltaY > 100) {
       this.content().scrollToTop(500);
+    }
+    if (result.deltaX > 200) {
+      this.location.back();
     }
   }
 

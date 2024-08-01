@@ -102,15 +102,16 @@ export class PrivateEventsComponent implements OnInit {
     const favs = await this.fav.getFavorites();
     for (let event of favs.privateEvents) {
       event.startDay = getDayName(event.start);
+
       event.startTime = new Date(event.start)
         .toLocaleTimeString('en-US', {
-          timeZone: this.db.getTimeZone(),
           hour: 'numeric',
           minute: '2-digit',
           hour12: true,
         })
         .toLowerCase();
     }
+
     this.events = favs.privateEvents;
   }
 

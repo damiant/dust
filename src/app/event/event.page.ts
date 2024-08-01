@@ -1,5 +1,5 @@
 import { Component, OnInit, signal, input, viewChild, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
   IonBackButton,
@@ -40,6 +40,7 @@ import {
 } from 'ionicons/icons';
 import { CachedImgComponent, ImageLocation } from '../cached-img/cached-img.component';
 import { canCreate } from '../map/map';
+import { ScrollResult } from '../map/map-model';
 
 @Component({
   selector: 'app-event',
@@ -75,6 +76,7 @@ export class EventPage implements OnInit {
   private settings = inject(SettingsService);
   private ui = inject(UiService);
   private toastController = inject(ToastController);
+  private location = inject(Location);
   public event: Event | undefined;
   public back = signal('Back');
   popover = viewChild.required(IonPopover);
@@ -145,6 +147,7 @@ export class EventPage implements OnInit {
       message,
       color: 'primary',
       duration: 3500,
+      swipeGesture: 'vertical',
       position: 'bottom',
     });
 
@@ -164,10 +167,12 @@ export class EventPage implements OnInit {
     }
   }
 
-  scrolled(deltaY: number) {
-    console.log('scrolled on event', deltaY);
-    if (deltaY > 100) {
+  scrolled(result: ScrollResult) {
+    if (result.deltaY > 100) {
       this.content().scrollToTop(500);
+    }
+    if (result.deltaX > 200) {
+      this.location.back();
     }
   }
 

@@ -72,6 +72,7 @@ export class ThingComponent {
       message,
       color: 'primary',
       duration: 1500,
+      swipeGesture: 'vertical',
       position: 'bottom',
     });
 

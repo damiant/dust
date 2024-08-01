@@ -58,10 +58,8 @@ export class DbService {
   public async initWorker(): Promise<void> {
     if (!this.initialized) {
       this.overrideDataset = this.getPreview();
-      console.info(`Initializing web worker...`);
       this.worker = new Worker(new URL('./app.worker', import.meta.url));
       registerWorker(this.worker);
-      console.info(`Initialized web worker`);
       this.initialized = true;
     }
   }
@@ -171,9 +169,6 @@ export class DbService {
       } else {
         console.info('[worker]', log);
       }
-    }
-    if (logs.length == 0) {
-      console.info('[worker] no worker logs')
     }
   }
 

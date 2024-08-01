@@ -158,7 +158,6 @@ export class DataManager implements WorkerClass {
     this.rslEvents = await this.loadMusic();
     this.georeferences = await this.getGeoReferences();
     const map = await this.loadMap();
-    this.log(`Successful load in populate. map defined=${!!map}`);
     this.init(hideLocations);
     return {
       events: this.events.length, art: this.art.length, pins: this.pins.length,
@@ -1164,7 +1163,6 @@ export class DataManager implements WorkerClass {
   }
 
   public async writeData(key: string, data: any): Promise<void> {
-    this.consoleLog(`writeData ${key}: data=${data}`);
     await set(key, data);
   }
 
