@@ -1,6 +1,5 @@
 # Roadmap
 
-- 🔴 Show filter if you chose past events etc
 - 🔴 Burning man picks friday 28th with no events
 - 🔴 Print favorites only prints one page (Borderland feedback)
 - 🔴 Multiple pins in the one location should allow flipping between the items

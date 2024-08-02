@@ -34,7 +34,7 @@ import { ThemePrimaryColor, UiService } from '../ui/ui.service';
 import { environment } from 'src/environments/environment';
 import { Network } from '@capacitor/network';
 import { addIcons } from 'ionicons';
-import { arrowForwardOutline, chevronUpOutline, cloudDownloadOutline } from 'ionicons/icons';
+import { arrowForwardOutline, chevronUpCircleSharp, chevronUpOutline, cloudDownloadOutline } from 'ionicons/icons';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { CarouselComponent, SlideSelect } from '../carousel/carousel.component';
 import { CarouselItemComponent } from '../carousel-item/carousel-item.component';
@@ -116,6 +116,7 @@ export class IntroPage {
   private toastController = inject(ToastController);
   private shareService = inject(ShareService);
   private pinEntry = viewChild.required(PinEntryComponent);
+  isFiltered = false;
   vm: IntroState = initialState();
   download: WritableSignal<string> = signal('');
   subtitle: WritableSignal<string> = signal('');
@@ -123,7 +124,7 @@ export class IntroPage {
   fab = viewChild.required(IonFab);
 
   constructor() {
-    addIcons({ arrowForwardOutline, chevronUpOutline, cloudDownloadOutline });
+    addIcons({ arrowForwardOutline, chevronUpOutline, chevronUpCircleSharp, cloudDownloadOutline });
     effect(() => {
       const downloading = this.download();
       if (downloading !== '') {
@@ -202,6 +203,7 @@ export class IntroPage {
     const name = v.detail.value;
     this.vm.scrollLeft = 0;
     this.vm.selected = undefined;
+    this.vm.showing = name;
     this.subtitle.set('');
     this.vm.cards = await this.api.loadDatasets(name);
     this.settingsService.settings.datasetFilter = name;
