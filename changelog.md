@@ -1,5 +1,8 @@
 ## Changes
 
+## 2.37
+- Search for camps, events and art is sorted by importance
+
 ## 2.36
 - Tap on an event will now open it
 - Toast messages can be swiped away

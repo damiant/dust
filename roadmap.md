@@ -1,5 +1,7 @@
 # Roadmap
 
+- 🔴 Show filter if you chose past events etc
+- 🔴 Burning man picks friday 28th with no events
 - 🔴 Print favorites only prints one page (Borderland feedback)
 - 🔴 Multiple pins in the one location should allow flipping between the items
 - 🟠 Now map needs music
@@ -85,6 +87,7 @@
 - Check In Button - For events, add to check in history on the more tab
 - Only show check in if distance = near and event is between start and end
 - Checked in events show with a tick next to them
+
 
 ## RSS Feed
 
