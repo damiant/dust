@@ -1,10 +1,8 @@
 # Roadmap
 
-- 🔴 Burning man picks friday 28th with no events
 - 🔴 Print favorites only prints one page (Borderland feedback)
 - 🔴 Multiple pins in the one location should allow flipping between the items
 - 🟠 Now map needs music
-- 🟠 For music show the star outline to indicate that music can be starred (Borderland feedback)
 
 - 🟠 Next/Prev buttons on events/art/camps (feature request)
 - 🟠 On todays favorite events show bold for happening now, grey if completed
