@@ -4,7 +4,6 @@
 - 🔴 Multiple pins in the one location should allow flipping between the items
 - 🟠 Now map needs music
 
-- 🟠 Next/Prev buttons on events/art/camps (feature request)
 - 🟠 On todays favorite events show bold for happening now, grey if completed
 - 🟠 As the time changes, update todays events
 - 🟠 Error: white screened the events page after a day had passed

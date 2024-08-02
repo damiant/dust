@@ -8,6 +8,13 @@
       <ion-button aria-label="Share this event" (click)="share()">
         <ion-icon color="primary" name="share-outline"></ion-icon>
       </ion-button>
+      <ion-button (click)="prev()">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="next()">
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </ion-button>
+
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -42,7 +49,7 @@
       <ion-icon aria-hidden="true" slot="start" name="location-outline"></ion-icon>
       <ion-label attr.aria-label="Camp location is {{event.location}}">{{event.location}}</ion-label>
     </ion-item>
-    } @for (occurrence of event.occurrence_set; track occurrence) {
+    } @for (occurrence of event.occurrence_set; track $index) {
     <ion-item (click)="toggleStar(occurrence)">
       <ion-icon aria-hidden="true" name="time-outline" slot="start"></ion-icon>
       <ion-label>{{occurrence.longTimeString}}</ion-label>
@@ -69,6 +76,7 @@
     </ion-item>
     @if (event.occurrence_set.length === 1) {
     <div class="center">
+
       @if (!event.occurrence_set[0].star) {
       <ion-button style="padding-bottom: 1rem" (click)="toggleStar(event.occurrence_set[0])" shape="round">Add To
         Favorites</ion-button>
