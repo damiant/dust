@@ -1,4 +1,4 @@
-import { Component, effect, viewChild, inject } from '@angular/core';
+import { Component, effect, viewChild, inject, OnDestroy, OnInit } from '@angular/core';
 import {
   IonBadge,
   IonButton,
@@ -33,6 +33,8 @@ import { SettingsService } from '../data/settings.service';
 import { addIcons } from 'ionicons';
 import { compass, compassOutline } from 'ionicons/icons';
 import { FavoritesService } from '../favs/favorites.service';
+import { EventsService } from './events.service';
+import { Subscription } from 'rxjs';
 
 interface EventsState {
   title: string;
@@ -114,12 +116,15 @@ function initialState(): EventsState {
     IonIcon,
   ],
 })
-export class EventsPage {
+export class EventsPage implements OnInit, OnDestroy {
   public db = inject(DbService);
   private ui = inject(UiService);
   private fav = inject(FavoritesService);
   private settings = inject(SettingsService);
   private toastController = inject(ToastController);
+  private eventsService = inject(EventsService);
+  private nextSubscription?: Subscription;
+  private prevSubscription?: Subscription;
   private geo = inject(GeoService);
   vm: EventsState = initialState();
 
@@ -139,12 +144,37 @@ export class EventsPage {
       },
       { allowSignalWrites: true },
     );
+
     effect(async () => {
       const _r = this.db.resume();
       this.setToday(now());
       await this.db.checkEvents();
       this.update();
     });
+  }
+
+  ngOnInit(): void {
+    this.nextSubscription = this.eventsService.next.subscribe((eventId) => {
+      const idx = this.vm.events.findIndex(e => e.uid == eventId);
+      if (idx == -1 || idx + 1 >= this.vm.events.length) return;
+      const e = this.vm.events[idx + 1];
+      this.eventsService.eventChanged.emit(e.uid);
+    });
+    this.prevSubscription = this.eventsService.prev.subscribe((eventId) => {
+      const idx = this.vm.events.findIndex(e => e.uid == eventId);
+      if (idx <= 0) return;
+      const e = this.vm.events[idx - 1];
+      this.eventsService.eventChanged.emit(e.uid);
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.prevSubscription) {
+      this.prevSubscription.unsubscribe();
+    }
+    if (this.nextSubscription) {
+      this.nextSubscription.unsubscribe();
+    }
   }
 
   ionViewDidEnter() {

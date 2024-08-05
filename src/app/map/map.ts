@@ -102,7 +102,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         controls.zoomToCursor = true;
         controls.enableRotate = false;
         controls.minDistance = 50;
-        controls.maxDistance = map.height / 4;
+        controls.maxDistance = map.height;
         controls.maxPolarAngle = Math.PI / 2;
     }
 

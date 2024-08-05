@@ -1,5 +1,11 @@
 ## Changes
 
+## 2.37
+- Search for camps, events and art is sorted by importance
+- Show filter as icon if selected on the home page
+- Next and previous buttons for events
+- Fix for map zooming (cannot zoom out to 100%)
+
 ## 2.36
 - Tap on an event will now open it
 - Toast messages can be swiped away

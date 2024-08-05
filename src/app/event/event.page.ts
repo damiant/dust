@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, input, viewChild, inject } from '@angular/core';
+import { Component, OnInit, signal, input, viewChild, inject, OnDestroy } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -37,10 +37,14 @@ import {
   starOutline,
   pricetagOutline,
   closeCircleOutline,
+  chevronBackOutline,
+  chevronForwardOutline,
 } from 'ionicons/icons';
 import { CachedImgComponent, ImageLocation } from '../cached-img/cached-img.component';
 import { canCreate } from '../map/map';
 import { ScrollResult } from '../map/map-model';
+import { EventsService } from '../events/events.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-event',
@@ -69,13 +73,14 @@ import { ScrollResult } from '../map/map-model';
     CachedImgComponent,
   ],
 })
-export class EventPage implements OnInit {
+export class EventPage implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private db = inject(DbService);
   private fav = inject(FavoritesService);
   private settings = inject(SettingsService);
   private ui = inject(UiService);
   private toastController = inject(ToastController);
+  private eventsService = inject(EventsService);
   private location = inject(Location);
   public event: Event | undefined;
   public back = signal('Back');
@@ -88,20 +93,35 @@ export class EventPage implements OnInit {
   mapTitle = '';
   mapSubtitle = '';
   campDescription = '';
+  private eventChangeSubscription?: Subscription;
   private day: Date | undefined;
   eventId = input<string>();
   filterDays = input<boolean>(true); // Whether to filter by day
   imageLocation = input<ImageLocation>('top');
   constructor() {
-    addIcons({ shareOutline, locationOutline, timeOutline, star, starOutline, pricetagOutline, closeCircleOutline });
+    addIcons({ shareOutline, locationOutline, chevronForwardOutline, chevronBackOutline, timeOutline, star, starOutline, pricetagOutline, closeCircleOutline });
   }
 
   async ngOnInit() {
     this.db.checkInit();
-    try {
-      this.ready = false;
-      const eventId = this.eventId() ? this.eventId()! + '+' : this.route.snapshot.paramMap.get('id');
 
+    this.ready = false;
+    const eventId = this.eventId() ? this.eventId()! + '+' : this.route.snapshot.paramMap.get('id');
+    this.init(eventId);
+    this.showMap = canCreate();
+    this.eventChangeSubscription = this.eventsService.eventChanged.subscribe(async (eventId) => {
+      await this.init(eventId);
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.eventChangeSubscription) {
+      this.eventChangeSubscription.unsubscribe();
+    }
+  }
+
+  private async init(eventId: string | null) {
+    try {
       let tmp = eventId?.split('+');
 
       if (!tmp) throw new Error('Route error');
@@ -138,7 +158,6 @@ export class EventPage implements OnInit {
       await this.fav.setEventStars(this.event);
     } finally {
       this.ready = true;
-      this.showMap = canCreate();
     }
   }
 
@@ -177,6 +196,14 @@ export class EventPage implements OnInit {
   }
 
   noop() { }
+
+  next() {
+    this.eventsService.next.emit(`${this.event?.uid}`);
+  }
+
+  prev() {
+    this.eventsService.prev.emit(`${this.event?.uid}`);
+  }
 
   share() {
     const url = `https://dust.events?${ShareInfoType.event}=${this.event?.uid}`;

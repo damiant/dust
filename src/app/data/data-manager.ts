@@ -39,6 +39,8 @@ interface TimeCache {
   [index: string]: TimeString | undefined;
 }
 
+type MatchType = 'Important' | 'Match' | 'No Match';
+
 export class DataManager implements WorkerClass {
   private events: Event[] = [];
   private camps: Camp[] = [];
@@ -823,24 +825,30 @@ export class DataManager implements WorkerClass {
     }
 
     for (let event of this.events) {
+      const match = this.eventContains(query, event, allDay)
       if (
-        this.eventContains(query, event, allDay) &&
+        match != 'No Match' &&
         this.eventIsCategory(category, event) &&
         this.onDay(day, event, timeRange, showPast)
       ) {
-
         const timeString = this.getTimeString(event, day);
         event.timeString = timeString.short;
         event.longTimeString = timeString.long;
         event.distance = distance(coords!, event.gpsCoords);
         event.distanceInfo = formatDistance(event.distance);
-        result.push(event);
+        if (match == 'Important') {
+          result.unshift(event);
+        } else {
+          result.push(event);
+        }
       }
     }
-    if (coords) {
-      this.sortEventsByDistance(result);
-    } else {
-      this.sortEvents(result);
+    if (query !== '') {
+      if (coords) {
+        this.sortEventsByDistance(result);
+      } else {
+        this.sortEvents(result);
+      }
     }
     return result;
   }
@@ -910,25 +918,34 @@ export class DataManager implements WorkerClass {
       } else {
         camp.distanceInfo = '';
       }
-      if (this.campMatches(query, camp)) {
-        result.push(camp);
+      const match = this.campMatches(query, camp);
+      switch (match) {
+        case 'Important': result.unshift(camp); break;
+        case 'Match': result.push(camp); break;
       }
     }
-    if (coords) {
-      this.sortCampsByDistance(result);
-    } else {
-      this.sortCamps(result);
+    if (query.length == 0) {
+      if (coords) {
+        this.sortCampsByDistance(result);
+      } else {
+        this.sortCamps(result);
+      }
     }
     return result;
   }
 
-  private campMatches(query: string, camp: Camp): boolean {
-    return (
+  private campMatches(query: string, camp: Camp): MatchType {
+    if (query == '') return 'Match';
+    if (
       camp.name.toLowerCase().includes(query) ||
-      camp.location_string?.toLowerCase().includes(query) ||
-      camp.description?.toLowerCase().includes(query) ||
-      false
-    );
+      camp.location_string?.toLowerCase().includes(query)) {
+      return 'Important';
+    }
+    if (
+      camp.description?.toLowerCase().includes(query)) {
+      return 'Match';
+    }
+    return 'No Match';
   }
 
   public findArts(query: string | undefined, coords: GpsCoord | undefined): Art[] {
@@ -941,25 +958,37 @@ export class DataManager implements WorkerClass {
         art.distance = distance(coords, art.gpsCoords);
         art.distanceInfo = formatDistance(art.distance);
       }
-      if (!query || this.artMatches(query.toLowerCase(), art)) {
-        result.push(art);
+      const match = this.artMatches(query ? query.toLowerCase() : '', art)
+      if (!query || match !== 'No Match') {
+        if (match == 'Important') {
+          result.unshift(art);
+        } else {
+          result.push(art);
+        }
       }
     }
-    if (coords) {
-      this.sortArtByDistance(result);
-    } else {
-      this.sortArt(result);
+    if (!query || query == '') {
+      if (coords) {
+        this.sortArtByDistance(result);
+      } else {
+        this.sortArt(result);
+      }
     }
     return result;
   }
 
-  private artMatches(query: string, art: Art): boolean {
-    return (
+  private artMatches(query: string, art: Art): MatchType {
+    if (query == '') return 'Match';
+    if (
       art.name.toLowerCase().includes(query) ||
-      art.location_string?.toLowerCase().includes(query) ||
-      art.description?.toLowerCase().includes(query) ||
-      false
-    );
+      art.location_string?.toLowerCase().includes(query)) {
+      return 'Important';
+    }
+    if (
+      art.description?.toLowerCase().includes(query)) {
+      return 'Match';
+    }
+    return 'No Match';
   }
 
   private eventIsCategory(category: string, event: Event): boolean {
@@ -1006,17 +1035,22 @@ export class DataManager implements WorkerClass {
     return result;
   }
 
-  private eventContains(terms: string, event: Event, allDay: boolean): boolean {
+  private eventContains(terms: string, event: Event, allDay: boolean): MatchType {
     if (!allDay) {
-      if (event.all_day) return false;
+      if (event.all_day) return 'No Match';
     }
-    return (
-      terms == '' ||
+    if (terms == '') return 'Match';
+    if (
       event.title.toLowerCase().includes(terms) ||
       event.camp?.toLowerCase().includes(terms) ||
-      event.location?.toLowerCase().includes(terms) ||
-      event.description.toLowerCase().includes(terms)
-    );
+      event.location?.toLowerCase().includes(terms)) {
+      return 'Important';
+    }
+    if (event.description.toLowerCase().includes(terms)) {
+      return 'Match'
+    }
+
+    return 'No Match';
   }
 
   private onDay(day: Date | undefined, event: Event, timeRange: TimeRange | undefined, showPast: boolean): boolean {

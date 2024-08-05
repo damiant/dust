@@ -21,7 +21,7 @@
 
   <ion-fab #fab slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button (ionBlur)="selectedFilter(undefined)" id="click-trigger">
-      <ion-icon name="chevron-up-outline"></ion-icon>
+      <ion-icon [name]="vm.showing === 'all' ? 'chevron-up-outline' : 'chevron-up-circle-sharp'"></ion-icon>
     </ion-fab-button>
     <ion-fab-list class="fab-list" side="top">
       <ion-content class="ion-padding">
