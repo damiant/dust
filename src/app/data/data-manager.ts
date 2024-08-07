@@ -159,7 +159,7 @@ export class DataManager implements WorkerClass {
     this.revision = await this.loadRevision();
     this.rslEvents = await this.loadMusic();
     this.georeferences = await this.getGeoReferences();
-    const map = await this.loadMap();
+    await this.loadMap();
     this.init(hideLocations);
     return {
       events: this.events.length, art: this.art.length, pins: this.pins.length,

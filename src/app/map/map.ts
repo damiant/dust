@@ -10,7 +10,7 @@ import {
 import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
-import { MapModel, MapPin, MapResult, PinColor, ScrollResult } from './map-model';
+import { MapModel, MapPin, MapResult, PinColor } from './map-model';
 
 
 interface AddPinResult {
@@ -53,10 +53,10 @@ export function canCreate(): boolean {
 export async function init3D(container: HTMLElement, map: MapModel): Promise<MapResult> {
     depth++;
     const result: MapResult = {
-        rotateCompass: (rotation: number) => { },
-        myPosition: (x: number, y: number) => { },
-        setNearest: (pin: string) => { },
-        scrolled: (result: ScrollResult) => { },
+        rotateCompass: () => { },
+        myPosition: () => { },
+        setNearest: () => { },
+        scrolled: () => { },
         dispose: () => { }
     };
     let disposables: MapDisposable[] = [];
@@ -75,7 +75,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         renderer.setSize(w, h);
     }
 
-    let dom = container.appendChild(renderer.domElement);
+    container.appendChild(renderer.domElement);
 
     const renderFn = () => {
         const delta = clock.getDelta();

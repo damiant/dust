@@ -1,24 +1,23 @@
 # Roadmap
 
 - 🔴 Search on map should match up camp name and zoom in and highlight the camp (all other camps should hide)
-- 🔴 Print favorites only prints one page (Borderland feedback)
 - 🔴 Double tap to zoom in or out full on the map
 - 🔴 Fix swipe left which happens when pinch zooming
-- 🔴 Document what camp leads can do to add other camp leads and document the process
-- 🔴 Document ways to disconnect and not use your phone
-- 🔴 Multiple pins in the one location should allow flipping between the items
-- 🔴 Search all feature
 - 🔴 Swipe to delete an event from favorites
+- 🔴 Search all feature
+- 🔴 Fuzzy search - if no matches or few matches
 - 🔴 Music - events going over midnight appear on the next day. Need a way to make it better
-- 🟠 Show full camp names as you zoom into the map
-- 🟠 Fuzzy search - if no matches or few matches
-- 🟠 Find similar events option
-- 🟠 Allow camp leads to interact with dust / event editing etc
-- 🟠 Option to "Suggest a change" to an event - allows temporary change that can be approved by camp lead
 - 🟠 Types for camps: sound camps, chill, other types
-- 🟠 Option to show reminder or not on events (some events are important and some are not)
+- 🟠 Option to "Suggest a change" to an event - allows temporary change that can be approved by camp lead
+- 🔴 Option to show reminder or not on events (some events are important and some are not)
+- 🟠 Allow camp leads to interact with dust / event editing etc
+- 🟠 Show full camp names as you zoom into the map
+- 🟠 Find similar events option
+- 🟠 Print favorites only prints one page (Borderland feedback)
+- 🟠 Document what camp leads can do to add other camp leads and document the process
+- 🟠 Document ways to disconnect and not use your phone
+- 🟠 Multiple pins in the one location should allow flipping between the items
 - 🟠 Now map needs music
-
 - 🟠 On todays favorite events show bold for happening now, grey if completed
 - 🟠 As the time changes, update todays events
 - 🟠 Error: white screened the events page after a day had passed

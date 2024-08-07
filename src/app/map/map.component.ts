@@ -205,12 +205,9 @@ export class MapComponent implements OnInit, OnDestroy {
     if (this.mapResult) {
       this.mapResult.rotateCompass(degree);
     }
-    // this.compass.style.transform = `rotate(${degree}deg)`;
-    // this.compass.style.visibility = this.hideCompass ? 'hidden' : 'visible';
   }
 
   private async displayYourLocation(gpsCoord: GpsCoord) {
-    //this.gpsCoord = await this.geo.getPosition();
     const pt = await this.geo.gpsToPoint(gpsCoord);
     if (this.hideCompass) {
       pt.x -= 1000;
@@ -225,12 +222,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private setMapInformation() {
     const el: HTMLElement = this.container().nativeElement;
-    const rect = el.getBoundingClientRect();
-    // this.mapInformation = {
-    //   width: rect.width,
-    //   height: rect.height,
-    //   circleRadius: rect.width / 2,
-    // };
+    el.getBoundingClientRect();
   }
   async update() {
     this.setMapInformation();
@@ -274,6 +266,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.setupCompass();
   }
 
+  // eslint-disable-next-line unused-imports/no-unused-vars
   private pinClicked(pinUUID: string, event?: PointerEvent) {
     const point = this._points[parseInt(pinUUID)];
     this.info = point?.info;
