@@ -187,6 +187,15 @@ export class MapComponent implements OnInit, OnDestroy {
   // This is called when searching on the map
   public triggerClick(pointIdx: number) {
     this.pinClicked(`${pointIdx}`);
+    this.mapResult?.pinSelected(`${pointIdx}`);
+
+    this.popover().nativeElement.style.setProperty('left', `10px`);
+    const y = this.container().nativeElement.top;
+    this.popover().nativeElement.style.setProperty('top', `${y + 10}px`);
+    const el: any = document.activeElement;
+    if (el) {
+      el.blur();
+    }
   }
 
   private async updateLocation() {
@@ -394,8 +403,14 @@ export class MapComponent implements OnInit, OnDestroy {
     );
   }
 
-  mapClick(event: MouseEvent) {
+  closePopover() {
+    if (!this.isOpen) return;
     this.isOpen = false;
+    this.mapResult?.pinUnselected();
+  }
+
+  mapClick(event: MouseEvent) {
+    this.closePopover();
     let left = event.clientX - 100;
     if (left < 0) { left = 0; }
     if (left + 200 > window.innerWidth) {
@@ -435,7 +450,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   link(url: string | undefined) {
     if (!url) return;
-    this.isOpen = false;
+    this.closePopover();
     setTimeout(() => {
       this.router.navigateByUrl(url);
     }, 500);

@@ -1,3 +1,5 @@
+import { AddPinResult } from "./map";
+
 export interface MapModel {
     image: string;
     width: number;
@@ -8,6 +10,8 @@ export interface MapModel {
 
     // When a user clicks a pin this signal emits the uuid
     pinClicked: (pinUUID: string, event: PointerEvent) => void;
+
+
 }
 
 export interface ScrollResult {
@@ -19,7 +23,12 @@ export interface MapResult {
     rotateCompass: (rotation: number) => void;
     myPosition: (x: number, y: number) => void;
     setNearest: (nearest: string) => void;
+
     scrolled: (result: ScrollResult) => void;
+    // When a user searches for a pin and one is found
+    pinSelected: (pinUUID: string) => void;
+    pinUnselected: () => void;
+    pinData: { [key: string]: AddPinResult; },
     dispose: () => void;
     currentHex?: any;
     currentObject?: any;

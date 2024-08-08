@@ -13,7 +13,7 @@ import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
 import { MapModel, MapPin, MapResult, PinColor } from './map-model';
 
 
-interface AddPinResult {
+export interface AddPinResult {
     pin: Mesh | Group;
     background: Mesh;
 }
@@ -57,6 +57,9 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         myPosition: () => { },
         setNearest: () => { },
         scrolled: () => { },
+        pinSelected: () => { },
+        pinUnselected: () => { },
+        pinData: {},
         dispose: () => { }
     };
     let disposables: MapDisposable[] = [];
@@ -116,11 +119,14 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
 
     const p = await createScene(map, font, scene, mixers, disposables, renderFn, result);
 
+    function centerOn(pin: Mesh | Group, zoom: number = 4) {
+        const z = pin.position.z + map.height / zoom;
+        camera.position.set(pin.position.x, map.height / zoom, z + 20);
+        controls.target.set(pin.position.x, 0, z);
+    }
     // Positions the camera over the pin
     if (map.pins.length == 1 && p) {
-        const z = p.pin.position.z + map.height / 4;
-        camera.position.set(p.pin.position.x, map.height / 4, z + 20);
-        controls.target.set(p.pin.position.x, 0, z);
+        centerOn(p.pin);
     }
 
     // lights
@@ -170,6 +176,27 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
             result.scrolled({ deltaY, deltaX });
         }
     });
+
+    result.pinSelected = (id: string) => {
+        console.log('pin select', id);
+        for (let key of Object.keys(result.pinData)) {
+            const mat: Material = result.pinData[key].background.material as Material;
+            if (key !== id) {
+                mat.opacity = 0.25;
+
+            }
+        }
+        centerOn(result.pinData[id].pin, 16);
+        animateMesh(result.pinData[id].background, mixers);
+    }
+
+    result.pinUnselected = () => {
+        console.log('pin unselected');
+        for (let key of Object.keys(result.pinData)) {
+            const mat: Material = result.pinData[key].background.material as Material;
+            mat.opacity = 1;
+        }
+    }
 
     container.addEventListener('click', (e: any) => {
         const width = container.clientWidth
@@ -225,6 +252,7 @@ async function createScene(map: MapModel, font: any, scene: Scene, mixers: Anima
         scaleToMap(pin, map.width, map.height);
         const material = getMaterial(pin.color);
         p = await addPin(pin, material, font, 0, map.width, mixers, scene, disposables);
+        result.pinData[pin.uuid] = p;
     }
 
     if (map.compass) {
