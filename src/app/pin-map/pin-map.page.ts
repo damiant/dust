@@ -371,7 +371,7 @@ export class PinMapPage {
   }
 
   scrolled(result: ScrollResult) {
-    if (result.deltaX > 200) {
+    if (this.ui.swipedRight(result)) {
       this.location.back();
     }
   }

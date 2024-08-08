@@ -8,6 +8,7 @@ import { NavigationBar } from '@mauricewegner/capacitor-navigation-bar';
 import { Share, ShareOptions } from '@capacitor/share';
 import { Router } from '@angular/router';
 import { Browser } from '@capacitor/browser';
+import { ScrollResult } from '../map/map-model';
 
 export const ThemePrimaryColor = '#F61067';
 
@@ -50,6 +51,20 @@ export class UiService {
       console.log(`${name}: scroll to top`);
       ionContent.scrollToTop(100);
     }
+  }
+
+  public swipedRight(r: ScrollResult): boolean {
+    if (r.deltaX > 200 && Math.abs(r.deltaY) < 100) {
+      return true;
+    }
+    return false;
+  }
+
+  public swipedDown(r: ScrollResult): boolean {
+    if (r.deltaY > 100 && Math.abs(r.deltaX) < 50) {
+      return true;
+    }
+    return false;
   }
 
   public async openUrl(url: string) {

@@ -1,5 +1,8 @@
 ## Changes
 
+## 2.38
+- Improve swipe back and up detection
+
 ## 2.37
 - Search for camps, events and art is sorted by importance
 - Show filter as icon if selected on the home page
