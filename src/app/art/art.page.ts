@@ -172,7 +172,7 @@ export class ArtPage {
   }
 
   artTrackBy(index: number, art: Art) {
-    return art.uid;
+    return art.uid + `-${index}`;
   }
 
   private async update(search: string | undefined) {

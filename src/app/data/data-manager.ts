@@ -34,6 +34,7 @@ import {
 import { defaultMapRadius, distance, formatDistance, locationStringToPin, mapPointToPoint } from '../map/map.utils';
 import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from '../map/geo.utils';
 import { set, get, clear } from 'idb-keyval';
+import Fuse from 'fuse.js'
 
 interface TimeCache {
   [index: string]: TimeString | undefined;
@@ -850,6 +851,13 @@ export class DataManager implements WorkerClass {
         this.sortEvents(result);
       }
     }
+    if (query && query.length > 0 && result.length < 5) {
+      const fuse = new Fuse(this.events, { keys: ['title', 'camp', 'location', 'description'] });
+      const found = fuse.search(query, { limit: 10 });
+      for (let c of found) {
+        result.push(c.item);
+      }
+    }
     return result;
   }
 
@@ -931,6 +939,13 @@ export class DataManager implements WorkerClass {
         this.sortCamps(result);
       }
     }
+    if (result.length < 5 && query.length > 0) {
+      const fuse = new Fuse(this.camps, { keys: ["name", 'description', 'location_string'] });
+      const found = fuse.search(query, { limit: 10 });
+      for (let c of found) {
+        result.push(c.item);
+      }
+    }
     return result;
   }
 
@@ -972,6 +987,13 @@ export class DataManager implements WorkerClass {
         this.sortArtByDistance(result);
       } else {
         this.sortArt(result);
+      }
+    }
+    if (query && query.length > 0 && result.length < 5) {
+      const fuse = new Fuse(this.art, { keys: ["name", 'description', 'location_string', 'artist'] });
+      const found = fuse.search(query, { limit: 10 });
+      for (let c of found) {
+        result.push(c.item);
       }
     }
     return result;
