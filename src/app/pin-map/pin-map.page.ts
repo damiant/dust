@@ -121,7 +121,6 @@ export class PinMapPage {
   }
 
   private async mapFor(mapType: string): Promise<MapSet> {
-    console.log(`Map for ${mapType}`);
     switch (mapType) {
       case MapType.Art:
         return await this.getArt();
@@ -148,7 +147,9 @@ export class PinMapPage {
     if (mapSet.points.length > 0) return mapSet;
     const ms = await this.db.getPins(pinType);
     this.applyMapType(mapType, ms);
-    this.exportForBM(ms);
+    if (mapType == MapType.Restrooms) {
+      this.exportForBM(ms);
+    }
     return ms;
   }
 
@@ -164,7 +165,8 @@ export class PinMapPage {
         (js.points as any).push({ lat: pin.gps.lat, lng: pin.gps.lng });
       }
     }
-    console.log(JSON.stringify(js));
+    // Uncomment to get data for export for burning man
+    //console.log(JSON.stringify(js));
   }
 
   private async getArt(): Promise<MapSet> {

@@ -1,9 +1,9 @@
 # Roadmap
 
 - ✅ Search on map should match up camp name and zoom in and highlight the camp (all other camps should hide)
-- 🔴 Double tap to zoom in or out full on the map
+- ✅ Double tap to zoom in or out full on the map
 - ✅ Fix swipe left which happens when pinch zooming
-- 🔴 Swipe to delete an event from favorites
+- ✅ Swipe to delete an event from favorites
 - 🔴 Search all feature
 - 🔴 Fuzzy search - if no matches or few matches
 - 🔴 Music - events going over midnight appear on the next day. Need a way to make it better

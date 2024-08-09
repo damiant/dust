@@ -63,7 +63,8 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         dispose: () => { }
     };
     let disposables: MapDisposable[] = [];
-
+    let lastClick = new Date();
+    let targetZoomLevel = 4;
     const scene = new Scene();
     scene.background = new Color(0x999999);
     scene.add(await mapImage(map, disposables));
@@ -92,7 +93,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
     if (!camera) {
         camera = new PerspectiveCamera(130, w / h, 1, 10000);
     }
-    camera.position.set(0, map.height / 4, 20);
+    camera.position.set(0, map.height / targetZoomLevel, 20);
 
     // controls
     if (!controls) {
@@ -213,6 +214,19 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
                 return;
             }
         });
+        if (new Date().getTime() - lastClick.getTime() < 1000) {
+            // Double click is a zoom in / out            
+            switch (targetZoomLevel) {
+                case 4: targetZoomLevel = 8; break;
+                case 8: targetZoomLevel = 16; break;
+                case 16: targetZoomLevel = 4; break;
+            }
+            camera.position.y = map.height / targetZoomLevel;
+            camera.updateProjectionMatrix();
+            return;
+        }
+        // No hit
+        lastClick = new Date();
     });
     renderer.setAnimationLoop(renderFn);
     result.dispose = () => {
@@ -412,7 +426,6 @@ async function loadTexture(name: string): Promise<any> {
 async function addSVG(name: string, scale: number, rotation: number, disposables: MapDisposable[], uuid: string): Promise<Group> {
     const svg = await loadSVG(name);
     const group = new Group();
-
 
     for (const path of svg.paths) {
         const material = new MeshBasicMaterial({
