@@ -309,6 +309,11 @@ export class FavsPage implements OnInit {
     this.vm.showMap = true;
   }
 
+  public async removeEvent(event: Event) {
+    const occurrence = this.fav.selectOccurrence(event, this.db.selectedDay());
+    await this.fav.starEvent(false, event, this.db.selectedDay(), occurrence);
+  }
+
   async mapCamp(camp: Camp) {
     const mp = toMapPoint(camp.location_string!, undefined, camp.pin);
     mp.gps = await this.db.getMapPointGPS(mp);

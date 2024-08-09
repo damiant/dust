@@ -40,8 +40,15 @@
       here.</ion-text>
   </div>
   } @for (event of vm.events; track eventsTrackBy($index, event)) {
-  <app-event (rslClick)="rslClick($event)" (groupClick)="groupClick($event)" title="Favorites"
-    (mapClick)="mapEvent($event)" [event]="event" [variableHeight]="true" [longTime]="true" />
+  <ion-item-sliding>
+    <ion-item lines="none">
+      <app-event (rslClick)="rslClick($event)" (groupClick)="groupClick($event)" title="Favorites"
+        (mapClick)="mapEvent($event)" [event]="event" [variableHeight]="true" [longTime]="true" />
+    </ion-item>
+    <ion-item-options>
+      <ion-item-option color="danger" (click)="removeEvent(event)">Remove</ion-item-option>
+    </ion-item-options>
+  </ion-item-sliding>
   } @if (vm.camps.length > 0) {
   <h1 class="flex">
     Camps
