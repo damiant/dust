@@ -42,7 +42,7 @@ PODS:
     - Capacitor
   - CordovaPlugins (6.1.1):
     - CapacitorCordova
-  - MauricewegnerCapacitorNavigationBar (2.0.3):
+  - HugotomaziCapacitorNavigationBar (4.0.1):
     - Capacitor
 
 DEPENDENCIES:
@@ -68,7 +68,7 @@ DEPENDENCIES:
   - "CapacitorStatusBar (from `../../node_modules/@capacitor/status-bar`)"
   - "CapawesomeCapacitorAppUpdate (from `../../node_modules/@capawesome/capacitor-app-update`)"
   - CordovaPlugins (from `../capacitor-cordova-ios-plugins`)
-  - "MauricewegnerCapacitorNavigationBar (from `../../node_modules/@mauricewegner/capacitor-navigation-bar`)"
+  - "HugotomaziCapacitorNavigationBar (from `../../node_modules/@hugotomazi/capacitor-navigation-bar`)"
 
 EXTERNAL SOURCES:
   Capacitor:
@@ -115,8 +115,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capawesome/capacitor-app-update"
   CordovaPlugins:
     :path: "../capacitor-cordova-ios-plugins"
-  MauricewegnerCapacitorNavigationBar:
-    :path: "../../node_modules/@mauricewegner/capacitor-navigation-bar"
+  HugotomaziCapacitorNavigationBar:
+    :path: "../../node_modules/@hugotomazi/capacitor-navigation-bar"
 
 SPEC CHECKSUMS:
   Capacitor: 8941aba4364ba9d1b22188569001f2ce45cc2b00
@@ -141,8 +141,8 @@ SPEC CHECKSUMS:
   CapacitorStatusBar: 2e4369f99166125435641b1908d05f561eaba6f6
   CapawesomeCapacitorAppUpdate: 3c05b5c8e42f9c6a88d666093406e9336d9bfdb1
   CordovaPlugins: 39364e8174866c78aec9eff46251e6bcd97fd3ff
-  MauricewegnerCapacitorNavigationBar: 37f1308a961a8d8cd00f6362e30bad03a73728f7
+  HugotomaziCapacitorNavigationBar: 57d7cd51c65ef5e40159bafb0095ee99fab432ba
 
-PODFILE CHECKSUM: 76ce76afc999002a0924402b55fa2a604be64708
+PODFILE CHECKSUM: fc541b0298f88333b56c01a9285aa620f217fea1
 
 COCOAPODS: 1.15.2

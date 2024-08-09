@@ -53,7 +53,7 @@
     "@capacitor/status-bar": "^6.0.0",
     "@capawesome/capacitor-app-update": "6.0.0",
     "@ionic/angular": "8.2.6",
-    "@mauricewegner/capacitor-navigation-bar": "2.0.3",
+    "@hugotomazi/capacitor-navigation-bar": "4.0.1",
     "capacitor-print-webview": "6.0.3",
     "cordova-plugin-calendar-ios-fix": "5.1.6",
     "cordova-plugin-device-orientation": "3.0.0",

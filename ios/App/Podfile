@@ -29,7 +29,7 @@ def capacitor_pods
   pod 'CapacitorSplashScreen', :path => '../../node_modules/@capacitor/splash-screen'
   pod 'CapacitorStatusBar', :path => '../../node_modules/@capacitor/status-bar'
   pod 'CapawesomeCapacitorAppUpdate', :path => '../../node_modules/@capawesome/capacitor-app-update'
-  pod 'MauricewegnerCapacitorNavigationBar', :path => '../../node_modules/@mauricewegner/capacitor-navigation-bar'
+  pod 'HugotomaziCapacitorNavigationBar', :path => '../../node_modules/@hugotomazi/capacitor-navigation-bar'
   pod 'CapacitorPrintWebview', :path => '../../node_modules/capacitor-print-webview'
   pod 'CordovaPlugins', :path => '../capacitor-cordova-ios-plugins'
 end
