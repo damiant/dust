@@ -52,6 +52,7 @@ import {
   cloudDownloadOutline,
   closeSharp,
   ellipsisVerticalSharp,
+  searchSharp,
 } from 'ionicons/icons';
 import { Animation, StatusBar } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
@@ -155,6 +156,7 @@ export class ProfilePage implements OnInit {
       cloudDownloadOutline,
       closeSharp,
       ellipsisVerticalSharp,
+      searchSharp
     });
     effect(() => {
       this.ui.scrollUpContent('profile', this.ionContent());
@@ -245,6 +247,10 @@ export class ProfilePage implements OnInit {
     //this.settings.clearSelectedEvent();
     this.settings.settings.preventAutoStart = true;
     this.ui.home();
+  }
+
+  search() {
+    this.router.navigateByUrl('/search');
   }
 
   public async rate() {

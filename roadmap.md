@@ -4,8 +4,8 @@
 - ✅ Double tap to zoom in or out full on the map
 - ✅ Fix swipe left which happens when pinch zooming
 - ✅ Swipe to delete an event from favorites
-- 🔴 Search all feature
-- 🔴 Fuzzy search - if no matches or few matches
+- ✅ Search all feature
+- ✅ Fuzzy search - if no matches or few matches
 - 🔴 Music - events going over midnight appear on the next day. Need a way to make it better
 - 🟠 Types for camps: sound camps, chill, other types
 - 🟠 Option to "Suggest a change" to an event - allows temporary change that can be approved by camp lead
@@ -30,7 +30,7 @@
 - 🔵 Timetable view (something like Google Calendar)
 - 🟠 Share/Collaborate with friends on your favorites list
 - 🟠 Notes - ability to write notes for things
-- 🟠 Option to predownload all content (images etc)
+- 🟠 Option to pre-download all content (images etc)
 
 # Drop a Pin
 

@@ -8,12 +8,14 @@
       <ion-button aria-label="Share this event" (click)="share()">
         <ion-icon color="primary" name="share-outline"></ion-icon>
       </ion-button>
+      @if (navButtons()) {
       <ion-button (click)="prev()">
         <ion-icon name="chevron-back-outline"></ion-icon>
       </ion-button>
       <ion-button (click)="next()">
         <ion-icon name="chevron-forward-outline"></ion-icon>
       </ion-button>
+      }
 
     </ion-buttons>
   </ion-toolbar>

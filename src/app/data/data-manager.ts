@@ -95,7 +95,7 @@ export class DataManager implements WorkerClass {
       case DataMethods.GetArtList:
         return this.getArtList(args[0]);
       case DataMethods.FindArts:
-        return this.findArts(args[0], args[1]);
+        return this.findArts(args[0], args[1], args[2]);
       case DataMethods.FindArt:
         return this.findArt(args[0]);
       case DataMethods.GpsToPoint:
@@ -123,9 +123,9 @@ export class DataManager implements WorkerClass {
       case DataMethods.CheckEvents:
         return this.checkEvents();
       case DataMethods.FindEvents:
-        return this.findEvents(args[0], args[1], args[2], args[3], args[4], args[5], args[6]);
+        return this.findEvents(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7]);
       case DataMethods.FindCamps:
-        return this.findCamps(args[0], args[1]);
+        return this.findCamps(args[0], args[1], args[2]);
       case DataMethods.FindEvent:
         return this.findEvent(args[0]);
       case DataMethods.FindCamp:
@@ -818,11 +818,18 @@ export class DataManager implements WorkerClass {
     coords: GpsCoord | undefined,
     timeRange: TimeRange | undefined,
     allDay: boolean,
-    showPast: boolean
+    showPast: boolean,
+    top?: number
   ): Event[] {
     const result: Event[] = [];
     if (query) {
       query = this.scrubQuery(query);
+      const fuse = new Fuse(this.events, { keys: ['title', 'camp', 'location', 'description'] });
+      const found = fuse.search(query, { limit: top ? top : 10 });
+      for (let c of found) {
+        result.push(c.item);
+      }
+      return result;
     }
 
     for (let event of this.events) {
@@ -849,13 +856,6 @@ export class DataManager implements WorkerClass {
         this.sortEventsByDistance(result);
       } else {
         this.sortEvents(result);
-      }
-    }
-    if (query && query.length > 0 && result.length < 5) {
-      const fuse = new Fuse(this.events, { keys: ['title', 'camp', 'location', 'description'] });
-      const found = fuse.search(query, { limit: 10 });
-      for (let c of found) {
-        result.push(c.item);
       }
     }
     return result;
@@ -914,10 +914,18 @@ export class DataManager implements WorkerClass {
     return result;
   }
 
-  public findCamps(query: string, coords?: GpsCoord): Camp[] {
+  public findCamps(query: string, coords?: GpsCoord, top?: number): Camp[] {
     const result: Camp[] = [];
     if (query) {
       query = this.scrubQuery(query);
+
+      const fuse = new Fuse(this.camps, { keys: ["name", 'description', 'location_string'] });
+      const found = fuse.search(query, { limit: top ? top : 10 });
+      for (let c of found) {
+        result.push(c.item);
+      }
+      return result;
+
     }
     for (let camp of this.camps) {
       if (coords) {
@@ -939,13 +947,7 @@ export class DataManager implements WorkerClass {
         this.sortCamps(result);
       }
     }
-    if (result.length < 5 && query.length > 0) {
-      const fuse = new Fuse(this.camps, { keys: ["name", 'description', 'location_string'] });
-      const found = fuse.search(query, { limit: 10 });
-      for (let c of found) {
-        result.push(c.item);
-      }
-    }
+
     return result;
   }
 
@@ -963,10 +965,16 @@ export class DataManager implements WorkerClass {
     return 'No Match';
   }
 
-  public findArts(query: string | undefined, coords: GpsCoord | undefined): Art[] {
+  public findArts(query: string | undefined, coords: GpsCoord | undefined, top?: number): Art[] {
     const result: Art[] = [];
     if (query) {
       query = this.scrubQuery(query);
+      const fuse = new Fuse(this.art, { keys: ["name", 'description', 'location_string', 'artist'] });
+      const found = fuse.search(query, { limit: top ? top : 10 });
+      for (let c of found) {
+        result.push(c.item);
+      }
+      return result;
     }
     for (let art of this.art) {
       if (coords) {
@@ -987,13 +995,6 @@ export class DataManager implements WorkerClass {
         this.sortArtByDistance(result);
       } else {
         this.sortArt(result);
-      }
-    }
-    if (query && query.length > 0 && result.length < 5) {
-      const fuse = new Fuse(this.art, { keys: ["name", 'description', 'location_string', 'artist'] });
-      const found = fuse.search(query, { limit: 10 });
-      for (let c of found) {
-        result.push(c.item);
       }
     }
     return result;

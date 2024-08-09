@@ -1,5 +1,8 @@
 <ion-content [fullscreen]="true">
   <div class="header" [ngStyle]="{'background-image': 'url('+ imageUrl+')'}">
+    <ion-fab-button class="search-btn" (click)="search()" size="small">
+      <ion-icon name="search-sharp"></ion-icon>
+    </ion-fab-button>
     <ion-fab-button class="close-btn" (click)="home()" size="small">
       <ion-icon name="close-sharp"></ion-icon>
     </ion-fab-button>
