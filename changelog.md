@@ -3,7 +3,7 @@
 ## 2.38
 - Improve swipe back and up detection
 - Search on map now zooms to and animates the found item
-- Swipe to remove favorite camps, events
+- Swipe to remove favorite camps, events, art
 
 ## 2.37
 - Search for camps, events and art is sorted by importance

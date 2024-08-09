@@ -324,10 +324,13 @@ export class FavsPage implements OnInit {
   }
 
   async removeCamp(camp: Camp) {
-    console.log('remove camp');
     await this.fav.starCamp(false, camp.uid);
     await this.update();
-    console.log('remove camp2');
+  }
+
+  async removeArt(art: Art) {
+    await this.fav.starArt(false, art.uid);
+    await this.update();
   }
 
   eventsTrackBy(index: number, event: Event) {
