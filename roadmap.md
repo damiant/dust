@@ -14,8 +14,10 @@
 - 🟠 Show full camp names as you zoom into the map
 - 🟠 Find similar events option
 - 🟠 Print favorites only prints one page (Borderland feedback)
+
 - 🟠 Document what camp leads can do to add other camp leads and document the process
 - 🟠 Document ways to disconnect and not use your phone
+
 - 🟠 Multiple pins in the one location should allow flipping between the items
 - 🟠 Now map needs music
 - 🟠 On todays favorite events show bold for happening now, grey if completed

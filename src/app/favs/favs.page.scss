@@ -4,7 +4,7 @@ h1 {
 }
 
 .pad-sides {
-    padding-left:10vw;
+    padding-left: 10vw;
     padding-right: 10vw;
 }
 
@@ -14,4 +14,12 @@ h1 {
 
 .b-pad-r {
     padding-right: 0.5rem;
+}
+
+ion-item {
+    --padding-start: 0;
+    --padding-end: 0;
+    --padding-top: 0;
+    --padding-bottom: 0;
+    --background: transparent;
 }

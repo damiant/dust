@@ -17,7 +17,7 @@ import {
   IonCard,
   IonCardTitle,
   IonCardContent,
-  IonCardHeader,
+  IonCardHeader, IonItemSliding, IonItemOptions, IonItemOption
 } from '@ionic/angular/standalone';
 import { Router, RouterModule } from '@angular/router';
 import { Art, Camp, Event, MapPoint } from '../data/models';
@@ -86,7 +86,7 @@ function initialState(): FavsState {
   templateUrl: './favs.page.html',
   styleUrls: ['./favs.page.scss'],
   standalone: true,
-  imports: [
+  imports: [IonItemOption, IonItemOptions, IonItemSliding,
     IonCardHeader,
     IonCardContent,
     IonCardTitle,
@@ -316,6 +316,13 @@ export class FavsPage implements OnInit {
     this.vm.mapTitle = camp.name;
     this.vm.mapSubtitle = camp.location_string!;
     this.vm.showMap = true;
+  }
+
+  async removeCamp(camp: Camp) {
+    console.log('remove camp');
+    await this.fav.starCamp(false, camp.uid);
+    await this.update();
+    console.log('remove camp2');
   }
 
   eventsTrackBy(index: number, event: Event) {

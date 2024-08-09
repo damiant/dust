@@ -52,7 +52,14 @@
     </ion-buttons>
   </h1>
   } @for (camp of vm.camps; track campsTrackBy($index, camp)) {
-  <app-camp title="Favorites" (mapClick)="mapCamp($event)" [camp]="camp" />
+  <ion-item-sliding>
+    <ion-item lines="none">
+      <app-camp title="Favorites" (mapClick)="mapCamp($event)" [camp]="camp" />
+    </ion-item>
+    <ion-item-options>
+      <ion-item-option color="danger" (click)="removeCamp(camp)">Remove</ion-item-option>
+    </ion-item-options>
+  </ion-item-sliding>
   } @if (vm.art.length > 0) {
   <h1 class="flex">
     Art
