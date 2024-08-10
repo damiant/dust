@@ -3,6 +3,7 @@
 ## 2.39
 
 - Fix possible memory leak
+- Fade in map
 
 ## 2.38
 - Improve swipe back and up detection
