@@ -4,6 +4,7 @@
 
 - Fix possible memory leak
 - Fade in map
+- Smaller pins for maps with more than 50 pins
 
 ## 2.38
 - Improve swipe back and up detection

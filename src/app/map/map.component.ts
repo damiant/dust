@@ -260,6 +260,9 @@ export class MapComponent implements OnInit, OnDestroy {
       this.points[0].animated = true;
     }
 
+    const largePins = this._points.length < 50;
+
+    const size = largePins ? map.defaultPinSize : map.defaultPinSize / 1.8;
     for (const [i, point] of this._points.entries()) {
       const pin = mapPointToPin(point, defaultMapRadius);
 
@@ -269,7 +272,7 @@ export class MapComponent implements OnInit, OnDestroy {
           x: pin.x, z: pin.y,
           color: point.info?.bgColor ?? 'primary',
           animated: point.animated,
-          size: map.defaultPinSize,
+          size,
           label: point.info?.label ?? '^'
         });
       } else {
