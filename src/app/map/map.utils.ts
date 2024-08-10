@@ -284,7 +284,6 @@ export function calculateRelativePosition(you: GpsCoord, pin: GpsCoord, compassR
   // Calculate difference between bearing and heading
   let angleDiff = bearingToPinDeg - compassRotation;
   angleDiff = (angleDiff + 180) % 360 - 180;
-  console.log(`compass=${compassRotation} angleDiff=${angleDiff} bearingToPinDeg=${bearingToPinDeg} bearingToPin=${bearingToPin}`);
 
   // Determine relative position
   if (angleDiff > -45 && angleDiff <= 45) {

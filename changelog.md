@@ -1,5 +1,9 @@
 ## Changes
 
+## 2.39
+
+- Fix possible memory leak
+
 ## 2.38
 - Improve swipe back and up detection
 - Search on map now zooms to and animates the found item
