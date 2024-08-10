@@ -26,6 +26,6 @@
 
 @if (footer) {
 <div [style.paddingBottom.px]="footerPadding()" [ngClass]="isHeader() ? 'header' : 'footer'">
-  <ion-text (click)="locationClick()">{{ footer }}</ion-text>
+  <ion-text [ngClass]="footerClass" (click)="locationClick()">{{ footer }}</ion-text>
 </div>
 }

@@ -10,11 +10,12 @@ import { CompassError, CompassHeading } from './compass';
 import { GpsCoord } from './geo.utils';
 import { Router, RouterModule } from '@angular/router';
 import { environment } from 'src/environments/environment';
-import { IonButton, IonContent, IonPopover, IonRouterOutlet, IonText } from '@ionic/angular/standalone';
+import { IonButton, IonContent, IonPopover, IonRouterOutlet, IonText, ToastController } from '@ionic/angular/standalone';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { DbService } from '../data/db.service';
 import { MapModel, MapResult, ScrollResult } from './map-model';
 import { init3D } from './map';
+import { UiService } from '../ui/ui.service';
 
 // How often is the map updated with a new location
 const geolocateInterval = 10000;
@@ -41,9 +42,12 @@ export class MapComponent implements OnInit, OnDestroy {
   private db = inject(DbService)
   private router = inject(Router);
   private settings = inject(SettingsService);
+  private toastController = inject(ToastController);
+  private ui = inject(UiService);
   _points: MapPoint[];
   isOpen = false;
   footer: string | undefined;
+  footerClass: string | undefined;
   popover = viewChild.required<ElementRef>('popover');
   info: MapInfo | undefined;
   src = 'assets/map.svg';
@@ -105,7 +109,7 @@ export class MapComponent implements OnInit, OnDestroy {
   async locationClick() {
     await this.geo.checkPermissions();
     if (this.geo.gpsPermission() == 'denied') {
-      this.footer = 'Location services need to be enabled in settings on your device';
+      this.ui.presentToast('Location services need to be enabled in settings on your device', this.toastController, undefined, 5000);
       return;
     }
     this.showMessage = true;
@@ -164,10 +168,12 @@ export class MapComponent implements OnInit, OnDestroy {
       }
       if (change === 'denied') {
         this.footer = this.disabledMessage;
+
       }
       if (change === 'none') {
         this.footer = undefined;
       }
+      this.footerClass = (this.footer == this.disabledMessage) ? 'warning' : '';
     });
   }
 
@@ -379,6 +385,7 @@ export class MapComponent implements OnInit, OnDestroy {
           this.footer = (you.lat == 0) ? 'Calculating location' : 'You are outside of the Event';
         } else {
           this.footer = this.disabledMessage;
+          this.footerClass = 'warning';
         }
       } else {
         if (dist != '') {

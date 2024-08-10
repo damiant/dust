@@ -39,3 +39,12 @@ app-cached-img {
 ion-content {
     border-radius: 0.5rem;
 }
+
+ion-text.warning {
+    background-color: var(--ion-color-primary);
+    color: white;
+    padding: 0.25rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 20px;
+}

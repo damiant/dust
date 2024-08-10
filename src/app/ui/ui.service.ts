@@ -75,11 +75,11 @@ export class UiService {
     await Browser.open({ url, presentationStyle: 'popover' });
   }
 
-  public async presentToast(message: string, toastController: ToastController, position?: any) {
+  public async presentToast(message: string, toastController: ToastController, position?: any, duration?: number) {
     const toast = await toastController.create({
       message,
       color: 'primary',
-      duration: 1500,
+      duration: duration ?? 1500,
       swipeGesture: 'vertical',
       position: position ? position : 'top',
     });
