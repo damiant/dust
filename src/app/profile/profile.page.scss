@@ -35,6 +35,14 @@ ion-button.tile {
     left: auto
 }
 
+.search-btn {
+    position: absolute;
+    top: 0.2rem;
+    z-index: 1;
+    left: 0.8rem;
+    right: auto
+}
+
 .header {
     background-position: center center;
     background-repeat: no-repeat;

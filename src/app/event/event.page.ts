@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, input, viewChild, inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, signal, input, viewChild, inject, OnDestroy, computed } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -84,6 +84,9 @@ export class EventPage implements OnInit, OnDestroy {
   private location = inject(Location);
   public event: Event | undefined;
   public back = signal('Back');
+  public navButtons = computed(() => {
+    return this.back() !== 'Search';
+  });
   popover = viewChild.required(IonPopover);
   content = viewChild.required(IonContent);
   isOpen = false;
@@ -187,10 +190,10 @@ export class EventPage implements OnInit, OnDestroy {
   }
 
   scrolled(result: ScrollResult) {
-    if (result.deltaY > 100) {
+    if (this.ui.swipedDown(result)) {
       this.content().scrollToTop(500);
     }
-    if (result.deltaX > 200) {
+    if (this.ui.swipedRight(result)) {
       this.location.back();
     }
   }

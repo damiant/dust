@@ -4,10 +4,11 @@ import { randomInt } from '../utils/utils';
 import { IonContent, NavController, ToastController } from '@ionic/angular/standalone';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
-import { NavigationBar } from '@mauricewegner/capacitor-navigation-bar';
+import { NavigationBar } from '@hugotomazi/capacitor-navigation-bar';
 import { Share, ShareOptions } from '@capacitor/share';
 import { Router } from '@angular/router';
 import { Browser } from '@capacitor/browser';
+import { ScrollResult } from '../map/map-model';
 
 export const ThemePrimaryColor = '#F61067';
 
@@ -52,6 +53,20 @@ export class UiService {
     }
   }
 
+  public swipedRight(r: ScrollResult): boolean {
+    if (r.deltaX > 200 && Math.abs(r.deltaY) < 100) {
+      return true;
+    }
+    return false;
+  }
+
+  public swipedDown(r: ScrollResult): boolean {
+    if (r.deltaY > 100 && Math.abs(r.deltaX) < 50) {
+      return true;
+    }
+    return false;
+  }
+
   public async openUrl(url: string) {
     if (url.startsWith('tel:') || url.startsWith('mailto:')) {
       window.open(url, '_blank');
@@ -60,11 +75,11 @@ export class UiService {
     await Browser.open({ url, presentationStyle: 'popover' });
   }
 
-  public async presentToast(message: string, toastController: ToastController, position?: any) {
+  public async presentToast(message: string, toastController: ToastController, position?: any, duration?: number) {
     const toast = await toastController.create({
       message,
       color: 'primary',
-      duration: 1500,
+      duration: duration ?? 1500,
       swipeGesture: 'vertical',
       position: position ? position : 'top',
     });

@@ -56,8 +56,8 @@ project(':capacitor-status-bar').projectDir = new File('../node_modules/@capacit
 include ':capawesome-capacitor-app-update'
 project(':capawesome-capacitor-app-update').projectDir = new File('../node_modules/@capawesome/capacitor-app-update/android')
 
-include ':mauricewegner-capacitor-navigation-bar'
-project(':mauricewegner-capacitor-navigation-bar').projectDir = new File('../node_modules/@mauricewegner/capacitor-navigation-bar/android')
+include ':hugotomazi-capacitor-navigation-bar'
+project(':hugotomazi-capacitor-navigation-bar').projectDir = new File('../node_modules/@hugotomazi/capacitor-navigation-bar/android')
 
 include ':capacitor-print-webview'
 project(':capacitor-print-webview').projectDir = new File('../node_modules/capacitor-print-webview/android')

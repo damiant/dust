@@ -135,9 +135,10 @@ export class DbService {
     coords: GpsCoord | undefined,
     timeRange: TimeRange | undefined,
     allDay: boolean,
-    showPast: boolean
+    showPast: boolean,
+    top?: number
   ): Promise<Event[]> {
-    return await call(this.worker, DataMethods.FindEvents, query, day, category, coords, timeRange, allDay, showPast);
+    return await call(this.worker, DataMethods.FindEvents, query, day, category, coords, timeRange, allDay, showPast, top);
   }
 
   public async getEventList(ids: string[]): Promise<Event[]> {
@@ -312,12 +313,12 @@ export class DbService {
     return await call(this.worker, DataMethods.GetArtList, ids);
   }
 
-  public async findCamps(query: string, near?: GpsCoord): Promise<Camp[]> {
-    return await call(this.worker, DataMethods.FindCamps, query, near);
+  public async findCamps(query: string, near?: GpsCoord, top?: number): Promise<Camp[]> {
+    return await call(this.worker, DataMethods.FindCamps, query, near, top);
   }
 
-  public async findArts(query: string | undefined, coords: GpsCoord | undefined): Promise<Art[]> {
-    return await call(this.worker, DataMethods.FindArts, query, coords);
+  public async findArts(query: string | undefined, coords: GpsCoord | undefined, top?: number): Promise<Art[]> {
+    return await call(this.worker, DataMethods.FindArts, query, coords, top);
   }
 
   public async findArt(uid: string): Promise<Art> {

@@ -1,5 +1,8 @@
 <ion-content [fullscreen]="true">
   <div class="header" [ngStyle]="{'background-image': 'url('+ imageUrl+')'}">
+    <ion-fab-button class="search-btn" (click)="search()" size="small">
+      <ion-icon name="search-sharp"></ion-icon>
+    </ion-fab-button>
     <ion-fab-button class="close-btn" (click)="home()" size="small">
       <ion-icon name="close-sharp"></ion-icon>
     </ion-fab-button>
@@ -96,7 +99,7 @@
   <app-pins-card (clickThing)="clickThing($event)" [things]="things"></app-pins-card>
 
   <div (click)="moreClick()" class="pad-top" (click)="hiddenPanel = !hiddenPanel"></div>
-  <div style="padding: 1rem">
+  <!-- <div style="padding: 1rem">
     <ion-item [hidden]="!hiddenPanel" lines="none">
       <ion-icon slot="start" name="time-outline"></ion-icon>
       <ion-toggle (ionChange)="toggleLongEvents($event)" [checked]="longEvents">Long Events In Search</ion-toggle>
@@ -105,7 +108,7 @@
       <ion-icon slot="start" name="locate-outline"></ion-icon>
       <ion-toggle (ionChange)="toggleLocation($event)" [checked]="locationEnabled">Show My Location</ion-toggle>
     </ion-item>
-  </div>
+  </div> -->
 
   <div class="pad-top"></div>
 </ion-content>

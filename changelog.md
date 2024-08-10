@@ -1,5 +1,15 @@
 ## Changes
 
+## 2.38
+- Improve swipe back and up detection
+- Search on map now zooms to and animates the found item
+- Swipe to remove favorite camps, events, art
+- Double tap on map for zoom in/far/out
+- Fuzzy search for art, events and camps
+- Search all feature
+- Fix bug related to map disappearing after using the keyboard
+- Fix bug with location denial causing infinite spinner
+
 ## 2.37
 - Search for camps, events and art is sorted by importance
 - Show filter as icon if selected on the home page

@@ -27,6 +27,7 @@ import { PinColor, ScrollResult } from '../map/map-model';
 import { FavoritesService } from '../favs/favorites.service';
 import { UiService } from '../ui/ui.service';
 import { ToastController } from '@ionic/angular';
+import { SettingsService } from '../data/settings.service';
 
 
 @Component({
@@ -55,6 +56,7 @@ export class PinMapPage {
   private db = inject(DbService);
   private ui = inject(UiService);
   private geo = inject(GeoService);
+  private settings = inject(SettingsService);
   private favs = inject(FavoritesService);
   private toast = inject(ToastController);
   private location = inject(Location);
@@ -121,7 +123,6 @@ export class PinMapPage {
   }
 
   private async mapFor(mapType: string): Promise<MapSet> {
-    console.log(`Map for ${mapType}`);
     switch (mapType) {
       case MapType.Art:
         return await this.getArt();
@@ -148,7 +149,9 @@ export class PinMapPage {
     if (mapSet.points.length > 0) return mapSet;
     const ms = await this.db.getPins(pinType);
     this.applyMapType(mapType, ms);
-    this.exportForBM(ms);
+    if (mapType == MapType.Restrooms) {
+      this.exportForBM(ms);
+    }
     return ms;
   }
 
@@ -164,7 +167,8 @@ export class PinMapPage {
         (js.points as any).push({ lat: pin.gps.lat, lng: pin.gps.lng });
       }
     }
-    console.log(JSON.stringify(js));
+    // Uncomment to get data for export for burning man
+    //console.log(JSON.stringify(js));
   }
 
   private async getArt(): Promise<MapSet> {
@@ -195,6 +199,8 @@ export class PinMapPage {
     for (let thing of this.favs.things()) {
       if (thing.name == this.thingName()) {
         if (!thing.gps) {
+          console.log(`Location enabled when showing isGettingGPS`, this.settings.settings.locationEnabled);
+
           this.isGettingGPS = true;
         } else {
           this.canClearThing = true;
@@ -371,7 +377,7 @@ export class PinMapPage {
   }
 
   scrolled(result: ScrollResult) {
-    if (result.deltaX > 200) {
+    if (this.ui.swipedRight(result)) {
       this.location.back();
     }
   }

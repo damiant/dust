@@ -10,11 +10,12 @@ import { CompassError, CompassHeading } from './compass';
 import { GpsCoord } from './geo.utils';
 import { Router, RouterModule } from '@angular/router';
 import { environment } from 'src/environments/environment';
-import { IonButton, IonContent, IonPopover, IonRouterOutlet, IonText } from '@ionic/angular/standalone';
+import { IonButton, IonContent, IonPopover, IonRouterOutlet, IonText, ToastController } from '@ionic/angular/standalone';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { DbService } from '../data/db.service';
 import { MapModel, MapResult, ScrollResult } from './map-model';
 import { init3D } from './map';
+import { UiService } from '../ui/ui.service';
 
 // How often is the map updated with a new location
 const geolocateInterval = 10000;
@@ -41,9 +42,12 @@ export class MapComponent implements OnInit, OnDestroy {
   private db = inject(DbService)
   private router = inject(Router);
   private settings = inject(SettingsService);
+  private toastController = inject(ToastController);
+  private ui = inject(UiService);
   _points: MapPoint[];
   isOpen = false;
   footer: string | undefined;
+  footerClass: string | undefined;
   popover = viewChild.required<ElementRef>('popover');
   info: MapInfo | undefined;
   src = 'assets/map.svg';
@@ -105,7 +109,7 @@ export class MapComponent implements OnInit, OnDestroy {
   async locationClick() {
     await this.geo.checkPermissions();
     if (this.geo.gpsPermission() == 'denied') {
-      this.footer = 'Location services need to be enabled in settings on your device';
+      this.ui.presentToast('Location services need to be enabled in settings on your device', this.toastController, undefined, 5000);
       return;
     }
     this.showMessage = true;
@@ -138,6 +142,9 @@ export class MapComponent implements OnInit, OnDestroy {
         }
       }
     } else {
+      if (this.loadingDialog()) {
+        this.hideLoadingDialog();
+      }
       this.settings.setLastGeoAlert();
     }
   }
@@ -161,10 +168,12 @@ export class MapComponent implements OnInit, OnDestroy {
       }
       if (change === 'denied') {
         this.footer = this.disabledMessage;
+
       }
       if (change === 'none') {
         this.footer = undefined;
       }
+      this.footerClass = (this.footer == this.disabledMessage) ? 'warning' : '';
     });
   }
 
@@ -187,6 +196,15 @@ export class MapComponent implements OnInit, OnDestroy {
   // This is called when searching on the map
   public triggerClick(pointIdx: number) {
     this.pinClicked(`${pointIdx}`);
+    this.mapResult?.pinSelected(`${pointIdx}`);
+
+    this.popover().nativeElement.style.setProperty('left', `10px`);
+    const y = this.container().nativeElement.top;
+    this.popover().nativeElement.style.setProperty('top', `${y + 10}px`);
+    const el: any = document.activeElement;
+    if (el) {
+      el.blur();
+    }
   }
 
   private async updateLocation() {
@@ -205,12 +223,9 @@ export class MapComponent implements OnInit, OnDestroy {
     if (this.mapResult) {
       this.mapResult.rotateCompass(degree);
     }
-    // this.compass.style.transform = `rotate(${degree}deg)`;
-    // this.compass.style.visibility = this.hideCompass ? 'hidden' : 'visible';
   }
 
   private async displayYourLocation(gpsCoord: GpsCoord) {
-    //this.gpsCoord = await this.geo.getPosition();
     const pt = await this.geo.gpsToPoint(gpsCoord);
     if (this.hideCompass) {
       pt.x -= 1000;
@@ -225,12 +240,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private setMapInformation() {
     const el: HTMLElement = this.container().nativeElement;
-    const rect = el.getBoundingClientRect();
-    // this.mapInformation = {
-    //   width: rect.width,
-    //   height: rect.height,
-    //   circleRadius: rect.width / 2,
-    // };
+    el.getBoundingClientRect();
   }
   async update() {
     this.setMapInformation();
@@ -274,6 +284,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.setupCompass();
   }
 
+  // eslint-disable-next-line unused-imports/no-unused-vars
   private pinClicked(pinUUID: string, event?: PointerEvent) {
     const point = this._points[parseInt(pinUUID)];
     this.info = point?.info;
@@ -374,6 +385,7 @@ export class MapComponent implements OnInit, OnDestroy {
           this.footer = (you.lat == 0) ? 'Calculating location' : 'You are outside of the Event';
         } else {
           this.footer = this.disabledMessage;
+          this.footerClass = 'warning';
         }
       } else {
         if (dist != '') {
@@ -401,8 +413,14 @@ export class MapComponent implements OnInit, OnDestroy {
     );
   }
 
-  mapClick(event: MouseEvent) {
+  closePopover() {
+    if (!this.isOpen) return;
     this.isOpen = false;
+    this.mapResult?.pinUnselected();
+  }
+
+  mapClick(event: MouseEvent) {
+    this.closePopover();
     let left = event.clientX - 100;
     if (left < 0) { left = 0; }
     if (left + 200 > window.innerWidth) {
@@ -442,7 +460,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   link(url: string | undefined) {
     if (!url) return;
-    this.isOpen = false;
+    this.closePopover();
     setTimeout(() => {
       this.router.navigateByUrl(url);
     }, 500);

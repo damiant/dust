@@ -128,10 +128,6 @@ export class CampPage implements OnInit {
     return date.toLocaleDateString([], { weekday: 'long' }) + ` ${getOrdinalNum(day)}`;
   }
 
-  canCreate() {
-    return canCreate();
-  }
-
   open(url: string) {
     this.ui.openUrl(url);
   }
@@ -155,10 +151,10 @@ export class CampPage implements OnInit {
   }
 
   scrolled(result: ScrollResult) {
-    if (result.deltaY > 100) {
+    if (this.ui.swipedDown(result)) {
       this.content().scrollToTop(500);
     }
-    if (result.deltaX > 200) {
+    if (this.ui.swipedRight(result)) {
       this.location.back();
     }
   }

@@ -13,7 +13,7 @@
     @for (card of vm.cards; track card.id) {
     <app-carousel-item (click)="open(card, true)">
       <app-cached-img (loaded)="vm.cardLoaded[card.id] = true" [loading]="'eager'"
-        [ngClass]="(vm.selected?.id === card.id) ? 'select' : 'unselect'" [src]="card.imageUrl" />
+        [ngClass]="(vm.selected?.id === card.id) ? 'select ' + vm.selected?.class : 'unselect'" [src]="card.imageUrl" />
       <p class="name" [hidden]="!vm.cardLoaded[card.id]" aria-hidden="true">{{card.title}}</p>
     </app-carousel-item>
     }

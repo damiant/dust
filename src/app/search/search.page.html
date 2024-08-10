@@ -1,0 +1,40 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Back"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Search</ion-title>
+    <ion-buttons slot="end">
+      @if (vm.busy) {
+      <ion-spinner color="dark" name="circular"></ion-spinner>
+      }
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Search
+      </ion-title>
+    </ion-toolbar>
+    <ion-toolbar>
+      <app-search [openFocused]="true" placeholder="Find Events, Camps & Art" (search)="search($event)" />
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-list [inset]="true">
+    @for (item of vm.items; track $index) {
+    <ion-item detail="true" [routerLink]="item.link">
+      <ion-icon aria-hidden="true" [src]="item.icon"></ion-icon>
+      <ion-label class="ion-text-nowrap">{{item.title}}</ion-label>
+    </ion-item>
+    }
+    @if (vm.items.length === 0) {
+    <div class="center">
+      <ion-text class="large" color="medium">This search will find events, camps or art. It will find the closest
+        matches by title, description and location.</ion-text>
+    </div>
+    }
+  </ion-list>
+</ion-content>

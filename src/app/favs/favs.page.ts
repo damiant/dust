@@ -17,7 +17,7 @@ import {
   IonCard,
   IonCardTitle,
   IonCardContent,
-  IonCardHeader,
+  IonCardHeader, IonItemSliding, IonItemOptions, IonItemOption
 } from '@ionic/angular/standalone';
 import { Router, RouterModule } from '@angular/router';
 import { Art, Camp, Event, MapPoint } from '../data/models';
@@ -86,7 +86,7 @@ function initialState(): FavsState {
   templateUrl: './favs.page.html',
   styleUrls: ['./favs.page.scss'],
   standalone: true,
-  imports: [
+  imports: [IonItemOption, IonItemOptions, IonItemSliding,
     IonCardHeader,
     IonCardContent,
     IonCardTitle,
@@ -309,6 +309,11 @@ export class FavsPage implements OnInit {
     this.vm.showMap = true;
   }
 
+  public async removeEvent(event: Event) {
+    const occurrence = this.fav.selectOccurrence(event, this.db.selectedDay());
+    await this.fav.starEvent(false, event, this.db.selectedDay(), occurrence);
+  }
+
   async mapCamp(camp: Camp) {
     const mp = toMapPoint(camp.location_string!, undefined, camp.pin);
     mp.gps = await this.db.getMapPointGPS(mp);
@@ -316,6 +321,16 @@ export class FavsPage implements OnInit {
     this.vm.mapTitle = camp.name;
     this.vm.mapSubtitle = camp.location_string!;
     this.vm.showMap = true;
+  }
+
+  async removeCamp(camp: Camp) {
+    await this.fav.starCamp(false, camp.uid);
+    await this.update();
+  }
+
+  async removeArt(art: Art) {
+    await this.fav.starArt(false, art.uid);
+    await this.update();
   }
 
   eventsTrackBy(index: number, event: Event) {

@@ -40,8 +40,15 @@
       here.</ion-text>
   </div>
   } @for (event of vm.events; track eventsTrackBy($index, event)) {
-  <app-event (rslClick)="rslClick($event)" (groupClick)="groupClick($event)" title="Favorites"
-    (mapClick)="mapEvent($event)" [event]="event" [variableHeight]="true" [longTime]="true" />
+  <ion-item-sliding>
+    <ion-item lines="none">
+      <app-event (rslClick)="rslClick($event)" (groupClick)="groupClick($event)" title="Favorites"
+        (mapClick)="mapEvent($event)" [event]="event" [variableHeight]="true" [longTime]="true" />
+    </ion-item>
+    <ion-item-options>
+      <ion-item-option color="danger" (click)="removeEvent(event)">Remove</ion-item-option>
+    </ion-item-options>
+  </ion-item-sliding>
   } @if (vm.camps.length > 0) {
   <h1 class="flex">
     Camps
@@ -52,7 +59,14 @@
     </ion-buttons>
   </h1>
   } @for (camp of vm.camps; track campsTrackBy($index, camp)) {
-  <app-camp title="Favorites" (mapClick)="mapCamp($event)" [camp]="camp" />
+  <ion-item-sliding>
+    <ion-item lines="none">
+      <app-camp title="Favorites" (mapClick)="mapCamp($event)" [camp]="camp" />
+    </ion-item>
+    <ion-item-options>
+      <ion-item-option color="danger" (click)="removeCamp(camp)">Remove</ion-item-option>
+    </ion-item-options>
+  </ion-item-sliding>
   } @if (vm.art.length > 0) {
   <h1 class="flex">
     Art
@@ -63,8 +77,15 @@
     </ion-buttons>
   </h1>
   } @for (art of vm.art; track artTrackBy($index, art)) {
-  <app-art (artClick)="artClick($event)" [showImage]="art.images && art.images.length > 0" title="Favorites"
-    [art]="art" />
+  <ion-item-sliding>
+    <ion-item lines="none">
+      <app-art (artClick)="artClick($event)" [showImage]="art.images && art.images.length > 0" title="Favorites"
+        [art]="art" />
+    </ion-item>
+    <ion-item-options>
+      <ion-item-option color="danger" (click)="removeArt(art)">Remove</ion-item-option>
+    </ion-item-options>
+  </ion-item-sliding>
   }
   <div style="padding: 2.5rem"></div>
 </ion-content>

@@ -212,6 +212,7 @@ export class EventsPage implements OnInit, OnDestroy {
     }
   }
 
+  // eslint-disable-next-line unused-imports/no-unused-vars
   public longEvent(length: number) {
     if (this.vm.shownLongEventMessage) {
       return;

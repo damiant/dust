@@ -10,7 +10,7 @@
   </div>
   <div class="center">
     @if (info.href) {
-    <ion-button [disabled]="!isOpen" (click)="link(info.href)" size="small" shape="round">View</ion-button>
+    <ion-button #popButton [disabled]="!isOpen" (click)="link(info.href)" size="small" shape="round">View</ion-button>
     }
   </div>
   <!-- </ion-content> -->
@@ -26,6 +26,6 @@
 
 @if (footer) {
 <div [style.paddingBottom.px]="footerPadding()" [ngClass]="isHeader() ? 'header' : 'footer'">
-  <ion-text (click)="locationClick()">{{ footer }}</ion-text>
+  <ion-text [ngClass]="footerClass" (click)="locationClick()">{{ footer }}</ion-text>
 </div>
 }
