@@ -283,6 +283,7 @@ export class IntroPage {
       );
     }
     if (!this.vm.selected) return;
+    this.vm.selected.class = 'launching';
 
     // If event has started (hasStarted)
     // and network is cell

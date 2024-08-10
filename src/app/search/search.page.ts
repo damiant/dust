@@ -55,7 +55,10 @@ export class SearchPage {
         if (a.title.toLowerCase().includes(value.toLowerCase())) {
           return -1;
         }
-        return 1;
+        if (b.title.toLowerCase().includes(value.toLowerCase())) {
+          return 1;
+        }
+        return 0;
       });
       this.vm.items = items;
     } finally {

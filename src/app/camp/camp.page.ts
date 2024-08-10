@@ -128,10 +128,6 @@ export class CampPage implements OnInit {
     return date.toLocaleDateString([], { weekday: 'long' }) + ` ${getOrdinalNum(day)}`;
   }
 
-  canCreate() {
-    return canCreate();
-  }
-
   open(url: string) {
     this.ui.openUrl(url);
   }

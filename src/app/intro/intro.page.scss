@@ -59,6 +59,24 @@ ion-text {
     transform: scale(0.95);
 }
 
+.launching {
+    animation: bounce 0.5s;
+    animation-direction: alternate;
+    animation-timing-function: cubic-bezier(.5, 0.05, 1, .5);
+    animation-iteration-count: infinite;
+}
+
+@keyframes bounce {
+    from {
+        transform: scale(0.97);
+    }
+
+    to {
+        transform: scale(0.92);
+    }
+}
+
+
 app-cached-img {
     --border-radius: 1rem;
 }

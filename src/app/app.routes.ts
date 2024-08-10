@@ -40,6 +40,6 @@ export const routes: Routes = [
   },
   {
     path: 'search',
-    loadComponent: () => import('./search/search.page').then( m => m.SearchPage)
+    loadComponent: () => import('./search/search.page').then(m => m.SearchPage)
   },
 ];

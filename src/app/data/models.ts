@@ -203,6 +203,7 @@ export interface Dataset {
   mapDirection: number; // Compass rotation for North
   directions: string | undefined; // Directions text
   pin: string;
+  class?: string; // Animation
   active: boolean; // Displayed publicly
   subTitle: string; // Calculated
 }
