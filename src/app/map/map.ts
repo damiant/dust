@@ -143,14 +143,17 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
     // scene.add(ambientLight);
 
     window.addEventListener('resize', () => {
+        if (depth == 0) return;
         const w = container.clientWidth;
         const h = container.clientHeight;
+        if (w == 0 || h == 0) return;
         camera.aspect = w / h;
         camera.updateProjectionMatrix();
         renderer.setSize(w, h);
     });
 
     container.addEventListener('pointermove', async (e: any) => {
+        if (depth == 0) return;
         if (new Date().getTime() - mouseChange > 200) {
             const deltaY = e.clientY - mouseY;
             const deltaX = e.clientX - mouseX;

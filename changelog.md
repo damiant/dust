@@ -7,6 +7,7 @@
 - Double tap on map for zoom in/far/out
 - Fuzzy search for art, events and camps
 - Search all feature
+- Fix bug related to map disappearing after using the keyboard
 
 ## 2.37
 - Search for camps, events and art is sorted by importance
