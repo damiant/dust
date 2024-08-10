@@ -54,6 +54,7 @@ export class MapComponent implements OnInit, OnDestroy {
   showMessage = false;
   hideCompass = false;
   pointsSet = false;
+  mapClass = 'hidden';
   selectedPoint: MapPoint | undefined;
   pins: Pin[] = [];
   private geoInterval: any;
@@ -243,6 +244,7 @@ export class MapComponent implements OnInit, OnDestroy {
     el.getBoundingClientRect();
   }
   async update() {
+    this.mapClass = 'hidden';
     this.setMapInformation();
     const map: MapModel = {
       image: this.src,// 'assets/map2.webp',
@@ -280,6 +282,7 @@ export class MapComponent implements OnInit, OnDestroy {
       this.scrolled.emit(result);
     }
     this._viewReady = true;
+    this.mapClass = 'fade-in';
     await this.checkGeolocation();
     this.setupCompass();
   }
