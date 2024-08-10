@@ -8,6 +8,7 @@
 - Fuzzy search for art, events and camps
 - Search all feature
 - Fix bug related to map disappearing after using the keyboard
+- Fix bug with location denial causing infinite spinner
 
 ## 2.37
 - Search for camps, events and art is sorted by importance

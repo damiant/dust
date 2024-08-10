@@ -27,6 +27,7 @@ import { PinColor, ScrollResult } from '../map/map-model';
 import { FavoritesService } from '../favs/favorites.service';
 import { UiService } from '../ui/ui.service';
 import { ToastController } from '@ionic/angular';
+import { SettingsService } from '../data/settings.service';
 
 
 @Component({
@@ -55,6 +56,7 @@ export class PinMapPage {
   private db = inject(DbService);
   private ui = inject(UiService);
   private geo = inject(GeoService);
+  private settings = inject(SettingsService);
   private favs = inject(FavoritesService);
   private toast = inject(ToastController);
   private location = inject(Location);
@@ -197,6 +199,8 @@ export class PinMapPage {
     for (let thing of this.favs.things()) {
       if (thing.name == this.thingName()) {
         if (!thing.gps) {
+          console.log(`Location enabled when showing isGettingGPS`, this.settings.settings.locationEnabled);
+
           this.isGettingGPS = true;
         } else {
           this.canClearThing = true;

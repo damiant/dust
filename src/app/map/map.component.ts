@@ -138,6 +138,9 @@ export class MapComponent implements OnInit, OnDestroy {
         }
       }
     } else {
+      if (this.loadingDialog()) {
+        this.hideLoadingDialog();
+      }
       this.settings.setLastGeoAlert();
     }
   }
