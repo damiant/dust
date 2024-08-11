@@ -248,12 +248,12 @@ function clockOffset(clock: number, clockShift?: number): number {
   return clock;
 }
 
-export function locationStringToPin(location: string, mapRadius: number): Pin | undefined {
+export function locationStringToPin(location: string, mapRadius: number, facing: string | undefined): Pin | undefined {
   if (!location) return undefined;
   if (location.toLowerCase().includes('center camp')) {
     location = '6:00 & A';
   }
-  const pin = mapPointToPin(toMapPoint(location), mapRadius);
+  const pin = mapPointToPin(toMapPoint(location, undefined, undefined, facing), mapRadius);
   if (pin == undefined && location !== 'None' && location !== 'Mobile') {
     console.warn(`Location "${location}" could not be found`);
   }

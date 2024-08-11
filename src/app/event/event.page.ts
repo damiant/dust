@@ -87,15 +87,18 @@ export class EventPage implements OnInit, OnDestroy {
   public navButtons = computed(() => {
     return this.back() !== 'Search';
   });
-  popover = viewChild.required(IonPopover);
+  popover = viewChild.required<IonPopover>('popover');
+  locationPopover = viewChild.required<IonPopover>('locationPopover');
   content = viewChild.required(IonContent);
   isOpen = false;
+  isLocationInfoOpen = false;
   ready = false;
   showMap = false;
   mapPoints: MapPoint[] = [];
   mapTitle = '';
   mapSubtitle = '';
   campDescription = '';
+  locationInfo = '';
   private eventChangeSubscription?: Subscription;
   private day: Date | undefined;
   eventId = input<string>();
@@ -180,12 +183,25 @@ export class EventPage implements OnInit, OnDestroy {
     this.isOpen = false;
   }
 
+  closeLocationInfoPopover() {
+    this.isLocationInfoOpen = false;
+  }
+
   async showCamp(e: any) {
     this.popover().event = e;
     const camp = await this.db.findCamp(this.event?.hosted_by_camp!);
     if (camp) {
       this.campDescription = camp.description!;
       this.isOpen = true;
+    }
+  }
+
+  async showLocationInfo(e: any) {
+    this.locationPopover().event = e;
+    const camp = await this.db.findCamp(this.event?.hosted_by_camp!);
+    if (camp) {
+      this.locationInfo = `${camp.landmark}. (${camp.facing})`;
+      this.isLocationInfoOpen = true;
     }
   }
 
