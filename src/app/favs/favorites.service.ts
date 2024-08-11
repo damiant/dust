@@ -337,8 +337,8 @@ export class FavoritesService {
       things.push(...JSON.parse(result.value));
     }
     if (things.length == 0) {
-      things.push({ name: 'My Camp', notes: '' });
       things.push({ name: 'My Bike', notes: '' });
+      things.push({ name: 'My Camp', notes: '' });
     }
     this.things.update(() => [...things]);
   }

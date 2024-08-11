@@ -1,6 +1,7 @@
 # Roadmap
 - 🔴 Show friends, private events, bike, other locations in search all
 - 🔴 Show history of previously viewed items in the search all area
+- 🔴 If search is restrooms then auto go to restroom map
 - ✅ Search on map should match up camp name and zoom in and highlight the camp (all other camps should hide)
 - ✅ Double tap to zoom in or out full on the map
 - ✅ Fix swipe left which happens when pinch zooming
