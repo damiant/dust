@@ -76,7 +76,12 @@ export class MapComponent implements OnInit, OnDestroy {
 
   @Input() set points(points: MapPoint[]) {
     if (this.pointsSet) {
-      // The map is already showing. We'll fade out then show the new points
+      // The map is already showing. 
+      if (this.points.length > 1) {
+        return; // Points didn't change (probably clicking back)
+      }
+
+      // We'll fade out then show the new points
       this.mapClass = 'fade-out';
       setTimeout(() => {
         this.mapClass = 'hidden';
