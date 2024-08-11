@@ -244,7 +244,7 @@ export class ProfilePage implements OnInit {
   }
 
   home() {
-    //this.settings.clearSelectedEvent();
+    this.favs.newFavs.set(0);
     this.settings.settings.preventAutoStart = true;
     this.ui.home();
   }

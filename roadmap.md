@@ -20,7 +20,6 @@
 - 🟠 Document what camp leads can do to add other camp leads and document the process
 - 🟠 Document ways to disconnect and not use your phone
 
-- 🟠 Multiple pins in the one location should allow flipping between the items
 - 🟠 Now map needs music
 - 🟠 On todays favorite events show bold for happening now, grey if completed
 - 🟠 As the time changes, update todays events
@@ -52,12 +51,10 @@
 
 - 🟠 Print to pdf for favorited events
 - 🔵 Favorites with 2 items fades one item
-- search on home page to search all events, camps, art, and music
 - 🔵 Dark mode tooltips on the map need a visible border
 - 🔵 Show a message when map is shown for the first time "Use 2 fingers or double tap to zoom into the map"
 - 🔵 Art tour audio
 - 🔵 Group multiple parties on music into the one card
-- 🔵 After adding a favorite show the badge count on the fav tab increase (and disappear after opening it)
 - 🔵 If an event has a long durations (>3hrs) then let user choose notification hour
 - 🔵 Pressing the tab again should clear search
 - 🔵 "Not Interested" button for Events

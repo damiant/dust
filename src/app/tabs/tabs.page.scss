@@ -1,12 +1,15 @@
-
-
-ion-tab-bar.ios  {
+ion-tab-bar.ios {
     padding-top: 0.5rem;
 
     // See https://github.com/ionic-team/ionic-framework/issues/17676
     // This fixes translucent
     position: absolute;
-    bottom: 0;  
-    left: 0;  
-    width: 100%;  
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+ion-badge {
+    margin-left: -5px;
+    margin-top: -3px;
 }

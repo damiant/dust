@@ -9,6 +9,7 @@
 - Fix possible memory leak
 - Fix map not updating when using next/prev buttons
 - Fade in map
+- Show badge count of favorited items
 - Smaller pins for maps with more than 50 pins
 
 ## 2.38
