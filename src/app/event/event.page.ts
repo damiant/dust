@@ -148,7 +148,7 @@ export class EventPage implements OnInit, OnDestroy {
       } else {
         mapPoint.gps = await this.db.getMapPointGPS(mapPoint);
       }
-      this.mapPoints.push(mapPoint);
+      this.mapPoints = [mapPoint];
       const selectedDay = this.db.selectedDay();
       const occurrences = JSON.parse(JSON.stringify(this.event.occurrence_set));
       this.event.occurrence_set = occurrences.filter((o: any) => {
@@ -163,6 +163,7 @@ export class EventPage implements OnInit, OnDestroy {
       });
       await this.fav.setEventStars(this.event);
     } finally {
+      console.log(`Map points`, this.mapPoints);
       this.ready = true;
     }
   }

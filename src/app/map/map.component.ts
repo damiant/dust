@@ -75,7 +75,23 @@ export class MapComponent implements OnInit, OnDestroy {
 
 
   @Input() set points(points: MapPoint[]) {
-    if (this.pointsSet) return;
+    if (this.pointsSet) {
+      // The map is already showing. We'll fade out then show the new points
+      this.mapClass = 'fade-out';
+      setTimeout(() => {
+        this.mapClass = 'hidden';
+        if (this.mapResult) {
+          this.mapResult.dispose();
+        }
+        this._points = points;
+        if (this._points.length > 0) {
+          this.fixGPSAndUpdate();
+          this.pointsSet = true;
+        }
+      }, 300);
+      return;
+    }
+    // Otherwise just set the points
     this._points = points;
     if (this._points.length > 0) {
       this.fixGPSAndUpdate();
@@ -260,7 +276,7 @@ export class MapComponent implements OnInit, OnDestroy {
       this.points[0].animated = true;
     }
 
-    const largePins = this._points.length < 50;
+    const largePins = this._points.length < 100;
 
     const size = largePins ? map.defaultPinSize : map.defaultPinSize / 2.0;
     const sameLocation: Record<string, number[]> = {};
@@ -313,6 +329,7 @@ export class MapComponent implements OnInit, OnDestroy {
         this.infoList.push(point.info);
       }
     }
+    if (this.infoList.length == 0) return;
     //this.popover().event = event;
     //    this.popover().event = event;
     setTimeout(() => {

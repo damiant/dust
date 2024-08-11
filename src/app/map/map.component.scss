@@ -16,6 +16,10 @@
     animation: fadeIn 0.3s;
 }
 
+.fade-out {
+    animation: fadeOut 0.3s;
+}
+
 .row-header {
     width: 100%;
     padding-bottom: 0.5rem;
@@ -39,6 +43,16 @@
 
     100% {
         opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
     }
 }
 

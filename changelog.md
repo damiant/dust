@@ -7,6 +7,7 @@
 - Show additional location information for events
 - Shift pins based on location descriptions
 - Fix possible memory leak
+- Fix map not updating when using next/prev buttons
 - Fade in map
 - Smaller pins for maps with more than 50 pins
 

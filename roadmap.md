@@ -1,5 +1,4 @@
 # Roadmap
-
 - 🔴 Show friends, private events, bike, other locations in search all
 - 🔴 Show history of previously viewed items in the search all area
 - ✅ Search on map should match up camp name and zoom in and highlight the camp (all other camps should hide)
