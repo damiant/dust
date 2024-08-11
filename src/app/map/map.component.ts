@@ -262,7 +262,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     const largePins = this._points.length < 50;
 
-    const size = largePins ? map.defaultPinSize : map.defaultPinSize / 1.8;
+    const size = largePins ? map.defaultPinSize : map.defaultPinSize / 2.0;
     const sameLocation: Record<string, number[]> = {};
     for (const [i, point] of this._points.entries()) {
       const pin = mapPointToPin(point, defaultMapRadius);

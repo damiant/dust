@@ -271,6 +271,7 @@ export class PinMapPage {
             href: '/camp/' + camp.uid + '+' + 'Map',
           },
           camp.pin,
+          camp.facing
         );
         if (point) points.push(point);
       }

@@ -200,7 +200,6 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
     }
 
     result.pinUnselected = () => {
-        console.log('pin unselected');
         for (let key of Object.keys(result.pinData)) {
             const mat: Material = result.pinData[key].background.material as Material;
             mat.opacity = 1;
@@ -327,7 +326,6 @@ function highlight(mesh: Mesh, result: MapResult) {
 function unhighlight(result: MapResult) {
     if (result.currentObject) {
         (result.currentObject.material as MeshPhongMaterial).emissive.setHex(result.currentHex);
-        console.log('unhighlight', result.currentHex);
         result.currentObject = undefined;
         result.currentHex = undefined;
     }
@@ -390,7 +388,10 @@ async function addPin(
     }
 
     if (svg) {
-        const scale = 0.2 * (mapWidth / 10000);
+        let scale = 0.2 * (mapWidth / 10000);
+        if (pin.size < 50) {
+            scale = scale * 0.5;
+        }
         const p = await addSVG(svg, scale, rotation, disposables, 'txt');
         p.position.x = mesh.position.x;
         p.position.z = mesh.position.z;

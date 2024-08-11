@@ -4,6 +4,7 @@
 
 - Show multiple camps at a single location as a count
 - Show facing directions for Burning Man
+- Shift pins based on location descriptions
 - Fix possible memory leak
 - Fade in map
 - Smaller pins for maps with more than 50 pins
