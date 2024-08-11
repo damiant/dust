@@ -49,7 +49,7 @@ export class MapComponent implements OnInit, OnDestroy {
   footer: string | undefined;
   footerClass: string | undefined;
   popover = viewChild.required<ElementRef>('popover');
-  info: MapInfo | undefined;
+  infoList: MapInfo[] | undefined;
   src = 'assets/map.svg';
   showMessage = false;
   hideCompass = false;
@@ -195,8 +195,8 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   // This is called when searching on the map
-  public triggerClick(pointIdx: number) {
-    this.pinClicked(`${pointIdx}`);
+  public triggerClick(pointIdx: number[]) {
+    this.pinClicked(pointIdx);
     this.mapResult?.pinSelected(`${pointIdx}`);
 
     this.popover().nativeElement.style.setProperty('left', `10px`);
@@ -263,18 +263,32 @@ export class MapComponent implements OnInit, OnDestroy {
     const largePins = this._points.length < 50;
 
     const size = largePins ? map.defaultPinSize : map.defaultPinSize / 1.8;
+    const sameLocation: Record<string, number[]> = {};
     for (const [i, point] of this._points.entries()) {
       const pin = mapPointToPin(point, defaultMapRadius);
 
       if (pin) {
+        let label = point.info?.label ?? '^'
+        let sameList = sameLocation[`${pin.x}+${pin.y}`];
+        if (sameList) {
+          sameList.push(map.pins.length);
+        } else {
+          sameList = [map.pins.length];
+        }
         map.pins.push({
           uuid: `${i}`,
           x: pin.x, z: pin.y,
           color: point.info?.bgColor ?? 'primary',
           animated: point.animated,
           size,
-          label: point.info?.label ?? '^'
+          label
         });
+        if (sameList.length > 1) {
+          for (const idx of sameList) {
+            map.pins[idx].label = sameList.length.toString();
+          }
+        }
+        sameLocation[`${pin.x}+${pin.y}`] = sameList;
       } else {
         console.error(`Point could not be converted to pin`);
       }
@@ -291,9 +305,14 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   // eslint-disable-next-line unused-imports/no-unused-vars
-  private pinClicked(pinUUID: string, event?: PointerEvent) {
-    const point = this._points[parseInt(pinUUID)];
-    this.info = point?.info;
+  private pinClicked(pinUUIDs: number[], event?: PointerEvent) {
+    this.infoList = [];
+    for (const uuid of pinUUIDs) {
+      const point = this._points[uuid];
+      if (point?.info) {
+        this.infoList.push(point.info);
+      }
+    }
     //this.popover().event = event;
     //    this.popover().event = event;
     setTimeout(() => {

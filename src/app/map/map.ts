@@ -215,14 +215,17 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         raycaster.setFromCamera(mouse, camera)
         unhighlight(result);
         const intersects = raycaster.intersectObjects(scene.children, true);
+        const hits: number[] = [];
         intersects.forEach((hit) => {
             if (hit.object.uuid !== 'map' && hit.object.uuid !== 'txt') {
                 highlight(hit.object as any, result);
-                map.pinClicked(hit.object.uuid, e);
-                return;
+                hits.push(parseInt(hit.object.uuid));
             }
         });
-        if (new Date().getTime() - lastClick.getTime() < 1000) {
+        if (hits.length > 0) {
+            map.pinClicked(hits, e);
+        }
+        if (new Date().getTime() - lastClick.getTime() < 500) {
             // Double click is a zoom in / out            
             switch (targetZoomLevel) {
                 case 4: targetZoomLevel = 8; break;

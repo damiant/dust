@@ -1,6 +1,7 @@
 <div [hidden]="!isOpen" class="popover" z-index="1" #popover>
-  @if (info) {
-  <!-- <ion-content class="ion-padding"> -->
+  @if (infoList) {
+  @if (infoList.length === 1) {
+  @let info = infoList[0];
   <b>{{ info.title }}</b><br />{{ info.location }}<br />{{ info.subtitle }}
   <div class="center">
     @if (info.imageUrl) {
@@ -13,7 +14,12 @@
     <ion-button #popButton [disabled]="!isOpen" (click)="link(info.href)" size="small" shape="round">View</ion-button>
     }
   </div>
-  <!-- </ion-content> -->
+  } @else {
+  <div class="row-header">{{ infoList[0].location }}</div>
+  @for (info of infoList; track $index) {
+  <div class="row" (click)="link(info.href)">{{ info.title }}</div>
+  }
+  }
   }
 </div>
 

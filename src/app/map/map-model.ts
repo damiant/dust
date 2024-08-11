@@ -9,7 +9,7 @@ export interface MapModel {
     compass: MapPin | undefined;
 
     // When a user clicks a pin this signal emits the uuid
-    pinClicked: (pinUUID: string, event: PointerEvent) => void;
+    pinClicked: (uuids: number[], event: PointerEvent) => void;
 
 
 }
