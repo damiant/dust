@@ -161,6 +161,7 @@ export class FavsPage implements OnInit {
   ];
 
   async ionViewWillEnter() {
+    this.fav.newFavs.set(0);
     await this.update();
   }
 

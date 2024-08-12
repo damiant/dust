@@ -244,7 +244,7 @@ export class ProfilePage implements OnInit {
   }
 
   home() {
-    //this.settings.clearSelectedEvent();
+    this.favs.newFavs.set(0);
     this.settings.settings.preventAutoStart = true;
     this.ui.home();
   }
@@ -304,26 +304,6 @@ export class ProfilePage implements OnInit {
     await this.ionModal().dismiss();
   }
 
-  async toggleLongEvents(e: any) {
-    this.longEvents = e.detail.checked;
-    this.settings.settings.longEvents = this.longEvents;
-    this.settings.save();
-  }
-  async toggleLocation(e: any) {
-    const turnedOn = e.detail.checked;
-    if (turnedOn) {
-      const success = await this.geo.requestPermission();
-      if (success) {
-        this.locationEnabled = turnedOn;
-      }
-    } else {
-      this.locationEnabled = false;
-    }
-    this.settings.settings.locationEnabled = this.locationEnabled
-      ? LocationEnabledStatus.Enabled
-      : LocationEnabledStatus.Disabled;
-    this.settings.save();
-  }
 
   async ionViewWillEnter() {
     if (Capacitor.isNativePlatform() && !this.ui.isAndroid()) {

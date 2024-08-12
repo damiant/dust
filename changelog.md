@@ -1,5 +1,18 @@
 ## Changes
 
+## 2.39
+
+- Show multiple camps at a single location as a count
+- Show facing directions for Burning Man
+- Show additional location information for events
+- Shift pins based on location descriptions
+- Fix possible memory leak
+- Fix event sorting by time
+- Fix map not updating when using next/prev buttons
+- Fade in map
+- Show badge count of favorited items
+- Smaller pins for maps with more than 50 pins
+
 ## 2.38
 - Improve swipe back and up detection
 - Search on map now zooms to and animates the found item

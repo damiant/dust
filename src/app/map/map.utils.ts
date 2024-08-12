@@ -2,11 +2,24 @@ import { MapInfo, MapPoint, Pin } from '../data/models';
 import { GpsCoord } from './geo.utils';
 
 // Streets from Esplanade to K in relative values from center
-export const streets = [0.285, 0.338, 0.369, 0.405, 0.435, 0.465, 0.525, 0.557, 0.59, 0.621, 0.649, 0.678];
+export const streets = [
+  0.283, // Esplanade
+  0.334, // A
+  0.367, // B
+  0.402, // C
+  0.432, // D
+  0.463, // E
+  0.520, // F
+  0.553, // G
+  0.585, // H
+  0.615, // I
+  0.643, // J
+  0.670 // K
+];
 
 export const defaultMapRadius = 5000;
 
-export function toMapPoint(location: string | undefined, info?: MapInfo, pin?: Pin): MapPoint {
+export function toMapPoint(location: string | undefined, info?: MapInfo, pin?: Pin, facing?: string): MapPoint {
   if (!location) {
     if (pin) {
       return { street: '', clock: '', x: pin.x, y: pin.y, info };
@@ -40,20 +53,38 @@ export function toMapPoint(location: string | undefined, info?: MapInfo, pin?: P
       l = l.replace(' ', ' & ');
     }
   }
+
   const tmp = l.split('&');
-  if (tmp[0].includes(':')) {
-    return {
-      street: tmp[1]?.trim(),
-      clock: tmp[0]?.trim(),
-      info,
-    };
-  } else {
-    return {
+  const mp: MapPoint = (tmp[0].includes(':')) ? {
+    street: tmp[1]?.trim(),
+    clock: tmp[0]?.trim(),
+    info
+  } :
+    {
       street: tmp[0]?.trim(),
       clock: tmp[1]?.trim(),
-      info,
+      info
     };
+
+  if (facing) {
+    // This shifts off the street so that the camp is facing the man
+    if (facing.includes('facing man')) {
+      mp.streetShift = 0.01;
+    }
+    // This shifts off the street so that the camp is facing the mountain
+    if (facing.includes('facing mountain')) {
+      mp.streetShift = -0.01;
+    }
+    // This shifts so the camp faces towards 10 on the map
+    if (facing.includes('& 10:00') || facing.includes('facing 10:00')) {
+      mp.clockShift = -0.03;
+    }
+    // This shifts so the camp faces towards 10 on the map
+    if (facing.includes('& 2:00') || facing.includes('facing 2:00')) {
+      mp.clockShift = 0.03;
+    }
   }
+  return mp;
 }
 
 export function mapPointToPoint(mapPoint: MapPoint, circleRadius: number) {
@@ -61,8 +92,8 @@ export function mapPointToPoint(mapPoint: MapPoint, circleRadius: number) {
     // If its a pin then dont use clock/street
     return { x: mapPoint.x, y: mapPoint.y };
   }
-  const clock = toClock(mapPoint.clock);
-  const rad = toStreetRadius(mapPoint.street);
+  const clock = clockOffset(toClock(mapPoint.clock), mapPoint.clockShift);
+  const rad = streetOffset(toStreetRadius(mapPoint.street), mapPoint.streetShift);
   const circleRad = circleRadius;
   return getPoint(clock, rad, circleRad);
 }
@@ -185,7 +216,10 @@ export function mapPointToPin(point: MapPoint, mapRadius: number): Pin | undefin
         return undefined;
       }
     }
-    return plot(toClock(point.clock), toStreetRadius(point.street), undefined, mapRadius);
+    return plot(
+      clockOffset(toClock(point.clock), point.clockShift),
+      streetOffset(toStreetRadius(point.street), point.streetShift),
+      undefined, mapRadius);
   } else if (point.feet) {
     if (point.streetOffset && point.clockOffset) {
       const offset = getPoint(toClock(point.clockOffset), toStreetRadius(point.streetOffset), mapRadius);
@@ -200,12 +234,26 @@ export function mapPointToPin(point: MapPoint, mapRadius: number): Pin | undefin
   return undefined;
 }
 
-export function locationStringToPin(location: string, mapRadius: number): Pin | undefined {
+function streetOffset(radius: number, streetShift?: number): number {
+  if (streetShift) {
+    return radius + streetShift;
+  }
+  return radius;
+}
+
+function clockOffset(clock: number, clockShift?: number): number {
+  if (clockShift) {
+    return clock + clockShift;
+  }
+  return clock;
+}
+
+export function locationStringToPin(location: string, mapRadius: number, facing: string | undefined): Pin | undefined {
   if (!location) return undefined;
   if (location.toLowerCase().includes('center camp')) {
     location = '6:00 & A';
   }
-  const pin = mapPointToPin(toMapPoint(location), mapRadius);
+  const pin = mapPointToPin(toMapPoint(location, undefined, undefined, facing), mapRadius);
   if (pin == undefined && location !== 'None' && location !== 'Mobile') {
     console.warn(`Location "${location}" could not be found`);
   }
@@ -284,7 +332,6 @@ export function calculateRelativePosition(you: GpsCoord, pin: GpsCoord, compassR
   // Calculate difference between bearing and heading
   let angleDiff = bearingToPinDeg - compassRotation;
   angleDiff = (angleDiff + 180) % 360 - 180;
-  console.log(`compass=${compassRotation} angleDiff=${angleDiff} bearingToPinDeg=${bearingToPinDeg} bearingToPin=${bearingToPin}`);
 
   // Determine relative position
   if (angleDiff > -45 && angleDiff <= 45) {

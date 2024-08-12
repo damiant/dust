@@ -11,23 +11,25 @@ import { Network } from '@capacitor/network';
 import { App } from '@capacitor/app';
 import { environment } from 'src/environments/environment';
 import { Keyboard } from '@capacitor/keyboard';
-import { IonIcon, IonLabel, IonTabBar, IonTabButton, IonTabs } from '@ionic/angular/standalone';
+import { IonIcon, IonLabel, IonTabBar, IonTabButton, IonTabs, IonBadge } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { musicalNotesOutline, ellipsisVertical } from 'ionicons/icons';
 import { Capacitor } from '@capacitor/core';
 import { Animation, StatusBar } from '@capacitor/status-bar';
 import { ScreenOrientation } from '@capacitor/screen-orientation';
+import { FavoritesService } from '../favs/favorites.service';
 
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss'],
   standalone: true,
-  imports: [CommonModule, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel],
+  imports: [IonBadge, CommonModule, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel],
 })
 export class TabsPage implements OnInit {
   public db = inject(DbService);
   private ui = inject(UiService);
+  public favs = inject(FavoritesService);
   private notificationService = inject(NotificationService);
   private shareService = inject(ShareService);
   private settings = inject(SettingsService);

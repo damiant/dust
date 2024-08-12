@@ -89,6 +89,7 @@ export interface Camp {
   label?: string; // Added by dust
   gpsCoord: GpsCoord;
   landmark: string;
+  facing: string;
   pin: Pin;
   distance: number;
   distanceInfo: string;
@@ -282,6 +283,8 @@ export interface MapPoint {
   street: string;
   clock: string;
   feet?: number;
+  streetShift?: number;
+  clockShift?: number;
   streetOffset?: string;
   clockOffset?: string;
   x?: number;

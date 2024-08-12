@@ -28,8 +28,12 @@
     }
 
     <ion-tab-button tab="favs" id="favButton" (click)="select('favs')">
+      @if(favs.newFavs() > 0) {
+      <ion-badge mode="ios">{{favs.newFavs()}}</ion-badge>
+      }
       <ion-icon aria-hidden="true" [src]="'assets/icon/star.svg'"></ion-icon>
-      <ion-label>Favorites</ion-label>
+      <ion-label>Favorites
+      </ion-label>
     </ion-tab-button>
   </ion-tab-bar>
 </ion-tabs>

@@ -32,6 +32,7 @@ export class FavoritesService {
   private db = inject(DbService);
   private ready: Promise<void> | undefined;
   public changed = signal(1);
+  public newFavs = signal(0);
   private dataset: string = '';
   private mapPointsTitle: string = '';
   private mapPoints: MapPoint[] = [];
@@ -181,6 +182,7 @@ export class FavoritesService {
         occurrence ? [occurrence] : event.occurrence_set,
         selectedDay,
       );
+      this.newFavs.set(this.newFavs() + 1);
       await Haptics.impact({ style: ImpactStyle.Heavy });
       return result.error ? result.error : result.message;
     } else {
@@ -243,6 +245,7 @@ export class FavoritesService {
     this.favorites.art = this.include(star, artId, this.favorites.art);
     await this.saveFavorites();
     if (star) {
+      this.newFavs.set(this.newFavs() + 1);
       await Haptics.impact({ style: ImpactStyle.Heavy });
     }
   }
@@ -321,6 +324,7 @@ export class FavoritesService {
     this.favorites.camps = this.include(star, campId, this.favorites.camps);
     await this.saveFavorites();
     if (star) {
+      this.newFavs.set(this.newFavs() + 1);
       await Haptics.impact({ style: ImpactStyle.Heavy });
     }
   }
@@ -337,8 +341,8 @@ export class FavoritesService {
       things.push(...JSON.parse(result.value));
     }
     if (things.length == 0) {
-      things.push({ name: 'My Camp', notes: '' });
       things.push({ name: 'My Bike', notes: '' });
+      things.push({ name: 'My Camp', notes: '' });
     }
     this.things.update(() => [...things]);
   }

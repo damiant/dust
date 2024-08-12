@@ -117,7 +117,7 @@ export class PinMapPage {
       idx++;
     }
     if (found != -1) {
-      this.map.triggerClick(found);
+      this.map.triggerClick([found]);
     }
 
   }
@@ -271,6 +271,7 @@ export class PinMapPage {
             href: '/camp/' + camp.uid + '+' + 'Map',
           },
           camp.pin,
+          camp.facing
         );
         if (point) points.push(point);
       }

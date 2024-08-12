@@ -142,7 +142,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
     // const ambientLight = new AmbientLight(0x333333);
     // scene.add(ambientLight);
 
-    window.addEventListener('resize', () => {
+    const windowResize = () => {
         if (depth == 0) return;
         const w = container.clientWidth;
         const h = container.clientHeight;
@@ -150,9 +150,10 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         camera.aspect = w / h;
         camera.updateProjectionMatrix();
         renderer.setSize(w, h);
-    });
+    };
+    window.addEventListener('resize', windowResize);
 
-    container.addEventListener('pointermove', async (e: any) => {
+    const pointerMove = async (e: any) => {
         if (depth == 0) return;
         if (new Date().getTime() - mouseChange > 200) {
             const deltaY = e.clientY - mouseY;
@@ -167,19 +168,23 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
             mouseY = e.clientY;
             mouseX = e.clientX;
         }
-    });
+    };
+    container.addEventListener('pointermove', pointerMove);
 
-    container.addEventListener('pointerdown', async (e: any) => {
+    const pointerDown = async (e: any) => {
         mouseY = e.clientY;
         mouseX = e.clientX;
-    });
-    container.addEventListener('pointerup', async (e: any) => {
+    };
+    container.addEventListener('pointerdown', pointerDown);
+
+    const pointerUp = async (e: any) => {
         const deltaY = e.clientY - mouseY;
         const deltaX = e.clientX - mouseX;
         if (deltaX > 100 || deltaY > 100) {
             result.scrolled({ deltaY, deltaX });
         }
-    });
+    }
+    container.addEventListener('pointerup', pointerUp);
 
     result.pinSelected = (id: string) => {
         console.log('pin select', id);
@@ -195,14 +200,13 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
     }
 
     result.pinUnselected = () => {
-        console.log('pin unselected');
         for (let key of Object.keys(result.pinData)) {
             const mat: Material = result.pinData[key].background.material as Material;
             mat.opacity = 1;
         }
     }
 
-    container.addEventListener('click', (e: any) => {
+    const containerClick = (e: any) => {
         const width = container.clientWidth
         const height = container.clientHeight;
         const box = container.getBoundingClientRect();
@@ -210,14 +214,17 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         raycaster.setFromCamera(mouse, camera)
         unhighlight(result);
         const intersects = raycaster.intersectObjects(scene.children, true);
+        const hits: number[] = [];
         intersects.forEach((hit) => {
             if (hit.object.uuid !== 'map' && hit.object.uuid !== 'txt') {
                 highlight(hit.object as any, result);
-                map.pinClicked(hit.object.uuid, e);
-                return;
+                hits.push(parseInt(hit.object.uuid));
             }
         });
-        if (new Date().getTime() - lastClick.getTime() < 1000) {
+        if (hits.length > 0) {
+            map.pinClicked(hits, e);
+        }
+        if (new Date().getTime() - lastClick.getTime() < 500) {
             // Double click is a zoom in / out            
             switch (targetZoomLevel) {
                 case 4: targetZoomLevel = 8; break;
@@ -230,7 +237,8 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         }
         // No hit
         lastClick = new Date();
-    });
+    };
+    container.addEventListener('click', containerClick);
     renderer.setAnimationLoop(renderFn);
     result.dispose = () => {
         depth--;
@@ -251,6 +259,11 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         // ambientLight.dispose();
         // dirLight2.dispose();
         dirLight1.dispose();
+        window.removeEventListener('resize', windowResize);
+        container.removeEventListener('pointermove', pointerMove);
+        container.removeEventListener('pointerdown', pointerDown);
+        container.removeEventListener('pointerup', pointerUp);
+        container.removeEventListener('click', containerClick);
         console.log('after dispose', renderer.info);
         //renderer.renderLists.dispose();
         //renderer.dispose();
@@ -313,7 +326,6 @@ function highlight(mesh: Mesh, result: MapResult) {
 function unhighlight(result: MapResult) {
     if (result.currentObject) {
         (result.currentObject.material as MeshPhongMaterial).emissive.setHex(result.currentHex);
-        console.log('unhighlight', result.currentHex);
         result.currentObject = undefined;
         result.currentHex = undefined;
     }
@@ -376,7 +388,10 @@ async function addPin(
     }
 
     if (svg) {
-        const scale = 0.2 * (mapWidth / 10000);
+        let scale = 0.2 * (mapWidth / 10000);
+        if (pin.size < 50) {
+            scale = scale * 0.5;
+        }
         const p = await addSVG(svg, scale, rotation, disposables, 'txt');
         p.position.x = mesh.position.x;
         p.position.z = mesh.position.z;

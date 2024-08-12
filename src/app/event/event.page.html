@@ -30,6 +30,13 @@
       <ion-content class="ion-padding">{{campDescription}}</ion-content>
     </ng-template>
   </ion-popover>
+  <ion-popover #locationPopover side="bottom" [isOpen]="isLocationInfoOpen" (didDismiss)="isLocationInfoOpen = false">
+    <ng-template>
+      <ion-icon aria-label="Close popover" class="btn" role="button" name="close-circle-outline"
+        (click)="closeLocationInfoPopover()"></ion-icon>
+      <ion-content class="ion-padding">{{locationInfo}}</ion-content>
+    </ng-template>
+  </ion-popover>
   @if (ready && event) {
   <ion-list lines="none">
     @if (event.imageUrl && imageLocation() !== 'bottom') {
@@ -46,9 +53,10 @@
         [src]="!!event.other_location ? 'assets/icon/map.svg' :'assets/icon/camp.svg'"></ion-icon>
       <ion-label attr.aria-label="{{event.camp}}" role="button">{{event.camp}}</ion-label>
     </ion-item>
+
     @if (event.location) {
-    <ion-item (click)="noop()">
-      <ion-icon aria-hidden="true" slot="start" name="location-outline"></ion-icon>
+    <ion-item (click)="showLocationInfo($event)">
+      <ion-icon aria-hidden="true" slot="start" color="primary" name="location-outline"></ion-icon>
       <ion-label attr.aria-label="Camp location is {{event.location}}">{{event.location}}</ion-label>
     </ion-item>
     } @for (occurrence of event.occurrence_set; track $index) {

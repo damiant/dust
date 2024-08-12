@@ -104,6 +104,7 @@ export class CampPage implements OnInit {
         this.camp.location_string!,
         { title: this.camp.name, location: this.camp.location_string!, subtitle: '', imageUrl: this.camp.imageUrl },
         this.camp.pin,
+        this.camp.facing
       );
       this.mapPoints = [mp];
     } else {

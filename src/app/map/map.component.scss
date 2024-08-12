@@ -12,6 +12,50 @@
     padding-right: 1rem;
 }
 
+.fade-in {
+    animation: fadeIn 0.3s;
+}
+
+.fade-out {
+    animation: fadeOut 0.3s;
+}
+
+.row-header {
+    width: 100%;
+    padding-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.row {
+    width: 100%;
+    padding-bottom: 0.5rem;
+    color: var(--ion-color-primary);
+}
+
+.hidden {
+    opacity: 0;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
 .header {
     position: fixed;
     left: 0;

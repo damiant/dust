@@ -47,7 +47,7 @@
       <div role="text" attr.aria-label="Located at {{camp.location_string}}">
         <ion-label aria-hidden="true">{{camp.location_string}}
           @if (camp.landmark) {
-          (Look for {{camp.landmark}})
+          <br /><span class="sub">{{camp.landmark}}. ({{camp.facing}})</span>
           }
         </ion-label>
       </div>

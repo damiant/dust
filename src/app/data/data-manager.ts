@@ -323,6 +323,7 @@ export class DataManager implements WorkerClass {
 
     let campIndex: any = {};
     let locIndex: any = {};
+    let facingIndex: any = {};
     let pinIndex: any = {};
     let artIndex: any = {};
     let artGPS: any = {};
@@ -344,6 +345,7 @@ export class DataManager implements WorkerClass {
 
       campIndex[camp.uid] = camp.name;
       locIndex[camp.uid] = camp.location_string;
+      facingIndex[camp.uid] = camp.facing;
       pinIndex[camp.uid] = camp.pin;
       if (camp.imageUrl) {
         camp.imageUrl = `${data_dust_events}${camp.imageUrl}`;
@@ -357,7 +359,7 @@ export class DataManager implements WorkerClass {
     for (let art of this.art) {
       artIndex[art.uid] = art.name;
       artLocationNames[art.uid] = art.location_string;
-      const pin = locationStringToPin(art.location_string!, this.mapRadius);
+      const pin = locationStringToPin(art.location_string!, this.mapRadius, undefined);
       if (pin) {
         const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
         art.gpsCoords = gpsCoords;
@@ -404,7 +406,7 @@ export class DataManager implements WorkerClass {
         event.camp = campIndex[event.hosted_by_camp];
         event.location = locIndex[event.hosted_by_camp];
 
-        let pin = locationStringToPin(event.location, this.mapRadius);
+        let pin = locationStringToPin(event.location, this.mapRadius, facingIndex[event.hosted_by_camp]);
         const placed = pinIndex[event.hosted_by_camp];
         if (placed) {
           event.pin = placed;
@@ -426,7 +428,7 @@ export class DataManager implements WorkerClass {
         event.camp = event.other_location;
         if (event.camp.toLowerCase().includes('center camp')) {
           event.location = '6:00 & A';
-          const pin = locationStringToPin(event.location, this.mapRadius);
+          const pin = locationStringToPin(event.location, this.mapRadius, undefined);
           const gpsCoords = mapToGps({ x: pin!.x, y: pin!.y });
           event.gpsCoords = gpsCoords;
         } else {
@@ -523,7 +525,7 @@ export class DataManager implements WorkerClass {
 
   private locateCamp(camp: Camp): Pin | undefined {
     if (!camp.location_string) return undefined;
-    return locationStringToPin(camp.location_string, this.mapRadius);
+    return locationStringToPin(camp.location_string, this.mapRadius, camp.facing);
   }
 
   private log(message: string) {
@@ -851,13 +853,13 @@ export class DataManager implements WorkerClass {
         }
       }
     }
-    if (query !== '') {
-      if (coords) {
-        this.sortEventsByDistance(result);
-      } else {
-        this.sortEvents(result);
-      }
+
+    if (coords) {
+      this.sortEventsByDistance(result);
+    } else {
+      this.sortEvents(result);
     }
+
     return result;
   }
 

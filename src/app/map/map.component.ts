@@ -49,11 +49,12 @@ export class MapComponent implements OnInit, OnDestroy {
   footer: string | undefined;
   footerClass: string | undefined;
   popover = viewChild.required<ElementRef>('popover');
-  info: MapInfo | undefined;
+  infoList: MapInfo[] | undefined;
   src = 'assets/map.svg';
   showMessage = false;
   hideCompass = false;
   pointsSet = false;
+  mapClass = 'hidden';
   selectedPoint: MapPoint | undefined;
   pins: Pin[] = [];
   private geoInterval: any;
@@ -74,7 +75,28 @@ export class MapComponent implements OnInit, OnDestroy {
 
 
   @Input() set points(points: MapPoint[]) {
-    if (this.pointsSet) return;
+    if (this.pointsSet) {
+      // The map is already showing. 
+      if (this.points.length > 1) {
+        return; // Points didn't change (probably clicking back)
+      }
+
+      // We'll fade out then show the new points
+      this.mapClass = 'fade-out';
+      setTimeout(() => {
+        this.mapClass = 'hidden';
+        if (this.mapResult) {
+          this.mapResult.dispose();
+        }
+        this._points = points;
+        if (this._points.length > 0) {
+          this.fixGPSAndUpdate();
+          this.pointsSet = true;
+        }
+      }, 300);
+      return;
+    }
+    // Otherwise just set the points
     this._points = points;
     if (this._points.length > 0) {
       this.fixGPSAndUpdate();
@@ -194,8 +216,8 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   // This is called when searching on the map
-  public triggerClick(pointIdx: number) {
-    this.pinClicked(`${pointIdx}`);
+  public triggerClick(pointIdx: number[]) {
+    this.pinClicked(pointIdx);
     this.mapResult?.pinSelected(`${pointIdx}`);
 
     this.popover().nativeElement.style.setProperty('left', `10px`);
@@ -243,6 +265,7 @@ export class MapComponent implements OnInit, OnDestroy {
     el.getBoundingClientRect();
   }
   async update() {
+    this.mapClass = 'hidden';
     this.setMapInformation();
     const map: MapModel = {
       image: this.src,// 'assets/map2.webp',
@@ -258,18 +281,35 @@ export class MapComponent implements OnInit, OnDestroy {
       this.points[0].animated = true;
     }
 
+    const largePins = this._points.length < 100;
+
+    const size = largePins ? map.defaultPinSize : map.defaultPinSize / 2.0;
+    const sameLocation: Record<string, number[]> = {};
     for (const [i, point] of this._points.entries()) {
       const pin = mapPointToPin(point, defaultMapRadius);
 
       if (pin) {
+        let label = point.info?.label ?? '^'
+        let sameList = sameLocation[`${pin.x}+${pin.y}`];
+        if (sameList) {
+          sameList.push(map.pins.length);
+        } else {
+          sameList = [map.pins.length];
+        }
         map.pins.push({
           uuid: `${i}`,
           x: pin.x, z: pin.y,
           color: point.info?.bgColor ?? 'primary',
           animated: point.animated,
-          size: map.defaultPinSize,
-          label: point.info?.label ?? '^'
+          size,
+          label
         });
+        if (sameList.length > 1) {
+          for (const idx of sameList) {
+            map.pins[idx].label = sameList.length.toString();
+          }
+        }
+        sameLocation[`${pin.x}+${pin.y}`] = sameList;
       } else {
         console.error(`Point could not be converted to pin`);
       }
@@ -280,14 +320,21 @@ export class MapComponent implements OnInit, OnDestroy {
       this.scrolled.emit(result);
     }
     this._viewReady = true;
+    this.mapClass = 'fade-in';
     await this.checkGeolocation();
     this.setupCompass();
   }
 
   // eslint-disable-next-line unused-imports/no-unused-vars
-  private pinClicked(pinUUID: string, event?: PointerEvent) {
-    const point = this._points[parseInt(pinUUID)];
-    this.info = point?.info;
+  private pinClicked(pinUUIDs: number[], event?: PointerEvent) {
+    this.infoList = [];
+    for (const uuid of pinUUIDs) {
+      const point = this._points[uuid];
+      if (point?.info) {
+        this.infoList.push(point.info);
+      }
+    }
+    if (this.infoList.length == 0) return;
     //this.popover().event = event;
     //    this.popover().event = event;
     setTimeout(() => {
