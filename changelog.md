@@ -7,6 +7,7 @@
 - Show additional location information for events
 - Shift pins based on location descriptions
 - Fix possible memory leak
+- Fix event sorting by time
 - Fix map not updating when using next/prev buttons
 - Fade in map
 - Show badge count of favorited items

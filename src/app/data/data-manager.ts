@@ -853,13 +853,13 @@ export class DataManager implements WorkerClass {
         }
       }
     }
-    if (query !== '') {
-      if (coords) {
-        this.sortEventsByDistance(result);
-      } else {
-        this.sortEvents(result);
-      }
+
+    if (coords) {
+      this.sortEventsByDistance(result);
+    } else {
+      this.sortEvents(result);
     }
+
     return result;
   }
 

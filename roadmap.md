@@ -2,12 +2,6 @@
 - 🔴 Show friends, private events, bike, other locations in search all
 - 🔴 Show history of previously viewed items in the search all area
 - 🔴 If search is restrooms then auto go to restroom map
-- ✅ Search on map should match up camp name and zoom in and highlight the camp (all other camps should hide)
-- ✅ Double tap to zoom in or out full on the map
-- ✅ Fix swipe left which happens when pinch zooming
-- ✅ Swipe to delete an event from favorites
-- ✅ Search all feature
-- ✅ Fuzzy search - if no matches or few matches
 - 🔴 Music - events going over midnight appear on the next day. Need a way to make it better
 - 🟠 Types for camps: sound camps, chill, other types
 - 🟠 Option to "Suggest a change" to an event - allows temporary change that can be approved by camp lead
@@ -24,8 +18,9 @@
 - 🟠 On todays favorite events show bold for happening now, grey if completed
 - 🟠 As the time changes, update todays events
 - 🟠 Error: white screened the events page after a day had passed
+- 🔵 If you favorite an event and return to the event list it is not starred
 
-# Feedback: Requested Features
+## Feedback: Requested Features
 
 - 🔵 Feature to highlight downloading an update in the week before the event if it was updated more than a week ago
 - 🔵 Timetable view (something like Google Calendar)
@@ -33,13 +28,13 @@
 - 🟠 Notes - ability to write notes for things
 - 🟠 Option to pre-download all content (images etc)
 
-# Drop a Pin
+## Drop a Pin
 
 - 🟠 If pin is dropped and location is not on the map then give message
 - 🟠 If pin dropped and location not on map then ask for street location and use that to guess
 - 🟠 Share my location - have URL which includes location and camp name and person name. Use for facebook / media
 
-# Share Events
+## Share Events
 - Share button - shows a 6 digit PIN that you can share with other users (a stored device id)
 - This will save your fav events to the server
 - If you accept a share it will also add any favorites from others
@@ -72,12 +67,9 @@
 - 🔵 Email (contact camp)
 - 🔵 Add notes to an event (eg invite)
 - 🔵 Filter for burns by country
+- 🔵 Overlapping events are hard to see - Maybe some indicator of this
 
-# Difficult to solve
-
-- Overlapping events are hard to see - Maybe some indicator of this
-
-# Bugs
+## Bugs
 
 - iOS: The filter on the home page for "regionals" etc cannot be dismissed by clicking elsewhere (works on Android)
 - Images are in `webp` but you when you use the share plugin these image types dont appear (at least on iOS). Maybe convert to png?
@@ -98,7 +90,6 @@
 - Check In Button - For events, add to check in history on the more tab
 - Only show check in if distance = near and event is between start and end
 - Checked in events show with a tick next to them
-
 
 ## RSS Feed
 
