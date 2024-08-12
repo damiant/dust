@@ -314,14 +314,21 @@ export class IntroPage {
     const x = daysUntil(manBurns, now());
     const until = daysUntil(start, now());
 
-    let hideLocations = until > 1 && this.isBurningMan();
+    let hideArtLocations = until > 1 && this.isBurningMan();
+    let hideCampLocations = until > 7 && this.isBurningMan();
     if (environment.overrideLocations) {
-      hideLocations = false;
+      hideArtLocations = false;
+      hideCampLocations = false;
       console.error('Overriding hiding locations');
     }
     console.debug(`Event starts ${start}, today is ${now()} and there are ${until} days until then`);
-    this.db.setHideLocations(hideLocations);
-    if (hideLocations && !this.vm.eventAlreadySelected) {
+    this.db.setLocationAvailable({
+      art: hideArtLocations,
+      camps: hideCampLocations,
+      artMessage: 'Location available August 25',
+      campMessage: 'Location available August 18'
+    });
+    if ((hideArtLocations || hideCampLocations) && !this.vm.eventAlreadySelected) {
       if (x < 80) {
         this.vm.message = `Locations for camps and art will be released in the app shortly before gates open. There are ${x} days until the man burns.`;
       } else {
@@ -366,7 +373,7 @@ export class IntroPage {
       await this.db.getWorkerLogs();
       const sendResult: SendResult = await this.api.sendDataToWorker(
         result.revision,
-        this.db.locationsHidden(),
+        this.db.getLocationAvailable(),
         this.isBurningMan(),
       );
       if (sendResult.datasetResult) {

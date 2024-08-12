@@ -10,6 +10,7 @@ import {
   GPSSet,
   GeoRef,
   Link,
+  LocationAvailable,
   LocationName,
   MapPoint,
   MapSet,
@@ -147,7 +148,7 @@ export class DataManager implements WorkerClass {
     }
   }
 
-  public async populate(dataset: string, hideLocations: boolean, env: any, timezone: string): Promise<DatasetResult> {
+  public async populate(dataset: string, locationAvailable: LocationAvailable, env: any, timezone: string): Promise<DatasetResult> {
     this.dataset = dataset;
     this.timezone = timezone;
     this.env = env;
@@ -161,7 +162,7 @@ export class DataManager implements WorkerClass {
     this.rslEvents = await this.loadMusic();
     this.georeferences = await this.getGeoReferences();
     await this.loadMap();
-    this.init(hideLocations);
+    this.init(locationAvailable);
     return {
       events: this.events.length, art: this.art.length, pins: this.pins.length,
       camps: this.camps.length, rsl: this.rslEvents.length, links: this.links.length,
@@ -308,7 +309,7 @@ export class DataManager implements WorkerClass {
     return mapPoints;
   }
 
-  private init(hideLocations: boolean) {
+  private init(locationAvailable: LocationAvailable) {
     console.time('init');
     this.cache = {};
     this.camps = this.camps.filter((camp) => {
@@ -350,8 +351,9 @@ export class DataManager implements WorkerClass {
       if (camp.imageUrl) {
         camp.imageUrl = `${data_dust_events}${camp.imageUrl}`;
       }
-      if (hideLocations) {
-        camp.location_string = LocationName.Unavailable;
+      if (locationAvailable.camps) {
+        camp.location_string = locationAvailable.campMessage;
+        camp.landmark = '';
       } else if (!camp.location_string) {
         camp.location_string = LocationName.Undefined;
       }
@@ -382,8 +384,8 @@ export class DataManager implements WorkerClass {
       }
 
 
-      if (hideLocations) {
-        art.location_string = LocationName.Unavailable;
+      if (locationAvailable.art) {
+        art.location_string = locationAvailable.artMessage;
       }
     }
     this.days = [];
@@ -413,6 +415,12 @@ export class DataManager implements WorkerClass {
           pin = placed;
         }
 
+        if (locationAvailable.camps) {
+          event.location = locationAvailable.campMessage;
+          event.pin = undefined;
+          pin = undefined;
+        }
+
         if (pin) {
           const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
           event.gpsCoords = gpsCoords;
@@ -421,9 +429,7 @@ export class DataManager implements WorkerClass {
             this.consoleError(`Unable to find camp ${event.hosted_by_camp} for event ${event.title} ${placed}`);
           }
         }
-        if (hideLocations) {
-          event.location = LocationName.Unavailable;
-        }
+
       } else if (event.other_location) {
         event.camp = event.other_location;
         if (event.camp.toLowerCase().includes('center camp')) {
@@ -562,7 +568,7 @@ export class DataManager implements WorkerClass {
       this.consoleError(`Failed to setDataset: ${err}`);
       throw new Error(`setDataset: ${err}`);
     } finally {
-      this.init(ds.hideLocations);
+      this.init(ds.locationAvailable);
     }
     return result;
   }

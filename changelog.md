@@ -1,4 +1,7 @@
 ## Changes
+## 2.40
+
+- Fix location text to let people know when they are available
 
 ## 2.39
 

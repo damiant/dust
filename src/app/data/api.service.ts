@@ -6,6 +6,7 @@ import {
   DatasetFilter,
   DatasetResult,
   FullDataset,
+  LocationAvailable,
   MapData,
   Names,
   Revision,
@@ -40,7 +41,7 @@ export class ApiService {
 
   public async sendDataToWorker(
     currentRevision: number,
-    hideLocations: boolean,
+    locationAvailable: LocationAvailable,
     mapIsOffline: boolean, // Are we using the built in map.svg
   ): Promise<SendResult> {
     const ds = this.settingsService.settings.datasetId;
@@ -86,7 +87,7 @@ export class ApiService {
       links,
       rsl,
       map,
-      hideLocations,
+      locationAvailable,
       timezone: this.dbService.getTimeZone(),
     };
     if (!environment.production) {

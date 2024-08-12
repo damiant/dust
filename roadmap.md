@@ -1,4 +1,5 @@
 # Roadmap
+- 🔴 Tweak street points to center them properly again
 - 🔴 Show friends, private events, bike, other locations in search all
 - 🔴 Show history of previously viewed items in the search all area
 - 🔴 If search is restrooms then auto go to restroom map

@@ -163,7 +163,6 @@ export class EventPage implements OnInit, OnDestroy {
       });
       await this.fav.setEventStars(this.event);
     } finally {
-      console.log(`Map points`, this.mapPoints);
       this.ready = true;
     }
   }
@@ -199,6 +198,11 @@ export class EventPage implements OnInit, OnDestroy {
 
   async showLocationInfo(e: any) {
     this.locationPopover().event = e;
+    if (this.db.getLocationAvailable().camps) {
+      this.locationInfo = `Locations cannot be display yet. ${this.db.getLocationAvailable().campMessage}.`;
+      this.isLocationInfoOpen = true;
+      return;
+    }
     const camp = await this.db.findCamp(this.event?.hosted_by_camp!);
     if (camp) {
       this.locationInfo = `${camp.landmark}. (${camp.facing})`;
