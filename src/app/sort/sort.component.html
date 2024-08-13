@@ -1,12 +1,2 @@
-<ion-button fill="clear" [id]="id()"><ion-icon name="chevron-down"></ion-icon></ion-button>
-<ion-popover [trigger]="id()" size="auto" side="bottom" [dismissOnSelect]="true">
-  <ng-template>
-    <ion-content>
-      <ion-radio-group (ionChange)="sortChanged($event)" [value]="sortType()">
-        @for (type of sortTypes; track type) {
-          <ion-radio labelPlacement="end" justify="start" [value]="type.value">{{ type.title }}</ion-radio>
-        }
-      </ion-radio-group>
-    </ion-content>
-  </ng-template>
-</ion-popover>
+<ion-checkbox [class]="sortType() === 'dist' || !padChecked() ? 'checked' : ''" (ionChange)="sortChanged($event)">Near
+  Me</ion-checkbox>

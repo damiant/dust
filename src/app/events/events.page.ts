@@ -35,6 +35,7 @@ import { compass, compassOutline } from 'ionicons/icons';
 import { FavoritesService } from '../favs/favorites.service';
 import { EventsService } from './events.service';
 import { Subscription } from 'rxjs';
+import { SortComponent } from '../sort/sort.component';
 
 interface EventsState {
   title: string;
@@ -111,6 +112,7 @@ function initialState(): EventsState {
     IonContent,
     SkeletonEventComponent,
     SearchComponent,
+    SortComponent,
     IonButton,
     IonBadge,
     IonIcon,
@@ -192,6 +194,7 @@ export class EventsPage implements OnInit, OnDestroy {
   }
 
   public categoryChanged() {
+    this.updateTitle();
     this.update(true);
   }
 
@@ -293,6 +296,9 @@ export class EventsPage implements OnInit, OnDestroy {
       return;
     }
     this.vm.title = !sameDay(day, noDate()) ? day.toLocaleDateString('en-US', { weekday: 'long' }) : 'Events';
+    if (this.vm.category != '') {
+      this.vm.title = ` ${this.vm.category}`;
+    }
   }
 
   map(event: Event) {

@@ -14,3 +14,17 @@ ion-popover {
 ion-item {
     font-weight: bold;
 }
+
+.checked {
+    padding-right: 1rem;
+}
+
+ion-checkbox {
+    margin-top: 1rem;
+    font-size: 1rem;
+    font-family: 'Gelion Regular' !important;
+
+    &::part(label) {
+        margin-inline-end: 0.5rem;
+    }
+}

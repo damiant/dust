@@ -1,4 +1,9 @@
 ## Changes
+## 2.41
+
+- Add near me checkbox for camps, events and art
+- Show distance at bottom of event so that it is visible
+
 ## 2.40
 
 - Fix location text to let people know when they are available

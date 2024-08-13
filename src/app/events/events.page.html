@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-title> {{vm.title}} </ion-title>
     <ion-buttons class="b-pad-r" slot="end">
-      <app-category [showSortBy]="true" id="event-categories" allTitle="All Events" [(category)]="vm.category"
+      <app-category [showSortBy]="false" id="event-categories" allTitle="All Events" [(category)]="vm.category"
         (categoryChange)="categoryChanged()" (sortTypeChange)="sortTypeChanged($event)"
         [categories]="vm.categories"></app-category>
     </ion-buttons>
@@ -18,7 +18,7 @@
       <ion-toolbar>
         <ion-title class="page-focus" size="large">{{vm.title}}</ion-title>
         <ion-buttons class="b-pad-r" slot="end">
-          <ion-text class="right-side">{{vm.category}}{{vm.timeRange}}</ion-text>
+          <app-sort [padChecked]="false" id="event-sort" (sortTypeChange)="sortTypeChanged($event)"></app-sort>
         </ion-buttons>
       </ion-toolbar>
       <ion-toolbar>

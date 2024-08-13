@@ -3,38 +3,30 @@ import {
   IonButton,
   IonContent,
   IonIcon,
-  IonPopover,
-  IonRadio,
-  IonRadioGroup,
   IonTitle,
-  IonItem,
+  IonItem, IonLabel, IonCheckbox
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { chevronDown } from 'ionicons/icons';
+import { locationSharp } from 'ionicons/icons';
 
 @Component({
   selector: 'app-sort',
   templateUrl: './sort.component.html',
   styleUrls: ['./sort.component.scss'],
   standalone: true,
-  imports: [IonItem, IonTitle, IonButton, IonPopover, IonContent, IonRadioGroup, IonRadio, IonIcon],
+  imports: [IonCheckbox, IonLabel, IonItem, IonTitle, IonButton, IonContent, IonIcon],
 })
 export class SortComponent {
-  sortTypes = [
-    { title: 'Sort by Distance', value: 'dist' },
-    { title: 'Sort Alphabetically', value: 'alpha' },
-  ];
-  id = input('');
-  allTitle = input<string>('');
   sortType = model<string>('alpha');
+  padChecked = input(true);
   sortTypeChange = output<string>();
 
   constructor() {
-    addIcons({ chevronDown });
+    addIcons({ locationSharp });
   }
 
   sortChanged(e: any) {
-    this.sortType.set(e.detail.value);
+    this.sortType.set(e.detail.checked ? 'dist' : 'alpha');
     this.sortTypeChange.emit(this.sortType());
   }
 }
