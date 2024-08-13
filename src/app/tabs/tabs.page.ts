@@ -77,7 +77,7 @@ export class TabsPage implements OnInit {
       const timeZone = this.db.getTimeZone();
       if (this.db.locationsHidden() && !hide) {
         // Locations were unlocked
-        this.db.setHideLocations(hide);
+        this.db.setLocationAvailable({ art: false, camps: false, artMessage: '', campMessage: '' });
         await this.db.populate(this.settings.settings.datasetId, timeZone);
       }
       this.ui.setStatusBarBasedOnTheme();

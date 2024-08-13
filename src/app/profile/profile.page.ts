@@ -237,7 +237,7 @@ export class ProfilePage implements OnInit {
       this.ui.presentToast('Locations now enabled', this.toastController);
       environment.overrideLocations = true;
       this.settings.save();
-      this.db.setHideLocations(false);
+      this.db.setLocationAvailable({ art: false, camps: false, artMessage: '', campMessage: '' });
       await this.db.populate(this.settings.settings.datasetId, this.db.getTimeZone());
       this.db.resume.set(new Date().toString());
     }

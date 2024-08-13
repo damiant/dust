@@ -4,16 +4,16 @@ import { GpsCoord } from './geo.utils';
 // Streets from Esplanade to K in relative values from center
 export const streets = [
   0.283, // Esplanade
-  0.334, // A
+  0.335, // A
   0.367, // B
-  0.402, // C
-  0.432, // D
-  0.463, // E
-  0.520, // F
+  0.400, // C
+  0.430, // D
+  0.462, // E
+  0.519, // F
   0.553, // G
-  0.585, // H
+  0.584, // H
   0.615, // I
-  0.643, // J
+  0.641, // J
   0.670 // K
 ];
 
@@ -66,24 +66,32 @@ export function toMapPoint(location: string | undefined, info?: MapInfo, pin?: P
       info
     };
 
+
   if (facing) {
     // This shifts off the street so that the camp is facing the man
     if (facing.includes('facing man')) {
-      mp.streetShift = 0.01;
+      mp.streetShift = 0.007;
     }
     // This shifts off the street so that the camp is facing the mountain
     if (facing.includes('facing mountain')) {
-      mp.streetShift = -0.01;
+      mp.streetShift = -0.007;
     }
     // This shifts so the camp faces towards 10 on the map
-    if (facing.includes('& 10:00') || facing.includes('facing 10:00')) {
+    if (facing.includes('& 10:00')) {
       mp.clockShift = -0.03;
     }
+    if (facing.includes('facing 10:00')) {
+      mp.clockShift = -0.07;
+    }
     // This shifts so the camp faces towards 10 on the map
-    if (facing.includes('& 2:00') || facing.includes('facing 2:00')) {
+    if (facing.includes('& 2:00')) {
       mp.clockShift = 0.03;
     }
+    if (facing.includes('facing 2:00')) {
+      mp.clockShift = 0.07;
+    }
   }
+
   return mp;
 }
 
@@ -277,7 +285,7 @@ export function getPoint(clock: number, rad: number, circleRadius: number): Pin 
 }
 
 export function clockToDegree(c: number): number {
-  const r = 360 / 12;
+  const r = 30.0 // 360 / 12;
   return (c - (3 % 12)) * r;
 }
 

@@ -15,6 +15,7 @@ import {
   DatasetResult,
   Dataset,
   Names,
+  LocationAvailable,
 } from './models';
 import { call, registerWorker } from './worker-interface';
 import { BurningManTimeZone, clone, data_dust_events, daysUntil, noDate, now, nowAtEvent, static_dust_events } from '../utils/utils';
@@ -49,7 +50,8 @@ export class DbService {
   public restart: WritableSignal<string> = signal('');
   public showPastEvents = false;
   private initialized = false;
-  private hideLocations = true;
+  private locationAvailable: LocationAvailable = { art: false, camps: false, artMessage: '', campMessage: '' };
+
   private prefix = '';
   public overrideDataset: string | undefined;
   private datasetsRead: string[] = [];
@@ -86,7 +88,7 @@ export class DbService {
 
   public async populate(dataset: string, timezone: string): Promise<DatasetResult> {
     this.initWorker(); // Just to double check
-    const result: DatasetResult = await call(this.worker, DataMethods.Populate, dataset, this.hideLocations, environment, timezone);
+    const result: DatasetResult = await call(this.worker, DataMethods.Populate, dataset, this.locationAvailable, environment, timezone);
     await this.writeData(dataset, Names.summary, result)
     return result;
   }
@@ -116,12 +118,16 @@ export class DbService {
     }
   }
 
-  public setHideLocations(hide: boolean) {
-    this.hideLocations = hide;
+  public setLocationAvailable(locationAvailable: LocationAvailable) {
+    this.locationAvailable = locationAvailable;
+  }
+
+  public getLocationAvailable(): LocationAvailable {
+    return this.locationAvailable;
   }
 
   public locationsHidden(): boolean {
-    return this.hideLocations;
+    return this.locationAvailable.art || this.locationAvailable.camps;
   }
 
   public async checkEvents(day?: Date): Promise<void> {

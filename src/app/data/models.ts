@@ -214,6 +214,13 @@ export interface TimeString {
   long: string;
 }
 
+export interface LocationAvailable {
+  camps: boolean;
+  art: boolean;
+  campMessage: string;
+  artMessage: string;
+}
+
 // Location object returned from the API
 export interface WebLocation {
   city: string;
@@ -353,7 +360,7 @@ export interface FullDataset {
   links: string;
   rsl: string;
   map: string;
-  hideLocations: boolean;
+  locationAvailable: LocationAvailable;
   timezone: string;
 }
 

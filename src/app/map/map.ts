@@ -368,9 +368,9 @@ async function addPin(
     mixers: AnimationMixer[],
     scene: Scene, disposables: MapDisposable[]): Promise<AddPinResult> {
     //const geometry = new CircleGeometry(pin.size, 24);
-    const geometry = new CylinderGeometry(pin.size, pin.size, 3, 24);
+    const geometry = new CylinderGeometry(pin.size, pin.size, 1, 24);
     const mesh = new Mesh(geometry, material);
-    mesh.position.set(pin.x, 3, pin.z);
+    mesh.position.set(pin.x, 1, pin.z);
     mesh.uuid = pin.uuid;
     if (pin.animated) {
         animateMesh(mesh, mixers);
@@ -390,7 +390,7 @@ async function addPin(
     if (svg) {
         let scale = 0.2 * (mapWidth / 10000);
         if (pin.size < 50) {
-            scale = scale * 0.5;
+            scale = scale * 0.35;
         }
         const p = await addSVG(svg, scale, rotation, disposables, 'txt');
         p.position.x = mesh.position.x;
@@ -462,7 +462,7 @@ async function addSVG(name: string, scale: number, rotation: number, disposables
         mesh.uuid = uuid;
         group.add(mesh);
     }
-    group.position.y = 5;
+    group.position.y = 2;
     group.rotation.x = - Math.PI / 2;
     group.rotation.z = rotation;
     return group;
@@ -483,7 +483,7 @@ function addText(message: string, font: any, size: number, disposables: MapDispo
     disposables.push(geometry);
     disposables.push(material);
     const text = new Mesh(geometry, material);
-    text.position.y = 5;
+    text.position.y = 2;
     text.rotation.x = - Math.PI / 2;
     return text;
 }

@@ -23,7 +23,8 @@ import {
   IonList,
   IonText,
   IonTitle,
-  IonToolbar, IonModal
+  IonToolbar, IonModal,
+  ToastController
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { star, starOutline, shareOutline, personOutline, locateOutline, locationOutline } from 'ionicons/icons';
@@ -63,6 +64,7 @@ export class ArtItemPage implements OnInit {
   private db = inject(DbService);
   private settings = inject(SettingsService);
   private fav = inject(FavoritesService);
+  private toastController = inject(ToastController);
   art: Art | undefined;
   showMap = false;
   mapPoints: MapPoint[] = [];
@@ -112,6 +114,10 @@ export class ArtItemPage implements OnInit {
   }
 
   map() {
+    if (this.db.getLocationAvailable().art) {
+      this.ui.presentDarkToast(`Art locations cannot be displayed yet. ${this.db.getLocationAvailable().artMessage}.`, this.toastController);
+      return;
+    }
     if (!canCreate()) return;
     this.showMap = true;
   }
