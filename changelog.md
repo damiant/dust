@@ -3,6 +3,7 @@
 
 - Add near me checkbox for camps, events and art
 - Show distance at bottom of event so that it is visible
+- Now map shows camps correctly offset from street
 
 ## 2.40
 

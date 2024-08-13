@@ -366,6 +366,7 @@ export class PinMapPage {
           href: `event/${event.uid}+Now`,
         },
         event.pin,
+        event.facing
       );
       mapPoint.gps = await this.db.getMapPointGPS(mapPoint);
       points.push(mapPoint);
