@@ -4,16 +4,16 @@ import { GpsCoord } from './geo.utils';
 // Streets from Esplanade to K in relative values from center
 export const streets = [
   0.283, // Esplanade
-  0.334, // A
+  0.337, // A
   0.367, // B
-  0.402, // C
-  0.432, // D
-  0.463, // E
-  0.520, // F
-  0.553, // G
-  0.585, // H
+  0.400, // C
+  0.430, // D
+  0.460, // E
+  0.518, // F
+  0.551, // G
+  0.583, // H
   0.615, // I
-  0.643, // J
+  0.641, // J
   0.670 // K
 ];
 
@@ -69,11 +69,11 @@ export function toMapPoint(location: string | undefined, info?: MapInfo, pin?: P
   if (facing) {
     // This shifts off the street so that the camp is facing the man
     if (facing.includes('facing man')) {
-      mp.streetShift = 0.01;
+      mp.streetShift = 0.007;
     }
     // This shifts off the street so that the camp is facing the mountain
     if (facing.includes('facing mountain')) {
-      mp.streetShift = -0.01;
+      mp.streetShift = -0.007;
     }
     // This shifts so the camp faces towards 10 on the map
     if (facing.includes('& 10:00') || facing.includes('facing 10:00')) {
