@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, input, viewChild, inject, OnDestroy, computed } from '@angular/core';
+import { Component, OnInit, signal, input, viewChild, inject, OnDestroy, computed, effect, output } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -43,7 +43,7 @@ import {
 import { CachedImgComponent, ImageLocation } from '../cached-img/cached-img.component';
 import { canCreate } from '../map/map';
 import { ScrollResult } from '../map/map-model';
-import { EventsService } from '../events/events.service';
+import { EventChanged, EventsService } from '../events/events.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -99,13 +99,21 @@ export class EventPage implements OnInit, OnDestroy {
   mapSubtitle = '';
   campDescription = '';
   locationInfo = '';
+  prevDisabled = false;
+  nextDisabled = false;
   private eventChangeSubscription?: Subscription;
   private day: Date | undefined;
   eventId = input<string>();
   filterDays = input<boolean>(true); // Whether to filter by day
   imageLocation = input<ImageLocation>('top');
+  opened = output<string>();
   constructor() {
     addIcons({ shareOutline, locationOutline, chevronForwardOutline, chevronBackOutline, timeOutline, star, starOutline, pricetagOutline, closeCircleOutline });
+    effect(() => {
+      const position = this.eventsService.position();
+      this.prevDisabled = position == 'start';
+      this.nextDisabled = position == 'end';
+    });
   }
 
   async ngOnInit() {
@@ -115,8 +123,8 @@ export class EventPage implements OnInit, OnDestroy {
     const eventId = this.eventId() ? this.eventId()! + '+' : this.route.snapshot.paramMap.get('id');
     this.init(eventId);
     this.showMap = canCreate();
-    this.eventChangeSubscription = this.eventsService.eventChanged.subscribe(async (eventId) => {
-      await this.init(eventId);
+    this.eventChangeSubscription = this.eventsService.eventChanged.subscribe(async (eventChange: EventChanged) => {
+      await this.init(eventChange.eventId);
     });
   }
 

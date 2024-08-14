@@ -33,8 +33,9 @@ import { SettingsService } from '../data/settings.service';
 import { addIcons } from 'ionicons';
 import { compass, compassOutline } from 'ionicons/icons';
 import { FavoritesService } from '../favs/favorites.service';
-import { EventsService } from './events.service';
+import { EventPositionChange, EventsService } from './events.service';
 import { Subscription } from 'rxjs';
+import { SortComponent } from '../sort/sort.component';
 
 interface EventsState {
   title: string;
@@ -111,6 +112,7 @@ function initialState(): EventsState {
     IonContent,
     SkeletonEventComponent,
     SearchComponent,
+    SortComponent,
     IonButton,
     IonBadge,
     IonIcon,
@@ -154,18 +156,31 @@ export class EventsPage implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.nextSubscription = this.eventsService.next.subscribe((eventId) => {
+    this.nextSubscription = this.eventsService.next.subscribe((eventId: string) => {
       const idx = this.vm.events.findIndex(e => e.uid == eventId);
       if (idx == -1 || idx + 1 >= this.vm.events.length) return;
       const e = this.vm.events[idx + 1];
-      this.eventsService.eventChanged.emit(e.uid);
+      this.eventsService.position.set(idx === this.vm.events.length - 2 ? 'end' : 'middle');
+      this.eventsService.eventChanged.emit({ eventId: e.uid });
     });
     this.prevSubscription = this.eventsService.prev.subscribe((eventId) => {
       const idx = this.vm.events.findIndex(e => e.uid == eventId);
       if (idx <= 0) return;
       const e = this.vm.events[idx - 1];
-      this.eventsService.eventChanged.emit(e.uid);
+      this.eventsService.position.set(idx === 1 ? 'start' : 'middle');
+      this.eventsService.eventChanged.emit({ eventId: e.uid });
     });
+  }
+
+  opened(eventId: string) {
+    const idx = this.vm.events.findIndex(e => e.uid == eventId);
+    let position: EventPositionChange = 'middle';
+    if (idx === 0) {
+      position = 'start';
+    } else if (idx === this.vm.events.length - 1) {
+      position = 'end';
+    }
+    this.eventsService.position.set(position);
   }
 
   ngOnDestroy(): void {
@@ -192,6 +207,7 @@ export class EventsPage implements OnInit, OnDestroy {
   }
 
   public categoryChanged() {
+    this.updateTitle();
     this.update(true);
   }
 
@@ -293,6 +309,9 @@ export class EventsPage implements OnInit, OnDestroy {
       return;
     }
     this.vm.title = !sameDay(day, noDate()) ? day.toLocaleDateString('en-US', { weekday: 'long' }) : 'Events';
+    if (this.vm.category != '') {
+      this.vm.title = ` ${this.vm.category}`;
+    }
   }
 
   map(event: Event) {

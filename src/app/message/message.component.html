@@ -1,4 +1,5 @@
-<ion-modal #modal [isOpen]="show()" (willDismiss)="close()" [initialBreakpoint]="0.5" [breakpoints]="[0.5]">
+<ion-modal #modal [canDismiss]="!disabled" [isOpen]="show()" (willDismiss)="close()" [initialBreakpoint]="0.5"
+  [breakpoints]="[0.5]">
   <ng-template>
     <div class="center tall">
       <div class="pad">
@@ -10,7 +11,7 @@
           size="large" fill="outline" shape="round" class="pad-right">{{secondButton()}}
         </ion-button>
 
-        <ion-button color="primary" (click)="dismiss(true); modal.dismiss()" size="large"
+        <ion-button [disabled]="disabled" color="primary" (click)="dismiss(true); modal.dismiss()" size="large"
           shape="round">Continue<ion-icon name="arrow-forward-outline"></ion-icon></ion-button>
       </div>
     </div>

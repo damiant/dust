@@ -56,6 +56,11 @@
       </div>
     </ng-template>
   </ion-modal>
+
+  @if (downloading) {
+  <ion-loading spinner="circular" [isOpen]="downloading"
+    [message]="'Updating '+db.selectedDataset().title"></ion-loading>
+  }
   <app-tile-container>
     @if (!db.locationsHidden()) {
     <app-tile title="Map" routerLink="/map/all" imgSrc="assets/icon/map.svg"></app-tile>
@@ -87,12 +92,6 @@
     }
   </ion-card>
   } }
-
-  @if (downloading) {
-  <ion-card><ion-card-content>
-      Downloading new content for {{db.selectedDataset().title}}
-      <ion-spinner name="dots" color="light"></ion-spinner></ion-card-content></ion-card>
-  }
 
   <app-events-card [events]="favEventsToday"></app-events-card>
 

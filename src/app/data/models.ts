@@ -7,6 +7,7 @@ export interface Event {
   start: Date; // Calculated
   end: Date; // Calculated
   location: string; // Calculated
+  facing?: string; // Calculated
   longTimeString: string; // Calculated
   old: boolean; // Calculated (whether the event has already passed)
   happening: boolean; // Calculated (whether the event is happening now)
@@ -177,7 +178,8 @@ export interface Settings {
   longEvents: boolean;
   preventAutoStart: boolean;
   offlineEvents: string[]; // List of all offline event ids
-  lastGeoAlert: number | undefined;
+  lastGeoAlert: number | undefined; // Last geolocation permission request alert
+  lastAboutAlert: number | undefined; // Last time the user got a message about the selected event
 }
 
 

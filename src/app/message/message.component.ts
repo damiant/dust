@@ -1,4 +1,4 @@
-import { Component, input, model, output } from '@angular/core';
+import { Component, effect, input, model, output } from '@angular/core';
 import { IonButton, IonIcon, IonModal, IonText, IonButtons } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { arrowForwardOutline } from 'ionicons/icons';
@@ -16,12 +16,23 @@ export class MessageComponent {
 
   message = input('');
   title = input('');
+  disabled = false;
   dismissed = output<boolean>();
   constructor() {
     addIcons({ arrowForwardOutline });
+    effect(() => {
+      const show = this.show();
+      if (show) {
+        this.disabled = true;
+        setTimeout(() => {
+          this.disabled = false;
+        }, 500);
+      }
+    })
   }
 
   close() {
+    if (this.disabled) return;
     this.show.set(false);
   }
 

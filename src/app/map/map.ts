@@ -5,11 +5,12 @@ import {
     BufferGeometry,
     CylinderGeometry,
     DirectionalLight,
-    MeshPhongMaterial
+    MeshPhongMaterial,
+    Texture
 } from 'three';
 import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
-import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
+import { SVGLoader, SVGResult } from 'three/examples/jsm/loaders/SVGLoader.js';
 import { MapModel, MapPin, MapResult, PinColor } from './map-model';
 
 
@@ -367,7 +368,6 @@ async function addPin(
     rotation: number, mapWidth: number,
     mixers: AnimationMixer[],
     scene: Scene, disposables: MapDisposable[]): Promise<AddPinResult> {
-    //const geometry = new CircleGeometry(pin.size, 24);
     const geometry = new CylinderGeometry(pin.size, pin.size, 1, 24);
     const mesh = new Mesh(geometry, material);
     mesh.position.set(pin.x, 1, pin.z);
@@ -423,7 +423,7 @@ function loadFont(name: string): Promise<any> {
     });
 }
 
-async function loadSVG(name: string): Promise<any> {
+async function loadSVG(name: string): Promise<SVGResult> {
     return new Promise((resolve) => {
         const loader = new SVGLoader();
         loader.load(name, function (svg) {
@@ -432,7 +432,7 @@ async function loadSVG(name: string): Promise<any> {
     });
 }
 
-async function loadTexture(name: string): Promise<any> {
+async function loadTexture(name: string): Promise<Texture> {
     return new Promise((resolve) => {
         const loader = new TextureLoader();
         loader.load(name, function (svg) {
@@ -441,8 +441,14 @@ async function loadTexture(name: string): Promise<any> {
     });
 }
 
+const svgCache: Map<string, SVGResult> = new Map();
+
 async function addSVG(name: string, scale: number, rotation: number, disposables: MapDisposable[], uuid: string): Promise<Group> {
-    const svg = await loadSVG(name);
+    let svg = svgCache.get(name);
+    if (svg === undefined) {
+        svg = await loadSVG(name);
+        svgCache.set(name, svg);
+    }
     const group = new Group();
 
     for (const path of svg.paths) {

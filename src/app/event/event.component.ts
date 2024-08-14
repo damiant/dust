@@ -57,6 +57,7 @@ export class EventComponent {
   groupClick = output<Event>();
   rslClick = output<string>();
   longEvent = output<number>();
+  opened = output<string>();
   isReady = false;
 
   constructor() {
@@ -113,6 +114,7 @@ export class EventComponent {
       this.rslClick.emit(this.event().slug);
       return;
     }
+    this.opened.emit(this.event().uid);
     this.router.navigateByUrl('/event/' + this.event().uid + '+' + this.title());
   }
 }

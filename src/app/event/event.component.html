@@ -26,7 +26,7 @@
       (click)="map(event(), $event)">
       {{ longTime() ? event().longTimeString : event().timeString }} &#64; {{ event().camp }} {{ event().location ? '('
       +
-      event().location + ')' : '' }} {{ event().distanceInfo }}
+      event().location + ')' : '' }}
     </ion-card-subtitle>
   </ion-card-header>
 
@@ -39,6 +39,6 @@
       } @else if (showStar) {
       <ion-icon name="star-outline" (click)="emitStar(true)"></ion-icon>
       }
-      {{ event().event_type.label }}</ion-text>
+      {{ event().event_type.label }} {{ event().distanceInfo }}</ion-text>
   </ion-card-content>
 </ion-card>

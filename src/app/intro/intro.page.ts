@@ -328,12 +328,14 @@ export class IntroPage {
       artMessage: 'Location available August 25',
       campMessage: 'Location available August 18'
     });
-    if ((hideArtLocations || hideCampLocations) && !this.vm.eventAlreadySelected) {
+
+    if ((hideArtLocations || hideCampLocations) && !this.vm.eventAlreadySelected && this.settingsService.shouldAboutAlert()) {
       if (x < 80) {
         this.vm.message = `Locations for camps and art will be released in the app shortly before gates open. There are ${x} days until the man burns.`;
       } else {
         this.vm.message = `Camps, Art and Events will be released in the app closer to the event. There are ${x} days until the man burns.`;
       }
+      this.settingsService.setLastAboutAlert();
       this.vm.showMessage = true;
     } else {
       this.vm.showMessage = false;

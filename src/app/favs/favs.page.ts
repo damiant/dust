@@ -37,7 +37,8 @@ import { star, starOutline, mapOutline, printOutline } from 'ionicons/icons';
 import { CalendarService } from '../calendar.service';
 import { ToastController } from '@ionic/angular';
 import { PrintWebview } from 'capacitor-print-webview';
-import { delay } from '../utils/utils';
+import { delay, plural } from '../utils/utils';
+import { MessageComponent } from '../message/message.component';
 
 
 enum Filter {
@@ -57,6 +58,7 @@ interface FavsState {
   noFavorites: boolean;
   mapTitle: string;
   search: string;
+  showCalendarMessage: boolean;
   mapSubtitle: string;
   rslId: string | undefined;
   isActionSheetOpen: boolean;
@@ -72,6 +74,7 @@ function initialState(): FavsState {
     filters: [Filter.Events, Filter.Camps, Filter.Art],
     showMap: false,
     noFavorites: false,
+    showCalendarMessage: false,
     mapTitle: '',
     search: '',
     mapSubtitle: '',
@@ -112,6 +115,7 @@ function initialState(): FavsState {
     ArtComponent,
     CategoryComponent,
     SearchComponent,
+    MessageComponent
   ],
 })
 export class FavsPage implements OnInit {
@@ -350,15 +354,18 @@ export class FavsPage implements OnInit {
     this.update();
   }
 
-  async syncCalendar(events: Event[]) {
+  async syncCalendar(events: Event[], doSync: boolean) {
     const list: string[] = [];
     let attempts = 1;
-    while (attempts < 2) {
-      for (const event of events) {
-        list.push(event.title);
-        console.log(event);
-        const location = event.location ? ` (${event.location})` : '';
-        const success = await this.calendar.add({
+    this.vm.showCalendarMessage = false;
+    if (!doSync) return;
+    for (const event of events) {
+      list.push(event.title);
+      console.log(event);
+      const location = event.location ? ` (${event.location})` : '';
+      let success = false;
+      while (attempts < 2 && !success) {
+        const hasPermission = await this.calendar.add({
           calendar: this.db.selectedDataset().title,
           name: event.title,
           description: event.description,
@@ -367,7 +374,7 @@ export class FavsPage implements OnInit {
           location: event.camp + location,
           timeZone: this.db.selectedDataset().timeZone,
         });
-        if (!success) {
+        if (!hasPermission) {
           if (attempts == 1) {
             // On Android it will fail the first time, but succeed the second time
             await delay(1000);
@@ -376,12 +383,14 @@ export class FavsPage implements OnInit {
             this.ui.presentDarkToast(`Unable to add events to the calendar. Check permissions.`, this.toastController);
             return;
           }
+        } else {
+          success = true;
         }
       }
     }
     await this.calendar.deleteOld(this.db.selectedDataset().title, list);
     await this.ui.presentToast(
-      `${events.length} events synced with your ${this.db.selectedDataset().title} calendar.`,
+      `${events.length} event${plural(events.length)} synced with your ${this.db.selectedDataset().title} calendar.`,
       this.toastController,
     );
   }

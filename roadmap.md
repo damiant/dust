@@ -1,5 +1,7 @@
 # Roadmap
-- 🔴 Tweak street points to center them properly again
+- 🔴 Like button instead of favorites?
+
+- 🔴 Click camp name to switch to camps view and select camp
 - 🔴 Show friends, private events, bike, other locations in search all
 - 🔴 Show history of previously viewed items in the search all area
 - 🔴 If search is restrooms then auto go to restroom map
