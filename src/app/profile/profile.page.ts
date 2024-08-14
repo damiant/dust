@@ -21,7 +21,8 @@ import {
   ToastController,
   IonFabList,
   IonModal, IonSpinner, IonText,
-  Platform
+  Platform,
+  AlertController, IonLoading
 } from '@ionic/angular/standalone';
 import { UiService } from '../ui/ui.service';
 import { Share } from '@capacitor/share';
@@ -64,6 +65,7 @@ import { FavoritesService } from '../favs/favorites.service';
 import { ApiService } from '../data/api.service';
 import { delay } from '../utils/utils';
 import { PinsCardComponent } from '../pins-card/pins-card.component';
+import { UpdateService } from '../update.service';
 
 interface Group {
   id: number;
@@ -75,7 +77,7 @@ interface Group {
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
   standalone: true,
-  imports: [IonText,
+  imports: [IonLoading, IonText,
     IonSpinner,
     IonModal,
     IonFabList,
@@ -113,9 +115,11 @@ export class ProfilePage implements OnInit {
   private map = inject(MapService);
   private geo = inject(GeoService);
   private toastController = inject(ToastController);
+  private alertController = inject(AlertController);
   private favs = inject(FavoritesService);
   private calendar = inject(CalendarService);
   private router = inject(Router);
+  private updateService = inject(UpdateService);
   public db = inject(DbService);
   moreClicks = 0;
   moreOpen = false;
@@ -360,6 +364,7 @@ export class ProfilePage implements OnInit {
       await delay(1000);
       const dataset = this.db.selectedDataset();
       const result = await this.api.download(dataset, false, this.download);
+
       switch (result) {
         case 'success': {
           this.downloading = false;
@@ -368,7 +373,8 @@ export class ProfilePage implements OnInit {
           return;
         }
         case 'already-updated': {
-          this.ui.presentToast('Already up to date', this.toastController);
+          this.ui.presentToast('You have the latest camps, events & art for this event', this.toastController);
+          this.updateService.checkVersion(this.alertController);
         }
       }
     } finally {

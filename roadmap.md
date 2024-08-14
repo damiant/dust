@@ -1,4 +1,10 @@
 # Roadmap
+- 🔴 Reduce frequency of locaiton popup
+- 🔴 Like button instead of favorites?
+- 🔴 Next/Prev buttons need to disable when there are no more events
+- 🔴 Download update should provide feedback in the UI
+- 🔴 Tap the calendar icon in Favorites has no UI feedback (maybe permission issue)
+- 🔴 Click camp name to switch to camps view and select camp
 - 🔴 Show friends, private events, bike, other locations in search all
 - 🔴 Show history of previously viewed items in the search all area
 - 🔴 If search is restrooms then auto go to restroom map
