@@ -1,7 +1,6 @@
 # Roadmap
 - 🔴 Like button instead of favorites?
-- 🔴 Next/Prev buttons need to disable when there are no more events
-- 🔴 Tap the calendar icon in Favorites has no UI feedback (maybe permission issue)
+
 - 🔴 Click camp name to switch to camps view and select camp
 - 🔴 Show friends, private events, bike, other locations in search all
 - 🔴 Show history of previously viewed items in the search all area

@@ -57,7 +57,7 @@
     <cdk-virtual-scroll-viewport [minBufferPx]="vm.minBufferPx" itemSize="180" maxBufferPx="2350">
       <app-event [showImage]="true" [title]="vm.title" [longTime]="!vm.day" [day]="vm.day" [event]="event"
         (starClick)=" star(event, $event)" (mapClick)="map($event)" (longEvent)="longEvent($event)"
-        *cdkVirtualFor=" let event of vm.events; trackBy: eventsTrackBy" />
+        (opened)="opened($event)" *cdkVirtualFor=" let event of vm.events; trackBy: eventsTrackBy" />
     </cdk-virtual-scroll-viewport>
   </div>
 </ion-content>

@@ -33,7 +33,7 @@ import { SettingsService } from '../data/settings.service';
 import { addIcons } from 'ionicons';
 import { compass, compassOutline } from 'ionicons/icons';
 import { FavoritesService } from '../favs/favorites.service';
-import { EventsService } from './events.service';
+import { EventPositionChange, EventsService } from './events.service';
 import { Subscription } from 'rxjs';
 import { SortComponent } from '../sort/sort.component';
 
@@ -156,18 +156,31 @@ export class EventsPage implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.nextSubscription = this.eventsService.next.subscribe((eventId) => {
+    this.nextSubscription = this.eventsService.next.subscribe((eventId: string) => {
       const idx = this.vm.events.findIndex(e => e.uid == eventId);
       if (idx == -1 || idx + 1 >= this.vm.events.length) return;
       const e = this.vm.events[idx + 1];
-      this.eventsService.eventChanged.emit(e.uid);
+      this.eventsService.position.set(idx === this.vm.events.length - 2 ? 'end' : 'middle');
+      this.eventsService.eventChanged.emit({ eventId: e.uid });
     });
     this.prevSubscription = this.eventsService.prev.subscribe((eventId) => {
       const idx = this.vm.events.findIndex(e => e.uid == eventId);
       if (idx <= 0) return;
       const e = this.vm.events[idx - 1];
-      this.eventsService.eventChanged.emit(e.uid);
+      this.eventsService.position.set(idx === 1 ? 'start' : 'middle');
+      this.eventsService.eventChanged.emit({ eventId: e.uid });
     });
+  }
+
+  opened(eventId: string) {
+    const idx = this.vm.events.findIndex(e => e.uid == eventId);
+    let position: EventPositionChange = 'middle';
+    if (idx === 0) {
+      position = 'start';
+    } else if (idx === this.vm.events.length - 1) {
+      position = 'end';
+    }
+    this.eventsService.position.set(position);
   }
 
   ngOnDestroy(): void {
