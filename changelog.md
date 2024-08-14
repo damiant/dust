@@ -5,6 +5,7 @@
 - Show distance at bottom of event so that it is visible
 - Downloading updates will show a progress spinner and also check for app updates
 - Now map shows camps correctly offset from street
+- Next/Prev buttons need to disable when there are no more events
 - Fix calendar sync feature
 
 ## 2.40
