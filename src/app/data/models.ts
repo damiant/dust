@@ -178,7 +178,8 @@ export interface Settings {
   longEvents: boolean;
   preventAutoStart: boolean;
   offlineEvents: string[]; // List of all offline event ids
-  lastGeoAlert: number | undefined;
+  lastGeoAlert: number | undefined; // Last geolocation permission request alert
+  lastAboutAlert: number | undefined; // Last time the user got a message about the selected event
 }
 
 

@@ -1,5 +1,5 @@
 # Roadmap
-- 🔴 Reduce frequency of locaiton popup
+- 🔴 Reduce frequency of location popup
 - 🔴 Like button instead of favorites?
 - 🔴 Next/Prev buttons need to disable when there are no more events
 - 🔴 Download update should provide feedback in the UI

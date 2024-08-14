@@ -43,6 +43,7 @@ export class SettingsService {
         datasetFilter: 'all',
         preventAutoStart: false,
         lastGeoAlert: undefined,
+        lastAboutAlert: undefined,
         offlineEvents: [],
         scrollLeft: 0,
       };
@@ -67,6 +68,17 @@ export class SettingsService {
   public setLastGeoAlert() {
     this.settings.lastGeoAlert = Date.now();
     this.save();
+  }
+
+  public setLastAboutAlert() {
+    this.settings.lastAboutAlert = Date.now();
+    this.save();
+  }
+
+  public shouldAboutAlert(): boolean {
+    const lastAboutAlert = this.settings.lastAboutAlert ?? 0;
+    if (lastAboutAlert == 0) return true;
+    return (Date.now() - lastAboutAlert > 86400000);
   }
 
   public shouldGeoAlert(): boolean {
