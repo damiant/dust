@@ -208,7 +208,7 @@ function timeBetween(d1: any, d2: any): string {
   return mins < 60 ? `${mins}min${plural(mins)}` : `${hrs}hr${plural(hrs)}`;
 }
 
-function plural(v: number): string {
+export function plural(v: number): string {
   return v === 1 ? "" : "s";
 }
 
