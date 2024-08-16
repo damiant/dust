@@ -1,4 +1,15 @@
 # Roadmap
+- 🔴 Update Burning Man Map to repeat A-Z and clock labels
+- 🔴 Compass is not animated particular on the restroom map
+- 🔴 Zoom to the the compass when on a multi-pin map
+- 🔴 Icon size for compass and pins need enlarger
+- 🔴 Super bright compass color on dark mode
+- 🔴 Tap anywhere on a popup in maps to dismiss it
+- 🔴 Dark side of the mug has a 27 hour event
+- 🔴 All day events for Burning Man are entered as 2 x12 hour. Need to clean these up
+- 🔴 Swipe back not working on now > event page
+- 🔴 Center Camp isnt listed as a camp (backend change)
+- 🔴 Temple isnt listed as art (backend change)
 - 🔴 Click camp name to switch to camps view and select camp
 - 🔴 Like button instead of favorites?
 
@@ -18,8 +29,6 @@
 - 🟠 Document ways to disconnect and not use your phone
 
 - 🟠 Now map needs music
-- 🟠 On todays favorite events show bold for happening now, grey if completed
-- 🟠 As the time changes, update todays events
 - 🟠 Error: white screened the events page after a day had passed
 - 🔵 If you favorite an event and return to the event list it is not starred
 
