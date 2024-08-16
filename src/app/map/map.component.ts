@@ -264,26 +264,31 @@ export class MapComponent implements OnInit, OnDestroy {
     const el: HTMLElement = this.container().nativeElement;
     el.getBoundingClientRect();
   }
+
   async update() {
     this.mapClass = 'hidden';
     this.setMapInformation();
     const largePins = this._points.length < 100;
     const pinSize = largePins ? 50 : 32;
+
+    const compassPt = await this.geo.gpsToPoint(this.geo.gpsPosition());
+    if (this.hideCompass) {
+      compassPt.x -= 1000;
+    }
+
     const map: MapModel = {
       image: this.src,// 'assets/map2.webp',
       width: 0,
       height: 0,
       defaultPinSize: pinSize,
       pins: [],
-      compass: { uuid: 'compass', x: 1, z: 1, color: 'tertiary', size: pinSize, label: '' },
+      compass: { uuid: 'compass', x: compassPt.x, z: compassPt.y, color: 'tertiary', size: pinSize, label: '' },
       pinClicked: this.pinClicked.bind(this),
     }
 
     if (this.points.length == 1) {
       this.points[0].animated = true;
     }
-
-
 
     const size = map.defaultPinSize;
     const sameLocation: Record<string, number[]> = {};

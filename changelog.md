@@ -7,6 +7,7 @@
 - Fix issue with searching for clock directions
 - Todays favorite events update when resuming the app
 - Your location is animated on the map
+- Focus over your location on the map (in multi-pin maps)
 - Icon sizes on map enlarged
 
 ## 2.41
