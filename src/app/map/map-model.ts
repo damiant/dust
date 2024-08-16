@@ -34,7 +34,7 @@ export interface MapResult {
     currentObject?: any;
 }
 
-export type PinColor = 'primary' | 'secondary' | 'tertiary' | 'compass' | 'warning';
+export type PinColor = 'primary' | 'secondary' | 'tertiary' | 'compass' | 'medical' | 'warning';
 
 export interface MapPin {
     uuid: string;

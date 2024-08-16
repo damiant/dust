@@ -363,6 +363,8 @@ function getMaterial(pinColor: PinColor): MeshPhongMaterial {
         case 'warning':
             return new MeshPhongMaterial({ color: 0xffc409, transparent: true });
         case 'compass':
+            return new MeshPhongMaterial({ color: 0x8bc34a });
+        case 'medical':
             return new MeshPhongMaterial({ color: 0x5260ff });
         default:
             return new MeshPhongMaterial({ color: 0x000000 });
@@ -408,9 +410,9 @@ async function addPin(
     }
 
     if (svg) {
-        let scale = 0.2 * (mapWidth / 10000);
+        let scale = 0.15 * (mapWidth / 10000);
         if (pin.size < 50) {
-            scale = scale * 0.60;
+            scale = 0.10 * (mapWidth / 10000);
         }
         const p = await addSVG(svg, scale, rotation, disposables, 'txt');
         p.position.x = mesh.position.x;

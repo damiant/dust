@@ -282,7 +282,7 @@ export class MapComponent implements OnInit, OnDestroy {
       height: 0,
       defaultPinSize: pinSize,
       pins: [],
-      compass: { uuid: 'compass', x: compassPt.x, z: compassPt.y, color: 'tertiary', size: pinSize, label: '' },
+      compass: { uuid: 'compass', x: compassPt.x, z: compassPt.y, color: 'compass', size: pinSize, label: '' },
       pinClicked: this.pinClicked.bind(this),
     }
 

@@ -7,6 +7,7 @@
 - Fix issue with searching for clock directions
 - Todays favorite events update when resuming the app
 - Your location is animated on the map
+- Your location now has its own green color
 - Focus over your location on the map (in multi-pin maps)
 - Tap anywhere on a popup in maps to dismiss it
 - Icon sizes on map enlarged

@@ -313,7 +313,7 @@ export class PinMapPage {
       case Names.ice:
         return 'warning';
       case Names.medical:
-        return 'compass';
+        return 'medical';
       case Names.art:
         return 'secondary';
       default:
