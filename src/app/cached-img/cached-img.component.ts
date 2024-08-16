@@ -25,7 +25,7 @@ export class CachedImgComponent {
   src = input<string>();
   isReady = false;
   loading = input('lazy');
-  errorImage = input<string>('./assets/error-img.png');
+  errorImage = input<string>('');
   loaded = output<boolean>()
 
   constructor() {
@@ -49,6 +49,7 @@ export class CachedImgComponent {
   }
 
   errored() {
+    if (this.errorImage() == '') return;
     this._src = this.errorImage();
     this.isReady = true;
     this._change.markForCheck();

@@ -20,7 +20,7 @@
   }
   <ion-card-header>
     <ion-card-title [class]="showImage() && event().imageUrl ? 'title' : ''" aria-hidden="true"
-      [routerLink]="'/event/' + event().uid + '+' + title()">{{ event().title }}
+      [routerLink]="'/event/' + event().uid + '+' + titleEncoded()">{{ event().title }}
     </ion-card-title>
     <ion-card-subtitle [class]="showImage() && event().imageUrl ? 'title' : ''" aria-hidden="true" color="primary"
       (click)="map(event(), $event)">
