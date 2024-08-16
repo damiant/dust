@@ -8,6 +8,7 @@
 - Todays favorite events update when resuming the app
 - Your location is animated on the map
 - Focus over your location on the map (in multi-pin maps)
+- Tap anywhere on a popup in maps to dismiss it
 - Icon sizes on map enlarged
 
 ## 2.41
