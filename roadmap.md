@@ -1,8 +1,7 @@
 # Roadmap
-- 🔴 Update Burning Man Map to repeat A-Z and clock labels
-- 🔴 Compass is not animated particular on the restroom map
-- 🔴 Zoom to the the compass when on a multi-pin map
 - 🔴 Icon size for compass and pins need enlarger
+- 🔴 Update Burning Man Map to repeat A-Z and clock labels
+- 🔴 Zoom to the the compass when on a multi-pin map
 - 🔴 Super bright compass color on dark mode
 - 🔴 Tap anywhere on a popup in maps to dismiss it
 - 🔴 Dark side of the mug has a 27 hour event

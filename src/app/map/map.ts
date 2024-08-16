@@ -287,7 +287,7 @@ async function createScene(map: MapModel, font: any, scene: Scene, mixers: Anima
     }
 
     if (map.compass) {
-        map.compass.animated = true;
+        map.compass.animated = map.pins.length > 1;
         scaleToMap(map.compass, map.width, map.height);
         const { pin: compass, background: background } = await addPin(map.compass, getMaterial('compass'), font, 0, map.width, mixers, scene, disposables);
         result.rotateCompass = (rotation: number) => {
@@ -391,7 +391,7 @@ async function addPin(
     if (svg) {
         let scale = 0.2 * (mapWidth / 10000);
         if (pin.size < 50) {
-            scale = scale * 0.35;
+            scale = scale * 0.60;
         }
         const p = await addSVG(svg, scale, rotation, disposables, 'txt');
         p.position.x = mesh.position.x;
