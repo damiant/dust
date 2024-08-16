@@ -173,11 +173,16 @@ export class ProfilePage implements OnInit {
       const things = this.favs.things();
       this.things = things;
     });
+    effect(async () => {
+      const resumed = this.db.resume();
+      if (resumed.length > 0) {
+        await this.update();
+      }
+    });
   }
 
   async ngOnInit() {
     await this.init();
-    //await this.update();
   }
 
   async init() {

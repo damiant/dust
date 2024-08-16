@@ -6,7 +6,12 @@
   @for (event of events(); track event.uid; let index = $index) {
   <ion-item color="transparent" detail="true" [routerLink]="'/event/' + event.uid + '+' + 'Home'"
     [lines]="items()[index].lines">
-    <span slot="start">{{items()[index].time}}</span>{{event.title}}</ion-item>
+    @if (event.happening) {
+    <p class="badge">NOW</p>
+    }
+    <span slot="start">{{items()[index].time}}</span>
+    <p [ngClass]="items()[index].class">{{event.title}}</p>
+  </ion-item>
   }
 </ion-card>
 }
