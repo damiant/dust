@@ -118,7 +118,9 @@ export class GeoService {
     if (environment.gps) {
       console.error(`Fake GPS position was returned ${environment.gps}`);
       setTimeout(() => {
-        this.gpsPosition.set({ lat: environment.gps.lat, lng: environment.gps.lng, timeStamp: new Date().getTime() });
+        if (environment.gps) {
+          this.gpsPosition.set({ lat: environment.gps.lat, lng: environment.gps.lng, timeStamp: new Date().getTime() });
+        }
       }, 3000);
       return this.gpsPosition(); // Return a fake location
     }

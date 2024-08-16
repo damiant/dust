@@ -287,6 +287,7 @@ async function createScene(map: MapModel, font: any, scene: Scene, mixers: Anima
     }
 
     if (map.compass) {
+        map.compass.animated = true;
         scaleToMap(map.compass, map.width, map.height);
         const { pin: compass, background: background } = await addPin(map.compass, getMaterial('compass'), font, 0, map.width, mixers, scene, disposables);
         result.rotateCompass = (rotation: number) => {

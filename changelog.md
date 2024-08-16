@@ -6,6 +6,7 @@
 - Fix issue with changing days when searching for an event
 - Fix issue with searching for clock directions
 - Todays favorite events update when resuming the app
+- Your location is animated on the map
 
 ## 2.41
 
