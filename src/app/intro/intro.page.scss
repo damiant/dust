@@ -13,6 +13,10 @@ ion-button {
     padding-bottom: calc(2rem + env(safe-area-inset-bottom));
 }
 
+ion-radio {
+    width: 100%;
+}
+
 h1 {
     font-size: 60px !important;
     font-family: 'Nunito';

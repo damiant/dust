@@ -1,10 +1,4 @@
 @if (_src) {
-  <img
-    class="image"
-    [loading]="loading()"
-    [@fade]="isReady ? 'visible' : 'hidden'"
-    [alt]="alt()"
-    (load)="ready()"
-    [src]="_src"
-  />
+<img class="image" [loading]="loading()" [@fade]="isReady ? 'visible' : 'hidden'" #img [alt]="alt()" (error)="errored()"
+  (load)="ready()" [src]="_src" />
 }

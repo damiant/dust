@@ -2,8 +2,9 @@
 
 ## 2.42
 
-- Labelling added to the Burning Man map
+- Additional labelling added to the Burning Man map
 - Show only needed points on the bike/camp map
+- Changing filter on intro page did not work if offline
 - Fix issue with changing days when searching for an event
 - Fix issue with searching for clock directions
 - Todays favorite events update when resuming the app
