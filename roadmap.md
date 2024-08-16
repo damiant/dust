@@ -1,7 +1,9 @@
 # Roadmap
+- 🔴 If you search for an event, then click on days, it doesnt re-search for term
+- 🔴 Getting location is failing if environment is set to return a fake location
+- 🔴 Click camp name to switch to camps view and select camp
 - 🔴 Like button instead of favorites?
 
-- 🔴 Click camp name to switch to camps view and select camp
 - 🔴 Show friends, private events, bike, other locations in search all
 - 🔴 Show history of previously viewed items in the search all area
 - 🔴 If search is restrooms then auto go to restroom map

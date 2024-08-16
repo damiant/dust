@@ -1,4 +1,9 @@
 ## Changes
+
+## 2.42
+
+- Show only needed points on the bike/camp map
+
 ## 2.41
 
 - Add near me checkbox for camps, events and art

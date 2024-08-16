@@ -194,7 +194,7 @@ export class PinMapPage {
   }
 
   private async getThings(): Promise<MapSet> {
-    const result: MapSet = await this.getAll();
+    const result: MapSet = { title: '', description: '', points: [{ street: '', clock: '' }] };
     result.title = this.thingName();
     for (let thing of this.favs.things()) {
       if (thing.name == this.thingName()) {

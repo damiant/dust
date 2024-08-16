@@ -267,13 +267,15 @@ export class MapComponent implements OnInit, OnDestroy {
   async update() {
     this.mapClass = 'hidden';
     this.setMapInformation();
+    const largePins = this._points.length < 100;
+    const pinSize = largePins ? 50 : 32;
     const map: MapModel = {
       image: this.src,// 'assets/map2.webp',
       width: 0,
       height: 0,
-      defaultPinSize: 80,
+      defaultPinSize: pinSize,
       pins: [],
-      compass: { uuid: 'compass', x: 1, z: 1, color: 'tertiary', size: 80, label: '' },
+      compass: { uuid: 'compass', x: 1, z: 1, color: 'tertiary', size: pinSize, label: '' },
       pinClicked: this.pinClicked.bind(this),
     }
 
@@ -281,9 +283,9 @@ export class MapComponent implements OnInit, OnDestroy {
       this.points[0].animated = true;
     }
 
-    const largePins = this._points.length < 100;
 
-    const size = largePins ? map.defaultPinSize : map.defaultPinSize / 2.5;
+
+    const size = map.defaultPinSize;
     const sameLocation: Record<string, number[]> = {};
     for (const [i, point] of this._points.entries()) {
       const pin = mapPointToPin(point, defaultMapRadius);
