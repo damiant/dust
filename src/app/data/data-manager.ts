@@ -820,6 +820,11 @@ export class DataManager implements WorkerClass {
     return false;
   }
 
+  private isClockString(str: string): boolean {
+    const regex = /^[0-9:&]+$/;
+    return regex.test(str);
+  }
+
   public findEvents(
     query: string,
     day: Date | undefined,
@@ -831,9 +836,15 @@ export class DataManager implements WorkerClass {
     top?: number
   ): Event[] {
     const result: Event[] = [];
-    if (query) {
+    if (query && !this.isClockString(query)) {
       query = this.scrubQuery(query);
-      const fuse = new Fuse(this.events, { keys: ['title', 'camp', 'location', 'description'] });
+      let events = this.events;
+      if (day || category) {
+        events = this.events.filter(event =>
+          this.onDay(day, event, timeRange, showPast) &&
+          this.eventIsCategory(category, event));
+      }
+      const fuse = new Fuse(events, { keys: ['title', 'camp', 'location', 'description'] });
       const found = fuse.search(query, { limit: top ? top : 10 });
       for (let c of found) {
         result.push(c.item);
@@ -925,7 +936,7 @@ export class DataManager implements WorkerClass {
 
   public findCamps(query: string, coords?: GpsCoord, top?: number): Camp[] {
     const result: Camp[] = [];
-    if (query) {
+    if (query && !this.isClockString(query)) {
       query = this.scrubQuery(query);
 
       const fuse = new Fuse(this.camps, { keys: ["name", 'description', 'location_string'] });
@@ -976,7 +987,7 @@ export class DataManager implements WorkerClass {
 
   public findArts(query: string | undefined, coords: GpsCoord | undefined, top?: number): Art[] {
     const result: Art[] = [];
-    if (query) {
+    if (query && !this.isClockString(query)) {
       query = this.scrubQuery(query);
       const fuse = new Fuse(this.art, { keys: ["name", 'description', 'location_string', 'artist'] });
       const found = fuse.search(query, { limit: top ? top : 10 });

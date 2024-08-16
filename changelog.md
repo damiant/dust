@@ -3,6 +3,8 @@
 ## 2.42
 
 - Show only needed points on the bike/camp map
+- Fix issue with changing days when searching for an event
+- Fix issue with searching for clock directions
 
 ## 2.41
 

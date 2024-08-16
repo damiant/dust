@@ -233,7 +233,6 @@ export class RslPage {
 
   public async dayChange(event: any) {
     this.vm.day = new Date(event.target.value);
-    console.log(`Day Change ${this.vm.day}`);
 
     this.updateTitle();
     await this.update(true);

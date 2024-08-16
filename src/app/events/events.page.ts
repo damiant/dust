@@ -275,7 +275,7 @@ export class EventsPage implements OnInit, OnDestroy {
   }
 
   searchEvents(value: string) {
-    this.vm.search = value.toLowerCase();
+    this.vm.search = value ? value.toLowerCase() : '';
     this.update(true);
   }
 
@@ -296,7 +296,6 @@ export class EventsPage implements OnInit, OnDestroy {
       this.db.selectedDay.set(new Date(event.target.value));
       this.vm.day = this.db.selectedDay();
     }
-    console.log(`Day Change ${this.vm.day}`);
 
     this.updateTitle();
     await this.update(true);
