@@ -2,6 +2,7 @@
 
 ## 2.42
 
+- Labelling added to the Burning Man map
 - Show only needed points on the bike/camp map
 - Fix issue with changing days when searching for an event
 - Fix issue with searching for clock directions

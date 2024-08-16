@@ -1,5 +1,5 @@
 # Roadmap
-- 🔴 Update Burning Man Map to repeat A-Z and clock labels
+- 🔴 Changing filter on intro page doesnt work if offline
 - 🔴 Dark side of the mug has a 27 hour event
 - 🔴 All day events for Burning Man are entered as 2 x12 hour. Need to clean these up
 - 🔴 Swipe back not working on now > event page
