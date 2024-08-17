@@ -17,6 +17,7 @@
 - 🟠 Show full camp names as you zoom into the map
 - 🟠 Find similar events option
 - 🟠 Print favorites only prints one page (Borderland feedback)
+- 🟠 When sharing camp information for Burning Man the static dataset does not include times (locations either but thats ok)
 
 - 🟠 Document what camp leads can do to add other camp leads and document the process
 - 🟠 Document ways to disconnect and not use your phone

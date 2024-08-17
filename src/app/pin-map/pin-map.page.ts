@@ -1,4 +1,4 @@
-import { Component, Signal, WritableSignal, computed, signal, input, inject, ViewChild, effect } from '@angular/core';
+import { Component, Signal, WritableSignal, computed, signal, input, inject, ViewChild, effect, viewChild } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MapComponent } from '../map/map.component';
@@ -21,7 +21,7 @@ import {
   IonIcon, IonButton, IonLoading
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { compassOutline } from 'ionicons/icons';
+import { compassOutline, shareOutline } from 'ionicons/icons';
 import { SearchComponent } from '../search/search.component';
 import { PinColor, ScrollResult } from '../map/map-model';
 import { FavoritesService } from '../favs/favorites.service';
@@ -60,6 +60,7 @@ export class PinMapPage {
   private favs = inject(FavoritesService);
   private toast = inject(ToastController);
   private location = inject(Location);
+  mapComp = viewChild.required(MapComponent);
   mapType = input('');
   thingName = input('');
   points: MapPoint[] = [];
@@ -77,7 +78,7 @@ export class PinMapPage {
   description = '';
   @ViewChild(MapComponent) map!: MapComponent;
   constructor() {
-    addIcons({ compassOutline });
+    addIcons({ compassOutline, shareOutline });
     this.db.checkInit();
     effect(async () => {
       const g = this.geo.gpsPosition();
@@ -249,6 +250,16 @@ export class PinMapPage {
     await this.favs.clearThing(this.thingName());
     this.ui.presentToast(`Removed ${this.thingName()}`, this.toast);
     this.location.back();
+  }
+
+  public async shareMap() {
+    const img: string | undefined = await this.mapComp().capture();
+    if (!img) return;
+    await this.ui.shareFile({
+      filename: `${this.title()}.png`,
+      contentType: 'image/png',
+      base64Data: img
+    });
   }
 
   private async getAll(): Promise<MapSet> {

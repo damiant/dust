@@ -107,6 +107,10 @@ export class MapComponent implements OnInit, OnDestroy {
     return this._points;
   }
 
+  public async capture(): Promise<string | undefined> {
+    return await this.mapResult?.capture();
+  }
+
   private async fixGPSAndUpdate() {
     this.selectedPoint = undefined;
     let foundPoints = 0;

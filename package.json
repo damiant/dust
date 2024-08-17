@@ -31,6 +31,7 @@
     "@angular/router": "^18.1.4",
     "@angular/service-worker": "^18.1.4",
     "@awesome-cordova-plugins/calendar": "6.8.0",
+    "@byteowls/capacitor-filesharer": "^6.0.0",
     "@capacitor-community/in-app-review": "6.0.0",
     "@capacitor-community/play-integrity": "6.0.0",
     "@capacitor/android": "6.1.1",

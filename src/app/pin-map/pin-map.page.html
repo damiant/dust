@@ -5,6 +5,9 @@
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-icon [hidden]="!busy()" class="rotate" color="primary" name="compass-outline"></ion-icon>
+      <ion-button (click)="shareMap()">
+        <ion-icon color="primary" name="share-outline"></ion-icon>
+      </ion-button>
       @if (canClearThing) {
       <ion-button (click)="clearThing()" color="danger">{{clearLabel}}</ion-button>
       }
@@ -27,6 +30,6 @@
     </ion-item>
   </div>
   <ion-loading spinner="circular" [isOpen]="isGettingGPS" message="Getting Location"></ion-loading>
-  <app-map (scrolled)="scrolled($event)" [(loadingDialog)]="isGettingGPS" [smallPins]="smallPins"
+  <app-map #map (scrolled)="scrolled($event)" [(loadingDialog)]="isGettingGPS" [smallPins]="smallPins"
     [points]="points"></app-map>
 </ion-content>

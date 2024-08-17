@@ -2,6 +2,7 @@
 
 ## 2.43
 
+- Maps can be shared (eg dropped pins)
 - Fix camps and art when text zoom is changed
 - Only message about long events once per day
 - Swipe back now working on now > event page

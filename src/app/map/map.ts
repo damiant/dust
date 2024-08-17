@@ -12,6 +12,7 @@ import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import { SVGLoader, SVGResult } from 'three/examples/jsm/loaders/SVGLoader.js';
 import { MapModel, MapPin, MapResult, PinColor } from './map-model';
+import { delay } from '../utils/utils';
 
 
 export interface AddPinResult {
@@ -63,6 +64,17 @@ function onMap(map: MapModel): boolean {
     return false;
 }
 
+function getCaptureBase64(el: HTMLElement) {
+    const cav: HTMLCanvasElement | null = el.querySelector('canvas');
+    if (cav) {
+        const base64 = cav.toDataURL('img/png').replace(/^data:image\/[a-z]+;base64,/, "");
+        return base64
+    } else {
+        console.error('No canvas found');
+    }
+    return undefined;
+}
+
 export async function init3D(container: HTMLElement, map: MapModel): Promise<MapResult> {
     depth++;
     const result: MapResult = {
@@ -72,12 +84,15 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         scrolled: () => { },
         pinSelected: () => { },
         pinUnselected: () => { },
+        capture: async () => { return undefined; },
         pinData: {},
         dispose: () => { }
     };
     let disposables: MapDisposable[] = [];
     let lastClick = new Date();
     let targetZoomLevel = 4;
+    let snap = false;
+    let snapImage: string | undefined = undefined;
     const scene = new Scene();
     scene.background = new Color(map.backgroundColor);
     scene.add(await mapImage(map, disposables));
@@ -101,6 +116,10 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         }
 
         renderer.render(scene, camera);
+        if (snap) {
+            snapImage = getCaptureBase64(container);
+            snap = false;
+        }
     };
 
     if (!camera) {
@@ -221,6 +240,17 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
             const mat: Material = result.pinData[key].background.material as Material;
             mat.opacity = 1;
         }
+    }
+
+    result.capture = async () => {
+        snap = true;
+        renderFn();
+        while (!snapImage) {
+            await delay(100);
+        }
+        const img = snapImage;
+        snapImage = undefined;
+        return img;
     }
 
     const containerClick = (e: any) => {
