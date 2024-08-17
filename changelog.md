@@ -3,6 +3,7 @@
 ## 2.43
 
 - Fix camps and art when text zoom is changed
+- Only message about long events once per day
 
 ## 2.42
 
