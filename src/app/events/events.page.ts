@@ -46,6 +46,7 @@ interface EventsState {
   categories: string[];
   search: string;
   noEvents: boolean;
+  cardHeight: number;
   pastEventOption: boolean;
   noEventsMessage: string;
   screenHeight: number;
@@ -71,6 +72,7 @@ function initialState(): EventsState {
     days: [],
     categories: ['All Events'],
     search: '',
+    cardHeight: 180,
     noEvents: false,
     pastEventOption: false,
     noEventsMessage: '',
@@ -192,8 +194,9 @@ export class EventsPage implements OnInit, OnDestroy {
     }
   }
 
-  ionViewDidEnter() {
+  async ionViewDidEnter() {
     this.hack();
+    this.vm.cardHeight = 130 + this.ui.textZoom() * 50;
   }
 
   private async init() {

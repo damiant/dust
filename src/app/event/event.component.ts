@@ -43,8 +43,16 @@ export class EventComponent {
   private fav = inject(FavoritesService);
   private db = inject(DbService);
   private emitting = 0;
+  public class = computed(() => {
+    if (this.variableHeight()) {
+      return '';
+    } else return 'item';
+  });
 
   event = input.required<Event>();
+  location = computed(() => {
+    return this.event().location ? ` (${this.event().location})` : '';
+  });
   title = input('Events');
   titleEncoded = computed(() => {
     return encodeURIComponent(this.title());

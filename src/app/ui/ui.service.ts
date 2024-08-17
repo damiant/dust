@@ -18,6 +18,7 @@ export const ThemePrimaryColor = '#F61067';
 export class UiService {
   private router = inject(Router);
   public navCtrl = inject(NavController);
+  public textZoom = signal(1);
   private clickedTab = signal('');
 
   public scrollUp(name: string, virtualScroll: CdkVirtualScrollViewport) {

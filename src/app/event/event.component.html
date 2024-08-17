@@ -9,7 +9,7 @@
 </h1>
 }
 
-<ion-card role="button" (click)="detail()" [class]="variableHeight() ? '' : 'item'">
+<ion-card role="button" (click)="detail()" [class]="class()">
   @if (showImage() && event().imageUrl) {
   <div class="image">
     <app-cached-img class="image" [alt]="event().title" [src]="event().imageUrl" />
@@ -24,9 +24,7 @@
     </ion-card-title>
     <ion-card-subtitle [class]="showImage() && event().imageUrl ? 'title' : ''" aria-hidden="true" color="primary"
       (click)="map(event(), $event)">
-      {{ longTime() ? event().longTimeString : event().timeString }} &#64; {{ event().camp }} {{ event().location ? '('
-      +
-      event().location + ')' : '' }}
+      {{ longTime() ? event().longTimeString : event().timeString }} &#64; {{ event().camp }}
     </ion-card-subtitle>
   </ion-card-header>
 
@@ -39,6 +37,6 @@
       } @else if (showStar) {
       <ion-icon name="star-outline" (click)="emitStar(true)"></ion-icon>
       }
-      {{ event().event_type.label }} {{ event().distanceInfo }}</ion-text>
+      {{ event().event_type.label }}{{location()}} {{ event().distanceInfo }}</ion-text>
   </ion-card-content>
 </ion-card>

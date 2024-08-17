@@ -7,6 +7,7 @@
 - Changing filter on intro page did not work if offline
 - Fix issue with changing days when searching for an event
 - Fix issue with searching for clock directions
+- Respond to text zoom setting
 - Todays favorite events update when resuming the app
 - Your location is animated on the map
 - Your location now has its own green color

@@ -177,7 +177,9 @@ export function getOccurrenceTimeString(start: Date, end: Date, day: Date | unde
     }
     // Length of time: `${time(start, tz)} (${timeBetween(end, start)})`;
     return {
-      long: `${day} ${timeRange} (${timeBetween(end, start)})`,
+      // Uncomment to show hours
+      //long: `${day} ${timeRange} (${timeBetween(end, start)})`,
+      long: `${day} ${timeRange}`,
       short,
     };
   }

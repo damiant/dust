@@ -18,6 +18,7 @@ import { Capacitor } from '@capacitor/core';
 import { Animation, StatusBar } from '@capacitor/status-bar';
 import { ScreenOrientation } from '@capacitor/screen-orientation';
 import { FavoritesService } from '../favs/favorites.service';
+import { TextZoom } from '@capacitor/text-zoom';
 
 @Component({
   selector: 'app-tabs',
@@ -68,6 +69,9 @@ export class TabsPage implements OnInit {
 
     // Whenever app is resumed set signal called resume
     App.addListener('resume', async () => {
+      const result = await TextZoom.getPreferred();
+      this.ui.textZoom.set(result.value);
+      document.documentElement.style.setProperty("--text-zoom", `${this.ui.textZoom()}`);
       const until = await this.daysUntilStarts();
       console.log(`${until} days until event.`);
       let hide = until > 1;
