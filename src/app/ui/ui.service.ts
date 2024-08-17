@@ -6,17 +6,15 @@ import { StatusBar, Style } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
 import { NavigationBar } from '@hugotomazi/capacitor-navigation-bar';
 import { Share, ShareOptions } from '@capacitor/share';
-import { Router } from '@angular/router';
 import { Browser } from '@capacitor/browser';
 import { ScrollResult } from '../map/map-model';
-
+import { FileSharer, ShareFileOptions } from '@byteowls/capacitor-filesharer';
 export const ThemePrimaryColor = '#F61067';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UiService {
-  private router = inject(Router);
   public navCtrl = inject(NavController);
   public textZoom = signal(1);
   private clickedTab = signal('');
@@ -44,6 +42,10 @@ export class UiService {
 
   public async share(options: ShareOptions) {
     await Share.share(options);
+  }
+
+  public async shareFile(options: ShareFileOptions) {
+    await FileSharer.share(options);
   }
 
   public scrollUpContent(name: string, ionContent: IonContent) {

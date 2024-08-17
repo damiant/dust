@@ -14,3 +14,7 @@
 .pic {
     height: 360px;
 }
+
+.item {
+    height: calc(var(--text-zoom) * 50 + 156px)
+}

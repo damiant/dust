@@ -36,7 +36,6 @@ export class CampComponent {
   mapClick = output<any>();
 
   map(camp: Camp, ev: any) {
-    console.log('emit', camp);
     this.mapClick.emit(camp);
     ev.stopPropagation();
   }

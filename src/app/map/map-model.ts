@@ -6,6 +6,7 @@ export interface MapModel {
     height: number;
     defaultPinSize: number;
     pins: MapPin[];
+    backgroundColor: number;
     compass: MapPin | undefined;
 
     // When a user clicks a pin this signal emits the uuid
@@ -23,6 +24,7 @@ export interface MapResult {
     rotateCompass: (rotation: number) => void;
     myPosition: (x: number, y: number) => void;
     setNearest: (nearest: string) => void;
+    capture: () => Promise<string | undefined>;
 
     scrolled: (result: ScrollResult) => void;
     // When a user searches for a pin and one is found

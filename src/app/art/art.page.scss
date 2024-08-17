@@ -1,5 +1,5 @@
 .item {
-    height: 156px;
+    height: calc(var(--text-zoom) * 50 + 156px)
 }
 
 // Fix the prevent it creating a larger than screen width

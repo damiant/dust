@@ -57,7 +57,6 @@ interface EventsState {
   mapPoints: MapPoint[];
   minBufferPx: number;
   byDist: boolean;
-  shownLongEventMessage: boolean;
   isNow: boolean;
   timeRange: string;
   displayedDistMessage: boolean;
@@ -79,7 +78,6 @@ function initialState(): EventsState {
     screenHeight: window.screen.height,
     day: undefined,
     showMap: false,
-    shownLongEventMessage: false,
     mapTitle: '',
     mapSubtitle: '',
     mapPoints: [],
@@ -233,11 +231,10 @@ export class EventsPage implements OnInit, OnDestroy {
 
   // eslint-disable-next-line unused-imports/no-unused-vars
   public longEvent(length: number) {
-    if (this.vm.shownLongEventMessage) {
-      return;
+    if (this.settings.shouldLastLongEventsAlert()) {
+      this.ui.presentToast(`Long events are displayed at the bottom of the list.`, this.toastController);
+      this.settings.setLastLongEventsAlert();
     }
-    this.vm.shownLongEventMessage = true;
-    this.ui.presentToast(`Long events are displayed at the bottom of the list.`, this.toastController);
   }
 
   toggleByDist() {

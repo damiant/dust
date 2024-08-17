@@ -13,6 +13,7 @@ import {
   IonLabel,
   IonList,
   IonPopover,
+  IonRouterOutlet,
   IonText,
   IonToolbar,
   ToastController,
@@ -101,6 +102,7 @@ export class EventPage implements OnInit, OnDestroy {
   locationInfo = '';
   prevDisabled = false;
   nextDisabled = false;
+  routerOutlet: IonRouterOutlet = inject(IonRouterOutlet);
   private eventChangeSubscription?: Subscription;
   private day: Date | undefined;
   eventId = input<string>();
@@ -123,6 +125,9 @@ export class EventPage implements OnInit, OnDestroy {
     const eventId = this.eventId() ? this.eventId()! + '+' : this.route.snapshot.paramMap.get('id');
     this.init(eventId);
     this.showMap = canCreate();
+    if (!this.showMap) {
+      this.routerOutlet.swipeGesture = true;
+    }
     this.eventChangeSubscription = this.eventsService.eventChanged.subscribe(async (eventChange: EventChanged) => {
       await this.init(eventChange.eventId);
     });

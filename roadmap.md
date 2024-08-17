@@ -1,7 +1,6 @@
 # Roadmap
 - 🔴 Dark side of the mug has a 27 hour event
 - 🔴 All day events for Burning Man are entered as 2 x12 hour. Need to clean these up
-- 🔴 Swipe back not working on now > event page
 - 🔴 Center Camp isnt listed as a camp (backend change)
 - 🔴 Temple isnt listed as art (backend change)
 - 🔴 Click camp name to switch to camps view and select camp
@@ -18,6 +17,7 @@
 - 🟠 Show full camp names as you zoom into the map
 - 🟠 Find similar events option
 - 🟠 Print favorites only prints one page (Borderland feedback)
+- 🟠 When sharing camp information for Burning Man the static dataset does not include times (locations either but thats ok)
 
 - 🟠 Document what camp leads can do to add other camp leads and document the process
 - 🟠 Document ways to disconnect and not use your phone

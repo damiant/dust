@@ -1,4 +1,4 @@
-import { Component, effect, viewChild, inject } from '@angular/core';
+import { Component, effect, viewChild, inject, ChangeDetectionStrategy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {
   IonBadge,
@@ -39,6 +39,7 @@ interface CampsState {
   minBufferPx: number;
   alphaIndex: number[];
   alphaValues: string[];
+  cardHeight: number;
   byDist: boolean;
   displayedDistMessage: boolean;
 }
@@ -52,6 +53,7 @@ function initialState(): CampsState {
     noCampsMessage: 'No camps were found.',
     mapPoints: [],
     minBufferPx: 900,
+    cardHeight: 180,
     alphaIndex: [],
     alphaValues: [],
     byDist: false,
@@ -64,6 +66,7 @@ function initialState(): CampsState {
   templateUrl: 'camps.page.html',
   styleUrls: ['camps.page.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     RouterModule,
@@ -137,6 +140,7 @@ export class CampsPage {
   async ionViewDidEnter() {
     // Hack to ensure tab view is updated on switch of tabs
     this.vm.minBufferPx = this.vm.minBufferPx == 901 ? 900 : 901;
+    this.vm.cardHeight = 130 + this.ui.textZoom() * 50;
   }
 
   search(value: string) {

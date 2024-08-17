@@ -1,4 +1,6 @@
 PODS:
+  - ByteowlsCapacitorFilesharer (6.0.0):
+    - Capacitor
   - Capacitor (6.1.1):
     - CapacitorCordova
   - CapacitorApp (6.0.1):
@@ -48,6 +50,7 @@ PODS:
     - Capacitor
 
 DEPENDENCIES:
+  - "ByteowlsCapacitorFilesharer (from `../../node_modules/@byteowls/capacitor-filesharer`)"
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorApp (from `../../node_modules/@capacitor/app`)"
   - "CapacitorAppLauncher (from `../../node_modules/@capacitor/app-launcher`)"
@@ -74,6 +77,8 @@ DEPENDENCIES:
   - "HugotomaziCapacitorNavigationBar (from `../../node_modules/@hugotomazi/capacitor-navigation-bar`)"
 
 EXTERNAL SOURCES:
+  ByteowlsCapacitorFilesharer:
+    :path: "../../node_modules/@byteowls/capacitor-filesharer"
   Capacitor:
     :path: "../../node_modules/@capacitor/ios"
   CapacitorApp:
@@ -124,6 +129,7 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@hugotomazi/capacitor-navigation-bar"
 
 SPEC CHECKSUMS:
+  ByteowlsCapacitorFilesharer: ea14537059851aed44df8c52f0984f61cd34f53b
   Capacitor: 8941aba4364ba9d1b22188569001f2ce45cc2b00
   CapacitorApp: 0bc633b4eae40a1f32cd2834788fad3bc42da6a1
   CapacitorAppLauncher: 9ac785e8d3936388249212b6e16cb32225960c5f
@@ -149,6 +155,6 @@ SPEC CHECKSUMS:
   CordovaPlugins: 39364e8174866c78aec9eff46251e6bcd97fd3ff
   HugotomaziCapacitorNavigationBar: 57d7cd51c65ef5e40159bafb0095ee99fab432ba
 
-PODFILE CHECKSUM: 403a81779d2f1b901be55c971cd537c2b589a071
+PODFILE CHECKSUM: 20770c09baadacb9b583db00e5c30a8e8092bb7d
 
 COCOAPODS: 1.15.2
