@@ -1,7 +1,6 @@
 # Roadmap
 - 🔴 Dark side of the mug has a 27 hour event
 - 🔴 All day events for Burning Man are entered as 2 x12 hour. Need to clean these up
-- 🔴 Swipe back not working on now > event page
 - 🔴 Center Camp isnt listed as a camp (backend change)
 - 🔴 Temple isnt listed as art (backend change)
 - 🔴 Click camp name to switch to camps view and select camp
