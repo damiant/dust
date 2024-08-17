@@ -6,6 +6,7 @@ export interface MapModel {
     height: number;
     defaultPinSize: number;
     pins: MapPin[];
+    backgroundColor: number;
     compass: MapPin | undefined;
 
     // When a user clicks a pin this signal emits the uuid

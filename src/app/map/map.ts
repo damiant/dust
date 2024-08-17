@@ -79,7 +79,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
     let lastClick = new Date();
     let targetZoomLevel = 4;
     const scene = new Scene();
-    scene.background = new Color(0x999999);
+    scene.background = new Color(map.backgroundColor);
     scene.add(await mapImage(map, disposables));
 
 
