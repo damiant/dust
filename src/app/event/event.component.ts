@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output, inject, effect } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output, inject, effect, computed } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { Event } from '../data/models';
 import { CommonModule } from '@angular/common';
@@ -43,9 +43,20 @@ export class EventComponent {
   private fav = inject(FavoritesService);
   private db = inject(DbService);
   private emitting = 0;
+  public class = computed(() => {
+    if (this.variableHeight()) {
+      return '';
+    } else return 'item';
+  });
 
   event = input.required<Event>();
+  location = computed(() => {
+    return this.event().location ? ` (${this.event().location})` : '';
+  });
   title = input('Events');
+  titleEncoded = computed(() => {
+    return encodeURIComponent(this.title());
+  });
   day = input<Date>();
   showStar = true;
   showImage = input(true);
@@ -115,6 +126,6 @@ export class EventComponent {
       return;
     }
     this.opened.emit(this.event().uid);
-    this.router.navigateByUrl('/event/' + this.event().uid + '+' + this.title());
+    this.router.navigateByUrl('/event/' + this.event().uid + '+' + this.titleEncoded());
   }
 }

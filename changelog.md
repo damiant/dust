@@ -1,4 +1,20 @@
 ## Changes
+
+## 2.42
+
+- Additional labelling added to the Burning Man map
+- Show only needed points on the bike/camp map
+- Changing filter on intro page did not work if offline
+- Fix issue with changing days when searching for an event
+- Fix issue with searching for clock directions
+- Respond to text zoom setting
+- Todays favorite events update when resuming the app
+- Your location is animated on the map
+- Your location now has its own green color
+- Focus over your location on the map (in multi-pin maps)
+- Tap anywhere on a popup in maps to dismiss it
+- Icon sizes on map enlarged
+
 ## 2.41
 
 - Add near me checkbox for camps, events and art

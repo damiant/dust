@@ -25,14 +25,19 @@ export class CachedImgComponent {
   src = input<string>();
   isReady = false;
   loading = input('lazy');
+  errorImage = input<string>('');
   loaded = output<boolean>()
 
   constructor() {
     effect(async () => {
       const src = this.src();
       if (src) {
-        this._src = await getCachedImage(src);
-        this._change.markForCheck();
+        try {
+          this._src = await getCachedImage(src);
+          this._change.markForCheck();
+        } catch (e) {
+          this.errored();
+        }
       }
     });
   }
@@ -41,5 +46,12 @@ export class CachedImgComponent {
     this._change.markForCheck();
     this.isReady = true;
     this.loaded.emit(true);
+  }
+
+  errored() {
+    if (this.errorImage() == '') return;
+    this._src = this.errorImage();
+    this.isReady = true;
+    this._change.markForCheck();
   }
 }

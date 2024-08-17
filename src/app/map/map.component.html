@@ -2,17 +2,19 @@
   @if (infoList) {
   @if (infoList.length === 1) {
   @let info = infoList[0];
-  <b>{{ info.title }}</b><br />{{ info.location }}<br />{{ info.subtitle }}
-  <div class="center">
-    @if (info.imageUrl) {
-    <app-cached-img (loaded)="popReady()" class="pop" [src]="info.imageUrl" [alt]="info.title"
-      (click)="link(info.href)" />
-    }
-  </div>
-  <div class="center">
-    @if (info.href) {
-    <ion-button #popButton [disabled]="!isOpen" (click)="link(info.href)" size="small" shape="round">View</ion-button>
-    }
+  <div style="width: 100%" (click)="link(info.href)">
+    <b>{{ info.title }}</b><br />{{ info.location }}<br />{{ info.subtitle }}
+    <div class="center">
+      @if (info.imageUrl) {
+      <app-cached-img (loaded)="popReady()" class="pop" [src]="info.imageUrl" [alt]="info.title"
+        (click)="link(info.href)" />
+      }
+    </div>
+    <div class="center">
+      @if (info.href) {
+      <ion-button #popButton [disabled]="!isOpen" (click)="link(info.href)" size="small" shape="round">View</ion-button>
+      }
+    </div>
   </div>
   } @else if (infoList.length > 1) {
   <div class="row-header">{{ infoList[0].location }}</div>

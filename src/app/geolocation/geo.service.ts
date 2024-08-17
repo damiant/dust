@@ -107,17 +107,23 @@ export class GeoService {
 
     console.timeEnd('geo.permissions');
 
-    if (environment.gps) {
-      console.error(`Fake GPS position was returned ${environment.gps}`);
-      this.gpsPosition.set(timeStampGPS(environment.gps));
-      return environment.gps; // Return a fake location
-    }
+
 
     if (secondsBetween(this.lastGpsUpdate, new Date()) < 10) {
       return this.gpsPosition();
     }
 
     this.gpsBusy.set(true);
+
+    if (environment.gps) {
+      console.error(`Fake GPS position was returned ${environment.gps}`);
+      setTimeout(() => {
+        if (environment.gps) {
+          this.gpsPosition.set({ lat: environment.gps.lat, lng: environment.gps.lng, timeStamp: new Date().getTime() });
+        }
+      }, 3000);
+      return this.gpsPosition(); // Return a fake location
+    }
     Geolocation.getCurrentPosition({ enableHighAccuracy: true }).then((position) => {
       this.gpsBusy.set(false);
       let gps = { lat: position.coords.latitude, lng: position.coords.longitude };

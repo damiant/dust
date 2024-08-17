@@ -48,9 +48,10 @@ export class SearchPage {
       }
       this.vm.busy = true;
       const items: SearchItem[] = [];
-      items.push(...this.asSearchItems(await this.db.findCamps(value, undefined, 5), 'camp', 'assets/icon/camp.svg'));
-      items.push(...this.asSearchItems(await this.db.findArts(value, undefined, 5), 'art', 'assets/icon/art.svg'));
-      items.push(...this.asSearchItems(await this.db.findEvents(value, undefined, '', undefined, undefined, true, true, 5), 'event', 'assets/icon/calendar.svg'));
+      const top = 20;
+      items.push(...this.asSearchItems(await this.db.findCamps(value, undefined, top), 'camp', 'assets/icon/camp.svg'));
+      items.push(...this.asSearchItems(await this.db.findArts(value, undefined, top), 'art', 'assets/icon/art.svg'));
+      items.push(...this.asSearchItems(await this.db.findEvents(value, undefined, '', undefined, undefined, true, true, top), 'event', 'assets/icon/calendar.svg'));
       items.sort((a: SearchItem, b: SearchItem) => {
         if (a.title.toLowerCase().includes(value.toLowerCase())) {
           return -1;

@@ -1,8 +1,10 @@
-export const environment = {
+import { Environment } from "./environment.model";
+
+export const environment: Environment = {
   production: true,
   simulatedTime: undefined,
-  gps: undefined,
+  gps: { lng: -119.19588439718973, lat: 40.78098917543007 },
   overrideLocations: false,
-  latitudeOffset: 4.61608809015,
-  longitudeOffset: -3.8730106216,
+  latitudeOffset: 0,
+  longitudeOffset: 0,
 };

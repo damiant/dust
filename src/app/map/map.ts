@@ -16,6 +16,7 @@ import { MapModel, MapPin, MapResult, PinColor } from './map-model';
 
 export interface AddPinResult {
     pin: Mesh | Group;
+    compass?: Mesh | Group;
     background: Mesh;
 }
 
@@ -49,6 +50,17 @@ let mouseChange = 0;
 
 export function canCreate(): boolean {
     return depth == 0;
+}
+
+function onMap(map: MapModel): boolean {
+    if (map.compass) {
+        if (map.compass.x < - map.width / 2) return false;
+        if (map.compass.x > map.width / 2) return false;
+        if (map.compass.z < - map.height / 2) return false;
+        if (map.compass.z > map.height / 2) return false;
+        return true;
+    }
+    return false;
 }
 
 export async function init3D(container: HTMLElement, map: MapModel): Promise<MapResult> {
@@ -126,9 +138,13 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         camera.position.set(pin.position.x, map.height / zoom, z + 20);
         controls.target.set(pin.position.x, 0, z);
     }
+
     // Positions the camera over the pin
     if (map.pins.length == 1 && p) {
         centerOn(p.pin);
+    } else if (map.compass && p?.compass && onMap(map)) {
+        // Center on the compass element if you are on the map
+        centerOn(p?.compass)
     }
 
     // lights
@@ -278,7 +294,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
 }
 
 async function createScene(map: MapModel, font: any, scene: Scene, mixers: AnimationMixer[], disposables: MapDisposable[], renderFn: () => void, result: MapResult) {
-    let p = undefined;
+    let p: AddPinResult | undefined = undefined;
     for (const pin of map.pins) {
         scaleToMap(pin, map.width, map.height);
         const material = getMaterial(pin.color);
@@ -287,8 +303,12 @@ async function createScene(map: MapModel, font: any, scene: Scene, mixers: Anima
     }
 
     if (map.compass) {
+        map.compass.animated = map.pins.length > 1;
         scaleToMap(map.compass, map.width, map.height);
         const { pin: compass, background: background } = await addPin(map.compass, getMaterial('compass'), font, 0, map.width, mixers, scene, disposables);
+        if (p) {
+            p.compass = compass;
+        }
         result.rotateCompass = (rotation: number) => {
             // Rotation is 0 - 360. Convert to 2π
             compass.rotation.z = (Math.PI + (Math.PI * 2 * ((360 - rotation) / 360)));
@@ -343,6 +363,8 @@ function getMaterial(pinColor: PinColor): MeshPhongMaterial {
         case 'warning':
             return new MeshPhongMaterial({ color: 0xffc409, transparent: true });
         case 'compass':
+            return new MeshPhongMaterial({ color: 0x8bc34a });
+        case 'medical':
             return new MeshPhongMaterial({ color: 0x5260ff });
         default:
             return new MeshPhongMaterial({ color: 0x000000 });
@@ -388,9 +410,9 @@ async function addPin(
     }
 
     if (svg) {
-        let scale = 0.2 * (mapWidth / 10000);
+        let scale = 0.15 * (mapWidth / 10000);
         if (pin.size < 50) {
-            scale = scale * 0.35;
+            scale = 0.10 * (mapWidth / 10000);
         }
         const p = await addSVG(svg, scale, rotation, disposables, 'txt');
         p.position.x = mesh.position.x;

@@ -26,6 +26,7 @@ dependencies {
     implementation project(':capacitor-share')
     implementation project(':capacitor-splash-screen')
     implementation project(':capacitor-status-bar')
+    implementation project(':capacitor-text-zoom')
     implementation project(':capawesome-capacitor-app-update')
     implementation project(':hugotomazi-capacitor-navigation-bar')
     implementation project(':capacitor-print-webview')

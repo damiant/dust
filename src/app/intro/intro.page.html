@@ -12,7 +12,7 @@
   <app-carousel [hidden]="vm.eventAlreadySelected" (slideChanged)="slideChanged($event)" #carousel>
     @for (card of vm.cards; track card.id) {
     <app-carousel-item (click)="open(card, true)">
-      <app-cached-img (loaded)="vm.cardLoaded[card.id] = true" [loading]="'eager'"
+      <app-cached-img errorImage="./assets/error-img.png" (loaded)="vm.cardLoaded[card.id] = true" [loading]="'eager'"
         [ngClass]="(vm.selected?.id === card.id) ? 'select ' + vm.selected?.class : 'unselect'" [src]="card.imageUrl" />
       <p class="name" [hidden]="!vm.cardLoaded[card.id]" aria-hidden="true">{{card.title}}</p>
     </app-carousel-item>

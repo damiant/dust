@@ -85,7 +85,7 @@ export class EventPage implements OnInit, OnDestroy {
   public event: Event | undefined;
   public back = signal('Back');
   public navButtons = computed(() => {
-    return this.back() !== 'Search';
+    return this.back() !== 'Search' && this.back() !== 'Now';
   });
   popover = viewChild.required<IonPopover>('popover');
   locationPopover = viewChild.required<IonPopover>('locationPopover');
