@@ -34,8 +34,7 @@
       <app-skeleton-art />
       <app-skeleton-art />
     </div>
-    <cdk-virtual-scroll-viewport [minBufferPx]="vm.minBufferPx" [itemSize]="vm.showImage ? 390 : 180"
-      maxBufferPx="2350">
+    <cdk-virtual-scroll-viewport [minBufferPx]="vm.minBufferPx" [itemSize]="vm.cardHeight" maxBufferPx="2350">
       @for (art of vm.arts; track artTrackBy($index, art)) {
       <app-art (artClick)="click($event)" [showImage]="vm.showImage" [art]="art" />
       }

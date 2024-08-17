@@ -1,5 +1,9 @@
 ## Changes
 
+## 2.43
+
+- Fix camps and art when text zoom is changed
+
 ## 2.42
 
 - Additional labelling added to the Burning Man map

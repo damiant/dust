@@ -36,6 +36,7 @@ interface ArtState {
   arts: Art[];
   minBufferPx: number;
   byDist: boolean;
+  cardHeight: number;
   alphaIndex: number[];
   alphaValues: string[];
   displayedDistMessage: boolean;
@@ -50,6 +51,7 @@ function initialState(): ArtState {
     alphaIndex: [],
     alphaValues: [],
     minBufferPx: 1900,
+    cardHeight: 180,
     byDist: false,
     displayedDistMessage: false,
   };
@@ -101,6 +103,7 @@ export class ArtPage {
       this.db.checkInit();
       this.vm = initialState();
       this.vm.showImage = true; // this.isThisYear();
+      this.calcCardHeight();
       this.init();
     }, { allowSignalWrites: true });
   }
@@ -111,6 +114,10 @@ export class ArtPage {
 
   home() {
     this.ui.home();
+  }
+
+  private calcCardHeight() {
+    this.vm.cardHeight = (this.vm.showImage ? 340 : 130) + this.ui.textZoom() * 50;
   }
 
   goToLetterGroup(e: string) {
@@ -183,6 +190,7 @@ export class ArtPage {
     this.allArt = await this.db.findArts(search, coords);
     const count = this.allArt.filter((a) => a.images && a.images.length > 0).length;
     this.vm.showImage = count / this.allArt.length > 0.5;
+    this.calcCardHeight();
     this.vm.arts = [];
     this.addArt(10);
     this.updateAlphaIndex();
