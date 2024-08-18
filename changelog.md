@@ -1,5 +1,8 @@
 ## Changes
 
+## 2.44
+- Fix calendar sync for recurring events
+
 ## 2.43
 
 - Maps can be shared (eg dropped pins)

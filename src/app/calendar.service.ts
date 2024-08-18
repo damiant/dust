@@ -32,6 +32,7 @@ export class CalendarService {
           events = [];
           if (found && found.length > 0) {
             console.log(`Delete Event by id ${found[0].id}`);
+            console.log(`found[0]`, found[0], found.length, startDate, endDate);
             await Calendar.deleteEventById(found[0].id);
           }
           console.log(`event`);
@@ -42,7 +43,7 @@ export class CalendarService {
         console.log(`findAllEventsInNamedCalendar Failed`, e);
         events = [];
       }
-      const found = events.find((e: any) => e.title == event.name);
+      const found = events.find((e: any) => e.title == event.name && this.dateMatches(e.startDate, startDate));
       if (found) {
         console.log(`Delete calendar event ${found.title} ${found.id}`);
         try {
@@ -68,6 +69,21 @@ export class CalendarService {
       console.error(e);
       return false;
     }
+  }
+
+  private dateMatches(date1: string, date2: Date): boolean {
+    // date1 is in the format 2024-08-31 10:00:00
+    const d2 = this.formatDateAsYYYYMMDD(date2);
+    return (date1.substring(0, d2.length - 1) == d2);
+  }
+
+  private formatDateAsYYYYMMDD(date: Date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+    const day = String(date.getDate()).padStart(2,
+      '0');
+
+    return `${year}-${month}-${day}`;
   }
 
   async deleteOld(calendarName: string, titles: string[]): Promise<boolean> {

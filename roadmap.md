@@ -1,4 +1,10 @@
 # Roadmap
+- 🔴 Sync calendar does not delete events you have removed from favorites
+- 🔴 Map button with just camps on it
+- 🔴 Use Capacitor share for image snap
+- 🔴 Save my camp location should ask for camp if not at event
+- 🔴 Share map should include dust and title overlaid on the map
+- 🔴 Share map should include link that opens dust to add friend
 - 🔴 Dark side of the mug has a 27 hour event
 - 🔴 All day events for Burning Man are entered as 2 x12 hour. Need to clean these up
 - 🔴 Center Camp isnt listed as a camp (backend change)
