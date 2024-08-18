@@ -2,6 +2,7 @@
 
 ## 2.44
 - Fix calendar sync for recurring events
+- Show map for camps even when art is hidden
 
 ## 2.43
 

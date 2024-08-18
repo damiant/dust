@@ -62,7 +62,7 @@
     [message]="'Updating '+db.selectedDataset().title"></ion-loading>
   }
   <app-tile-container>
-    @if (!db.locationsHidden()) {
+    @if (!db.allLocationsHidden()) {
     <app-tile title="Map" routerLink="/map/all" imgSrc="assets/icon/map.svg"></app-tile>
     }
     <app-tile [hidden]="!hasMedical" title="Medical" routerLink="/map/medical"

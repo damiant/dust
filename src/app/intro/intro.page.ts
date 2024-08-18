@@ -322,7 +322,7 @@ export class IntroPage {
       console.error('Overriding hiding locations');
     }
     console.debug(`Event starts ${start}, today is ${now()} and there are ${until} days until then`);
-    this.db.setLocationAvailable({
+    this.db.setLocationHidden({
       art: hideArtLocations,
       camps: hideCampLocations,
       artMessage: 'Location available August 25',
@@ -375,7 +375,7 @@ export class IntroPage {
       await this.db.getWorkerLogs();
       const sendResult: SendResult = await this.api.sendDataToWorker(
         result.revision,
-        this.db.getLocationAvailable(),
+        this.db.getLocationHidden(),
         this.isBurningMan(),
       );
       if (sendResult.datasetResult) {

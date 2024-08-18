@@ -211,8 +211,8 @@ export class EventPage implements OnInit, OnDestroy {
 
   async showLocationInfo(e: any) {
     this.locationPopover().event = e;
-    if (this.db.getLocationAvailable().camps) {
-      this.locationInfo = `Locations cannot be display yet. ${this.db.getLocationAvailable().campMessage}.`;
+    if (this.db.getLocationHidden().camps) {
+      this.locationInfo = `Locations cannot be display yet. ${this.db.getLocationHidden().campMessage}.`;
       this.isLocationInfoOpen = true;
       return;
     }

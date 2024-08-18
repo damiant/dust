@@ -217,7 +217,7 @@ export interface TimeString {
   long: string;
 }
 
-export interface LocationAvailable {
+export interface LocationHidden {
   camps: boolean;
   art: boolean;
   campMessage: string;
@@ -363,7 +363,7 @@ export interface FullDataset {
   links: string;
   rsl: string;
   map: string;
-  locationAvailable: LocationAvailable;
+  locationAvailable: LocationHidden;
   timezone: string;
 }
 

@@ -114,8 +114,8 @@ export class ArtItemPage implements OnInit {
   }
 
   map() {
-    if (this.db.getLocationAvailable().art) {
-      this.ui.presentDarkToast(`Art locations cannot be displayed yet. ${this.db.getLocationAvailable().artMessage}.`, this.toastController);
+    if (this.db.getLocationHidden().art) {
+      this.ui.presentDarkToast(`Art locations cannot be displayed yet. ${this.db.getLocationHidden().artMessage}.`, this.toastController);
       return;
     }
     if (!canCreate()) return;

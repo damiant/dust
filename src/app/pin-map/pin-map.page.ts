@@ -288,7 +288,12 @@ export class PinMapPage {
       }
     }
 
-    for (let type of [Names.restrooms, Names.ice, Names.medical, Names.art]) {
+    const otherMaps = [Names.restrooms, Names.ice, Names.medical];
+    if (!this.db.artLocationsHidden()) {
+      otherMaps.push(Names.art);
+    }
+
+    for (let type of otherMaps) {
       const map = await this.mapFor(type);
       this.applyMapType(type, map);
       points.push(...map.points);
