@@ -1,4 +1,4 @@
-import { Component, effect, viewChild, inject } from '@angular/core';
+import { Component, effect, viewChild, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -107,6 +107,7 @@ export class RslPage {
   private geo = inject(GeoService);
   private fav = inject(FavoritesService);
   private toastController = inject(ToastController);
+  private _change = inject(ChangeDetectorRef);
   vm: RSLState = initialState();
   allEvents: RSLEvent[] = [];
   ionContent = viewChild.required(IonContent);
@@ -147,6 +148,7 @@ export class RslPage {
     this.addEvents(50);
     setTimeout(() => {
       (ev as InfiniteScrollCustomEvent).target.complete();
+      this._change.detectChanges();
     }, 1);
   }
 
@@ -165,6 +167,7 @@ export class RslPage {
     if (scrollToTop) {
       this.ui.scrollUpContent('rsl', this.ionContent());
     }
+    this._change.detectChanges();
   }
 
   private async handleNoEvents() {
@@ -219,6 +222,7 @@ export class RslPage {
     this.popover().event = e;
     this.vm.message = message;
     this.vm.isOpen = true;
+    this._change.markForCheck();
   }
 
   public async map(event: RSLEvent) {

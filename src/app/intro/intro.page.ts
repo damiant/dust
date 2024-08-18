@@ -1,4 +1,4 @@
-import { Component, WritableSignal, effect, signal, viewChild, inject } from '@angular/core';
+import { Component, WritableSignal, effect, signal, viewChild, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -54,6 +54,7 @@ interface IntroState {
   cardLoaded: any;
   clearCount: number;
   scrollLeft: number;
+  enableCarousel: boolean;
   showing: DatasetFilter;
 }
 
@@ -67,6 +68,7 @@ function initialState(): IntroState {
     cards: [],
     selected: undefined,
     message: '',
+    enableCarousel: false,
     pinPromise: undefined,
     cardLoaded: {},
     clearCount: 0,
@@ -116,6 +118,7 @@ export class IntroPage {
   private toastController = inject(ToastController);
   private shareService = inject(ShareService);
   private pinEntry = viewChild.required(PinEntryComponent);
+  private _change = inject(ChangeDetectorRef);
   isFiltered = false;
   vm: IntroState = initialState();
   download: WritableSignal<string> = signal('');
@@ -130,6 +133,7 @@ export class IntroPage {
       if (downloading !== '') {
         //this.ui.presentDarkToast(`Downloading ${downloading}`, this.toastController);
       }
+      this._change.detectChanges();
     });
     effect(async () => {
       const shareItem = this.shareService.hasShare();
@@ -140,6 +144,10 @@ export class IntroPage {
         await this.ionViewDidEnter();
       }
     });
+  }
+
+  ionViewWillLeave() {
+    this.vm.enableCarousel = false;
   }
 
   async ionViewWillEnter() {
@@ -176,6 +184,7 @@ export class IntroPage {
       this.carousel().setScrollLeft(this.settingsService.settings.scrollLeft);
     }
     const preview = this.db.overrideDataset;
+    this._change.detectChanges();
     if (preview) {
       const all = await this.api.loadDatasets(this.vm.showing, true);
       console.info('overriding preview', preview);
@@ -213,6 +222,7 @@ export class IntroPage {
   }
 
   async ionViewDidEnter() {
+    this.vm.enableCarousel = true;
     this.ui.setNavigationBar(ThemePrimaryColor);
     await delay(500);
     if (Capacitor.isNativePlatform()) {
@@ -322,7 +332,7 @@ export class IntroPage {
       console.error('Overriding hiding locations');
     }
     console.debug(`Event starts ${start}, today is ${now()} and there are ${until} days until then`);
-    this.db.setLocationAvailable({
+    this.db.setLocationHidden({
       art: hideArtLocations,
       camps: hideCampLocations,
       artMessage: 'Location available August 25',
@@ -375,7 +385,7 @@ export class IntroPage {
       await this.db.getWorkerLogs();
       const sendResult: SendResult = await this.api.sendDataToWorker(
         result.revision,
-        this.db.getLocationAvailable(),
+        this.db.getLocationsHidden(),
         this.isBurningMan(),
       );
       if (sendResult.datasetResult) {
@@ -414,6 +424,7 @@ export class IntroPage {
     } finally {
       setTimeout(() => {
         this.vm.ready = true;
+        this._change.detectChanges();
       }, 2000);
     }
   }

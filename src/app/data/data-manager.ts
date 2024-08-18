@@ -10,7 +10,7 @@ import {
   GPSSet,
   GeoRef,
   Link,
-  LocationAvailable,
+  LocationHidden,
   LocationName,
   MapPoint,
   MapSet,
@@ -148,7 +148,7 @@ export class DataManager implements WorkerClass {
     }
   }
 
-  public async populate(dataset: string, locationAvailable: LocationAvailable, env: any, timezone: string): Promise<DatasetResult> {
+  public async populate(dataset: string, locationsHidden: LocationHidden, env: any, timezone: string): Promise<DatasetResult> {
     this.dataset = dataset;
     this.timezone = timezone;
     this.env = env;
@@ -162,7 +162,7 @@ export class DataManager implements WorkerClass {
     this.rslEvents = await this.loadMusic();
     this.georeferences = await this.getGeoReferences();
     await this.loadMap();
-    this.init(locationAvailable);
+    this.init(locationsHidden);
     return {
       events: this.events.length, art: this.art.length, pins: this.pins.length,
       camps: this.camps.length, rsl: this.rslEvents.length, links: this.links.length,
@@ -309,7 +309,7 @@ export class DataManager implements WorkerClass {
     return mapPoints;
   }
 
-  private init(locationAvailable: LocationAvailable) {
+  private init(locationsHidden: LocationHidden) {
     console.time('init');
     this.cache = {};
     this.camps = this.camps.filter((camp) => {
@@ -351,8 +351,8 @@ export class DataManager implements WorkerClass {
       if (camp.imageUrl) {
         camp.imageUrl = `${data_dust_events}${camp.imageUrl}`;
       }
-      if (locationAvailable.camps) {
-        camp.location_string = locationAvailable.campMessage;
+      if (locationsHidden.camps) {
+        camp.location_string = locationsHidden.campMessage;
         camp.landmark = '';
       } else if (!camp.location_string) {
         camp.location_string = LocationName.Undefined;
@@ -384,8 +384,8 @@ export class DataManager implements WorkerClass {
       }
 
 
-      if (locationAvailable.art) {
-        art.location_string = locationAvailable.artMessage;
+      if (locationsHidden.art) {
+        art.location_string = locationsHidden.artMessage;
       }
     }
     this.days = [];
@@ -416,8 +416,8 @@ export class DataManager implements WorkerClass {
           pin = placed;
         }
 
-        if (locationAvailable.camps) {
-          event.location = locationAvailable.campMessage;
+        if (locationsHidden.camps) {
+          event.location = locationsHidden.campMessage;
           event.pin = undefined;
           pin = undefined;
         }

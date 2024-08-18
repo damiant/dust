@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import {
   IonButton,
   IonButtons,
@@ -57,6 +57,7 @@ export class PrivateEventComponent implements OnInit {
   private streetService = inject(StreetService);
   private modalCtrl = inject(ModalController);
   private toastController = inject(ToastController);
+  private _change = inject(ChangeDetectorRef);
   noAddress = 'Choose Address';
   dtReady = false;
   initialTime = now().toISOString();
@@ -91,7 +92,10 @@ export class PrivateEventComponent implements OnInit {
 
   ngOnInit() {
     this.streetService.setAddress(this.event.address, this.addresses);
-    setTimeout(() => { this.dtReady = true }, 300);
+    setTimeout(() => {
+      this.dtReady = true;
+      this._change.detectChanges();
+    }, 300);
   }
 
   cancel() {

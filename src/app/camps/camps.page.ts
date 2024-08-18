@@ -1,4 +1,4 @@
-import { Component, effect, viewChild, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, effect, viewChild, inject, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {
   IonBadge,
@@ -40,6 +40,7 @@ interface CampsState {
   alphaIndex: number[];
   alphaValues: string[];
   cardHeight: number;
+  isScrollDisabled: boolean
   byDist: boolean;
   displayedDistMessage: boolean;
 }
@@ -57,6 +58,7 @@ function initialState(): CampsState {
     alphaIndex: [],
     alphaValues: [],
     byDist: false,
+    isScrollDisabled: false,
     displayedDistMessage: false,
   };
 }
@@ -92,8 +94,8 @@ export class CampsPage {
   private ui = inject(UiService);
   private toastController = inject(ToastController);
   private geo = inject(GeoService);
+  private _change = inject(ChangeDetectorRef);
   vm: CampsState = initialState();
-  isScrollDisabled = false;
   virtualScroll = viewChild.required(CdkVirtualScrollViewport);
 
   constructor() {
@@ -127,7 +129,7 @@ export class CampsPage {
   }
 
   enableScroll() {
-    this.isScrollDisabled = false;
+    this.vm.isScrollDisabled = false;
   }
 
   goToLetterGroup(e: string) {
@@ -167,6 +169,7 @@ export class CampsPage {
     this.vm.camps = await this.db.findCamps(search, coords);
     this.updateAlphaIndex();
     this.vm.noCampsMessage = isWhiteSpace(search) ? `No camps were found.` : `No camps were found matching "${search}"`;
+    this._change.markForCheck();
   }
 
   private updateAlphaIndex() {

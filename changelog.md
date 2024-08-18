@@ -1,5 +1,10 @@
 ## Changes
 
+## 2.44
+- Fix calendar sync for recurring events
+- Show map for camps even when art is hidden
+- Performance improvements
+
 ## 2.43
 
 - Maps can be shared (eg dropped pins)

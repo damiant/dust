@@ -33,7 +33,6 @@ import { GPSPin, MapService } from '../map/map.service';
 import { DbService } from '../data/db.service';
 import { TileContainerComponent } from '../tile-container/tile-container.component';
 import { TileComponent } from '../tile/tile.component';
-import { GeoService } from '../geolocation/geo.service';
 import { DatasetResult, Event, Link, LocationEnabledStatus, Names, Thing } from '../data/models';
 import { environment } from 'src/environments/environment';
 import { InAppReview } from '@capacitor-community/in-app-review';
@@ -70,6 +69,27 @@ import { UpdateService } from '../update.service';
 interface Group {
   id: number;
   links: Link[];
+}
+
+interface HomeState {
+  moreClicks: number;
+  moreOpen: boolean;
+  rated: boolean;
+  locationEnabled: boolean;
+  longEvents: boolean;
+  hiddenPanel: boolean;
+  downloading: boolean;
+  directionsOpen: boolean;
+  eventIsHappening: boolean;
+  favEventsToday: Event[];
+  imageUrl: string;
+  mapPin: GPSPin | undefined;
+  groups: Group[];
+  things: Thing[];
+  hasMedical: boolean;
+  hasRestrooms: boolean;
+  hasIce: boolean;
+  presentingElement: any;
 }
 
 @Component({
@@ -113,38 +133,41 @@ export class ProfilePage implements OnInit {
   private ui = inject(UiService);
   private settings = inject(SettingsService);
   private map = inject(MapService);
-  private geo = inject(GeoService);
   private toastController = inject(ToastController);
   private alertController = inject(AlertController);
   private favs = inject(FavoritesService);
   private calendar = inject(CalendarService);
   private router = inject(Router);
   private updateService = inject(UpdateService);
+  private api = inject(ApiService);
+  private platform = inject(Platform);
   public db = inject(DbService);
-  moreClicks = 0;
-  moreOpen = false;
-  rated = false;
-  locationEnabled = false;
-  longEvents = false;
-  hiddenPanel = false;
-  downloading = false;
-  directionsOpen = false;
-  eventIsHappening = false;
-  favEventsToday: Event[] = [];
-  imageUrl = '';
-  mapPin: GPSPin | undefined;
-  groups: Group[] = [];
-  things: Thing[] = [];
-  ionContent = viewChild.required(IonContent);
-  ionModal = viewChild.required(IonModal);
-  hasMedical = true;
-  hasRestrooms = true;
-  hasIce = true;
-  presentingElement: any;
+  private ionContent = viewChild.required(IonContent);
+  private ionModal = viewChild.required(IonModal);
+  public vm: HomeState = {
+    moreClicks: 0,
+    moreOpen: false,
+    rated: false,
+    locationEnabled: false,
+    longEvents: false,
+    hiddenPanel: false,
+    downloading: false,
+    directionsOpen: false,
+    eventIsHappening: false,
+    favEventsToday: [],
+    imageUrl: '',
+    mapPin: undefined,
+    groups: [],
+    things: [],
+    hasMedical: true,
+    hasRestrooms: true,
+    hasIce: true,
+    presentingElement: undefined,
+  }
+
   download: WritableSignal<string> = signal('');
   directionText: WritableSignal<string> = signal('');
-  api = inject(ApiService);
-  platform = inject(Platform);
+
   constructor() {
     addIcons({
       linkOutline,
@@ -171,7 +194,7 @@ export class ProfilePage implements OnInit {
     });
     effect(() => {
       const things = this.favs.things();
-      this.things = things;
+      this.vm.things = things;
     });
     effect(async () => {
       const resumed = this.db.resume();
@@ -186,26 +209,26 @@ export class ProfilePage implements OnInit {
   }
 
   async init() {
-    this.presentingElement = document.querySelector('.ion-page');
-    this.imageUrl = await getCachedImage(this.db.selectedImage());
+    this.vm.presentingElement = document.querySelector('.ion-page');
+    this.vm.imageUrl = await getCachedImage(this.db.selectedImage());
     this.db.checkInit();
     const summary: DatasetResult = await this.db.get(this.settings.settings.datasetId, Names.summary, {
       onlyRead: true,
     });
-    this.hasRestrooms = this.hasValue(summary.pinTypes, 'Restrooms');
-    this.hasMedical = this.hasValue(summary.pinTypes, 'Medical');
-    this.hasIce = this.hasValue(summary.pinTypes, 'Ice');
-    this.mapPin = this.getMapPin();
-    this.longEvents = this.settings.settings.longEvents;
-    this.eventIsHappening = !this.db.eventHasntBegun() && !this.db.isHistorical();
-    this.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
-    this.groups = this.group(await this.db.getLinks());
+    this.vm.hasRestrooms = this.hasValue(summary.pinTypes, 'Restrooms');
+    this.vm.hasMedical = this.hasValue(summary.pinTypes, 'Medical');
+    this.vm.hasIce = this.hasValue(summary.pinTypes, 'Ice');
+    this.vm.mapPin = this.getMapPin();
+    this.vm.longEvents = this.settings.settings.longEvents;
+    this.vm.eventIsHappening = !this.db.eventHasntBegun() && !this.db.isHistorical();
+    this.vm.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
+    this.vm.groups = this.group(await this.db.getLinks());
     await this.favs.getThings();
-    this.things = this.favs.things();
+    this.vm.things = this.favs.things();
   }
 
   async update() {
-    this.favEventsToday = await this.favs.getFavoriteEventsToday();
+    this.vm.favEventsToday = await this.favs.getFavoriteEventsToday();
   }
 
   clickThing(thing: Thing) {
@@ -241,12 +264,12 @@ export class ProfilePage implements OnInit {
   }
 
   async moreClick() {
-    this.moreClicks++;
-    if (this.moreClicks == 5) {
+    this.vm.moreClicks++;
+    if (this.vm.moreClicks == 5) {
       this.ui.presentToast('Locations now enabled', this.toastController);
       environment.overrideLocations = true;
       this.settings.save();
-      this.db.setLocationAvailable({ art: false, camps: false, artMessage: '', campMessage: '' });
+      this.db.setLocationHidden({ art: false, camps: false, artMessage: '', campMessage: '' });
       await this.db.populate(this.settings.settings.datasetId, this.db.getTimeZone());
       this.db.resume.set(new Date().toString());
     }
@@ -264,7 +287,7 @@ export class ProfilePage implements OnInit {
 
   public async rate() {
     await this.dismiss();
-    this.rated = true;
+    this.vm.rated = true;
     await InAppReview.requestReview();
   }
 
@@ -304,9 +327,6 @@ export class ProfilePage implements OnInit {
 
   async feedback() {
     await this.dismiss();
-    // This is not working. Seems to require href instead
-    // const url = 'mailto:damian@dust.events';
-    // this.ui.openUrl(url);
   }
 
   async dismiss() {
@@ -345,23 +365,23 @@ export class ProfilePage implements OnInit {
 
   async directions() {
     // Default comes from https://burningman.org/event/preparation/getting-there-and-back/
-    if (!this.mapPin) return;
+    if (!this.vm.mapPin) return;
     if (this.getDirectionText()) {
       this.directionText.set(this.getDirectionText());
-      this.directionsOpen = true;
+      this.vm.directionsOpen = true;
       return;
     }
     if (await this.map.canOpenMapApp('google')) {
-      await this.map.openGoogleMapDirections(this.mapPin);
+      await this.map.openGoogleMapDirections(this.vm.mapPin);
     } else if (await this.map.canOpenMapApp('apple')) {
-      await this.map.openAppleMapDirections(this.mapPin);
+      await this.map.openAppleMapDirections(this.vm.mapPin);
     }
   }
 
   async downloadUpdate() {
     try {
       await this.dismiss();
-      this.downloading = true;
+      this.vm.downloading = true;
       if (this.db.networkStatus() == 'none') {
         this.ui.presentToast('No network connection. Maybe turn off airplane mode?', this.toastController);
         return;
@@ -372,7 +392,7 @@ export class ProfilePage implements OnInit {
 
       switch (result) {
         case 'success': {
-          this.downloading = false;
+          this.vm.downloading = false;
           this.ui.presentToast('Update complete', this.toastController);
           this.home();
           return;
@@ -384,7 +404,7 @@ export class ProfilePage implements OnInit {
       }
     } finally {
 
-      this.downloading = false;
+      this.vm.downloading = false;
     }
   }
 }

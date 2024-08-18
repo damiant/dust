@@ -1,4 +1,4 @@
-import { Component, effect, input, model, output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, inject, input, model, output } from '@angular/core';
 import { IonButton, IonIcon, IonModal, IonText, IonButtons } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { arrowForwardOutline } from 'ionicons/icons';
@@ -7,12 +7,14 @@ import { arrowForwardOutline } from 'ionicons/icons';
   selector: 'app-message',
   templateUrl: './message.component.html',
   styleUrls: ['./message.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [IonButtons, IonModal, IonButton, IonText, IonIcon],
 })
 export class MessageComponent {
-  show = model(false);
-  secondButton = input('');
+  public show = model(false);
+  private _change = inject(ChangeDetectorRef);
+  public secondButton = input('');
 
   message = input('');
   title = input('');
@@ -26,6 +28,7 @@ export class MessageComponent {
         this.disabled = true;
         setTimeout(() => {
           this.disabled = false;
+          this._change.detectChanges();
         }, 500);
       }
     })

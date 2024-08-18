@@ -6,7 +6,7 @@ import {
   DatasetFilter,
   DatasetResult,
   FullDataset,
-  LocationAvailable,
+  LocationHidden,
   MapData,
   Names,
   Revision,
@@ -41,7 +41,7 @@ export class ApiService {
 
   public async sendDataToWorker(
     currentRevision: number,
-    locationAvailable: LocationAvailable,
+    locationAvailable: LocationHidden,
     mapIsOffline: boolean, // Are we using the built in map.svg
   ): Promise<SendResult> {
     const ds = this.settingsService.settings.datasetId;

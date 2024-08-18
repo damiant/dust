@@ -1,4 +1,4 @@
-import { Component, OnInit, effect, viewChild, inject, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, effect, viewChild, inject, ViewChild, ElementRef, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -89,6 +89,7 @@ function initialState(): FavsState {
   templateUrl: './favs.page.html',
   styleUrls: ['./favs.page.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [IonItemOption, IonItemOptions, IonItemSliding,
     IonCardHeader,
     IonCardContent,
@@ -125,6 +126,7 @@ export class FavsPage implements OnInit {
   private calendar = inject(CalendarService);
   public db = inject(DbService);
   private toastController = inject(ToastController);
+  private _change = inject(ChangeDetectorRef);
   private router = inject(Router);
   vm: FavsState = initialState();
 
@@ -206,6 +208,7 @@ export class FavsPage implements OnInit {
     this.vm.camps = camps;
     this.vm.art = art;
     this.vm.noFavorites = this.vm.art.length == 0 && this.vm.camps.length == 0 && this.vm.events.length == 0;
+    this._change.detectChanges();
   }
 
   private filterItems(filter: Filter, items: any[]): any[] {
@@ -358,6 +361,7 @@ export class FavsPage implements OnInit {
     const list: string[] = [];
     let attempts = 1;
     this.vm.showCalendarMessage = false;
+    this._change.detectChanges();
     if (!doSync) return;
     for (const event of events) {
       list.push(event.title);
@@ -396,7 +400,6 @@ export class FavsPage implements OnInit {
   }
 
   async print() {
-
     const r = document.documentElement;
     r.style.setProperty('--body-height', `${this.printSection.nativeElement.offsetHeight * 2}px`);
     r.style.setProperty('--zoom', '0.5');

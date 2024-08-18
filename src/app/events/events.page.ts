@@ -1,4 +1,4 @@
-import { Component, effect, viewChild, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, effect, viewChild, inject, OnDestroy, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import {
   IonBadge,
   IonButton,
@@ -94,6 +94,7 @@ function initialState(): EventsState {
   templateUrl: 'events.page.html',
   styleUrls: ['events.page.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     RouterModule,
@@ -128,6 +129,7 @@ export class EventsPage implements OnInit, OnDestroy {
   private nextSubscription?: Subscription;
   private prevSubscription?: Subscription;
   private geo = inject(GeoService);
+  private _change = inject(ChangeDetectorRef);
   vm: EventsState = initialState();
 
   virtualScroll = viewChild.required(CdkVirtualScrollViewport);
@@ -349,6 +351,7 @@ export class EventsPage implements OnInit, OnDestroy {
       this.hack();
       this.virtualScroll().scrollToOffset(0, 'smooth');
     }
+    this._change.detectChanges();
   }
 
   private noEventsMessage(): string {

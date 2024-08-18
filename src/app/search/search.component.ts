@@ -1,4 +1,4 @@
-import { Component, input, OnInit, output, viewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, input, OnInit, output, viewChild } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormControl } from '@angular/forms';
 import { Capacitor } from '@capacitor/core';
@@ -16,6 +16,7 @@ export class SearchComponent implements OnInit {
   placeholder = input('');
   openFocused = input(false);
   search = output<string>();
+  private _change = inject(ChangeDetectorRef);
   searchBar = viewChild.required(IonSearchbar)
 
   form = new FormGroup({
@@ -26,6 +27,7 @@ export class SearchComponent implements OnInit {
     if (this.openFocused()) {
       setTimeout(() => {
         this.searchBar().setFocus();
+        this._change.detectChanges();
       }, 500);
     }
   }

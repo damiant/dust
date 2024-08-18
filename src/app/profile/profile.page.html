@@ -1,5 +1,5 @@
 <ion-content [fullscreen]="true">
-  <div class="header" [ngStyle]="{'background-image': 'url('+ imageUrl+')'}">
+  <div class="header" [ngStyle]="{'background-image': 'url('+ vm.imageUrl+')'}">
     <ion-fab-button class="search-btn" (click)="search()" size="small">
       <ion-icon name="search-sharp"></ion-icon>
     </ion-fab-button>
@@ -11,7 +11,7 @@
       class="back-title">{{db.selectedDataset().title}}</span></ion-title> -->
   </div>
 
-  <ion-modal [isOpen]="moreOpen" (didDismiss)="moreOpen = false" #modal [initialBreakpoint]="0.5"
+  <ion-modal [isOpen]="vm.moreOpen" (didDismiss)="vm.moreOpen = false" #modal [initialBreakpoint]="0.5"
     [breakpoints]="[0.25, 0.5, 0.75, 1]">
     <ng-template>
       <ion-list class="ion-padding">
@@ -30,7 +30,7 @@
           Share
         </ion-item>
 
-        <ion-item [disabled]="rated" (click)="rate()" detail="true">
+        <ion-item [disabled]="vm.rated" (click)="rate()" detail="true">
           <ion-icon slot="start" name="star-half-outline"></ion-icon>
           Rate
         </ion-item>
@@ -47,7 +47,7 @@
       </ion-list>
     </ng-template>
   </ion-modal>
-  <ion-modal [isOpen]="directionsOpen" (didDismiss)="directionsOpen = false" #modal [initialBreakpoint]="0.75"
+  <ion-modal [isOpen]="vm.directionsOpen" (didDismiss)="vm.directionsOpen = false" #modal [initialBreakpoint]="0.75"
     [breakpoints]="[0.25, 0.5, 0.75, 1]">
     <ng-template>
       <div class="ion-padding txt">
@@ -57,35 +57,35 @@
     </ng-template>
   </ion-modal>
 
-  @if (downloading) {
-  <ion-loading spinner="circular" [isOpen]="downloading"
+  @if (vm.downloading) {
+  <ion-loading spinner="circular" [isOpen]="vm.downloading"
     [message]="'Updating '+db.selectedDataset().title"></ion-loading>
   }
   <app-tile-container>
-    @if (!db.locationsHidden()) {
+    @if (!db.allLocationsHidden()) {
     <app-tile title="Map" routerLink="/map/all" imgSrc="assets/icon/map.svg"></app-tile>
     }
-    <app-tile [hidden]="!hasMedical" title="Medical" routerLink="/map/medical"
+    <app-tile [hidden]="!vm.hasMedical" title="Medical" routerLink="/map/medical"
       imgSrc="assets/icon/medical.svg"></app-tile>
 
-    @if (!db.locationsHidden() && this.eventIsHappening) {
+    @if (!db.anyLocationsHidden() && this.vm.eventIsHappening) {
     <app-tile title="Now" routerLink="/map/now" imgSrc="assets/icon/calendar.svg"></app-tile>
     }
-    <app-tile [hidden]="!hasRestrooms" title="Restrooms" routerLink="/map/restrooms"
+    <app-tile [hidden]="!vm.hasRestrooms" title="Restrooms" routerLink="/map/restrooms"
       imgSrc="assets/icon/toilet.svg"></app-tile>
-    @if (!db.locationsHidden() && !db.featuresHidden().includes('art')) {
+    @if (!db.artLocationsHidden() && !db.featuresHidden().includes('art')) {
     <app-tile title="Art" routerLink="/map/art" imgSrc="assets/icon/art.svg"></app-tile>
     }
-    <app-tile [hidden]="!hasIce" title="Ice" routerLink="/map/ice" imgSrc="assets/icon/ice.svg"></app-tile>
-    <app-tile title="Directions" [hidden]="!mapPin" (click)="directions()" iconName="compass-outline"></app-tile>
-    <app-tile title="More" (click)="moreOpen = true" iconName="ellipsis-vertical-sharp"></app-tile>
+    <app-tile [hidden]="!vm.hasIce" title="Ice" routerLink="/map/ice" imgSrc="assets/icon/ice.svg"></app-tile>
+    <app-tile title="Directions" [hidden]="!vm.mapPin" (click)="directions()" iconName="compass-outline"></app-tile>
+    <app-tile title="More" (click)="vm.moreOpen = true" iconName="ellipsis-vertical-sharp"></app-tile>
   </app-tile-container>
 
   @if (!db.featuresHidden().includes('friends')) {
   <app-friends />
   } @if (!db.featuresHidden().includes('private')) {
   <app-private-events />
-  } @if (groups.length > 0 && db.featuresHidden().includes('private')) { @for (group of groups; track group.id) {
+  } @if (vm.groups.length > 0 && db.featuresHidden().includes('private')) { @for (group of vm.groups; track group.id) {
   <ion-card class="ion-padding-bottom">
     @for (link of group.links; track link) {
     <app-link [url]="link.url" [text]="link.title"></app-link>
@@ -93,11 +93,11 @@
   </ion-card>
   } }
 
-  <app-events-card [events]="favEventsToday"></app-events-card>
+  <app-events-card [events]="vm.favEventsToday"></app-events-card>
 
-  <app-pins-card (clickThing)="clickThing($event)" [things]="things"></app-pins-card>
+  <app-pins-card (clickThing)="clickThing($event)" [things]="vm.things"></app-pins-card>
 
-  <div (click)="moreClick()" class="pad-top" (click)="hiddenPanel = !hiddenPanel"></div>
+  <div (click)="moreClick()" class="pad-top" (click)="vm.hiddenPanel = !vm.hiddenPanel"></div>
 
   <div class="pad-top"></div>
 </ion-content>

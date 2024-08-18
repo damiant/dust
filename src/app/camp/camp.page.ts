@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject, viewChild } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -38,6 +38,7 @@ import { ScrollResult } from '../map/map-model';
   templateUrl: './camp.page.html',
   styleUrls: ['./camp.page.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     FormsModule,
@@ -66,6 +67,7 @@ export class CampPage implements OnInit {
   private toastController = inject(ToastController);
   private ui = inject(UiService);
   private location = inject(Location);
+  private _change = inject(ChangeDetectorRef);
   content = viewChild.required(IonContent);
   showEvent = false;
   camp: Camp | undefined;
@@ -111,6 +113,7 @@ export class CampPage implements OnInit {
       this.mapPoints = [];
     }
     this.showMap = canCreate();
+    this._change.detectChanges();
   }
 
   public async toggleRSLStar(occurrence: RSLOccurrence, rslEvent: RSLEvent) {
