@@ -1,4 +1,4 @@
-import { Component, WritableSignal, effect, signal, viewChild, inject } from '@angular/core';
+import { Component, WritableSignal, effect, signal, viewChild, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -118,6 +118,7 @@ export class IntroPage {
   private toastController = inject(ToastController);
   private shareService = inject(ShareService);
   private pinEntry = viewChild.required(PinEntryComponent);
+  private _change = inject(ChangeDetectorRef);
   isFiltered = false;
   vm: IntroState = initialState();
   download: WritableSignal<string> = signal('');
@@ -132,6 +133,7 @@ export class IntroPage {
       if (downloading !== '') {
         //this.ui.presentDarkToast(`Downloading ${downloading}`, this.toastController);
       }
+      this._change.detectChanges();
     });
     effect(async () => {
       const shareItem = this.shareService.hasShare();
@@ -182,6 +184,7 @@ export class IntroPage {
       this.carousel().setScrollLeft(this.settingsService.settings.scrollLeft);
     }
     const preview = this.db.overrideDataset;
+    this._change.detectChanges();
     if (preview) {
       const all = await this.api.loadDatasets(this.vm.showing, true);
       console.info('overriding preview', preview);
@@ -421,6 +424,7 @@ export class IntroPage {
     } finally {
       setTimeout(() => {
         this.vm.ready = true;
+        this._change.detectChanges();
       }, 2000);
     }
   }

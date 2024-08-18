@@ -1,4 +1,4 @@
-import { Component, effect, viewChild, inject } from '@angular/core';
+import { Component, effect, viewChild, inject, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import {
   InfiniteScrollCustomEvent,
   IonBadge,
@@ -62,6 +62,7 @@ function initialState(): ArtState {
   templateUrl: 'art.page.html',
   styleUrls: ['art.page.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterLink,
     CommonModule,
@@ -89,6 +90,7 @@ export class ArtPage {
   private ui = inject(UiService);
   private router = inject(Router);
   private geo = inject(GeoService);
+  private _change = inject(ChangeDetectorRef);
   private toastController = inject(ToastController);
   vm: ArtState = initialState();
   private allArt: Art[] = [];
@@ -129,6 +131,7 @@ export class ArtPage {
       if (idx >= 0) {
         this.virtualScroll().scrollToIndex(this.vm.alphaIndex[idx]);
       }
+      this._change.detectChanges();
     }, 1);
   }
 
@@ -139,6 +142,7 @@ export class ArtPage {
       await this.update(undefined);
     } finally {
       this.vm.busy = false;
+      this._change.detectChanges();
     }
   }
 
@@ -154,12 +158,14 @@ export class ArtPage {
 
   async ionViewDidEnter() {
     this.hack();
+    this._change.detectChanges();
   }
 
   onIonInfinite(ev: any) {
     this.addArt(10);
     setTimeout(() => {
       (ev as InfiniteScrollCustomEvent).target.complete();
+      this._change.detectChanges();
     }, 10);
   }
 
@@ -194,6 +200,7 @@ export class ArtPage {
     this.vm.arts = [];
     this.addArt(10);
     this.updateAlphaIndex();
+    this._change.detectChanges();
   }
 
   click(art: Art) {

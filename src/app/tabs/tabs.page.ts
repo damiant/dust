@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EnvironmentInjector, OnInit, effect, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, EnvironmentInjector, OnInit, effect, inject } from '@angular/core';
 import { DbService } from '../data/db.service';
 import { NotificationService } from '../notifications/notification.service';
 import { Router } from '@angular/router';
@@ -30,6 +30,7 @@ import { TextZoom } from '@capacitor/text-zoom';
 export class TabsPage implements OnInit {
   public db = inject(DbService);
   private ui = inject(UiService);
+  private _change = inject(ChangeDetectorRef);
   public favs = inject(FavoritesService);
   private notificationService = inject(NotificationService);
   private shareService = inject(ShareService);
@@ -119,6 +120,7 @@ export class TabsPage implements OnInit {
     }
     setTimeout(() => {
       this.router.navigateByUrl(`/${page}/${id}`);
+      this._change.detectChanges();
     }, 100);
   }
 
@@ -129,6 +131,7 @@ export class TabsPage implements OnInit {
     document.getElementById('favButton')?.click();
     setTimeout(() => {
       this.router.navigateByUrl(`/event/${eventId}`);
+      this._change.detectChanges();
     }, 1000);
   }
 
@@ -168,6 +171,7 @@ export class TabsPage implements OnInit {
   }
 
   select(tab: string) {
+    this._change.markForCheck();
     if (tab == this.currentTab) {
       this.ui.setTab(tab);
     }

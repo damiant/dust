@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, output, contentChildren, viewChild, input, computed } from '@angular/core';
+import { Component, ElementRef, output, contentChildren, viewChild, input, computed, ChangeDetectorRef, inject } from '@angular/core';
 import { CarouselItemComponent } from '../carousel-item/carousel-item.component';
 
 export interface SlideSelect {
@@ -15,6 +15,7 @@ export class CarouselComponent {
   slideChanged = output<SlideSelect>();
   private interval: any;
   private lastValue = -1;
+  private _change = inject(ChangeDetectorRef);
   enabled = input<boolean>(false);
   children = contentChildren(CarouselItemComponent);
   container = viewChild.required<ElementRef>('container');
@@ -22,6 +23,7 @@ export class CarouselComponent {
   public setScrollLeft(left: number) {
     setTimeout(() => {
       this.container().nativeElement.scrollLeft = left;
+      this._change.detectChanges();
     }, 50);
   }
 

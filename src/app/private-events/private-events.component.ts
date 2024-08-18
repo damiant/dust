@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import {
   IonCard,
   IonCardContent,
@@ -22,7 +22,6 @@ import { PrivateEventComponent, PrivateEventResult } from '../private-event/priv
 import { UiService } from '../ui/ui.service';
 import { addIcons } from 'ionicons';
 import { add, calendar } from 'ionicons/icons';
-import { DbService } from '../data/db.service';
 
 @Component({
   selector: 'app-private-events',
@@ -43,15 +42,16 @@ import { DbService } from '../data/db.service';
     IonLabel,
   ],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PrivateEventsComponent implements OnInit {
   private modalCtrl = inject(ModalController);
   private fav = inject(FavoritesService);
   private ui = inject(UiService);
-  private db = inject(DbService);
   private toastController = inject(ToastController);
   public events: PrivateEvent[] = [];
   private editingPrivateEvent: PrivateEvent | undefined;
+  private _change = inject(ChangeDetectorRef);
 
   constructor() {
     addIcons({ add, calendar });
@@ -113,6 +113,7 @@ export class PrivateEventsComponent implements OnInit {
     }
 
     this.events = favs.privateEvents;
+    this._change.markForCheck();
   }
 
   async editPrivateEvent(event: PrivateEvent) {

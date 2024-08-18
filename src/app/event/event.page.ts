@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, input, viewChild, inject, OnDestroy, computed, effect, output } from '@angular/core';
+import { Component, OnInit, signal, input, viewChild, inject, OnDestroy, computed, effect, output, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -52,6 +52,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './event.page.html',
   styleUrls: ['./event.page.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     RouterLink,
@@ -83,6 +84,7 @@ export class EventPage implements OnInit, OnDestroy {
   private toastController = inject(ToastController);
   private eventsService = inject(EventsService);
   private location = inject(Location);
+  private _change = inject(ChangeDetectorRef);
   public event: Event | undefined;
   public back = signal('Back');
   public navButtons = computed(() => {
@@ -177,6 +179,7 @@ export class EventPage implements OnInit, OnDestroy {
       await this.fav.setEventStars(this.event);
     } finally {
       this.ready = true;
+      this._change.markForCheck();
     }
   }
 
@@ -207,6 +210,7 @@ export class EventPage implements OnInit, OnDestroy {
       this.campDescription = camp.description!;
       this.isOpen = true;
     }
+    this._change.detectChanges();
   }
 
   async showLocationInfo(e: any) {
@@ -214,12 +218,14 @@ export class EventPage implements OnInit, OnDestroy {
     if (this.db.locationsHidden().camps) {
       this.locationInfo = `Locations cannot be display yet. ${this.db.locationsHidden().campMessage}.`;
       this.isLocationInfoOpen = true;
+      this._change.detectChanges();
       return;
     }
     const camp = await this.db.findCamp(this.event?.hosted_by_camp!);
-    if (camp) {
+    if (camp && camp.landmark) {
       this.locationInfo = `${camp.landmark}. (${camp.facing})`;
       this.isLocationInfoOpen = true;
+      this._change.detectChanges();
     }
   }
 

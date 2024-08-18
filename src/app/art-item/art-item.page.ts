@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { Art, Event, MapPoint } from '../data/models';
@@ -37,6 +37,7 @@ import { canCreate } from '../map/map';
   templateUrl: './art-item.page.html',
   styleUrls: ['./art-item.page.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [IonModal,
     IonTitle,
     FormsModule,
@@ -64,6 +65,7 @@ export class ArtItemPage implements OnInit {
   private db = inject(DbService);
   private settings = inject(SettingsService);
   private fav = inject(FavoritesService);
+  private _change = inject(ChangeDetectorRef);
   private toastController = inject(ToastController);
   art: Art | undefined;
   showMap = false;
@@ -102,6 +104,7 @@ export class ArtItemPage implements OnInit {
     this.mapPoints.push(point);
 
     this.star = await this.fav.isFavArt(this.art.uid);
+    this._change.detectChanges();
   }
 
   open(url: string) {

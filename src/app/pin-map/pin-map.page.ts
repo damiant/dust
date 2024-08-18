@@ -1,4 +1,4 @@
-import { Component, Signal, WritableSignal, computed, signal, input, inject, ViewChild, effect, viewChild } from '@angular/core';
+import { Component, Signal, WritableSignal, computed, signal, input, inject, ViewChild, effect, viewChild, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MapComponent } from '../map/map.component';
@@ -35,6 +35,7 @@ import { SettingsService } from '../data/settings.service';
   templateUrl: './pin-map.page.html',
   styleUrls: ['./pin-map.page.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [IonLoading, IonButton,
     CommonModule,
     FormsModule,
@@ -61,6 +62,7 @@ export class PinMapPage {
   private toast = inject(ToastController);
   private location = inject(Location);
   mapComp = viewChild.required(MapComponent);
+  _change = inject(ChangeDetectorRef);
   mapType = input('');
   thingName = input('');
   points: MapPoint[] = [];
@@ -90,16 +92,16 @@ export class PinMapPage {
           this.location.back();
         }
       }
-
+      this._change.detectChanges();
     });
   }
 
   async ionViewWillEnter() {
-
     const mapSet = await this.mapFor(this.mapType());
     this.points = mapSet.points;
     this.title.set(mapSet.title);
     this.description = mapSet.description;
+    this._change.detectChanges();
   }
 
   public search(value: string) {
@@ -398,5 +400,6 @@ export class PinMapPage {
     if (this.ui.swipedRight(result)) {
       this.location.back();
     }
+    this._change.detectChanges();
   }
 }

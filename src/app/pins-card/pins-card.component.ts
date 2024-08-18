@@ -1,4 +1,4 @@
-import { Component, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, input, output } from '@angular/core';
 import { IonCard, IonCardHeader, IonItem, IonCardTitle, IonButton, IonIcon, IonNote, IonFabButton, ModalController } from "@ionic/angular/standalone";
 import { Thing } from '../data/models';
 import { locationOutline, add } from 'ionicons/icons';
@@ -13,11 +13,13 @@ import { FavoritesService } from '../favs/favorites.service';
   templateUrl: './pins-card.component.html',
   styleUrls: ['./pins-card.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [IonFabButton, IonNote, IonIcon, IonButton, IonCardTitle, IonItem, IonCard, IonCardHeader, ThingComponent]
 })
 export class PinsCardComponent {
   private modalCtrl = inject(ModalController);
   private favs = inject(FavoritesService);
+  private _change = inject(ChangeDetectorRef);
   things = input<Thing[]>([]);
   editingThing: Thing | undefined;
   clickThing = output<Thing>();
@@ -54,10 +56,12 @@ export class PinsCardComponent {
     switch (role) {
       case ThingResult.confirm: {
         await this.favs.addThing(data);
+        this._change.markForCheck();
         return;
       }
       case ThingResult.delete: {
         await this.favs.deleteThing(this.editingThing!);
+        this._change.markForCheck();
         return;
       }
     }

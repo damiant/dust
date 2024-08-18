@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, Input, OnDestroy, OnInit, effect, input, viewChild, inject, output, model } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, effect, input, viewChild, inject, output, model, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { LocationEnabledStatus, MapInfo, MapPoint, Pin } from '../data/models';
 import { calculateRelativePosition, defaultMapRadius, distance, formatDistanceNice, mapPointToPin } from './map.utils';
 import { delay } from '../utils/utils';
@@ -35,6 +35,7 @@ const geolocateInterval = 10000;
     CachedImgComponent,
     IonRouterOutlet
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
 export class MapComponent implements OnInit, OnDestroy {
@@ -44,6 +45,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private settings = inject(SettingsService);
   private toastController = inject(ToastController);
   private ui = inject(UiService);
+  private _change = inject(ChangeDetectorRef);
   _points: MapPoint[];
   isOpen = false;
   footer: string | undefined;
@@ -93,6 +95,7 @@ export class MapComponent implements OnInit, OnDestroy {
           this.fixGPSAndUpdate();
           this.pointsSet = true;
         }
+        this._change.detectChanges();
       }, 300);
       return;
     }
@@ -102,6 +105,7 @@ export class MapComponent implements OnInit, OnDestroy {
       this.fixGPSAndUpdate();
       this.pointsSet = true;
     }
+    this._change.detectChanges();
   }
   get points() {
     return this._points;
@@ -147,6 +151,7 @@ export class MapComponent implements OnInit, OnDestroy {
       this.wasLoadingDialog = true;
     }
     this.loadingDialog.set(false);
+    this._change.detectChanges();
   }
 
   async enableGeoLocation(now: boolean) {
@@ -181,6 +186,7 @@ export class MapComponent implements OnInit, OnDestroy {
       const gpsPos = this.geo.gpsPosition();
       await this.viewReady();
       await this.displayYourLocation(gpsPos);
+      this._change.detectChanges();
     });
     effect(async () => {
       const heading = this.geo.heading();
@@ -200,6 +206,7 @@ export class MapComponent implements OnInit, OnDestroy {
         this.footer = undefined;
       }
       this.footerClass = (this.footer == this.disabledMessage) ? 'warning' : '';
+      this._change.detectChanges();
     });
   }
 
@@ -207,6 +214,7 @@ export class MapComponent implements OnInit, OnDestroy {
     while (!this._viewReady) {
       await delay(50);
     }
+    this._change.detectChanges();
   }
 
   async ngOnInit() {
@@ -351,6 +359,7 @@ export class MapComponent implements OnInit, OnDestroy {
     //    this.popover().event = event;
     setTimeout(() => {
       this.isOpen = true;
+      this._change.detectChanges();
     }, 100);
   }
 
@@ -522,6 +531,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.closePopover();
     setTimeout(() => {
       this.router.navigateByUrl(url);
+      this._change.detectChanges();
     }, 500);
   }
 

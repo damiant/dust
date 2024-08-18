@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import {
   IonCard,
   IonCardContent,
@@ -39,11 +39,13 @@ import { add, person } from 'ionicons/icons';
     IonLabel,
   ],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FriendsComponent implements OnInit {
   private modalCtrl = inject(ModalController);
   private fav = inject(FavoritesService);
   public friends: Friend[] = [];
+  private _change = inject(ChangeDetectorRef);
   private editingFriend: Friend | undefined;
 
   constructor() {
@@ -61,9 +63,9 @@ export class FriendsComponent implements OnInit {
       presentingElement: e,
       componentProps: friend
         ? {
-            friend: friend,
-            isEdit: friend,
-          }
+          friend: friend,
+          isEdit: friend,
+        }
         : undefined,
     });
     modal.present();
@@ -91,6 +93,7 @@ export class FriendsComponent implements OnInit {
   async update() {
     const favs = await this.fav.getFavorites();
     this.friends = favs.friends;
+    this._change.markForCheck();
   }
 
   async editFriend(friend: Friend) {

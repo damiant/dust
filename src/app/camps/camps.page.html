@@ -14,7 +14,7 @@
     [magnifyDividers]="true" [magnificationMultiplier]="2" [magnificationCurve]="[1, .7, .6, .4, .2, 0]"
     [exactX]="false" [navigateOnHover]="true" [letterSpacing]="'0.5%'" [offsetSizeCheckInterval]="100"
     (letterChange)="goToLetterGroup($event)" (isActive)="!$event && enableScroll()"></app-alphabetical-scroll-bar>
-  <div [class.disable-scroll]="isScrollDisabled" [class.side]="!vm.byDist"
+  <div [class.disable-scroll]="vm.isScrollDisabled" [class.side]="!vm.byDist"
     class="virtual-scroll-container ion-content-scroll-host" cdkVirtualScrollingElement>
     <ion-header collapse="condense">
       <ion-toolbar>

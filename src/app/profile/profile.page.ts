@@ -187,24 +187,20 @@ export class ProfilePage implements OnInit {
     });
     effect(() => {
       this.ui.scrollUpContent('profile', this.ionContent());
-      console.log('effect scrollup');
     });
     effect(async () => {
       this.favs.changed();
-      console.log('this.favs.changed');
       await this.update();
     });
     effect(() => {
       const things = this.favs.things();
       this.vm.things = things;
-      console.log('this.things');
     });
     effect(async () => {
       const resumed = this.db.resume();
       if (resumed.length > 0) {
         await this.update();
       }
-      console.log('resumed');
     });
   }
 

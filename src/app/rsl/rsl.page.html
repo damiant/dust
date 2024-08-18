@@ -1,9 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>{{vm.title}}</ion-title>
-    <ion-buttons class="b-pad-r" slot="end">
-      <app-sort id="music-sort" (sortTypeChange)="sortTypeChanged($event)"></app-sort>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -15,9 +12,13 @@
         <img class="rslLogo" alt="Rockstar Librarian Logo" src="assets/icon/rsl-logo.svg" style="height: 80px"
           (click)="rslLogo()" />
       </ion-item> -->
+      <ion-buttons class="b-pad-r" slot="end">
+        <app-sort [padChecked]=false id="music-sort" (sortTypeChange)="sortTypeChanged($event)"></app-sort>
+      </ion-buttons>
     </ion-toolbar>
     <ion-toolbar>
       <app-search placeholder="Find Events & DJs" (search)="searchEvents($event)" />
+
     </ion-toolbar>
     <ion-toolbar>
       <ion-segment (ionChange)="dayChange($event)" [(ngModel)]="vm.defaultDay" [scrollable]="true">

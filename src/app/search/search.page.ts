@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonSpinner, IonList, IonItem, IonLabel, IonIcon, IonText } from '@ionic/angular/standalone';
@@ -21,6 +21,7 @@ interface SearchState {
   templateUrl: './search.page.html',
   styleUrls: ['./search.page.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [IonText, IonIcon, IonLabel, IonItem, IonList, IonSpinner,
     IonBackButton,
     IonButtons,
@@ -37,6 +38,7 @@ interface SearchState {
 export class SearchPage {
   public vm: SearchState = { items: [], busy: false };
   private db = inject(DbService);
+  private _change = inject(ChangeDetectorRef);
   constructor() { }
 
 
@@ -64,6 +66,7 @@ export class SearchPage {
       this.vm.items = items;
     } finally {
       this.vm.busy = false;
+      this._change.detectChanges();
     }
   }
 
