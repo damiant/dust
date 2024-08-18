@@ -79,7 +79,7 @@ export class TabsPage implements OnInit {
         hide = false;
       }
       const timeZone = this.db.getTimeZone();
-      if (this.db.locationsHidden() && !hide) {
+      if (this.db.anyLocationsHidden() && !hide) {
         // Locations were unlocked
         this.db.setLocationHidden({ art: false, camps: false, artMessage: '', campMessage: '' });
         await this.db.populate(this.settings.settings.datasetId, timeZone);
@@ -90,7 +90,7 @@ export class TabsPage implements OnInit {
 
     // When app is paused hide the keyboard
     App.addListener('pause', async () => {
-      if (Capacitor.getPlatform() != 'web') {
+      if (Capacitor.getPlatform() !== 'web') {
         await Keyboard.hide();
       }
     });

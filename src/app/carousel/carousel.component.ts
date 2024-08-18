@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, output, contentChildren, viewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, output, contentChildren, viewChild, input, computed } from '@angular/core';
 import { CarouselItemComponent } from '../carousel-item/carousel-item.component';
 
 export interface SlideSelect {
@@ -11,10 +11,11 @@ export interface SlideSelect {
   styleUrls: ['./carousel.component.scss'],
   standalone: true,
 })
-export class CarouselComponent implements AfterViewInit, OnDestroy {
+export class CarouselComponent {
   slideChanged = output<SlideSelect>();
   private interval: any;
   private lastValue = -1;
+  enabled = input<boolean>(false);
   children = contentChildren(CarouselItemComponent);
   container = viewChild.required<ElementRef>('container');
 
@@ -24,7 +25,16 @@ export class CarouselComponent implements AfterViewInit, OnDestroy {
     }, 50);
   }
 
-  ngAfterViewInit() {
+  private enableChanged = computed(() => {
+    const enabled = this.enabled();
+    if (enabled) {
+      this.enable();
+    } else {
+      this.disable();
+    }
+  });
+
+  private enable() {
     this.interval = setInterval(() => {
       const padding = parseInt(getComputedStyle(this.container().nativeElement).scrollPaddingLeft);
       const l = this.container().nativeElement.scrollLeft;
@@ -41,7 +51,10 @@ export class CarouselComponent implements AfterViewInit, OnDestroy {
     }, 1000);
   }
 
-  ngOnDestroy() {
-    clearInterval(this.interval);
+  private disable() {
+    if (this.interval) {
+      clearInterval(this.interval);
+      this.interval = undefined;
+    }
   }
 }

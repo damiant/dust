@@ -54,6 +54,7 @@ interface IntroState {
   cardLoaded: any;
   clearCount: number;
   scrollLeft: number;
+  enableCarousel: boolean;
   showing: DatasetFilter;
 }
 
@@ -67,6 +68,7 @@ function initialState(): IntroState {
     cards: [],
     selected: undefined,
     message: '',
+    enableCarousel: false,
     pinPromise: undefined,
     cardLoaded: {},
     clearCount: 0,
@@ -142,6 +144,10 @@ export class IntroPage {
     });
   }
 
+  ionViewWillLeave() {
+    this.vm.enableCarousel = false;
+  }
+
   async ionViewWillEnter() {
     this.vm = initialState();
     this.vm.showing = this.settingsService.settings.datasetFilter ?? 'all';
@@ -213,6 +219,7 @@ export class IntroPage {
   }
 
   async ionViewDidEnter() {
+    this.vm.enableCarousel = true;
     this.ui.setNavigationBar(ThemePrimaryColor);
     await delay(500);
     if (Capacitor.isNativePlatform()) {
@@ -375,7 +382,7 @@ export class IntroPage {
       await this.db.getWorkerLogs();
       const sendResult: SendResult = await this.api.sendDataToWorker(
         result.revision,
-        this.db.getLocationHidden(),
+        this.db.getLocationsHidden(),
         this.isBurningMan(),
       );
       if (sendResult.datasetResult) {

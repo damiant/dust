@@ -9,7 +9,8 @@
     </div> -->
   </div>
 
-  <app-carousel [hidden]="vm.eventAlreadySelected" (slideChanged)="slideChanged($event)" #carousel>
+  <app-carousel [enabled]="vm.enableCarousel" [hidden]="vm.eventAlreadySelected" (slideChanged)="slideChanged($event)"
+    #carousel>
     @for (card of vm.cards; track card.id) {
     <app-carousel-item (click)="open(card, true)">
       <app-cached-img errorImage="./assets/error-img.png" (loaded)="vm.cardLoaded[card.id] = true" [loading]="'eager'"

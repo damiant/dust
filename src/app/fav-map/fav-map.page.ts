@@ -43,7 +43,7 @@ export class FavMapPage {
   ionViewWillEnter() {
     this.title = this.fav.getMapPointsTitle();
     this.points = this.fav.getMapPoints();
-    if (this.db.locationsHidden()) {
+    if (this.db.anyLocationsHidden()) {
       this.isToastOpen = true;
     }
   }

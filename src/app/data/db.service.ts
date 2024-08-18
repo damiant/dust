@@ -50,12 +50,29 @@ export class DbService {
   public restart: WritableSignal<string> = signal('');
   public showPastEvents = false;
   private initialized = false;
-  private locationHidden: LocationHidden = { art: false, camps: false, artMessage: '', campMessage: '' };
+  public locationsHidden = signal({ art: false, camps: false, artMessage: '', campMessage: '' });
 
   private prefix = '';
   public overrideDataset: string | undefined;
   private datasetsRead: string[] = [];
   private worker!: Worker;
+
+  public anyLocationsHidden = computed(() => {
+    return this.locationsHidden().art || this.locationsHidden().camps;
+  });
+
+  public allLocationsHidden = computed(() => {
+    return this.locationsHidden().art && this.locationsHidden().camps;
+  });
+
+  public getLocationsHidden(): LocationHidden {
+    return this.locationsHidden();
+  }
+
+  public artLocationsHidden = computed(() => {
+    return this.locationsHidden().art;
+  });
+
 
   public async initWorker(): Promise<void> {
     if (!this.initialized) {
@@ -88,7 +105,7 @@ export class DbService {
 
   public async populate(dataset: string, timezone: string): Promise<DatasetResult> {
     this.initWorker(); // Just to double check
-    const result: DatasetResult = await call(this.worker, DataMethods.Populate, dataset, this.locationHidden, environment, timezone);
+    const result: DatasetResult = await call(this.worker, DataMethods.Populate, dataset, this.getLocationsHidden(), environment, timezone);
     await this.writeData(dataset, Names.summary, result)
     return result;
   }
@@ -119,23 +136,7 @@ export class DbService {
   }
 
   public setLocationHidden(locationHidden: LocationHidden) {
-    this.locationHidden = locationHidden;
-  }
-
-  public getLocationHidden(): LocationHidden {
-    return this.locationHidden;
-  }
-
-  public locationsHidden(): boolean {
-    return this.locationHidden.art || this.locationHidden.camps;
-  }
-
-  public allLocationsHidden(): boolean {
-    return this.locationHidden.art && this.locationHidden.camps;
-  }
-
-  public artLocationsHidden(): boolean {
-    return this.locationHidden.art;
+    this.locationsHidden.set(locationHidden);
   }
 
   public async checkEvents(day?: Date): Promise<void> {
