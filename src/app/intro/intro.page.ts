@@ -151,7 +151,9 @@ export class IntroPage {
   }
 
   async ionViewWillEnter() {
+    const cardLoaded = structuredClone(this.vm.cardLoaded);
     this.vm = initialState();
+    this.vm.cardLoaded = cardLoaded;
     this.vm.showing = this.settingsService.settings.datasetFilter ?? 'all';
     // Whether the user has selected an event already
     this.vm.eventAlreadySelected =
@@ -455,6 +457,7 @@ export class IntroPage {
     this.vm.selected = card;
     this.subtitle.set(this.vm.selected.subTitle);
     this.save();
+
   }
 
   slideChanged(slide: SlideSelect) {

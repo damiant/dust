@@ -1,4 +1,4 @@
-import { Component, ElementRef, output, contentChildren, viewChild, input, computed, ChangeDetectorRef, inject } from '@angular/core';
+import { Component, ElementRef, output, contentChildren, viewChild, input, computed, ChangeDetectorRef, inject, ChangeDetectionStrategy, effect } from '@angular/core';
 import { CarouselItemComponent } from '../carousel-item/carousel-item.component';
 
 export interface SlideSelect {
@@ -10,6 +10,7 @@ export interface SlideSelect {
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CarouselComponent {
   slideChanged = output<SlideSelect>();
@@ -20,21 +21,24 @@ export class CarouselComponent {
   children = contentChildren(CarouselItemComponent);
   container = viewChild.required<ElementRef>('container');
 
+  constructor() {
+    effect(() => {
+      const enabled = this.enabled();
+      if (enabled) {
+        this.enable();
+      } else {
+        console.log('disable carousel');
+        this.disable();
+      }
+    });
+  }
+
   public setScrollLeft(left: number) {
     setTimeout(() => {
       this.container().nativeElement.scrollLeft = left;
       this._change.detectChanges();
     }, 50);
   }
-
-  private enableChanged = computed(() => {
-    const enabled = this.enabled();
-    if (enabled) {
-      this.enable();
-    } else {
-      this.disable();
-    }
-  });
 
   private enable() {
     this.interval = setInterval(() => {
@@ -50,7 +54,7 @@ export class CarouselComponent {
         this.slideChanged.emit({ index: current, scrollLeft: l });
         this.lastValue = current;
       }
-    }, 1000);
+    }, 500);
   }
 
   private disable() {
