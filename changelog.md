@@ -1,5 +1,10 @@
 ## Changes
 
+## 2.45
+
+- Fix issue with carousel not flipping when switching between events
+- Fix issue where label of event disappeared.
+
 ## 2.44
 - Fix calendar sync for recurring events
 - Show map for camps even when art is hidden
