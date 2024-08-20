@@ -176,6 +176,7 @@ export class IntroPage {
     if (this.vm.cards.length == 0) {
       this.vm.message = `Check your network connection and try starting again.`;
       this.vm.showMessage = true;
+      this._change.detectChanges();
       return;
     }
     this.vm.downloading = false;
@@ -349,6 +350,7 @@ export class IntroPage {
       }
       this.settingsService.setLastAboutAlert();
       this.vm.showMessage = true;
+      this._change.detectChanges();
     } else {
       this.vm.showMessage = false;
       await this.launch();
@@ -381,6 +383,7 @@ export class IntroPage {
       }
       this.vm.ready = false;
       this.vm.showMessage = false;
+      this._change.detectChanges();
 
       console.warn(`populate ${this.settingsService.settings.datasetId} attempt ${attempt}`);
       let result = await this.db.populate(this.settingsService.settings.datasetId, this.db.getTimeZone());
