@@ -1,4 +1,4 @@
-import { Component, ElementRef, output, contentChildren, viewChild, input, computed, ChangeDetectorRef, inject, ChangeDetectionStrategy, effect } from '@angular/core';
+import { Component, ElementRef, output, contentChildren, viewChild, input, ChangeDetectorRef, inject, ChangeDetectionStrategy, effect } from '@angular/core';
 import { CarouselItemComponent } from '../carousel-item/carousel-item.component';
 
 export interface SlideSelect {
