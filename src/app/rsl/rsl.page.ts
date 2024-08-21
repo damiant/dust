@@ -132,6 +132,12 @@ export class RslPage {
         await this.update();
       }
     });
+    effect(async () => {
+      const changed = this.fav.changed();
+      if (changed) {
+        await this.update();
+      }
+    });
   }
 
   private async init() {
