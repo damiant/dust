@@ -1,5 +1,9 @@
 ## Changes
 
+### 2.48
+
+- Fix to un favorite music events when swiped
+
 ### 2.47
 
 - Fix download update option that continually spins

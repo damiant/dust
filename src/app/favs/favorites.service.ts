@@ -450,7 +450,7 @@ export class FavoritesService {
           },
         ],
         title: o.who,
-        uid: '', // rslEvent.campUID!,
+        uid: rslEvent.uid,
         url: undefined,
         year: 2000,
       };

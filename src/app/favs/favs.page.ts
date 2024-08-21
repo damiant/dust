@@ -319,7 +319,20 @@ export class FavsPage implements OnInit {
 
   public async removeEvent(event: Event) {
     const occurrence = this.fav.selectOccurrence(event, this.db.selectedDay());
-    await this.fav.starEvent(false, event, this.db.selectedDay(), occurrence);
+    if (event.slug.startsWith('rsl')) {
+      const favs = await this.fav.getFavorites();
+      const items = await this.fav.getRSLEventList(favs.rslEvents);
+      for (const rslEvent of items) {
+        for (const occurrence of rslEvent.occurrences) {
+          console.log(this.fav.rslId(rslEvent, occurrence), event.slug);
+          if (this.fav.rslId(rslEvent, occurrence) == event.slug) {
+            await this.fav.starRSLEvent(false, rslEvent, occurrence);
+          }
+        }
+      }
+    } else {
+      await this.fav.starEvent(false, event, this.db.selectedDay(), occurrence);
+    }
   }
 
   async mapCamp(camp: Camp) {
