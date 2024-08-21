@@ -397,6 +397,7 @@ export class FavsPage implements OnInit {
       `${events.length} event${plural(events.length)} synced with your ${this.db.selectedDataset().title} calendar.`,
       this.toastController,
     );
+    this._change.detectChanges();
   }
 
   async print() {

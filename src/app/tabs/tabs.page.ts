@@ -120,7 +120,7 @@ export class TabsPage implements OnInit {
     }
     setTimeout(() => {
       this.router.navigateByUrl(`/${page}/${id}`);
-      this._change.detectChanges();
+      this._change.markForCheck();
     }, 100);
   }
 

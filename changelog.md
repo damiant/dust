@@ -1,5 +1,10 @@
 ## Changes
 
+### 2.47
+
+- Fix download update option that continually spins
+- Fix intro page not starting if the location message is shown
+
 ## 2.45
 
 - Fix issue with carousel not flipping when switching between events
