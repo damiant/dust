@@ -7,9 +7,12 @@ import {
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
+  IonIcon,
   IonText,
 } from '@ionic/angular/standalone';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
+import { addIcons } from 'ionicons';
+import { volumeHighOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-art',
@@ -26,6 +29,7 @@ import { CachedImgComponent } from '../cached-img/cached-img.component';
     IonCardContent,
     CachedImgComponent,
     IonText,
+    IonIcon,
   ],
 })
 export class ArtComponent {
@@ -33,6 +37,10 @@ export class ArtComponent {
   title = input('Art');
   showImage = input(true);
   artClick = output<Art>();
+
+  constructor() {
+    addIcons({ volumeHighOutline });
+  }
 
   click() {
     this.artClick.emit(this.art());
