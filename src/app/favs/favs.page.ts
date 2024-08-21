@@ -365,7 +365,6 @@ export class FavsPage implements OnInit {
     if (!doSync) return;
     for (const event of events) {
       list.push(event.title);
-      console.log(event);
       const location = event.location ? ` (${event.location})` : '';
       let success = false;
       while (attempts < 2 && !success) {
