@@ -33,9 +33,12 @@ export class CalendarService {
           if (found && found.length > 0) {
             console.log(`Delete Event by id ${found[0].id}`);
             console.log(`found[0]`, found[0], found.length, startDate, endDate);
-            await Calendar.deleteEventById(found[0].id);
+            try {
+              await Calendar.deleteEventById(found[0].id);
+            } catch (e) {
+              console.error(`deleteEventById(${found[0].id}) Failed`, e);
+            }
           }
-          console.log(`event`);
         } else {
           events = await Calendar.findAllEventsInNamedCalendar(event.calendar);
         }
@@ -62,7 +65,7 @@ export class CalendarService {
         endDate,
         { calendarName: event.calendar },
       );
-      console.log(`Id of event ${event.name} added to calendar ${event.calendar}`, calendarId);
+      console.log(`Id ${calendarId} of event ${event.name} added to calendar ${event.calendar}`);
 
       return hasPermission;
     } catch (e) {
