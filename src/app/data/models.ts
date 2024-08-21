@@ -112,6 +112,7 @@ export interface Day {
 
 export interface Art {
   artist?: string;
+  audio?: string;
   category?: string;
   contact_email?: string;
   description: string;
