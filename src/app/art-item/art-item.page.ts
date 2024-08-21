@@ -27,7 +27,7 @@ import {
   ToastController
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { star, starOutline, shareOutline, personOutline, locateOutline, locationOutline } from 'ionicons/icons';
+import { star, starOutline, shareOutline, personOutline, locateOutline, locationOutline, volumeHighOutline } from 'ionicons/icons';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { EventPage } from '../event/event.page';
 import { canCreate } from '../map/map';
@@ -80,7 +80,7 @@ export class ArtItemPage implements OnInit {
   star = false;
 
   constructor() {
-    addIcons({ star, starOutline, shareOutline, personOutline, locateOutline, locationOutline });
+    addIcons({ star, starOutline, shareOutline, personOutline, locateOutline, locationOutline, volumeHighOutline });
   }
 
   async ngOnInit() {
