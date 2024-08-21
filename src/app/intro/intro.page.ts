@@ -244,6 +244,7 @@ export class IntroPage {
       // We are not auto starting with an event. We'll check versions (without await)
       this.updateService.checkVersion(this.alertController);
     }
+    this._change.markForCheck();
   }
 
   public async clear() {

@@ -1,7 +1,8 @@
 ## Changes
 
-### 2.46
+### 2.47
 
+- Fix download update option that continually spins
 - Fix intro page not starting if the location message is shown
 
 ## 2.45

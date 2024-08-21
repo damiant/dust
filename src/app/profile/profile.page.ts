@@ -1,4 +1,4 @@
-import { Component, OnInit, effect, viewChild, inject, WritableSignal, signal } from '@angular/core';
+import { Component, OnInit, effect, viewChild, inject, WritableSignal, signal, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -142,6 +142,7 @@ export class ProfilePage implements OnInit {
   private api = inject(ApiService);
   private platform = inject(Platform);
   public db = inject(DbService);
+  private _change = inject(ChangeDetectorRef);
   private ionContent = viewChild.required(IonContent);
   private ionModal = viewChild.required(IonModal);
   public vm: HomeState = {
@@ -229,6 +230,7 @@ export class ProfilePage implements OnInit {
 
   async update() {
     this.vm.favEventsToday = await this.favs.getFavoriteEventsToday();
+    this._change.detectChanges();
   }
 
   clickThing(thing: Thing) {
@@ -389,7 +391,7 @@ export class ProfilePage implements OnInit {
       await delay(1000);
       const dataset = this.db.selectedDataset();
       const result = await this.api.download(dataset, false, this.download);
-
+      this._change.detectChanges();
       switch (result) {
         case 'success': {
           this.vm.downloading = false;
@@ -403,8 +405,8 @@ export class ProfilePage implements OnInit {
         }
       }
     } finally {
-
       this.vm.downloading = false;
+      this._change.detectChanges();
     }
   }
 }
