@@ -103,6 +103,11 @@ export class ArtItemPage implements OnInit {
     point.info = { title: this.art.name, subtitle: '', location: '' };
     this.mapPoints.push(point);
 
+    // If we are offline then do not show the audio option
+    if (this.db.networkStatus() == 'none') {
+      this.art.audio = undefined
+    }
+
     this.star = await this.fav.isFavArt(this.art.uid);
     this._change.markForCheck();
   }

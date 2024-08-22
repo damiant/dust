@@ -3,6 +3,7 @@
 ### 2.49
 
 - Add links for Burning Man
+- If offline, the audio tour will not be displayed
 
 ### 2.48
 
