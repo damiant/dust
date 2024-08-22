@@ -133,7 +133,7 @@ export class IntroPage {
       if (downloading !== '') {
         //this.ui.presentDarkToast(`Downloading ${downloading}`, this.toastController);
       }
-      this._change.detectChanges();
+      this._change.markForCheck();
     });
     effect(async () => {
       const shareItem = this.shareService.hasShare();
@@ -176,7 +176,7 @@ export class IntroPage {
     if (this.vm.cards.length == 0) {
       this.vm.message = `Check your network connection and try starting again.`;
       this.vm.showMessage = true;
-      this._change.detectChanges();
+      this._change.markForCheck();
       return;
     }
     this.vm.downloading = false;
@@ -187,7 +187,7 @@ export class IntroPage {
       this.carousel().setScrollLeft(this.settingsService.settings.scrollLeft);
     }
     const preview = this.db.overrideDataset;
-    this._change.detectChanges();
+    this._change.markForCheck();
     if (preview) {
       const all = await this.api.loadDatasets(this.vm.showing, true);
       console.info('overriding preview', preview);

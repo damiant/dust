@@ -104,7 +104,7 @@ export class ArtItemPage implements OnInit {
     this.mapPoints.push(point);
 
     this.star = await this.fav.isFavArt(this.art.uid);
-    this._change.detectChanges();
+    this._change.markForCheck();
   }
 
   open(url: string) {
