@@ -1,5 +1,9 @@
 ## Changes
 
+### 2.49
+
+- Add links for Burning Man
+
 ### 2.48
 
 - Fix to un favorite music events when swiped

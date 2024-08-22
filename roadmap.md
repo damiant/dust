@@ -1,5 +1,7 @@
 # Roadmap
 - 🔴 Sync calendar does not delete events you have removed from favorites
+- 🔴 Possibly duplicating calendar entries on Android
+- 🔴 Switch to using the Capacitor plugin  https://ebarooni.github.io/capacitor-calendar/
 - 🔴 Use Capacitor share for image snap
 - 🔴 Save my camp location should ask for camp if not at event
 - 🔴 Share map should include dust and title overlaid on the map
