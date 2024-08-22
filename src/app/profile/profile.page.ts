@@ -224,6 +224,7 @@ export class ProfilePage implements OnInit {
     this.vm.eventIsHappening = !this.db.eventHasntBegun() && !this.db.isHistorical();
     this.vm.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
     this.vm.groups = this.group(await this.db.getLinks());
+
     await this.favs.getThings();
     this.vm.things = this.favs.things();
   }
@@ -253,7 +254,9 @@ export class ProfilePage implements OnInit {
         group.links.push(link);
       }
     }
-    groups.push(group);
+    if (group.links.length > 0) {
+      groups.push(group);
+    }
     return groups;
   }
 
