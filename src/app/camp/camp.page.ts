@@ -149,7 +149,7 @@ export class CampPage implements OnInit {
     this.ui.share({
       title: this.camp?.name,
       dialogTitle: this.camp?.name,
-      text: `Check out ${this.camp?.name} at ${this.settings.eventTitle()} using the dust app.`,
+      text: `Check out ${this.camp?.name} at ${this.settings.eventTitle()} using the dust app. `,
       url,
     });
   }

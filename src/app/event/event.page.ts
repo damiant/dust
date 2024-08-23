@@ -254,7 +254,7 @@ export class EventPage implements OnInit, OnDestroy {
       title: this.event?.title,
       dialogTitle: this.event?.title,
       text: `Check out ${this.event?.title} at ${this.event?.camp} (${this.event?.location
-        }) ${this.settings.eventTitle()} using the dust app.`,
+        }) ${this.settings.eventTitle()} using the dust app. `,
       url,
     });
   }

@@ -1,5 +1,9 @@
 ## Changes
 
+### 2.50
+
+- Fix shared text
+
 ### 2.49
 
 - Add links for Burning Man
