@@ -42,4 +42,8 @@ export const routes: Routes = [
     path: 'search',
     loadComponent: () => import('./search/search.page').then(m => m.SearchPage)
   },
+  {
+    path: 'print-favs',
+    loadComponent: () => import('./print-favs/print-favs.page').then( m => m.PrintFavsPage)
+  },
 ];

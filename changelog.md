@@ -2,6 +2,7 @@
 
 ### 2.50
 
+- Multi column favorite print layout
 - Fix shared text
 
 ### 2.49

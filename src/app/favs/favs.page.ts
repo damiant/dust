@@ -1,4 +1,4 @@
-import { Component, OnInit, effect, viewChild, inject, ViewChild, ElementRef, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, effect, viewChild, inject, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -36,7 +36,6 @@ import { addIcons } from 'ionicons';
 import { star, starOutline, mapOutline, printOutline } from 'ionicons/icons';
 import { CalendarService } from '../calendar.service';
 import { ToastController } from '@ionic/angular';
-import { PrintWebview } from 'capacitor-print-webview';
 import { delay, plural } from '../utils/utils';
 import { MessageComponent } from '../message/message.component';
 
@@ -131,7 +130,6 @@ export class FavsPage implements OnInit {
   vm: FavsState = initialState();
 
   ionContent = viewChild.required(IonContent);
-  @ViewChild('printSection', { read: ElementRef }) printSection!: ElementRef;
 
   constructor() {
     addIcons({ star, starOutline, mapOutline, printOutline });
@@ -410,13 +408,5 @@ export class FavsPage implements OnInit {
       this.toastController,
     );
     this._change.detectChanges();
-  }
-
-  async print() {
-    const r = document.documentElement;
-    r.style.setProperty('--body-height', `${this.printSection.nativeElement.offsetHeight * 2}px`);
-    r.style.setProperty('--zoom', '0.5');
-    delay(500);
-    await PrintWebview.print();
   }
 }

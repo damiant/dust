@@ -1,0 +1,45 @@
+<!-- <ion-content  #printSection [fullscreen]="true"> -->
+<!-- <ion-icon name="close-sharp"></ion-icon> -->
+
+<div class="page" [hidden]="vm.hide" (click)="close()">
+  <h2>Events</h2>
+  @for (event of vm.events; track event.uid) {
+  @if (event.group) {
+  <div class="row">
+    <h3>{{event.group}}</h3>
+  </div>
+  }
+  <div class="row">
+    <p class="row-a"><b>{{event.timeString}}</b></p>
+    <p class="row-b">{{event.location}} {{event.camp}}<br />{{event.title}}</p>
+  </div>
+  }
+
+  @if (vm.camps.length > 0) {
+  <div class="row">
+    <div class="line"></div>
+  </div>
+  <div class="row">
+    <h2>Camps</h2>
+  </div>
+  @for (camp of vm.camps; track camp.uid) {
+  <p class="row">
+    <b>{{camp.name}}</b> - {{camp.location_string}}
+  </p>
+  }
+  }
+
+  @if (vm.art.length > 0) {
+  <div class="row">
+    <div class="line"></div>
+  </div>
+  <div class="row">
+
+    <h2>Art</h2>
+  </div>
+  @for (art of vm.art; track art.uid) {
+  <p class="row"><b>{{art.name}}</b> - {{art.location_string}}</p>
+  }
+  }
+</div>
+<!-- </ion-content> -->
