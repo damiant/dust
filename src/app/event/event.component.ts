@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output, inject, effect, computed } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output, inject, effect, computed, ChangeDetectorRef } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { Event } from '../data/models';
 import { CommonModule } from '@angular/common';
@@ -42,6 +42,7 @@ export class EventComponent {
   private router = inject(Router);
   private fav = inject(FavoritesService);
   private db = inject(DbService);
+  private _change = inject(ChangeDetectorRef);
   private emitting = 0;
   public class = computed(() => {
     if (this.variableHeight()) {
@@ -76,6 +77,15 @@ export class EventComponent {
     effect(async () => {
       const e = this.event();
       this.checkStarred(e);
+      this._change.markForCheck();
+    });
+    effect(async () => {
+      const _r = this.fav.changed();
+      if (_r !== 0) {
+        const e = this.event();
+        await this.checkStarred(e);
+        this._change.markForCheck();
+      }
     });
   }
 

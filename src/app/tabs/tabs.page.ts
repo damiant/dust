@@ -70,9 +70,11 @@ export class TabsPage implements OnInit {
 
     // Whenever app is resumed set signal called resume
     App.addListener('resume', async () => {
-      const result = await TextZoom.getPreferred();
-      this.ui.textZoom.set(result.value);
-      document.documentElement.style.setProperty("--text-zoom", `${this.ui.textZoom()}`);
+      if (Capacitor.getPlatform() !== 'web') {
+        const result = await TextZoom.getPreferred();
+        this.ui.textZoom.set(result.value);
+        document.documentElement.style.setProperty("--text-zoom", `${this.ui.textZoom()}`);
+      }
       const until = await this.daysUntilStarts();
       console.log(`${until} days until event.`);
       let hide = until > 1;

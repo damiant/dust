@@ -1,5 +1,9 @@
 ## Changes
 
+### 2.51
+
+- When event starred in details then star on the event list
+
 ### 2.50
 
 - Multi column favorite print layout
