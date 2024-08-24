@@ -3,6 +3,7 @@
 ### 2.51
 
 - When event starred in details then star on the event list
+- Add version information on the bottom of the home page
 
 ### 2.50
 
