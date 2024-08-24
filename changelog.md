@@ -1,5 +1,11 @@
 ## Changes
 
+### 2.50
+
+- Multi column favorite print layout
+- Fix search which was missing matches at the end of descriptions
+- Fix shared text
+
 ### 2.49
 
 - Add links for Burning Man

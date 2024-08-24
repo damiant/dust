@@ -300,7 +300,7 @@ export class ProfilePage implements OnInit {
     await this.dismiss();
     await Share.share({
       title: 'Dust in Curious Places',
-      text: 'Check out the dust app for Burning Man events, art and theme camps.',
+      text: 'Check out the dust app for Burning Man events, art and theme camps. ',
       url: 'https://dust.events/',
       dialogTitle: 'Share dust with friends',
     });

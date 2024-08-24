@@ -844,7 +844,7 @@ export class DataManager implements WorkerClass {
           this.onDay(day, event, timeRange, showPast) &&
           this.eventIsCategory(category, event));
       }
-      const fuse = new Fuse(events, { keys: ['title', 'camp', 'location', 'description'] });
+      const fuse = new Fuse(events, { keys: ['title', 'description', 'camp', 'location'], ignoreLocation: true });
       const found = fuse.search(query, { limit: top ? top : 10 });
       for (let c of found) {
         result.push(c.item);
@@ -939,7 +939,7 @@ export class DataManager implements WorkerClass {
     if (query && !this.isClockString(query)) {
       query = this.scrubQuery(query);
 
-      const fuse = new Fuse(this.camps, { keys: ["name", 'description', 'location_string'] });
+      const fuse = new Fuse(this.camps, { keys: ["name", 'description', 'location_string'], ignoreLocation: true });
       const found = fuse.search(query, { limit: top ? top : 10 });
       for (let c of found) {
         result.push(c.item);
@@ -989,7 +989,7 @@ export class DataManager implements WorkerClass {
     const result: Art[] = [];
     if (query && !this.isClockString(query)) {
       query = this.scrubQuery(query);
-      const fuse = new Fuse(this.art, { keys: ["name", 'description', 'location_string', 'artist'] });
+      const fuse = new Fuse(this.art, { keys: ["name", 'description', 'location_string', 'artist'], ignoreLocation: true });
       const found = fuse.search(query, { limit: top ? top : 10 });
       for (let c of found) {
         result.push(c.item);
