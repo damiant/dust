@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, effect, ElementRef, inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonIcon, IonList, IonItem, IonLabel } from '@ionic/angular/standalone';
