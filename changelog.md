@@ -4,6 +4,7 @@
 
 - When event starred in details then star on the event list
 - Add version information on the bottom of the home page
+- Clicking music event in favorites will not open blank page
 
 ### 2.50
 

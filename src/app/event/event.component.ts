@@ -131,6 +131,9 @@ export class EventComponent {
     if (this.emitting > 0) {
       return;
     }
+    if (this.event().slug?.startsWith('rsl')) {
+      return;
+    }
     if (this.event().uid === '') {
       this.rslClick.emit(this.event().slug);
       return;

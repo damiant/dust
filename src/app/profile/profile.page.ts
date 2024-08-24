@@ -221,7 +221,7 @@ export class ProfilePage implements OnInit {
     });
     await this.favs.getThings();
     const links = await this.db.getLinks();
-    const { version } = await App.getInfo();
+    const { version } = Capacitor.getPlatform() == 'web' ? { version: '0.0.0' } : await App.getInfo();
 
     this.vm.imageUrl = imageUrl;
     this.vm.hasRestrooms = this.hasValue(summary.pinTypes, 'Restrooms');
