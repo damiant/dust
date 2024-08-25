@@ -370,7 +370,6 @@ export class PinMapPage {
     const title = 'Happening Now';
     this.title.set(title);
     const timeRange = nowRange(this.db.getTimeZone());
-    //const timeRange = nowRange(localTimeZone());
     this.smallPins = true;
     const points = [];
     const allEvents = await this.db.findEvents('', undefined, '', undefined, timeRange, true, false);

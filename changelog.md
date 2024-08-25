@@ -1,5 +1,9 @@
 ## Changes
 
+### 2.52
+
+- Optimize startup performance
+
 ### 2.51
 
 - When event starred in details then star on the event list

@@ -106,17 +106,26 @@ export function mapPointToPoint(mapPoint: MapPoint, circleRadius: number) {
   return getPoint(clock, rad, circleRad);
 }
 
+const streetCache = new Map<string, number>();
+
 export function toStreetRadius(street: string): number {
   try {
+    if (streetCache.has(street)) {
+      return streetCache.get(street)!;
+    }
+    let result = 0;
     const acode = 'a'.charCodeAt(0);
-    const c = street.toLowerCase().charCodeAt(0) - acode;
-    if (street.toLowerCase() == 'airport road') {
+    const streetL = street.toLowerCase();
+    const c = streetL.charCodeAt(0) - acode;
+    if (streetL == 'airport road') {
       return 0.8;
     }
-    if (street.toLowerCase() == 'esplanade') {
+    if (streetL == 'esplanade') {
       return streets[0];
     }
-    return streets[c + 1];
+    result = streets[c + 1];
+    streetCache.set(street, result);
+    return result;
   } catch {
     console.error(`Unable to find street ${street}`);
     return 0;
@@ -124,10 +133,8 @@ export function toStreetRadius(street: string): number {
 }
 
 export function toRadius(feet: number): number {
-  // 2500ft from man to espanade
-  const toEspanade = streets[0];
-  const pixels = (feet / 2500.0) * toEspanade;
-  return pixels;
+  // 2500ft from man to esplanade
+  return (feet / 2500.0) * streets[0];
 }
 
 export const maxDistance = 9999;
@@ -289,22 +296,30 @@ export function clockToDegree(c: number): number {
   return (c - (3 % 12)) * r;
 }
 
+const radianMultiplier = Math.PI / 180;
+
 export function getPointOnCircle(radius: number, degree: number): Pin {
-  const radian = (degree * Math.PI) / 180;
+  const radian = degree * radianMultiplier;
   const x = radius * Math.cos(radian);
   const y = radius * Math.sin(radian);
   return { x, y };
 }
 
+const clockCache = new Map<string, number>();
 // eg 2:45 => 2.75
 export function toClock(clock: string): number {
   if (!clock) {
     console.error(`Invalid clock string`);
     return 0;
   }
+  if (clockCache.has(clock)) {
+    return clockCache.get(clock)!;
+  }
   const tmp = clock.split(':');
   const v = parseInt(tmp[1]) / 60.0; // eg 2:45 => 45/60 => 0.75
-  return parseInt(tmp[0]) + v;
+  const result = parseInt(tmp[0]) + v;
+  clockCache.set(clock, result);
+  return result;
 }
 
 export function calculateRelativePosition(you: GpsCoord, pin: GpsCoord, compassRotation: number): string {

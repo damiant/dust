@@ -277,7 +277,7 @@ export class EventsPage implements OnInit, OnDestroy {
   }
 
   searchEvents(value: string) {
-    this.vm.search = value ? value.toLowerCase() : '';
+    this.vm.search = value && (typeof value === 'string') ? value.toLowerCase() : '';
     this.update(true);
   }
 

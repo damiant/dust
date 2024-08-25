@@ -27,17 +27,24 @@ function affineTransformation(
     (lat1 * lon2 * y3 + lat2 * lon3 * y1 + lat3 * lon1 * y2 - lat2 * lon1 * y3 - lat3 * lon2 * y1 - lat1 * lon3 * y2) /
     detT;
 
+  const det = A * E - B * D;
+  const BF = B * F;
+  const CE = C * E;
+  const AF = A * F;
+  const CD = C * D;
+
   return {
     toXY: function (gpsPoint: GpsCoord) {
-      let x = A * gpsPoint.lat + B * gpsPoint.lng + C;
-      let y = D * gpsPoint.lat + E * gpsPoint.lng + F;
-      return { x, y };
+      return {
+        x: A * gpsPoint.lat + B * gpsPoint.lng + C,
+        y: D * gpsPoint.lat + E * gpsPoint.lng + F
+      };
     },
     toGPS: function (x: number, y: number) {
-      let det = A * E - B * D;
-      let lat = (E * x - B * y + B * F - C * E) / det;
-      let lng = (-D * x + A * y + C * D - A * F) / det;
-      return { lat, lng };
+      return {
+        lat: (E * x - B * y + BF - CE) / det,
+        lng: (-D * x + A * y + CD - AF) / det
+      };
     },
   };
 }

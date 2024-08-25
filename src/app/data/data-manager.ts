@@ -35,11 +35,7 @@ import {
 import { defaultMapRadius, distance, formatDistance, locationStringToPin, mapPointToPoint } from '../map/map.utils';
 import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from '../map/geo.utils';
 import { set, get, clear } from 'idb-keyval';
-import Fuse from 'fuse.js'
-
-interface TimeCache {
-  [index: string]: TimeString | undefined;
-}
+import Fuse from 'fuse.js';
 
 type MatchType = 'Important' | 'Match' | 'No Match';
 
@@ -48,9 +44,9 @@ export class DataManager implements WorkerClass {
   private camps: Camp[] = [];
   private rslEvents: RSLEvent[] = [];
   private pins: PlacedPin[] = [];
-  private categories: string[] = [];
+  private categories = new Set<string>();
   private art: Art[] = [];
-  private days: number[] = [];
+  private days = new Set<number>();
   private rslDays: number[] = [];
   private links: Link[] = [];
   private georeferences: GeoRef[] = [];
@@ -59,7 +55,7 @@ export class DataManager implements WorkerClass {
   private hasGeoPoints = false;
   private dataset: string = '';
   private timezone: string = BurningManTimeZone;
-  private cache: TimeCache = {};
+  private cache = new Map<string, TimeString>();
   private mapRadius = 5000;
   private logs: string[] = [];
   private env: any; // Environment variables dont work in web worker so we have them passed in
@@ -78,7 +74,7 @@ export class DataManager implements WorkerClass {
       case DataMethods.HasGeoPoints:
         return this.hasGeoPoints;
       case DataMethods.GetCategories:
-        return this.categories;
+        return Array.from(this.categories.values()).sort();
       case DataMethods.SetDataset:
         return await this.setDataset(args[0]);
       case DataMethods.GetEvents:
@@ -152,7 +148,6 @@ export class DataManager implements WorkerClass {
     this.dataset = dataset;
     this.timezone = timezone;
     this.env = env;
-    this.log(`Populate dataset=${dataset}`)
     this.events = await this.loadEvents();
     this.camps = await this.loadCamps();
     this.art = await this.loadArt();
@@ -213,6 +208,7 @@ export class DataManager implements WorkerClass {
 
   private checkEvents(): boolean {
     const today = this.now(this.timezone);
+    const todayTime = today.getTime();
     let hasLiveEvents = false;
     for (const event of this.events) {
       event.old = true;
@@ -232,8 +228,8 @@ export class DataManager implements WorkerClass {
             occurrence.happening = false;
             hasLiveEvents = false;
           } else {
-            const isOld = new Date(occurrence.end_time).getTime() - today.getTime() < 0;
-            const isHappening = !isOld && new Date(occurrence.start_time).getTime() < today.getTime();
+            const isOld = new Date(occurrence.end_time).getTime() - todayTime < 0;
+            const isHappening = !isOld && new Date(occurrence.start_time).getTime() < todayTime;
             occurrence.old = isOld;
             occurrence.happening = isHappening;
             if (!occurrence.old) {
@@ -311,7 +307,7 @@ export class DataManager implements WorkerClass {
 
   private init(locationsHidden: LocationHidden) {
     console.time('init');
-    this.cache = {};
+    this.cache = new Map<string, TimeString>();
     this.camps = this.camps.filter((camp) => {
       return camp.description || camp.location_string;
     });
@@ -322,9 +318,7 @@ export class DataManager implements WorkerClass {
     this.allEventsOld = false;
     this.initGeoLocation();
 
-    let campIndex: any = {};
-    let locIndex: any = {};
-    let facingIndex: any = {};
+    let campCache = new Map<string, Camp>();
     let pinIndex: any = {};
     let artIndex: any = {};
     let artGPS: any = {};
@@ -344,10 +338,6 @@ export class DataManager implements WorkerClass {
         }
       }
 
-      campIndex[camp.uid] = camp.name;
-      locIndex[camp.uid] = camp.location_string;
-      facingIndex[camp.uid] = camp.facing;
-      pinIndex[camp.uid] = camp.pin;
       if (camp.imageUrl) {
         camp.imageUrl = `${data_dust_events}${camp.imageUrl}`;
       }
@@ -357,7 +347,9 @@ export class DataManager implements WorkerClass {
       } else if (!camp.location_string) {
         camp.location_string = LocationName.Undefined;
       }
+      campCache.set(camp.uid, camp);
     }
+
     for (let art of this.art) {
       artIndex[art.uid] = art.name;
       artLocationNames[art.uid] = art.location_string;
@@ -388,32 +380,38 @@ export class DataManager implements WorkerClass {
         art.location_string = locationsHidden.artMessage;
       }
     }
-    this.days = [];
+
+    this.days = new Set<number>();
     this.rslDays = [];
-    this.categories = [];
+    this.categories = new Set<string>();
+
     this.allEventsOld = !this.checkEvents();
 
     for (let event of this.events) {
       let allLong = true;
-      const labels = event.event_type.label.split(',');
-      for (let label of labels) {
-        if (!this.categories.includes(label.trim())) {
-          this.categories.push(label.trim());
-        }
+      for (let label of event.event_type.label.split(',')) {
+        label = label.trim();
+        this.categories.add(label);
       }
       if (event.imageUrl) {
         event.imageUrl = `${data_dust_events}${event.imageUrl}`;
       }
       if (event.hosted_by_camp) {
-        event.camp = campIndex[event.hosted_by_camp];
-        event.location = locIndex[event.hosted_by_camp];
-        event.facing = facingIndex[event.hosted_by_camp];
+        const camp = campCache.get(event.hosted_by_camp);
+        if (camp) {
+          event.camp = camp.name;
+          event.location = camp.location_string!;
+          event.facing = camp.facing;
+        }
+        const placed = camp?.pin;
 
-        let pin = locationStringToPin(event.location, this.mapRadius, facingIndex[event.hosted_by_camp]);
-        const placed = pinIndex[event.hosted_by_camp];
+        let pin;
+
         if (placed) {
           event.pin = placed;
           pin = placed;
+        } else {
+          pin = locationStringToPin(event.location, this.mapRadius, event.facing);
         }
 
         if (locationsHidden.camps) {
@@ -423,8 +421,7 @@ export class DataManager implements WorkerClass {
         }
 
         if (pin) {
-          const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
-          event.gpsCoords = gpsCoords;
+          event.gpsCoords = mapToGps({ x: pin.x, y: pin.y });
         } else {
           if (!this.env.production) {
             this.consoleError(`Unable to find camp ${event.hosted_by_camp} for event ${event.title} ${placed}`);
@@ -469,35 +466,14 @@ export class DataManager implements WorkerClass {
       } else {
         this.consoleError(`no location ${JSON.stringify(event)}`);
       }
-      if (event.print_description === '') {
-        // Happens before events go to the WWW guide
-        event.print_description = event.description;
-      }
 
-      // Events over 6 hours are no worth it
-      // event.occurrence_set = event.occurrence_set.filter(o => {
-      //     let start: Date = new Date(o.start_time);
-      //     let end: Date = new Date(o.end_time);
-      //     const hrs = this.hoursBetween(start, end);
-      //     return hrs <= 6;
-      // });
 
-      for (let occurrence of event.occurrence_set) {
+      for (let [i, occurrence] of event.occurrence_set.entries()) {
         let start: Date = new Date(occurrence.start_time);
         let end: Date = new Date(occurrence.end_time);
         this.addDay(start);
-        const hrs = this.hoursBetween(start, end);
-        // if (hrs > 24) {
-        //   occurrence.end_time = new Date(
-        //     start.getFullYear(),
-        //     start.getMonth(),
-        //     start.getDate(),
-        //     end.getHours(),
-        //     end.getMinutes(),
-        //   ).toLocaleString('en-US', { timeZone: this.timezone });
-        //   end = new Date(occurrence.end_time);
-        // }
-        if (hrs <= 6) {
+
+        if (this.hoursBetween(start, end) <= 6) {
           allLong = false;
         }
 
@@ -509,10 +485,14 @@ export class DataManager implements WorkerClass {
         }
         const res = this.getOccurrenceTimeStringCached(start, end, undefined);
         occurrence.longTimeString = res ? res.long : 'Unknown';
+        if (i == 0) {
+          event.start = new Date(occurrence.start_time);
+          if (res) {
+            event.timeString = res.short;
+            event.longTimeString = res.long;
+          }
+        }
       }
-      const timeString = this.getTimeString(event, undefined);
-      event.timeString = timeString.short;
-      event.longTimeString = timeString.long;
 
       event.all_day = allLong;
     }
@@ -520,8 +500,7 @@ export class DataManager implements WorkerClass {
       this.addRSLDay(this.asDateTime(rslEvent.day));
     }
 
-    this.categories.sort();
-    this.cache = {};
+    this.cache = new Map<string, TimeString>();
     console.timeEnd('init');
   }
 
@@ -1042,10 +1021,11 @@ export class DataManager implements WorkerClass {
 
   private getTimeString(event: Event, day: Date | undefined): TimeString {
     for (let occurrence of event.occurrence_set) {
-      const start: Date = new Date(occurrence.start_time);
-      const end: Date = new Date(occurrence.end_time);
-      event.start = start;
-      const res = this.getOccurrenceTimeStringCached(start, end, day);
+      event.start = new Date(occurrence.start_time);
+      const res = this.getOccurrenceTimeStringCached(
+        event.start,
+        new Date(occurrence.end_time),
+        day);
       if (res) {
         return res;
       }
@@ -1055,10 +1035,14 @@ export class DataManager implements WorkerClass {
 
   private getOccurrenceTimeStringCached(start: Date, end: Date, day: Date | undefined): TimeString | undefined {
     const key = `${start.getTime()}-${end.getTime()}-${day}`;
-    if (!(key in this.cache)) {
-      this.cache[key] = getOccurrenceTimeString(start, end, day, this.timezone);
+    if (!(this.cache.has(key))) {
+      const value = getOccurrenceTimeString(start, end, day, this.timezone);
+      if (value) {
+        this.cache.set(key, value);
+      }
+      return value;
     }
-    return this.cache[key];
+    return this.cache.get(key);
   }
 
   private hoursBetween(d1: any, d2: any): number {
@@ -1067,7 +1051,7 @@ export class DataManager implements WorkerClass {
 
   public getDays(name: Names): Day[] {
     const result: Day[] = [];
-    const days = (name == Names.rsl) ? this.rslDays : this.days;
+    const days = (name == Names.rsl) ? this.rslDays : this.days.values();
     for (let day of days) {
       const date = new Date(day);
       result.push({ name: getDayNameFromDate(date).substring(0, 3), dayName: date.getDate().toString(), date });
@@ -1127,9 +1111,7 @@ export class DataManager implements WorkerClass {
 
   private addDay(date: Date) {
     const day = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
-    if (!this.days.includes(day)) {
-      this.days.push(day);
-    }
+    this.days.add(day);
   }
 
   private addRSLDay(date: Date) {

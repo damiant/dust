@@ -227,7 +227,6 @@ export class FavsPage implements OnInit {
     const search = this.vm.search.toLowerCase();
     if (item.title && item.title.toLowerCase().includes(search)) return true;
     if (item.description && item.description.toLowerCase().includes(search)) return true;
-    if (item.print_description && item.print_description.toLowerCase().includes(search)) return true;
     if (item.location_string && item.location_string.toLowerCase().includes(search)) return true;
     return false;
   }
