@@ -147,39 +147,49 @@ const timeLookup: any = {
   '12:00 PM': 'Noon'
 };
 
+const timeCache = new Map<Date, string>();
+
 export function time(d: Date, timeZone: string): string {
   // Burning Man is in PST timezone so report it that way in the UI (useful for people looking in other timezones)
-  const s = d
-    .toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone })
-    .toLowerCase()
-    .replace(/\s|:00/g, '');
-  return timeLookup[s] || s;
+  let v = timeCache.get(d);
+  if (!v) {
+    v = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone })
+      .toLowerCase()
+      .replace(/\s|:00/g, '');
+    timeCache.set(d, v);
+  }
+  return timeLookup[v] || v;
 }
+
+const weekdayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 // eslint-disable-next-line unused-imports/no-unused-vars
 export function getOccurrenceTimeString(start: Date, end: Date, day: Date | undefined, timeZone: string): TimeString | undefined {
   const startsToday = day && sameDay(start, day);
   const endsToday = day && sameDay(end, day);
 
+
   // Note: We ignore timeZone so that times in the app show as timezone of the event
   if (!day || startsToday || endsToday) {
-    const day = start.toLocaleDateString([], { weekday: 'long' });
+    const day = weekdayNames[start.getDay()];
     const tz = localTimeZone;
+    const endTime = time(end, tz);
+    const startTime = time(start, tz);
     const short =
       endsToday && !startsToday
-        ? `Until ${time(end, tz)} (${timeBetween(end, start)})`
-        : `${time(start, tz)}`;
-    const timeRange = getTimeRange(time(start, tz), time(end, tz));
+        ? `Until ${endTime}(${timeBetween(end, start)})`
+        : `${startTime}`;
+    const timeRange = getTimeRange(startTime, endTime);
     if (timeRange == 'All Day') {
       return {
         long: `${timeRange} ${day}`,
         short: timeRange
       }
     }
-    // Length of time: `${time(start, tz)} (${timeBetween(end, start)})`;
+    // Length of time: `${ time(start, tz) }(${ timeBetween(end, start) })`;
     return {
       // Uncomment to show hours
-      //long: `${day} ${timeRange} (${timeBetween(end, start)})`,
+      //long: `${ day } ${ timeRange }(${ timeBetween(end, start) })`,
       long: `${day} ${timeRange}`,
       short,
     };
@@ -192,11 +202,11 @@ function getTimeRange(from: string, to: string): string {
     return 'All Day';
   }
   if (from.endsWith('pm') && to.endsWith('pm')) {
-    return `${from.replace('pm', '')}-${to}`;
+    return `${from.replace('pm', '')} - ${to}`;
   } else if (from.endsWith('am') && to.endsWith('am')) {
-    return `${from.replace('am', '')}-${to}`;
+    return `${from.replace('am', '')} - ${to}`;
   }
-  return `${from}-${to}`;
+  return `${from} - ${to}`;
 }
 
 export function isWhiteSpace(s: string): boolean {
@@ -207,7 +217,7 @@ export function isWhiteSpace(s: string): boolean {
 
 function timeBetween(d1: any, d2: any): string {
   const hrs = Math.ceil(Math.abs(d1 - d2) / 36e5);
-  const mins = Math.floor(Math.abs(d1 - d2) / 1000 / 60);
+  const mins = Math.floor(Math.abs(d1 - d2) / 60000);
   return mins < 60 ? `${mins}min${plural(mins)}` : `${hrs}hr${plural(hrs)}`;
 }
 

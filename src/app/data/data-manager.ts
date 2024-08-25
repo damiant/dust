@@ -35,11 +35,7 @@ import {
 import { defaultMapRadius, distance, formatDistance, locationStringToPin, mapPointToPoint } from '../map/map.utils';
 import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from '../map/geo.utils';
 import { set, get, clear } from 'idb-keyval';
-import Fuse from 'fuse.js'
-
-interface TimeCache {
-  [index: string]: TimeString | undefined;
-}
+import Fuse from 'fuse.js';
 
 type MatchType = 'Important' | 'Match' | 'No Match';
 
@@ -152,7 +148,6 @@ export class DataManager implements WorkerClass {
     this.dataset = dataset;
     this.timezone = timezone;
     this.env = env;
-    console.time('populate.read');
     this.events = await this.loadEvents();
     this.camps = await this.loadCamps();
     this.art = await this.loadArt();
@@ -162,7 +157,6 @@ export class DataManager implements WorkerClass {
     this.rslEvents = await this.loadMusic();
     this.georeferences = await this.getGeoReferences();
     await this.loadMap();
-    console.timeEnd('populate.read');
     this.init(locationsHidden);
     return {
       events: this.events.length, art: this.art.length, pins: this.pins.length,
@@ -324,14 +318,11 @@ export class DataManager implements WorkerClass {
     this.allEventsOld = false;
     this.initGeoLocation();
 
-    let campIndex: any = {};
-    let locIndex: any = {};
-    let facingIndex: any = {};
+    let campCache = new Map<string, Camp>();
     let pinIndex: any = {};
     let artIndex: any = {};
     let artGPS: any = {};
     let artLocationNames: any = {};
-    console.time('camps');
     for (let camp of this.camps) {
       const pin = this.locateCamp(camp);
 
@@ -347,10 +338,6 @@ export class DataManager implements WorkerClass {
         }
       }
 
-      campIndex[camp.uid] = camp.name;
-      locIndex[camp.uid] = camp.location_string;
-      facingIndex[camp.uid] = camp.facing;
-      pinIndex[camp.uid] = camp.pin;
       if (camp.imageUrl) {
         camp.imageUrl = `${data_dust_events}${camp.imageUrl}`;
       }
@@ -360,9 +347,9 @@ export class DataManager implements WorkerClass {
       } else if (!camp.location_string) {
         camp.location_string = LocationName.Undefined;
       }
+      campCache.set(camp.uid, camp);
     }
-    console.timeEnd('camps');
-    console.time('art');
+
     for (let art of this.art) {
       artIndex[art.uid] = art.name;
       artLocationNames[art.uid] = art.location_string;
@@ -393,14 +380,13 @@ export class DataManager implements WorkerClass {
         art.location_string = locationsHidden.artMessage;
       }
     }
-    console.timeEnd('art');
+
     this.days = new Set<number>();
     this.rslDays = [];
     this.categories = new Set<string>();
 
     this.allEventsOld = !this.checkEvents();
 
-    console.time('events');
     for (let event of this.events) {
       let allLong = true;
       for (let label of event.event_type.label.split(',')) {
@@ -411,10 +397,13 @@ export class DataManager implements WorkerClass {
         event.imageUrl = `${data_dust_events}${event.imageUrl}`;
       }
       if (event.hosted_by_camp) {
-        event.camp = campIndex[event.hosted_by_camp];
-        event.location = locIndex[event.hosted_by_camp];
-        event.facing = facingIndex[event.hosted_by_camp];
-        const placed = pinIndex[event.hosted_by_camp];
+        const camp = campCache.get(event.hosted_by_camp);
+        if (camp) {
+          event.camp = camp.name;
+          event.location = camp.location_string!;
+          event.facing = camp.facing;
+        }
+        const placed = camp?.pin;
 
         let pin;
 
@@ -505,13 +494,8 @@ export class DataManager implements WorkerClass {
         }
       }
 
-      // const timeString = this.getTimeString(event, undefined);
-      // event.timeString = timeString.short;
-      // event.longTimeString = timeString.long;
-
       event.all_day = allLong;
     }
-    console.timeEnd('events');
     for (const rslEvent of this.rslEvents) {
       this.addRSLDay(this.asDateTime(rslEvent.day));
     }
