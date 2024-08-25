@@ -351,7 +351,7 @@ export class EventsPage implements OnInit, OnDestroy {
       this.hack();
       this.virtualScroll().scrollToOffset(0, 'smooth');
     }
-    this._change.detectChanges();
+    this._change.markForCheck();
   }
 
   private noEventsMessage(): string {

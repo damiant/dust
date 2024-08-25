@@ -8,8 +8,8 @@
 - 🔴 Share map should include link that opens dust to add friend
 - 🔴 Dark side of the mug has a 27 hour event
 - 🔴 All day events for Burning Man are entered as 2 x12 hour. Need to clean these up
-- 🔴 Center Camp isnt listed as a camp (backend change)
-- 🔴 Temple isnt listed as art (backend change)
+- 🔴 Center Camp is not listed as a camp (backend change)
+- 🔴 Temple is not listed as art (backend change)
 - 🔴 Click camp name to switch to camps view and select camp
 - 🔴 Like button instead of favorites?
 

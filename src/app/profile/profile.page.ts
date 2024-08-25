@@ -38,6 +38,7 @@ import { environment } from 'src/environments/environment';
 import { InAppReview } from '@capacitor-community/in-app-review';
 import { PrivateEventsComponent } from '../private-events/private-events.component';
 import { addIcons } from 'ionicons';
+import { App } from '@capacitor/app';
 import {
   linkOutline,
   mailUnreadOutline,
@@ -89,6 +90,7 @@ interface HomeState {
   hasMedical: boolean;
   hasRestrooms: boolean;
   hasIce: boolean;
+  version: string;
   presentingElement: any;
 }
 
@@ -163,6 +165,7 @@ export class ProfilePage implements OnInit {
     hasMedical: true,
     hasRestrooms: true,
     hasIce: true,
+    version: '',
     presentingElement: undefined,
   }
 
@@ -211,11 +214,16 @@ export class ProfilePage implements OnInit {
 
   async init() {
     this.vm.presentingElement = document.querySelector('.ion-page');
-    this.vm.imageUrl = await getCachedImage(this.db.selectedImage());
+    const imageUrl = await getCachedImage(this.db.selectedImage());
     this.db.checkInit();
     const summary: DatasetResult = await this.db.get(this.settings.settings.datasetId, Names.summary, {
       onlyRead: true,
     });
+    await this.favs.getThings();
+    const links = await this.db.getLinks();
+    const { version } = Capacitor.getPlatform() == 'web' ? { version: '0.0.0' } : await App.getInfo();
+
+    this.vm.imageUrl = imageUrl;
     this.vm.hasRestrooms = this.hasValue(summary.pinTypes, 'Restrooms');
     this.vm.hasMedical = this.hasValue(summary.pinTypes, 'Medical');
     this.vm.hasIce = this.hasValue(summary.pinTypes, 'Ice');
@@ -223,15 +231,16 @@ export class ProfilePage implements OnInit {
     this.vm.longEvents = this.settings.settings.longEvents;
     this.vm.eventIsHappening = !this.db.eventHasntBegun() && !this.db.isHistorical();
     this.vm.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
-    this.vm.groups = this.group(await this.db.getLinks());
+    this.vm.groups = this.group(links);
 
-    await this.favs.getThings();
     this.vm.things = this.favs.things();
+    this.vm.version = `Version ${version}`;
+    this._change.markForCheck();
   }
 
   async update() {
     this.vm.favEventsToday = await this.favs.getFavoriteEventsToday();
-    this._change.detectChanges();
+    this._change.markForCheck();
   }
 
   clickThing(thing: Thing) {
