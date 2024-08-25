@@ -417,12 +417,15 @@ export class DataManager implements WorkerClass {
         event.camp = campIndex[event.hosted_by_camp];
         event.location = locIndex[event.hosted_by_camp];
         event.facing = facingIndex[event.hosted_by_camp];
-
-        let pin = locationStringToPin(event.location, this.mapRadius, event.facing);
         const placed = pinIndex[event.hosted_by_camp];
+
+        let pin;
+
         if (placed) {
           event.pin = placed;
           pin = placed;
+        } else {
+          pin = locationStringToPin(event.location, this.mapRadius, event.facing);
         }
 
         if (locationsHidden.camps) {
