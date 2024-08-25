@@ -25,7 +25,6 @@ export interface Event {
   located_at_art?: string;
   occurrence_set: OccurrenceSet[];
   other_location?: string;
-  print_description: string;
   imageUrl?: string; // Added by dust
   slug: string;
   title: string;

@@ -435,9 +435,8 @@ export class FavoritesService {
         distanceInfo: '',
         event_type: { abbr: '', label: '', id: 0 },
         gpsCoords: { lat: 0, lng: 0 },
-        description: '',
         slug: this.rslId(rslEvent, o),
-        print_description: `${o.who} is playing ${party}${rslEvent.artCar ? 'on the ' + rslEvent.artCar + ' mutant vehicle' : 'at ' + rslEvent.camp
+        description: `${o.who} is playing ${party}${rslEvent.artCar ? 'on the ' + rslEvent.artCar + ' mutant vehicle' : 'at ' + rslEvent.camp
           }.`,
         occurrence_set: [
           {

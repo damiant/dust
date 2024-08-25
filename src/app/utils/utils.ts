@@ -54,9 +54,7 @@ export function clone(o: any): any {
   }
 }
 
-export function localTimeZone(): string {
-  return Intl.DateTimeFormat().resolvedOptions().timeZone;
-}
+export const localTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 export function timeRangeToString(timeRange: TimeRange | undefined, timeZone: string): string {
   if (!timeRange) {
@@ -144,26 +142,29 @@ export function addDays(date: Date, days: number) {
   return result;
 }
 
+const timeLookup: any = {
+  '12:00 AM': 'Midnight',
+  '12:00 PM': 'Noon'
+};
+
 export function time(d: Date, timeZone: string): string {
   // Burning Man is in PST timezone so report it that way in the UI (useful for people looking in other timezones)
   const s = d
     .toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone })
     .toLowerCase()
-    .replace(' ', '')
-    .replace(':00', '');
-  if (s == '12am') return 'Midnight';
-  if (s == '12pm') return 'Noon';
-  return s;
+    .replace(/\s|:00/g, '');
+  return timeLookup[s] || s;
 }
 
 // eslint-disable-next-line unused-imports/no-unused-vars
 export function getOccurrenceTimeString(start: Date, end: Date, day: Date | undefined, timeZone: string): TimeString | undefined {
   const startsToday = day && sameDay(start, day);
   const endsToday = day && sameDay(end, day);
-  const tz = localTimeZone();
+
   // Note: We ignore timeZone so that times in the app show as timezone of the event
   if (!day || startsToday || endsToday) {
     const day = start.toLocaleDateString([], { weekday: 'long' });
+    const tz = localTimeZone;
     const short =
       endsToday && !startsToday
         ? `Until ${time(end, tz)} (${timeBetween(end, start)})`

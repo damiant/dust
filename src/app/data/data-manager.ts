@@ -48,9 +48,9 @@ export class DataManager implements WorkerClass {
   private camps: Camp[] = [];
   private rslEvents: RSLEvent[] = [];
   private pins: PlacedPin[] = [];
-  private categories: string[] = [];
+  private categories = new Set<string>();
   private art: Art[] = [];
-  private days: number[] = [];
+  private days = new Set<number>();
   private rslDays: number[] = [];
   private links: Link[] = [];
   private georeferences: GeoRef[] = [];
@@ -59,7 +59,7 @@ export class DataManager implements WorkerClass {
   private hasGeoPoints = false;
   private dataset: string = '';
   private timezone: string = BurningManTimeZone;
-  private cache: TimeCache = {};
+  private cache = new Map<string, TimeString>();
   private mapRadius = 5000;
   private logs: string[] = [];
   private env: any; // Environment variables dont work in web worker so we have them passed in
@@ -78,7 +78,7 @@ export class DataManager implements WorkerClass {
       case DataMethods.HasGeoPoints:
         return this.hasGeoPoints;
       case DataMethods.GetCategories:
-        return this.categories;
+        return this.categories.values();
       case DataMethods.SetDataset:
         return await this.setDataset(args[0]);
       case DataMethods.GetEvents:
@@ -152,7 +152,7 @@ export class DataManager implements WorkerClass {
     this.dataset = dataset;
     this.timezone = timezone;
     this.env = env;
-    this.log(`Populate dataset=${dataset}`)
+    console.time('populate.read');
     this.events = await this.loadEvents();
     this.camps = await this.loadCamps();
     this.art = await this.loadArt();
@@ -162,6 +162,7 @@ export class DataManager implements WorkerClass {
     this.rslEvents = await this.loadMusic();
     this.georeferences = await this.getGeoReferences();
     await this.loadMap();
+    console.timeEnd('populate.read');
     this.init(locationsHidden);
     return {
       events: this.events.length, art: this.art.length, pins: this.pins.length,
@@ -213,6 +214,7 @@ export class DataManager implements WorkerClass {
 
   private checkEvents(): boolean {
     const today = this.now(this.timezone);
+    const todayTime = today.getTime();
     let hasLiveEvents = false;
     for (const event of this.events) {
       event.old = true;
@@ -232,8 +234,8 @@ export class DataManager implements WorkerClass {
             occurrence.happening = false;
             hasLiveEvents = false;
           } else {
-            const isOld = new Date(occurrence.end_time).getTime() - today.getTime() < 0;
-            const isHappening = !isOld && new Date(occurrence.start_time).getTime() < today.getTime();
+            const isOld = new Date(occurrence.end_time).getTime() - todayTime < 0;
+            const isHappening = !isOld && new Date(occurrence.start_time).getTime() < todayTime;
             occurrence.old = isOld;
             occurrence.happening = isHappening;
             if (!occurrence.old) {
@@ -311,7 +313,7 @@ export class DataManager implements WorkerClass {
 
   private init(locationsHidden: LocationHidden) {
     console.time('init');
-    this.cache = {};
+    this.cache = new Map<string, TimeString>();
     this.camps = this.camps.filter((camp) => {
       return camp.description || camp.location_string;
     });
@@ -329,6 +331,7 @@ export class DataManager implements WorkerClass {
     let artIndex: any = {};
     let artGPS: any = {};
     let artLocationNames: any = {};
+    console.time('camps');
     for (let camp of this.camps) {
       const pin = this.locateCamp(camp);
 
@@ -358,6 +361,8 @@ export class DataManager implements WorkerClass {
         camp.location_string = LocationName.Undefined;
       }
     }
+    console.timeEnd('camps');
+    console.time('art');
     for (let art of this.art) {
       artIndex[art.uid] = art.name;
       artLocationNames[art.uid] = art.location_string;
@@ -388,17 +393,21 @@ export class DataManager implements WorkerClass {
         art.location_string = locationsHidden.artMessage;
       }
     }
-    this.days = [];
+    console.timeEnd('art');
+    this.days = new Set<number>();
     this.rslDays = [];
-    this.categories = [];
+    this.categories = new Set<string>();
+
     this.allEventsOld = !this.checkEvents();
 
+    console.time('events');
     for (let event of this.events) {
       let allLong = true;
       const labels = event.event_type.label.split(',');
       for (let label of labels) {
-        if (!this.categories.includes(label.trim())) {
-          this.categories.push(label.trim());
+        label = label.trim();
+        if (!this.categories.has(label)) {
+          this.categories.add(label);
         }
       }
       if (event.imageUrl) {
@@ -409,7 +418,7 @@ export class DataManager implements WorkerClass {
         event.location = locIndex[event.hosted_by_camp];
         event.facing = facingIndex[event.hosted_by_camp];
 
-        let pin = locationStringToPin(event.location, this.mapRadius, facingIndex[event.hosted_by_camp]);
+        let pin = locationStringToPin(event.location, this.mapRadius, event.facing);
         const placed = pinIndex[event.hosted_by_camp];
         if (placed) {
           event.pin = placed;
@@ -469,35 +478,14 @@ export class DataManager implements WorkerClass {
       } else {
         this.consoleError(`no location ${JSON.stringify(event)}`);
       }
-      if (event.print_description === '') {
-        // Happens before events go to the WWW guide
-        event.print_description = event.description;
-      }
 
-      // Events over 6 hours are no worth it
-      // event.occurrence_set = event.occurrence_set.filter(o => {
-      //     let start: Date = new Date(o.start_time);
-      //     let end: Date = new Date(o.end_time);
-      //     const hrs = this.hoursBetween(start, end);
-      //     return hrs <= 6;
-      // });
 
       for (let occurrence of event.occurrence_set) {
         let start: Date = new Date(occurrence.start_time);
         let end: Date = new Date(occurrence.end_time);
         this.addDay(start);
-        const hrs = this.hoursBetween(start, end);
-        // if (hrs > 24) {
-        //   occurrence.end_time = new Date(
-        //     start.getFullYear(),
-        //     start.getMonth(),
-        //     start.getDate(),
-        //     end.getHours(),
-        //     end.getMinutes(),
-        //   ).toLocaleString('en-US', { timeZone: this.timezone });
-        //   end = new Date(occurrence.end_time);
-        // }
-        if (hrs <= 6) {
+
+        if (this.hoursBetween(start, end) <= 6) {
           allLong = false;
         }
 
@@ -516,12 +504,12 @@ export class DataManager implements WorkerClass {
 
       event.all_day = allLong;
     }
+    console.timeEnd('events');
     for (const rslEvent of this.rslEvents) {
       this.addRSLDay(this.asDateTime(rslEvent.day));
     }
 
-    this.categories.sort();
-    this.cache = {};
+    this.cache = new Map<string, TimeString>();
     console.timeEnd('init');
   }
 
@@ -1055,10 +1043,13 @@ export class DataManager implements WorkerClass {
 
   private getOccurrenceTimeStringCached(start: Date, end: Date, day: Date | undefined): TimeString | undefined {
     const key = `${start.getTime()}-${end.getTime()}-${day}`;
-    if (!(key in this.cache)) {
-      this.cache[key] = getOccurrenceTimeString(start, end, day, this.timezone);
+    if (!(this.cache.has(key))) {
+      const value = getOccurrenceTimeString(start, end, day, this.timezone);
+      if (value) {
+        this.cache.set(key, value);
+      }
     }
-    return this.cache[key];
+    return this.cache.get(key);
   }
 
   private hoursBetween(d1: any, d2: any): number {
@@ -1067,7 +1058,7 @@ export class DataManager implements WorkerClass {
 
   public getDays(name: Names): Day[] {
     const result: Day[] = [];
-    const days = (name == Names.rsl) ? this.rslDays : this.days;
+    const days = (name == Names.rsl) ? this.rslDays : this.days.values();
     for (let day of days) {
       const date = new Date(day);
       result.push({ name: getDayNameFromDate(date).substring(0, 3), dayName: date.getDate().toString(), date });
@@ -1127,8 +1118,8 @@ export class DataManager implements WorkerClass {
 
   private addDay(date: Date) {
     const day = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
-    if (!this.days.includes(day)) {
-      this.days.push(day);
+    if (!this.days.has(day)) {
+      this.days.add(day);
     }
   }
 

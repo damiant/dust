@@ -317,7 +317,8 @@ export class DbService {
   }
 
   public async getCategories(): Promise<string[]> {
-    return await call(this.worker, DataMethods.GetCategories);
+    const categories = await call(this.worker, DataMethods.GetCategories);
+    return categories.sort();
   }
 
   public async getCampList(ids: string[]): Promise<Camp[]> {
