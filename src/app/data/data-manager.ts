@@ -403,8 +403,7 @@ export class DataManager implements WorkerClass {
     console.time('events');
     for (let event of this.events) {
       let allLong = true;
-      const labels = event.event_type.label.split(',');
-      for (let label of labels) {
+      for (let label of event.event_type.label.split(',')) {
         label = label.trim();
         this.categories.add(label);
       }
