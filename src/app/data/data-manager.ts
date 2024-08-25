@@ -406,9 +406,7 @@ export class DataManager implements WorkerClass {
       const labels = event.event_type.label.split(',');
       for (let label of labels) {
         label = label.trim();
-        if (!this.categories.has(label)) {
-          this.categories.add(label);
-        }
+        this.categories.add(label);
       }
       if (event.imageUrl) {
         event.imageUrl = `${data_dust_events}${event.imageUrl}`;
@@ -1130,9 +1128,7 @@ export class DataManager implements WorkerClass {
 
   private addDay(date: Date) {
     const day = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
-    if (!this.days.has(day)) {
-      this.days.add(day);
-    }
+    this.days.add(day);
   }
 
   private addRSLDay(date: Date) {
