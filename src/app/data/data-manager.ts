@@ -78,7 +78,7 @@ export class DataManager implements WorkerClass {
       case DataMethods.HasGeoPoints:
         return this.hasGeoPoints;
       case DataMethods.GetCategories:
-        return this.categories.values();
+        return Array.from(this.categories.values()).sort();
       case DataMethods.SetDataset:
         return await this.setDataset(args[0]);
       case DataMethods.GetEvents:
@@ -435,8 +435,7 @@ export class DataManager implements WorkerClass {
         }
 
         if (pin) {
-          const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
-          event.gpsCoords = gpsCoords;
+          event.gpsCoords = mapToGps({ x: pin.x, y: pin.y });
         } else {
           if (!this.env.production) {
             this.consoleError(`Unable to find camp ${event.hosted_by_camp} for event ${event.title} ${placed}`);
@@ -483,7 +482,7 @@ export class DataManager implements WorkerClass {
       }
 
 
-      for (let occurrence of event.occurrence_set) {
+      for (let [i, occurrence] of event.occurrence_set.entries()) {
         let start: Date = new Date(occurrence.start_time);
         let end: Date = new Date(occurrence.end_time);
         this.addDay(start);
@@ -500,10 +499,18 @@ export class DataManager implements WorkerClass {
         }
         const res = this.getOccurrenceTimeStringCached(start, end, undefined);
         occurrence.longTimeString = res ? res.long : 'Unknown';
+        if (i == 0) {
+          event.start = new Date(occurrence.start_time);
+          if (res) {
+            event.timeString = res.short;
+            event.longTimeString = res.long;
+          }
+        }
       }
-      const timeString = this.getTimeString(event, undefined);
-      event.timeString = timeString.short;
-      event.longTimeString = timeString.long;
+
+      // const timeString = this.getTimeString(event, undefined);
+      // event.timeString = timeString.short;
+      // event.longTimeString = timeString.long;
 
       event.all_day = allLong;
     }
@@ -1033,10 +1040,11 @@ export class DataManager implements WorkerClass {
 
   private getTimeString(event: Event, day: Date | undefined): TimeString {
     for (let occurrence of event.occurrence_set) {
-      const start: Date = new Date(occurrence.start_time);
-      const end: Date = new Date(occurrence.end_time);
-      event.start = start;
-      const res = this.getOccurrenceTimeStringCached(start, end, day);
+      event.start = new Date(occurrence.start_time);
+      const res = this.getOccurrenceTimeStringCached(
+        event.start,
+        new Date(occurrence.end_time),
+        day);
       if (res) {
         return res;
       }
@@ -1051,6 +1059,7 @@ export class DataManager implements WorkerClass {
       if (value) {
         this.cache.set(key, value);
       }
+      return value;
     }
     return this.cache.get(key);
   }
