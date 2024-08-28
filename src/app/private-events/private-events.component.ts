@@ -73,7 +73,7 @@ export class PrivateEventsComponent implements OnInit {
         }
         : undefined,
     });
-    modal.present();
+    await modal.present();
 
     const { data, role } = await modal.onWillDismiss();
     delay(800); // Time for animation
