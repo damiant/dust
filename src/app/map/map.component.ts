@@ -16,6 +16,7 @@ import { DbService } from '../data/db.service';
 import { MapModel, MapResult, ScrollResult } from './map-model';
 import { init3D } from './map';
 import { UiService } from '../ui/ui.service';
+import { Capacitor } from '@capacitor/core';
 
 // How often is the map updated with a new location
 const geolocateInterval = 10000;
@@ -48,6 +49,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private _change = inject(ChangeDetectorRef);
   _points: MapPoint[];
   isOpen = false;
+  secondButton = '';
   footer: string | undefined;
   footerClass: string | undefined;
   popover = viewChild.required<ElementRef>('popover');
@@ -224,6 +226,9 @@ export class MapComponent implements OnInit, OnDestroy {
     const mapURI = await this.settings.getMapURI();
     if (mapURI !== undefined && mapURI !== '') {
       this.src = mapURI;
+    }
+    if (Capacitor.getPlatform() !== 'ios') {
+      this.secondButton = 'Not Now';
     }
   }
 

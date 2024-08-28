@@ -84,15 +84,18 @@ export class PinMapPage {
     this.db.checkInit();
     effect(async () => {
       const g = this.geo.gpsPosition();
-      if (g.lat != 0) {
+      if (g.lat !== -1) {
         if (this.isGettingGPS) {
           this.isGettingGPS = false;
+          this._change.markForCheck();
           await this.favs.setThingPosition(this.thingName(), g);
           this.ui.presentToast(`Saved location of ${this.thingName()}`, this.toast);
           this.location.back();
         }
+      } else {
+        console.error('gps is ', g)
       }
-      this._change.detectChanges();
+      this._change.markForCheck();
     });
   }
 
@@ -203,7 +206,6 @@ export class PinMapPage {
       if (thing.name == this.thingName()) {
         if (!thing.gps) {
           console.log(`Location enabled when showing isGettingGPS`, this.settings.settings.locationEnabled);
-
           this.isGettingGPS = true;
         } else {
           this.canClearThing = true;

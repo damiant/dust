@@ -82,7 +82,7 @@ export function mapToGps(point: Point): GpsCoord {
 }
 
 export function NoGPSCoord(): GpsCoord2 {
-  return { lat: 0, lng: 0, timeStamp: new Date().getTime() };
+  return { lat: -1, lng: -1, timeStamp: new Date().getTime() };
 }
 
 export function timeStampGPS(gpsCoord: GpsCoord): GpsCoord2 {

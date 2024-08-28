@@ -29,7 +29,8 @@
       <ion-text class="text">{{description}}</ion-text>
     </ion-item>
   </div>
-  <ion-loading spinner="circular" [isOpen]="isGettingGPS" message="Getting Location"></ion-loading>
+  <ion-loading spinner="circular" [isOpen]="isGettingGPS"
+    message="Getting Location: This may take up to 10 seconds."></ion-loading>
   <app-map #map (scrolled)="scrolled($event)" [(loadingDialog)]="isGettingGPS" [smallPins]="smallPins"
     [points]="points"></app-map>
 </ion-content>
