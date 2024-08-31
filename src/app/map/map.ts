@@ -318,7 +318,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
 
         try {
             console.log((performance as any).memory.usedJSHeapSize);
-        } catch (e) { }
+        } catch { }
     }
     return result;
 }

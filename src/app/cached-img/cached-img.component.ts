@@ -35,7 +35,7 @@ export class CachedImgComponent {
         try {
           this._src = await getCachedImage(src);
           this._change.markForCheck();
-        } catch (e) {
+        } catch {
           this.errored();
         }
       }

@@ -237,7 +237,7 @@ export class DbService {
         this.markRead(this._getkey(dataset, name));
         return result;
       }
-    } catch (err) {
+    } catch {
       const error = `Failed to get dataset=${dataset} name=${name}`;
       if (options.defaultValue) {
         console.warn(`${error}. Return default vaule of ${options.defaultValue}`);

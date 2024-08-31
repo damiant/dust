@@ -263,7 +263,8 @@ export async function decryptString(ciphertext: string, password: string) {
     const plainBuffer = await crypto.subtle.decrypt(alg, key, ctUint8);            // decrypt ciphertext using key
     const plaintext = new TextDecoder().decode(plainBuffer);                       // plaintext from ArrayBuffer
     return plaintext;                                                              // return the plaintext
-  } catch (e) {
+  } catch {
     throw new Error('Decrypt failed');
+
   }
 }

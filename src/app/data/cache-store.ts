@@ -9,7 +9,7 @@ export async function getCachedImage(imageUrl: string): Promise<string> {
   const fileType = imageName?.split('.').pop();
   try {
     return await read(imageName!, fileType!);
-  } catch (e) {
+  } catch {
     return await storeAndRead(imageUrl, imageName!, fileType!);
   }
 }
