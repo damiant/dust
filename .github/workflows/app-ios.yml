@@ -69,7 +69,7 @@ jobs:
         run: xcodebuild -workspace './ios/App/App.xcworkspace' -scheme App -destination generic/platform=iOS -archivePath App.xcarchive archive
 
       - name: 🍻 Assemble IPA
-        run: xcodebuild archive -archivePath App.xcarchive -exportArchive -exportPath output -allowProvisioningUpdates
+        run: xcodebuild archive -archivePath App.xcarchive -exportArchive -exportOptionsPlist ./archive.plist -exportPath output -allowProvisioningUpdates
 
       - name: Upload release bundle
         uses: actions/upload-artifact@v3
