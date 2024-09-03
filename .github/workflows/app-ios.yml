@@ -48,10 +48,10 @@ jobs:
         with:
           xcode-version: latest
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 19.x
+      #- name: Setup Node.js
+      #  uses: actions/setup-node@v4
+      #  with:
+      #    node-version: 19.x
 
       - name: Install bun      
         uses: oven-sh/setup-bun@v1          
