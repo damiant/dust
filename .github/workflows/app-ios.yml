@@ -72,7 +72,7 @@ jobs:
         run: xcodebuild archive -archivePath App.xcarchive -exportArchive -exportOptionsPlist ./ios/archive.plist -exportPath output -allowProvisioningUpdates
 
       - name: 🍻 Send to TestFlight
-        run: xcrun altool --upload-app -f output/App.ipa -t ios --apiKey $APP_STORE_CONNECT_KEY_ID --apiIssuer $APP_STORE_CONNECT_ISSUER_ID
+        run: xcrun altool --upload-app -f output/App.ipa -t ios --apiKey ${{ secrets.APP_STORE_CONNECT_KEY_ID }} --apiIssuer ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
 
       - name: Upload release bundle
         uses: actions/upload-artifact@v4
