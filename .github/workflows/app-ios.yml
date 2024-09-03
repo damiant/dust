@@ -68,13 +68,13 @@ jobs:
       - name: Build project
         run: xcodebuild -workspace './ios/App/App.xcworkspace' -scheme App -destination generic/platform=iOS -archivePath App.xcarchive archive
 
-      - name: 🍻 Create binary (.ipa)
+      - name: Create binary (.ipa)
         run: xcodebuild archive -archivePath App.xcarchive -exportArchive -exportOptionsPlist ./ios/archive.plist -exportPath output -allowProvisioningUpdates
 
-- name: 🍻 Create private key for TestFlight
+      - name: Create private key for TestFlight
         run: echo ${{ secrets.APP_STORE_CONNECT_P8 }} > ./private_keys/AuthKey_${{ secrets.APP_STORE_CONNECT_KEY_ID }}.p8
 
-      - name: 🍻 Send to TestFlight
+      - name: Send to TestFlight
         run: xcrun altool --upload-app -f output/App.ipa -t ios --apiKey ${{ secrets.APP_STORE_CONNECT_KEY_ID }} --apiIssuer ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
 
       - name: Upload release bundle
