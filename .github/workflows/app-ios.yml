@@ -72,6 +72,7 @@ jobs:
         run: xcodebuild archive -archivePath App.xcarchive -exportArchive -exportOptionsPlist ./ios/archive.plist -exportPath output -allowProvisioningUpdates
 
       - name: Create private key for TestFlight
+        run: mkdir ./private_keys
         run: echo "${{ secrets.APP_STORE_CONNECT_P8 }}" > ./private_keys/AuthKey_${{ secrets.APP_STORE_CONNECT_KEY_ID }}.p8
 
       - name: Send to TestFlight
