@@ -1,5 +1,11 @@
 ## Changes
 
+### 2.54
+
+- Use experimental zoneless change detection
+- Use isolatedModules to speed up builds
+- Avoid app update unless on wifi
+
 ### 2.52
 
 - Optimize startup performance

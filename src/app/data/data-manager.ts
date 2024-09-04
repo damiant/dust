@@ -460,7 +460,7 @@ export class DataManager implements WorkerClass {
               this.consoleError(`Unable to find art ${event.located_at_art} for event ${event.title} ${placed}`);
             }
           }
-        } catch (err) {
+        } catch {
           this.consoleError(`Failed GPS: ${event.title} hosted at art ${event.located_at_art}`);
         }
       } else {
@@ -1129,7 +1129,7 @@ export class DataManager implements WorkerClass {
     try {
       const res = await fetch(uri);
       return await res.json();
-    } catch (err) {
+    } catch {
       this.consoleError(`Worker fetch Failed to load ${uri}`);
       return [];
     }
@@ -1162,6 +1162,7 @@ export class DataManager implements WorkerClass {
       }
       return result;
     } catch (err) {
+      this.consoleLog(`${err}`);
       return { title: '', description: '', points: [] };
     }
   }
@@ -1239,7 +1240,7 @@ export class DataManager implements WorkerClass {
         point.gps = this.getMapPointGPS(point);
       }
       return mapSet;
-    } catch (err) {
+    } catch {
       return { title: '', description: '', points: [] };
     }
   }
@@ -1263,7 +1264,7 @@ export class DataManager implements WorkerClass {
         }
       }
       return mapSet;
-    } catch (err) {
+    } catch {
       return { title: pinType, description: '', points: [] };
     }
   }

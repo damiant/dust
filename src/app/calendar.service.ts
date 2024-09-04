@@ -51,7 +51,7 @@ export class CalendarService {
         console.log(`Delete calendar event ${found.title} ${found.id}`);
         try {
           await Calendar.deleteEventById(found.id);
-        } catch (e) {
+        } catch {
           // Ignore the error: delete should work
         }
       }

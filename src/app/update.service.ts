@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
 import { AppUpdate, AppUpdateAvailability } from '@capawesome/capacitor-app-update';
 import { AlertController } from '@ionic/angular/standalone';
+import { Network } from '@capacitor/network';
 
 @Injectable({
   providedIn: 'root',
@@ -9,6 +10,12 @@ import { AlertController } from '@ionic/angular/standalone';
 export class UpdateService {
   public async checkVersion(alert: AlertController) {
     if (Capacitor.getPlatform() == 'web') return;
+
+    const status = await Network.getStatus();
+    if (status.connectionType !== 'wifi') {
+      // Only attempt an update if on wifi
+      return;
+    }
     const result = await AppUpdate.getAppUpdateInfo();
     if (result.updateAvailability !== AppUpdateAvailability.UPDATE_AVAILABLE) {
       return;

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   IonButton,
@@ -44,11 +44,13 @@ export enum FriendResult {
     IonHeader,
   ],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FriendComponent implements OnInit {
   private modalCtrl = inject(ModalController);
   private toastController = inject(ToastController);
   private streetService = inject(StreetService);
+  private _change = inject(ChangeDetectorRef);
   noAddress = 'Choose Address';
   friend: Friend = { name: '', notes: '', address: this.noAddress };
   isEdit: boolean = false;
@@ -64,6 +66,7 @@ export class FriendComponent implements OnInit {
       text: 'Confirm',
       handler: (value: any) => {
         this.friend.address = `${value.hour.value}:${value.minute.value} & ${value.street.value}`;
+        this._change.markForCheck();
       },
     },
   ];

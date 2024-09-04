@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import {
   IonButton,
   IonButtons,
@@ -52,6 +52,7 @@ export enum PrivateEventResult {
     IonToolbar,
   ],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PrivateEventComponent implements OnInit {
   private streetService = inject(StreetService);
@@ -86,6 +87,7 @@ export class PrivateEventComponent implements OnInit {
       text: 'Confirm',
       handler: (value: any) => {
         this.event.address = `${value.hour.value}:${value.minute.value} & ${value.street.value}`;
+        this._change.markForCheck();
       },
     },
   ];
@@ -94,7 +96,7 @@ export class PrivateEventComponent implements OnInit {
     this.streetService.setAddress(this.event.address, this.addresses);
     setTimeout(() => {
       this.dtReady = true;
-      this._change.detectChanges();
+      this._change.markForCheck();
     }, 300);
   }
 

@@ -1,7 +1,7 @@
 PODS:
   - ByteowlsCapacitorFilesharer (6.0.0):
     - Capacitor
-  - Capacitor (6.1.1):
+  - Capacitor (6.1.2):
     - CapacitorCordova
   - CapacitorApp (6.0.1):
     - Capacitor
@@ -13,7 +13,7 @@ PODS:
     - Capacitor
   - CapacitorCommunityPlayIntegrity (6.0.0):
     - Capacitor
-  - CapacitorCordova (6.1.1)
+  - CapacitorCordova (6.1.2)
   - CapacitorFilesystem (6.0.1):
     - Capacitor
   - CapacitorGeolocation (6.0.1):
@@ -44,7 +44,7 @@ PODS:
     - Capacitor
   - CapawesomeCapacitorAppUpdate (6.0.0):
     - Capacitor
-  - CordovaPlugins (6.1.1):
+  - CordovaPlugins (6.1.2):
     - CapacitorCordova
   - HugotomaziCapacitorNavigationBar (4.0.1):
     - Capacitor
@@ -130,13 +130,13 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   ByteowlsCapacitorFilesharer: ea14537059851aed44df8c52f0984f61cd34f53b
-  Capacitor: 8941aba4364ba9d1b22188569001f2ce45cc2b00
+  Capacitor: 679f9673fdf30597493a6362a5d5bf233d46abc2
   CapacitorApp: 0bc633b4eae40a1f32cd2834788fad3bc42da6a1
   CapacitorAppLauncher: 9ac785e8d3936388249212b6e16cb32225960c5f
   CapacitorBrowser: 83ec661a9ccd56c28a6851e4dd1ac33b181227ec
   CapacitorCommunityInAppReview: c69a9392f39a10f28092d823cfa979637f4fa079
   CapacitorCommunityPlayIntegrity: 26ad626ed53773a9189e0b12f16ea90f609c00ef
-  CapacitorCordova: 8f2cc8d8d3619c566e9418fe8772064a94266106
+  CapacitorCordova: f48c89f96c319101cd2f0ce8a2b7449b5fb8b3dd
   CapacitorFilesystem: 37fb3aa5c945b4539ab11c74a5c57925a302bf24
   CapacitorGeolocation: 39dca51d755f08ed1d43e51be55291a402cdc64f
   CapacitorHaptics: fe689ade56ef20ec9b041a753c6da70c5d8ec9a9
@@ -152,7 +152,7 @@ SPEC CHECKSUMS:
   CapacitorStatusBar: b81d4fb5d4e0064c712018071b3ab4b810b39a63
   CapacitorTextZoom: 013a8dd0887f6bd103171768c91845f2354414b6
   CapawesomeCapacitorAppUpdate: 3c05b5c8e42f9c6a88d666093406e9336d9bfdb1
-  CordovaPlugins: 39364e8174866c78aec9eff46251e6bcd97fd3ff
+  CordovaPlugins: 1481b6d6dd6f425769c147cdbe9e7f219bf9cfd6
   HugotomaziCapacitorNavigationBar: 57d7cd51c65ef5e40159bafb0095ee99fab432ba
 
 PODFILE CHECKSUM: 20770c09baadacb9b583db00e5c30a8e8092bb7d

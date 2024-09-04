@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EnvironmentInjector, NgZone, OnInit, effect, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EnvironmentInjector, OnInit, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NotificationService } from './notifications/notification.service';
 import { App, URLOpenListenerEvent } from '@capacitor/app';
@@ -21,7 +21,6 @@ export class AppComponent implements OnInit {
   private notificationService = inject(NotificationService);
   private integrityService = inject(IntegrityService);
   private shareService = inject(ShareService);
-  private zone = inject(NgZone);
   private dbService = inject(DbService);
   private ui = inject(UiService);
   private settings = inject(SettingsService);
@@ -40,24 +39,24 @@ export class AppComponent implements OnInit {
     await this.notificationService.configure();
     App.addListener('appUrlOpen', (event: URLOpenListenerEvent) => {
       console.log('appUrlOpen', event);
-      this.zone.run(() => {
-        try {
-          // url will come in like https://dust.events?art=1234
-          const tmp = event.url.split('?');
-          if (tmp.length > 1) {
-            const kv = tmp[1].split('=');
-            this.shareService.notify(kv[0] as ShareInfoType, kv[1]);
-          }
-        } catch (e) {
-          console.error('appUrlOpen', e);
+
+      try {
+        // url will come in like https://dust.events?art=1234
+        const tmp = event.url.split('?');
+        if (tmp.length > 1) {
+          const kv = tmp[1].split('=');
+          this.shareService.notify(kv[0] as ShareInfoType, kv[1]);
         }
-      });
+      } catch (e) {
+        console.error('appUrlOpen', e);
+      }
+
     });
 
     // Test application integrity
-    setTimeout(() => {
-      this.integrityService.testIntegrity();
-    }, 10000);
+    // setTimeout(() => {
+    //   this.integrityService.testIntegrity();
+    // }, 10000);
   }
 
   stackChanged() {
