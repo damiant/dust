@@ -32,7 +32,7 @@ jobs:
         run: bun install
 
       - name: Build project app
-        run: bun run build
+        run: bun run build-prod
 
       - name: Capacitor sync
         run: npx cap sync
@@ -46,7 +46,7 @@ jobs:
           base64 -d android/release.jks.base64 > android/release.decrypted.jks
 
       - name: Sign build
-        run: jarsigner -keystore android/release.decrypted.jks -storepass "${{ secrets.KEYSTORE_PASSWORD }}" -signedjar ./android/app/build/outputs/bundle/release/app-release-signed.aab ./android/app/build/outputs/bundle/release/app-release.aab release
+        run: jarsigner -keystore android/release.decrypted.jks -storepass "${{ secrets.KEYSTORE_PASSWORD }}" -signedjar ./android/app/build/outputs/bundle/release/app-release-signed.aab ./android/app/build/outputs/bundle/release/app-release.aab dust
 
       - name: Upload release bundle
         uses: actions/upload-artifact@v4
