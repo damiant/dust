@@ -20,11 +20,6 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-#      - name: Setup Node.js
-#        uses: actions/setup-node@v4
-#        with:
-#          node-version: 20.x
-
       - name: Install bun      
         uses: oven-sh/setup-bun@v1   
 
@@ -35,7 +30,7 @@ jobs:
         run: bun run build-prod
 
       - name: Capacitor sync
-        run: npx cap sync
+        run: bunx cap sync
 
       - name: Build app bundle
         run: cd android && ./gradlew bundle
