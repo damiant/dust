@@ -54,9 +54,9 @@ export class AppComponent implements OnInit {
     });
 
     // Test application integrity
-    setTimeout(() => {
-      this.integrityService.testIntegrity();
-    }, 10000);
+    // setTimeout(() => {
+    //   this.integrityService.testIntegrity();
+    // }, 10000);
   }
 
   stackChanged() {
