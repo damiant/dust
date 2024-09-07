@@ -1,4 +1,5 @@
 # Roadmap
+- 🔴 If offline and unable to download an event then show message 'Unable to download data for [event]'. 
 - 🔴 Sync calendar does not delete events you have removed from favorites
 - 🔴 Possibly duplicating calendar entries on Android
 - 🔴 Switch to using the Capacitor plugin  https://ebarooni.github.io/capacitor-calendar/
