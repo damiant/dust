@@ -82,7 +82,7 @@ jobs:
          echo "${{ secrets.APP_STORE_CONNECT_P8 }}" > ./private_keys/AuthKey_${{ secrets.APP_STORE_CONNECT_KEY_ID }}.p8
 
       - name: Send to TestFlight
-        run: xcrun altool --upload-app --file output/App.ipa --type ios --apiKey ${{ secrets.APP_STORE_CONNECT_KEY_ID }} --apiIssuer ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+        run: xcrun altool --upload-app --file output/App.ipa --type ios --apiKey ${{ secrets.APP_STORE_CONNECT_KEY_ID }} --apiIssuer ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }} --notes "${{ github.event.pull_request.title }}"
 
       #- name: Upload release bundle
       #  uses: actions/upload-artifact@v4
