@@ -1,4 +1,8 @@
 # Roadmap
+- 🔴 Add art type to art to filter for mutant vehicles
+- 🔴 Add camp type to camps to filter for sound camps
+- 🔴 Add header for app version to API
+- 🔴 Add header for event name to API
 - 🔴 If offline and unable to download an event then show message 'Unable to download data for [event]'. 
 - 🔴 Sync calendar does not delete events you have removed from favorites
 - 🔴 Possibly duplicating calendar entries on Android

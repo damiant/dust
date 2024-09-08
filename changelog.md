@@ -1,5 +1,10 @@
 ## Changes
 
+### 2.55
+
+- Add camp types to accommodate sound camps
+- Add art types to accommodate mutant vehicles
+
 ### 2.54
 
 - Use experimental zoneless change detection

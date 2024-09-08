@@ -31,6 +31,7 @@ import {
   hasValue,
   nowAtEvent,
   sameDay,
+  titlePlural,
 } from '../utils/utils';
 import { defaultMapRadius, distance, formatDistance, locationStringToPin, mapPointToPoint } from '../map/map.utils';
 import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from '../map/geo.utils';
@@ -45,6 +46,8 @@ export class DataManager implements WorkerClass {
   private rslEvents: RSLEvent[] = [];
   private pins: PlacedPin[] = [];
   private categories = new Set<string>();
+  private campTypes = new Set<string>();
+  private artTypes = new Set<string>();
   private art: Art[] = [];
   private days = new Set<number>();
   private rslDays: number[] = [];
@@ -75,6 +78,10 @@ export class DataManager implements WorkerClass {
         return this.hasGeoPoints;
       case DataMethods.GetCategories:
         return Array.from(this.categories.values()).sort();
+      case DataMethods.GetCampTypes:
+        return Array.from(this.campTypes.values()).sort();
+      case DataMethods.GetArtTypes:
+        return Array.from(this.artTypes.values()).sort();
       case DataMethods.SetDataset:
         return await this.setDataset(args[0]);
       case DataMethods.GetEvents:
@@ -92,7 +99,7 @@ export class DataManager implements WorkerClass {
       case DataMethods.GetArtList:
         return this.getArtList(args[0]);
       case DataMethods.FindArts:
-        return this.findArts(args[0], args[1], args[2]);
+        return this.findArts(args[0], args[1], args[2], args[3]);
       case DataMethods.FindArt:
         return this.findArt(args[0]);
       case DataMethods.GpsToPoint:
@@ -122,7 +129,7 @@ export class DataManager implements WorkerClass {
       case DataMethods.FindEvents:
         return this.findEvents(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7]);
       case DataMethods.FindCamps:
-        return this.findCamps(args[0], args[1], args[2]);
+        return this.findCamps(args[0], args[1], args[2], args[3]);
       case DataMethods.FindEvent:
         return this.findEvent(args[0]);
       case DataMethods.FindCamp:
@@ -323,9 +330,15 @@ export class DataManager implements WorkerClass {
     let artIndex: any = {};
     let artGPS: any = {};
     let artLocationNames: any = {};
+    this.campTypes = new Set<string>();
+    this.artTypes = new Set<string>();
+
     for (let camp of this.camps) {
       const pin = this.locateCamp(camp);
 
+      if (camp.camp_type && camp.camp_type.trim() != '') {
+        this.campTypes.add(titlePlural(camp.camp_type));
+      }
       if (pin) {
         const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
         camp.gpsCoord = gpsCoords;
@@ -353,6 +366,9 @@ export class DataManager implements WorkerClass {
     for (let art of this.art) {
       artIndex[art.uid] = art.name;
       artLocationNames[art.uid] = art.location_string;
+      if (art.art_type && art.art_type.trim() != '') {
+        this.artTypes.add(titlePlural(art.art_type));
+      }
       const pin = locationStringToPin(art.location_string!, this.mapRadius, undefined);
       if (pin) {
         const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
@@ -913,7 +929,7 @@ export class DataManager implements WorkerClass {
     return result;
   }
 
-  public findCamps(query: string, coords?: GpsCoord, top?: number): Camp[] {
+  public findCamps(query: string, coords?: GpsCoord, top?: number, campType?: string): Camp[] {
     const result: Camp[] = [];
     if (query && !this.isClockString(query)) {
       query = this.scrubQuery(query);
@@ -933,7 +949,7 @@ export class DataManager implements WorkerClass {
       } else {
         camp.distanceInfo = '';
       }
-      const match = this.campMatches(query, camp);
+      const match = this.campMatches(query, camp, campType);
       switch (match) {
         case 'Important': result.unshift(camp); break;
         case 'Match': result.push(camp); break;
@@ -950,21 +966,29 @@ export class DataManager implements WorkerClass {
     return result;
   }
 
-  private campMatches(query: string, camp: Camp): MatchType {
-    if (query == '') return 'Match';
-    if (
-      camp.name.toLowerCase().includes(query) ||
-      camp.location_string?.toLowerCase().includes(query)) {
-      return 'Important';
+  private campMatches(query: string, camp: Camp, campType?: string): MatchType {
+    let result: MatchType = 'No Match';
+    if (query == '') {
+      result = 'Match';
+    } else {
+      if (
+        camp.name.toLowerCase().includes(query) ||
+        camp.location_string?.toLowerCase().includes(query)) {
+        result = 'Important';
+      } else {
+        if (
+          camp.description?.toLowerCase().includes(query)) {
+          result = 'Match';
+        }
+      }
     }
-    if (
-      camp.description?.toLowerCase().includes(query)) {
-      return 'Match';
+    if (hasValue(campType)) {
+      result = this.typeMatch(camp.camp_type, campType) ? 'Match' : 'No Match';
     }
-    return 'No Match';
+    return result;
   }
 
-  public findArts(query: string | undefined, coords: GpsCoord | undefined, top?: number): Art[] {
+  public findArts(query: string | undefined, coords: GpsCoord | undefined, top?: number, artType?: string): Art[] {
     const result: Art[] = [];
     if (query && !this.isClockString(query)) {
       query = this.scrubQuery(query);
@@ -980,8 +1004,15 @@ export class DataManager implements WorkerClass {
         art.distance = distance(coords, art.gpsCoords);
         art.distanceInfo = formatDistance(art.distance);
       }
-      const match = this.artMatches(query ? query.toLowerCase() : '', art)
-      if (!query || match !== 'No Match') {
+      let match = this.artMatches(query ? query.toLowerCase() : '', art);
+
+      if (hasValue(artType)) {
+        if (!this.typeMatch(art.art_type, artType)) {
+          match = 'No Match';
+        }
+      }
+
+      if (match !== 'No Match') {
         if (match == 'Important') {
           result.unshift(art);
         } else {
@@ -997,6 +1028,11 @@ export class DataManager implements WorkerClass {
       }
     }
     return result;
+  }
+
+  private typeMatch(value: string | undefined, type: string | undefined): boolean {
+    if (!value) return false;
+    return (titlePlural(value) === type);
   }
 
   private artMatches(query: string, art: Art): MatchType {

@@ -22,18 +22,22 @@ import { ArtComponent } from './art.component';
 import { UiService } from '../ui/ui.service';
 import { SearchComponent } from '../search/search.component';
 import { SkeletonArtComponent } from '../skeleton-art/skeleton-art.component';
-import { delay, isWhiteSpace } from '../utils/utils';
+import { delay, hasValue, isWhiteSpace } from '../utils/utils';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { GpsCoord } from '../map/geo.utils';
 import { GeoService } from '../geolocation/geo.service';
 import { AlphabeticalScrollBarComponent } from '../alpha/alpha.component';
 import { SortComponent } from '../sort/sort.component';
+import { CategoryComponent } from '../category/category.component';
 
 interface ArtState {
   showImage: boolean;
   busy: boolean;
   noArtMessage: string;
+  title: string;
   arts: Art[];
+  artTypes: string[];
+  artType: string;
   minBufferPx: number;
   byDist: boolean;
   cardHeight: number;
@@ -47,6 +51,9 @@ function initialState(): ArtState {
     showImage: false,
     busy: true,
     noArtMessage: 'No art was found',
+    artTypes: [],
+    artType: '',
+    title: 'Art',
     arts: [],
     alphaIndex: [],
     alphaValues: [],
@@ -82,6 +89,7 @@ function initialState(): ArtState {
     ArtComponent,
     SearchComponent,
     SortComponent,
+    CategoryComponent,
     SkeletonArtComponent,
   ],
 })
@@ -131,7 +139,7 @@ export class ArtPage {
       if (idx >= 0) {
         this.virtualScroll().scrollToIndex(this.vm.alphaIndex[idx]);
       }
-      this._change.detectChanges();
+      this._change.markForCheck();
     }, 1);
   }
 
@@ -142,7 +150,7 @@ export class ArtPage {
       await this.update(undefined);
     } finally {
       this.vm.busy = false;
-      this._change.detectChanges();
+      this._change.markForCheck();
     }
   }
 
@@ -156,16 +164,22 @@ export class ArtPage {
     this.update('');
   }
 
+  categoryChanged() {
+    this.vm.title = hasValue(this.vm.artType) ? this.vm.artType : 'Art';
+    this.ui.scrollUp('art', this.virtualScroll());
+    this.update('');
+  }
+
   async ionViewDidEnter() {
     this.hack();
-    this._change.detectChanges();
+    this._change.markForCheck();
   }
 
   onIonInfinite(ev: any) {
     this.addArt(10);
     setTimeout(() => {
       (ev as InfiniteScrollCustomEvent).target.complete();
-      this._change.detectChanges();
+      this._change.markForCheck();
     }, 10);
   }
 
@@ -193,7 +207,8 @@ export class ArtPage {
     if (this.vm.byDist) {
       coords = await this.geo.getPosition();
     }
-    this.allArt = await this.db.findArts(search, coords);
+    this.allArt = await this.db.findArts(search, coords, undefined, this.vm.artType);
+    this.vm.artTypes = await this.db.getArtTypes();
     const count = this.allArt.filter((a) => a.images && a.images.length > 0).length;
     this.vm.showImage = count / this.allArt.length > 0.5;
     this.calcCardHeight();

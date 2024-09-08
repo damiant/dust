@@ -1,11 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title> {{vm.title}} </ion-title>
-    <ion-buttons class="b-pad-r" slot="end">
-      <app-category [showSortBy]="false" id="event-categories" allTitle="All Events" [(category)]="vm.category"
-        (categoryChange)="categoryChanged()" (sortTypeChange)="sortTypeChanged($event)"
-        [categories]="vm.categories"></app-category>
-    </ion-buttons>
+
     @if (db.selectedYear() !== '') {
     <ion-badge (click)="home()" class="pad-right" slot="end">{{db.selectedYear()}}</ion-badge>
     }
@@ -23,6 +19,11 @@
       </ion-toolbar>
       <ion-toolbar>
         <app-search placeholder="Find Events" (search)="searchEvents($event)" />
+        <ion-buttons class="b-pad-r" slot="end">
+          <app-category [showSortBy]="false" id="event-categories" allTitle="All Events" [(category)]="vm.category"
+            (categoryChange)="categoryChanged()" (sortTypeChange)="sortTypeChanged($event)"
+            [categories]="vm.categories"></app-category>
+        </ion-buttons>
       </ion-toolbar>
       <ion-toolbar>
         <ion-segment (ionChange)="dayChange($event)" [(ngModel)]="vm.defaultDay" [scrollable]="true">

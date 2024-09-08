@@ -84,6 +84,13 @@ export function hasValue(v: any): boolean {
   return (v !== undefined && v !== null && v !== '');
 }
 
+export function titlePlural(s: string): string {
+  if ((s == 'Art' || s == 'Camps')) {
+    return s;
+  }
+  return s + 's';
+}
+
 export function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(() => resolve(), ms));
 }
