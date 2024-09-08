@@ -31,6 +31,7 @@ import {
   hasValue,
   nowAtEvent,
   sameDay,
+  titlePlural,
 } from '../utils/utils';
 import { defaultMapRadius, distance, formatDistance, locationStringToPin, mapPointToPoint } from '../map/map.utils';
 import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from '../map/geo.utils';
@@ -336,7 +337,7 @@ export class DataManager implements WorkerClass {
       const pin = this.locateCamp(camp);
 
       if (camp.camp_type && camp.camp_type.trim() != '') {
-        this.campTypes.add(camp.camp_type);
+        this.campTypes.add(titlePlural(camp.camp_type));
       }
       if (pin) {
         const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
@@ -366,7 +367,7 @@ export class DataManager implements WorkerClass {
       artIndex[art.uid] = art.name;
       artLocationNames[art.uid] = art.location_string;
       if (art.art_type && art.art_type.trim() != '') {
-        this.artTypes.add(art.art_type);
+        this.artTypes.add(titlePlural(art.art_type));
       }
       const pin = locationStringToPin(art.location_string!, this.mapRadius, undefined);
       if (pin) {
@@ -981,12 +982,8 @@ export class DataManager implements WorkerClass {
         }
       }
     }
-    if (campType && campType.trim() != '') {
-      if (camp.camp_type?.toLowerCase() == campType.toLowerCase()) {
-        result = 'Match';
-      } else {
-        result = 'No Match';
-      }
+    if (hasValue(campType)) {
+      result = this.typeMatch(camp.camp_type, campType) ? 'Match' : 'No Match';
     }
     return result;
   }
@@ -1010,7 +1007,7 @@ export class DataManager implements WorkerClass {
       let match = this.artMatches(query ? query.toLowerCase() : '', art);
 
       if (hasValue(artType)) {
-        if (art.art_type?.toLowerCase() !== artType!.toLowerCase()) {
+        if (!this.typeMatch(art.art_type, artType)) {
           match = 'No Match';
         }
       }
@@ -1031,6 +1028,11 @@ export class DataManager implements WorkerClass {
       }
     }
     return result;
+  }
+
+  private typeMatch(value: string | undefined, type: string | undefined): boolean {
+    if (!value) return false;
+    return (titlePlural(value) === type);
   }
 
   private artMatches(query: string, art: Art): MatchType {

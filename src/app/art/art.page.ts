@@ -22,7 +22,7 @@ import { ArtComponent } from './art.component';
 import { UiService } from '../ui/ui.service';
 import { SearchComponent } from '../search/search.component';
 import { SkeletonArtComponent } from '../skeleton-art/skeleton-art.component';
-import { delay, hasValue, isWhiteSpace, titlePlural } from '../utils/utils';
+import { delay, hasValue, isWhiteSpace } from '../utils/utils';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { GpsCoord } from '../map/geo.utils';
 import { GeoService } from '../geolocation/geo.service';
@@ -165,7 +165,7 @@ export class ArtPage {
   }
 
   categoryChanged() {
-    this.vm.title = hasValue(this.vm.artType) ? titlePlural(this.vm.artType) : 'Art';
+    this.vm.title = hasValue(this.vm.artType) ? this.vm.artType : 'Art';
     this.ui.scrollUp('art', this.virtualScroll());
     this.update('');
   }

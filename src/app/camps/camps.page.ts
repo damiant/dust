@@ -21,7 +21,7 @@ import { CampComponent } from '../camp/camp.component';
 import { SortComponent } from '../sort/sort.component';
 import { UiService } from '../ui/ui.service';
 import { SearchComponent } from '../search/search.component';
-import { hasValue, isWhiteSpace, titlePlural } from '../utils/utils';
+import { hasValue, isWhiteSpace } from '../utils/utils';
 import { toMapPoint } from '../map/map.utils';
 import { GeoService } from '../geolocation/geo.service';
 import { GpsCoord } from '../map/geo.utils';
@@ -137,7 +137,7 @@ export class CampsPage {
   }
 
   public categoryChanged() {
-    this.vm.title = hasValue(this.vm.campType) ? titlePlural(this.vm.campType) : 'Camps';
+    this.vm.title = hasValue(this.vm.campType) ? this.vm.campType : 'Camps';
     this.update('');
   }
 

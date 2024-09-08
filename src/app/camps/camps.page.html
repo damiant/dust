@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title> Camps</ion-title>
+    <ion-title> {{vm.title}}</ion-title>
 
     @if (db.selectedYear() !== '') {
     <ion-badge class="pad-right" (click)="home()" slot="end">{{db.selectedYear()}}</ion-badge>
