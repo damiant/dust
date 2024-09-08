@@ -91,6 +91,7 @@ export interface Camp {
   landmark: string;
   facing: string;
   pin: Pin;
+  camp_type?: string,
   distance: number;
   distanceInfo: string;
   year: number;
@@ -132,6 +133,7 @@ export interface Art {
   self_guided_tour_map: number;
   label?: string; // Added by dust
   uid: string;
+  art_type?: string,
   url?: string;
   year: number;
 }
@@ -404,6 +406,8 @@ export enum DataMethods {
   GetGPSPoints = 'getGPSPoints',
   GetPins = 'getPins',
   GetCategories = 'getCategories',
+  GetCampTypes = 'getCampTypes',
+  GetArtTypes = 'getArtTypes',
   SetDataset = 'setDataset',
   GetEvents = 'getEvents',
   GetLinks = 'getLinks',

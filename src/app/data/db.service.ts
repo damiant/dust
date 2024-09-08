@@ -320,6 +320,14 @@ export class DbService {
     return await call(this.worker, DataMethods.GetCategories);
   }
 
+  public async getCampTypes(): Promise<string[]> {
+    return await call(this.worker, DataMethods.GetCampTypes);
+  }
+
+  public async getArtTypes(): Promise<string[]> {
+    return await call(this.worker, DataMethods.GetArtTypes);
+  }
+
   public async getCampList(ids: string[]): Promise<Camp[]> {
     return await call(this.worker, DataMethods.GetCampList, ids);
   }
@@ -328,12 +336,12 @@ export class DbService {
     return await call(this.worker, DataMethods.GetArtList, ids);
   }
 
-  public async findCamps(query: string, near?: GpsCoord, top?: number): Promise<Camp[]> {
-    return await call(this.worker, DataMethods.FindCamps, query, near, top);
+  public async findCamps(query: string, near?: GpsCoord, top?: number, campType?: string): Promise<Camp[]> {
+    return await call(this.worker, DataMethods.FindCamps, query, near, top, campType);
   }
 
-  public async findArts(query: string | undefined, coords: GpsCoord | undefined, top?: number): Promise<Art[]> {
-    return await call(this.worker, DataMethods.FindArts, query, coords, top);
+  public async findArts(query: string | undefined, coords: GpsCoord | undefined, top?: number, artType?: string): Promise<Art[]> {
+    return await call(this.worker, DataMethods.FindArts, query, coords, top, artType);
   }
 
   public async findArt(uid: string): Promise<Art> {

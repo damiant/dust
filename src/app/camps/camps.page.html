@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title> Camps </ion-title>
+    <ion-title> Camps</ion-title>
 
     @if (db.selectedYear() !== '') {
     <ion-badge class="pad-right" (click)="home()" slot="end">{{db.selectedYear()}}</ion-badge>
@@ -18,13 +18,19 @@
     class="virtual-scroll-container ion-content-scroll-host" cdkVirtualScrollingElement>
     <ion-header collapse="condense">
       <ion-toolbar>
-        <ion-title class="page-focus" size="large">Camps</ion-title>
+        <ion-title class="page-focus" size="large">{{vm.title}}</ion-title>
         <ion-buttons class="b-pad-r" slot="end">
           <app-sort id="camps-sort" (sortTypeChange)="sortTypeChanged($event)"></app-sort>
         </ion-buttons>
       </ion-toolbar>
       <ion-toolbar>
         <app-search placeholder="Find Camps" (search)="search($event)" />
+        @if (vm.campTypes.length > 0) {
+        <ion-buttons class="b-pad-r" slot="end">
+          <app-category [showSortBy]="false" id="camp-types" allTitle="All Types" [(category)]="vm.campType"
+            (categoryChange)="categoryChanged()" [categories]="vm.campTypes"></app-category>
+        </ion-buttons>
+        }
       </ion-toolbar>
     </ion-header>
     <app-map-modal [title]="vm.mapTitle" [subtitle]="vm.mapSubtitle" [(show)]="vm.showMap"

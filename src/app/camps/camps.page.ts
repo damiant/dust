@@ -21,17 +21,21 @@ import { CampComponent } from '../camp/camp.component';
 import { SortComponent } from '../sort/sort.component';
 import { UiService } from '../ui/ui.service';
 import { SearchComponent } from '../search/search.component';
-import { isWhiteSpace } from '../utils/utils';
+import { hasValue, isWhiteSpace, titlePlural } from '../utils/utils';
 import { toMapPoint } from '../map/map.utils';
 import { GeoService } from '../geolocation/geo.service';
 import { GpsCoord } from '../map/geo.utils';
 import { AlphabeticalScrollBarComponent } from '../alpha/alpha.component';
 import { addIcons } from 'ionicons';
 import { compass, compassOutline } from 'ionicons/icons';
+import { CategoryComponent } from '../category/category.component';
 
 interface CampsState {
   camps: Camp[];
+  campType: string;
+  campTypes: string[];
   showMap: boolean;
+  title: string;
   mapTitle: string;
   mapSubtitle: string;
   noCampsMessage: string;
@@ -48,7 +52,10 @@ interface CampsState {
 function initialState(): CampsState {
   return {
     camps: [],
+    campTypes: [],
+    campType: '',
     showMap: false,
+    title: 'Camps',
     mapTitle: '',
     mapSubtitle: '',
     noCampsMessage: 'No camps were found.',
@@ -85,6 +92,7 @@ function initialState(): CampsState {
     IonBadge,
     CampComponent,
     SearchComponent,
+    CategoryComponent,
     AlphabeticalScrollBarComponent,
     SortComponent,
   ],
@@ -128,6 +136,11 @@ export class CampsPage {
     this.update('');
   }
 
+  public categoryChanged() {
+    this.vm.title = hasValue(this.vm.campType) ? titlePlural(this.vm.campType) : 'Camps';
+    this.update('');
+  }
+
   enableScroll() {
     this.vm.isScrollDisabled = false;
   }
@@ -166,7 +179,8 @@ export class CampsPage {
     if (this.vm.byDist) {
       coords = await this.geo.getPosition();
     }
-    this.vm.camps = await this.db.findCamps(search, coords);
+    this.vm.camps = await this.db.findCamps(search, coords, undefined, this.vm.campType);
+    this.vm.campTypes = await this.db.getCampTypes();
     this.updateAlphaIndex();
     this.vm.noCampsMessage = isWhiteSpace(search) ? `No camps were found.` : `No camps were found matching "${search}"`;
     this._change.markForCheck();
