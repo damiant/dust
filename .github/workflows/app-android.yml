@@ -48,8 +48,7 @@ jobs:
         with:
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
           packageName: nexus.concepts.dust
-          releaseFiles: android/app/build/outputs/bundle/release/app-release-signed.aab
-          userFraction: 1.0
+          releaseFiles: android/app/build/outputs/bundle/release/app-release-signed.aab          
           track: internal
           status: completed
           whatsNewDirectory: resources/whatsnew           
