@@ -57,8 +57,7 @@ jobs:
           releaseFiles: android/app/build/outputs/bundle/release/app-release-signed.aab          
           track: internal
           status: completed
-          whatsNewDirectory: resources/whatsnew           
-          debugSymbols: android/app/build/intermediates/merged_native_libs/release/out/lib          
+          whatsNewDirectory: resources/whatsnew
 
       - name: Upload release bundle
         uses: actions/upload-artifact@v4
