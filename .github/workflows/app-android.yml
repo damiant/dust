@@ -50,8 +50,7 @@ jobs:
           packageName: nexus.concepts.dust
           releaseFiles: android/app/build/outputs/bundle/release/app-release-signed.aab
           track: qa
-          status: completed           
-          userFraction: 1
+          status: completed
           whatsNewDirectory: resources/whatsnew           
           debugSymbols: android/app/build/intermediates/merged_native_libs/release/out/lib
 
