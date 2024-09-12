@@ -43,13 +43,6 @@ jobs:
       - name: Sign build
         run: jarsigner -keystore android/release.decrypted.jks -storepass "${{ secrets.KEYSTORE_PASSWORD }}" -signedjar ./android/app/build/outputs/bundle/release/app-release-signed.aab ./android/app/build/outputs/bundle/release/app-release.aab dust
 
-      - name: Upload release bundle
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-release
-          path: android/app/build/outputs/bundle/release/app-release-signed.aab
-          retention-days: 60
-
       - name: Send to Play Store          
         uses: r0adkll/upload-google-play@v1
         with:
@@ -60,4 +53,11 @@ jobs:
           status: completed           
           userFraction: 1.00
           whatsNewDirectory: resources/whatsnew           
-          debugSymbols: android/app/build/intermediates/merged_native_libs/release/out/lib          
+          debugSymbols: android/app/build/intermediates/merged_native_libs/release/out/lib
+
+      - name: Upload release bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release
+          path: android/app/build/outputs/bundle/release/app-release-signed.aab
+          retention-days: 60          
