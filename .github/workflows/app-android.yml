@@ -32,6 +32,12 @@ jobs:
       - name: Capacitor sync
         run: bunx cap sync
 
+      - name: Bump version
+        uses: chkfung/android-version-actions@v1.2.2
+        with:
+          gradlePath: app/build.gradle 
+          versionCode: ${{github.run_number}}
+
       - name: Build app bundle
         run: cd android && ./gradlew bundle
 
@@ -52,7 +58,7 @@ jobs:
           track: internal
           status: completed
           whatsNewDirectory: resources/whatsnew           
-          debugSymbols: android/app/build/intermediates/merged_native_libs/release/out/lib
+          debugSymbols: android/app/build/intermediates/merged_native_libs/release/out/lib          
 
       - name: Upload release bundle
         uses: actions/upload-artifact@v4
