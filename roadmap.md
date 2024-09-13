@@ -1,4 +1,13 @@
 # Roadmap
+- 🌟 Not auto selecting and opening the app
+- 🌟 Dust Daka - Siri for "where am I": 8:30 and F. Maybe screen reader or voice control button.
+- 🌟 Siri - What is the closest camp, restroom, ice, medical etc?
+- 🌟 Simple - "Find X camp" > show your location and target only with distance and direction
+- 🌟 Remove Play integrity check
+- 🔴 Add friend by camp name
+- 🔴 If powered then give better GPS accuracy and update the map with centering
+- 🌟 Fix RSL Data - if < 11am then assume the next day
+- 🌟 Test when firefox is the default browser on Android
 - 🌟 If offline and unable to download an event then show message 'Unable to download data for [event]'. 
 - 🌟 Unresponsive after a certain amount of use
 - 🌟 If you favorite an event it would reset to the top of the list and you had to scroll back down
@@ -11,7 +20,21 @@
 - 🔴 Home page - if not all then show brief tooltip "Showing only past events"
 - 🔴 Sunrise/sunset label on music sets
 - 🔴 line crossing over midnight.
+- 🔴 Sort friends by location (maybe distance)
 - 🔴 Add changelog to whatchanged text
+- 🔴 Add friends should be faster - camp name requested
+- 🔴 Burner map import
+- 🔴 Share a location via AirDrop
+- 🔴 Music by start time (column for location)
+- 🔴 Zendo, Ranger outposts
+- 🔴 Ending soon tag on events with < 25% time left
+- 🔴 Art / Camps have visited tag
+- 🟠 Shuttle stops, airport, burner express depot
+
+- 🟠 Whats near me for favorites (near me on fav page)
+- 🟠 Near me for favs on the home page
+- 🟠 Bigger icon for your current location
+- 🟠 Whiteout mode - button for whiteout - show huge compass with direction to camp / center camp / temple / 3 or 9
 - 🟠 One page printout "not usable"
 - 🟠 Need to know if an event repeats (ie not as important)
 - 🟠 Share events others are interested in (airdrop maybe)
