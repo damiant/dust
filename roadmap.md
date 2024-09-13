@@ -1,6 +1,24 @@
 # Roadmap
-- 🔴 Add art type to art to filter for mutant vehicles
-- 🔴 Add camp type to camps to filter for sound camps
+- 🔴 One page printout "not usable"
+- 🔴 Need to know if an event repeats (ie not as important)
+- 🔴 Add an "Are you sure" for deleting friends camps
+- 🔴 Swipe back is too sensitive.
+- 🔴 Unresponsive after a certain amount of use
+- 🔴 If you closed app on events and were scrolled to a point then see if you can scroll back there
+- 🔴 Music should have an "all" option.
+- 🔴 Music search should work on all days
+- 🔴 Nearby apparently didnt work for some - verify if location disabled shows that "near me" is not available
+- 🔴 Share events others are interested in (airdrop maybe)
+- 🟠 Burner Map - Store your camp location and work out how to share
+- 🟠 Option to confirm/deny an event for those with connectivity
+- 🟠 Wallpaper background generator
+- 🔴 Ability to search for events between 2 times (eg 2 to 4pm)
+- 🔴 Map should have toggles for art, restrooms, camps, infrastructure
+- 🔴 Home page - if not all then show brief tooltip "Showing only past events"
+- 🔴 Sunrise/sunset label on music sets
+- 🔴 line crossing over midnight.
+- 🔴 Some kind of priority on favorites (eg color, maybe long press?)
+- 🔴 Tracking friends
 - 🔴 Add header for app version to API
 - 🔴 Add header for event name to API
 - 🔴 If offline and unable to download an event then show message 'Unable to download data for [event]'. 
