@@ -216,12 +216,14 @@ export class ProfilePage implements OnInit {
     this.vm.presentingElement = document.querySelector('.ion-page');
     const imageUrl = await getCachedImage(this.db.selectedImage());
     this.db.checkInit();
+    const { version, build } = Capacitor.getPlatform() == 'web' ? { version: '0.0.0', build: '0' } : await App.getInfo();
+    await this.db.setVersion(`${version} (${build})`);
     const summary: DatasetResult = await this.db.get(this.settings.settings.datasetId, Names.summary, {
       onlyRead: true,
     });
     await this.favs.getThings();
     const links = await this.db.getLinks();
-    const { version } = Capacitor.getPlatform() == 'web' ? { version: '0.0.0' } : await App.getInfo();
+
 
     this.vm.imageUrl = imageUrl;
     this.vm.hasRestrooms = this.hasValue(summary.pinTypes, 'Restrooms');

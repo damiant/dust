@@ -135,6 +135,10 @@ export class DbService {
     }
   }
 
+  public async setVersion(version: string) {
+    return await call(this.worker, DataMethods.SetVersion, version);
+  }
+
   public setLocationHidden(locationHidden: LocationHidden) {
     this.locationsHidden.set(locationHidden);
   }
