@@ -397,10 +397,5 @@ export class PinMapPage {
     };
   }
 
-  scrolled(result: ScrollResult) {
-    if (this.ui.swipedRight(result)) {
-      this.location.back();
-    }
-    this._change.detectChanges();
-  }
+
 }

@@ -1,5 +1,9 @@
 ## Changes
 
+### 2.56
+
+- Remove swipe to go back for pages that have the map
+
 ### 2.55
 
 - Add camp types to accommodate sound camps

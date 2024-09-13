@@ -1,5 +1,5 @@
 import { Component, OnInit, signal, input, viewChild, inject, OnDestroy, computed, effect, output, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
   IonBackButton,
@@ -83,7 +83,6 @@ export class EventPage implements OnInit, OnDestroy {
   private ui = inject(UiService);
   private toastController = inject(ToastController);
   private eventsService = inject(EventsService);
-  private location = inject(Location);
   private _change = inject(ChangeDetectorRef);
   public event: Event | undefined;
   public back = signal('Back');
@@ -232,9 +231,6 @@ export class EventPage implements OnInit, OnDestroy {
   scrolled(result: ScrollResult) {
     if (this.ui.swipedDown(result)) {
       this.content().scrollToTop(500);
-    }
-    if (this.ui.swipedRight(result)) {
-      this.location.back();
     }
   }
 
