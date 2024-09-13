@@ -1,5 +1,9 @@
 ## Changes
 
+### 2.57
+
+- Fix when going back to camps/events page and seeing white content
+
 ### 2.56
 
 - Remove swipe to go back for pages that have the map

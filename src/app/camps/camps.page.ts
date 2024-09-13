@@ -156,6 +156,7 @@ export class CampsPage {
     // Hack to ensure tab view is updated on switch of tabs
     this.vm.minBufferPx = this.vm.minBufferPx == 901 ? 900 : 901;
     this.vm.cardHeight = 130 + this.ui.textZoom() * 50;
+    this._change.markForCheck();
   }
 
   search(value: string) {

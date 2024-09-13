@@ -251,6 +251,7 @@ export class EventsPage implements OnInit, OnDestroy {
   private hack() {
     // Hack to ensure tab view is updated on switch of tabs or when day is changed
     this.vm.minBufferPx = this.vm.minBufferPx == 1901 ? 1900 : 1901;
+    this._change.markForCheck();
   }
 
   private chooseDefaultDay(today: Date): Date | string {
