@@ -13,7 +13,7 @@ import {
   IonToolbar,
   ModalController,
   PickerColumn,
-  ToastController,
+  ToastController, IonAlert
 } from '@ionic/angular/standalone';
 import { Friend } from '../data/models';
 import { StreetService } from '../map/street.service';
@@ -30,7 +30,7 @@ export enum FriendResult {
   selector: 'app-friend',
   templateUrl: './friend.component.html',
   styleUrls: ['./friend.component.scss'],
-  imports: [
+  imports: [IonAlert,
     CommonModule,
     FormsModule,
     IonItem,
@@ -52,8 +52,25 @@ export class FriendComponent implements OnInit {
   private streetService = inject(StreetService);
   private _change = inject(ChangeDetectorRef);
   noAddress = 'Choose Address';
+  deleting = false;
   friend: Friend = { name: '', notes: '', address: this.noAddress };
   isEdit: boolean = false;
+  public deleteButtons = [
+    {
+      text: 'Delete',
+      role: 'confirm',
+      handler: () => {
+
+      },
+    },
+    {
+      text: 'Cancel',
+      role: 'cancel',
+      handler: () => {
+      },
+    },
+
+  ];
 
   public addresses: PickerColumn[];
 
@@ -109,6 +126,13 @@ export class FriendComponent implements OnInit {
   }
 
   deleteFriend() {
+    this.deleting = true;
+  }
+
+  confirmDelete(ev: any) {
+    this.deleting = false;
+    if (ev.detail.role !== 'confirm') return;
     return this.modalCtrl.dismiss(this.friend, FriendResult.delete);
+
   }
 }

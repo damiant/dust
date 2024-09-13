@@ -3,6 +3,7 @@
 ### 2.56
 
 - Remove swipe to go back for pages that have the map
+- Confirmation added when deleting a friend
 
 ### 2.55
 

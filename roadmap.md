@@ -1,7 +1,5 @@
 # Roadmap
-- 🔴 Swipe back is too sensitive.
 - 🔴 Unresponsive after a certain amount of use
-- 🔴 Back with swipe can cause routing to page you cannot exit
 - 🔴 If you closed app on events and were scrolled to a point then see if you can scroll back there
 - 🔴 Add header for app version to API
 - 🔴 Add header for event name to API
@@ -15,7 +13,6 @@
 - 🔴 Add changelog to whatchanged text
 - 🟠 One page printout "not usable"
 - 🟠 Need to know if an event repeats (ie not as important)
-- 🟠 Add an "Are you sure" for deleting friends camps
 - 🟠 Share events others are interested in (airdrop maybe)
 - 🟠 Burner Map - Store your camp location and work out how to share
 - 🟠 Option to confirm/deny an event for those with connectivity
