@@ -32,6 +32,12 @@ jobs:
       - name: Capacitor sync
         run: bunx cap sync
 
+      - name: Bump version
+        uses: chkfung/android-version-actions@v1.2.2
+        with:
+          gradlePath: android/app/build.gradle 
+          versionCode: 2${{github.run_number}}
+
       - name: Build app bundle
         run: cd android && ./gradlew bundle
 
@@ -43,9 +49,19 @@ jobs:
       - name: Sign build
         run: jarsigner -keystore android/release.decrypted.jks -storepass "${{ secrets.KEYSTORE_PASSWORD }}" -signedjar ./android/app/build/outputs/bundle/release/app-release-signed.aab ./android/app/build/outputs/bundle/release/app-release.aab dust
 
+      - name: Send to Play Store          
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+          packageName: nexus.concepts.dust
+          releaseFiles: android/app/build/outputs/bundle/release/app-release-signed.aab          
+          track: internal
+          status: completed
+          whatsNewDirectory: resources/whatsnew
+
       - name: Upload release bundle
         uses: actions/upload-artifact@v4
         with:
           name: app-release
           path: android/app/build/outputs/bundle/release/app-release-signed.aab
-          retention-days: 60
+          retention-days: 60          
