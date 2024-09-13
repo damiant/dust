@@ -1,6 +1,7 @@
 # Roadmap
 - 🌟 If offline and unable to download an event then show message 'Unable to download data for [event]'. 
 - 🌟 Unresponsive after a certain amount of use
+- 🌟 If you favorite an event it would reset to the top of the list and you had to scroll back down
 - 🔴 If you closed app on events and were scrolled to a point then see if you can scroll back there
 - 🔴 Add header for event name to API
 - 🌟 Nearby apparently did not work for some - even when location enabled
