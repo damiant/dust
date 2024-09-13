@@ -49,6 +49,7 @@ export class DataManager implements WorkerClass {
   private campTypes = new Set<string>();
   private artTypes = new Set<string>();
   private art: Art[] = [];
+  private version: string = ''; // Version of the app (used for API calls)
   private days = new Set<number>();
   private rslDays: number[] = [];
   private links: Link[] = [];
@@ -126,6 +127,8 @@ export class DataManager implements WorkerClass {
         return this.getRSLEvents(args[0], args[1], args[2], undefined, undefined, args[3]);
       case DataMethods.CheckEvents:
         return this.checkEvents();
+      case DataMethods.SetVersion:
+        return this.setVersion(args[0]);
       case DataMethods.FindEvents:
         return this.findEvents(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7]);
       case DataMethods.FindCamps:
@@ -170,6 +173,10 @@ export class DataManager implements WorkerClass {
       camps: this.camps.length, rsl: this.rslEvents.length, links: this.links.length,
       revision: this.revision.revision, pinTypes: await this.summarizePins(this.pins)
     };
+  }
+
+  private async setVersion(version: string) {
+    this.version = version;
   }
 
   private async summarizePins(pins: PlacedPin[]) {
@@ -1232,7 +1239,7 @@ export class DataManager implements WorkerClass {
 
   public async write(key: string, url: string, timeout: number): Promise<any> {
     try {
-      const response = await webFetchWithTimeout(url, {}, timeout);
+      const response = await webFetchWithTimeout(url, { headers: { 'app-version': this.version } }, timeout);
       const json = await response.json();
       if (key.includes(Names.camps)) {
         this.fixPins(json);
@@ -1250,7 +1257,7 @@ export class DataManager implements WorkerClass {
 
   public async fetch(key: string, url: string, timeout: number): Promise<any> {
     try {
-      const response = await webFetchWithTimeout(url, {}, timeout);
+      const response = await webFetchWithTimeout(url, { headers: { 'app-version': this.version } }, timeout);
       const json = await response.json();
       return json;
     } catch (err) {

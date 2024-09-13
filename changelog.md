@@ -1,5 +1,11 @@
 ## Changes
 
+### 2.56
+
+- Remove swipe to go back for pages that have the map
+- Confirmation added when deleting a friend
+- Pass version number with requests for data
+
 ### 2.55
 
 - Add camp types to accommodate sound camps

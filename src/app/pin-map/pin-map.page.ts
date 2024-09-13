@@ -23,7 +23,7 @@ import {
 import { addIcons } from 'ionicons';
 import { compassOutline, shareOutline } from 'ionicons/icons';
 import { SearchComponent } from '../search/search.component';
-import { PinColor, ScrollResult } from '../map/map-model';
+import { PinColor } from '../map/map-model';
 import { FavoritesService } from '../favs/favorites.service';
 import { UiService } from '../ui/ui.service';
 import { ToastController } from '@ionic/angular';
@@ -397,10 +397,5 @@ export class PinMapPage {
     };
   }
 
-  scrolled(result: ScrollResult) {
-    if (this.ui.swipedRight(result)) {
-      this.location.back();
-    }
-    this._change.detectChanges();
-  }
+
 }

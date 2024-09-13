@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject, viewChild } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
   IonBackButton,
@@ -24,7 +24,6 @@ import { EventPage } from '../event/event.page';
 import { FavoritesService } from '../favs/favorites.service';
 import { UiService } from '../ui/ui.service';
 import { SettingsService } from '../data/settings.service';
-//import { ShareInfoType } from '../share/share.service';
 import { toMapPoint } from '../map/map.utils';
 import { getOrdinalNum } from '../utils/utils';
 import { addIcons } from 'ionicons';
@@ -66,7 +65,6 @@ export class CampPage implements OnInit {
   private settings = inject(SettingsService);
   private toastController = inject(ToastController);
   private ui = inject(UiService);
-  private location = inject(Location);
   private _change = inject(ChangeDetectorRef);
   content = viewChild.required(IonContent);
   showEvent = false;
@@ -157,9 +155,6 @@ export class CampPage implements OnInit {
   scrolled(result: ScrollResult) {
     if (this.ui.swipedDown(result)) {
       this.content().scrollToTop(500);
-    }
-    if (this.ui.swipedRight(result)) {
-      this.location.back();
     }
   }
 

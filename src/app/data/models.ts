@@ -434,6 +434,7 @@ export enum DataMethods {
   SetMapPointsGPS = 'setMapPointsGPS',
   HasGeoPoints = 'hasGeoPoints',
   ConsoleLog = 'consoleLog',
+  SetVersion = 'setVersion',
   Write = 'write',
   Fetch = 'fetch',
   ReadData = 'readData',
