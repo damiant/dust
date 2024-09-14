@@ -5,6 +5,7 @@
 - Fix when going back to camps/events page and seeing white content
 - Fix auto starting the event if closed while selected
 - Scroll to the last event you visited (after pressing < and >)
+- Fix where music shows no events on first view
 
 ### 2.56
 

@@ -1,20 +1,33 @@
 # Roadmap
+
+## Accessibility / Navigation
 - 🌟 Dust Daka - Siri for "where am I": 8:30 and F. Maybe screen reader or voice control button.
 - 🌟 Siri - What is the closest camp, restroom, ice, medical etc?
 - 🌟 Simple - "Find X camp" > show your location and target only with distance and direction
+- 🟠 Whiteout mode - button for whiteout - show huge compass with direction to camp / center camp / temple / 3 or 9
+
+## Bugs
+- 🌟 Fix RSL Data - if < 11am then assume the next day
 - 🔴 If the current day is at end of list then scroll right
 - 🔴 If you closed app on events and were scrolled to a point then see if you can scroll back there
-
 - 🔴 Verify filtered events dont save the filtered version
 - 🔴 Verify if there are no events that it doesnt try to download them
-
-- 🔴 Add friend by camp name
 - 🔴 If powered then give better GPS accuracy and update the map with centering
-- 🌟 Fix RSL Data - if < 11am then assume the next day
 - 🌟 Test when firefox is the default browser on Android
 - 🌟 If offline and unable to download an event then show message 'Unable to download data for [event]'
 - 🌟 Unresponsive after a certain amount of use
 - 🌟 Nearby apparently did not work for some - even when location enabled
+- 🔴 Add changelog to whatchanged text
+- 🟠 Bigger icon for your current location
+- 🔴 Possibly duplicating calendar entries on Android
+- 🔴 Switch to using the Capacitor plugin  https://ebarooni.github.io/capacitor-calendar/
+- 🔴 Dark side of the mug has a 27 hour event
+- 🔴 All day events for Burning Man are entered as 2 x12 hour. Need to clean these up
+- 🔵 If you favorite an event and return to the event list it is not starred
+- 🔵 Add a timeout for the "getting location". Set to 10 seconds
+
+## Features
+- 🔴 Add friend by camp name
 - 🔴 Music should have an "all" option.
 - 🔴 Music search should work on all days
 - 🔴 Map should have toggles for art, restrooms, camps, infrastructure
@@ -22,7 +35,6 @@
 - 🔴 Sunrise/sunset label on music sets
 - 🔴 line crossing over midnight.
 - 🔴 Sort friends by location (maybe distance)
-- 🔴 Add changelog to whatchanged text
 - 🔴 Add friends should be faster - camp name requested
 - 🔴 Burner map import
 - 🔴 Share a location via AirDrop
@@ -31,11 +43,8 @@
 - 🔴 Ending soon tag on events with < 25% time left
 - 🔴 Art / Camps have visited tag
 - 🟠 Shuttle stops, airport, burner express depot
-
 - 🟠 Whats near me for favorites (near me on fav page)
 - 🟠 Near me for favs on the home page
-- 🟠 Bigger icon for your current location
-- 🟠 Whiteout mode - button for whiteout - show huge compass with direction to camp / center camp / temple / 3 or 9
 - 🟠 One page printout "not usable"
 - 🟠 Need to know if an event repeats (ie not as important)
 - 🟠 Share events others are interested in (airdrop maybe)
@@ -46,14 +55,11 @@
 - 🟠 Some kind of priority on favorites (eg color, maybe long press?)
 - 🟠 Tracking friends
 - 🔴 Sync calendar does not delete events you have removed from favorites
-- 🔴 Possibly duplicating calendar entries on Android
-- 🔴 Switch to using the Capacitor plugin  https://ebarooni.github.io/capacitor-calendar/
+
 - 🔴 Use Capacitor share for image snap
 - 🔴 Save my camp location should ask for camp if not at event
 - 🔴 Share map should include dust and title overlaid on the map
 - 🔴 Share map should include link that opens dust to add friend
-- 🔴 Dark side of the mug has a 27 hour event
-- 🔴 All day events for Burning Man are entered as 2 x12 hour. Need to clean these up
 - 🔴 Center Camp is not listed as a camp (backend change)
 - 🔴 Temple is not listed as art (backend change)
 - 🔴 Click camp name to switch to camps view and select camp
@@ -76,8 +82,6 @@
 - 🟠 Document ways to disconnect and not use your phone
 
 - 🟠 Now map needs music
-- 🟠 Error: white screened the events page after a day had passed
-- 🔵 If you favorite an event and return to the event list it is not starred
 
 ## Feedback: Requested Features
 
