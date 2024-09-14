@@ -12,4 +12,9 @@ export class EventsService {
     public prev = new EventEmitter<string>();
     public position = signal<EventPositionChange>('unknown');
     public eventChanged = new EventEmitter<EventChanged>();
+
+    // Emits when the event page is left so that the event is scrolled into view
+    public leftEventPage = new EventEmitter<void>();
+
+    public currentEventId: string | undefined;
 }
