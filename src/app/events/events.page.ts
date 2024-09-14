@@ -176,8 +176,8 @@ export class EventsPage implements OnInit, OnDestroy {
     this.eventPageLeftSubscription = this.eventsService.leftEventPage.subscribe(() => {
       if (this.eventsService.currentEventId) {
         const idx = this.vm.events.findIndex(e => e.uid == this.eventsService.currentEventId);
-        // Scrolls to the event you were looking at
-        this.virtualScroll().scrollToIndex(idx, 'smooth');
+        // Scrolls to the event you were looking at        
+        this.virtualScroll().scrollToIndex(idx, 'instant');
         (this.vm.events[idx] as any).highlighted = true;
         this._change.markForCheck();
 
