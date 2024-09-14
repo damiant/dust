@@ -7,6 +7,7 @@
 - Scroll to the last event you visited (after pressing < and >)
 - Fix where music shows no events on first view
 - The music section will scroll the current day into view
+- Rock Star Librarian data for sets crossing midnight have day incremented
 
 ### 2.56
 
