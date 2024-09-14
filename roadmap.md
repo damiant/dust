@@ -7,7 +7,6 @@
 - 🟠 Whiteout mode - button for whiteout - show huge compass with direction to camp / center camp / temple / 3 or 9
 
 ## Bugs
-- 🌟 Fix RSL Data - if < 11am then assume the next day
 - 🔴 If you closed app on events and were scrolled to a point then see if you can scroll back there
 - 🔴 Verify filtered events dont save the filtered version
 - 🔴 Verify if there are no events that it doesnt try to download them
