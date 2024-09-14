@@ -148,6 +148,10 @@ export class RslPage {
     this.vm.defaultDay = this.chooseDefaultDay(now());
     this.updateTitle();
     await this.update();
+    setTimeout(() => {
+      // Scroll the current day into view
+      document.querySelector('#today')?.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+    }, 25);
   }
 
   onIonInfinite(ev: any) {
