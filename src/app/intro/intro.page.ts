@@ -158,10 +158,11 @@ export class IntroPage {
     // Whether the user has selected an event already
     this.vm.eventAlreadySelected =
       !isWhiteSpace(this.settingsService.settings.datasetId) && !this.settingsService.settings.preventAutoStart;
+    console.log(`eventAlreadySelected ${this.vm.eventAlreadySelected} prevAuto=${this.settingsService.settings.preventAutoStart} ${JSON.stringify(this.settingsService.settings.datasetId)} ${isWhiteSpace(this.settingsService.settings.datasetId)}`)
     if (this.settingsService.settings.dataset) {
       const end = new Date(this.settingsService.settings.dataset.end);
       const until = daysUntil(end, now());
-      if (until < 0) {
+      if (until < -30) {
         // event has already ended. We shouldn't auto start
         console.warn(`Event ended ${Math.abs(until)} days ago. Not opening automatically.`);
         this.vm.eventAlreadySelected = false;
@@ -238,6 +239,7 @@ export class IntroPage {
 
     if (this.vm.eventAlreadySelected) {
       console.log(`Auto starting = ${this.vm.eventAlreadySelected}...`);
+      this._change.markForCheck();
       await this.go();
     } else {
       console.log('Did not auto start');
@@ -423,6 +425,10 @@ export class IntroPage {
       }
       this.db.featuresHidden.set(hidden);
       this.settingsService.setOffline(this.settingsService.settings.datasetId);
+
+      this.settingsService.settings.preventAutoStart = false;
+      this.vm.eventAlreadySelected = false;
+
       this.settingsService.save();
       this.ui.setStatusBarBasedOnTheme();
       this.db.overrideDataset = undefined;

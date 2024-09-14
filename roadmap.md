@@ -1,8 +1,9 @@
 # Roadmap
-- 🌟 Not auto selecting and opening the app
 - 🌟 Dust Daka - Siri for "where am I": 8:30 and F. Maybe screen reader or voice control button.
 - 🌟 Siri - What is the closest camp, restroom, ice, medical etc?
 - 🌟 Simple - "Find X camp" > show your location and target only with distance and direction
+- 🔴 Verify filtered events dont save the filtered version
+- 🔴 Verify if there are no events that it doesnt try to download them
 - 🔴 Add friend by camp name
 - 🔴 If powered then give better GPS accuracy and update the map with centering
 - 🌟 Fix RSL Data - if < 11am then assume the next day

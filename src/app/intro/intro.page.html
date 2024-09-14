@@ -20,7 +20,7 @@
     }
   </app-carousel>
 
-  <ion-fab #fab slot="fixed" vertical="bottom" horizontal="end">
+  <ion-fab #fab [hidden]="vm.eventAlreadySelected" slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button (ionBlur)="selectedFilter(undefined)" id="click-trigger">
       <ion-icon [name]="vm.showing === 'all' ? 'chevron-up-outline' : 'chevron-up-circle-sharp'"></ion-icon>
     </ion-fab-button>

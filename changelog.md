@@ -3,6 +3,7 @@
 ### 2.57
 
 - Fix when going back to camps/events page and seeing white content
+- Fix auto starting the event if closed while selected
 
 ### 2.56
 
