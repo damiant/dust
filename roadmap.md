@@ -8,7 +8,6 @@
 
 ## Bugs
 - 🌟 Fix RSL Data - if < 11am then assume the next day
-- 🔴 If the current day is at end of list then scroll right
 - 🔴 If you closed app on events and were scrolled to a point then see if you can scroll back there
 - 🔴 Verify filtered events dont save the filtered version
 - 🔴 Verify if there are no events that it doesnt try to download them
