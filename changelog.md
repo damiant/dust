@@ -1,5 +1,9 @@
 ## Changes
 
+### 2.58
+
+- Fix for event listing
+
 ### 2.57
 
 - Fix when going back to camps/events page and seeing white content
