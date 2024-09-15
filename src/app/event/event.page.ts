@@ -130,6 +130,7 @@ export class EventPage implements OnInit, OnDestroy {
       this.routerOutlet.swipeGesture = true;
     }
     this.eventChangeSubscription = this.eventsService.eventChanged.subscribe(async (eventChange: EventChanged) => {
+      this.eventsService.currentEventId = eventChange.eventId;
       await this.init(eventChange.eventId);
     });
   }
@@ -139,6 +140,11 @@ export class EventPage implements OnInit, OnDestroy {
       this.eventChangeSubscription.unsubscribe();
     }
   }
+
+  ionViewDidLeave() {
+    this.eventsService.leftEventPage.emit();
+  }
+
 
   private async init(eventId: string | null) {
     try {

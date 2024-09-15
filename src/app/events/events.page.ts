@@ -128,6 +128,7 @@ export class EventsPage implements OnInit, OnDestroy {
   private eventsService = inject(EventsService);
   private nextSubscription?: Subscription;
   private prevSubscription?: Subscription;
+  private eventPageLeftSubscription?: Subscription;
   private geo = inject(GeoService);
   private _change = inject(ChangeDetectorRef);
   vm: EventsState = initialState();
@@ -172,6 +173,21 @@ export class EventsPage implements OnInit, OnDestroy {
       this.eventsService.position.set(idx === 1 ? 'start' : 'middle');
       this.eventsService.eventChanged.emit({ eventId: e.uid });
     });
+    this.eventPageLeftSubscription = this.eventsService.leftEventPage.subscribe(() => {
+      if (this.eventsService.currentEventId) {
+        const idx = this.vm.events.findIndex(e => e.uid == this.eventsService.currentEventId);
+        // Scrolls to the event you were looking at        
+        this.virtualScroll().scrollToIndex(idx, 'instant');
+        (this.vm.events[idx] as any).highlighted = true;
+        this._change.markForCheck();
+
+        setTimeout(() => {
+          (this.vm.events[idx] as any).highlighted = undefined;
+          this._change.markForCheck();
+        }, 2000);
+        this.eventsService.currentEventId = undefined;
+      }
+    });
   }
 
   opened(eventId: string) {
@@ -191,6 +207,9 @@ export class EventsPage implements OnInit, OnDestroy {
     }
     if (this.nextSubscription) {
       this.nextSubscription.unsubscribe();
+    }
+    if (this.eventPageLeftSubscription) {
+      this.eventPageLeftSubscription.unsubscribe();
     }
   }
 
@@ -251,6 +270,7 @@ export class EventsPage implements OnInit, OnDestroy {
   private hack() {
     // Hack to ensure tab view is updated on switch of tabs or when day is changed
     this.vm.minBufferPx = this.vm.minBufferPx == 1901 ? 1900 : 1901;
+    this._change.markForCheck();
   }
 
   private chooseDefaultDay(today: Date): Date | string {

@@ -23,7 +23,8 @@
     <ion-toolbar>
       <ion-segment (ionChange)="dayChange($event)" [(ngModel)]="vm.defaultDay" [scrollable]="true">
         @for (day of vm.days; track day) {
-        <ion-segment-button [class.bold]="day.today" [value]="day.date">
+        <ion-segment-button [id]="vm.day === day.date ? 'today' : 'day'+day.dayName" [class.bold]="day.today"
+          [value]="day.date">
           {{day.name}}<br />{{day.dayName}}
         </ion-segment-button>
         }

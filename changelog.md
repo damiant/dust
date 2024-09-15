@@ -1,5 +1,14 @@
 ## Changes
 
+### 2.57
+
+- Fix when going back to camps/events page and seeing white content
+- Fix auto starting the event if closed while selected
+- Scroll to the last event you visited (after pressing < and >)
+- Fix where music shows no events on first view
+- The music section will scroll the current day into view
+- Rock Star Librarian data for sets crossing midnight have day incremented
+
 ### 2.56
 
 - Remove swipe to go back for pages that have the map

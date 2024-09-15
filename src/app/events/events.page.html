@@ -56,9 +56,10 @@
     }
     }
     <cdk-virtual-scroll-viewport [minBufferPx]="vm.minBufferPx" [itemSize]="vm.cardHeight" maxBufferPx="2350">
-      <app-event [showImage]="true" [title]="vm.title" [longTime]="!vm.day" [day]="vm.day" [event]="event"
-        (starClick)=" star(event, $event)" (mapClick)="map($event)" (longEvent)="longEvent($event)"
-        (opened)="opened($event)" *cdkVirtualFor=" let event of vm.events; trackBy: eventsTrackBy" />
+      <app-event [highlighted]="event.highlighted" [showImage]="true" [title]="vm.title" [longTime]="!vm.day"
+        [day]="vm.day" [event]="event" (starClick)=" star(event, $event)" (mapClick)="map($event)"
+        (longEvent)="longEvent($event)" (opened)="opened($event)"
+        *cdkVirtualFor=" let event of vm.events; trackBy: eventsTrackBy" />
     </cdk-virtual-scroll-viewport>
   </div>
 </ion-content>

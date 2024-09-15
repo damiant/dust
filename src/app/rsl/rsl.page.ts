@@ -148,6 +148,10 @@ export class RslPage {
     this.vm.defaultDay = this.chooseDefaultDay(now());
     this.updateTitle();
     await this.update();
+    setTimeout(() => {
+      // Scroll the current day into view
+      document.querySelector('#today')?.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+    }, 25);
   }
 
   onIonInfinite(ev: any) {
@@ -184,6 +188,11 @@ export class RslPage {
     }
     const wasSearch = this.vm.search?.length > 0;
     const days = await this.db.searchRSL(this.vm.search, this.db.isHistorical());
+    if (this.vm.events.length > 0) {
+      this.vm.noEvents = false;
+      this.vm.noEventsMessage = '';
+      return;
+    }
     if (days.length == 0) {
       this.vm.noEvents = this.vm.events.length == 0;
       this.vm.noEventsMessage = wasSearch

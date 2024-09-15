@@ -45,12 +45,14 @@ export class EventComponent {
   private _change = inject(ChangeDetectorRef);
   private emitting = 0;
   public class = computed(() => {
+    const highlight = this.highlighted() ? 'highlight' : '';
     if (this.variableHeight()) {
-      return '';
-    } else return 'item';
+      return highlight;
+    } else return `${highlight} item`;
   });
 
   event = input.required<Event>();
+  highlighted = input(false);
   location = computed(() => {
     return this.event().location ? ` (${this.event().location})` : '';
   });
