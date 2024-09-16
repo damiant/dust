@@ -63,7 +63,7 @@ jobs:
     - name: R2 Upload
       run: |
         bun add wrangler --dev
-        bunx wrangler r2 object put dust-updates/app.zip --file=app-v1.0.zip
+        bunx wrangler r2 object put dust-updates/app-v1.zip --file=app.zip
         bunx wrangler r2 object put dust-updates/version.json --file=version.json
       env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}        
