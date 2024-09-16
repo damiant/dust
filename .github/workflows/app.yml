@@ -55,10 +55,10 @@ jobs:
     - name: Write version file
       uses: DamianReeves/write-file-action@master
       with:
-      path: version.json
-      contents: |
-         { version: "${{ github.run_id }}" }
-      write-mode: overwrite
+        path: version.json
+        contents: |
+          { version: "${{ github.run_id }}" }
+        write-mode: overwrite
 
     - name: R2 Upload
       run: |
