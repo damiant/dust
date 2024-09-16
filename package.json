@@ -30,7 +30,6 @@
     "@angular/platform-browser": "^18.2.1",
     "@angular/platform-browser-dynamic": "^18.2.1",
     "@angular/router": "^18.2.1",
-    "@angular/service-worker": "^18.2.1",
     "@awesome-cordova-plugins/calendar": "6.8.0",
     "@byteowls/capacitor-filesharer": "^6.0.0",
     "@capacitor-community/in-app-review": "6.0.0",
