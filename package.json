@@ -53,6 +53,7 @@
     "@capacitor/status-bar": "6.0.1",
     "@capacitor/text-zoom": "6.0.2",
     "@capawesome/capacitor-app-update": "6.0.0",
+    "@capgo/capacitor-updater": "6.1.32",
     "@hugotomazi/capacitor-navigation-bar": "4.0.1",
     "@ionic/angular": "8.2.7",
     "capacitor-print-webview": "6.0.3",

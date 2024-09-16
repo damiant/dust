@@ -57,7 +57,7 @@ jobs:
       with:
         path: version.json
         contents: |
-          { version: "${{ github.run_id }}" }
+          { "version": "${{ github.run_id }}" }
         write-mode: overwrite
 
     - name: R2 Upload

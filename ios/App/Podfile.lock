@@ -1,4 +1,5 @@
 PODS:
+  - Alamofire (5.9.1)
   - ByteowlsCapacitorFilesharer (6.0.0):
     - Capacitor
   - Capacitor (6.1.2):
@@ -42,10 +43,21 @@ PODS:
     - Capacitor
   - CapawesomeCapacitorAppUpdate (6.0.0):
     - Capacitor
+  - CapgoCapacitorUpdater (6.1.32):
+    - Alamofire
+    - Capacitor
+    - SSZipArchive
+    - SwiftyRSA
+    - Version
   - CordovaPlugins (6.1.2):
     - CapacitorCordova
   - HugotomaziCapacitorNavigationBar (4.0.1):
     - Capacitor
+  - SSZipArchive (2.4.3)
+  - SwiftyRSA (1.7.0):
+    - SwiftyRSA/ObjC (= 1.7.0)
+  - SwiftyRSA/ObjC (1.7.0)
+  - Version (0.8.0)
 
 DEPENDENCIES:
   - "ByteowlsCapacitorFilesharer (from `../../node_modules/@byteowls/capacitor-filesharer`)"
@@ -70,8 +82,16 @@ DEPENDENCIES:
   - "CapacitorStatusBar (from `../../node_modules/@capacitor/status-bar`)"
   - "CapacitorTextZoom (from `../../node_modules/@capacitor/text-zoom`)"
   - "CapawesomeCapacitorAppUpdate (from `../../node_modules/@capawesome/capacitor-app-update`)"
+  - "CapgoCapacitorUpdater (from `../../node_modules/@capgo/capacitor-updater`)"
   - CordovaPlugins (from `../capacitor-cordova-ios-plugins`)
   - "HugotomaziCapacitorNavigationBar (from `../../node_modules/@hugotomazi/capacitor-navigation-bar`)"
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - SSZipArchive
+    - SwiftyRSA
+    - Version
 
 EXTERNAL SOURCES:
   ByteowlsCapacitorFilesharer:
@@ -118,12 +138,15 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/text-zoom"
   CapawesomeCapacitorAppUpdate:
     :path: "../../node_modules/@capawesome/capacitor-app-update"
+  CapgoCapacitorUpdater:
+    :path: "../../node_modules/@capgo/capacitor-updater"
   CordovaPlugins:
     :path: "../capacitor-cordova-ios-plugins"
   HugotomaziCapacitorNavigationBar:
     :path: "../../node_modules/@hugotomazi/capacitor-navigation-bar"
 
 SPEC CHECKSUMS:
+  Alamofire: f36a35757af4587d8e4f4bfa223ad10be2422b8c
   ByteowlsCapacitorFilesharer: ea14537059851aed44df8c52f0984f61cd34f53b
   Capacitor: 679f9673fdf30597493a6362a5d5bf233d46abc2
   CapacitorApp: 0bc633b4eae40a1f32cd2834788fad3bc42da6a1
@@ -146,9 +169,13 @@ SPEC CHECKSUMS:
   CapacitorStatusBar: b81d4fb5d4e0064c712018071b3ab4b810b39a63
   CapacitorTextZoom: 013a8dd0887f6bd103171768c91845f2354414b6
   CapawesomeCapacitorAppUpdate: 3c05b5c8e42f9c6a88d666093406e9336d9bfdb1
+  CapgoCapacitorUpdater: f286378946eae7e06e54bd135815f3c5d939dfcc
   CordovaPlugins: 1481b6d6dd6f425769c147cdbe9e7f219bf9cfd6
   HugotomaziCapacitorNavigationBar: 57d7cd51c65ef5e40159bafb0095ee99fab432ba
+  SSZipArchive: fe6a26b2a54d5a0890f2567b5cc6de5caa600aef
+  SwiftyRSA: 8c6dd1ea7db1b8dc4fb517a202f88bb1354bc2c6
+  Version: de5907f2c5d0f3cf21708db7801d1d5401139486
 
-PODFILE CHECKSUM: 979174205bc561db9d00133dbab501d0c8cbca51
+PODFILE CHECKSUM: f041afc5471d41d24ea29ea88dabdd6d5ceb83ea
 
 COCOAPODS: 1.15.2
