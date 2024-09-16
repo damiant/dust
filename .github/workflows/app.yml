@@ -46,25 +46,13 @@ jobs:
       env:
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-      
-    - name: Send To Slack
-      id: slack
-      uses: slackapi/slack-github-action@v1.25.0
+
+    - name: Zip app
+      uses: montudor/action-zip@v1
       with:
-            # For posting a rich message using Block Kit
-            payload: |
-              {
-                "text": "Dust App Preview build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
-                "blocks": [
-                  {
-                    "type": "section",
-                    "text": {
-                      "type": "mrkdwn",
-                      "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
-                    }
-                  }
-                ]
-              }
-      env:
-            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-            SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK   
+        args: zip -qq -r app.zip www/browser
+
+    - name: R2 Upload
+      run: |
+        bun add wrangler --dev
+        bunx wrangler r2 object put dust-updates/app.zip --file=app.zip
