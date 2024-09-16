@@ -56,3 +56,5 @@ jobs:
       run: |
         bun add wrangler --dev
         bunx wrangler r2 object put dust-updates/app.zip --file=app.zip
+      env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}        
