@@ -3,6 +3,7 @@
 ### 2.58
 
 - Fix for event listing
+- Fix to refresh event listing when changing filter
 
 ### 2.57
 

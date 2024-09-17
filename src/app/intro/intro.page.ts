@@ -210,7 +210,8 @@ export class IntroPage {
 
   async selectedFilter(v: any) {
     if (!v) {
-      this.fab().close();
+      await this.fab().close();
+      this._change.markForCheck();
       return;
     }
     const name = v.detail.value;
@@ -222,7 +223,8 @@ export class IntroPage {
     this.settingsService.settings.datasetFilter = name;
     this.settingsService.save();
     this.carousel().setScrollLeft(0);
-    this.fab().close();
+    await this.fab().close();
+    this._change.markForCheck();
   }
 
   async ionViewDidEnter() {
