@@ -20,6 +20,10 @@ const config: CapacitorConfig = {
       iconColor: '#F61067',
       sound: 'blazing2.wav',
     },
+    CapacitorUpdater: {
+      autoUpdate: false,
+      statsUrl: "",
+    }
   },
   android: {
     buildOptions: {

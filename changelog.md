@@ -1,5 +1,10 @@
 ## Changes
 
+### 2.58
+
+- Fix for event listing
+- Fix to refresh event listing when changing filter
+
 ### 2.57
 
 - Fix when going back to camps/events page and seeing white content

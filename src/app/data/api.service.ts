@@ -169,9 +169,11 @@ export class ApiService {
       .sort((a, b) => this.sortEvents(a, b, filter));
     if (list.length > 1 && filter == 'all' && isAfter(new Date(list[0].start), new Date(list[1].start))) {
       // Make Burning Man first if the closest regional is after it.
-      const tmp = { ...list[0] };
-      list[0] = list[1];
-      list[1] = tmp;
+      if (list[1].id.includes('ttitd')) {
+        const tmp = { ...list[0] };
+        list[0] = list[1];
+        list[1] = tmp;
+      }
     }
     return list;
   }

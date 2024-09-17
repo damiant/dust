@@ -11,8 +11,6 @@ PODS:
     - Capacitor
   - CapacitorCommunityInAppReview (6.0.0):
     - Capacitor
-  - CapacitorCommunityPlayIntegrity (6.0.0):
-    - Capacitor
   - CapacitorCordova (6.1.2)
   - CapacitorFilesystem (6.0.1):
     - Capacitor
@@ -31,8 +29,6 @@ PODS:
   - CapacitorPrintWebview (6.0.3):
     - Capacitor
   - CapacitorScreenOrientation (6.0.2):
-    - Capacitor
-  - CapacitorScreenReader (6.0.2):
     - Capacitor
   - CapacitorShare (6.0.2):
     - Capacitor
@@ -56,7 +52,6 @@ DEPENDENCIES:
   - "CapacitorAppLauncher (from `../../node_modules/@capacitor/app-launcher`)"
   - "CapacitorBrowser (from `../../node_modules/@capacitor/browser`)"
   - "CapacitorCommunityInAppReview (from `../../node_modules/@capacitor-community/in-app-review`)"
-  - "CapacitorCommunityPlayIntegrity (from `../../node_modules/@capacitor-community/play-integrity`)"
   - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorFilesystem (from `../../node_modules/@capacitor/filesystem`)"
   - "CapacitorGeolocation (from `../../node_modules/@capacitor/geolocation`)"
@@ -67,7 +62,6 @@ DEPENDENCIES:
   - "CapacitorPreferences (from `../../node_modules/@capacitor/preferences`)"
   - CapacitorPrintWebview (from `../../node_modules/capacitor-print-webview`)
   - "CapacitorScreenOrientation (from `../../node_modules/@capacitor/screen-orientation`)"
-  - "CapacitorScreenReader (from `../../node_modules/@capacitor/screen-reader`)"
   - "CapacitorShare (from `../../node_modules/@capacitor/share`)"
   - "CapacitorSplashScreen (from `../../node_modules/@capacitor/splash-screen`)"
   - "CapacitorStatusBar (from `../../node_modules/@capacitor/status-bar`)"
@@ -89,8 +83,6 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/browser"
   CapacitorCommunityInAppReview:
     :path: "../../node_modules/@capacitor-community/in-app-review"
-  CapacitorCommunityPlayIntegrity:
-    :path: "../../node_modules/@capacitor-community/play-integrity"
   CapacitorCordova:
     :path: "../../node_modules/@capacitor/ios"
   CapacitorFilesystem:
@@ -111,8 +103,6 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/capacitor-print-webview"
   CapacitorScreenOrientation:
     :path: "../../node_modules/@capacitor/screen-orientation"
-  CapacitorScreenReader:
-    :path: "../../node_modules/@capacitor/screen-reader"
   CapacitorShare:
     :path: "../../node_modules/@capacitor/share"
   CapacitorSplashScreen:
@@ -135,7 +125,6 @@ SPEC CHECKSUMS:
   CapacitorAppLauncher: 9ac785e8d3936388249212b6e16cb32225960c5f
   CapacitorBrowser: 83ec661a9ccd56c28a6851e4dd1ac33b181227ec
   CapacitorCommunityInAppReview: c69a9392f39a10f28092d823cfa979637f4fa079
-  CapacitorCommunityPlayIntegrity: 26ad626ed53773a9189e0b12f16ea90f609c00ef
   CapacitorCordova: f48c89f96c319101cd2f0ce8a2b7449b5fb8b3dd
   CapacitorFilesystem: 37fb3aa5c945b4539ab11c74a5c57925a302bf24
   CapacitorGeolocation: 39dca51d755f08ed1d43e51be55291a402cdc64f
@@ -146,7 +135,6 @@ SPEC CHECKSUMS:
   CapacitorPreferences: e8284bf740cf8c6d3f25409af3c01df87dfeb5a1
   CapacitorPrintWebview: d2c9d1cf8b058cce3bf19e20d3567e3378f6be15
   CapacitorScreenOrientation: 6039dc2ea4a8596b79316709d5727e8bb7e32845
-  CapacitorScreenReader: 80aea6586fc25d13892aefd0f68913babb17696f
   CapacitorShare: 591ae4693d85686ceb590db8e8b44aa014ec6490
   CapacitorSplashScreen: 250df9ef8014fac5c7c1fd231f0f8b1d8f0b5624
   CapacitorStatusBar: b81d4fb5d4e0064c712018071b3ab4b810b39a63
@@ -155,6 +143,6 @@ SPEC CHECKSUMS:
   CordovaPlugins: 1481b6d6dd6f425769c147cdbe9e7f219bf9cfd6
   HugotomaziCapacitorNavigationBar: 57d7cd51c65ef5e40159bafb0095ee99fab432ba
 
-PODFILE CHECKSUM: 20770c09baadacb9b583db00e5c30a8e8092bb7d
+PODFILE CHECKSUM: bd78a10a793e37ca391de556b36eb49048692b4d
 
 COCOAPODS: 1.15.2

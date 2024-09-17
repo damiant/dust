@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Capacitor, CapacitorHttp, HttpResponse } from '@capacitor/core';
-import { PlayIntegrity } from '@capacitor-community/play-integrity';
+//import { PlayIntegrity } from '@capacitor-community/play-integrity';
 
 @Injectable({
     providedIn: 'root',
@@ -12,6 +12,7 @@ export class IntegrityService {
             if (Capacitor.getPlatform() !== 'android') {
                 return true;
             }
+            const PlayIntegrity: any = undefined;
             const result = await PlayIntegrity.requestIntegrityToken({
                 nonce: this.generateUUID(),
                 googleCloudProjectNumber: 150349171567

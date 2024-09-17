@@ -8,9 +8,6 @@ project(':byteowls-capacitor-filesharer').projectDir = new File('../node_modules
 include ':capacitor-community-in-app-review'
 project(':capacitor-community-in-app-review').projectDir = new File('../node_modules/@capacitor-community/in-app-review/android')
 
-include ':capacitor-community-play-integrity'
-project(':capacitor-community-play-integrity').projectDir = new File('../node_modules/@capacitor-community/play-integrity/android')
-
 include ':capacitor-app'
 project(':capacitor-app').projectDir = new File('../node_modules/@capacitor/app/android')
 
@@ -43,9 +40,6 @@ project(':capacitor-preferences').projectDir = new File('../node_modules/@capaci
 
 include ':capacitor-screen-orientation'
 project(':capacitor-screen-orientation').projectDir = new File('../node_modules/@capacitor/screen-orientation/android')
-
-include ':capacitor-screen-reader'
-project(':capacitor-screen-reader').projectDir = new File('../node_modules/@capacitor/screen-reader/android')
 
 include ':capacitor-share'
 project(':capacitor-share').projectDir = new File('../node_modules/@capacitor/share/android')
