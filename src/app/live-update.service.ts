@@ -29,7 +29,7 @@ export class LiveUpdateService {
     const currentVersion = await this.currentVersion();
     const builtInVersion = await CapacitorUpdater.getBuiltinVersion();
     console.log(`Built in version is ${builtInVersion.version}`);
-    if (json.version == currentVersion) {
+    if (json.version !== currentVersion) {
       console.log(`Current version is ${currentVersion}. Latest version is ${json.version}`);
       console.log(`Downloading ${json.version}`);
       const data = await CapacitorUpdater.download({
