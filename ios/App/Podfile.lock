@@ -24,6 +24,8 @@ PODS:
     - Capacitor
   - CapacitorNetwork (6.0.2):
     - Capacitor
+  - CapacitorPluginSiriShorts (6.0.0):
+    - Capacitor
   - CapacitorPreferences (6.0.2):
     - Capacitor
   - CapacitorPrintWebview (6.0.3):
@@ -59,6 +61,7 @@ DEPENDENCIES:
   - "CapacitorKeyboard (from `../../node_modules/@capacitor/keyboard`)"
   - "CapacitorLocalNotifications (from `../../node_modules/@capacitor/local-notifications`)"
   - "CapacitorNetwork (from `../../node_modules/@capacitor/network`)"
+  - CapacitorPluginSiriShorts (from `../../node_modules/capacitor-plugin-siri-shorts`)
   - "CapacitorPreferences (from `../../node_modules/@capacitor/preferences`)"
   - CapacitorPrintWebview (from `../../node_modules/capacitor-print-webview`)
   - "CapacitorScreenOrientation (from `../../node_modules/@capacitor/screen-orientation`)"
@@ -97,6 +100,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/local-notifications"
   CapacitorNetwork:
     :path: "../../node_modules/@capacitor/network"
+  CapacitorPluginSiriShorts:
+    :path: "../../node_modules/capacitor-plugin-siri-shorts"
   CapacitorPreferences:
     :path: "../../node_modules/@capacitor/preferences"
   CapacitorPrintWebview:
@@ -132,6 +137,7 @@ SPEC CHECKSUMS:
   CapacitorKeyboard: 2700f9b18687be021e28b5a09b59eb151a46d5e0
   CapacitorLocalNotifications: 6bac9e948b2b8852506c6d74abb2cde140250f86
   CapacitorNetwork: 8796cf1f1104a00b289957b6150b7c60e1c2a8d3
+  CapacitorPluginSiriShorts: d51f41f25a7c4fb5bc9cfc78efc930447c357a50
   CapacitorPreferences: e8284bf740cf8c6d3f25409af3c01df87dfeb5a1
   CapacitorPrintWebview: d2c9d1cf8b058cce3bf19e20d3567e3378f6be15
   CapacitorScreenOrientation: 6039dc2ea4a8596b79316709d5727e8bb7e32845
@@ -143,6 +149,6 @@ SPEC CHECKSUMS:
   CordovaPlugins: 1481b6d6dd6f425769c147cdbe9e7f219bf9cfd6
   HugotomaziCapacitorNavigationBar: 57d7cd51c65ef5e40159bafb0095ee99fab432ba
 
-PODFILE CHECKSUM: bd78a10a793e37ca391de556b36eb49048692b4d
+PODFILE CHECKSUM: 789b8b32381a0a6ee74309fc61155ab04a7b3a73
 
 COCOAPODS: 1.15.2

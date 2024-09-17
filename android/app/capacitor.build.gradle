@@ -28,6 +28,7 @@ dependencies {
     implementation project(':capacitor-text-zoom')
     implementation project(':capawesome-capacitor-app-update')
     implementation project(':hugotomazi-capacitor-navigation-bar')
+    implementation project(':capacitor-plugin-siri-shorts')
     implementation project(':capacitor-print-webview')
 
 }

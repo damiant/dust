@@ -8,6 +8,8 @@ import { IntegrityService } from './data/integrity.service';
 import { DbService } from './data/db.service';
 import { UiService } from './ui/ui.service';
 import { SettingsService } from './data/settings.service';
+import { SiriShortcuts } from 'capacitor-plugin-siri-shorts';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -53,6 +55,16 @@ export class AppComponent implements OnInit {
 
     });
 
+    SiriShortcuts.addListener('appLaunchBySiriShortcuts', (res) => {
+      // do something with the response of the shortcut here
+      console.log('siri', res)
+    });
+
+    SiriShortcuts.donate({
+      persistentIdentifier: "dustWhereAmI",
+      title: "Where Am I?",
+      suggestedInvocationPhrase: "Where Am I?",
+    })
     // Test application integrity
     // setTimeout(() => {
     //   this.integrityService.testIntegrity();
@@ -60,6 +72,8 @@ export class AppComponent implements OnInit {
   }
 
   stackChanged() {
-    this.dbService.getWorkerLogs();
+    if (!environment.production) {
+      this.dbService.getWorkerLogs();
+    }
   }
 }

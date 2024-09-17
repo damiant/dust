@@ -54,6 +54,7 @@
     "@capawesome/capacitor-app-update": "6.0.0",
     "@hugotomazi/capacitor-navigation-bar": "4.0.1",
     "@ionic/angular": "8.2.7",
+    "capacitor-plugin-siri-shorts": "6.0.0",
     "capacitor-print-webview": "6.0.3",
     "cordova-plugin-calendar-ios-fix": "5.1.6",
     "cordova-plugin-device-orientation": "3.0.0",

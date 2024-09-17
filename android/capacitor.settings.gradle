@@ -59,5 +59,8 @@ project(':capawesome-capacitor-app-update').projectDir = new File('../node_modul
 include ':hugotomazi-capacitor-navigation-bar'
 project(':hugotomazi-capacitor-navigation-bar').projectDir = new File('../node_modules/@hugotomazi/capacitor-navigation-bar/android')
 
+include ':capacitor-plugin-siri-shorts'
+project(':capacitor-plugin-siri-shorts').projectDir = new File('../node_modules/capacitor-plugin-siri-shorts/android')
+
 include ':capacitor-print-webview'
 project(':capacitor-print-webview').projectDir = new File('../node_modules/capacitor-print-webview/android')

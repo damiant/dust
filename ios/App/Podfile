@@ -30,6 +30,7 @@ def capacitor_pods
   pod 'CapacitorTextZoom', :path => '../../node_modules/@capacitor/text-zoom'
   pod 'CapawesomeCapacitorAppUpdate', :path => '../../node_modules/@capawesome/capacitor-app-update'
   pod 'HugotomaziCapacitorNavigationBar', :path => '../../node_modules/@hugotomazi/capacitor-navigation-bar'
+  pod 'CapacitorPluginSiriShorts', :path => '../../node_modules/capacitor-plugin-siri-shorts'
   pod 'CapacitorPrintWebview', :path => '../../node_modules/capacitor-print-webview'
   pod 'CordovaPlugins', :path => '../capacitor-cordova-ios-plugins'
 end
