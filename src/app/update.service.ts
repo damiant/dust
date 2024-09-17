@@ -22,7 +22,7 @@ export class UpdateService {
     }
     const result = await AppUpdate.getAppUpdateInfo();
     if (result.updateAvailability !== AppUpdateAvailability.UPDATE_AVAILABLE) {
-      await this.liveUpdate.checkVersion(alert);
+      //await this.liveUpdate.checkVersion(alert);
       return;
     }
     // Let use know about update

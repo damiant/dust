@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Capacitor, HttpResponse } from '@capacitor/core';
 import { Network } from '@capacitor/network';
 import { Preferences } from '@capacitor/preferences';
-import { CapacitorUpdater } from '@capgo/capacitor-updater';
+//import { CapacitorUpdater } from '@capgo/capacitor-updater';
 import { AlertController } from '@ionic/angular/standalone';
 import { CapacitorHttp } from '@capacitor/core';
 
@@ -18,6 +18,9 @@ export class LiveUpdateService {
       // Only attempt an update if on wifi
       return;
     }
+
+    // Uncomment to test
+    const CapacitorUpdater: any = undefined;
 
     // Download https://updates.dust.events/version.json
     const url = `https://updates.dust.events/version.json`;
