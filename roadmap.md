@@ -5,10 +5,8 @@
 🔥 Important
 
 ◯ Space between event types
-◯ Icon for recurring event
 ◯ Schedule in mobile for manager is bad layout
 ◯ Import and data entry for camps: capitalize first letter
-◯ Mutant vehicles should show as mobile rather than unplaced
 
 
 ## Accessibility / Navigation

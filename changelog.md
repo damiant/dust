@@ -3,6 +3,7 @@
 ### 2.59
 - Private events are now reminders and are available in regional burns
 - Mutant Vehicles show location as "Out on the Playa"
+- Recurring events are shown with an icon
 
 ### 2.58
 
