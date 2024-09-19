@@ -7,8 +7,6 @@
 ◯ Schedule in mobile for manager is bad layout
 ◯ Import and data entry for camps: capitalize first letter
 
-- 🔴 Art should show side image layout if there are < 50% of art with images
-
 ## Accessibility / Navigation
 - 🔴🩷 Dust Daka - Siri for "where am I": 8:30 and F. Maybe screen reader or voice control button.
 - 🔴🩷 Siri - What is the closest camp, restroom, ice, medical etc?

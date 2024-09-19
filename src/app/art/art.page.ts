@@ -18,7 +18,7 @@ import { Art } from '../data/models';
 import { DbService } from '../data/db.service';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ArtComponent } from './art.component';
+import { ArtComponent, ArtImageStyle } from './art.component';
 import { UiService } from '../ui/ui.service';
 import { SearchComponent } from '../search/search.component';
 import { SkeletonArtComponent } from '../skeleton-art/skeleton-art.component';
@@ -31,7 +31,7 @@ import { SortComponent } from '../sort/sort.component';
 import { CategoryComponent } from '../category/category.component';
 
 interface ArtState {
-  showImage: boolean;
+  imageStyle: ArtImageStyle;
   busy: boolean;
   noArtMessage: string;
   title: string;
@@ -48,7 +48,7 @@ interface ArtState {
 
 function initialState(): ArtState {
   return {
-    showImage: false,
+    imageStyle: 'none',
     busy: true,
     noArtMessage: 'No art was found',
     artTypes: [],
@@ -112,7 +112,7 @@ export class ArtPage {
       const _year = this.db.selectedYear();
       this.db.checkInit();
       this.vm = initialState();
-      this.vm.showImage = true; // this.isThisYear();
+      this.vm.imageStyle = 'top';
       this.calcCardHeight();
       this.init();
     }, { allowSignalWrites: true });
@@ -127,7 +127,7 @@ export class ArtPage {
   }
 
   private calcCardHeight() {
-    this.vm.cardHeight = (this.vm.showImage ? 340 : 130) + this.ui.textZoom() * 50;
+    this.vm.cardHeight = (this.vm.imageStyle == 'top' ? 340 : 130) + this.ui.textZoom() * 50;
   }
 
   goToLetterGroup(e: string) {
@@ -210,7 +210,7 @@ export class ArtPage {
     this.allArt = await this.db.findArts(search, coords, undefined, this.vm.artType);
     this.vm.artTypes = await this.db.getArtTypes();
     const count = this.allArt.filter((a) => a.images && a.images.length > 0).length;
-    this.vm.showImage = count / this.allArt.length > 0.5;
+    this.vm.imageStyle = count / this.allArt.length > 0.5 ? 'top' : 'side';
     this.calcCardHeight();
     this.vm.arts = [];
     this.addArt(10);

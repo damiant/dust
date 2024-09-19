@@ -82,8 +82,8 @@
   } @for (art of vm.art; track artTrackBy($index, art)) {
   <ion-item-sliding>
     <ion-item lines="none">
-      <app-art (artClick)="artClick($event)" [showImage]="art.images && art.images.length > 0" title="Favorites"
-        [art]="art" />
+      <app-art (artClick)="artClick($event)" [imageStyle]="art.images && art.images.length > 0 ? 'top' : 'none'"
+        title="Favorites" [art]="art" />
     </ion-item>
     <ion-item-options>
       <ion-item-option color="danger" (click)="removeArt(art)">Remove</ion-item-option>

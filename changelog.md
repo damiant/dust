@@ -5,6 +5,7 @@
 - Mutant Vehicles show location as "Out on the Playa"
 - Recurring events are shown with an icon
 - Add spacing between event types
+- Art shows side image layout if < 50% of art has an image
 
 ### 2.58
 

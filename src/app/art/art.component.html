@@ -1,7 +1,7 @@
-<ion-card [ngClass]="{ pic: showImage() }" class="item" (click)="click()">
-  @if (showImage() && art().images) {
-  <div class="image-container">
-    <app-cached-img class="image" [src]="art().images && art().images[0].thumbnail_url" />
+<ion-card [ngClass]="{ pic: imageStyle() == 'top' }" class="item" (click)="click()">
+  @if (imageStyle() !== 'none' && art().images) {
+  <div [class]="imageContainerCSSStyle()">
+    <app-cached-img [class]="imageCSSStyle()" [src]="art().images && art().images[0].thumbnail_url" />
   </div>
   }
   <ion-card-header>
