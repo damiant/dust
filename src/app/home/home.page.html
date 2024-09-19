@@ -78,17 +78,23 @@
     <app-tile title="More" (click)="vm.moreOpen = true" iconName="ellipsis-vertical-sharp"></app-tile>
   </app-tile-container>
 
-  @if (!db.featuresHidden().includes('friends')) {
-  <app-friends />
-  } @if (!db.featuresHidden().includes('private')) {
-  <app-private-events />
-  } @if (vm.groups.length > 0) { @for (group of vm.groups; track group.id) {
+  @if (vm.groups.length > 0) {
+  @for (group of vm.groups; track group.id) {
   <ion-card class="ion-padding-bottom">
     @for (link of group.links; track link) {
     <app-link [url]="link.url" [text]="link.title"></app-link>
     }
   </ion-card>
-  } }
+  }
+  }
+
+  @if (!db.featuresHidden().includes('friends')) {
+  <app-friends />
+  }
+
+  @if (!db.featuresHidden().includes('private')) {
+  <app-private-events />
+  }
 
   <app-events-card [events]="vm.favEventsToday"></app-events-card>
 
