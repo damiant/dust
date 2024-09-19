@@ -37,7 +37,8 @@ export interface Event {
 export enum LocationName {
   Unavailable = 'Location Available Soon',
   Undefined = '',
-  Unplaced = 'Unplaced'
+  Unplaced = 'Unplaced',
+  Mobile = 'Out on the Playa'
 }
 
 export interface Revision {

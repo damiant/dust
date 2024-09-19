@@ -392,7 +392,11 @@ export class DataManager implements WorkerClass {
       pinIndex[art.uid] = art.pin;
 
       if (!art.location_string) {
-        art.location_string = LocationName.Unplaced;
+        if (art.art_type?.includes('Vehicle')) {
+          art.location_string = LocationName.Mobile;
+        } else {
+          art.location_string = LocationName.Unplaced;
+        }
         if (art.pin?.x) {
           art.location_string = undefined; // Its placed with x,y
         }
