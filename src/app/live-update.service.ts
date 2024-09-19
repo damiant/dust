@@ -12,6 +12,7 @@ import { CapacitorHttp } from '@capacitor/core';
 export class LiveUpdateService {
   public async checkVersion(alert: AlertController) {
     if (Capacitor.getPlatform() == 'web') return;
+    if (!alert) return;
 
     const status = await Network.getStatus();
     if (status.connectionType !== 'wifi') {
