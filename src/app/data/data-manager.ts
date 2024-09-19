@@ -868,6 +868,7 @@ export class DataManager implements WorkerClass {
         const timeString = this.getTimeString(event, day);
         event.timeString = timeString.short;
         event.longTimeString = timeString.long;
+        event.event_type.label = event.event_type.label.replace(/,/g, ', ');
         event.distance = distance(coords!, event.gpsCoords);
         event.distanceInfo = formatDistance(event.distance);
         if (match == 'Important') {

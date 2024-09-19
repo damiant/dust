@@ -4,6 +4,7 @@
 - Private events are now reminders and are available in regional burns
 - Mutant Vehicles show location as "Out on the Playa"
 - Recurring events are shown with an icon
+- Add spacing between event types
 
 ### 2.58
 
