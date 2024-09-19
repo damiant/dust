@@ -64,6 +64,7 @@ export class PrivateEventComponent implements OnInit {
   initialTime = now().toISOString();
   public addresses: PickerColumn[];
   public isEdit = false;
+  public showAddress = true;
   public startEvent = new Date(new Date().getFullYear(), 7, 20).toISOString();
   public endEvent = new Date(new Date().getFullYear(), 8, 10).toISOString();
 
@@ -93,7 +94,9 @@ export class PrivateEventComponent implements OnInit {
   ];
 
   ngOnInit() {
-    this.streetService.setAddress(this.event.address, this.addresses);
+    if (this.event?.address) {
+      this.streetService.setAddress(this.event.address, this.addresses);
+    }
     setTimeout(() => {
       this.dtReady = true;
       this._change.markForCheck();
@@ -109,9 +112,12 @@ export class PrivateEventComponent implements OnInit {
       this.presentToast(`Specify name`);
       return;
     }
-    if (this.event.address == this.noAddress) {
+    if (this.showAddress && this.event.address == this.noAddress) {
       this.presentToast(`Select an address`);
       return;
+    }
+    if (this.event.address == this.noAddress) {
+      this.event.address = undefined;
     }
     if (this.event.start == this.initialTime) {
       this.presentToast(`Select a date and time when the event starts`);

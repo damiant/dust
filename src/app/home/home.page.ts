@@ -95,9 +95,9 @@ interface HomeState {
 }
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.page.html',
-  styleUrls: ['./profile.page.scss'],
+  selector: 'app-home',
+  templateUrl: './home.page.html',
+  styleUrls: ['./home.page.scss'],
   standalone: true,
   imports: [IonLoading, IonText,
     IonSpinner,
@@ -131,7 +131,7 @@ interface HomeState {
     LinkComponent,
   ],
 })
-export class ProfilePage implements OnInit {
+export class HomePage implements OnInit {
   private ui = inject(UiService);
   private settings = inject(SettingsService);
   private map = inject(MapService);

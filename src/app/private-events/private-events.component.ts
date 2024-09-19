@@ -22,6 +22,7 @@ import { PrivateEventComponent, PrivateEventResult } from '../private-event/priv
 import { UiService } from '../ui/ui.service';
 import { addIcons } from 'ionicons';
 import { add, calendar } from 'ionicons/icons';
+import { SettingsService } from '../data/settings.service';
 
 @Component({
   selector: 'app-private-events',
@@ -47,6 +48,7 @@ import { add, calendar } from 'ionicons/icons';
 export class PrivateEventsComponent implements OnInit {
   private modalCtrl = inject(ModalController);
   private fav = inject(FavoritesService);
+  private settings = inject(SettingsService);
   private ui = inject(UiService);
   private toastController = inject(ToastController);
   public events: PrivateEvent[] = [];
@@ -70,8 +72,12 @@ export class PrivateEventsComponent implements OnInit {
         ? {
           event: event,
           isEdit: event,
+          showAddress: this.settings.isBurningMan()
         }
-        : undefined,
+        : {
+          isEdit: false,
+          showAddress: this.settings.isBurningMan()
+        },
     });
     await modal.present();
 

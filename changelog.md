@@ -1,5 +1,8 @@
 ## Changes
 
+### 2.59
+- Private events are now reminders and are available in regional burns
+
 ### 2.58
 
 - Fix for event listing

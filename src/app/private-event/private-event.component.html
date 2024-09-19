@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
     </ion-buttons>
-    <ion-title>Private Event</ion-title>
+    <ion-title>Reminder</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="confirm()" [strong]="true">Save</ion-button>
     </ion-buttons>
@@ -15,12 +15,14 @@
       placeholder="The events title"></ion-input>
   </ion-item>
 
+  @if (showAddress) {
   <ion-item id="pick-address">
     <ion-label>Address</ion-label>
     <ion-button size="small" [class.button]="event.address === noAddress" class="slim" slot="end" color="light">{{
       event.address
       }}</ion-button>
   </ion-item>
+  }
   <ion-item>
     <ion-label>Time</ion-label>
     @if(dtReady) {

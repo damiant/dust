@@ -322,7 +322,7 @@ export interface PrivateEvent {
   start: string;
   startDay?: string;
   startTime?: string;
-  address: string;
+  address: string | undefined;
   notes: string;
 }
 

@@ -19,6 +19,10 @@ export class SettingsService {
     }
   }
 
+  public isBurningMan(): boolean {
+    return this.settings.datasetId.includes('ttitd');
+  }
+
   public async getMapURI(): Promise<string | undefined> {
     return await get('mapUri');
   }
