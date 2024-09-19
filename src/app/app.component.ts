@@ -60,11 +60,11 @@ export class AppComponent implements OnInit {
       console.log('siri', res)
     });
 
-    SiriShortcuts.donate({
+    const result = await SiriShortcuts.present({
       persistentIdentifier: "dustWhereAmI",
       title: "Where Am I?",
       suggestedInvocationPhrase: "Where Am I?",
-    })
+    });
     // Test application integrity
     // setTimeout(() => {
     //   this.integrityService.testIntegrity();
