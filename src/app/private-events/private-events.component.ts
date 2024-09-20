@@ -23,6 +23,7 @@ import { UiService } from '../ui/ui.service';
 import { addIcons } from 'ionicons';
 import { add, calendar } from 'ionicons/icons';
 import { SettingsService } from '../data/settings.service';
+import { CardHeaderComponent } from '../card-header/card-header.component';
 
 @Component({
   selector: 'app-private-events',
@@ -41,6 +42,7 @@ import { SettingsService } from '../data/settings.service';
     IonText,
     IonItem,
     IonLabel,
+    CardHeaderComponent
   ],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,

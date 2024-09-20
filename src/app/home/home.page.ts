@@ -66,6 +66,7 @@ import { ApiService } from '../data/api.service';
 import { delay } from '../utils/utils';
 import { PinsCardComponent } from '../pins-card/pins-card.component';
 import { UpdateService } from '../update.service';
+import { CardHeaderComponent } from '../card-header/card-header.component';
 
 interface Group {
   id: number;
@@ -80,6 +81,7 @@ interface HomeState {
   longEvents: boolean;
   hiddenPanel: boolean;
   downloading: boolean;
+  eventTitle: string;
   directionsOpen: boolean;
   eventIsHappening: boolean;
   favEventsToday: Event[];
@@ -129,6 +131,7 @@ interface HomeState {
     PrivateEventsComponent,
     PinsCardComponent,
     LinkComponent,
+    CardHeaderComponent
   ],
 })
 export class HomePage implements OnInit {
@@ -159,6 +162,7 @@ export class HomePage implements OnInit {
     eventIsHappening: false,
     favEventsToday: [],
     imageUrl: '',
+    eventTitle: '',
     mapPin: undefined,
     groups: [],
     things: [],
@@ -232,6 +236,7 @@ export class HomePage implements OnInit {
     this.vm.mapPin = this.getMapPin();
     this.vm.longEvents = this.settings.settings.longEvents;
     this.vm.eventIsHappening = !this.db.eventHasntBegun() && !this.db.isHistorical();
+    this.vm.eventTitle = this.db.selectedDataset().title;
     this.vm.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
     this.vm.groups = this.group(links);
 

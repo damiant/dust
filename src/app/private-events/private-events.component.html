@@ -1,12 +1,5 @@
+<app-card-header title="Reminders" (addClicked)="addPrivateEvent()"></app-card-header>
 <ion-card>
-  <ion-card-header>
-    <ion-card-title>Reminders</ion-card-title>
-    <ion-fab-button style="position: absolute; top: 0.2rem; z-index: 1; right: 0.2rem; left: auto"
-      (click)="addPrivateEvent()" size="small">
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-card-header>
-
   <ion-card-content>
     <ion-list>
       @if (events.length === 0) {
