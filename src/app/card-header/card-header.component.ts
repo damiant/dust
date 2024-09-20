@@ -1,4 +1,4 @@
-import { Component, input, OnInit, output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { IonFabButton, IonIcon } from "@ionic/angular/standalone";
 
 @Component({
@@ -8,13 +8,9 @@ import { IonFabButton, IonIcon } from "@ionic/angular/standalone";
   standalone: true,
   imports: [IonFabButton, IonIcon]
 })
-export class CardHeaderComponent implements OnInit {
+export class CardHeaderComponent {
 
   title = input('Card Header');
   addClicked = output<void>();
   addHidden = input<boolean>(false);
-  constructor() { }
-
-  ngOnInit() { }
-
 }
