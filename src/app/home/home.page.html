@@ -94,7 +94,7 @@
   }
 
   @if (!db.featuresHidden().includes('private')) {
-  <app-private-events />
+  <app-reminders [highlightedDates]="vm.highlightedDates" [startEvent]="vm.startDate" [endEvent]="vm.endDate" />
   }
 
   <app-events-card [events]="vm.favEventsToday"></app-events-card>

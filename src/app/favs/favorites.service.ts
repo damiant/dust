@@ -5,7 +5,7 @@ import {
   Friend,
   MapPoint,
   OccurrenceSet,
-  PrivateEvent,
+  Reminder,
   RSLEvent,
   RSLOccurrence,
   Thing,
@@ -255,7 +255,7 @@ export class FavoritesService {
     await this.saveFavorites();
   }
 
-  public async addPrivateEvent(event: PrivateEvent): Promise<string | undefined> {
+  public async addPrivateEvent(event: Reminder): Promise<string | undefined> {
     this.favorites.privateEvents.push(event);
     const result = await this.notifyPrivateEvent(event);
     this.sortPrivateEvents();
@@ -263,7 +263,7 @@ export class FavoritesService {
     return result;
   }
 
-  private async notifyPrivateEvent(event: PrivateEvent): Promise<string | undefined> {
+  private async notifyPrivateEvent(event: Reminder): Promise<string | undefined> {
     const occurrenceSet: OccurrenceSet = {
       start_time: event.start,
       end_time: event.start,
@@ -292,7 +292,7 @@ export class FavoritesService {
     await this.saveFavorites();
   }
 
-  public async updatePrivateEvent(event: PrivateEvent, old: PrivateEvent) {
+  public async updatePrivateEvent(event: Reminder, old: Reminder) {
     const idx = this.favorites.privateEvents.findIndex((f) => f.title == old.title && f.address == old.address);
     this.favorites.privateEvents[idx] = event;
     this.sortPrivateEvents();
@@ -312,7 +312,7 @@ export class FavoritesService {
     await this.saveFavorites();
   }
 
-  public async deletePrivateEvent(toDelete: PrivateEvent) {
+  public async deletePrivateEvent(toDelete: Reminder) {
     this.favorites.privateEvents = this.favorites.privateEvents.filter(
       (event) => event.title !== toDelete.title || event.address !== toDelete.address,
     );

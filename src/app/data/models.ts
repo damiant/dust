@@ -161,7 +161,7 @@ export interface Favorites {
   art: string[];
   friends: Friend[];
   rslEvents: string[];
-  privateEvents: PrivateEvent[];
+  privateEvents: Reminder[];
 }
 
 export enum LocationEnabledStatus {
@@ -317,7 +317,7 @@ export interface MapInfo {
   label?: string;
 }
 
-export interface PrivateEvent {
+export interface Reminder {
   id: string;
   title: string;
   start: string;

@@ -36,7 +36,7 @@ import { TileComponent } from '../tile/tile.component';
 import { DatasetResult, Event, Link, LocationEnabledStatus, Names, Thing } from '../data/models';
 import { environment } from 'src/environments/environment';
 import { InAppReview } from '@capacitor-community/in-app-review';
-import { PrivateEventsComponent } from '../private-events/private-events.component';
+import { RemindersComponent } from '../reminders/reminders.component';
 import { addIcons } from 'ionicons';
 import { App } from '@capacitor/app';
 import {
@@ -63,10 +63,11 @@ import { CalendarService } from '../calendar.service';
 import { EventsCardComponent } from '../events-card/events-card.component';
 import { FavoritesService } from '../favs/favorites.service';
 import { ApiService } from '../data/api.service';
-import { delay } from '../utils/utils';
+import { addDays, delay } from '../utils/utils';
 import { PinsCardComponent } from '../pins-card/pins-card.component';
 import { UpdateService } from '../update.service';
 import { CardHeaderComponent } from '../card-header/card-header.component';
+import { daysHighlighted } from '../utils/date-utils';
 
 interface Group {
   id: number;
@@ -84,12 +85,15 @@ interface HomeState {
   eventTitle: string;
   directionsOpen: boolean;
   eventIsHappening: boolean;
+  startDate: string;
+  endDate: string;
   favEventsToday: Event[];
   imageUrl: string;
   mapPin: GPSPin | undefined;
   groups: Group[];
   things: Thing[];
   hasMedical: boolean;
+  highlightedDates: any[];
   hasRestrooms: boolean;
   hasIce: boolean;
   version: string;
@@ -128,7 +132,7 @@ interface HomeState {
     TileContainerComponent,
     TileComponent,
     EventsCardComponent,
-    PrivateEventsComponent,
+    RemindersComponent,
     PinsCardComponent,
     LinkComponent,
     CardHeaderComponent
@@ -163,7 +167,10 @@ export class HomePage implements OnInit {
     favEventsToday: [],
     imageUrl: '',
     eventTitle: '',
+    startDate: '',
+    endDate: '',
     mapPin: undefined,
+    highlightedDates: [],
     groups: [],
     things: [],
     hasMedical: true,
@@ -237,6 +244,10 @@ export class HomePage implements OnInit {
     this.vm.longEvents = this.settings.settings.longEvents;
     this.vm.eventIsHappening = !this.db.eventHasntBegun() && !this.db.isHistorical();
     this.vm.eventTitle = this.db.selectedDataset().title;
+    this.vm.startDate = addDays(new Date(this.db.selectedDataset().start), -30).toISOString();
+    this.vm.endDate = addDays(new Date(this.db.selectedDataset().end), 7).toISOString();
+    this.vm.highlightedDates = daysHighlighted(this.db.selectedDataset().start, this.db.selectedDataset().end);
+    console.log(this.vm.highlightedDates)
     this.vm.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
     this.vm.groups = this.group(links);
 
