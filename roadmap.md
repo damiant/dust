@@ -4,9 +4,6 @@
 🩷 High Impact
 🔥 Important
 
-◯ Schedule in mobile for manager is bad layout
-◯ Import and data entry for camps: capitalize first letter
-
 ## Accessibility / Navigation
 - 🔴🩷 Dust Daka - Siri for "where am I": 8:30 and F. Maybe screen reader or voice control button.
 - 🔴🩷 Siri - What is the closest camp, restroom, ice, medical etc?

@@ -20,10 +20,18 @@
     object-fit: cover;
 }
 
-.pic {
+.top {
     height: 360px;
 }
 
 .item {
     height: calc(var(--text-zoom) * 50 + 156px)
+}
+
+.side {
+
+    ion-card-title,
+    ion-card-subtitle {
+        padding-right: 34vw;
+    }
 }
