@@ -316,7 +316,7 @@ export class FavsPage implements OnInit {
 
   public async removeEvent(event: Event) {
     const occurrence = this.fav.selectOccurrence(event, this.db.selectedDay());
-    if (event.slug.startsWith('rsl')) {
+    if (event.slug && event.slug.startsWith('rsl')) {
       const favs = await this.fav.getFavorites();
       const items = await this.fav.getRSLEventList(favs.rslEvents);
       for (const rslEvent of items) {

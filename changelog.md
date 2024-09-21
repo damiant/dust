@@ -6,6 +6,7 @@
 - Recurring events are shown with an icon
 - Add spacing between event types
 - Art shows side image layout if < 50% of art has an image
+- Fix swipe to remove events from favorites
 
 ### 2.58
 
