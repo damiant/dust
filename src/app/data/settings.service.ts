@@ -31,6 +31,23 @@ export class SettingsService {
     await set('mapUri', uri);
   }
 
+  public async setInteger(key: string, value: number) {
+    await set(key, value);
+  }
+
+  public async getInteger(key: string): Promise<number> {
+    try {
+      const value = await get(key);
+      if (!value) {
+        return 0;
+      }
+      return value;
+    }
+    catch {
+      return 0;
+    }
+  }
+
   public getSettings(): Settings {
     try {
       const settings = JSON.parse(localStorage['settings']);

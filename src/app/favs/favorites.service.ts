@@ -17,6 +17,7 @@ import { DbService } from '../data/db.service';
 import { clone, getDayName, getOccurrenceTimeString, now, sameDay } from '../utils/utils';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { GpsCoord } from '../map/geo.utils';
+import { RatingService } from '../rating.service';
 
 enum DbId {
   favorites = 'favorites',
@@ -29,6 +30,7 @@ enum DbId {
 export class FavoritesService {
   private notificationService = inject(NotificationService);
   private settingsService = inject(SettingsService);
+  private ratingService = inject(RatingService);
   private db = inject(DbService);
   private ready: Promise<void> | undefined;
   public changed = signal(1);
@@ -184,6 +186,7 @@ export class FavoritesService {
       );
       this.newFavs.set(this.newFavs() + 1);
       await Haptics.impact({ style: ImpactStyle.Heavy });
+      this.ratingService.rateAfterUsage();
       return result.error ? result.error : result.message;
     } else {
       // Remove notifications
@@ -255,15 +258,15 @@ export class FavoritesService {
     await this.saveFavorites();
   }
 
-  public async addPrivateEvent(event: Reminder): Promise<string | undefined> {
+  public async addReminder(event: Reminder): Promise<string | undefined> {
     this.favorites.privateEvents.push(event);
-    const result = await this.notifyPrivateEvent(event);
-    this.sortPrivateEvents();
+    const result = await this.notifyReminder(event);
+    this.sortReminders();
     await this.saveFavorites();
     return result;
   }
 
-  private async notifyPrivateEvent(event: Reminder): Promise<string | undefined> {
+  private async notifyReminder(event: Reminder): Promise<string | undefined> {
     const occurrenceSet: OccurrenceSet = {
       start_time: event.start,
       end_time: event.start,
@@ -298,13 +301,13 @@ export class FavoritesService {
   public async updatePrivateEvent(event: Reminder, old: Reminder) {
     const idx = this.favorites.privateEvents.findIndex((f) => f.title == old.title && f.address == old.address);
     this.favorites.privateEvents[idx] = event;
-    this.sortPrivateEvents();
+    this.sortReminders();
     await this.notificationService.unscheduleAll(event.id);
-    await this.notifyPrivateEvent(event);
+    await this.notifyReminder(event);
     await this.saveFavorites();
   }
 
-  private sortPrivateEvents() {
+  private sortReminders() {
     this.favorites.privateEvents.sort((a, b) => Number(new Date(a.start)) - Number(new Date(b.start)));
   }
 

@@ -35,7 +35,6 @@ import { TileContainerComponent } from '../tile-container/tile-container.compone
 import { TileComponent } from '../tile/tile.component';
 import { DatasetResult, Event, Link, LocationEnabledStatus, Names, Thing } from '../data/models';
 import { environment } from 'src/environments/environment';
-import { InAppReview } from '@capacitor-community/in-app-review';
 import { RemindersComponent } from '../reminders/reminders.component';
 import { addIcons } from 'ionicons';
 import { App } from '@capacitor/app';
@@ -68,6 +67,7 @@ import { PinsCardComponent } from '../pins-card/pins-card.component';
 import { UpdateService } from '../update.service';
 import { CardHeaderComponent } from '../card-header/card-header.component';
 import { daysHighlighted } from '../utils/date-utils';
+import { RatingService } from '../rating.service';
 
 interface Group {
   id: number;
@@ -151,6 +151,7 @@ export class HomePage implements OnInit {
   private api = inject(ApiService);
   private platform = inject(Platform);
   public db = inject(DbService);
+  private ratingService = inject(RatingService);
   private _change = inject(ChangeDetectorRef);
   private ionContent = viewChild.required(IonContent);
   private ionModal = viewChild.required(IonModal);
@@ -247,7 +248,6 @@ export class HomePage implements OnInit {
     this.vm.startDate = addDays(new Date(this.db.selectedDataset().start), -30).toISOString();
     this.vm.endDate = addDays(new Date(this.db.selectedDataset().end), 7).toISOString();
     this.vm.highlightedDates = daysHighlighted(this.db.selectedDataset().start, this.db.selectedDataset().end);
-    console.log(this.vm.highlightedDates)
     this.vm.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
     this.vm.groups = this.group(links);
 
@@ -320,7 +320,7 @@ export class HomePage implements OnInit {
   public async rate() {
     await this.dismiss();
     this.vm.rated = true;
-    await InAppReview.requestReview();
+    this.ratingService.rate();
   }
 
   async share() {

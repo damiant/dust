@@ -99,7 +99,7 @@ export class RemindersComponent implements OnInit {
         if (event) {
           await this.fav.updatePrivateEvent(data, event);
         } else {
-          const result = await this.fav.addPrivateEvent(data);
+          const result = await this.fav.addReminder(data);
           if (result) {
             this.ui.presentToast(result, this.toastController);
           }
