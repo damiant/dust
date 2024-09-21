@@ -271,10 +271,13 @@ export class FavoritesService {
       happening: false,
       longTimeString: '',
     };
+    let title = event.address ?
+      event.title + ' @ ' + event.address :
+      event.title;
     const result = await this.notificationService.scheduleAll(
       {
         id: event.id,
-        title: event.title + ' @ ' + event.address,
+        title,
         body: event.title + ' will start soon. ',
         comment: event.notes,
       },
