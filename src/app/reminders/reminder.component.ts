@@ -17,22 +17,22 @@ import {
   PickerColumn,
   ToastController,
 } from '@ionic/angular/standalone';
-import { PrivateEvent } from '../data/models';
+import { Reminder } from '../data/models';
 import { FormsModule } from '@angular/forms';
 import { StreetService } from '../map/street.service';
 import { CommonModule } from '@angular/common';
 import { now, uniqueId } from '../utils/utils';
 
-export enum PrivateEventResult {
+export enum ReminderResult {
   confirm = 'confirm',
   cancel = 'cancel',
   delete = 'delete',
 }
 
 @Component({
-  selector: 'app-private-event',
-  templateUrl: './private-event.component.html',
-  styleUrls: ['./private-event.component.scss'],
+  selector: 'app-reminder',
+  templateUrl: './reminder.component.html',
+  styleUrls: ['./reminder.component.scss'],
   imports: [
     FormsModule,
     CommonModule,
@@ -54,7 +54,7 @@ export enum PrivateEventResult {
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PrivateEventComponent implements OnInit {
+export class ReminderComponent implements OnInit {
   private streetService = inject(StreetService);
   private modalCtrl = inject(ModalController);
   private toastController = inject(ToastController);
@@ -64,16 +64,19 @@ export class PrivateEventComponent implements OnInit {
   initialTime = now().toISOString();
   public addresses: PickerColumn[];
   public isEdit = false;
-  public startEvent = new Date(new Date().getFullYear(), 7, 20).toISOString();
-  public endEvent = new Date(new Date().getFullYear(), 8, 10).toISOString();
+  public showAddress = true;
+  public startEvent = '';
+  public endEvent = '';
+  public highlightedDates: any[] = [];
 
-  event: PrivateEvent = {
+  public event: Reminder = {
     title: '',
     id: uniqueId('pe'),
     start: this.initialTime,
     address: this.noAddress,
     notes: '',
   };
+
   constructor() {
     this.addresses = this.streetService.getAddresses();
   }
@@ -93,7 +96,10 @@ export class PrivateEventComponent implements OnInit {
   ];
 
   ngOnInit() {
-    this.streetService.setAddress(this.event.address, this.addresses);
+    if (this.event?.address) {
+      this.streetService.setAddress(this.event.address, this.addresses);
+    }
+    console.log(this.startEvent, this.endEvent);
     setTimeout(() => {
       this.dtReady = true;
       this._change.markForCheck();
@@ -101,27 +107,30 @@ export class PrivateEventComponent implements OnInit {
   }
 
   cancel() {
-    return this.modalCtrl.dismiss(null, PrivateEventResult.cancel);
+    return this.modalCtrl.dismiss(null, ReminderResult.cancel);
   }
 
   confirm() {
     if (this.event.title.length == 0) {
-      this.presentToast(`Specify name`);
+      this.presentToast(`Specify title`);
       return;
     }
-    if (this.event.address == this.noAddress) {
+    if (this.showAddress && this.event.address == this.noAddress) {
       this.presentToast(`Select an address`);
       return;
     }
+    if (this.event.address == this.noAddress) {
+      this.event.address = undefined;
+    }
     if (this.event.start == this.initialTime) {
-      this.presentToast(`Select a date and time when the event starts`);
+      this.presentToast(`Select a date and time when to receive the reminder`);
       return;
     }
-    return this.modalCtrl.dismiss(this.event, PrivateEventResult.confirm);
+    return this.modalCtrl.dismiss(this.event, ReminderResult.confirm);
   }
 
   deleteEvent() {
-    return this.modalCtrl.dismiss(this.event, PrivateEventResult.delete);
+    return this.modalCtrl.dismiss(this.event, ReminderResult.delete);
   }
 
   async presentToast(message: string) {

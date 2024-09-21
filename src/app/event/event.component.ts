@@ -13,7 +13,7 @@ import {
   IonText,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { mapOutline, starOutline, star } from 'ionicons/icons';
+import { mapOutline, starOutline, star, repeatOutline } from 'ionicons/icons';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { FavoritesService } from '../favs/favorites.service';
 import { DbService } from '../data/db.service';
@@ -62,6 +62,7 @@ export class EventComponent {
   });
   day = input<Date>();
   showStar = true;
+  showRecurring = false;
   showImage = input(true);
   longTime = input(false);
   variableHeight = input(false);
@@ -75,7 +76,7 @@ export class EventComponent {
   isReady = false;
 
   constructor() {
-    addIcons({ mapOutline, starOutline, star });
+    addIcons({ mapOutline, star, starOutline, repeatOutline });
     effect(async () => {
       const e = this.event();
       this.checkStarred(e);
@@ -95,6 +96,7 @@ export class EventComponent {
     await this.fav.setEventStars(e);
     const occurrence = this.fav.selectOccurrence(e, this.db.selectedDay());
     this.showStar = !!occurrence;
+    this.showRecurring = !this.star && this.event().occurrence_set.length > 1;
     const starred = occurrence ? await this.fav.isFavEventOccurrence(e.uid, occurrence) : false;
     this.star = starred;
     if (occurrence) {

@@ -1,5 +1,13 @@
 ## Changes
 
+### 2.59
+- Private events are now reminders and are available in regional burns
+- Mutant Vehicles show location as "Out on the Playa"
+- Recurring events are shown with an icon
+- Add spacing between event types
+- Art shows side image layout if < 50% of art has an image
+- Fix swipe to remove events from favorites
+
 ### 2.58
 
 - Fix for event listing

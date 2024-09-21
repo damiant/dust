@@ -37,7 +37,8 @@ export interface Event {
 export enum LocationName {
   Unavailable = 'Location Available Soon',
   Undefined = '',
-  Unplaced = 'Unplaced'
+  Unplaced = 'Unplaced',
+  Mobile = 'Out on the Playa'
 }
 
 export interface Revision {
@@ -160,7 +161,7 @@ export interface Favorites {
   art: string[];
   friends: Friend[];
   rslEvents: string[];
-  privateEvents: PrivateEvent[];
+  privateEvents: Reminder[];
 }
 
 export enum LocationEnabledStatus {
@@ -316,13 +317,13 @@ export interface MapInfo {
   label?: string;
 }
 
-export interface PrivateEvent {
+export interface Reminder {
   id: string;
   title: string;
   start: string;
   startDay?: string;
   startTime?: string;
-  address: string;
+  address: string | undefined;
   notes: string;
 }
 

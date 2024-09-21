@@ -332,8 +332,8 @@ export class IntroPage {
     const x = daysUntil(manBurns, now());
     const until = daysUntil(start, now());
 
-    let hideArtLocations = until > 1 && this.isBurningMan();
-    let hideCampLocations = until > 7 && this.isBurningMan();
+    let hideArtLocations = until > 1 && this.settingsService.isBurningMan();
+    let hideCampLocations = until > 7 && this.settingsService.isBurningMan();
     if (environment.overrideLocations) {
       hideArtLocations = false;
       hideCampLocations = false;
@@ -360,10 +360,6 @@ export class IntroPage {
       this.vm.showMessage = false;
       await this.launch();
     }
-  }
-
-  isBurningMan() {
-    return this.settingsService.settings.datasetId.includes('ttitd');
   }
 
   async launch(attempt: number = 1) {
@@ -396,7 +392,7 @@ export class IntroPage {
       const sendResult: SendResult = await this.api.sendDataToWorker(
         result.revision,
         this.db.getLocationsHidden(),
-        this.isBurningMan(),
+        this.settingsService.isBurningMan(),
       );
       if (sendResult.datasetResult) {
         // We downloaded a new dataset
@@ -421,9 +417,9 @@ export class IntroPage {
       if (result.art == 0) {
         hidden.push('art');
       }
-      if (!this.isBurningMan()) {
+      if (!this.settingsService.isBurningMan()) {
         hidden.push('friends');
-        hidden.push('private');
+        //hidden.push('private');
       }
       this.db.featuresHidden.set(hidden);
       this.settingsService.setOffline(this.settingsService.settings.datasetId);
@@ -483,7 +479,7 @@ export class IntroPage {
   save() {
     this.settingsService.settings.datasetId = this.api.datasetId(this.vm.selected!);
     this.settingsService.settings.dataset = this.vm.selected;
-    this.settingsService.settings.mapRotation = this.isBurningMan() ? 45 : -(this.vm.selected!.mapDirection ?? 0); // Burning Mans map is rotate 45 degrees
+    this.settingsService.settings.mapRotation = this.settingsService.isBurningMan() ? 45 : -(this.vm.selected!.mapDirection ?? 0); // Burning Mans map is rotate 45 degrees
     this.settingsService.settings.eventTitle = this.vm.selected!.title;
     this.settingsService.settings.scrollLeft = this.vm.scrollLeft;
     this.settingsService.save();

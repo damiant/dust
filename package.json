@@ -15,6 +15,7 @@
     "deploy-preview-app": "npm run build --configuration=production && netlify deploy --prod --dir=www/browser",
     "rsl": "npx tsx scripts/rsl.ts",
     "restrooms": "npx tsx scripts/restrooms.ts",
+    "precommit": "ng lint",
     "lint": "ng lint",
     "prettify": "prettier \"**/*.{ts,html}\" --write",
     "prepare": "husky install"
@@ -89,7 +90,7 @@
     "eslint-plugin-jsdoc": "50.2.2",
     "eslint-plugin-prefer-arrow": "1.2.3",
     "eslint-plugin-unused-imports": "4.1.3",
-    "husky": "9.0.3",
+    "husky": "9.1.6",
     "jasmine-core": "5.1.1",
     "jasmine-spec-reporter": "7.0.0",
     "karma": "~6.4.4",

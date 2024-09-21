@@ -6,9 +6,6 @@
     <ion-fab-button class="close-btn" (click)="home()" size="small">
       <ion-icon name="close-sharp"></ion-icon>
     </ion-fab-button>
-
-    <!-- <ion-title class="image-text" (click)="moreClick()" size="large"><span
-      class="back-title">{{db.selectedDataset().title}}</span></ion-title> -->
   </div>
 
   <ion-modal [isOpen]="vm.moreOpen" (didDismiss)="vm.moreOpen = false" #modal [initialBreakpoint]="0.5"
@@ -81,22 +78,29 @@
     <app-tile title="More" (click)="vm.moreOpen = true" iconName="ellipsis-vertical-sharp"></app-tile>
   </app-tile-container>
 
-  @if (!db.featuresHidden().includes('friends')) {
-  <app-friends />
-  } @if (!db.featuresHidden().includes('private')) {
-  <app-private-events />
-  } @if (vm.groups.length > 0) { @for (group of vm.groups; track group.id) {
-  <ion-card class="ion-padding-bottom">
+  @if (vm.groups.length > 0) {
+  <app-card-header [title]="vm.eventTitle" [addHidden]="true"></app-card-header>
+  @for (group of vm.groups; track group.id) {
+  <ion-card class="ion-padding-top ion-padding-bottom">
     @for (link of group.links; track link) {
     <app-link [url]="link.url" [text]="link.title"></app-link>
     }
   </ion-card>
-  } }
+  }
+  }
+
+  @if (!db.featuresHidden().includes('friends')) {
+  <app-friends />
+  }
+
+  @if (!db.featuresHidden().includes('private')) {
+  <app-reminders [highlightedDates]="vm.highlightedDates" [startEvent]="vm.startDate" [endEvent]="vm.endDate" />
+  }
 
   <app-events-card [events]="vm.favEventsToday"></app-events-card>
 
   <app-pins-card (clickThing)="clickThing($event)" [things]="vm.things"></app-pins-card>
-  <div class="center text">
+  <div class="center text-dim">
     <p (click)="vm.moreOpen = true">{{vm.version}}</p>
   </div>
   <div (click)="moreClick()" class="pad-top" (click)="vm.hiddenPanel = !vm.hiddenPanel"></div>

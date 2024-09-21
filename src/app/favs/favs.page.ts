@@ -33,7 +33,7 @@ import { SearchComponent } from '../search/search.component';
 import { distance, formatDistanceMiles, toMapPoint } from '../map/map.utils';
 import { GeoService } from '../geolocation/geo.service';
 import { addIcons } from 'ionicons';
-import { star, starOutline, mapOutline, printOutline } from 'ionicons/icons';
+import { star, starOutline, mapOutline, printOutline, calendarOutline } from 'ionicons/icons';
 import { CalendarService } from '../calendar.service';
 import { ToastController } from '@ionic/angular';
 import { delay, plural } from '../utils/utils';
@@ -132,7 +132,7 @@ export class FavsPage implements OnInit {
   ionContent = viewChild.required(IonContent);
 
   constructor() {
-    addIcons({ star, starOutline, mapOutline, printOutline });
+    addIcons({ printOutline, calendarOutline, mapOutline, star, starOutline });
     effect(async () => {
       this.fav.changed();
       await this.update();
@@ -316,7 +316,7 @@ export class FavsPage implements OnInit {
 
   public async removeEvent(event: Event) {
     const occurrence = this.fav.selectOccurrence(event, this.db.selectedDay());
-    if (event.slug.startsWith('rsl')) {
+    if (event.slug && event.slug.startsWith('rsl')) {
       const favs = await this.fav.getFavorites();
       const items = await this.fav.getRSLEventList(favs.rslEvents);
       for (const rslEvent of items) {

@@ -11,10 +11,27 @@
     background-color: rgba(0, 0, 0, 0.1);
 }
 
-.pic {
+.side-image {
+    padding-left: 0.5rem;
+    float: right;
+    height: 156px;
+    width: 33vw;
+    min-width: 150px;
+    object-fit: cover;
+}
+
+.top {
     height: 360px;
 }
 
 .item {
     height: calc(var(--text-zoom) * 50 + 156px)
+}
+
+.side {
+
+    ion-card-title,
+    ion-card-subtitle {
+        padding-right: 34vw;
+    }
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject, input } from '@angular/core';
 import {
   IonCard,
   IonCardContent,
@@ -15,18 +15,20 @@ import {
 } from '@ionic/angular/standalone';
 import { FriendComponent } from '../friend/friend.component';
 import { FavoritesService } from '../favs/favorites.service';
-import { PrivateEvent } from '../data/models';
+import { Reminder } from '../data/models';
 import { CommonModule } from '@angular/common';
 import { clone, delay, getDayName } from '../utils/utils';
-import { PrivateEventComponent, PrivateEventResult } from '../private-event/private-event.component';
+import { ReminderComponent, ReminderResult } from './reminder.component';
 import { UiService } from '../ui/ui.service';
 import { addIcons } from 'ionicons';
 import { add, calendar } from 'ionicons/icons';
+import { SettingsService } from '../data/settings.service';
+import { CardHeaderComponent } from '../card-header/card-header.component';
 
 @Component({
-  selector: 'app-private-events',
-  templateUrl: './private-events.component.html',
-  styleUrls: ['./private-events.component.scss'],
+  selector: 'app-reminders',
+  templateUrl: './reminders.component.html',
+  styleUrls: ['./reminders.component.scss'],
   imports: [
     CommonModule,
     FriendComponent,
@@ -40,17 +42,22 @@ import { add, calendar } from 'ionicons/icons';
     IonText,
     IonItem,
     IonLabel,
+    CardHeaderComponent
   ],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PrivateEventsComponent implements OnInit {
+export class RemindersComponent implements OnInit {
   private modalCtrl = inject(ModalController);
   private fav = inject(FavoritesService);
+  private settings = inject(SettingsService);
   private ui = inject(UiService);
   private toastController = inject(ToastController);
-  public events: PrivateEvent[] = [];
-  private editingPrivateEvent: PrivateEvent | undefined;
+  public events: Reminder[] = [];
+  public startEvent = input<string>('');
+  public endEvent = input<string>('');
+  public highlightedDates = input<any[]>([]);
+  private editingReminder: Reminder | undefined;
   private _change = inject(ChangeDetectorRef);
 
   constructor() {
@@ -61,28 +68,38 @@ export class PrivateEventsComponent implements OnInit {
     this.update();
   }
 
-  async addPrivateEvent(event?: PrivateEvent) {
+  async addReminder(event?: Reminder) {
     const e: any = document.getElementById('my-outlet');
     const modal = await this.modalCtrl.create({
-      component: PrivateEventComponent,
+      component: ReminderComponent,
       presentingElement: e,
       componentProps: event
         ? {
           event: event,
+          startEvent: this.startEvent(),
+          endEvent: this.endEvent(),
+          highlightedDates: this.highlightedDates(),
           isEdit: event,
+          showAddress: this.settings.isBurningMan()
         }
-        : undefined,
+        : {
+          startEvent: this.startEvent(),
+          endEvent: this.endEvent(),
+          highlightedDates: this.highlightedDates(),
+          isEdit: false,
+          showAddress: this.settings.isBurningMan()
+        },
     });
     await modal.present();
 
     const { data, role } = await modal.onWillDismiss();
     delay(800); // Time for animation
     switch (role) {
-      case PrivateEventResult.confirm: {
+      case ReminderResult.confirm: {
         if (event) {
           await this.fav.updatePrivateEvent(data, event);
         } else {
-          const result = await this.fav.addPrivateEvent(data);
+          const result = await this.fav.addReminder(data);
           if (result) {
             this.ui.presentToast(result, this.toastController);
           }
@@ -90,8 +107,8 @@ export class PrivateEventsComponent implements OnInit {
         await this.update();
         return;
       }
-      case PrivateEventResult.delete: {
-        await this.fav.deletePrivateEvent(this.editingPrivateEvent!);
+      case ReminderResult.delete: {
+        await this.fav.deletePrivateEvent(this.editingReminder!);
         await this.update();
         return;
       }
@@ -116,8 +133,8 @@ export class PrivateEventsComponent implements OnInit {
     this._change.markForCheck();
   }
 
-  async editPrivateEvent(event: PrivateEvent) {
-    this.editingPrivateEvent = clone(event);
-    this.addPrivateEvent(event);
+  async editReminder(event: Reminder) {
+    this.editingReminder = clone(event);
+    this.addReminder(event);
   }
 }

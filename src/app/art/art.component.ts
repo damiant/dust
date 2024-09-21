@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { Art } from '../data/models';
 import { CommonModule } from '@angular/common';
 import {
@@ -13,6 +13,8 @@ import {
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { addIcons } from 'ionicons';
 import { volumeHighOutline } from 'ionicons/icons';
+
+export type ArtImageStyle = 'top' | 'side' | 'none';
 
 @Component({
   selector: 'app-art',
@@ -35,7 +37,9 @@ import { volumeHighOutline } from 'ionicons/icons';
 export class ArtComponent {
   art = input.required<Art>();
   title = input('Art');
-  showImage = input(true);
+  imageStyle = input<ArtImageStyle>('top');
+  imageContainerCSSStyle = computed(() => this.imageStyle() == 'top' ? 'image-container' : 'side-container');
+  imageCSSStyle = computed(() => this.imageStyle() == 'top' ? 'image' : 'side-image');
   artClick = output<Art>();
 
   constructor() {

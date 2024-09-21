@@ -37,6 +37,9 @@
       } @else if (showStar) {
       <ion-icon name="star-outline" (click)="emitStar(true)"></ion-icon>
       }
+      @if (showRecurring) {
+      <ion-icon name="repeat-outline"></ion-icon>
+      }
       {{ event().event_type.label }}{{location()}} {{ event().distanceInfo }}</ion-text>
   </ion-card-content>
 </ion-card>

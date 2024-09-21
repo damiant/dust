@@ -4,6 +4,10 @@
 🩷 High Impact
 🔥 Important
 
+🔥 Rating after 4th favorite
+🔥 Dark mode keyboard for Android
+
+
 ## Accessibility / Navigation
 - 🔴🩷 Dust Daka - Siri for "where am I": 8:30 and F. Maybe screen reader or voice control button.
 - 🔴🩷 Siri - What is the closest camp, restroom, ice, medical etc?

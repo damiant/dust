@@ -19,6 +19,7 @@ import { CommonModule } from '@angular/common';
 import { clone, delay } from '../utils/utils';
 import { addIcons } from 'ionicons';
 import { add, person } from 'ionicons/icons';
+import { CardHeaderComponent } from "../card-header/card-header.component";
 
 @Component({
   selector: 'app-friends',
@@ -37,6 +38,7 @@ import { add, person } from 'ionicons/icons';
     IonItem,
     IonIcon,
     IonLabel,
+    CardHeaderComponent
   ],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,

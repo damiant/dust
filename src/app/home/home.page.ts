@@ -35,8 +35,7 @@ import { TileContainerComponent } from '../tile-container/tile-container.compone
 import { TileComponent } from '../tile/tile.component';
 import { DatasetResult, Event, Link, LocationEnabledStatus, Names, Thing } from '../data/models';
 import { environment } from 'src/environments/environment';
-import { InAppReview } from '@capacitor-community/in-app-review';
-import { PrivateEventsComponent } from '../private-events/private-events.component';
+import { RemindersComponent } from '../reminders/reminders.component';
 import { addIcons } from 'ionicons';
 import { App } from '@capacitor/app';
 import {
@@ -63,9 +62,12 @@ import { CalendarService } from '../calendar.service';
 import { EventsCardComponent } from '../events-card/events-card.component';
 import { FavoritesService } from '../favs/favorites.service';
 import { ApiService } from '../data/api.service';
-import { delay } from '../utils/utils';
+import { addDays, delay } from '../utils/utils';
 import { PinsCardComponent } from '../pins-card/pins-card.component';
 import { UpdateService } from '../update.service';
+import { CardHeaderComponent } from '../card-header/card-header.component';
+import { daysHighlighted } from '../utils/date-utils';
+import { RatingService } from '../rating.service';
 
 interface Group {
   id: number;
@@ -80,14 +82,18 @@ interface HomeState {
   longEvents: boolean;
   hiddenPanel: boolean;
   downloading: boolean;
+  eventTitle: string;
   directionsOpen: boolean;
   eventIsHappening: boolean;
+  startDate: string;
+  endDate: string;
   favEventsToday: Event[];
   imageUrl: string;
   mapPin: GPSPin | undefined;
   groups: Group[];
   things: Thing[];
   hasMedical: boolean;
+  highlightedDates: any[];
   hasRestrooms: boolean;
   hasIce: boolean;
   version: string;
@@ -95,9 +101,9 @@ interface HomeState {
 }
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.page.html',
-  styleUrls: ['./profile.page.scss'],
+  selector: 'app-home',
+  templateUrl: './home.page.html',
+  styleUrls: ['./home.page.scss'],
   standalone: true,
   imports: [IonLoading, IonText,
     IonSpinner,
@@ -126,12 +132,13 @@ interface HomeState {
     TileContainerComponent,
     TileComponent,
     EventsCardComponent,
-    PrivateEventsComponent,
+    RemindersComponent,
     PinsCardComponent,
     LinkComponent,
+    CardHeaderComponent
   ],
 })
-export class ProfilePage implements OnInit {
+export class HomePage implements OnInit {
   private ui = inject(UiService);
   private settings = inject(SettingsService);
   private map = inject(MapService);
@@ -144,6 +151,7 @@ export class ProfilePage implements OnInit {
   private api = inject(ApiService);
   private platform = inject(Platform);
   public db = inject(DbService);
+  private ratingService = inject(RatingService);
   private _change = inject(ChangeDetectorRef);
   private ionContent = viewChild.required(IonContent);
   private ionModal = viewChild.required(IonModal);
@@ -159,7 +167,11 @@ export class ProfilePage implements OnInit {
     eventIsHappening: false,
     favEventsToday: [],
     imageUrl: '',
+    eventTitle: '',
+    startDate: '',
+    endDate: '',
     mapPin: undefined,
+    highlightedDates: [],
     groups: [],
     things: [],
     hasMedical: true,
@@ -232,6 +244,10 @@ export class ProfilePage implements OnInit {
     this.vm.mapPin = this.getMapPin();
     this.vm.longEvents = this.settings.settings.longEvents;
     this.vm.eventIsHappening = !this.db.eventHasntBegun() && !this.db.isHistorical();
+    this.vm.eventTitle = this.db.selectedDataset().title;
+    this.vm.startDate = addDays(new Date(this.db.selectedDataset().start), -30).toISOString();
+    this.vm.endDate = addDays(new Date(this.db.selectedDataset().end), 7).toISOString();
+    this.vm.highlightedDates = daysHighlighted(this.db.selectedDataset().start, this.db.selectedDataset().end);
     this.vm.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
     this.vm.groups = this.group(links);
 
@@ -304,7 +320,7 @@ export class ProfilePage implements OnInit {
   public async rate() {
     await this.dismiss();
     this.vm.rated = true;
-    await InAppReview.requestReview();
+    this.ratingService.rate();
   }
 
   async share() {

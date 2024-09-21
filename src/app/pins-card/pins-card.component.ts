@@ -7,6 +7,7 @@ import { ThingComponent, ThingResult } from '../thing/thing.component';
 
 import { clone, delay } from '../utils/utils';
 import { FavoritesService } from '../favs/favorites.service';
+import { CardHeaderComponent } from "../card-header/card-header.component";
 
 @Component({
   selector: 'app-pins-card',
@@ -14,7 +15,17 @@ import { FavoritesService } from '../favs/favorites.service';
   styleUrls: ['./pins-card.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IonFabButton, IonNote, IonIcon, IonButton, IonCardTitle, IonItem, IonCard, IonCardHeader, ThingComponent]
+  imports: [
+    IonFabButton,
+    IonNote,
+    IonIcon,
+    IonButton,
+    IonCardTitle,
+    IonItem,
+    IonCard,
+    IonCardHeader,
+    ThingComponent,
+    CardHeaderComponent]
 })
 export class PinsCardComponent {
   private modalCtrl = inject(ModalController);

@@ -19,12 +19,33 @@ export class SettingsService {
     }
   }
 
+  public isBurningMan(): boolean {
+    return this.settings.datasetId.includes('ttitd');
+  }
+
   public async getMapURI(): Promise<string | undefined> {
     return await get('mapUri');
   }
 
   public async setMapURI(uri: string) {
     await set('mapUri', uri);
+  }
+
+  public async setInteger(key: string, value: number) {
+    await set(key, value);
+  }
+
+  public async getInteger(key: string): Promise<number> {
+    try {
+      const value = await get(key);
+      if (!value) {
+        return 0;
+      }
+      return value;
+    }
+    catch {
+      return 0;
+    }
   }
 
   public getSettings(): Settings {

@@ -42,7 +42,7 @@
     </div>
     <cdk-virtual-scroll-viewport [minBufferPx]="vm.minBufferPx" [itemSize]="vm.cardHeight" maxBufferPx="2350">
       @for (art of vm.arts; track artTrackBy($index, art)) {
-      <app-art (artClick)="click($event)" [showImage]="vm.showImage" [art]="art" />
+      <app-art (artClick)="click($event)" [imageStyle]="art.images ? vm.imageStyle : 'none'" [art]="art" />
       }
     </cdk-virtual-scroll-viewport>
     <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
