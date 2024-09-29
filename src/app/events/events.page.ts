@@ -17,7 +17,6 @@ import { DbService } from '../data/db.service';
 import { Day, Event, MapPoint, Names } from '../data/models';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { FormsModule } from '@angular/forms';
 import { noDate, now, nowRange, sameDay, timeRangeToString } from '../utils/utils';
@@ -36,6 +35,8 @@ import { FavoritesService } from '../favs/favorites.service';
 import { EventPositionChange, EventsService } from './events.service';
 import { Subscription } from 'rxjs';
 import { SortComponent } from '../sort/sort.component';
+import { UiScrollModule } from 'ngx-ui-scroll';
+import { IDatasource } from 'ngx-ui-scroll';
 
 interface EventsState {
   title: string;
@@ -98,7 +99,7 @@ function initialState(): EventsState {
   imports: [
     CommonModule,
     RouterModule,
-    ScrollingModule,
+    UiScrollModule,
     MapModalComponent,
     FormsModule,
     EventComponent,
@@ -133,7 +134,7 @@ export class EventsPage implements OnInit, OnDestroy {
   private _change = inject(ChangeDetectorRef);
   vm: EventsState = initialState();
 
-  virtualScroll = viewChild.required(CdkVirtualScrollViewport);
+  virtualScroll = viewChild.required('VirtualScroll');
 
   constructor() {
     addIcons({ compass, compassOutline });
@@ -158,6 +159,20 @@ export class EventsPage implements OnInit, OnDestroy {
     });
   }
 
+  datasource: IDatasource = {
+    get: async (index, count, success) => {
+      await this.update();
+      console.log('datasource', index, count);
+      const data = [];
+      for (let i = index; i <= index + count - 1; i++) {
+        data.push(this.vm.events[i]);
+      }
+      console.log(data);
+      success(data);
+      this._change.markForCheck();
+    }
+  };
+
   ngOnInit(): void {
     this.nextSubscription = this.eventsService.next.subscribe((eventId: string) => {
       const idx = this.vm.events.findIndex(e => e.uid == eventId);
@@ -177,7 +192,7 @@ export class EventsPage implements OnInit, OnDestroy {
       if (this.eventsService.currentEventId) {
         const idx = this.vm.events.findIndex(e => e.uid == this.eventsService.currentEventId);
         // Scrolls to the event you were looking at        
-        this.virtualScroll().scrollToIndex(idx, 'instant');
+        (this.virtualScroll() as any).scrollToIndex(idx, 'instant');
         (this.vm.events[idx] as any).highlighted = true;
         this._change.markForCheck();
 
@@ -369,7 +384,7 @@ export class EventsPage implements OnInit, OnDestroy {
     this.vm.pastEventOption = !this.vm.isNow && (this.vm.search?.length <= 0) && !this.db.eventHasntBegun() && !this.db.showPastEvents;
     if (scrollToTop) {
       this.hack();
-      this.virtualScroll().scrollToOffset(0, 'smooth');
+      (this.virtualScroll() as any).scrollToOffset(0, 'smooth');
     }
     this._change.markForCheck();
   }

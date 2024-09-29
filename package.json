@@ -61,6 +61,7 @@
     "fuse.js": "7.0.0",
     "idb-keyval": "^6.2.1",
     "ionicons": "^7.4.0",
+    "ngx-ui-scroll": "^3.2.1",
     "ngxtension": "^3.5.5",
     "rxjs": "~7.8.1",
     "three": "^0.166.1",

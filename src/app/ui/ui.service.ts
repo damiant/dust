@@ -19,7 +19,7 @@ export class UiService {
   public textZoom = signal(1);
   private clickedTab = signal('');
 
-  public scrollUp(name: string, virtualScroll: CdkVirtualScrollViewport) {
+  public scrollUp(name: string, virtualScroll: any) {
     const tab = this.clickedTab();
     if (tab.startsWith(name)) {
       virtualScroll.scrollToIndex(0, 'smooth');

@@ -43,3 +43,8 @@ ion-segment::-webkit-scrollbar {
 .b-pad-r {
     padding-right: 0.5rem;
 }
+
+.viewport {
+    height: 300px;
+    overflow-y: auto;
+}
