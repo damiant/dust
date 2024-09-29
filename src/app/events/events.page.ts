@@ -55,7 +55,6 @@ interface EventsState {
   mapTitle: string;
   mapSubtitle: string;
   mapPoints: MapPoint[];
-  minBufferPx: number;
   byDist: boolean;
   isNow: boolean;
   timeRange: string;
@@ -84,8 +83,7 @@ function initialState(): EventsState {
     byDist: false,
     isNow: false,
     timeRange: '',
-    displayedDistMessage: false,
-    minBufferPx: 1900,
+    displayedDistMessage: false
   };
 }
 
@@ -156,6 +154,14 @@ export class EventsPage implements OnInit, OnDestroy {
       await this.db.checkEvents();
       this.update();
     });
+
+    effect(async () => {
+      const _r = this.fav.changed();
+      if (_r !== 0) {
+        await this.fav.setFavoritedList(this.vm.events);
+        this._change.markForCheck();
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -214,8 +220,8 @@ export class EventsPage implements OnInit, OnDestroy {
   }
 
   async ionViewDidEnter() {
-    this.hack();
-    this.vm.cardHeight = 130 + this.ui.textZoom() * 50;
+    this.virtualScroll().checkViewportSize();
+    this.vm.cardHeight = 140 + this.ui.textZoom() * 50;
   }
 
   private async init() {
@@ -248,10 +254,10 @@ export class EventsPage implements OnInit, OnDestroy {
     if (message) {
       this.ui.presentToast(message, this.toastController);
     }
+    await this.update();
   }
 
-  // eslint-disable-next-line unused-imports/no-unused-vars
-  public longEvent(length: number) {
+  private longEvent() {
     if (this.settings.shouldLastLongEventsAlert()) {
       this.ui.presentToast(`Long events are displayed at the bottom of the list.`, this.toastController);
       this.settings.setLastLongEventsAlert();
@@ -265,12 +271,6 @@ export class EventsPage implements OnInit, OnDestroy {
       this.vm.displayedDistMessage = true;
     }
     this.update(true);
-  }
-
-  private hack() {
-    // Hack to ensure tab view is updated on switch of tabs or when day is changed
-    this.vm.minBufferPx = this.vm.minBufferPx == 1901 ? 1900 : 1901;
-    this._change.markForCheck();
   }
 
   private chooseDefaultDay(today: Date): Date | string {
@@ -364,12 +364,16 @@ export class EventsPage implements OnInit, OnDestroy {
       this.settings.settings.longEvents, // Filter events > 6 hrs
       this.db.showPastEvents
     );
+    const longEvents = await this.fav.setFavoritedList(this.vm.events);
     this.vm.noEvents = this.vm.events.length == 0;
     this.vm.noEventsMessage = this.noEventsMessage();
     this.vm.pastEventOption = !this.vm.isNow && (this.vm.search?.length <= 0) && !this.db.eventHasntBegun() && !this.db.showPastEvents;
     if (scrollToTop) {
-      this.hack();
+      this.virtualScroll().checkViewportSize();
       this.virtualScroll().scrollToOffset(0, 'smooth');
+    }
+    if (longEvents) {
+      this.longEvent();
     }
     this._change.markForCheck();
   }

@@ -108,6 +108,29 @@ export class FavoritesService {
     return events;
   }
 
+  public async setFavoritedList(events: Event[]): Promise<boolean> {
+    let longEvents = false;
+    for (let e of events) {
+      await this.setEventStars(e);
+      const occurrence = this.selectOccurrence(e, this.db.selectedDay());
+      e.showStar = !!occurrence;
+      e.showRecurring = !e.star && e.occurrence_set.length > 1;
+      const starred = occurrence ? await this.isFavEventOccurrence(e.uid, occurrence) : false;
+      e.star = starred;
+      if (occurrence) {
+        const length = this.hoursBetween(new Date(occurrence.end_time), new Date(occurrence.start_time));
+        if (length > 5) {
+          longEvents = true;
+        }
+      }
+    }
+    return longEvents;
+  }
+
+  private hoursBetween(d1: any, d2: any): number {
+    return Math.ceil(Math.abs(d1 - d2) / 36e5);
+  }
+
   public async isFavEventOccurrence(id: string, occurrence: OccurrenceSet): Promise<boolean> {
     await this.ready;
     return this.starredEvent(id, occurrence);

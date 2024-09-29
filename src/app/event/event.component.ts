@@ -61,54 +61,18 @@ export class EventComponent {
     return encodeURIComponent(this.title());
   });
   day = input<Date>();
-  showStar = true;
-  showRecurring = false;
   showImage = input(true);
   longTime = input(false);
   variableHeight = input(false);
-  star = false;
   mapClick = output<any>();
   starClick = output<boolean>();
   groupClick = output<Event>();
   rslClick = output<string>();
-  longEvent = output<number>();
   opened = output<string>();
   isReady = false;
 
   constructor() {
     addIcons({ mapOutline, star, starOutline, repeatOutline });
-    effect(async () => {
-      const e = this.event();
-      this.checkStarred(e);
-      this._change.markForCheck();
-    });
-    effect(async () => {
-      const _r = this.fav.changed();
-      if (_r !== 0) {
-        const e = this.event();
-        await this.checkStarred(e);
-        this._change.markForCheck();
-      }
-    });
-  }
-
-  private async checkStarred(e: Event) {
-    await this.fav.setEventStars(e);
-    const occurrence = this.fav.selectOccurrence(e, this.db.selectedDay());
-    this.showStar = !!occurrence;
-    this.showRecurring = !this.star && this.event().occurrence_set.length > 1;
-    const starred = occurrence ? await this.fav.isFavEventOccurrence(e.uid, occurrence) : false;
-    this.star = starred;
-    if (occurrence) {
-      const length = this.hoursBetween(new Date(occurrence.end_time), new Date(occurrence.start_time));
-      if (length > 5) {
-        this.longEvent.emit(length);
-      }
-    }
-  }
-
-  private hoursBetween(d1: any, d2: any): number {
-    return Math.ceil(Math.abs(d1 - d2) / 36e5);
   }
 
   map(event: Event, ev: any) {
@@ -127,7 +91,6 @@ export class EventComponent {
   emitStar(star: boolean) {
     this.emitting = 3;
     this.starClick.emit(star);
-    this.checkStarred(this.event());
   }
 
   detail() {
