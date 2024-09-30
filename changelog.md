@@ -1,4 +1,7 @@
 ## Changes
+### 2.60
+
+- Fix for scrolling on events and camps to prevent jitter
 
 ### 2.59
 - Private events are now reminders and are available in regional burns

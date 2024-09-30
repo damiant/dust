@@ -40,7 +40,6 @@ interface CampsState {
   mapSubtitle: string;
   noCampsMessage: string;
   mapPoints: MapPoint[];
-  minBufferPx: number;
   alphaIndex: number[];
   alphaValues: string[];
   cardHeight: number;
@@ -60,7 +59,6 @@ function initialState(): CampsState {
     mapSubtitle: '',
     noCampsMessage: 'No camps were found.',
     mapPoints: [],
-    minBufferPx: 900,
     cardHeight: 180,
     alphaIndex: [],
     alphaValues: [],
@@ -153,9 +151,8 @@ export class CampsPage {
   }
 
   async ionViewDidEnter() {
-    // Hack to ensure tab view is updated on switch of tabs
-    this.vm.minBufferPx = this.vm.minBufferPx == 901 ? 900 : 901;
     this.vm.cardHeight = 130 + this.ui.textZoom() * 50;
+    this.virtualScroll().checkViewportSize();
     this._change.markForCheck();
   }
 

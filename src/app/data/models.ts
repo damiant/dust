@@ -15,6 +15,9 @@ export interface Event {
   distance: number; // Calculated
   distanceInfo: string; // Calculated
   gpsCoords: GpsCoord; // Calculated
+  star?: boolean; // Calculated (whether the event is starred)
+  showStar?: boolean; // Calculated (whether to show star icon on event list)
+  showRecurring?: boolean; // Calculated (whether to show recurring icon on event list)
   pin?: Pin; // Calculated if no gps
   all_day: any;
   check_location?: number;

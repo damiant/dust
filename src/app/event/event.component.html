@@ -32,12 +32,12 @@
     (click)="detail()">
     <ion-text aria-hidden="true" class="clamp">{{ event().description }}</ion-text>
     <ion-text aria-hidden="true" class="clamp1 type">
-      @if (star && showStar) {
+      @if (event().star && event().showStar) {
       <ion-icon name="star" (click)="emitStar(false)"></ion-icon>
-      } @else if (showStar) {
+      } @else if (event().showStar) {
       <ion-icon name="star-outline" (click)="emitStar(true)"></ion-icon>
       }
-      @if (showRecurring) {
+      @if (event().showRecurring) {
       <ion-icon name="repeat-outline"></ion-icon>
       }
       {{ event().event_type.label }}{{location()}} {{ event().distanceInfo }}</ion-text>
