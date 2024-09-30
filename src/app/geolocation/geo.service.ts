@@ -24,6 +24,7 @@ export class GeoService {
   private hasPermission = false;
   private centerOfMap: GpsCoord | undefined;
   // Returns true if you are granted permission
+  public hasShownGeolocationMessage = false;
   public async checkPermissions(): Promise<boolean> {
     if (!Capacitor.isNativePlatform()) {
       return true;

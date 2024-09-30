@@ -117,6 +117,14 @@ export class MapComponent implements OnInit, OnDestroy {
     return await this.mapResult?.capture();
   }
 
+  private showGeolocationMessage() {
+    if (this.geo.hasShownGeolocationMessage) {
+    } else {
+      this.geo.hasShownGeolocationMessage = true;
+      this.showMessage = true;
+    }
+  }
+
   private async fixGPSAndUpdate() {
     this.selectedPoint = undefined;
     let foundPoints = 0;
@@ -144,7 +152,7 @@ export class MapComponent implements OnInit, OnDestroy {
       this.ui.presentToast('Location services need to be enabled in settings on your device', this.toastController, undefined, 5000);
       return;
     }
-    this.showMessage = true;
+    this.showGeolocationMessage();
     this.hideLoadingDialog();
   }
 
@@ -371,7 +379,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private async checkGeolocation() {
     if (this.settings.settings.locationEnabled === LocationEnabledStatus.Unknown) {
       if (this.settings.shouldGeoAlert() && !this.hideCompass) {
-        this.showMessage = true;
+        this.showGeolocationMessage();
         this.hideLoadingDialog();
       }
       return;
@@ -394,7 +402,7 @@ export class MapComponent implements OnInit, OnDestroy {
     if (!hasGeo) {
       if (this.settings.shouldGeoAlert()) {
         if (await this.db.hasGeoPoints()) {
-          this.showMessage = true;
+          this.showGeolocationMessage();
           this.hideLoadingDialog();
         }
       }
