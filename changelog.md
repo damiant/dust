@@ -1,4 +1,9 @@
 ## Changes
+
+### 2.61
+
+- Dont show the geolocation prompt on every access
+
 ### 2.60
 
 - Fix for scrolling on events and camps to prevent jitter
