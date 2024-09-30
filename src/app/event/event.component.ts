@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output, inject, effect, computed, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output, inject, computed, ChangeDetectorRef } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { Event } from '../data/models';
 import { CommonModule } from '@angular/common';
