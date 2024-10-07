@@ -1,5 +1,9 @@
 ## Changes
 
+### 2.62
+
+- Fix for washed out coloring of the map image
+
 ### 2.61
 
 - Dont show the geolocation prompt on every access
