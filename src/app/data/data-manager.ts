@@ -1196,6 +1196,8 @@ export class DataManager implements WorkerClass {
       const def: GPSSet = { title: '', description: '', points: [] };
       const data: GPSSet = await this.read(this.getId(name as any), def);
       const result: MapSet = { title: data.title, description: data.description, points: [] };
+
+      if (!data.points) return result;
       for (let gps of data.points) {
         const point = gpsToMap(gps);
         const mapPoint: MapPoint = {
