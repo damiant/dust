@@ -257,7 +257,8 @@ export enum Names {
   ice = 'ice', // Burning Man only
   medical = 'medical', // Burning Man only
   restrooms = 'restrooms', // Burning Man only
-  summary = 'summary' // Event summary (DatasetResult)
+  summary = 'summary', // Event summary (DatasetResult)
+  other = 'other' // Other pin types (Shuttle Stop etc)
 }
 
 export enum MapType {
@@ -266,6 +267,7 @@ export enum MapType {
   Now = 'now',
   Art = 'art',
   Medical = 'medical',
+  Other = 'other',
   Things = 'things',
   All = 'all'
 }

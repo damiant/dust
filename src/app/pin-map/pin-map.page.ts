@@ -140,6 +140,8 @@ export class PinMapPage {
         return await this.fallback(await this.db.getMapPoints(Names.ice), 'Ice', mapType);
       case MapType.Medical:
         return await this.fallback(await this.db.getMapPoints(Names.medical), 'Medical', mapType);
+      case MapType.Other:
+        return await this.db.getPins(Names.other);
       case MapType.Things:
         return await this.getThings();
       case MapType.All:
@@ -234,6 +236,7 @@ export class PinMapPage {
   private iconFor(name: string): string {
     if (name.includes('Camp')) return '-';
     if (name.includes('Bike')) return ':';
+
     return '^';
   }
 
@@ -292,7 +295,7 @@ export class PinMapPage {
       }
     }
 
-    const otherMaps = [Names.restrooms, Names.ice, Names.medical];
+    const otherMaps = [Names.restrooms, Names.ice, Names.medical, Names.other];
     if (!this.db.artLocationsHidden()) {
       otherMaps.push(Names.art);
     }
@@ -322,11 +325,11 @@ export class PinMapPage {
         }
         point.info = { title: map.title, location: '', subtitle: `${index + 1} of ${map.points.length}`, label };
       }
-      point.info.bgColor = this.colorOf(type);
+      point.info.bgColor = this.colorOf(type, point.info.bgColor);
     });
   }
 
-  private colorOf(type: string): PinColor {
+  private colorOf(type: string, defaultColor: PinColor | undefined): PinColor {
     switch (type) {
       case Names.restrooms:
         return 'tertiary';
@@ -336,6 +339,8 @@ export class PinMapPage {
         return 'medical';
       case Names.art:
         return 'secondary';
+      case Names.other:
+        return defaultColor ?? 'tertiary';
       default:
         return 'primary';
     }

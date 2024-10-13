@@ -392,6 +392,8 @@ function getMaterial(pinColor: PinColor): MeshPhongMaterial {
             return new MeshPhongMaterial({ color: 0x2196F3, transparent: true });
         case 'tertiary':
             return new MeshPhongMaterial({ color: 0x2dd36f, transparent: true });
+        case 'accent':
+            return new MeshPhongMaterial({ color: 0x9E9E9E, transparent: true });
         case 'warning':
             return new MeshPhongMaterial({ color: 0xffc409, transparent: true });
         case 'compass':
@@ -438,6 +440,7 @@ async function addPin(
         case '-': svg = 'assets/camp.svg'; rotation = Math.PI; break;
         case ':': svg = 'assets/bike.svg'; rotation = Math.PI; break;
         case '+': svg = 'assets/medical.svg'; break;
+        case '@': svg = 'assets/bus.svg'; rotation = Math.PI; break;
         case '': svg = 'assets/compass.svg'; break;
     }
 
