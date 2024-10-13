@@ -1309,7 +1309,17 @@ export class DataManager implements WorkerClass {
           mp.x = pt.x;
           mp.y = pt.y;
         }
-        if (pin.label == pinType) {
+        let match = (pin.label == pinType);
+        if (pinType == 'other' && !['GPS', 'Restrooms', 'Medical'].includes(pin.label)) {
+          mp.info = { title: pin.label, location: '', subtitle: '', bgColor: 'accent' };
+          if (pin.label.includes('Shuttle')) {
+            mp.info.label = '@';
+          } else {
+            mp.info.label = pin.label.substring(0, 1);
+          }
+          match = true;
+        }
+        if (match) {
           mapSet.points.push(mp);
         }
       }

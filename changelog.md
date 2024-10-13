@@ -1,5 +1,9 @@
 ## Changes
 
+### 2.63
+
+- Support for shuttle stops and other markers
+
 ### 2.62
 
 - Fix for washed out coloring of the map image

@@ -322,7 +322,7 @@ export class MapComponent implements OnInit, OnDestroy {
       const pin = mapPointToPin(point, defaultMapRadius);
 
       if (pin) {
-        let label = point.info?.label ?? '^'
+        let label = point.info?.label ?? '^';
         let sameList = sameLocation[`${pin.x}+${pin.y}`];
         if (sameList) {
           sameList.push(map.pins.length);
