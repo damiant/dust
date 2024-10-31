@@ -28,6 +28,8 @@ PODS:
     - Capacitor
   - CapacitorPrintWebview (6.0.3):
     - Capacitor
+  - CapacitorPushNotifications (6.0.2):
+    - Capacitor
   - CapacitorScreenOrientation (6.0.2):
     - Capacitor
   - CapacitorShare (6.0.2):
@@ -61,6 +63,7 @@ DEPENDENCIES:
   - "CapacitorNetwork (from `../../node_modules/@capacitor/network`)"
   - "CapacitorPreferences (from `../../node_modules/@capacitor/preferences`)"
   - CapacitorPrintWebview (from `../../node_modules/capacitor-print-webview`)
+  - "CapacitorPushNotifications (from `../../node_modules/@capacitor/push-notifications`)"
   - "CapacitorScreenOrientation (from `../../node_modules/@capacitor/screen-orientation`)"
   - "CapacitorShare (from `../../node_modules/@capacitor/share`)"
   - "CapacitorSplashScreen (from `../../node_modules/@capacitor/splash-screen`)"
@@ -101,6 +104,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/preferences"
   CapacitorPrintWebview:
     :path: "../../node_modules/capacitor-print-webview"
+  CapacitorPushNotifications:
+    :path: "../../node_modules/@capacitor/push-notifications"
   CapacitorScreenOrientation:
     :path: "../../node_modules/@capacitor/screen-orientation"
   CapacitorShare:
@@ -134,6 +139,7 @@ SPEC CHECKSUMS:
   CapacitorNetwork: 8796cf1f1104a00b289957b6150b7c60e1c2a8d3
   CapacitorPreferences: e8284bf740cf8c6d3f25409af3c01df87dfeb5a1
   CapacitorPrintWebview: d2c9d1cf8b058cce3bf19e20d3567e3378f6be15
+  CapacitorPushNotifications: ccd797926c030acad3d5498ef452c735c90a2c89
   CapacitorScreenOrientation: 6039dc2ea4a8596b79316709d5727e8bb7e32845
   CapacitorShare: 591ae4693d85686ceb590db8e8b44aa014ec6490
   CapacitorSplashScreen: 250df9ef8014fac5c7c1fd231f0f8b1d8f0b5624
@@ -143,6 +149,6 @@ SPEC CHECKSUMS:
   CordovaPlugins: 1481b6d6dd6f425769c147cdbe9e7f219bf9cfd6
   HugotomaziCapacitorNavigationBar: 57d7cd51c65ef5e40159bafb0095ee99fab432ba
 
-PODFILE CHECKSUM: bd78a10a793e37ca391de556b36eb49048692b4d
+PODFILE CHECKSUM: a75e725da3a3c761f89034d4067c42d9c0311b93
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.1
