@@ -68,6 +68,7 @@ import { UpdateService } from '../update.service';
 import { CardHeaderComponent } from '../card-header/card-header.component';
 import { daysHighlighted } from '../utils/date-utils';
 import { RatingService } from '../rating.service';
+import { PushNotificationService } from '../notifications/push-notification.service';
 
 interface Group {
   id: number;
@@ -144,6 +145,7 @@ export class HomePage implements OnInit {
   private map = inject(MapService);
   private toastController = inject(ToastController);
   private alertController = inject(AlertController);
+  private pushNotifications = inject(PushNotificationService);
   private favs = inject(FavoritesService);
   private calendar = inject(CalendarService);
   private router = inject(Router);
@@ -254,6 +256,13 @@ export class HomePage implements OnInit {
     this.vm.things = this.favs.things();
     this.vm.version = `Version ${version}`;
     this._change.markForCheck();
+    this.notifications();
+  }
+
+  private async notifications() {
+    await delay(4000);
+    await this.pushNotifications.initialize();
+    await this.pushNotifications.register();
   }
 
   async update() {

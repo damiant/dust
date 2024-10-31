@@ -7,6 +7,7 @@ import { PushNotifications } from '@capacitor/push-notifications';
 export class PushNotificationService {
 
     public async initialize(): Promise<void> {
+        await PushNotifications.removeAllListeners();
         await PushNotifications.addListener('registration', token => {
             console.log('register', token);
         });
