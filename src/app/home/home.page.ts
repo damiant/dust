@@ -1,4 +1,4 @@
-import { Component, OnInit, effect, viewChild, inject, WritableSignal, signal, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, effect, viewChild, inject, WritableSignal, signal, ChangeDetectorRef, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -53,6 +53,8 @@ import {
   closeSharp,
   ellipsisVerticalSharp,
   searchSharp,
+  notificationsOutline,
+  notificationsOffOutline,
 } from 'ionicons/icons';
 import { Animation, StatusBar } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
@@ -145,7 +147,7 @@ export class HomePage implements OnInit {
   private map = inject(MapService);
   private toastController = inject(ToastController);
   private alertController = inject(AlertController);
-  private pushNotifications = inject(PushNotificationService);
+  public pushNotifications = inject(PushNotificationService);
   private favs = inject(FavoritesService);
   private calendar = inject(CalendarService);
   private router = inject(Router);
@@ -156,7 +158,7 @@ export class HomePage implements OnInit {
   private ratingService = inject(RatingService);
   private _change = inject(ChangeDetectorRef);
   private ionContent = viewChild.required(IonContent);
-  private ionModal = viewChild.required(IonModal);
+  private ionModal = viewChild.required(IonModal);  
   public vm: HomeState = {
     moreClicks: 0,
     moreOpen: false,
@@ -166,7 +168,7 @@ export class HomePage implements OnInit {
     hiddenPanel: false,
     downloading: false,
     directionsOpen: false,
-    eventIsHappening: false,
+    eventIsHappening: false,    
     favEventsToday: [],
     imageUrl: '',
     eventTitle: '',
@@ -200,6 +202,8 @@ export class HomePage implements OnInit {
       locateOutline,
       cloudDownloadOutline,
       closeSharp,
+      notificationsOutline,
+      notificationsOffOutline,
       ellipsisVerticalSharp,
       searchSharp
     });
@@ -238,7 +242,6 @@ export class HomePage implements OnInit {
     await this.favs.getThings();
     const links = await this.db.getLinks();
 
-
     this.vm.imageUrl = imageUrl;
     this.vm.hasRestrooms = this.hasValue(summary.pinTypes, 'Restrooms');
     this.vm.hasMedical = this.hasValue(summary.pinTypes, 'Medical');
@@ -260,8 +263,8 @@ export class HomePage implements OnInit {
   }
 
   private async notifications() {
+    await this.pushNotifications.initialize(this.db.selectedDataset().id);
     await delay(4000);
-    await this.pushNotifications.initialize();
     await this.pushNotifications.register();
   }
 
@@ -314,6 +317,17 @@ export class HomePage implements OnInit {
       await this.db.populate(this.settings.settings.datasetId, this.db.getTimeZone());
       this.db.resume.set(new Date().toString());
     }
+  }
+
+  async toggleNotifications() {
+    await this.dismiss();
+    const enabled = this.pushNotifications.enabled();
+    await this.pushNotifications.storeNotifications(!enabled);
+    this.ui.presentToast(
+      this.pushNotifications.enabled() ? 
+      `You have subscribed to notifications from ${this.settings.settings.eventTitle}` :
+      `You have unsubscribed from notifications from ${this.settings.settings.eventTitle}`
+      , this.toastController);
   }
 
   home() {

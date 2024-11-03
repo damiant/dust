@@ -48,6 +48,34 @@ export class SettingsService {
     }
   }
 
+  public async setBoolean(key: string, value: boolean): Promise<void> {
+      await this.setInteger(key, value ? 1 : 0);
+  }
+  
+  public async getBoolean(key: string): Promise<boolean> {
+    try {
+      const value = await get(key);
+      if (!value) {
+        return false;
+      }
+      return (value == 1);
+    } catch {
+      return false;
+    }
+  }
+
+  public async hasValue(key: string): Promise<boolean> {
+    try {
+      const value = await get(key);
+      if (!value) {
+        return false;
+      }
+      return true;      
+    } catch {
+      return false;
+    }
+  }
+
   public getSettings(): Settings {
     try {
       const settings = JSON.parse(localStorage['settings']);

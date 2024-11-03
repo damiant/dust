@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "150349171567",
+    "project_id": "dust-1441c",
+    "storage_bucket": "dust-1441c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:150349171567:android:7de0ce41076fdd91fab69a",
+        "android_client_info": {
+          "package_name": "nexus.concepts.dust"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOzq2P1ZpzAHxMDmje4SZ3j_e5uidi0Ng"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
