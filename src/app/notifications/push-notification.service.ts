@@ -1,4 +1,4 @@
-import { inject, Injectable, signal, Signal } from "@angular/core";
+import { inject, Injectable, signal } from "@angular/core";
 import { PushNotifications } from '@capacitor/push-notifications';
 import { ApiService } from "../data/api.service";
 import { Capacitor } from "@capacitor/core";
