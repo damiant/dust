@@ -1,0 +1,30 @@
+.image {
+    min-height: 180px;
+    width: 100%;
+    object-fit:contain;
+    margin-bottom: -5px;
+}
+
+.image-container {
+    min-height: 180px;
+    width: 100%;
+    object-fit: cover;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.hide {
+    display: none;
+}
+
+.top {
+    height: 360px;
+}
+
+.item {
+    height: calc(var(--text-zoom) * 50 + 156px)
+}
+
+ion-avatar {  
+    float: left;
+    margin-right: 0.5rem;
+}

@@ -3,6 +3,7 @@ import { PushNotifications } from '@capacitor/push-notifications';
 import { ApiService } from "../data/api.service";
 import { Capacitor } from "@capacitor/core";
 import { SettingsService } from "../data/settings.service";
+import { Router } from "@angular/router";
 
 @Injectable({
     providedIn: 'root',
@@ -11,6 +12,7 @@ export class PushNotificationService {
     pushToken = '';
     public enabled = signal(false);
     private api = inject(ApiService);
+    private router = inject(Router);
     private settings = inject(SettingsService);
     private datasetId = '';
 
@@ -42,6 +44,7 @@ export class PushNotificationService {
 
         await PushNotifications.addListener('pushNotificationActionPerformed', notification => {
             console.log('Push notification action performed', notification.actionId, notification.inputValue);
+            this.router.navigateByUrl('/messages');
         });
     }
 

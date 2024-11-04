@@ -265,6 +265,10 @@ export class DbService {
     this._writeData(this._getkey(dataset, name), data);
   }
 
+  public async readData(dataset: string, name: string): Promise<any> {
+    return await this._read(this._getkey(dataset, name));
+  }
+
   private _getkey(dataset: string, name: string): string {
     return `${dataset}-${name}`
   }

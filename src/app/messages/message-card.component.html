@@ -1,0 +1,24 @@
+<ion-card class="image-container" class="item">
+  @if (item()['media:content']?.medium === 'image') {
+    <div class="image-container" [class.hide]="hideImage">
+      <img (error)="hideImage = true" loading="lazy" class="image" [src]="item()['media:content']?.url" />
+    </div>
+  }
+
+  <ion-card-header>
+    <ion-card-title>
+      {{ item().pubDate }}
+    </ion-card-title>
+    @if (item().category) {
+      <ion-card-subtitle> {{ item().category }}</ion-card-subtitle>
+    }
+  </ion-card-header>
+
+  <ion-card-content>
+    <ion-avatar>
+      <img [src]="item().avatar" />
+    </ion-avatar>
+    <ion-text [innerHTML]="item().description"></ion-text>
+    <ion-text color="primary"></ion-text>
+  </ion-card-content>
+</ion-card>

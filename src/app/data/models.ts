@@ -248,6 +248,7 @@ export enum Names {
   camps = 'camps',
   rsl = 'rsl',
   revision = 'revision',
+  messages = 'messages',
   version = 'version',
   pins = 'pins',
   links = 'links',
