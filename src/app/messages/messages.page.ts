@@ -27,7 +27,7 @@ export class MessagesPage implements OnInit {
 
   }
   async ngOnInit() {
-    await this.messages.getMessages(this.settings.settings.datasetId);    
+    await this.messages.getMessages(this.settings.settings.datasetId, this.settings.settings.dataset?.mastodonHandle);    
   }
 
 }

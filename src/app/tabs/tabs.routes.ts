@@ -32,6 +32,10 @@ export const routes: Routes = [
         loadComponent: () => import('../rsl/rsl.page').then((m) => m.RslPage),
       },
       {
+        path: 'messages',
+        loadComponent: () => import('../messages/messages.page').then((m) => m.MessagesPage),
+      },
+      {
         path: 'profile',
         loadComponent: () => import('../home/home.page').then((m) => m.HomePage),
       },

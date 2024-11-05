@@ -15,7 +15,7 @@
       <ion-label>Camps</ion-label>
     </ion-tab-button>
 
-    @if (!db.featuresHidden().includes('art')) {
+     @if (!db.featuresHidden().includes('art')) {
     <ion-tab-button tab="art" (click)="select('art')">
       <ion-icon aria-hidden="true" [src]="'assets/icon/art.svg'"></ion-icon>
       <ion-label>Art</ion-label>
@@ -32,9 +32,15 @@
       <ion-badge mode="ios">{{favs.newFavs()}}</ion-badge>
       }
       <ion-icon aria-hidden="true" [src]="'assets/icon/star.svg'"></ion-icon>
-      <ion-label>Favorites
-      </ion-label>
+      <ion-label>Favorites </ion-label>
     </ion-tab-button>
+
+    @if (!db.featuresHidden().includes('messages')) {
+      <ion-tab-button tab="messages" (click)="select('messages')">
+        <ion-icon aria-hidden="true" name="mail-outline"></ion-icon>
+        <ion-label>Messages</ion-label>
+      </ion-tab-button>
+      }
   </ion-tab-bar>
 </ion-tabs>
 }

@@ -4,14 +4,12 @@
 🩷 High Impact
 🔥 Important
 
-🔥 Rating after 4th favorite
 🔥 Dark mode keyboard for Android
 
 ## Notifications
-- 🔴 Subscribe if first ever event, or favorited event
-- 🔴 On push notification press go to messages page
-- 🔴 Show all received messages on the messages page
-- 🔴 Message is unread until read. Show badge count based on unread count
+- 🔴 Background check messages on open (if after 1 hour). If new messages show badge
+- 🔴 Clear message badge on opening messages page
+- 🔴 Show messages as tab (if background check or read shows at least 1 message)
 
 ## Accessibility / Navigation
 - 🔴🩷 Dust Daka - Siri for "where am I": 8:30 and F. Maybe screen reader or voice control button.

@@ -340,11 +340,6 @@ export class HomePage implements OnInit {
     this.router.navigateByUrl('/search');
   }
 
-  async messages() {
-    await this.dismiss();
-    this.router.navigateByUrl('/messages');
-  }
-
   public async rate() {
     await this.dismiss();
     this.vm.rated = true;
