@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, input, ViewChild, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   IonCard,

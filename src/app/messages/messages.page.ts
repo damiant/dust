@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonBackButton, IonButtons, IonSpinner, IonList, IonIcon, IonItem, IonLabel, IonText } from '@ionic/angular/standalone';
 import { MessagesService } from '../message/messages.service';
-import { MastodonFeed } from '../message/mastodon-feed';
 import { MessageCardComponent } from './message-card.component';
 import { SettingsService } from '../data/settings.service';
 
