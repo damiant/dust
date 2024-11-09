@@ -9,7 +9,6 @@
 ## Notifications
 - 🔴 Background check messages on open (if after 1 hour). If new messages show badge
 - 🔴 Clear message badge on opening messages page
-- 🔴 Show messages as tab (if background check or read shows at least 1 message)
 
 ## Accessibility / Navigation
 - 🔴🩷 Dust Daka - Siri for "where am I": 8:30 and F. Maybe screen reader or voice control button.

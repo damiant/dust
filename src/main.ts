@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, enableProdMode, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { APP_INITIALIZER, enableProdMode, importProvidersFrom, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { RouteReuseStrategy, provideRouter, withComponentInputBinding } from '@angular/router';
 import { provideIonicAngular, IonicRouteStrategy } from '@ionic/angular/standalone';
@@ -22,6 +22,7 @@ const appInitFactory =
 
 bootstrapApplication(AppComponent, {
   providers: [
+    provideAnimations(),
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: APP_INITIALIZER, useFactory: appInitFactory, deps: [DbService], multi: true },
     provideExperimentalZonelessChangeDetection(),

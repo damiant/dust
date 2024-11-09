@@ -35,6 +35,14 @@ export class SettingsService {
     await set(key, value);
   }
 
+  public async set(key: string, value: string) {
+    await set(key, value);
+  }
+
+  public async get(key: string): Promise<string | undefined> {
+    return await get(key);
+  }
+
   public async getInteger(key: string): Promise<number> {
     try {
       const value = await get(key);

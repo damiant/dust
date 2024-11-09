@@ -1,12 +1,16 @@
-<ion-card class="image-container" class="item">
+<ion-card class="image-container" class="item" [@fadeOut]="out()">
+  <div class="right">
+    <ion-fab-button size="small" (click)="markAsRead()"><ion-icon name="checkmark-outline"></ion-icon></ion-fab-button>
+  </div>
   @if (item()['media:content']?.medium === 'image') {
-    <div class="image-container" [class.hide]="hideImage">
-      <img (error)="hideImage = true" loading="lazy" class="image" [src]="item()['media:content']?.url" />
+    <div class="image-container" [class.hide]="hideImage()">
+      <img (error)="hideImage.set(true)" loading="lazy" class="image" [src]="item()['media:content']?.url" />
     </div>
   }
 
   <ion-card-header>
     <ion-card-title>
+      
       {{ item().pubDate }}
     </ion-card-title>
     @if (item().category) {
@@ -20,5 +24,6 @@
     </ion-avatar>
     <ion-text [innerHTML]="item().description"></ion-text>
     <ion-text color="primary"></ion-text>
+
   </ion-card-content>
 </ion-card>

@@ -212,6 +212,7 @@ export interface Dataset {
   dist?: number; // Estimated calculated distance to event
   mapDirection: number; // Compass rotation for North
   mastodonHandle: string; // Mastodon handle
+  inboxEmail: string; // Has inbox email Y/N
   directions: string | undefined; // Directions text
   pin: string;
   class?: string; // Animation
@@ -250,6 +251,7 @@ export enum Names {
   rsl = 'rsl',
   revision = 'revision',
   messages = 'messages',
+  emails = 'emails',
   version = 'version',
   pins = 'pins',
   links = 'links',

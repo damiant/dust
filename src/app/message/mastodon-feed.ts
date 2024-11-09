@@ -40,6 +40,8 @@ export interface MastodonFeed {
     description: string
     "media:content"?: MediaContent
     category: any
+    read: boolean
+    reading: boolean
   }
   
   export interface Guid {

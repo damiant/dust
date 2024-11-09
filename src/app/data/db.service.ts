@@ -40,7 +40,7 @@ export interface GetOptions {
 })
 export class DbService {
   private defaultDataset: Dataset = { 
-    name: '', year: '', id: '', title: '', start: '', end: '', subTitle: '', lat: 0, long: 0, 
+    name: '', year: '', id: '', title: '', start: '', end: '', subTitle: '', lat: 0, long: 0, inboxEmail: '',    
     mapDirection: 0, imageUrl: '', timeZone: '', active: false, pin: '', directions: undefined, mastodonHandle: '' };
   public selectedDay = signal(noDate());
   public selectedYear = signal('');
