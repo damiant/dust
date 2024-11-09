@@ -1,5 +1,4 @@
 import { animate, AnimationTriggerMetadata, state, style, transition, trigger } from "@angular/animations";
-import { scale } from "ionicons/icons";
 
 export function FadeOut(timingIn: number): AnimationTriggerMetadata  {
     return trigger('fadeOut', [
