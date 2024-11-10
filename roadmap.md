@@ -4,9 +4,11 @@
 🩷 High Impact
 🔥 Important
 
-🔥 Rating after 4th favorite
 🔥 Dark mode keyboard for Android
 
+## Notifications
+- 🔴 Background check messages on open (if after 1 hour). If new messages show badge
+- 🔴 Clear message badge on opening messages page
 
 ## Accessibility / Navigation
 - 🔴🩷 Dust Daka - Siri for "where am I": 8:30 and F. Maybe screen reader or voice control button.

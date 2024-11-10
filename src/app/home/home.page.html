@@ -17,6 +17,11 @@
           Feedback
         </ion-item>
 
+        <ion-item (click)="toggleNotifications()" detail="true">
+          <ion-icon slot="start" [name]="pushNotifications.enabled() ? 'notifications-off-outline' : 'notifications-outline'"></ion-icon>
+          {{pushNotifications.enabled() ? 'Unsubscribe': 'Subscribe'}}
+        </ion-item>
+
         <ion-item (click)="addCalendar()" detail="true">
           <ion-icon slot="start" name="calendar-outline"></ion-icon>
           Add to Calendar

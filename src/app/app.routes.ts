@@ -46,4 +46,8 @@ export const routes: Routes = [
     path: 'print-favs',
     loadComponent: () => import('./print-favs/print-favs.page').then( m => m.PrintFavsPage)
   },
+  {
+    path: 'messages',
+    loadComponent: () => import('./messages/messages.page').then( m => m.MessagesPage)
+  },
 ];

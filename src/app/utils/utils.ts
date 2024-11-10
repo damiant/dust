@@ -251,6 +251,21 @@ export function diffNumbers(a: number | undefined, b: number | undefined): numbe
   }
 }
 
+export function hashCode(s: string): number {
+  return [...s].reduce(
+    (hash, c) => (Math.imul(31, hash) + c.charCodeAt(0)) | 0, // extraneous ( )
+    0
+  );
+}
+
+function escapeRegExp(str: string) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
+
+export function replaceAll(str: string, find: string, replace: string) {
+  return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+}
+
 export async function decryptString(ciphertext: string, password: string) {
   const pwUtf8 = new TextEncoder().encode(password);                                 // encode password as UTF-8
   const pwHash = await crypto.subtle.digest('SHA-256', pwUtf8);                      // hash the password

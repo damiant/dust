@@ -22,6 +22,7 @@ const appInitFactory =
 
 bootstrapApplication(AppComponent, {
   providers: [
+    provideAnimations(),
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: APP_INITIALIZER, useFactory: appInitFactory, deps: [DbService], multi: true },
     provideExperimentalZonelessChangeDetection(),

@@ -227,6 +227,18 @@ export class ApiService {
     }
   }
 
+  public async registerToken(token: string, dataset: string): Promise<boolean> {
+    const payload = { token, festival: dataset };
+    const res = await fetch(`https://api.dust.events/pushtokens`, {method: 'POST', body: JSON.stringify(payload)});
+    return res.status == 200;
+  }
+
+  public async unregisterToken(token: string, dataset: string): Promise<boolean> {
+    const payload = { token, festival: dataset };
+    const res = await fetch(`https://api.dust.events/pushtokens`, {method: 'DELETE', body: JSON.stringify(payload)});
+    return res.status == 200;
+  }
+
   public async hasEverDownloaded(selected: Dataset) {
     const dataset = this.datasetId(selected);
     const myRevision = await this.dbService.get(dataset, Names.revision, { onlyRead: true, defaultValue: { revision: 0 } });

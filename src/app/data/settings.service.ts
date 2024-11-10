@@ -35,6 +35,14 @@ export class SettingsService {
     await set(key, value);
   }
 
+  public async set(key: string, value: string) {
+    await set(key, value);
+  }
+
+  public async get(key: string): Promise<string | undefined> {
+    return await get(key);
+  }
+
   public async getInteger(key: string): Promise<number> {
     try {
       const value = await get(key);
@@ -45,6 +53,34 @@ export class SettingsService {
     }
     catch {
       return 0;
+    }
+  }
+
+  public async setBoolean(key: string, value: boolean): Promise<void> {
+      await this.setInteger(key, value ? 1 : 0);
+  }
+  
+  public async getBoolean(key: string): Promise<boolean> {
+    try {
+      const value = await get(key);
+      if (!value) {
+        return false;
+      }
+      return (value == 1);
+    } catch {
+      return false;
+    }
+  }
+
+  public async hasValue(key: string): Promise<boolean> {
+    try {
+      const value = await get(key);
+      if (!value) {
+        return false;
+      }
+      return true;      
+    } catch {
+      return false;
     }
   }
 

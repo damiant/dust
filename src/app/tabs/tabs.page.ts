@@ -13,7 +13,7 @@ import { environment } from 'src/environments/environment';
 import { Keyboard } from '@capacitor/keyboard';
 import { IonIcon, IonLabel, IonTabBar, IonTabButton, IonTabs, IonBadge } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { musicalNotesOutline, ellipsisVertical } from 'ionicons/icons';
+import { musicalNotesOutline, ellipsisVertical, mailOutline } from 'ionicons/icons';
 import { Capacitor } from '@capacitor/core';
 import { Animation, StatusBar } from '@capacitor/status-bar';
 import { ScreenOrientation } from '@capacitor/screen-orientation';
@@ -41,7 +41,7 @@ export class TabsPage implements OnInit {
   private activeTab?: HTMLElement;
   public environmentInjector = inject(EnvironmentInjector);
   constructor() {
-    addIcons({ musicalNotesOutline, ellipsisVertical });
+    addIcons({ mailOutline, musicalNotesOutline, ellipsisVertical });
     effect(() => {
       const eventId = this.notificationService.hasNotification();
       if (eventId && eventId.length > 0) {

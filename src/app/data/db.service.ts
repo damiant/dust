@@ -39,7 +39,9 @@ export interface GetOptions {
   providedIn: 'root',
 })
 export class DbService {
-  private defaultDataset: Dataset = { name: '', year: '', id: '', title: '', start: '', end: '', subTitle: '', lat: 0, long: 0, mapDirection: 0, imageUrl: '', timeZone: '', active: false, pin: '', directions: undefined };
+  private defaultDataset: Dataset = { 
+    name: '', year: '', id: '', title: '', start: '', end: '', subTitle: '', lat: 0, long: 0, inboxEmail: '',    
+    mapDirection: 0, imageUrl: '', timeZone: '', active: false, pin: '', directions: undefined, mastodonHandle: '' };
   public selectedDay = signal(noDate());
   public selectedYear = signal('');
   public selectedDataset = signal(this.defaultDataset);
@@ -263,6 +265,10 @@ export class DbService {
 
   public async writeData(dataset: string, name: string, data: any): Promise<void> {
     this._writeData(this._getkey(dataset, name), data);
+  }
+
+  public async readData(dataset: string, name: string): Promise<any> {
+    return await this._read(this._getkey(dataset, name));
   }
 
   private _getkey(dataset: string, name: string): string {

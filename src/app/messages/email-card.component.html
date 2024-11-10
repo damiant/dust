@@ -1,0 +1,19 @@
+<ion-card class="image-container" class="item" [@fadeOut]="out()">  
+  <div class="right">
+    <ion-fab-button size="small" (click)="markAsRead()"><ion-icon name="checkmark-outline"></ion-icon></ion-fab-button>
+  </div>
+
+  <ion-card-header>
+    <ion-card-title>
+      {{ email().subject }}
+    </ion-card-title>
+    @if (email().from.name) {
+      <ion-card-subtitle>{{ email().from.name }}</ion-card-subtitle>
+    }
+  </ion-card-header>
+
+  <ion-card-content>
+    <div class="body" [innerHTML]="email().html"></div>
+    <ion-text color="primary"></ion-text>
+  </ion-card-content>
+</ion-card>

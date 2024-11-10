@@ -421,6 +421,9 @@ export class IntroPage {
         hidden.push('friends');
         //hidden.push('private');
       }
+      if (`${this.settingsService.settings.dataset?.mastodonHandle}`.length == 0) {
+        hidden.push('messages');
+      }
       this.db.featuresHidden.set(hidden);
       this.settingsService.setOffline(this.settingsService.settings.datasetId);
 

@@ -15,6 +15,9 @@ const config: CapacitorConfig = {
       splashImmersive: false,
       launchAutoHide: false,
     },
+    PushNotifications: {
+      presentationOptions: ['badge', 'sound', 'alert']
+    },
     LocalNotifications: {
       smallIcon: 'icon',
       iconColor: '#F61067',
