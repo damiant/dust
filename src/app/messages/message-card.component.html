@@ -1,10 +1,10 @@
-<ion-card class="image-container" class="item" [@fadeOut]="out()">
+<ion-card class="image-container" class="item" [@fadeOut]="out()" [@fadeIn]="in()">
   <div class="right">
     <ion-fab-button size="small" (click)="markAsRead()"><ion-icon name="checkmark-outline"></ion-icon></ion-fab-button>
   </div>
   @if (item()['media:content']?.medium === 'image') {
     <div class="image-container" [class.hide]="hideImage()">
-      <img (error)="hideImage.set(true)" loading="lazy" class="image" [src]="item()['media:content']?.url" />
+      <img (load)="in.set(true)" (error)="hideImage.set(true)" loading="lazy" class="image" [src]="item()['media:content']?.url" />
     </div>
   }
 

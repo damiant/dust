@@ -27,6 +27,9 @@ export class MessagesPage implements OnInit {
   feed = this.messages.feed;
   emails = this.messages.email;
   unread = computed(()=> {
+    if (!this.feed().rss && this.emails().length == 0) {{
+      return -1;
+    }}
     const messages = this.feed().rss ? this.feed().rss.channel.item.filter(i => !i.read).length : 0;
     return this.emails().filter(i => !i.read).length + messages;
   });
