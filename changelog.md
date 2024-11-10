@@ -1,4 +1,8 @@
 ## Changes
+### 2.64
+
+- Support for push notifications
+- Messages tab added for emails and mastodon messages
 
 ### 2.63
 
