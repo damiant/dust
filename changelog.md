@@ -1,4 +1,8 @@
 ## Changes
+### 2.65
+
+- Events dates that have not been decided are now supported
+
 ### 2.64
 
 - Support for push notifications
