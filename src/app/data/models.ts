@@ -73,6 +73,11 @@ export interface TimeRange {
   end: Date;
 }
 
+export interface Group {
+  id: number;
+  links: Link[];
+}
+
 export interface Thing {
   name: string;
   notes: string;
@@ -201,6 +206,9 @@ export type DatasetFilter = 'all' | 'regional' | 'bm' | 'past';
 export interface Dataset {
   name: string; // Name
   title: string; // Title
+  region: string; // City / State/Country
+  website: string; // Website
+  unknownDates: boolean; // Whether the dates are unknown
   year: string; // Year name
   id: string; // Identifier for the remote dataset at data.dust.events
   start: string; // When it starts

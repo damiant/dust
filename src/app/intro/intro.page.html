@@ -15,7 +15,8 @@
     <app-carousel-item (click)="open(card, true)">
       <app-cached-img errorImage="./assets/error-img.png" (loaded)="vm.cardLoaded[card.id] = true" [loading]="'eager'"
         [ngClass]="(vm.selected?.id === card.id) ? 'select ' + vm.selected?.class : 'unselect'" [src]="card.imageUrl" />
-      <p class="name" [hidden]="!vm.cardLoaded[card.id]" aria-hidden="true">{{card.title}}</p>
+      <p [hidden]="!vm.cardLoaded[card.id]" aria-hidden="true">{{card.title}}</p>
+      <p class="region" [hidden]="!vm.cardLoaded[card.id]" aria-hidden="true">{{card.region}}</p>
     </app-carousel-item>
     }
   </app-carousel>

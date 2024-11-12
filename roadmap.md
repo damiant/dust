@@ -6,6 +6,9 @@
 
 🔥 Dark mode keyboard for Android
 
+- 🔴 Important: Clean up favorites as we may archive a particular year
+- 🔥 Option to show a burn without dates other than year
+
 ## Notifications
 - 🔴 Background check messages on open (if after 1 hour). If new messages show badge
 - 🔴 Clear message badge on opening messages page
