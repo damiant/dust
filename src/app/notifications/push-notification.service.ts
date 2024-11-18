@@ -21,7 +21,7 @@ export class PushNotificationService {
         this.enabled.set(await this.getNotificationsEnabled());
         if (Capacitor.getPlatform() == 'web') return;
         await PushNotifications.removeAllListeners();
-        await PushNotifications.addListener('registration', async token => {            
+        await PushNotifications.addListener('registration', async token => {
             this.pushToken = token.value;
             if (await this.getNotificationsEnabledOrUndefined() == false) {
                 // Don't auto subscribe if the user has unsubscribed
@@ -30,7 +30,7 @@ export class PushNotificationService {
             const registered = await this.api.registerToken(token.value, datasetId);
             if (registered) {
                 await this.storeNotifications(true);
-                console.log(`Token was registered`);
+                console.log(`Token ${token.value} registered for ${datasetId}`);
             }
         });
 
@@ -56,7 +56,7 @@ export class PushNotificationService {
         if (!enabled) {
             const result = await this.api.unregisterToken(this.pushToken, this.datasetId);
             if (result) {
-               console.log(`Unregistered token for ${this.datasetId}`);
+                console.log(`Unregistered token for ${this.datasetId}`);
             }
         } else {
             if (!this.pushToken) {

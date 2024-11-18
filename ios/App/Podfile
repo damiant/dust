@@ -41,6 +41,10 @@ target 'App' do
   pod 'FirebaseMessaging'
 end
 
+target 'pushextension' do
+  pod 'FirebaseMessaging'
+end
+
 post_install do |installer|
   assertDeploymentTarget(installer)
 end
