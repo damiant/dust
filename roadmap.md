@@ -5,7 +5,7 @@
 🔥 Important
 
 🔥 Dark mode keyboard for Android
-
+- 🔴 Page for each event - https://subdomain.dust.events point to camps/events/art
 - 🔴 Important: Clean up favorites as we may archive a particular year
 - 🔥 Option to show a burn without dates other than year
 

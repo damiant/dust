@@ -1,4 +1,8 @@
 ## Changes
+### 2.66
+
+- Burn sharing improved
+
 ### 2.65
 
 - Events dates that have not been decided are now supported

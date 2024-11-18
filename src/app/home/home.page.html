@@ -27,9 +27,9 @@
           Add to Calendar
         </ion-item>
 
-        <ion-item (click)="share()" detail="true">
+        <ion-item (click)="shareEvent()" detail="true">
           <ion-icon slot="start" name="share-outline"></ion-icon>
-          Share
+          Share {{vm.eventTitle}}
         </ion-item>
 
         <ion-item [disabled]="vm.rated" (click)="rate()" detail="true">

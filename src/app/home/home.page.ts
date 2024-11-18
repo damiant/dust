@@ -332,6 +332,16 @@ export class HomePage implements OnInit {
     });
   }
 
+  async shareEvent() {
+    await this.dismiss();
+    await Share.share({
+      title: `${this.db.selectedDataset().title}`,
+      text: `${this.db.selectedDataset().title} - ${this.db.selectedDataset().region}. ${this.db.eventInfo()}`,      
+      url: `https://${this.db.selectedDataset().id}.dust.events/home/`,
+      dialogTitle: `Share ${this.db.selectedDataset().title} with friends`,
+    });
+  }
+
   async addCalendar() {
     await this.dismiss();
     const success = await this.calendar.add({

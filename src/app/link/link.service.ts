@@ -62,5 +62,5 @@ export class LinkService {
         title += `<p>${ds.region}</p>`;
         const url = ds.website;
         return { uid: '0', title, url };
-    }
+    }    
 }
