@@ -3,7 +3,8 @@
       {
         "appId": "955dfb49",
         "root": ".",
-        "dependencyInstallCommand": "npm i bun -g && bun install"
+        "dependencyInstallCommand": "npm i bun -g && bun install",
+        "webBuildCommand": "bunx bun run build --  --configuration=production"
       }
     ]
   }
