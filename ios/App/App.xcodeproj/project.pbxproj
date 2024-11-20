@@ -3,12 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 48;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		2D0114452CEBB8270006D59F /* pushextension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 2D01143E2CEBB8270006D59F /* pushextension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		2D410B672A96562A005327E4 /* blazing2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 2D410B662A965629005327E4 /* blazing2.wav */; };
+		2DBF993B2CEE2C3F0051941F /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DBF99372CEE2C3F0051941F /* NotificationService.swift */; };
 		2FAD9763203C412B000D30F8 /* config.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAD9762203C412B000D30F8 /* config.xml */; };
 		50379B232058CBB4000EE86E /* capacitor.config.json in Resources */ = {isa = PBXBuildFile; fileRef = 50379B222058CBB4000EE86E /* capacitor.config.json */; };
 		504EC3081FED79650016851F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504EC3071FED79650016851F /* AppDelegate.swift */; };
@@ -50,6 +51,9 @@
 		2D01143E2CEBB8270006D59F /* pushextension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = pushextension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D25B0082A7DCE490087C17D /* App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = App.entitlements; sourceTree = "<group>"; };
 		2D410B662A965629005327E4 /* blazing2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = blazing2.wav; sourceTree = "<group>"; };
+		2DBF99362CEE2C3F0051941F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2DBF99372CEE2C3F0051941F /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		2DBF99382CEE2C3F0051941F /* pushextension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = pushextension.entitlements; sourceTree = "<group>"; };
 		2FAD9762203C412B000D30F8 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = config.xml; sourceTree = "<group>"; };
 		4BE7D7D8D26A45338B9E7902 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		50379B222058CBB4000EE86E /* capacitor.config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = capacitor.config.json; sourceTree = "<group>"; };
@@ -68,20 +72,6 @@
 		FC68EB0AF532CFC21C3344DD /* Pods-App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App.debug.xcconfig"; path = "Pods/Target Support Files/Pods-App/Pods-App.debug.xcconfig"; sourceTree = "<group>"; };
 		FE15758FF6F9B467CE7CD978 /* Pods-pushextension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pushextension.release.xcconfig"; path = "Pods/Target Support Files/Pods-pushextension/Pods-pushextension.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		2D0114492CEBB8270006D59F /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 2D01143D2CEBB8270006D59F /* pushextension */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		2D01143F2CEBB8270006D59F /* pushextension */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (2D0114492CEBB8270006D59F /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = pushextension; sourceTree = "<group>"; };
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		2D01143B2CEBB8270006D59F /* Frameworks */ = {
@@ -112,11 +102,21 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		2DBF99392CEE2C3F0051941F /* pushextension */ = {
+			isa = PBXGroup;
+			children = (
+				2DBF99362CEE2C3F0051941F /* Info.plist */,
+				2DBF99372CEE2C3F0051941F /* NotificationService.swift */,
+				2DBF99382CEE2C3F0051941F /* pushextension.entitlements */,
+			);
+			path = pushextension;
+			sourceTree = "<group>";
+		};
 		504EC2FB1FED79650016851F = {
 			isa = PBXGroup;
 			children = (
 				504EC3061FED79650016851F /* App */,
-				2D01143F2CEBB8270006D59F /* pushextension */,
+				2DBF99392CEE2C3F0051941F /* pushextension */,
 				504EC3051FED79650016851F /* Products */,
 				7F8756D8B27F46E3366F6CEA /* Pods */,
 				27E2DDA53C4D2A4D1A88CE4A /* Frameworks */,
@@ -178,9 +178,6 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				2D01143F2CEBB8270006D59F /* pushextension */,
-			);
 			name = pushextension;
 			productName = pushextension;
 			productReference = 2D01143E2CEBB8270006D59F /* pushextension.appex */;
@@ -218,10 +215,12 @@
 				TargetAttributes = {
 					2D01143D2CEBB8270006D59F = {
 						CreatedOnToolsVersion = 16.1;
+						ProvisioningStyle = Automatic;
 					};
 					504EC3031FED79650016851F = {
 						CreatedOnToolsVersion = 9.2;
 						LastSwiftMigration = 1100;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -333,6 +332,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2DBF993B2CEE2C3F0051941F /* NotificationService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -396,11 +396,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = pushextension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -438,11 +434,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = pushextension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
@@ -558,8 +550,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -576,10 +567,7 @@
 				DEVELOPMENT_TEAM = N3B3WKDZND;
 				INFOPLIST_FILE = App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 2.65;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEBUG\"";
 				PRODUCT_BUNDLE_IDENTIFIER = nexus.concepts.dust;
@@ -603,10 +591,7 @@
 				DEVELOPMENT_TEAM = N3B3WKDZND;
 				INFOPLIST_FILE = App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 2.65;
 				PRODUCT_BUNDLE_IDENTIFIER = nexus.concepts.dust;
 				PRODUCT_NAME = "$(TARGET_NAME)";
