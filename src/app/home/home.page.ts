@@ -33,7 +33,7 @@ import { GPSPin, MapService } from '../map/map.service';
 import { DbService } from '../data/db.service';
 import { TileContainerComponent } from '../tile-container/tile-container.component';
 import { TileComponent } from '../tile/tile.component';
-import { DatasetResult, Event, Link, LocationEnabledStatus, Names, Thing } from '../data/models';
+import { DatasetResult, Event, Group, LocationEnabledStatus, Names, Thing } from '../data/models';
 import { environment } from 'src/environments/environment';
 import { RemindersComponent } from '../reminders/reminders.component';
 import { addIcons } from 'ionicons';
@@ -71,11 +71,7 @@ import { CardHeaderComponent } from '../card-header/card-header.component';
 import { daysHighlighted } from '../utils/date-utils';
 import { RatingService } from '../rating.service';
 import { PushNotificationService } from '../notifications/push-notification.service';
-
-interface Group {
-  id: number;
-  links: Link[];
-}
+import { LinkService } from '../link/link.service';
 
 interface HomeState {
   moreClicks: number;
@@ -156,6 +152,7 @@ export class HomePage implements OnInit {
   private platform = inject(Platform);
   public db = inject(DbService);
   private ratingService = inject(RatingService);
+  private linkService = inject(LinkService);
   private _change = inject(ChangeDetectorRef);
   private ionContent = viewChild.required(IonContent);
   private ionModal = viewChild.required(IonModal);  
@@ -240,8 +237,7 @@ export class HomePage implements OnInit {
       onlyRead: true,
     });
     await this.favs.getThings();
-    const links = await this.db.getLinks();
-
+    this.vm.groups = await this.linkService.getGroupedLinks();
     this.vm.imageUrl = imageUrl;
     this.vm.hasRestrooms = this.hasValue(summary.pinTypes, 'Restrooms');
     this.vm.hasMedical = this.hasValue(summary.pinTypes, 'Medical');
@@ -254,7 +250,7 @@ export class HomePage implements OnInit {
     this.vm.endDate = addDays(new Date(this.db.selectedDataset().end), 7).toISOString();
     this.vm.highlightedDates = daysHighlighted(this.db.selectedDataset().start, this.db.selectedDataset().end);
     this.vm.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
-    this.vm.groups = this.group(links);
+    
 
     this.vm.things = this.favs.things();
     this.vm.version = `Version ${version}`;
@@ -277,27 +273,7 @@ export class HomePage implements OnInit {
     this.router.navigateByUrl(`/map/things/${thing.name}`);
   }
 
-  private group(links: Link[]): Group[] {
-    let groups: Group[] = [];
-    let group: Group = { id: 1, links: [] };
-    for (const link of links) {
-      if (link.title.startsWith('#')) {
-        link.title = link.title.substring(1);
-        if (group.links.length > 0) {
-          // Start a new group
-          groups.push(group);
-          group = { id: group.id + 1, links: [] };
-        }
-        group.links.push(link);
-      } else {
-        group.links.push(link);
-      }
-    }
-    if (group.links.length > 0) {
-      groups.push(group);
-    }
-    return groups;
-  }
+
 
   hasValue(v: Record<string, number>, property: string): boolean {
     return v && v.hasOwnProperty(property) && v[property] > 0;
@@ -353,6 +329,16 @@ export class HomePage implements OnInit {
       text: 'Check out the dust app for Burning Man events, art and theme camps. ',
       url: 'https://dust.events/',
       dialogTitle: 'Share dust with friends',
+    });
+  }
+
+  async shareEvent() {
+    await this.dismiss();
+    await Share.share({
+      title: `${this.db.selectedDataset().title}`,
+      text: `${this.db.selectedDataset().title} - ${this.db.selectedDataset().region}. ${this.db.eventInfo()}`,      
+      url: `https://${this.db.selectedDataset().id}.dust.events/home/`,
+      dialogTitle: `Share ${this.db.selectedDataset().title} with friends`,
     });
   }
 

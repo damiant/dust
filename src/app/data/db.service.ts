@@ -39,9 +39,10 @@ export interface GetOptions {
   providedIn: 'root',
 })
 export class DbService {
-  private defaultDataset: Dataset = { 
-    name: '', year: '', id: '', title: '', start: '', end: '', subTitle: '', lat: 0, long: 0, inboxEmail: '',    
-    mapDirection: 0, imageUrl: '', timeZone: '', active: false, pin: '', directions: undefined, mastodonHandle: '' };
+  private defaultDataset: Dataset = {
+    name: '', year: '', id: '', title: '', region: '', website: '', unknownDates: false, start: '', end: '', subTitle: '', lat: 0, long: 0, inboxEmail: '',
+    mapDirection: 0, imageUrl: '', timeZone: '', active: false, pin: '', directions: undefined, mastodonHandle: ''
+  };
   public selectedDay = signal(noDate());
   public selectedYear = signal('');
   public selectedDataset = signal(this.defaultDataset);
@@ -83,6 +84,24 @@ export class DbService {
       registerWorker(this.worker);
       this.initialized = true;
     }
+  }
+
+  public eventInfo(): string {
+    const ds = this.selectedDataset();
+    const start = new Date(ds.start);
+    const end = new Date(ds.end);
+    const startDay = start.toLocaleDateString('default', { weekday: 'long' });
+    const monthName = start.toLocaleString('default', { month: 'long' });
+    const endMonthName = end.toLocaleString('default', { month: 'long' });
+    let dates = `${monthName} ${start.getDate()}-${end.getDate()}`;
+    if (monthName !== endMonthName) {
+      dates = `${monthName} ${start.getDate()} - ${endMonthName} ${end.getDate()}`;
+    } else {
+      if (start.getDate() == end.getDate()) {
+        dates = `${monthName} ${start.getDate()}`;
+      }
+    }
+    return `${startDay} ${dates}`;
   }
 
   public getPreview(): string | undefined {
