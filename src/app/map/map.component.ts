@@ -1,5 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, Input, OnDestroy, OnInit, effect, input, viewChild, inject, output, model, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import {
+  Component, ElementRef, Input, OnDestroy, OnInit, effect, input,
+  viewChild, inject, output, model, ChangeDetectionStrategy, ChangeDetectorRef
+} from '@angular/core';
 import { LocationEnabledStatus, MapInfo, MapPoint, Pin } from '../data/models';
 import { calculateRelativePosition, defaultMapRadius, distance, formatDistanceNice, mapPointToPin } from './map.utils';
 import { delay } from '../utils/utils';
@@ -10,7 +13,7 @@ import { CompassError, CompassHeading } from './compass';
 import { GpsCoord } from './geo.utils';
 import { Router, RouterModule } from '@angular/router';
 import { environment } from 'src/environments/environment';
-import { IonButton, IonContent, IonPopover, IonRouterOutlet, IonText, ToastController } from '@ionic/angular/standalone';
+import { IonButton, IonRouterOutlet, IonText, ToastController } from '@ionic/angular/standalone';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { DbService } from '../data/db.service';
 import { MapModel, MapResult, ScrollResult } from './map-model';
@@ -29,12 +32,9 @@ const geolocateInterval = 10000;
     RouterModule,
     CommonModule,
     MessageComponent,
-    IonPopover,
-    IonContent,
     IonText,
     IonButton,
-    CachedImgComponent,
-    IonRouterOutlet
+    CachedImgComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,

@@ -1,10 +1,6 @@
 import { Component, input, model, output } from '@angular/core';
 import {
-  IonButton,
-  IonContent,
-  IonIcon,
-  IonTitle,
-  IonItem, IonLabel, IonCheckbox
+  IonCheckbox
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { locationSharp } from 'ionicons/icons';
@@ -14,7 +10,7 @@ import { locationSharp } from 'ionicons/icons';
   templateUrl: './sort.component.html',
   styleUrls: ['./sort.component.scss'],
   standalone: true,
-  imports: [IonCheckbox, IonLabel, IonItem, IonTitle, IonButton, IonContent, IonIcon],
+  imports: [IonCheckbox],
 })
 export class SortComponent {
   sortType = model<string>('alpha');

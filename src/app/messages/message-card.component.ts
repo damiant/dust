@@ -7,9 +7,8 @@ import {
   IonCardSubtitle,
   IonCardTitle,
   IonIcon,
-  IonText, IonAvatar, IonButton, IonFab, IonFabButton
+  IonText, IonAvatar, IonFabButton
 } from '@ionic/angular/standalone';
-import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { Item } from '../message/mastodon-feed';
 import { addIcons } from 'ionicons';
 import { checkmarkOutline } from 'ionicons/icons';
@@ -25,14 +24,14 @@ export type ArtImageStyle = 'top' | 'side' | 'none';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   animations: [FadeOut(500), FadeIn(300)],  
-  imports: [IonFabButton, IonFab, IonButton, IonAvatar,
+  imports: [IonFabButton, 
+    IonAvatar,
     CommonModule,
     IonCard,
     IonCardHeader,
     IonCardTitle,
     IonCardSubtitle,
     IonCardContent,
-    CachedImgComponent,
     IonText,
     IonIcon,
   ]

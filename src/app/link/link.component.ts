@@ -1,6 +1,6 @@
-import { Component, computed, input, inject } from '@angular/core';
+import { Component, computed, input, inject, ChangeDetectionStrategy } from '@angular/core';
 import { UiService } from '../ui/ui.service';
-import { IonItem, IonIcon, IonCard, IonCardContent } from '@ionic/angular/standalone';
+import { IonItem, IonIcon, IonCardContent } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
   compass,
@@ -18,7 +18,8 @@ import { CachedImgComponent } from '../cached-img/cached-img.component';
   templateUrl: './link.component.html',
   styleUrls: ['./link.component.scss'],
   standalone: true,
-  imports: [IonCardContent, IonCard, IonIcon, IonItem, CommonModule, CachedImgComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [IonCardContent, IonIcon, IonItem, CommonModule, CachedImgComponent],
 })
 export class LinkComponent {
   private ui = inject(UiService);
@@ -45,13 +46,13 @@ export class LinkComponent {
   type = computed(() => {
     let txt: string = this.text();
     let url: string = this.url();
-    if (
+    if ( url && (
       url.endsWith('.jpeg') ||
       url.endsWith('.jpg') ||
       url.endsWith('.webp') ||
       url.endsWith('.gif') ||
       url.endsWith('.png')
-    ) {
+    )) {
       return 'image';
     }
     if (txt.includes('<')) {
@@ -107,11 +108,5 @@ export class LinkComponent {
     return string.replace(disallowedTagsRegex, (match, tag) => {
       return escapedAllowedTags.includes(tag) ? match : '';
     });
-  }
-  private replaceAll(str: string, str1: string, str2: string, ignore = true) {
-    return str.replace(
-      new RegExp(str1.replace(/([\/\,\!\\\^\$\{\}\[\]\(\)\.\*\+\?\|\<\>\-\&])/g, '\\$&'), ignore ? 'gi' : 'g'),
-      typeof str2 == 'string' ? str2.replace(/\$/g, '$$$$') : str2,
-    );
   }
 }
