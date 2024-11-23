@@ -12,9 +12,6 @@ import {
   IonFab,
   IonFabButton,
   IonFabList,
-  IonItem,
-  IonList,
-  IonPopover,
   IonRadioGroup,
   IonRadio
 } from '@ionic/angular/standalone';
