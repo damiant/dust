@@ -2,6 +2,7 @@
 ### 2.66
 
 - Burn sharing improved
+- Fix link bug
 
 ### 2.65
 

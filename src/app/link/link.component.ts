@@ -45,13 +45,13 @@ export class LinkComponent {
   type = computed(() => {
     let txt: string = this.text();
     let url: string = this.url();
-    if (
+    if ( url && (
       url.endsWith('.jpeg') ||
       url.endsWith('.jpg') ||
       url.endsWith('.webp') ||
       url.endsWith('.gif') ||
       url.endsWith('.png')
-    ) {
+    )) {
       return 'image';
     }
     if (txt.includes('<')) {
