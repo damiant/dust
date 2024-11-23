@@ -2,9 +2,6 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject, 
 import {
   IonCard,
   IonCardContent,
-  IonCardHeader,
-  IonCardTitle,
-  IonFabButton,
   IonIcon,
   IonItem,
   IonLabel,
@@ -13,7 +10,6 @@ import {
   ModalController,
   ToastController,
 } from '@ionic/angular/standalone';
-import { FriendComponent } from '../friend/friend.component';
 import { FavoritesService } from '../favs/favorites.service';
 import { Reminder } from '../data/models';
 import { CommonModule } from '@angular/common';
@@ -31,11 +27,7 @@ import { CardHeaderComponent } from '../card-header/card-header.component';
   styleUrls: ['./reminders.component.scss'],
   imports: [
     CommonModule,
-    FriendComponent,
     IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonFabButton,
     IonIcon,
     IonCardContent,
     IonList,

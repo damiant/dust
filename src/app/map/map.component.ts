@@ -29,12 +29,9 @@ const geolocateInterval = 10000;
     RouterModule,
     CommonModule,
     MessageComponent,
-    IonPopover,
-    IonContent,
     IonText,
     IonButton,
-    CachedImgComponent,
-    IonRouterOutlet
+    CachedImgComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,

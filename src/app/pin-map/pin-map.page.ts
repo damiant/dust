@@ -1,4 +1,5 @@
-import { Component, Signal, WritableSignal, computed, signal, input, inject, ViewChild, effect, viewChild, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Signal, WritableSignal, computed, signal, input, inject, ViewChild, 
+  effect, viewChild, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MapComponent } from '../map/map.component';
@@ -17,7 +18,6 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
-  IonSpinner,
   IonIcon, IonButton, IonLoading
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -49,7 +49,6 @@ import { SettingsService } from '../data/settings.service';
     IonBackButton,
     IonText,
     IonIcon,
-    IonSpinner,
     SearchComponent
   ],
 })

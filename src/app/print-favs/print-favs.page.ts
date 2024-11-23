@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonIcon, IonList, IonItem, IonLabel } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { closeSharp } from 'ionicons/icons';
 import { DbService } from '../data/db.service';
@@ -23,7 +22,8 @@ interface PrintState {
   templateUrl: './print-favs.page.html',
   styleUrls: ['./print-favs.page.scss'],
   standalone: true,
-  imports: [IonLabel, IonItem, IonList, IonIcon, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [    
+    CommonModule, FormsModule]
 })
 export class PrintFavsPage {
   private location = inject(Location);

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, inject, input, model, output } from '@angular/core';
-import { IonButton, IonIcon, IonModal, IonText, IonButtons } from '@ionic/angular/standalone';
+import { IonButton, IonIcon, IonModal, IonText } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { arrowForwardOutline } from 'ionicons/icons';
 
@@ -9,7 +9,7 @@ import { arrowForwardOutline } from 'ionicons/icons';
   styleUrls: ['./message.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [IonButtons, IonModal, IonButton, IonText, IonIcon],
+  imports: [IonModal, IonButton, IonText, IonIcon],
 })
 export class MessageComponent {
   public show = model(false);

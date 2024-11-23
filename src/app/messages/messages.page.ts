@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonBackButton, IonButtons, IonSpinner, IonList, IonIcon, IonItem, IonLabel, IonText, IonButton } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonBackButton, IonButtons, IonText } from '@ionic/angular/standalone';
 import { MessagesService } from '../message/messages.service';
 import { MessageCardComponent } from './message-card.component';
 import { EmailCardComponent } from './email-card.component';
@@ -16,7 +16,7 @@ import { delay } from '../utils/utils';
   styleUrls: ['./messages.page.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IonButton, IonText, IonLabel, IonItem, IonIcon, IonList, IonSpinner, IonButtons, IonBackButton, IonContent, IonHeader, IonTitle,
+  imports: [ IonText, IonButtons, IonBackButton, IonContent, IonHeader, IonTitle,
     MessageCardComponent, EmailCardComponent, 
     IonToolbar, CommonModule, FormsModule]
 })

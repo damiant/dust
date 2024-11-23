@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, input, output } from '@angular/core';
-import { IonCard, IonCardHeader, IonItem, IonCardTitle, IonButton, IonIcon, IonNote, IonFabButton, ModalController } from "@ionic/angular/standalone";
+import { IonCard, IonItem, IonIcon, IonNote, ModalController } from "@ionic/angular/standalone";
 import { Thing } from '../data/models';
 import { locationOutline, add } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
@@ -16,15 +16,10 @@ import { CardHeaderComponent } from "../card-header/card-header.component";
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    IonFabButton,
     IonNote,
     IonIcon,
-    IonButton,
-    IonCardTitle,
     IonItem,
     IonCard,
-    IonCardHeader,
-    ThingComponent,
     CardHeaderComponent]
 })
 export class PinsCardComponent {

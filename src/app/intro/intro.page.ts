@@ -85,9 +85,6 @@ function initialState(): IntroState {
   imports: [
     IonRadio,
     IonRadioGroup,
-    IonPopover,
-    IonList,
-    IonItem,
     IonFabList,
     IonFabButton,
     IonFab,

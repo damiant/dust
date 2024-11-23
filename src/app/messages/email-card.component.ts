@@ -7,9 +7,8 @@ import {
   IonCardSubtitle,
   IonCardTitle,
   IonIcon,
-  IonText, IonButtons, IonButton, IonFabButton
+  IonText, IonFabButton
 } from '@ionic/angular/standalone';
-import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { Email } from '../message/emails';
 import { addIcons } from 'ionicons';
 import { checkmarkOutline } from 'ionicons/icons';
@@ -25,14 +24,13 @@ export type ArtImageStyle = 'top' | 'side' | 'none';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   animations: [FadeOut(500)],
-  imports: [IonFabButton, IonButton, IonButtons,
+  imports: [IonFabButton,
     CommonModule,
     IonCard,
     IonCardHeader,
     IonCardTitle,
     IonCardSubtitle,
     IonCardContent,
-    CachedImgComponent,
     IonText,
     IonIcon,
   ],
