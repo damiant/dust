@@ -22,22 +22,21 @@ export interface ArtCarEvent {
 }
 
 @Component({
-  selector: 'app-rsl-event',
-  templateUrl: './rsl-event.component.html',
-  styleUrls: ['./rsl-event.component.scss'],
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    CommonModule,
-    IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonCardSubtitle,
-    IonCardContent,
-    IonIcon,
-    IonText,
-    CachedImgComponent,
-  ],
+    selector: 'app-rsl-event',
+    templateUrl: './rsl-event.component.html',
+    styleUrls: ['./rsl-event.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        CommonModule,
+        IonCard,
+        IonCardHeader,
+        IonCardTitle,
+        IonCardSubtitle,
+        IonCardContent,
+        IonIcon,
+        IonText,
+        CachedImgComponent,
+    ]
 })
 export class RslEventComponent {
   private fav = inject(FavoritesService);

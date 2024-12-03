@@ -21,11 +21,10 @@ import { FavoritesService } from '../favs/favorites.service';
 import { TextZoom } from '@capacitor/text-zoom';
 
 @Component({
-  selector: 'app-tabs',
-  templateUrl: 'tabs.page.html',
-  styleUrls: ['tabs.page.scss'],
-  standalone: true,
-  imports: [IonBadge, CommonModule, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel],
+    selector: 'app-tabs',
+    templateUrl: 'tabs.page.html',
+    styleUrls: ['tabs.page.scss'],
+    imports: [IonBadge, CommonModule, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel]
 })
 export class TabsPage implements OnInit {
   public db = inject(DbService);

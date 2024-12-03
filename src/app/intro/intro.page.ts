@@ -75,30 +75,29 @@ function initialState(): IntroState {
 }
 
 @Component({
-  selector: 'app-intro',
-  templateUrl: './intro.page.html',
-  styleUrls: ['./intro.page.scss'],
-  standalone: true,
-  imports: [
-    IonRadio,
-    IonRadioGroup,
-    IonFabList,
-    IonFabButton,
-    IonFab,
-    CommonModule,
-    FormsModule,
-    RouterModule,
-    MessageComponent,
-    IonButton,
-    IonSpinner,
-    IonIcon,
-    IonText,
-    IonContent,
-    CachedImgComponent,
-    CarouselComponent,
-    CarouselItemComponent,
-    PinEntryComponent
-  ],
+    selector: 'app-intro',
+    templateUrl: './intro.page.html',
+    styleUrls: ['./intro.page.scss'],
+    imports: [
+        IonRadio,
+        IonRadioGroup,
+        IonFabList,
+        IonFabButton,
+        IonFab,
+        CommonModule,
+        FormsModule,
+        RouterModule,
+        MessageComponent,
+        IonButton,
+        IonSpinner,
+        IonIcon,
+        IonText,
+        IonContent,
+        CachedImgComponent,
+        CarouselComponent,
+        CarouselItemComponent,
+        PinEntryComponent
+    ]
 })
 export class IntroPage {
   private db = inject(DbService);

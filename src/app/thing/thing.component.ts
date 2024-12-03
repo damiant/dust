@@ -24,22 +24,21 @@ export enum ThingResult {
 }
 
 @Component({
-  selector: 'app-thing',
-  templateUrl: './thing.component.html',
-  styleUrls: ['./thing.component.scss'],
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonItem,
-    IonButton,
-    IonContent,
-    IonButtons,
-    IonToolbar,
-    IonTitle,
-    IonInput,
-    IonHeader,
-  ],
-  standalone: true,
+    selector: 'app-thing',
+    templateUrl: './thing.component.html',
+    styleUrls: ['./thing.component.scss'],
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonItem,
+        IonButton,
+        IonContent,
+        IonButtons,
+        IonToolbar,
+        IonTitle,
+        IonInput,
+        IonHeader,
+    ]
 })
 export class ThingComponent {
   private modalCtrl = inject(ModalController);

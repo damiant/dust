@@ -89,30 +89,29 @@ interface HomeState {
 }
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss'],
-  standalone: true,
-  imports: [IonLoading,     
-    IonModal,
-    CommonModule,
-    FormsModule,
-    RouterModule,
-    FriendsComponent,
-    IonContent,
-    IonCard,
-    IonList,
-    IonItem,
-    IonIcon,
-    IonFabButton,
-    TileContainerComponent,
-    TileComponent,
-    EventsCardComponent,
-    RemindersComponent,
-    PinsCardComponent,
-    LinkComponent,
-    CardHeaderComponent
-  ],
+    selector: 'app-home',
+    templateUrl: './home.page.html',
+    styleUrls: ['./home.page.scss'],
+    imports: [IonLoading,
+        IonModal,
+        CommonModule,
+        FormsModule,
+        RouterModule,
+        FriendsComponent,
+        IonContent,
+        IonCard,
+        IonList,
+        IonItem,
+        IonIcon,
+        IonFabButton,
+        TileContainerComponent,
+        TileComponent,
+        EventsCardComponent,
+        RemindersComponent,
+        PinsCardComponent,
+        LinkComponent,
+        CardHeaderComponent
+    ]
 })
 export class HomePage implements OnInit {
   private ui = inject(UiService);

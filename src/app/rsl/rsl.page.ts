@@ -72,30 +72,29 @@ function initialState(): RSLState {
   };
 }
 @Component({
-  selector: 'app-rsl',
-  templateUrl: './rsl.page.html',
-  styleUrls: ['./rsl.page.scss'],
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    RslEventComponent,
-    IonHeader,
-    IonToolbar,
-    IonButtons,
-    IonSegment,
-    IonContent,
-    IonTitle,
-    IonSegmentButton,
-    IonPopover,
-    IonInfiniteScroll,
-    IonInfiniteScrollContent,
-    IonText,
-    SortComponent,
-    SearchComponent,
-    MapModalComponent,
-    SkeletonEventComponent,
-  ],
+    selector: 'app-rsl',
+    templateUrl: './rsl.page.html',
+    styleUrls: ['./rsl.page.scss'],
+    imports: [
+        CommonModule,
+        FormsModule,
+        RslEventComponent,
+        IonHeader,
+        IonToolbar,
+        IonButtons,
+        IonSegment,
+        IonContent,
+        IonTitle,
+        IonSegmentButton,
+        IonPopover,
+        IonInfiniteScroll,
+        IonInfiniteScrollContent,
+        IonText,
+        SortComponent,
+        SearchComponent,
+        MapModalComponent,
+        SkeletonEventComponent,
+    ]
 })
 export class RslPage {
   private ui = inject(UiService);

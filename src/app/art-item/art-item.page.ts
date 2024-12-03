@@ -33,31 +33,28 @@ import { EventPage } from '../event/event.page';
 import { canCreate } from '../map/map';
 
 @Component({
-  selector: 'app-art-item',
-  templateUrl: './art-item.page.html',
-  styleUrls: ['./art-item.page.scss'],
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IonModal,
-    IonTitle,
-    FormsModule,
-    RouterModule,
-    MapComponent,
-    MapModalComponent,
-    IonHeader,
-    IonToolbar,
-    IonBackButton,
-    IonButtons,
-    IonButton,
-    IonContent,
-    IonList,
-    IonItem,
-    IonIcon,
-    IonLabel,
-    IonText,
-    CachedImgComponent,
-    EventPage
-  ],
+    selector: 'app-art-item',
+    templateUrl: './art-item.page.html',
+    styleUrls: ['./art-item.page.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [IonModal,
+        FormsModule,
+        RouterModule,
+        MapModalComponent,
+        IonHeader,
+        IonToolbar,
+        IonBackButton,
+        IonButtons,
+        IonButton,
+        IonContent,
+        IonList,
+        IonItem,
+        IonIcon,
+        IonLabel,
+        IonText,
+        CachedImgComponent,
+        EventPage
+    ]
 })
 export class ArtItemPage implements OnInit {
   private route = inject(ActivatedRoute);

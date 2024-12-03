@@ -31,26 +31,25 @@ import { SettingsService } from '../data/settings.service';
 
 
 @Component({
-  selector: 'app-pin-map',
-  templateUrl: './pin-map.page.html',
-  styleUrls: ['./pin-map.page.scss'],
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IonLoading, IonButton,
-    CommonModule,
-    FormsModule,
-    MapComponent,
-    IonContent,
-    IonHeader,
-    IonItem,
-    IonToolbar,
-    IonTitle,
-    IonButtons,
-    IonBackButton,
-    IonText,
-    IonIcon,
-    SearchComponent
-  ],
+    selector: 'app-pin-map',
+    templateUrl: './pin-map.page.html',
+    styleUrls: ['./pin-map.page.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [IonLoading, IonButton,
+        CommonModule,
+        FormsModule,
+        MapComponent,
+        IonContent,
+        IonHeader,
+        IonItem,
+        IonToolbar,
+        IonTitle,
+        IonButtons,
+        IonBackButton,
+        IonText,
+        IonIcon,
+        SearchComponent
+    ]
 })
 export class PinMapPage {
   private db = inject(DbService);

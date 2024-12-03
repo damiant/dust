@@ -11,11 +11,10 @@ interface Item {
 }
 
 @Component({
-  selector: 'app-events-card',
-  templateUrl: './events-card.component.html',
-  styleUrls: ['./events-card.component.scss'],
-  standalone: true,
-  imports: [IonCardSubtitle, IonCardTitle, IonCardContent, IonList, IonItem, CommonModule, IonCardHeader, IonCard, RouterModule]
+    selector: 'app-events-card',
+    templateUrl: './events-card.component.html',
+    styleUrls: ['./events-card.component.scss'],
+    imports: [IonCardTitle, IonItem, CommonModule, IonCardHeader, IonCard, RouterModule]
 })
 export class EventsCardComponent {
   items = computed(() => {

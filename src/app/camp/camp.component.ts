@@ -13,22 +13,21 @@ import {
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 
 @Component({
-  selector: 'app-camp',
-  templateUrl: './camp.component.html',
-  styleUrls: ['./camp.component.scss'],
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    CommonModule,
-    RouterModule,
-    IonCard,
-    IonCardHeader,
-    IonCardSubtitle,
-    IonText,
-    IonCardTitle,
-    IonCardContent,
-    CachedImgComponent,
-  ],
+    selector: 'app-camp',
+    templateUrl: './camp.component.html',
+    styleUrls: ['./camp.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        CommonModule,
+        RouterModule,
+        IonCard,
+        IonCardHeader,
+        IonCardSubtitle,
+        IonText,
+        IonCardTitle,
+        IonCardContent,
+        CachedImgComponent,
+    ]
 })
 export class CampComponent {
   camp = input.required<Camp>();

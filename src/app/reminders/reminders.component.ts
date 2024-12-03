@@ -22,22 +22,21 @@ import { SettingsService } from '../data/settings.service';
 import { CardHeaderComponent } from '../card-header/card-header.component';
 
 @Component({
-  selector: 'app-reminders',
-  templateUrl: './reminders.component.html',
-  styleUrls: ['./reminders.component.scss'],
-  imports: [
-    CommonModule,
-    IonCard,
-    IonIcon,
-    IonCardContent,
-    IonList,
-    IonText,
-    IonItem,
-    IonLabel,
-    CardHeaderComponent
-  ],
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-reminders',
+    templateUrl: './reminders.component.html',
+    styleUrls: ['./reminders.component.scss'],
+    imports: [
+        CommonModule,
+        IonCard,
+        IonIcon,
+        IonCardContent,
+        IonList,
+        IonText,
+        IonItem,
+        IonLabel,
+        CardHeaderComponent
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RemindersComponent implements OnInit {
   private modalCtrl = inject(ModalController);

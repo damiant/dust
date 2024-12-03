@@ -4,11 +4,10 @@ import { decryptString } from '../utils/utils';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-pin-entry',
-  templateUrl: './pin-entry.component.html',
-  styleUrls: ['./pin-entry.component.scss'],
-  standalone: true,
-  imports: [IonInput, IonModal, IonText, IonButton, IonIcon, FormsModule]
+    selector: 'app-pin-entry',
+    templateUrl: './pin-entry.component.html',
+    styleUrls: ['./pin-entry.component.scss'],
+    imports: [IonInput, IonModal, IonText, IonButton, IonIcon, FormsModule]
 })
 export class PinEntryComponent {
   show = model(false);

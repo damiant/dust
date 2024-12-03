@@ -33,30 +33,29 @@ import { canCreate } from '../map/map';
 import { ScrollResult } from '../map/map-model';
 
 @Component({
-  selector: 'app-camp',
-  templateUrl: './camp.page.html',
-  styleUrls: ['./camp.page.scss'],
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    CommonModule,
-    FormsModule,
-    MapComponent,
-    EventPage,
-    IonHeader,
-    IonToolbar,
-    IonButtons,
-    IonBackButton,
-    IonButton,
-    IonIcon,
-    IonContent,
-    IonList,
-    IonItem,
-    IonLabel,
-    IonText,
-    IonModal,
-    CachedImgComponent,
-  ],
+    selector: 'app-camp',
+    templateUrl: './camp.page.html',
+    styleUrls: ['./camp.page.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        CommonModule,
+        FormsModule,
+        MapComponent,
+        EventPage,
+        IonHeader,
+        IonToolbar,
+        IonButtons,
+        IonBackButton,
+        IonButton,
+        IonIcon,
+        IonContent,
+        IonList,
+        IonItem,
+        IonLabel,
+        IonText,
+        IonModal,
+        CachedImgComponent,
+    ]
 })
 export class CampPage implements OnInit {
   private route = inject(ActivatedRoute);

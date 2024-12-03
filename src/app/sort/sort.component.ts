@@ -6,11 +6,10 @@ import { addIcons } from 'ionicons';
 import { locationSharp } from 'ionicons/icons';
 
 @Component({
-  selector: 'app-sort',
-  templateUrl: './sort.component.html',
-  styleUrls: ['./sort.component.scss'],
-  standalone: true,
-  imports: [IonCheckbox],
+    selector: 'app-sort',
+    templateUrl: './sort.component.html',
+    styleUrls: ['./sort.component.scss'],
+    imports: [IonCheckbox]
 })
 export class SortComponent {
   sortType = model<string>('alpha');

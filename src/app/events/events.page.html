@@ -56,7 +56,7 @@
     }
     }
     <cdk-virtual-scroll-viewport minBufferPx="5344" [itemSize]="vm.cardHeight" maxBufferPx="9944">
-      <app-event [highlighted]="event.highlighted" [showImage]="true" [title]="vm.title" [longTime]="!vm.day"
+      <app-event [highlighted]="!!event.highlighted" [showImage]="true" [title]="vm.title" [longTime]="!vm.day"
         [day]="vm.day" [event]="event" (starClick)="star(event, $event)" (mapClick)="map($event)"
         (opened)="opened($event)" *cdkVirtualFor=" let event of vm.events; trackBy: eventsTrackBy" />
 

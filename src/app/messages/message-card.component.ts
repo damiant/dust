@@ -18,23 +18,22 @@ import { delay } from '../utils/utils';
 export type ArtImageStyle = 'top' | 'side' | 'none';
 
 @Component({
-  selector: 'app-message-card',
-  templateUrl: './message-card.component.html',
-  styleUrls: ['./message-card.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  animations: [FadeOut(500), FadeIn(300)],  
-  imports: [IonFabButton, 
-    IonAvatar,
-    CommonModule,
-    IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonCardSubtitle,
-    IonCardContent,
-    IonText,
-    IonIcon,
-  ]
+    selector: 'app-message-card',
+    templateUrl: './message-card.component.html',
+    styleUrls: ['./message-card.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    animations: [FadeOut(500), FadeIn(300)],
+    imports: [IonFabButton,
+        IonAvatar,
+        CommonModule,
+        IonCard,
+        IonCardHeader,
+        IonCardTitle,
+        IonCardSubtitle,
+        IonCardContent,
+        IonText,
+        IonIcon,
+    ]
 })
 export class MessageCardComponent implements OnInit {
   item = input.required<Item>();
