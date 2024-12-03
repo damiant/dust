@@ -2,11 +2,9 @@ import { Component, effect, viewChild, inject, ChangeDetectionStrategy, ChangeDe
 import { RouterModule } from '@angular/router';
 import {
   IonBadge,
-  IonButton,
   IonButtons,
   IonContent,
   IonHeader,
-  IonIcon,
   IonText,
   IonTitle,
   IonToolbar,

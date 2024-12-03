@@ -12,12 +12,8 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
-  IonList,
   IonItem,
-  IonCard,
-  IonCardTitle,
-  IonCardContent,
-  IonCardHeader, IonItemSliding, IonItemOptions, IonItemOption
+  IonItemSliding, IonItemOptions, IonItemOption
 } from '@ionic/angular/standalone';
 import { Router, RouterModule } from '@angular/router';
 import { Art, Camp, Event, MapPoint } from '../data/models';

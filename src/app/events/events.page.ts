@@ -5,7 +5,6 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
-  IonIcon,
   IonSegment,
   IonSegmentButton,
   IonText,

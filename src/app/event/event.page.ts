@@ -18,10 +18,9 @@ import {
   IonToolbar,
   ToastController,
 } from '@ionic/angular/standalone';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { DbService } from '../data/db.service';
 import { Event, MapPoint, OccurrenceSet } from '../data/models';
-import { MapModalComponent } from '../map-modal/map-modal.component';
 import { MapComponent } from '../map/map.component';
 import { FavoritesService } from '../favs/favorites.service';
 import { ShareInfoType } from '../share/share.service';

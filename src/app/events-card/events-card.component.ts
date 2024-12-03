@@ -1,5 +1,5 @@
 import { Component, computed, input } from '@angular/core';
-import { IonCard, IonCardHeader, IonItem, IonList, IonCardContent, IonCardTitle, IonCardSubtitle } from "@ionic/angular/standalone";
+import { IonCard, IonCardHeader, IonItem, IonCardTitle } from "@ionic/angular/standalone";
 import { Event } from '../data/models';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';

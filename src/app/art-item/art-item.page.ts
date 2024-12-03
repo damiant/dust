@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { Art, Event, MapPoint } from '../data/models';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { DbService } from '../data/db.service';
-import { MapComponent } from '../map/map.component';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { FavoritesService } from '../favs/favorites.service';
 import { UiService } from '../ui/ui.service';
@@ -22,7 +21,6 @@ import {
   IonLabel,
   IonList,
   IonText,
-  IonTitle,
   IonToolbar, IonModal,
   ToastController
 } from '@ionic/angular/standalone';

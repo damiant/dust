@@ -6,7 +6,6 @@ import {
   IonPopover,
   IonRadio,
   IonRadioGroup,
-  IonTitle,
   IonItem,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';

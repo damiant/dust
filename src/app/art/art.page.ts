@@ -2,11 +2,9 @@ import { Component, effect, viewChild, inject, ChangeDetectorRef, ChangeDetectio
 import {
   InfiniteScrollCustomEvent,
   IonBadge,
-  IonButton,
   IonButtons,
   IonContent,
   IonHeader,
-  IonIcon,
   IonInfiniteScroll,
   IonInfiniteScrollContent,
   IonText,
@@ -16,7 +14,7 @@ import {
 } from '@ionic/angular/standalone';
 import { Art } from '../data/models';
 import { DbService } from '../data/db.service';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ArtComponent, ArtImageStyle } from './art.component';
 import { UiService } from '../ui/ui.service';

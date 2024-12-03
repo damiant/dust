@@ -2,9 +2,6 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject }
 import {
   IonCard,
   IonCardContent,
-  IonCardHeader,
-  IonCardTitle,
-  IonFabButton,
   IonIcon,
   IonItem,
   IonLabel,
