@@ -75,29 +75,29 @@ function initialState(): IntroState {
 }
 
 @Component({
-    selector: 'app-intro',
-    templateUrl: './intro.page.html',
-    styleUrls: ['./intro.page.scss'],
-    imports: [
-        IonRadio,
-        IonRadioGroup,
-        IonFabList,
-        IonFabButton,
-        IonFab,
-        CommonModule,
-        FormsModule,
-        RouterModule,
-        MessageComponent,
-        IonButton,
-        IonSpinner,
-        IonIcon,
-        IonText,
-        IonContent,
-        CachedImgComponent,
-        CarouselComponent,
-        CarouselItemComponent,
-        PinEntryComponent
-    ]
+  selector: 'app-intro',
+  templateUrl: './intro.page.html',
+  styleUrls: ['./intro.page.scss'],
+  imports: [
+    IonRadio,
+    IonRadioGroup,
+    IonFabList,
+    IonFabButton,
+    IonFab,
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    MessageComponent,
+    IonButton,
+    IonSpinner,
+    IonIcon,
+    IonText,
+    IonContent,
+    CachedImgComponent,
+    CarouselComponent,
+    CarouselItemComponent,
+    PinEntryComponent
+  ]
 })
 export class IntroPage {
   private db = inject(DbService);
@@ -414,7 +414,7 @@ export class IntroPage {
         hidden.push('friends');
         //hidden.push('private');
       }
-      if (`${this.settingsService.settings.dataset?.mastodonHandle}`.length == 0) {
+      if (`${this.settingsService.settings.dataset?.mastodonHandle}`.length == 0 && this.settingsService.settings.dataset?.inboxEmail !== 'Y') {
         hidden.push('messages');
       }
       this.db.featuresHidden.set(hidden);

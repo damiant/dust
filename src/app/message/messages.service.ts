@@ -56,21 +56,21 @@ export class MessagesService {
 
     private readMessagesKey = 'messagesRead';
 
-    public async markEmailAsRead(email: Email) {  
-        await this.markAsRead(this.hashOfEmail(email));    
+    public async markEmailAsRead(email: Email) {
+        await this.markAsRead(this.hashOfEmail(email));
     }
 
-    public async markMessageAsRead(message: Item) {  
-        await this.markAsRead(this.hashOfItem(message));    
+    public async markMessageAsRead(message: Item) {
+        await this.markAsRead(this.hashOfItem(message));
     }
 
-    private async markAsRead(hash: number) {        
+    private async markAsRead(hash: number) {
         const list = await this.getReadMessageHashes();
         list.push(hash);
         await this.settings.set(this.readMessagesKey, JSON.stringify(list));
     }
 
-    private async getReadMessageHashes(): Promise<number[]> {        
+    private async getReadMessageHashes(): Promise<number[]> {
         let read = await this.settings.get(this.readMessagesKey);
         let list = [];
         if (read) {
@@ -98,10 +98,16 @@ export class MessagesService {
         return hashCode(`${email.date}+${email.subject}`);
     }
 
-    private async cleanupEmail(data: Email[]) {       
+    private async cleanupEmail(data: Email[]) {
         let list = await this.getReadMessageHashes();
         for (let email of data) {
-            email.html = replaceAll(email.html, 'width="600"', '');            
+            email.html = replaceAll(email.html, 'width="600"', '');
+            email.html = replaceAll(email.html, 'Unsubscribe</a>', '</a>');
+            email.html = replaceAll(email.html, 'Subscribe</a>', '</a>');
+            email.html = replaceAll(email.html, 'Click here</a>', '</a>');
+            email.html = replaceAll(email.html, 'inbox@dust.events', 'you');
+            email.html = replaceAll(email.html, 'Unsubscribe instantly</a>', '</a>');
+
             email.read = list.includes(this.hashOfEmail(email));
         }
     }
