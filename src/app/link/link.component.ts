@@ -10,6 +10,7 @@ import {
   mailOutline,
   ticketOutline,
   tvOutline,
+  createOutline,
 } from 'ionicons/icons';
 import { CommonModule } from '@angular/common';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
@@ -35,6 +36,9 @@ export class LinkComponent {
       return 'compass-outline';
     } else if (url.includes('youtu.') || url.includes('youtube.')) {
       return 'tv-outline';
+    }
+    if (txt.includes('Manage my')) {
+      return 'create-outline';
     }
     if (txt.includes('ticket')) {
       return 'ticket-outline';
@@ -84,7 +88,7 @@ export class LinkComponent {
   });
 
   constructor() {
-    addIcons({ linkOutline, compass, compassOutline, callOutline, mailOutline, ticketOutline, tvOutline });
+    addIcons({ linkOutline, compass, compassOutline, callOutline, mailOutline, ticketOutline, tvOutline, createOutline });
   }
 
   link(url: string) {

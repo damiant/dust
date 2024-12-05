@@ -226,6 +226,8 @@ export interface Dataset {
   pin: string;
   class?: string; // Animation
   active: boolean; // Displayed publicly
+  camp_registration: boolean;
+  event_registration: boolean;
   subTitle: string; // Calculated
 }
 

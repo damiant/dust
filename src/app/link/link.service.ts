@@ -37,8 +37,12 @@ export class LinkService {
         if (groups.length === 0) {
             groups.push(group);
         }
-        
+
+        this.getRegistrationLinks().map(
+            l => groups[0].links.unshift(l));
+
         groups[0].links.unshift(this.getEventInfo());
+
 
         return groups;
     }
@@ -62,5 +66,18 @@ export class LinkService {
         title += `<p>${ds.region}</p>`;
         const url = ds.website;
         return { uid: '0', title, url };
-    }    
+    }
+
+    private getRegistrationLinks(): Link[] {
+        const ds = this.db.selectedDataset();
+        const links: Link[] = [];
+        // if (ds.event_registration) {
+        //     links.push({ uid: '-2', title: 'Register Event () In Open Camping', url: `https://edit.dust.events/${ds.id}/events` });
+        // }
+        if (ds.camp_registration) {
+            const id = `${Math.random()}`.replace('.', '');
+            links.push({ uid: '-1', title: 'Manage my camp & events', url: `https://edit.dust.events/${ds.id}/camps?key=${id}` });            
+        }
+        return links;
+    }
 }
