@@ -1,5 +1,5 @@
 import { Component, computed, input } from '@angular/core';
-import { IonCard, IonCardHeader, IonItem, IonList, IonCardContent, IonCardTitle, IonCardSubtitle } from "@ionic/angular/standalone";
+import { IonCard, IonCardHeader, IonItem, IonCardTitle } from "@ionic/angular/standalone";
 import { Event } from '../data/models';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -11,11 +11,10 @@ interface Item {
 }
 
 @Component({
-  selector: 'app-events-card',
-  templateUrl: './events-card.component.html',
-  styleUrls: ['./events-card.component.scss'],
-  standalone: true,
-  imports: [IonCardSubtitle, IonCardTitle, IonCardContent, IonList, IonItem, CommonModule, IonCardHeader, IonCard, RouterModule]
+    selector: 'app-events-card',
+    templateUrl: './events-card.component.html',
+    styleUrls: ['./events-card.component.scss'],
+    imports: [IonCardTitle, IonItem, CommonModule, IonCardHeader, IonCard, RouterModule]
 })
 export class EventsCardComponent {
   items = computed(() => {

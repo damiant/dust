@@ -18,12 +18,12 @@ interface PrintState {
 }
 
 @Component({
-  selector: 'app-print-favs',
-  templateUrl: './print-favs.page.html',
-  styleUrls: ['./print-favs.page.scss'],
-  standalone: true,
-  imports: [    
-    CommonModule, FormsModule]
+    selector: 'app-print-favs',
+    templateUrl: './print-favs.page.html',
+    styleUrls: ['./print-favs.page.scss'],
+    imports: [
+        CommonModule, FormsModule
+    ]
 })
 export class PrintFavsPage {
   private location = inject(Location);

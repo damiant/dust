@@ -11,14 +11,13 @@ import { Item } from '../message/mastodon-feed';
 import { delay } from '../utils/utils';
 
 @Component({
-  selector: 'app-messages',
-  templateUrl: './messages.page.html',
-  styleUrls: ['./messages.page.scss'],
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ IonText, IonButtons, IonBackButton, IonContent, IonHeader, IonTitle,
-    MessageCardComponent, EmailCardComponent, 
-    IonToolbar, CommonModule, FormsModule]
+    selector: 'app-messages',
+    templateUrl: './messages.page.html',
+    styleUrls: ['./messages.page.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [IonText, IonButtons, IonBackButton, IonContent, IonHeader, IonTitle,
+        MessageCardComponent, EmailCardComponent,
+        IonToolbar, CommonModule, FormsModule]
 })
 export class MessagesPage implements OnInit {
 

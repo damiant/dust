@@ -25,19 +25,18 @@ import { Capacitor } from '@capacitor/core';
 const geolocateInterval = 10000;
 
 @Component({
-  selector: 'app-map',
-  templateUrl: './map.component.html',
-  styleUrls: ['./map.component.scss'],
-  imports: [
-    RouterModule,
-    CommonModule,
-    MessageComponent,
-    IonText,
-    IonButton,
-    CachedImgComponent
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
+    selector: 'app-map',
+    templateUrl: './map.component.html',
+    styleUrls: ['./map.component.scss'],
+    imports: [
+        RouterModule,
+        CommonModule,
+        MessageComponent,
+        IonText,
+        IonButton,
+        CachedImgComponent
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MapComponent implements OnInit, OnDestroy {
   private geo = inject(GeoService);

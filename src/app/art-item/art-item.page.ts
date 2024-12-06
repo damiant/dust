@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { Art, Event, MapPoint } from '../data/models';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { DbService } from '../data/db.service';
-import { MapComponent } from '../map/map.component';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { FavoritesService } from '../favs/favorites.service';
 import { UiService } from '../ui/ui.service';
@@ -22,7 +21,6 @@ import {
   IonLabel,
   IonList,
   IonText,
-  IonTitle,
   IonToolbar, IonModal,
   ToastController
 } from '@ionic/angular/standalone';
@@ -33,31 +31,28 @@ import { EventPage } from '../event/event.page';
 import { canCreate } from '../map/map';
 
 @Component({
-  selector: 'app-art-item',
-  templateUrl: './art-item.page.html',
-  styleUrls: ['./art-item.page.scss'],
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IonModal,
-    IonTitle,
-    FormsModule,
-    RouterModule,
-    MapComponent,
-    MapModalComponent,
-    IonHeader,
-    IonToolbar,
-    IonBackButton,
-    IonButtons,
-    IonButton,
-    IonContent,
-    IonList,
-    IonItem,
-    IonIcon,
-    IonLabel,
-    IonText,
-    CachedImgComponent,
-    EventPage
-  ],
+    selector: 'app-art-item',
+    templateUrl: './art-item.page.html',
+    styleUrls: ['./art-item.page.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [IonModal,
+        FormsModule,
+        RouterModule,
+        MapModalComponent,
+        IonHeader,
+        IonToolbar,
+        IonBackButton,
+        IonButtons,
+        IonButton,
+        IonContent,
+        IonList,
+        IonItem,
+        IonIcon,
+        IonLabel,
+        IonText,
+        CachedImgComponent,
+        EventPage
+    ]
 })
 export class ArtItemPage implements OnInit {
   private route = inject(ActivatedRoute);

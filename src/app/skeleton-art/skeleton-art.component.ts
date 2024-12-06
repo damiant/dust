@@ -12,7 +12,12 @@ import {
   selector: 'app-skeleton-art',
   templateUrl: './skeleton-art.component.html',
   styleUrls: ['./skeleton-art.component.scss'],
-  standalone: true,
-  imports: [IonCard, IonCardHeader, IonSkeletonText, IonCardContent, IonCardTitle, IonCardSubtitle],
+  imports: [
+    IonCard,
+    IonCardHeader,
+    IonSkeletonText,
+    IonCardContent,
+    IonCardTitle,
+    IonCardSubtitle]
 })
-export class SkeletonArtComponent {}
+export class SkeletonArtComponent { }

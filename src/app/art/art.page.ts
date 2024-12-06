@@ -2,11 +2,9 @@ import { Component, effect, viewChild, inject, ChangeDetectorRef, ChangeDetectio
 import {
   InfiniteScrollCustomEvent,
   IonBadge,
-  IonButton,
   IonButtons,
   IonContent,
   IonHeader,
-  IonIcon,
   IonInfiniteScroll,
   IonInfiniteScrollContent,
   IonText,
@@ -16,7 +14,7 @@ import {
 } from '@ionic/angular/standalone';
 import { Art } from '../data/models';
 import { DbService } from '../data/db.service';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ArtComponent, ArtImageStyle } from './art.component';
 import { UiService } from '../ui/ui.service';
@@ -65,33 +63,29 @@ function initialState(): ArtState {
 }
 
 @Component({
-  selector: 'app-arts',
-  templateUrl: 'art.page.html',
-  styleUrls: ['art.page.scss'],
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    RouterLink,
-    CommonModule,
-    ScrollingModule,
-    IonButton,
-    IonButtons,
-    AlphabeticalScrollBarComponent,
-    IonContent,
-    IonHeader,
-    IonTitle,
-    IonIcon,
-    IonText,
-    IonToolbar,
-    IonInfiniteScroll,
-    IonInfiniteScrollContent,
-    IonBadge,
-    ArtComponent,
-    SearchComponent,
-    SortComponent,
-    CategoryComponent,
-    SkeletonArtComponent,
-  ],
+    selector: 'app-arts',
+    templateUrl: 'art.page.html',
+    styleUrls: ['art.page.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        CommonModule,
+        ScrollingModule,
+        IonButtons,
+        AlphabeticalScrollBarComponent,
+        IonContent,
+        IonHeader,
+        IonTitle,
+        IonText,
+        IonToolbar,
+        IonInfiniteScroll,
+        IonInfiniteScrollContent,
+        IonBadge,
+        ArtComponent,
+        SearchComponent,
+        SortComponent,
+        CategoryComponent,
+        SkeletonArtComponent,
+    ]
 })
 export class ArtPage {
   public db = inject(DbService);

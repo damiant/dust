@@ -10,17 +10,17 @@ import { FavoritesService } from '../favs/favorites.service';
 import { CardHeaderComponent } from "../card-header/card-header.component";
 
 @Component({
-  selector: 'app-pins-card',
-  templateUrl: './pins-card.component.html',
-  styleUrls: ['./pins-card.component.scss'],
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    IonNote,
-    IonIcon,
-    IonItem,
-    IonCard,
-    CardHeaderComponent]
+    selector: 'app-pins-card',
+    templateUrl: './pins-card.component.html',
+    styleUrls: ['./pins-card.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        IonNote,
+        IonIcon,
+        IonItem,
+        IonCard,
+        CardHeaderComponent
+    ]
 })
 export class PinsCardComponent {
   private modalCtrl = inject(ModalController);

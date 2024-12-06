@@ -18,10 +18,9 @@ import {
   IonToolbar,
   ToastController,
 } from '@ionic/angular/standalone';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { DbService } from '../data/db.service';
 import { Event, MapPoint, OccurrenceSet } from '../data/models';
-import { MapModalComponent } from '../map-modal/map-modal.component';
 import { MapComponent } from '../map/map.component';
 import { FavoritesService } from '../favs/favorites.service';
 import { ShareInfoType } from '../share/share.service';
@@ -48,32 +47,29 @@ import { EventChanged, EventsService } from '../events/events.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-event',
-  templateUrl: './event.page.html',
-  styleUrls: ['./event.page.scss'],
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    CommonModule,
-    RouterLink,
-    FormsModule,
-    MapModalComponent,
-    MapComponent,
-    IonItem,
-    IonButton,
-    IonText,
-    IonIcon,
-    IonLabel,
-    IonBadge,
-    IonContent,
-    IonList,
-    IonButtons,
-    IonToolbar,
-    IonBackButton,
-    IonHeader,
-    IonPopover,
-    CachedImgComponent,
-  ],
+    selector: 'app-event',
+    templateUrl: './event.page.html',
+    styleUrls: ['./event.page.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        CommonModule,
+        FormsModule,
+        MapComponent,
+        IonItem,
+        IonButton,
+        IonText,
+        IonIcon,
+        IonLabel,
+        IonBadge,
+        IonContent,
+        IonList,
+        IonButtons,
+        IonToolbar,
+        IonBackButton,
+        IonHeader,
+        IonPopover,
+        CachedImgComponent,
+    ]
 })
 export class EventPage implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);

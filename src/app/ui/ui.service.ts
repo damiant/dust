@@ -9,6 +9,8 @@ import { Share, ShareOptions } from '@capacitor/share';
 import { Browser } from '@capacitor/browser';
 import { ScrollResult } from '../map/map-model';
 import { FileSharer, ShareFileOptions } from '@byteowls/capacitor-filesharer';
+import { ApiService } from '../data/api.service';
+import { SettingNames, SettingsService } from '../data/settings.service';
 export const ThemePrimaryColor = '#F61067';
 
 @Injectable({
@@ -18,6 +20,20 @@ export class UiService {
   public navCtrl = inject(NavController);
   public textZoom = signal(1);
   private clickedTab = signal('');
+  private lastUrl = '';
+  private api = inject(ApiService);
+  private settings = inject(SettingsService);
+
+  constructor() {
+    Browser.addListener('browserFinished', async () => {
+      const key = this.getOneTimeKey();
+      console.log(`browser finished ${this.lastUrl} key=${key}`);
+      if (this.lastUrl.includes('dust.events')) {
+        const ownerOf = await this.api.getOneTimeKey(key);
+        await this.settings.set(SettingNames.OwnerOf, ownerOf);
+      }
+    });
+  }
 
   public scrollUp(name: string, virtualScroll: CdkVirtualScrollViewport) {
     const tab = this.clickedTab();
@@ -74,7 +90,23 @@ export class UiService {
       window.open(url, '_blank');
       return;
     }
+    this.lastUrl = url;
+    if (url.includes('[@unique-id')) {
+      const id = `${Math.random()}`.replace('.', '');
+      this.setOneTimeKey(id);  
+      url = url.replace('[@unique-id]', id);
+    }
     await Browser.open({ url, presentationStyle: 'popover' });
+  }
+
+  public setOneTimeKey(key: string) {
+    sessionStorage.setItem('key',key);
+  }
+
+  private getOneTimeKey(): string {
+    const key = sessionStorage.getItem('key');
+    sessionStorage.removeItem('key');    
+    return key ?? '';
   }
 
   public async presentToast(message: string, toastController: ToastController, position?: any, duration?: number) {

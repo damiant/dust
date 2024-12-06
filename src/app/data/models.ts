@@ -19,6 +19,7 @@ export interface Event {
   showStar?: boolean; // Calculated (whether to show star icon on event list)
   showRecurring?: boolean; // Calculated (whether to show recurring icon on event list)
   pin?: Pin; // Calculated if no gps
+  highlighted?: boolean; // Calculated (whether the event is highlighted)
   all_day: any;
   check_location?: number;
   description: string;
@@ -225,6 +226,8 @@ export interface Dataset {
   pin: string;
   class?: string; // Animation
   active: boolean; // Displayed publicly
+  camp_registration: boolean;
+  event_registration: boolean;
   subTitle: string; // Calculated
 }
 

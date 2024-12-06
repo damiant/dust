@@ -6,11 +6,10 @@ import { Keyboard } from '@capacitor/keyboard';
 import { IonSearchbar } from '@ionic/angular/standalone';
 
 @Component({
-  selector: 'app-search',
-  templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss'],
-  standalone: true,
-  imports: [ReactiveFormsModule, IonSearchbar],
+    selector: 'app-search',
+    templateUrl: './search.component.html',
+    styleUrls: ['./search.component.scss'],
+    imports: [ReactiveFormsModule, IonSearchbar]
 })
 export class SearchComponent implements OnInit {
   placeholder = input('');

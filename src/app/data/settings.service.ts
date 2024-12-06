@@ -3,6 +3,11 @@ import { LocationEnabledStatus, Settings } from './models';
 import { Preferences } from '@capacitor/preferences';
 import { set, get } from 'idb-keyval';
 
+export const SettingNames = {
+  OwnerOf: 'OwnerOf', // Used for what a logged in dust user owns (eg camp name, burn name)
+  MapURI: 'mapUri'
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -24,11 +29,11 @@ export class SettingsService {
   }
 
   public async getMapURI(): Promise<string | undefined> {
-    return await get('mapUri');
+    return await get(SettingNames.MapURI);
   }
 
   public async setMapURI(uri: string) {
-    await set('mapUri', uri);
+    await set(SettingNames.MapURI, uri);
   }
 
   public async setInteger(key: string, value: number) {

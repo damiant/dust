@@ -17,23 +17,22 @@ interface SearchState {
   busy: boolean;
 }
 @Component({
-  selector: 'app-search-page',
-  templateUrl: './search.page.html',
-  styleUrls: ['./search.page.scss'],
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IonText, IonIcon, IonLabel, IonItem, IonList, IonSpinner,
-    IonBackButton,
-    IonButtons,
-    IonContent,
-    IonHeader,
-    IonIcon,
-    IonTitle,
-    IonToolbar,
-    SearchComponent,
-    CommonModule,
-    RouterModule,
-    FormsModule]
+    selector: 'app-search-page',
+    templateUrl: './search.page.html',
+    styleUrls: ['./search.page.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [IonText, IonIcon, IonLabel, IonItem, IonList, IonSpinner,
+        IonBackButton,
+        IonButtons,
+        IonContent,
+        IonHeader,
+        IonIcon,
+        IonTitle,
+        IonToolbar,
+        SearchComponent,
+        CommonModule,
+        RouterModule,
+        FormsModule]
 })
 export class SearchPage {
   public vm: SearchState = { items: [], busy: false };

@@ -27,24 +27,23 @@ export enum FriendResult {
 }
 
 @Component({
-  selector: 'app-friend',
-  templateUrl: './friend.component.html',
-  styleUrls: ['./friend.component.scss'],
-  imports: [IonAlert,
-    CommonModule,
-    FormsModule,
-    IonItem,
-    IonButton,
-    IonPickerLegacy,
-    IonContent,
-    IonButtons,
-    IonToolbar,
-    IonTitle,
-    IonInput,
-    IonHeader,
-  ],
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-friend',
+    templateUrl: './friend.component.html',
+    styleUrls: ['./friend.component.scss'],
+    imports: [IonAlert,
+        CommonModule,
+        FormsModule,
+        IonItem,
+        IonButton,
+        IonPickerLegacy,
+        IonContent,
+        IonButtons,
+        IonToolbar,
+        IonTitle,
+        IonInput,
+        IonHeader,
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FriendComponent implements OnInit {
   private modalCtrl = inject(ModalController);

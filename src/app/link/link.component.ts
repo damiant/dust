@@ -10,16 +10,16 @@ import {
   mailOutline,
   ticketOutline,
   tvOutline,
+  createOutline,
 } from 'ionicons/icons';
 import { CommonModule } from '@angular/common';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 @Component({
-  selector: 'app-link',
-  templateUrl: './link.component.html',
-  styleUrls: ['./link.component.scss'],
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IonCardContent, IonIcon, IonItem, CommonModule, CachedImgComponent],
+    selector: 'app-link',
+    templateUrl: './link.component.html',
+    styleUrls: ['./link.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [IonCardContent, IonIcon, IonItem, CommonModule, CachedImgComponent]
 })
 export class LinkComponent {
   private ui = inject(UiService);
@@ -36,6 +36,9 @@ export class LinkComponent {
       return 'compass-outline';
     } else if (url.includes('youtu.') || url.includes('youtube.')) {
       return 'tv-outline';
+    }
+    if (txt.includes('Manage')) {
+      return 'create-outline';
     }
     if (txt.includes('ticket')) {
       return 'ticket-outline';
@@ -85,7 +88,7 @@ export class LinkComponent {
   });
 
   constructor() {
-    addIcons({ linkOutline, compass, compassOutline, callOutline, mailOutline, ticketOutline, tvOutline });
+    addIcons({ linkOutline, compass, compassOutline, callOutline, mailOutline, ticketOutline, tvOutline, createOutline });
   }
 
   link(url: string) {

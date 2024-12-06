@@ -4,10 +4,19 @@
 🩷 High Impact
 🔥 Important
 
-🔥 Dark mode keyboard for Android
-- 🔴 Page for each event - https://subdomain.dust.events point to camps/events/art
+- 🔥 Allow event to be added outside of event range for ticket sales (if admin) with auto-notification
+- 🔥 Camp/Event registration in Dust if enabled "Register Theme Camp"
+  - Dust Admin app is subfolder of Dust
+  - Dust can check JWT if owner of camp: "Manage [camp name]" or art etc of current burn
+
+- 🔴 Dark mode keyboard for Android
 - 🔴 Important: Clean up favorites as we may archive a particular year
-- 🔥 Option to show a burn without dates other than year
+- 🔴 Schedule send messages (eg for tickets available)
+
+## Volunteeripate
+- 🔴 Connect to get Tickets and Volunteer shifts
+- 🔴 Sync with Volunteeripate to update UI (shift become reminders, ticket is QR Code)
+- 🔴 POST api with API_KEY to send message for lost child alert
 
 ## Notifications
 - 🔴 Background check messages on open (if after 1 hour). If new messages show badge

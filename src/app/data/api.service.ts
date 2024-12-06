@@ -239,6 +239,14 @@ export class ApiService {
     return res.status == 200;
   }
 
+  public async getOneTimeKey(key: string): Promise<string> {
+    if (key == '') return '';
+    const payload = { key };
+    const res = await fetch(`https://api.dust.events/one-time-key`, {method: 'DELETE', body: JSON.stringify(payload)});
+    const userInfo = await res.json();
+    return userInfo.name;
+  }
+
   public async hasEverDownloaded(selected: Dataset) {
     const dataset = this.datasetId(selected);
     const myRevision = await this.dbService.get(dataset, Names.revision, { onlyRead: true, defaultValue: { revision: 0 } });

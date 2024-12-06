@@ -30,29 +30,28 @@ export enum ReminderResult {
 }
 
 @Component({
-  selector: 'app-reminder',
-  templateUrl: './reminder.component.html',
-  styleUrls: ['./reminder.component.scss'],
-  imports: [
-    FormsModule,
-    CommonModule,
-    IonItem,
-    IonButton,
-    IonLabel,
-    IonModal,
-    IonDatetimeButton,
-    IonDatetime,
-    IonPickerLegacy,
-    IonContent,
-    IonInput,
-    IonButtons,
-    IonButton,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
-  ],
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-reminder',
+    templateUrl: './reminder.component.html',
+    styleUrls: ['./reminder.component.scss'],
+    imports: [
+        FormsModule,
+        CommonModule,
+        IonItem,
+        IonButton,
+        IonLabel,
+        IonModal,
+        IonDatetimeButton,
+        IonDatetime,
+        IonPickerLegacy,
+        IonContent,
+        IonInput,
+        IonButtons,
+        IonButton,
+        IonHeader,
+        IonTitle,
+        IonToolbar,
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ReminderComponent implements OnInit {
   private streetService = inject(StreetService);

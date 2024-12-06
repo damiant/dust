@@ -12,12 +12,8 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
-  IonList,
   IonItem,
-  IonCard,
-  IonCardTitle,
-  IonCardContent,
-  IonCardHeader, IonItemSliding, IonItemOptions, IonItemOption
+  IonItemSliding, IonItemOptions, IonItemOption
 } from '@ionic/angular/standalone';
 import { Router, RouterModule } from '@angular/router';
 import { Art, Camp, Event, MapPoint } from '../data/models';
@@ -84,39 +80,36 @@ function initialState(): FavsState {
 }
 
 @Component({
-  selector: 'app-favs',
-  templateUrl: './favs.page.html',
-  styleUrls: ['./favs.page.scss'],
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IonItemOption, IonItemOptions, IonItemSliding,
-    IonCardHeader,
-    IonCardContent,
-    IonCardTitle,
-    IonCard,
-    IonItem,
-    IonList,
-    CommonModule,
-    FormsModule,
-    RouterModule,
-    EventComponent,
-    IonContent,
-    IonButtons,
-    IonButton,
-    IonIcon,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonActionSheet,
-    IonText,
-    IonBadge,
-    CampComponent,
-    MapModalComponent,
-    ArtComponent,
-    CategoryComponent,
-    SearchComponent,
-    MessageComponent
-  ],
+    selector: 'app-favs',
+    templateUrl: './favs.page.html',
+    styleUrls: ['./favs.page.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        IonItemOption, 
+        IonItemOptions, 
+        IonItemSliding,
+        IonItem,
+        CommonModule,
+        FormsModule,
+        RouterModule,
+        EventComponent,
+        IonContent,
+        IonButtons,
+        IonButton,
+        IonIcon,
+        IonHeader,
+        IonToolbar,
+        IonTitle,
+        IonActionSheet,
+        IonText,
+        IonBadge,
+        CampComponent,
+        MapModalComponent,
+        ArtComponent,
+        CategoryComponent,
+        SearchComponent,
+        MessageComponent
+    ]
 })
 export class FavsPage implements OnInit {
   private fav = inject(FavoritesService);

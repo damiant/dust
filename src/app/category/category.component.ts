@@ -6,18 +6,16 @@ import {
   IonPopover,
   IonRadio,
   IonRadioGroup,
-  IonTitle,
   IonItem,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronDown } from 'ionicons/icons';
 
 @Component({
-  selector: 'app-category',
-  templateUrl: './category.component.html',
-  styleUrls: ['./category.component.scss'],
-  standalone: true,
-  imports: [IonItem, IonTitle, IonButton, IonPopover, IonContent, IonRadioGroup, IonRadio, IonIcon],
+    selector: 'app-category',
+    templateUrl: './category.component.html',
+    styleUrls: ['./category.component.scss'],
+    imports: [IonItem, IonButton, IonPopover, IonContent, IonRadioGroup, IonRadio, IonIcon]
 })
 export class CategoryComponent {
   sortTypes = [

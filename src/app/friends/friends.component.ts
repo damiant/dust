@@ -2,9 +2,6 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject }
 import {
   IonCard,
   IonCardContent,
-  IonCardHeader,
-  IonCardTitle,
-  IonFabButton,
   IonIcon,
   IonItem,
   IonLabel,
@@ -22,26 +19,21 @@ import { add, person } from 'ionicons/icons';
 import { CardHeaderComponent } from "../card-header/card-header.component";
 
 @Component({
-  selector: 'app-friends',
-  templateUrl: './friends.component.html',
-  styleUrls: ['./friends.component.scss'],
-  imports: [
-    CommonModule,
-    FriendComponent,
-    IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonFabButton,
-    IonCardContent,
-    IonList,
-    IonText,
-    IonItem,
-    IonIcon,
-    IonLabel,
-    CardHeaderComponent
-  ],
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-friends',
+    templateUrl: './friends.component.html',
+    styleUrls: ['./friends.component.scss'],
+    imports: [
+        CommonModule,
+        IonCard,
+        IonCardContent,
+        IonList,
+        IonText,
+        IonItem,
+        IonIcon,
+        IonLabel,
+        CardHeaderComponent
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FriendsComponent implements OnInit {
   private modalCtrl = inject(ModalController);

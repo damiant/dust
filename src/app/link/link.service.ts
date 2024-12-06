@@ -1,6 +1,8 @@
 import { inject, Injectable } from "@angular/core";
 import { Group, Link } from "../data/models";
 import { DbService } from "../data/db.service";
+import { UiService } from "../ui/ui.service";
+import { SettingNames, SettingsService } from "../data/settings.service";
 
 @Injectable({
     providedIn: 'root',
@@ -8,13 +10,15 @@ import { DbService } from "../data/db.service";
 export class LinkService {
 
     db = inject(DbService);
+    settings = inject(SettingsService);
+    ui = inject(UiService);
 
     public async getGroupedLinks(): Promise<Group[]> {
         const links = await this.db.getLinks();
-        return this.group(links);
+        return await this.group(links);
     }
 
-    private group(links: Link[]): Group[] {
+    private async group(links: Link[]): Promise<Group[]> {
         let groups: Group[] = [];
         let group: Group = { id: 1, links: [] };
         for (const link of links) {
@@ -37,8 +41,12 @@ export class LinkService {
         if (groups.length === 0) {
             groups.push(group);
         }
-        
+
+        (await this.getRegistrationLinks()).map(
+            l => groups[0].links.unshift(l));
+
         groups[0].links.unshift(this.getEventInfo());
+
 
         return groups;
     }
@@ -62,5 +70,21 @@ export class LinkService {
         title += `<p>${ds.region}</p>`;
         const url = ds.website;
         return { uid: '0', title, url };
-    }    
+    }
+
+    private async getRegistrationLinks(): Promise<Link[]> {
+        const ds = this.db.selectedDataset();
+        const links: Link[] = [];
+        // if (ds.event_registration) {
+        //     links.push({ uid: '-2', title: 'Register Event () In Open Camping', url: `https://edit.dust.events/${ds.id}/events` });
+        // }
+        if (ds.camp_registration) {
+            let ownerOf = await this.settings.get(SettingNames.OwnerOf);
+            if (!ownerOf || ownerOf == '') {
+                ownerOf = 'my camp & events';
+            }
+            links.push({ uid: '-1', title: `Manage ${ownerOf}`, url: `https://edit.dust.events/${ds.id}/camps?key=[@unique-id]` });
+        }
+        return links;
+    }
 }

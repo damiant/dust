@@ -2,11 +2,9 @@ import { Component, effect, viewChild, inject, ChangeDetectionStrategy, ChangeDe
 import { RouterModule } from '@angular/router';
 import {
   IonBadge,
-  IonButton,
   IonButtons,
   IonContent,
   IonHeader,
-  IonIcon,
   IonText,
   IonTitle,
   IonToolbar,
@@ -69,31 +67,28 @@ function initialState(): CampsState {
 }
 
 @Component({
-  selector: 'app-camps',
-  templateUrl: 'camps.page.html',
-  styleUrls: ['camps.page.scss'],
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    CommonModule,
-    RouterModule,
-    ScrollingModule,
-    MapModalComponent,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonButtons,
-    IonButton,
-    IonContent,
-    IonText,
-    IonIcon,
-    IonBadge,
-    CampComponent,
-    SearchComponent,
-    CategoryComponent,
-    AlphabeticalScrollBarComponent,
-    SortComponent,
-  ],
+    selector: 'app-camps',
+    templateUrl: 'camps.page.html',
+    styleUrls: ['camps.page.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        CommonModule,
+        RouterModule,
+        ScrollingModule,
+        MapModalComponent,
+        IonHeader,
+        IonToolbar,
+        IonTitle,
+        IonButtons,
+        IonContent,
+        IonText,
+        IonBadge,
+        CampComponent,
+        SearchComponent,
+        CategoryComponent,
+        AlphabeticalScrollBarComponent,
+        SortComponent,
+    ]
 })
 export class CampsPage {
   public db = inject(DbService);
