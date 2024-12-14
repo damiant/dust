@@ -193,6 +193,7 @@ export interface Settings {
   lastGeoAlert: number | undefined; // Last geolocation permission request alert
   lastAboutAlert: number | undefined; // Last time the user got a message about the selected event
   lastLongEvents: number | undefined; // Last time the user got a message about long events
+  list: boolean; // Display cards as a list
 }
 
 

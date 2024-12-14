@@ -9,8 +9,10 @@ ion-button {
     bottom: 0;
     width: 100%;
     text-align: center;
-    padding: 2rem;
+    padding-top: 1rem;
     padding-bottom: calc(2rem + env(safe-area-inset-bottom));
+
+    background-image: linear-gradient(to bottom, transparent, var(--ion-color-primary));
 }
 
 ion-radio {
@@ -137,3 +139,8 @@ p.region {
     padding: 0.5rem;
     padding-bottom: env(safe-area-inset-bottom);
 }
+
+ion-fab {
+    padding-top: env(safe-area-inset-top);
+}
+

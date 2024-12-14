@@ -1,0 +1,31 @@
+import { Component, output, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { albumsOutline, listOutline } from 'ionicons/icons';
+import { addIcons } from 'ionicons';
+
+@Component({
+  selector: 'app-bar',
+  templateUrl: './bar.component.html',
+  styleUrls: ['./bar.component.scss'],
+  imports: [
+    CommonModule,
+  ]
+})
+export class BarComponent {
+  options = [
+    { id: 'past', name: 'Past' },
+    { id: 'all', name: 'Upcoming' },
+    { id: 'bm', name: `)'(` }
+  ];
+  selection = signal(this.options[1].id);
+  selected = output<string>();
+
+  constructor() {
+    addIcons({ albumsOutline, listOutline })
+  }
+
+  update(id: string) {
+    this.selection.set(id);
+    this.selected.emit(id);    
+  }
+}

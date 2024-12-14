@@ -108,6 +108,7 @@ export class SettingsService {
         lastLongEvents: undefined,
         lastAboutAlert: undefined,
         offlineEvents: [],
+        list: false,
         scrollLeft: 0,
       };
     }

@@ -1,6 +1,10 @@
 <ion-content color="primary" [fullscreen]="true">
-  <app-message (dismissed)="launch()" [show]="vm.showMessage" [title]="vm.selected ? 'About '+vm.selected.year : ''"
-    [message]="vm.message"></app-message>
+  <app-message
+    (dismissed)="launch()"
+    [show]="vm.showMessage"
+    [title]="vm.selected ? 'About '+vm.selected.year : ''"
+    [message]="vm.message"
+  ></app-message>
   <div [class.full]="vm.eventAlreadySelected" class="vcenter rows">
     <h1 (click)="clear()">dust.</h1>
     <ion-text role="text"><strong>dust</strong> is a guide for burners to find events, camps and art.</ion-text>
@@ -12,20 +16,29 @@
   @if (vm.list) {
   <app-burn-card [cards]="vm.cards" [selected]="vm.selected" (clicked)="open($event, true)"></app-burn-card>
   } @else {
-  <app-carousel [enabled]="vm.enableCarousel" [hidden]="vm.eventAlreadySelected" (slideChanged)="slideChanged($event)"
-    #carousel>
+  <app-carousel
+    [enabled]="vm.enableCarousel"
+    [hidden]="vm.eventAlreadySelected"
+    (slideChanged)="slideChanged($event)"
+    #carousel
+  >
     @for (card of vm.cards; track card.id) {
     <app-carousel-item (click)="open(card, true)">
-      <app-cached-img errorImage="./assets/error-img.png" (loaded)="vm.cardLoaded[card.id] = true" [loading]="'eager'"
-        [ngClass]="(vm.selected?.id === card.id) ? 'select ' + vm.selected?.class : 'unselect'" [src]="card.imageUrl" />
+      <app-cached-img
+        errorImage="./assets/error-img.png"
+        (loaded)="vm.cardLoaded[card.id] = true"
+        [loading]="'eager'"
+        [ngClass]="(vm.selected?.id === card.id) ? 'select ' + vm.selected?.class : 'unselect'"
+        [src]="card.imageUrl"
+      />
       <p [hidden]="!vm.cardLoaded[card.id]" aria-hidden="true">{{card.title}}</p>
       <p class="region" [hidden]="!vm.cardLoaded[card.id]" aria-hidden="true">{{card.region}}</p>
     </app-carousel-item>
     }
   </app-carousel>
-}
+  }
 
-  <ion-fab #fab [hidden]="vm.eventAlreadySelected" slot="fixed" vertical="bottom" horizontal="end">
+  <!-- <ion-fab #fab [hidden]="vm.eventAlreadySelected" slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button (ionBlur)="selectedFilter(undefined)" id="click-trigger">
       <ion-icon [name]="vm.showing === 'all' ? 'chevron-up-outline' : 'chevron-up-circle-sharp'"></ion-icon>
     </ion-fab-button>
@@ -40,7 +53,7 @@
         <ion-checkbox style="padding: 0.2rem;" (ionChange)="toggleList()">List</ion-checkbox>
       </ion-content>
     </ion-fab-list>
-  </ion-fab>
+  </ion-fab> -->
 
   <!-- @if (vm.downloading) {
   <ion-fab #fab slot="fixed" vertical="bottom" horizontal="start">
@@ -50,15 +63,26 @@
   </ion-fab>
   } -->
 
-  <app-pin-entry [correctPin]="vm.selected ? vm.selected.pin : ''" (dismissed)="closePin()"
-    [show]="vm.showPinModal"></app-pin-entry>
-  <div [hidden]="vm.eventAlreadySelected" class="footer">
-    <ion-button [disabled]="!vm.ready" (click)="go()" size="large" shape="round">Get Dusty @if (!vm.ready ||
-      vm.downloading) {
-      <ion-spinner style="margin-left: 0.5rem" color="light" name="circular"></ion-spinner>
-      } @if (vm.ready && !vm.downloading) {
-      <ion-icon name="arrow-forward-outline"></ion-icon>
-      }</ion-button>
-  </div>
+  <ion-fab slot="fixed" vertical="top" horizontal="start">
+    <ion-fab-button>
+      <ion-icon (click)="toggleList()" [name]="vm.list ? 'albums-outline' : 'list-outline'"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <app-pin-entry
+    [correctPin]="vm.selected ? vm.selected.pin : ''"
+    (dismissed)="closePin()"
+    [show]="vm.showPinModal"
+  ></app-pin-entry>
   <p class="subtitle">{{subtitle()}}</p>
+  <div [hidden]="vm.eventAlreadySelected" class="footer">
+    @if (vm.ready && !vm.downloading) {
+    <app-bar (selected)="selectedFilter($event)"></app-bar>
+    } @else {
+    <ion-button [disabled]="!vm.ready" (click)="go()" size="large" shape="round">
+      <ion-spinner color="light" name="circular"></ion-spinner>
+    </ion-button>
+    }
+  </div>
+
 </ion-content>

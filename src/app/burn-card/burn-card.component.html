@@ -1,11 +1,10 @@
 @for (card of cards; track card.id) {
-  <div class="row" (click)="open(card)" >
+  <div class="row" (click)="open(card)">
     <div class="card" [ngClass]="selected()?.id === card.id ? 'select ' + selected()?.class : 'unselect'">
       <app-cached-img
         errorImage="./assets/error-img.png"
         (loaded)="loaded[card.id] = true"
         [loading]="'eager'"
-        
         [src]="card.imageUrl"
       />
       <div class="info" [hidden]="!loaded[card.id]">
@@ -15,3 +14,4 @@
     </div>
   </div>
 }
+<div style="padding-bottom: 200px"></div>

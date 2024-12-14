@@ -1,4 +1,8 @@
 ## Changes
+### 2.68
+
+- Dust home page redesigned
+
 ### 2.66
 
 - Burn sharing improved
