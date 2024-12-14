@@ -1,4 +1,4 @@
-import { Component, output, signal } from '@angular/core';
+import { Component, model, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { albumsOutline, listOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
@@ -17,7 +17,7 @@ export class BarComponent {
     { id: 'all', name: 'Upcoming' },
     { id: 'bm', name: `)'(` }
   ];
-  selection = signal(this.options[1].id);
+  selection = model(this.options[1].id);
   selected = output<string>();
 
   constructor() {

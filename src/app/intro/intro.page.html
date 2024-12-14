@@ -13,7 +13,7 @@
     </div> -->
   </div>
 
-  @if (vm.list) {
+  @if (vm.list && !vm.eventAlreadySelected) {
   <app-burn-card [cards]="vm.cards" [selected]="vm.selected" (clicked)="open($event, true)"></app-burn-card>
   } @else {
   <app-carousel
@@ -77,7 +77,7 @@
   <p class="subtitle">{{subtitle()}}</p>
   <div [hidden]="vm.eventAlreadySelected" class="footer">
     @if (vm.ready && !vm.downloading) {
-    <app-bar (selected)="selectedFilter($event)"></app-bar>
+    <app-bar [selection]="vm.showing" (selected)="selectedFilter($event)"></app-bar>
     } @else {
     <ion-button [disabled]="!vm.ready" (click)="go()" size="large" shape="round">
       <ion-spinner color="light" name="circular"></ion-spinner>
