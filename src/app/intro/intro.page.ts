@@ -9,6 +9,9 @@ import {
   IonSpinner,
   IonText,
   ToastController,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
   IonFab,
   IonFabButton
 } from '@ionic/angular/standalone';
@@ -89,7 +92,10 @@ function initialState(): IntroState {
     IonButton,
     IonSpinner,
     IonIcon,
+    IonToolbar,
     IonText,
+    IonHeader,
+    IonTitle,
     IonContent,
     CachedImgComponent,
     CarouselComponent,
