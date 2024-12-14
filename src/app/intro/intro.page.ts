@@ -12,6 +12,7 @@ import {
   IonFab,
   IonFabButton,
   IonFabList,
+  IonCheckbox,
   IonRadioGroup,
   IonRadio
 } from '@ionic/angular/standalone';
@@ -37,6 +38,7 @@ import { CarouselComponent, SlideSelect } from '../carousel/carousel.component';
 import { CarouselItemComponent } from '../carousel-item/carousel-item.component';
 import { UpdateService } from '../update.service';
 import { ShareInfoType, ShareService } from '../share/share.service';
+import { BurnCardComponent } from '../burn-card/burn-card.component';
 
 interface IntroState {
   ready: boolean;
@@ -51,6 +53,7 @@ interface IntroState {
   cardLoaded: any;
   clearCount: number;
   scrollLeft: number;
+  list: boolean;
   enableCarousel: boolean;
   showing: DatasetFilter;
 }
@@ -70,6 +73,7 @@ function initialState(): IntroState {
     cardLoaded: {},
     clearCount: 0,
     scrollLeft: 0,
+    list: false,
     showing: 'all',
   };
 }
@@ -84,6 +88,7 @@ function initialState(): IntroState {
     IonFabList,
     IonFabButton,
     IonFab,
+    IonCheckbox,
     CommonModule,
     FormsModule,
     RouterModule,
@@ -96,7 +101,8 @@ function initialState(): IntroState {
     CachedImgComponent,
     CarouselComponent,
     CarouselItemComponent,
-    PinEntryComponent
+    PinEntryComponent,
+    BurnCardComponent,
   ]
 })
 export class IntroPage {
@@ -217,6 +223,12 @@ export class IntroPage {
     this.settingsService.save();
     this.carousel().setScrollLeft(0);
     await this.fab().close();
+    this._change.markForCheck();
+  }
+
+  async toggleList() {
+    await this.fab().close();
+    this.vm.list = !this.vm.list;
     this._change.markForCheck();
   }
 

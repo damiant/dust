@@ -9,6 +9,9 @@
     </div> -->
   </div>
 
+  @if (vm.list) {
+  <app-burn-card [cards]="vm.cards" [selected]="vm.selected" (clicked)="open($event, true)"></app-burn-card>
+  } @else {
   <app-carousel [enabled]="vm.enableCarousel" [hidden]="vm.eventAlreadySelected" (slideChanged)="slideChanged($event)"
     #carousel>
     @for (card of vm.cards; track card.id) {
@@ -20,6 +23,7 @@
     </app-carousel-item>
     }
   </app-carousel>
+}
 
   <ion-fab #fab [hidden]="vm.eventAlreadySelected" slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button (ionBlur)="selectedFilter(undefined)" id="click-trigger">
@@ -32,7 +36,8 @@
           <ion-radio value="past">Past Events</ion-radio><br />
           <ion-radio value="regional">Regionals</ion-radio><br />
           <ion-radio value="bm">Burning Man</ion-radio><br />
-        </ion-radio-group>
+        </ion-radio-group>        
+        <ion-checkbox style="padding: 0.2rem;" (ionChange)="toggleList()">List</ion-checkbox>
       </ion-content>
     </ion-fab-list>
   </ion-fab>
