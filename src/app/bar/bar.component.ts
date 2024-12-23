@@ -1,4 +1,4 @@
-import { Component, model, output, signal } from '@angular/core';
+import { Component, model, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { albumsOutline, listOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
