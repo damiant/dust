@@ -1,4 +1,4 @@
-import { Component, ElementRef, output, contentChildren, viewChild, input, ChangeDetectorRef, inject, ChangeDetectionStrategy, effect } from '@angular/core';
+import { Component, ElementRef, output, contentChildren, viewChild, input, ChangeDetectorRef, inject, ChangeDetectionStrategy, effect, OnDestroy } from '@angular/core';
 import { CarouselItemComponent } from '../carousel-item/carousel-item.component';
 
 export interface SlideSelect {
@@ -12,7 +12,7 @@ export interface SlideSelect {
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CarouselComponent {
+export class CarouselComponent implements OnDestroy {
   slideChanged = output<SlideSelect>();
   private interval: any;
   private lastValue = -1;
@@ -55,6 +55,10 @@ export class CarouselComponent {
         this.lastValue = current;
       }
     }, 500);
+  }
+
+  ngOnDestroy() {
+    this.disable();
   }
 
   private disable() {
