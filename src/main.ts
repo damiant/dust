@@ -25,8 +25,7 @@ bootstrapApplication(AppComponent, {
     }),
     provideExperimentalZonelessChangeDetection(),
     //provideZoneChangeDetection({ eventCoalescing: true }),
-    provideIonicAngular({ mode: 'ios', swipeBackEnabled: true }),
-    provideAnimations(),
+    provideIonicAngular({ mode: 'ios', swipeBackEnabled: true }),    
     provideRouter(routes, withComponentInputBinding()),
     // provideServiceWorker('ngsw-worker.js', {
     //   // Service Worker seems to be causing problems

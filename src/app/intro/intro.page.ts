@@ -89,7 +89,6 @@ function initialState(): IntroState {
     FormsModule,
     RouterModule,
     MessageComponent,
-    IonButton,
     IonSpinner,
     IonIcon,
     IonToolbar,
@@ -122,6 +121,7 @@ export class IntroPage {
   vm: IntroState = initialState();
   download: WritableSignal<string> = signal('');
   subtitle: WritableSignal<string> = signal('');
+  opened = signal(false);
   carousel = viewChild(CarouselComponent);
 
   constructor() {
@@ -206,6 +206,8 @@ export class IntroPage {
       this.vm.selected = p;
       this.subtitle.set(this.vm.selected.subTitle);
     }
+    
+    this.opened.set(true);
   }
 
   async selectedFilter(v: string) {
@@ -226,12 +228,12 @@ export class IntroPage {
     this._change.markForCheck();
   }
 
-  async toggleList() {    
+  async toggleList() {
     this.vm.list = !this.vm.list;
     this.settingsService.settings.list = this.vm.list;
     this.settingsService.save();
     this._change.markForCheck();
-  }  
+  }
 
   async ionViewDidEnter() {
     this.vm.enableCarousel = true;
@@ -352,6 +354,7 @@ export class IntroPage {
       artMessage: 'Location available August 25',
       campMessage: 'Location available August 18'
     });
+    this.opened.set(false);
 
     if ((hideArtLocations || hideCampLocations) && !this.vm.eventAlreadySelected && this.settingsService.shouldAboutAlert()) {
       if (x < 80) {

@@ -1,23 +1,26 @@
-
 <ion-fab slot="fixed" vertical="top" horizontal="start">
   <ion-fab-button (click)="toggleList()">
-    <ion-icon  [name]="vm.list ? 'albums-outline' : 'list-outline'"></ion-icon>
+    @if (vm.ready && !vm.downloading) {
+    <ion-icon [name]="vm.list ? 'albums-outline' : 'list-outline'"></ion-icon>
+    } @else {
+    <ion-spinner color="light" name="circular"></ion-spinner>
+    }
   </ion-fab-button>
 </ion-fab>
 <ion-header color="primary" [translucent]="true">
   <ion-toolbar mode="ios" color="primary">
-  <ion-title>
-    <div class="title">dust.</div>
+    <ion-title>
+      <div class="title">dust.</div>
     </ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true" color="primary">
   <ion-header collapse="condense">
-    <ion-toolbar  color="primary">    
-    <div [class.full]="vm.eventAlreadySelected" class="vcenter rows">
-      <h1 (click)="clear()">dust.</h1>
-      <ion-text role="text"><strong>dust</strong> is a guide for burners to find events, camps and art.</ion-text>
-    </div>
+    <ion-toolbar color="primary">
+      <div [class.full]="vm.eventAlreadySelected" class="vcenter rows">
+        <h1 (click)="clear()">dust.</h1>
+        <ion-text role="text"><strong>dust</strong> is a guide for burners to find events, camps and art.</ion-text>
+      </div>
     </ion-toolbar>
   </ion-header>
   <app-message
@@ -26,7 +29,6 @@
     [title]="vm.selected ? 'About '+vm.selected.year : ''"
     [message]="vm.message"
   ></app-message>
-
 
   @if (vm.list && !vm.eventAlreadySelected) {
   <app-burn-card [cards]="vm.cards" [selected]="vm.selected" (clicked)="open($event, true)"></app-burn-card>
@@ -53,7 +55,6 @@
   </app-carousel>
   }
 
-
   <app-pin-entry
     [correctPin]="vm.selected ? vm.selected.pin : ''"
     (dismissed)="closePin()"
@@ -61,13 +62,12 @@
   ></app-pin-entry>
   <p class="subtitle">{{subtitle()}}</p>
   <div [hidden]="vm.eventAlreadySelected" class="footer">
-    @if (vm.ready && !vm.downloading) {
-    <app-bar [selection]="vm.showing" (selected)="selectedFilter($event)"></app-bar>
-    } @else {
+    <!-- @if (vm.ready && !vm.downloading) { -->
+    <app-bar [opened]="opened()" [selection]="vm.showing" (selected)="selectedFilter($event)"></app-bar>
+    <!-- } @else {
     <ion-button [disabled]="!vm.ready" (click)="go()" size="large" shape="round">
       <ion-spinner color="light" name="circular"></ion-spinner>
     </ion-button>
-    }
+    } -->
   </div>
-
 </ion-content>
