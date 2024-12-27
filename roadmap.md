@@ -3,7 +3,9 @@
 💚 Quick Win
 🩷 High Impact
 🔥 Important
-
+- 🔥 Add Medical to Search results
+- 🔥 Add Ice to search results
+- 🔥 Show top 10 closest things including restrooms on search default page
 - 🔥 Allow event to be added outside of event range for ticket sales (if admin) with auto-notification
 - 🔥 Camp/Event registration in Dust if enabled "Register Theme Camp"
   - Dust Admin app is subfolder of Dust
