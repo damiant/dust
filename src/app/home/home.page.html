@@ -8,8 +8,13 @@
     </ion-fab-button>
   </div>
 
-  <ion-modal [isOpen]="vm.moreOpen" (didDismiss)="vm.moreOpen = false" #modal [initialBreakpoint]="0.5"
-    [breakpoints]="[0.25, 0.5, 0.75, 1]">
+  <ion-modal
+    [isOpen]="vm.moreOpen"
+    (didDismiss)="vm.moreOpen = false"
+    #modal
+    [initialBreakpoint]="0.5"
+    [breakpoints]="[0.25, 0.5, 0.75, 1]"
+  >
     <ng-template>
       <ion-list class="ion-padding">
         <ion-item href="mailto:damian@dust.events?subject=dust" (click)="feedback()" detail="true">
@@ -18,7 +23,10 @@
         </ion-item>
 
         <ion-item (click)="toggleNotifications()" detail="true">
-          <ion-icon slot="start" [name]="pushNotifications.enabled() ? 'notifications-off-outline' : 'notifications-outline'"></ion-icon>
+          <ion-icon
+            slot="start"
+            [name]="pushNotifications.enabled() ? 'notifications-off-outline' : 'notifications-outline'"
+          ></ion-icon>
           {{pushNotifications.enabled() ? 'Unsubscribe': 'Subscribe'}}
         </ion-item>
 
@@ -49,8 +57,13 @@
       </ion-list>
     </ng-template>
   </ion-modal>
-  <ion-modal [isOpen]="vm.directionsOpen" (didDismiss)="vm.directionsOpen = false" #modal [initialBreakpoint]="0.75"
-    [breakpoints]="[0.25, 0.5, 0.75, 1]">
+  <ion-modal
+    [isOpen]="vm.directionsOpen"
+    (didDismiss)="vm.directionsOpen = false"
+    #modal
+    [initialBreakpoint]="0.75"
+    [breakpoints]="[0.25, 0.5, 0.75, 1]"
+  >
     <ng-template>
       <div class="ion-padding txt">
         <h2>Directions</h2>
@@ -60,21 +73,32 @@
   </ion-modal>
 
   @if (vm.downloading) {
-  <ion-loading spinner="circular" [isOpen]="vm.downloading"
-    [message]="'Updating '+db.selectedDataset().title"></ion-loading>
+  <ion-loading
+    spinner="circular"
+    [isOpen]="vm.downloading"
+    [message]="'Updating '+db.selectedDataset().title"
+  ></ion-loading>
   }
   <app-tile-container>
     @if (!db.allLocationsHidden()) {
     <app-tile title="Map" routerLink="/map/all" imgSrc="assets/icon/map.svg"></app-tile>
     }
-    <app-tile [hidden]="!vm.hasMedical" title="Medical" routerLink="/map/medical"
-      imgSrc="assets/icon/medical.svg"></app-tile>
+    <app-tile
+      [hidden]="!vm.hasMedical"
+      title="Medical"
+      routerLink="/map/medical"
+      imgSrc="assets/icon/medical.svg"
+    ></app-tile>
 
     @if (!db.anyLocationsHidden() && this.vm.eventIsHappening) {
     <app-tile title="Now" routerLink="/map/now" imgSrc="assets/icon/calendar.svg"></app-tile>
     }
-    <app-tile [hidden]="!vm.hasRestrooms" title="Restrooms" routerLink="/map/restrooms"
-      imgSrc="assets/icon/toilet.svg"></app-tile>
+    <app-tile
+      [hidden]="!vm.hasRestrooms"
+      title="Restrooms"
+      routerLink="/map/restrooms"
+      imgSrc="assets/icon/toilet.svg"
+    ></app-tile>
     @if (!db.artLocationsHidden() && !db.featuresHidden().includes('art')) {
     <app-tile title="Art" routerLink="/map/art" imgSrc="assets/icon/art.svg"></app-tile>
     }
@@ -91,24 +115,20 @@
     <app-link [url]="link.url" [text]="link.title"></app-link>
     }
   </ion-card>
-  }
-  }
-
-  @if (!db.featuresHidden().includes('friends')) {
+  } } @if (!db.featuresHidden().includes('friends')) {
   <app-friends />
-  }
-
-  @if (!db.featuresHidden().includes('private')) {
+  } @if (!db.featuresHidden().includes('private')) {
   <app-reminders [highlightedDates]="vm.highlightedDates" [startEvent]="vm.startDate" [endEvent]="vm.endDate" />
   }
 
   <app-events-card [events]="vm.favEventsToday"></app-events-card>
 
+  @if (vm.eventIsHappening) {
   <app-pins-card (clickThing)="clickThing($event)" [things]="vm.things"></app-pins-card>
+  }
   <div class="center text-dim">
     <p (click)="vm.moreOpen = true">{{vm.version}}</p>
   </div>
   <div (click)="moreClick()" class="pad-top" (click)="vm.hiddenPanel = !vm.hiddenPanel"></div>
   <div class="pad-top"></div>
-
 </ion-content>
