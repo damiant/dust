@@ -1,6 +1,12 @@
 import { GpsCoord } from '../map/geo.utils';
 import { PinColor } from '../map/map-model';
 
+export interface ItemList {
+  events: Event[];
+  camps: Camp[];
+  art: Art[];
+}
+
 export interface Event {
   camp: string; // Calculated
   timeString: string; // Calculated
@@ -442,6 +448,7 @@ export enum DataMethods {
   CheckEvents = 'checkEvents',
   FindEvents = 'findEvents',
   FindCamps = 'findCamps',
+  FindAll = 'findAll',
   FindEvent = 'findEvent',
   FindCamp = 'findCamp',
   GetCampEvents = 'getCampEvents',

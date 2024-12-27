@@ -9,6 +9,7 @@ import {
   FullDataset,
   GPSSet,
   GeoRef,
+  ItemList,
   Link,
   LocationHidden,
   LocationName,
@@ -133,6 +134,8 @@ export class DataManager implements WorkerClass {
         return this.findEvents(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7]);
       case DataMethods.FindCamps:
         return this.findCamps(args[0], args[1], args[2], args[3]);
+      case DataMethods.FindAll:
+        return this.findAll(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7]);
       case DataMethods.FindEvent:
         return this.findEvent(args[0]);
       case DataMethods.FindCamp:
@@ -829,6 +832,26 @@ export class DataManager implements WorkerClass {
   private isClockString(str: string): boolean {
     const regex = /^[0-9:&]+$/;
     return regex.test(str);
+  }
+
+  public findAll(
+    query: string,
+    day: Date | undefined,
+    category: string,
+    coords: GpsCoord | undefined,
+    timeRange: TimeRange | undefined,
+    allDay: boolean,
+    showPast: boolean,
+    top?: number
+  ): ItemList {
+     const events = this.findEvents(query, day, category, coords, timeRange, allDay, showPast, top);
+     const art = this.findArts(query, coords, top);
+     const camps = this.findCamps(query, coords, top);
+     return {
+      events,
+      camps,
+      art
+     }
   }
 
   public findEvents(

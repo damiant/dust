@@ -32,7 +32,7 @@ export class SearchComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.form.value.search) {
+    if (this.form.value.search) {      
       this.search.emit(this.form.value.search);
     }
     if (Capacitor.getPlatform() != 'web') {
@@ -40,7 +40,7 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  handleInput(event: any) {
+  handleInput(event: any) {    
     this.search.emit(event.target.value);
   }
 }
