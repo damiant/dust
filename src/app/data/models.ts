@@ -6,6 +6,8 @@ export interface ItemList {
   camps: Camp[];
   art: Art[];
   restrooms: MapSet;
+  medical: MapSet;
+  ice: MapSet;
 }
 
 export interface Event {

@@ -5,7 +5,7 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton,
 import { SearchComponent } from './search.component';
 import { DbService } from '../data/db.service';
 import { RouterModule } from '@angular/router';
-import { MapSet } from '../data/models';
+import { MapSet, MapType } from '../data/models';
 import { GeoService } from '../geolocation/geo.service';
 import { GpsCoord } from '../map/geo.utils';
 import { calculateRelativePosition, distance, formatDistanceNiceShort } from '../map/map.utils';
@@ -67,11 +67,13 @@ export class SearchPage {
       this.vm.busy = true;
       const items: SearchItem[] = [];
       const top = 20;
-      const list = await this.db.findAll(value, undefined, '', this.vm.gps, undefined, true, true, top);      
+      const list = await this.db.findAll(value, undefined, '', this.vm.gps, undefined, true, true, top);
       items.push(...this.asSearchItems(list.camps, 'camp', 'assets/icon/camp.svg', this.vm.gps));
       items.push(...this.asSearchItems(list.art, 'art', 'assets/icon/art.svg', this.vm.gps));
       items.push(...this.asSearchItems(list.events, 'event', 'assets/icon/calendar.svg', this.vm.gps));
-      items.push(...this.mapSetToSearchItems(list.restrooms, 'restroom', 'assets/icon/toilet.svg', this.vm.gps));
+      items.push(...this.mapSetToSearchItems(list.restrooms, MapType.Restrooms, 'assets/icon/toilet.svg', this.vm.gps));
+      items.push(...this.mapSetToSearchItems(list.medical, MapType.Medical, 'assets/icon/medical.svg', this.vm.gps));
+      items.push(...this.mapSetToSearchItems(list.ice, MapType.Ice, 'assets/icon/ice.svg', this.vm.gps));
       items.sort((a: SearchItem, b: SearchItem) => {
         if (a.title.toLowerCase().includes(value.toLowerCase())) {
           return -1;
@@ -81,7 +83,7 @@ export class SearchPage {
         }
         return 0;
       });
-      this.vm.items = items;      
+      this.vm.items = items;
     } finally {
       this.vm.busy = false;
       this._change.detectChanges();
@@ -93,7 +95,7 @@ export class SearchPage {
     for (const item of mapset.points) {
       if (item.gps) {
         const dist = this.dist(gps, item.gps);
-        r.push({ title: mapset.title, icon, link: `/${linkName}/${item.gps.lat}+${item.gps.lng}+Search`, dist })
+        r.push({ title: mapset.title, icon, link: `/map/${linkName}`, dist })
       }
     }
     return r;

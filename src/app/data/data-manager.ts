@@ -847,26 +847,38 @@ export class DataManager implements WorkerClass {
     const events = this.findEvents(query, day, category, coords, timeRange, allDay, showPast, top);
     const art = this.findArts(query, coords, top);
     const camps = this.findCamps(query, coords, top);
+    let medical = await this.getGPSPoints(Names.medical, 'Medical');
+    let ice = await this.getGPSPoints(Names.ice, 'Ice');
     let restrooms = await this.getGPSPoints(Names.restrooms, 'Block of restrooms');
     if (restrooms.points.length == 0) {
       restrooms = await this.getPins('Restrooms');
     }
-    if (!this.isRestroomQuery(query)) {
-      restrooms.points = [];
-    } else {
-      restrooms.points = this.sortByDistance(restrooms.points, coords, 3);
-    }
+    medical.points = this.sortByDistance(medical.points, coords, this.isMedicalQuery(query) ? 1 : 0);
+    ice.points = this.sortByDistance(ice.points, coords, this.isIceQuery(query) ? 1 : 0);
+    restrooms.points = this.sortByDistance(restrooms.points, coords, this.isRestroomQuery(query) ? 3 : 0);
     return {
       events,
       camps,
       art,
-      restrooms
+      restrooms,
+      medical,
+      ice
     }
   }
 
   private isRestroomQuery(query: string): boolean {
     const q = query.toLowerCase();
     return q.includes('rest') || q.includes('toilet') || q.includes('porta') || q.includes('potty') || q.includes('bath');
+  }
+
+  private isMedicalQuery(query: string): boolean {
+    const q = query.toLowerCase();
+    return q.includes('med') || q.includes('aid');
+  }
+
+  private isIceQuery(query: string): boolean {
+    const q = query.toLowerCase();
+    return q.includes('ice');
   }
 
   public findEvents(
@@ -943,7 +955,9 @@ export class DataManager implements WorkerClass {
     });
   }
 
-  private sortByDistance(points: MapPoint[], gps: GpsCoord, top: number): MapPoint[] {
+  private sortByDistance(points: MapPoint[], gps: GpsCoord | undefined, top: number): MapPoint[] {
+    if (top == 0) return [];
+    if (!gps) return points;
     points.sort((a: MapPoint, b: MapPoint) => {
       if (!a.gps || !b.gps) {
         return -1;
