@@ -5,6 +5,7 @@ export interface ItemList {
   events: Event[];
   camps: Camp[];
   art: Art[];
+  restrooms: MapSet;
 }
 
 export interface Event {

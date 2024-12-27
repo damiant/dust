@@ -2,6 +2,7 @@
 ### 2.68
 
 - Dust home page redesigned
+- Search now shows distance and direction
 - Find feature only appears during the event
 
 ### 2.66

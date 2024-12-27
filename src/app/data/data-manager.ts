@@ -135,7 +135,7 @@ export class DataManager implements WorkerClass {
       case DataMethods.FindCamps:
         return this.findCamps(args[0], args[1], args[2], args[3]);
       case DataMethods.FindAll:
-        return this.findAll(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7]);
+        return await this.findAll(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7]);
       case DataMethods.FindEvent:
         return this.findEvent(args[0]);
       case DataMethods.FindCamp:
@@ -834,7 +834,7 @@ export class DataManager implements WorkerClass {
     return regex.test(str);
   }
 
-  public findAll(
+  public async findAll(
     query: string,
     day: Date | undefined,
     category: string,
@@ -843,15 +843,30 @@ export class DataManager implements WorkerClass {
     allDay: boolean,
     showPast: boolean,
     top?: number
-  ): ItemList {
-     const events = this.findEvents(query, day, category, coords, timeRange, allDay, showPast, top);
-     const art = this.findArts(query, coords, top);
-     const camps = this.findCamps(query, coords, top);
-     return {
+  ): Promise<ItemList> {
+    const events = this.findEvents(query, day, category, coords, timeRange, allDay, showPast, top);
+    const art = this.findArts(query, coords, top);
+    const camps = this.findCamps(query, coords, top);
+    let restrooms = await this.getGPSPoints(Names.restrooms, 'Block of restrooms');
+    if (restrooms.points.length == 0) {
+      restrooms = await this.getPins('Restrooms');
+    }
+    if (!this.isRestroomQuery(query)) {
+      restrooms.points = [];
+    } else {
+      restrooms.points = this.sortByDistance(restrooms.points, coords, 3);
+    }
+    return {
       events,
       camps,
-      art
-     }
+      art,
+      restrooms
+    }
+  }
+
+  private isRestroomQuery(query: string): boolean {
+    const q = query.toLowerCase();
+    return q.includes('rest') || q.includes('toilet') || q.includes('porta') || q.includes('potty') || q.includes('bath');
   }
 
   public findEvents(
@@ -926,6 +941,16 @@ export class DataManager implements WorkerClass {
     events.sort((a: Event, b: Event) => {
       return (a.happening ? 0 : 1) - (b.happening ? 0 : 1) || a.distance - b.distance;
     });
+  }
+
+  private sortByDistance(points: MapPoint[], gps: GpsCoord, top: number): MapPoint[] {
+    points.sort((a: MapPoint, b: MapPoint) => {
+      if (!a.gps || !b.gps) {
+        return -1;
+      }
+      return distance(gps, b.gps) - distance(gps, a.gps);
+    });
+    return points.slice(-top);
   }
 
   private sortCamps(camps: Camp[]) {

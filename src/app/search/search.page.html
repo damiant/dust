@@ -28,6 +28,7 @@
     <ion-item detail="true" [routerLink]="item.link">
       <ion-icon aria-hidden="true" [src]="item.icon"></ion-icon>
       <ion-label class="ion-text-nowrap">{{item.title}}</ion-label>
+      <ion-note slot="end">{{item.dist}}</ion-note>
     </ion-item>
     }
     @if (vm.items.length === 0) {
