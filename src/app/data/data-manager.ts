@@ -846,13 +846,10 @@ export class DataManager implements WorkerClass {
   ): Promise<ItemList> {
     const events = this.findEvents(query, day, category, coords, timeRange, allDay, showPast, top);
     const art = this.findArts(query, coords, top);
-    const camps = this.findCamps(query, coords, top);
-    let medical = await this.getGPSPoints(Names.medical, 'Medical');
-    let ice = await this.getGPSPoints(Names.ice, 'Ice');
-    let restrooms = await this.getGPSPoints(Names.restrooms, 'Block of restrooms');
-    if (restrooms.points.length == 0) {
-      restrooms = await this.getPins('Restrooms');
-    }
+    const camps = this.findCamps(query, coords, top);    
+    const medical = await this.getMapSet(Names.medical, 'Medical', 'Medical');
+    const ice = await this.getMapSet(Names.ice, 'Ice', 'Ice');
+    const restrooms = await this.getMapSet(Names.restrooms, 'Block of restrooms', 'Restrooms');
     medical.points = this.sortByDistance(medical.points, coords, this.isMedicalQuery(query) ? 1 : 0);
     ice.points = this.sortByDistance(ice.points, coords, this.isIceQuery(query) ? 1 : 0);
     restrooms.points = this.sortByDistance(restrooms.points, coords, this.isRestroomQuery(query) ? 3 : 0);
@@ -863,6 +860,15 @@ export class DataManager implements WorkerClass {
       restrooms,
       medical,
       ice
+    }
+  }
+
+  private async getMapSet(name: Names, title: string, pinType: string): Promise<MapSet> {
+    const v = await this.getGPSPoints(name, title);
+    if (v.points.length == 0) {
+      return await this.getPins(pinType);
+    } else {
+      return v;
     }
   }
 

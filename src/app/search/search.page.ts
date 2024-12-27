@@ -113,8 +113,12 @@ export class SearchPage {
 
   private dist(gps: GpsCoord | undefined, pin: GpsCoord | undefined): string {
     if (gps && pin) {
+      const dist = distance(gps, pin);
+      if (dist > 4) {
+        return '';
+      }
       return calculateRelativePosition(gps, pin, this.geo.heading().trueHeading, true) +
-        formatDistanceNiceShort(distance(gps, pin));
+        formatDistanceNiceShort(dist);
     }
     return '';
   }
