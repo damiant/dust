@@ -4,6 +4,7 @@
 - Dust home page redesigned
 - Search now shows distance and direction
 - Find feature only appears during the event
+- Fix wording for all day events
 
 ### 2.66
 
