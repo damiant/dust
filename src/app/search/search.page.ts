@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonSpinner, IonList, IonItem, IonLabel, IonIcon, IonText, IonNote } from '@ionic/angular/standalone';
@@ -46,9 +46,21 @@ export class SearchPage {
   hasTerms = signal(false);
   private db = inject(DbService);
   private geo = inject(GeoService);
-  private _change = inject(ChangeDetectorRef);  
+  private _change = inject(ChangeDetectorRef);
 
-  async ionViewDidEnter() {
+  constructor() {
+    effect(async () => {
+      if (!this.hasTerms()) {
+        await this.updatePosition();
+      }
+    });
+  }
+
+  async ionViewDidEnter() {    
+    this.updatePosition();
+  }
+
+  private async updatePosition() {
     this.vm.gps = await this.geo.getPosition();
     if (this.vm.gps && this.vm.gps.lat == -1) {
       this.vm.gps = undefined;

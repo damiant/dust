@@ -3,10 +3,11 @@
 💚 Quick Win
 🩷 High Impact
 🔥 Important
+- 🔥 Events in search should be filtered to upcoming/soon
 - 🔥 Show top 10 closest things including restrooms on search default page
 - 🔥 Allow event to be added outside of event range for ticket sales (if admin) with auto-notification
  - 🟠🩷 Whiteout mode - button for whiteout - show huge compass with direction to camp / center camp / temple / 3 or 9
- 
+
 - 🔴 Dark mode keyboard for Android
 - 🔴 Important: Clean up favorites as we may archive a particular year
 - 🔴 Schedule send messages (eg for tickets available)

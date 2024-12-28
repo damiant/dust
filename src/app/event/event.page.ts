@@ -167,8 +167,8 @@ export class EventPage implements OnInit, OnDestroy {
       this.mapPoints = [mapPoint];
       const selectedDay = this.db.selectedDay();
       const occurrences = JSON.parse(JSON.stringify(this.event.occurrence_set));
-      this.event.occurrence_set = occurrences.filter((o: any) => {
-        const isNoDate = sameDay(selectedDay, noDate());
+      const isNoDate = sameDay(selectedDay, noDate());
+      this.event.occurrence_set = occurrences.filter((o: any) => {      
         const isSelectedDay = dateMatches(selectedDay, o);
         if (!isNoDate && !isSelectedDay) {
           if (this.filterDays()) {
@@ -177,6 +177,11 @@ export class EventPage implements OnInit, OnDestroy {
         }
         return !o.old;
       });
+      if (isNoDate) {
+        if (occurrences.every((o: any) => o.old)) {
+          this.event.occurrence_set = occurrences;
+        }
+      }   
       await this.fav.setEventStars(this.event);
     } finally {
       this.ready = true;
