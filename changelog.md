@@ -3,6 +3,7 @@
 
 - Dust home page redesigned
 - Search now shows distance and direction
+- Search shows camps, events, near me
 - Find feature only appears during the event
 - Fix wording for all day events
 

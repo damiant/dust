@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonSpinner, IonList, IonItem, IonLabel, IonIcon, IonText, IonNote } from '@ionic/angular/standalone';
@@ -43,59 +43,69 @@ interface SearchState {
 })
 export class SearchPage {
   public vm: SearchState = { items: [], busy: false, gps: undefined };
+  hasTerms = signal(false);
   private db = inject(DbService);
   private geo = inject(GeoService);
-  private _change = inject(ChangeDetectorRef);
-  constructor() { }
-
+  private _change = inject(ChangeDetectorRef);  
 
   async ionViewDidEnter() {
     this.vm.gps = await this.geo.getPosition();
+    if (this.vm.gps && this.vm.gps.lat == -1) {
+      this.vm.gps = undefined;
+    }
+    if (this.vm.gps) {
+      await this.search(undefined);
+    }
   }
 
-  async search(value: string) {
+  async search(terms: string | undefined) {
     try {
-      if (typeof value === 'object') {
+      if (typeof terms === 'object') {
         return;
       }
 
-
-      if (value.trim() == '') {
+      if (terms && terms.trim() == '') {
         this.vm.items = [];
         return;
       }
       this.vm.busy = true;
       const items: SearchItem[] = [];
-      const top = 20;
-      const list = await this.db.findAll(value, undefined, '', this.vm.gps, undefined, true, true, top);
+      const top = terms ? 20 : 1;
+      const list = await this.db.findAll(terms, undefined, '', this.vm.gps, undefined, true, true, top);
       items.push(...this.asSearchItems(list.camps, 'camp', 'assets/icon/camp.svg', this.vm.gps));
       items.push(...this.asSearchItems(list.art, 'art', 'assets/icon/art.svg', this.vm.gps));
       items.push(...this.asSearchItems(list.events, 'event', 'assets/icon/calendar.svg', this.vm.gps));
-      items.push(...this.mapSetToSearchItems(list.restrooms, MapType.Restrooms, 'assets/icon/toilet.svg', this.vm.gps));
-      items.push(...this.mapSetToSearchItems(list.medical, MapType.Medical, 'assets/icon/medical.svg', this.vm.gps));
-      items.push(...this.mapSetToSearchItems(list.ice, MapType.Ice, 'assets/icon/ice.svg', this.vm.gps));
-      items.sort((a: SearchItem, b: SearchItem) => {
-        if (a.title.toLowerCase().includes(value.toLowerCase())) {
-          return -1;
-        }
-        if (b.title.toLowerCase().includes(value.toLowerCase())) {
-          return 1;
-        }
-        return 0;
-      });
+      items.push(...this.mapSetToSearchItems(list.restrooms, MapType.Restrooms, 'assets/icon/toilet.svg', this.vm.gps, top));
+      items.push(...this.mapSetToSearchItems(list.medical, MapType.Medical, 'assets/icon/medical.svg', this.vm.gps, top));
+      items.push(...this.mapSetToSearchItems(list.ice, MapType.Ice, 'assets/icon/ice.svg', this.vm.gps, top));
+      if (terms) {
+        items.sort((a: SearchItem, b: SearchItem) => {
+          if (a.title.toLowerCase().includes(terms.toLowerCase())) {
+            return -1;
+          }
+          if (b.title.toLowerCase().includes(terms.toLowerCase())) {
+            return 1;
+          }
+          return 0;
+        });
+      }
       this.vm.items = items;
+      this.hasTerms.set(!!terms);
     } finally {
       this.vm.busy = false;
       this._change.detectChanges();
     }
   }
 
-  private mapSetToSearchItems(mapset: MapSet, linkName: string, icon: string, gps: GpsCoord | undefined): SearchItem[] {
+  private mapSetToSearchItems(mapset: MapSet, linkName: string, icon: string, gps: GpsCoord | undefined, top: number): SearchItem[] {
     const r: SearchItem[] = [];
     for (const item of mapset.points) {
       if (item.gps) {
         const dist = this.dist(gps, item.gps);
         r.push({ title: mapset.title, icon, link: `/map/${linkName}`, dist })
+      }
+      if (r.length >= top) {
+        break;
       }
     }
     return r;

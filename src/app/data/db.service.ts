@@ -170,14 +170,14 @@ export class DbService {
   }
 
   public async findAll(
-    query: string,
+    query: string | undefined,
     day: Date | undefined,
     category: string,
     coords: GpsCoord | undefined,
     timeRange: TimeRange | undefined,
     allDay: boolean,
     showPast: boolean,
-    top?: number
+    top: number
   ): Promise<ItemList> {
     return await call(this.worker, DataMethods.FindAll, query, day, category, coords, timeRange, allDay, showPast, top);
   }
