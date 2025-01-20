@@ -1,4 +1,8 @@
 ## Changes
+### 2.69
+
+- Fix for auto opening event
+
 ### 2.68
 
 - Dust home page redesigned
