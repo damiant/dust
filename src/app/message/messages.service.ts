@@ -107,7 +107,10 @@ export class MessagesService {
             email.html = replaceAll(email.html, 'Click here</a>', '</a>');
             email.html = replaceAll(email.html, 'inbox@dust.events', 'you');
             email.html = replaceAll(email.html, 'Unsubscribe instantly</a>', '</a>');
-
+            email.html = replaceAll(email.html, 'list-manage.com/unsubscribe?','');
+            email.html = replaceAll(email.html, 'list-manage.com/profile?','');
+            email.html = replaceAll(email.html, 'unsubscribe', '');
+            email.html = replaceAll(email.html, '<img src="https://cdn-images.mailchimp.com/monkey_rewards/intuit-mc-rewards-2.png"','<div ');
             email.read = list.includes(this.hashOfEmail(email));
         }
     }

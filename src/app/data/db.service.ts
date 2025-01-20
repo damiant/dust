@@ -16,6 +16,7 @@ import {
   Dataset,
   Names,
   LocationHidden,
+  ItemList,
 } from './models';
 import { call, registerWorker } from './worker-interface';
 import { BurningManTimeZone, clone, data_dust_events, daysUntil, noDate, now, nowAtEvent, static_dust_events } from '../utils/utils';
@@ -166,6 +167,19 @@ export class DbService {
 
   public async checkEvents(day?: Date): Promise<void> {
     return await call(this.worker, DataMethods.CheckEvents, day);
+  }
+
+  public async findAll(
+    query: string | undefined,
+    day: Date | undefined,
+    category: string,
+    coords: GpsCoord | undefined,
+    timeRange: TimeRange | undefined,
+    allDay: boolean,
+    showPast: boolean,
+    top: number
+  ): Promise<ItemList> {
+    return await call(this.worker, DataMethods.FindAll, query, day, category, coords, timeRange, allDay, showPast, top);
   }
 
   public async findEvents(

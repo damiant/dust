@@ -3,17 +3,16 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
   AlertController,
-  IonButton,
   IonContent,
   IonIcon,
   IonSpinner,
   IonText,
   ToastController,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
   IonFab,
-  IonFabButton,
-  IonFabList,
-  IonRadioGroup,
-  IonRadio
+  IonFabButton
 } from '@ionic/angular/standalone';
 import { PinEntryComponent } from '../pin-entry/pin-entry.component';
 import { Router, RouterModule } from '@angular/router';
@@ -37,6 +36,8 @@ import { CarouselComponent, SlideSelect } from '../carousel/carousel.component';
 import { CarouselItemComponent } from '../carousel-item/carousel-item.component';
 import { UpdateService } from '../update.service';
 import { ShareInfoType, ShareService } from '../share/share.service';
+import { BurnCardComponent } from '../burn-card/burn-card.component';
+import { BarComponent } from '../bar/bar.component';
 
 interface IntroState {
   ready: boolean;
@@ -51,6 +52,7 @@ interface IntroState {
   cardLoaded: any;
   clearCount: number;
   scrollLeft: number;
+  list: boolean;
   enableCarousel: boolean;
   showing: DatasetFilter;
 }
@@ -70,6 +72,7 @@ function initialState(): IntroState {
     cardLoaded: {},
     clearCount: 0,
     scrollLeft: 0,
+    list: false,
     showing: 'all',
   };
 }
@@ -79,24 +82,25 @@ function initialState(): IntroState {
   templateUrl: './intro.page.html',
   styleUrls: ['./intro.page.scss'],
   imports: [
-    IonRadio,
-    IonRadioGroup,
-    IonFabList,
     IonFabButton,
     IonFab,
     CommonModule,
     FormsModule,
     RouterModule,
     MessageComponent,
-    IonButton,
     IonSpinner,
     IonIcon,
+    IonToolbar,
     IonText,
+    IonHeader,
+    IonTitle,
     IonContent,
     CachedImgComponent,
     CarouselComponent,
     CarouselItemComponent,
-    PinEntryComponent
+    PinEntryComponent,
+    BurnCardComponent,
+    BarComponent,
   ]
 })
 export class IntroPage {
@@ -116,8 +120,8 @@ export class IntroPage {
   vm: IntroState = initialState();
   download: WritableSignal<string> = signal('');
   subtitle: WritableSignal<string> = signal('');
-  carousel = viewChild.required(CarouselComponent);
-  fab = viewChild.required(IonFab);
+  opened = signal(false);
+  carousel = viewChild(CarouselComponent);
 
   constructor() {
     addIcons({ arrowForwardOutline, chevronUpOutline, chevronUpCircleSharp, cloudDownloadOutline });
@@ -132,7 +136,6 @@ export class IntroPage {
       const shareItem = this.shareService.hasShare();
       if (shareItem.type == ShareInfoType.preview) {
         this.db.overrideDataset = shareItem.id;
-        console.log(`Override Dataset `, shareItem.id);
         await this.ionViewWillEnter();
         await this.ionViewDidEnter();
       }
@@ -146,6 +149,7 @@ export class IntroPage {
   async ionViewWillEnter() {
     const cardLoaded = structuredClone(this.vm.cardLoaded);
     this.vm = initialState();
+    this.vm.list = this.settingsService.settings.list;
     this.vm.cardLoaded = cardLoaded;
     this.vm.showing = this.settingsService.settings.datasetFilter ?? 'all';
     // Whether the user has selected an event already
@@ -178,7 +182,9 @@ export class IntroPage {
     if (idx >= 0) {
       this.vm.selected = this.vm.cards[idx];
       this.subtitle.set(this.vm.selected.subTitle);
-      this.carousel().setScrollLeft(this.settingsService.settings.scrollLeft);
+      if (this.carousel()) {
+        this.carousel()!.setScrollLeft(this.settingsService.settings.scrollLeft);
+      }
     }
     const preview = this.db.overrideDataset;
     this._change.markForCheck();
@@ -199,24 +205,32 @@ export class IntroPage {
       this.vm.selected = p;
       this.subtitle.set(this.vm.selected.subTitle);
     }
+    
+    this.opened.set(true);
   }
 
-  async selectedFilter(v: any) {
+  async selectedFilter(v: string) {
     if (!v) {
-      await this.fab().close();
       this._change.markForCheck();
       return;
     }
-    const name = v.detail.value;
     this.vm.scrollLeft = 0;
     this.vm.selected = undefined;
-    this.vm.showing = name;
+    this.vm.showing = v as DatasetFilter;
     this.subtitle.set('');
-    this.vm.cards = await this.api.loadDatasets(name);
-    this.settingsService.settings.datasetFilter = name;
+    this.vm.cards = await this.api.loadDatasets(v as DatasetFilter);
+    this.settingsService.settings.datasetFilter = v as DatasetFilter;
     this.settingsService.save();
-    this.carousel().setScrollLeft(0);
-    await this.fab().close();
+    if (this.carousel()) {
+      this.carousel()!.setScrollLeft(0);
+    }
+    this._change.markForCheck();
+  }
+
+  async toggleList() {
+    this.vm.list = !this.vm.list;
+    this.settingsService.settings.list = this.vm.list;
+    this.settingsService.save();
     this._change.markForCheck();
   }
 
@@ -339,6 +353,7 @@ export class IntroPage {
       artMessage: 'Location available August 25',
       campMessage: 'Location available August 18'
     });
+    this.opened.set(false);
 
     if ((hideArtLocations || hideCampLocations) && !this.vm.eventAlreadySelected && this.settingsService.shouldAboutAlert()) {
       if (x < 80) {

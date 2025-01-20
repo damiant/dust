@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, enableProdMode, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideAppInitializer, enableProdMode, provideExperimentalZonelessChangeDetection, inject } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { RouteReuseStrategy, provideRouter, withComponentInputBinding } from '@angular/router';
 import { provideIonicAngular, IonicRouteStrategy } from '@ionic/angular/standalone';
@@ -15,20 +15,17 @@ if (environment.production) {
   //window.console.log = () => { }
 }
 
-const appInitFactory =
-  (dbService: DbService): (() => Promise<void>) =>
-    async () =>
-      await dbService.initWorker();
-
 bootstrapApplication(AppComponent, {
   providers: [
     provideAnimations(),
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    { provide: APP_INITIALIZER, useFactory: appInitFactory, deps: [DbService], multi: true },
+    provideAppInitializer(async () => {
+      const dbService = inject(DbService);
+      await dbService.initWorker();
+    }),
     provideExperimentalZonelessChangeDetection(),
     //provideZoneChangeDetection({ eventCoalescing: true }),
-    provideIonicAngular({ mode: 'ios', swipeBackEnabled: true }),
-    provideAnimations(),
+    provideIonicAngular({ mode: 'ios', swipeBackEnabled: true }),    
     provideRouter(routes, withComponentInputBinding()),
     // provideServiceWorker('ngsw-worker.js', {
     //   // Service Worker seems to be causing problems

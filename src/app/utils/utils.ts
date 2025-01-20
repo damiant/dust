@@ -205,7 +205,7 @@ export function getOccurrenceTimeString(start: Date, end: Date, day: Date | unde
 }
 
 function getTimeRange(from: string, to: string): string {
-  if (from == 'Midnight' && to == '11:59pm') {
+  if ((from == 'Midnight' || from == '12am') && to == '11:59pm') {
     return 'All Day';
   }
   if (from.endsWith('pm') && to.endsWith('pm')) {

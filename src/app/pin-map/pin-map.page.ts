@@ -153,7 +153,7 @@ export class PinMapPage {
     this.title.set(pinType);
     this.applyMapType(mapType, mapSet);
     if (mapSet.points.length > 0) return mapSet;
-    const ms = await this.db.getPins(pinType);
+    const ms = await this.db.getPins(pinType);    
     this.applyMapType(mapType, ms);
     if (mapType == MapType.Restrooms) {
       this.exportForBM(ms);

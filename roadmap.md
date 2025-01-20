@@ -3,11 +3,10 @@
 💚 Quick Win
 🩷 High Impact
 🔥 Important
-
+- 🔥 Events in search should be filtered to upcoming/soon
+- 🔥 Show top 10 closest things including restrooms on search default page
 - 🔥 Allow event to be added outside of event range for ticket sales (if admin) with auto-notification
-- 🔥 Camp/Event registration in Dust if enabled "Register Theme Camp"
-  - Dust Admin app is subfolder of Dust
-  - Dust can check JWT if owner of camp: "Manage [camp name]" or art etc of current burn
+ - 🟠🩷 Whiteout mode - button for whiteout - show huge compass with direction to camp / center camp / temple / 3 or 9
 
 - 🔴 Dark mode keyboard for Android
 - 🔴 Important: Clean up favorites as we may archive a particular year
@@ -26,7 +25,7 @@
 - 🔴🩷 Dust Daka - Siri for "where am I": 8:30 and F. Maybe screen reader or voice control button.
 - 🔴🩷 Siri - What is the closest camp, restroom, ice, medical etc?
 - 🔴🩷 Simple - "Find X camp" > show your location and target only with distance and direction
-- 🟠🩷 Whiteout mode - button for whiteout - show huge compass with direction to camp / center camp / temple / 3 or 9
+
 - 🔴 If search is restrooms then auto go to restroom map
 - 🔴 Show friends, private events, bike, other locations in search all
 - 🔴 Show history of previously viewed items in the search all area

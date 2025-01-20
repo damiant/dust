@@ -1,6 +1,15 @@
 import { GpsCoord } from '../map/geo.utils';
 import { PinColor } from '../map/map-model';
 
+export interface ItemList {
+  events: Event[];
+  camps: Camp[];
+  art: Art[];
+  restrooms: MapSet;
+  medical: MapSet;
+  ice: MapSet;
+}
+
 export interface Event {
   camp: string; // Calculated
   timeString: string; // Calculated
@@ -193,6 +202,7 @@ export interface Settings {
   lastGeoAlert: number | undefined; // Last geolocation permission request alert
   lastAboutAlert: number | undefined; // Last time the user got a message about the selected event
   lastLongEvents: number | undefined; // Last time the user got a message about long events
+  list: boolean; // Display cards as a list
 }
 
 
@@ -441,6 +451,7 @@ export enum DataMethods {
   CheckEvents = 'checkEvents',
   FindEvents = 'findEvents',
   FindCamps = 'findCamps',
+  FindAll = 'findAll',
   FindEvent = 'findEvent',
   FindCamp = 'findCamp',
   GetCampEvents = 'getCampEvents',

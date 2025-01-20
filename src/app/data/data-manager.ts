@@ -9,6 +9,7 @@ import {
   FullDataset,
   GPSSet,
   GeoRef,
+  ItemList,
   Link,
   LocationHidden,
   LocationName,
@@ -133,6 +134,8 @@ export class DataManager implements WorkerClass {
         return this.findEvents(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7]);
       case DataMethods.FindCamps:
         return this.findCamps(args[0], args[1], args[2], args[3]);
+      case DataMethods.FindAll:
+        return await this.findAll(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7]);
       case DataMethods.FindEvent:
         return this.findEvent(args[0]);
       case DataMethods.FindCamp:
@@ -201,16 +204,26 @@ export class DataManager implements WorkerClass {
     await clear();
   }
 
-  private sortArt(art: Art[]) {
+  private sortArt(art: Art[], top?: number) {
     art.sort((a: Art, b: Art) => {
       return a.name.localeCompare(b.name);
     });
+    if (top) {
+      while (art.length > top) {
+        art.pop();
+      }
+    }
   }
 
-  private sortArtByDistance(art: Art[]) {
+  private sortArtByDistance(art: Art[], top?: number) {
     art.sort((a: Art, b: Art) => {
       return a.distance - b.distance;
     });
+    if (top) {
+      while (art.length > top) {
+        art.pop();
+      }
+    }
   }
 
   private now(timeZone: string): Date {
@@ -831,6 +844,62 @@ export class DataManager implements WorkerClass {
     return regex.test(str);
   }
 
+  public async findAll(
+    query: string,
+    day: Date | undefined,
+    category: string,
+    coords: GpsCoord | undefined,
+    timeRange: TimeRange | undefined,
+    allDay: boolean,
+    showPast: boolean,
+    top: number
+  ): Promise<ItemList> {
+    const events = this.findEvents(query, day, category, coords, timeRange, allDay, showPast, top);
+    const art = this.findArts(query, coords, top);
+    const camps = this.findCamps(query, coords, top);
+    const medical = await this.getMapSet(Names.medical, 'Medical', 'Medical');
+    const ice = await this.getMapSet(Names.ice, 'Ice', 'Ice');
+    const restrooms = await this.getMapSet(Names.restrooms, 'Block of restrooms', 'Restrooms');
+    medical.points = this.sortByDistance(medical.points, coords, this.isMedicalQuery(query) ? 1 : 0);
+    ice.points = this.sortByDistance(ice.points, coords, this.isIceQuery(query) ? 1 : 0);
+    restrooms.points = this.sortByDistance(restrooms.points, coords, this.isRestroomQuery(query) ? 3 : 0);
+    return {
+      events,
+      camps,
+      art,
+      restrooms,
+      medical,
+      ice
+    }
+  }
+
+  private async getMapSet(name: Names, title: string, pinType: string): Promise<MapSet> {
+    const v = await this.getGPSPoints(name, title);
+    if (v.points.length == 0) {
+      return await this.getPins(pinType);
+    } else {
+      return v;
+    }
+  }
+
+  private isRestroomQuery(query: string): boolean {
+    if (!query) return true;
+    const q = query.toLowerCase();
+    return q.includes('rest') || q.includes('toilet') || q.includes('porta') || q.includes('potty') || q.includes('bath');
+  }
+
+  private isMedicalQuery(query: string): boolean {
+    if (!query) return true;
+    const q = query.toLowerCase();
+    return q.includes('med') || q.includes('aid');
+  }
+
+  private isIceQuery(query: string): boolean {
+    if (!query) return true;
+    const q = query.toLowerCase();
+    return q.includes('ice');
+  }
+
   public findEvents(
     query: string,
     day: Date | undefined,
@@ -880,15 +949,15 @@ export class DataManager implements WorkerClass {
     }
 
     if (coords) {
-      this.sortEventsByDistance(result);
+      this.sortEventsByDistance(result, top);
     } else {
-      this.sortEvents(result);
+      this.sortEvents(result, top);
     }
 
     return result;
   }
 
-  private sortEvents(events: Event[]) {
+  private sortEvents(events: Event[], top?: number) {
     events.sort((a: Event, b: Event) => {
       if (!!a.all_day) {
         return 99999; // All day events go to the bottom
@@ -897,24 +966,56 @@ export class DataManager implements WorkerClass {
       }
       return a.start.getTime() - b.start.getTime();
     });
+    if (top) {
+      while (events.length > top) {
+        events.pop();
+      }      
+    }
   }
 
-  private sortEventsByDistance(events: Event[]) {
+  private sortEventsByDistance(events: Event[], top?: number) {
     events.sort((a: Event, b: Event) => {
       return (a.happening ? 0 : 1) - (b.happening ? 0 : 1) || a.distance - b.distance;
     });
+    if (top) {
+      while (events.length > top) {
+        events.pop();
+      }      
+    }
   }
 
-  private sortCamps(camps: Camp[]) {
+  private sortByDistance(points: MapPoint[], gps: GpsCoord | undefined, top: number): MapPoint[] {
+    if (top == 0) return [];
+    if (!gps) return points;
+    points.sort((a: MapPoint, b: MapPoint) => {
+      if (!a.gps || !b.gps) {
+        return -1;
+      }
+      return distance(gps, b.gps) - distance(gps, a.gps);
+    });
+    return points.slice(-top);
+  }
+
+  private sortCamps(camps: Camp[], top?: number) {
     camps.sort((a: Camp, b: Camp) => {
       return a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
     });
+    if (top) {
+      while (camps.length > top) {
+        camps.pop();
+      }      
+    }
   }
 
-  private sortCampsByDistance(camps: Camp[]) {
+  private sortCampsByDistance(camps: Camp[], top?: number) {
     camps.sort((a: Camp, b: Camp) => {
       return a.distance - b.distance;
     });
+    if (top) {
+      while (camps.length > top) {
+        camps.pop();
+      }
+    }
   }
 
   public getCampEvents(campId: string): Event[] {
@@ -967,11 +1068,11 @@ export class DataManager implements WorkerClass {
         case 'Match': result.push(camp); break;
       }
     }
-    if (query.length == 0) {
+    if (!query || query.length == 0) {
       if (coords) {
-        this.sortCampsByDistance(result);
+        this.sortCampsByDistance(result, top);
       } else {
-        this.sortCamps(result);
+        this.sortCamps(result, top);
       }
     }
 
@@ -980,7 +1081,7 @@ export class DataManager implements WorkerClass {
 
   private campMatches(query: string, camp: Camp, campType?: string): MatchType {
     let result: MatchType = 'No Match';
-    if (query == '') {
+    if (query == '' || !query) {
       result = 'Match';
     } else {
       if (
@@ -1034,7 +1135,7 @@ export class DataManager implements WorkerClass {
     }
     if (!query || query == '') {
       if (coords) {
-        this.sortArtByDistance(result);
+        this.sortArtByDistance(result, top);
       } else {
         this.sortArt(result);
       }
@@ -1114,7 +1215,7 @@ export class DataManager implements WorkerClass {
     if (!allDay) {
       if (event.all_day) return 'No Match';
     }
-    if (terms == '') return 'Match';
+    if (terms == '' || !terms) return 'Match';
     if (
       event.title.toLowerCase().includes(terms) ||
       event.camp?.toLowerCase().includes(terms) ||

@@ -285,6 +285,7 @@ export class HomePage implements OnInit {
   home() {
     this.favs.newFavs.set(0);
     this.settings.settings.preventAutoStart = true;
+    this.settings.save();
     this.ui.home();
   }
 

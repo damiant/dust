@@ -184,20 +184,28 @@ export function imperial(): boolean {
   return navigator.language.toLowerCase().includes('-us');
 }
 
-export function formatDistanceMiles(dist: number): string {
+export function formatDistanceMiles(dist: number, short = false): string {
   if (dist == maxDistance) {
     return '';
   }
   if (imperial()) {
-    return `${Math.round(dist * 10) / 10} miles`;
+    return short ?
+      `${Math.round(dist * 10) / 10}mi` :
+      `${Math.round(dist * 10) / 10} miles`;
   } else {
     const km = dist * 1.60934;
-    return `${Math.round(km * 10) / 10} km`;
+    return short ?
+      `${Math.round(km * 10) / 10}km` :
+      `${Math.round(km * 10) / 10} km`;
   }
 }
 
 export function formatDistanceNice(dist: number): string {
   return (dist >= 0.25) ? formatDistanceMiles(dist) : formatDistanceFt(dist);
+}
+
+export function formatDistanceNiceShort(dist: number): string {
+  return (dist >= 0.25) ? formatDistanceMiles(dist, true) : formatDistanceFt(dist).replace(' ', '');
 }
 
 export function formatDistanceFt(dist: number): string {
@@ -322,7 +330,7 @@ export function toClock(clock: string): number {
   return result;
 }
 
-export function calculateRelativePosition(you: GpsCoord, pin: GpsCoord, compassRotation: number): string {
+export function calculateRelativePosition(you: GpsCoord, pin: GpsCoord, compassRotation: number, arrows = false): string {
   // Convert degrees to radians
   const degToRad = (degrees: number) => degrees * (Math.PI / 180);
   const radToDeg = (radians: number) => radians * (180 / Math.PI);
@@ -356,15 +364,40 @@ export function calculateRelativePosition(you: GpsCoord, pin: GpsCoord, compassR
   let angleDiff = bearingToPinDeg - compassRotation;
   angleDiff = (angleDiff + 180) % 360 - 180;
 
-  // Determine relative position
-  if (angleDiff > -45 && angleDiff <= 45) {
-    return 'ahead of you';
-  } else if (angleDiff > 45 && angleDiff <= 135) {
-    return 'to the right';
-  } else if (angleDiff > 135 || angleDiff <= -135) {
-    return 'behind you';
+  // ↖ ↗ ↙ ↘ ↑ ← ↓ →
+  if (arrows) {
+    if (angleDiff > -22.5 && angleDiff <= 22.5) {
+      return '↑';
+    } else if (angleDiff > 22.5 && angleDiff <= 67.5) {
+      return '↗';
+    } else if (angleDiff > 67.5 && angleDiff <= 112.5) {
+      return '→';
+    } else if (angleDiff > 112.5 && angleDiff <= 157.5) {
+      return '↘';
+    } else if (angleDiff > 157.5 || angleDiff <= 202.5) {
+      return '↓';
+    } else if (angleDiff > 202.5 && angleDiff <= 247.5) {
+      return '↙';
+    } else if (angleDiff > 247.5 && angleDiff <= 292.5) {
+      return '←';
+    } else if (angleDiff > 292.5 && angleDiff <= 337.5) {
+      return '↖';
+    } else if (angleDiff > 337.5) {
+      return '↑';
+    } else {
+      return '·';
+    }
   } else {
-    return 'to the left';
+    // Determine relative position
+    if (angleDiff > -45 && angleDiff <= 45) {
+      return 'ahead of you';
+    } else if (angleDiff > 45 && angleDiff <= 135) {
+      return 'to the right';
+    } else if (angleDiff > 135 || angleDiff <= -135) {
+      return 'behind you';
+    } else {
+      return 'to the left';
+    }
   }
 }
 

@@ -1,4 +1,16 @@
 ## Changes
+### 2.69
+
+- Fix for auto opening event
+
+### 2.68
+
+- Dust home page redesigned
+- Search now shows distance and direction
+- Search shows camps, events, near me
+- Find feature only appears during the event
+- Fix wording for all day events
+
 ### 2.66
 
 - Burn sharing improved
