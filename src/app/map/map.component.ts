@@ -76,6 +76,7 @@ export class MapComponent implements OnInit, OnDestroy {
   isHeader = input<boolean>(false);
   loadingDialog = model<boolean>(false);
   wasLoadingDialog = false;
+  private liveInterval: any;
   scrolled = output<ScrollResult>();
 
 
@@ -111,6 +112,12 @@ export class MapComponent implements OnInit, OnDestroy {
     }
 
     this.live.update(this.updateLive.bind(this));
+    if (this.liveInterval) {
+      clearInterval(this.liveInterval);
+    }
+    this.liveInterval = setInterval(() => {
+      this.live.update(this.updateLive.bind(this));
+    }, 60500); // 1 minute and 5 seconds update the map
     this._change.detectChanges();
   }
   get points() {
@@ -580,6 +587,9 @@ export class MapComponent implements OnInit, OnDestroy {
     if (this.watchId) {
       (navigator as any).compass.clearWatch(this.watchId);
       this.watchId = undefined;
+    }
+    if (this.liveInterval) {
+      clearInterval(this.liveInterval);
     }
     if (this.geoInterval) {
       clearInterval(this.geoInterval);
