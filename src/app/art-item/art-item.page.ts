@@ -31,28 +31,28 @@ import { EventPage } from '../event/event.page';
 import { canCreate } from '../map/map';
 
 @Component({
-    selector: 'app-art-item',
-    templateUrl: './art-item.page.html',
-    styleUrls: ['./art-item.page.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [IonModal,
-        FormsModule,
-        RouterModule,
-        MapModalComponent,
-        IonHeader,
-        IonToolbar,
-        IonBackButton,
-        IonButtons,
-        IonButton,
-        IonContent,
-        IonList,
-        IonItem,
-        IonIcon,
-        IonLabel,
-        IonText,
-        CachedImgComponent,
-        EventPage
-    ]
+  selector: 'app-art-item',
+  templateUrl: './art-item.page.html',
+  styleUrls: ['./art-item.page.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [IonModal,
+    FormsModule,
+    RouterModule,
+    MapModalComponent,
+    IonHeader,
+    IonToolbar,
+    IonBackButton,
+    IonButtons,
+    IonButton,
+    IonContent,
+    IonList,
+    IonItem,
+    IonIcon,
+    IonLabel,
+    IonText,
+    CachedImgComponent,
+    EventPage
+  ]
 })
 export class ArtItemPage implements OnInit {
   private route = inject(ActivatedRoute);
@@ -95,7 +95,7 @@ export class ArtItemPage implements OnInit {
       point = await this.db.gpsToMapPoint(gps, undefined);
     }
     this.events = await this.db.getArtEvents(id);
-    point.info = { title: this.art.name, subtitle: '', location: '' };
+    point.info = { title: this.art.name, subtitle: '', location: '', id: this.art.uid };
     this.mapPoints.push(point);
 
     // If we are offline then do not show the audio option

@@ -3,7 +3,7 @@ import {
   Component, ElementRef, Input, OnDestroy, OnInit, effect, input,
   viewChild, inject, output, model, ChangeDetectionStrategy, ChangeDetectorRef
 } from '@angular/core';
-import { LocationEnabledStatus, MapInfo, MapPoint, Pin } from '../data/models';
+import { LiveLocation, LocationEnabledStatus, MapInfo, MapPoint, Pin } from '../data/models';
 import { calculateRelativePosition, defaultMapRadius, distance, formatDistanceNice, mapPointToPin } from './map.utils';
 import { delay } from '../utils/utils';
 import { GeoService } from '../geolocation/geo.service';
@@ -20,27 +20,29 @@ import { MapModel, MapResult, ScrollResult } from './map-model';
 import { init3D } from './map';
 import { UiService } from '../ui/ui.service';
 import { Capacitor } from '@capacitor/core';
+import { LiveService } from './live.service';
 
 // How often is the map updated with a new location
 const geolocateInterval = 10000;
 
 @Component({
-    selector: 'app-map',
-    templateUrl: './map.component.html',
-    styleUrls: ['./map.component.scss'],
-    imports: [
-        RouterModule,
-        CommonModule,
-        MessageComponent,
-        IonText,
-        IonButton,
-        CachedImgComponent
-    ],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-map',
+  templateUrl: './map.component.html',
+  styleUrls: ['./map.component.scss'],
+  imports: [
+    RouterModule,
+    CommonModule,
+    MessageComponent,
+    IonText,
+    IonButton,
+    CachedImgComponent
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MapComponent implements OnInit, OnDestroy {
   private geo = inject(GeoService);
-  private db = inject(DbService)
+  private db = inject(DbService);
+  private live = inject(LiveService);
   private router = inject(Router);
   private settings = inject(SettingsService);
   private toastController = inject(ToastController);
@@ -77,6 +79,7 @@ export class MapComponent implements OnInit, OnDestroy {
   scrolled = output<ScrollResult>();
 
 
+
   @Input() set points(points: MapPoint[]) {
     if (this.pointsSet) {
       // The map is already showing. 
@@ -106,10 +109,47 @@ export class MapComponent implements OnInit, OnDestroy {
       this.fixGPSAndUpdate();
       this.pointsSet = true;
     }
+
+    this.live.update(this.updateLive.bind(this));
     this._change.detectChanges();
   }
   get points() {
     return this._points;
+  }
+
+  private async updateLive(locations: LiveLocation[]) {    
+    for (const location of locations) {
+      for (const p of this._points) {
+        if ((p.info) && `${p.info?.id}` === `u-${location.id}`) {
+          const gpsCoord = { lat: location.lat, lng: location.lng };
+          const isAtBurn = this.isAtBurn(p.info.title, gpsCoord);
+          if (!isAtBurn) {
+            break;
+          }
+          // Only update if they are with 20 miles from the burn
+          p.gps = gpsCoord;
+          const pt = await this.geo.gpsToPoint(p.gps);
+          p.x = pt.x;
+          p.y = pt.y;
+          p.info.bgColor = 'live';          
+          break;
+        }
+      }
+    }
+  }
+
+  private isAtBurn(name: string, gps: GpsCoord): boolean {
+    if (!this.settings.settings.dataset) {
+      return true;
+    }
+    const burn: GpsCoord = { lat: this.settings.settings.dataset.lat, lng: this.settings.settings.dataset?.long };
+    const dist = distance(gps, burn);
+    if (dist < 20) {
+      return true;
+    }
+    console.warn(`${name} is ${formatDistanceNice(dist)} from the event`);
+    return false;
+    // 
   }
 
   public async capture(): Promise<string | undefined> {

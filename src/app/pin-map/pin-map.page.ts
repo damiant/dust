@@ -359,6 +359,7 @@ export class PinMapPage {
       subtitle: '',
       location: '',
       label: this.initials(art.name, art.label),
+      id: art.uid,
       imageUrl: art.images && art.images[0] ? art.images[0].thumbnail_url : '',
       href: '/art/' + art.uid + '+' + this.title(),
     };

@@ -19,7 +19,7 @@ import {
   ItemList,
 } from './models';
 import { call, registerWorker } from './worker-interface';
-import { BurningManTimeZone, clone, data_dust_events, daysUntil, noDate, now, nowAtEvent, static_dust_events } from '../utils/utils';
+import { BurningManTimeZone, clone, data_dust_events, daysUntil, noDate, now, nowAtEvent, r2data_dust_events, static_dust_events } from '../utils/utils';
 import { GpsCoord, Point } from '../map/geo.utils';
 import { environment } from 'src/environments/environment';
 import { Network } from '@capacitor/network';
@@ -449,17 +449,22 @@ export class DbService {
     return await call(this.worker, DataMethods.GetCamps, idx, count);
   }
 
+  defaultExtension = 'json';
+
   public livePath(dataset: string, name: Names, ext?: string): string {
-    if (name == 'festivals') {
-      return `${data_dust_events}${dataset}.${ext ? ext : 'json'}`;
+    if (name == Names.festivals) {
+      return `${data_dust_events}${dataset}.${ext ? ext : this.defaultExtension}`;
     }
-    if (name == 'location') {
+    if (name == Names.location) {
       return `https://api.dust.events/location`;
     }
+    if (name == Names.live) {
+      return `${r2data_dust_events}${dataset}/${name}.${ext ? ext : this.defaultExtension}`;
+    }
     if (this.isStatic(dataset)) {
-      return `${static_dust_events}${dataset}/${name}.${ext ? ext : 'json'}`;
+      return `${static_dust_events}${dataset}/${name}.${ext ? ext : this.defaultExtension}`;
     } else {
-      return `${data_dust_events}${dataset}/${this.prefix}${name}.${ext ? ext : 'json'}`;
+      return `${data_dust_events}${dataset}/${this.prefix}${name}.${ext ? ext : this.defaultExtension}`;
     }
   }
 

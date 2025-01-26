@@ -278,6 +278,7 @@ export enum Names {
   links = 'links',
   map = 'map',
   location = 'location',
+  live = 'locations', // Live locations
   geo = 'geo', // Burning Man only
   ice = 'ice', // Burning Man only
   medical = 'medical', // Burning Man only
@@ -345,6 +346,7 @@ export interface MapInfo {
   href?: string;
   bgColor?: PinColor;
   label?: string;
+  id?: string; // Unique identifier for art/camp etc
 }
 
 export interface Reminder {
@@ -409,6 +411,14 @@ export interface DatasetResult {
   rsl: number;
   revision: number;
   pinTypes: Record<string, number>;
+}
+
+export interface LiveLocation {
+  festivalId: number;
+  id: number;
+  lng: number;
+  lat: number;
+  timestamp: string;
 }
 
 export interface RSLOccurrence {

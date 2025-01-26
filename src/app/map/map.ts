@@ -396,6 +396,8 @@ function getMaterial(pinColor: PinColor): MeshPhongMaterial {
             return new MeshPhongMaterial({ color: 0x9E9E9E, transparent: true });
         case 'warning':
             return new MeshPhongMaterial({ color: 0xffc409, transparent: true });
+        case 'live':
+            return new MeshPhongMaterial({ color: 0xCACA00, transparent: true });
         case 'compass':
             return new MeshPhongMaterial({ color: 0x8bc34a });
         case 'medical':

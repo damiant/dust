@@ -15,6 +15,9 @@ export const data_dust_events = 'https://api.dust.events/data/'
 // Static data is for burning man datasets
 export const static_dust_events = 'https://api.dust.events/static/'
 
+// Static content that was generated
+export const r2data_dust_events = 'https://data.dust.events/'
+
 /**
  * @deprecated nowAtEvent should be used instead
  */
