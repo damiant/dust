@@ -2,6 +2,10 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 function cleanAndCopyFiles(sourceFolder: string, destinationFolder: string, deleteAll: boolean): void {
+  if (!doesFolderExist(sourceFolder)) {
+    console.log(`Source folder ${sourceFolder} does not exist`);
+    return;
+  }
   // Delete all files and folders in the destination folder
   if (fs.existsSync(destinationFolder)) {
     if (deleteAll) {
@@ -54,6 +58,8 @@ function doesFolderExist(folderPath: string): boolean {
 
 // Example usage:
 const sourceFolderPath = '../dust-admin/admin-app/www/browser';
-const destinationFolderPath = 'www/browser';
+const finalDestinationFolderPath = 'www/browser';
+const destinationFolderPath = '.admin-app';
 
-cleanAndCopyFiles(sourceFolderPath, destinationFolderPath, false);
+cleanAndCopyFiles(sourceFolderPath, destinationFolderPath, true);
+cleanAndCopyFiles(destinationFolderPath, finalDestinationFolderPath, false);
