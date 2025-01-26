@@ -230,7 +230,8 @@ export class ApiService {
 
   public async getLiveLocations(): Promise<LiveLocation[]> {
     const ds = this.settingsService.settings.datasetId;
-    const liveUrl = this.dbService.livePath(ds, Names.live);
+    const s = Date.now() / 30000; // Changes every 30 seconds to give Cloudflare a chance to cache
+    const liveUrl = this.dbService.livePath(ds, Names.live) + `?${s}`;
     try {
       const res = await fetch(liveUrl, { method: 'GET', cache: 'no-cache' });
       return await res.json();

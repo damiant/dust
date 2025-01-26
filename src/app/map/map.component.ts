@@ -117,12 +117,17 @@ export class MapComponent implements OnInit, OnDestroy {
     return this._points;
   }
 
-  private async updateLive(locations: LiveLocation[]) {    
+  private async updateLive(locations: LiveLocation[]) {
     for (const location of locations) {
       for (const p of this._points) {
         if ((p.info) && `${p.info?.id}` === `u-${location.id}`) {
           const gpsCoord = { lat: location.lat, lng: location.lng };
           const isAtBurn = this.isAtBurn(p.info.title, gpsCoord);
+          const isOldData = this.isOldData(location.timestamp);          
+          if (isOldData) {
+            console.warn(`Location of ${p.info.title} is old.`);
+            break;
+          }
           if (!isAtBurn) {
             break;
           }
@@ -131,10 +136,21 @@ export class MapComponent implements OnInit, OnDestroy {
           const pt = await this.geo.gpsToPoint(p.gps);
           p.x = pt.x;
           p.y = pt.y;
-          p.info.bgColor = 'live';          
+          p.info.bgColor = 'live';
           break;
         }
       }
+    }
+  }
+
+  private isOldData(timestamp: string): boolean {
+    // Timestamp comes in as epoch time
+    try {
+      const now = new Date().getTime();
+      const diff = now - parseInt(timestamp);
+      return (diff > 8.64e+7); // 24 hours
+    } catch {
+      return false;
     }
   }
 
