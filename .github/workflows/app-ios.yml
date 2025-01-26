@@ -57,13 +57,10 @@ jobs:
         uses: oven-sh/setup-bun@v1          
 
       - name: Install app dependencies
-        run: bun install
+        run: bun install     
 
       - name: Build project app
         run: bun run build-prod  
-
-      - name: Git Clone Dust admin
-        run: mkdir admin && cd admin && git clone https://github.com/damiant/dust-admin.git
 
       - name: Capacitor sync
         run: bunx cap sync
