@@ -37,7 +37,7 @@ export class LinkComponent {
     } else if (url.includes('youtu.') || url.includes('youtube.')) {
       return 'tv-outline';
     }
-    if (txt.includes('Manage')) {
+    if (txt.startsWith('Manage') || txt.startsWith('Sign In')) {
       return 'create-outline';
     }
     if (txt.includes('ticket')) {

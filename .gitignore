@@ -74,3 +74,6 @@ resources/android/**/*
 scripts/rsl
 # Local Netlify folder
 .netlify
+
+# Dust Admin App
+.admin-app

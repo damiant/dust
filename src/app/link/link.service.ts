@@ -1,8 +1,9 @@
 import { inject, Injectable } from "@angular/core";
-import { Group, Link } from "../data/models";
+import { Dataset, Group, Link } from "../data/models";
 import { DbService } from "../data/db.service";
 import { UiService } from "../ui/ui.service";
-import { SettingNames, SettingsService } from "../data/settings.service";
+import { SettingsService } from "../data/settings.service";
+import { decodeToken } from "../data/auth";
 
 @Injectable({
     providedIn: 'root',
@@ -63,7 +64,8 @@ export class LinkService {
         if (monthName !== endMonthName) {
             dates = `${monthName} ${start.getDate()} - ${endMonthName} ${end.getDate()}`;
         }
-        let title = `<h2>${startDay}</h2><p>${dates} ${start.getFullYear()}</p>`
+        //let title = `<h2>${startDay}</h2><p>${dates} ${start.getFullYear()}</p>`;
+        let title = `<h2>${startDay} ${dates} ${start.getFullYear()}</h2>`;
         if (ds.unknownDates) {
             title = `<h2>Dates to be decided<h2>`;
         }
@@ -78,13 +80,33 @@ export class LinkService {
         // if (ds.event_registration) {
         //     links.push({ uid: '-2', title: 'Register Event () In Open Camping', url: `https://edit.dust.events/${ds.id}/events` });
         // }
-        if (ds.camp_registration) {
-            let ownerOf = await this.settings.get(SettingNames.OwnerOf);
-            if (!ownerOf || ownerOf == '') {
-                ownerOf = 'my camp & events';
-            }
-            links.push({ uid: '-1', title: `Manage ${ownerOf}`, url: `https://edit.dust.events/${ds.id}/camps?key=[@unique-id]` });
+        if (ds.camp_registration || ds.event_registration) {
+            links.push({ uid: '-1', title: this.entity(ds), 
+                url: `./admin.html`
+             }); 
         }
         return links;
+    }
+
+    private entity(ds: Dataset): string {
+        const token = decodeToken();
+        console.log(ds, token);
+        if (!token) return `Sign In`;
+        if (token.festivals.length > 0) {
+            return `Manage the burn`;
+        }
+        if (token.camps.length == 1) {
+            return `Manage my camp`;
+        }
+        if (token.art.length == 1) {
+            return `Manage my art`;
+        }
+        if (token.events.length = 1) {
+            return `Manage my event`;
+        }
+        if (token.events.length > 1) {
+            return `Manage my events`;
+        }
+        return `Manage my burn`;
     }
 }

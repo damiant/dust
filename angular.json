@@ -31,6 +31,11 @@
                 "input": "src/assets",
                 "output": "assets"
               },
+              {
+                "glob": "**/*",
+                "input": ".admin-app",
+                "output": "admin"
+              },
               "src/manifest.webmanifest"
             ],
             "styles": [

@@ -1,5 +1,7 @@
 # Roadmap
 
+- 🔥 Manage my burn needs to be reworked to use local token and local admin instance
+
 💚 Quick Win
 🩷 High Impact
 🔥 Important

@@ -44,6 +44,7 @@ import {
   searchSharp,
   notificationsOutline,
   notificationsOffOutline,
+  logInOutline,
 } from 'ionicons/icons';
 import { Animation, StatusBar } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
@@ -128,7 +129,7 @@ export class HomePage implements OnInit {
   private platform = inject(Platform);
   public db = inject(DbService);
   private ratingService = inject(RatingService);
-  private linkService = inject(LinkService);
+  private linkService = inject(LinkService);  
   private _change = inject(ChangeDetectorRef);
   private ionContent = viewChild.required(IonContent);
   private ionModal = viewChild.required(IonModal);  
@@ -173,6 +174,7 @@ export class HomePage implements OnInit {
       exitOutline,
       timeOutline,
       locateOutline,
+      logInOutline,
       cloudDownloadOutline,
       closeSharp,
       notificationsOutline,
@@ -343,7 +345,7 @@ export class HomePage implements OnInit {
     this.router.navigateByUrl('/about');
   }
 
-  async feedback() {
+  async feedback() {    
     await this.dismiss();
   }
 
@@ -355,7 +357,7 @@ export class HomePage implements OnInit {
   async ionViewWillEnter() {
     if (Capacitor.isNativePlatform() && !this.ui.isAndroid()) {
       await StatusBar.hide({ animation: Animation.Fade });
-    }
+    }    
   }
 
   async ionViewWillLeave() {

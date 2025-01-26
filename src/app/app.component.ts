@@ -10,11 +10,11 @@ import { UiService } from './ui/ui.service';
 import { SettingsService } from './data/settings.service';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: 'app.component.html',
-    styleUrls: ['app.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [IonApp, IonRouterOutlet, CommonModule]
+  selector: 'app-root',
+  templateUrl: 'app.component.html',
+  styleUrls: ['app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [IonApp, IonRouterOutlet, CommonModule]
 })
 export class AppComponent implements OnInit {
   private notificationService = inject(NotificationService);
