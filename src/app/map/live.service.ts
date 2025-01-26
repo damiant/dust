@@ -13,7 +13,7 @@ export class LiveService {
     private lastUpdate = 0;
     private api = inject(ApiService);
     private locations: LiveLocation[] = [];
-    private callbackFn: (locations: LiveLocation[]) => void = (p) => { };
+    private callbackFn: (locations: LiveLocation[]) => void = () => { };
 
     public update(callback: (locations: LiveLocation[]) => void): void {
         this.callbackFn = callback;
