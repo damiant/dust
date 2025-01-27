@@ -16,7 +16,7 @@ import { environment } from 'src/environments/environment';
 import { IonButton, IonRouterOutlet, IonText, ToastController } from '@ionic/angular/standalone';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { DbService } from '../data/db.service';
-import { MapModel, MapResult, ScrollResult } from './map-model';
+import { LivePoint, MapModel, MapResult, ScrollResult } from './map-model';
 import { init3D } from './map';
 import { UiService } from '../ui/ui.service';
 import { Capacitor } from '@capacitor/core';
@@ -125,17 +125,20 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   private async updateLive(locations: LiveLocation[]) {
+    let doUpdate = false;
+    const livePoints: LivePoint[] = [];
     for (const location of locations) {
-      for (const p of this._points) {
+      for (const [i, p] of this._points.entries()) {
         if ((p.info) && `${p.info?.id}` === `u-${location.id}`) {
           const gpsCoord = { lat: location.lat, lng: location.lng };
           const isAtBurn = this.isAtBurn(p.info.title, gpsCoord);
-          const isOldData = this.isOldData(location.timestamp);          
+          const isOldData = this.isOldData(location.timestamp);
           if (isOldData) {
             console.warn(`Location of ${p.info.title} is old.`);
             break;
           }
           if (!isAtBurn) {
+            console.warn(`Location of ${p.info.title} is not at the burn.`);
             break;
           }
           // Only update if they are with 20 miles from the burn
@@ -144,9 +147,18 @@ export class MapComponent implements OnInit, OnDestroy {
           p.x = pt.x;
           p.y = pt.y;
           p.info.bgColor = 'live';
+          doUpdate = true;
+          livePoints.push({ idx: i, x: pt.x, y: pt.y });
+          console.log(`${p.info.title} is at ${p.gps.lat}, ${p.gps.lng}`);
           break;
         }
       }
+    }
+    if (doUpdate) {
+      // TODO: Trigger  UI update of map
+      setTimeout(() => {
+      this.mapResult?.liveUpdated(livePoints);
+      },100);
     }
   }
 
@@ -303,8 +315,8 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   // This is called when searching on the map
-  public triggerClick(pointIdx: number[]) {
-    this.pinClicked(pointIdx);
+  public triggerClick(pointIdx: number) {
+    this.pinClicked([pointIdx]);
     this.mapResult?.pinSelected(`${pointIdx}`);
 
     this.popover().nativeElement.style.setProperty('left', `10px`);
@@ -421,15 +433,17 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   // eslint-disable-next-line unused-imports/no-unused-vars
-  private pinClicked(pinUUIDs: number[], event?: PointerEvent) {
+  private pinClicked(indexes: number[], event?: PointerEvent) {
     this.infoList = [];
-    for (const uuid of pinUUIDs) {
-      const point = this._points[uuid];
+    for (const index of indexes) {
+      const point = this._points[index];
       if (point?.info) {
         this.infoList.push(point.info);
       }
     }
-    if (this.infoList.length == 0) return;
+    if (this.infoList.length == 0) {
+      return;
+    }
     //this.popover().event = event;
     //    this.popover().event = event;
     setTimeout(() => {

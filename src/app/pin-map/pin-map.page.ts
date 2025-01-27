@@ -121,7 +121,7 @@ export class PinMapPage {
       idx++;
     }
     if (found != -1) {
-      this.map.triggerClick([found]);
+      this.map.triggerClick(found);
     }
 
   }
