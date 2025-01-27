@@ -65,11 +65,12 @@ export class LinkService {
             dates = `${monthName} ${start.getDate()} - ${endMonthName} ${end.getDate()}`;
         }
         //let title = `<h2>${startDay}</h2><p>${dates} ${start.getFullYear()}</p>`;
-        let title = `<h2>${startDay} ${dates} ${start.getFullYear()}</h2>`;
+        let title = `<h2>${ds.region}</h2>`;
         if (ds.unknownDates) {
-            title = `<h2>Dates to be decided<h2>`;
+            title += `<h2>Dates to be decided<h2>`;
+        } else {
+            title += `<p>${startDay} ${dates}, ${start.getFullYear()}</p>`;
         }
-        title += `<p>${ds.region}</p>`;
         const url = ds.website;
         return { uid: '0', title, url };
     }
@@ -81,9 +82,10 @@ export class LinkService {
         //     links.push({ uid: '-2', title: 'Register Event () In Open Camping', url: `https://edit.dust.events/${ds.id}/events` });
         // }
         if (ds.camp_registration || ds.event_registration) {
-            links.push({ uid: '-1', title: this.entity(ds), 
+            links.push({
+                uid: '-1', title: this.entity(ds),
                 url: `./admin.html`
-             }); 
+            });
         }
         return links;
     }
