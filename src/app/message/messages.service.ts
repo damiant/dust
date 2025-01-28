@@ -3,7 +3,7 @@ import { Item, MastodonFeed } from './mastodon-feed';
 import { DbService } from '../data/db.service';
 import { Names } from '../data/models';
 import { Email } from './emails';
-import { hashCode, replaceAll } from '../utils/utils';
+import { hashCode, r2data_dust_events, replaceAll } from '../utils/utils';
 import { SettingsService } from '../data/settings.service';
 
 export interface Feed {
@@ -34,7 +34,7 @@ export class MessagesService {
             this.feed.set(data);
         }
         if (inboxEmail) {
-            const res = await fetch(`https://data.dust.events/${datasetId}/messages.json?${Math.random()}`, { method: 'GET' });
+            const res = await fetch(`${r2data_dust_events}${datasetId}/messages.json?${Math.random()}`, { method: 'GET' });
             const emailList: Email[] = await res.json();
             await this.cleanupEmail(emailList);
             await this.db.writeData(datasetId, Names.emails, emailList);

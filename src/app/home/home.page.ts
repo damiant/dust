@@ -44,6 +44,8 @@ import {
   searchSharp,
   notificationsOutline,
   notificationsOffOutline,
+  logInOutline,
+  openOutline,
 } from 'ionicons/icons';
 import { Animation, StatusBar } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
@@ -61,6 +63,7 @@ import { daysHighlighted } from '../utils/date-utils';
 import { RatingService } from '../rating.service';
 import { PushNotificationService } from '../notifications/push-notification.service';
 import { LinkService } from '../link/link.service';
+import { ParticipateComponent } from "../participate/participate.component";
 
 interface HomeState {
   moreClicks: number;
@@ -93,25 +96,24 @@ interface HomeState {
     templateUrl: './home.page.html',
     styleUrls: ['./home.page.scss'],
     imports: [IonLoading,
-        IonModal,
-        CommonModule,
-        FormsModule,
-        RouterModule,
-        FriendsComponent,
-        IonContent,
-        IonCard,
-        IonList,
-        IonItem,
-        IonIcon,
-        IonFabButton,
-        TileContainerComponent,
-        TileComponent,
-        EventsCardComponent,
-        RemindersComponent,
-        PinsCardComponent,
-        LinkComponent,
-        CardHeaderComponent
-    ]
+    IonModal,
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    FriendsComponent,
+    IonContent,
+    IonCard,
+    IonList,
+    IonItem,
+    IonIcon,
+    IonFabButton,
+    TileContainerComponent,
+    TileComponent,
+    EventsCardComponent,
+    RemindersComponent,
+    PinsCardComponent,
+    LinkComponent,    
+    CardHeaderComponent, ParticipateComponent]
 })
 export class HomePage implements OnInit {
   private ui = inject(UiService);
@@ -128,7 +130,7 @@ export class HomePage implements OnInit {
   private platform = inject(Platform);
   public db = inject(DbService);
   private ratingService = inject(RatingService);
-  private linkService = inject(LinkService);
+  private linkService = inject(LinkService);  
   private _change = inject(ChangeDetectorRef);
   private ionContent = viewChild.required(IonContent);
   private ionModal = viewChild.required(IonModal);  
@@ -173,11 +175,13 @@ export class HomePage implements OnInit {
       exitOutline,
       timeOutline,
       locateOutline,
+      logInOutline,
       cloudDownloadOutline,
       closeSharp,
       notificationsOutline,
       notificationsOffOutline,
       ellipsisVerticalSharp,
+      openOutline,
       searchSharp
     });
     effect(() => {
@@ -343,7 +347,7 @@ export class HomePage implements OnInit {
     this.router.navigateByUrl('/about');
   }
 
-  async feedback() {
+  async feedback() {    
     await this.dismiss();
   }
 
@@ -355,7 +359,7 @@ export class HomePage implements OnInit {
   async ionViewWillEnter() {
     if (Capacitor.isNativePlatform() && !this.ui.isAndroid()) {
       await StatusBar.hide({ animation: Animation.Fade });
-    }
+    }    
   }
 
   async ionViewWillLeave() {

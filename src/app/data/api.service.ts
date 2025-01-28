@@ -6,6 +6,7 @@ import {
   DatasetFilter,
   DatasetResult,
   FullDataset,
+  LiveLocation,
   LocationHidden,
   MapData,
   Names,
@@ -227,24 +228,29 @@ export class ApiService {
     }
   }
 
+  public async getLiveLocations(): Promise<LiveLocation[]> {
+    const ds = this.settingsService.settings.datasetId;
+    const s = Date.now() / 30000; // Changes every 30 seconds to give Cloudflare a chance to cache
+    const liveUrl = this.dbService.livePath(ds, Names.live) + `?${s}`;
+    try {
+      const res = await fetch(liveUrl, { method: 'GET', cache: 'no-cache' });
+      return await res.json();
+    } catch (err) {
+      console.error(`Failed to get live locations`, err);
+      return [];
+    }
+  }
+
   public async registerToken(token: string, dataset: string): Promise<boolean> {
     const payload = { token, festival: dataset };
-    const res = await fetch(`https://api.dust.events/pushtokens`, {method: 'POST', body: JSON.stringify(payload)});
+    const res = await fetch(`https://api.dust.events/pushtokens`, { method: 'POST', body: JSON.stringify(payload) });
     return res.status == 200;
   }
 
   public async unregisterToken(token: string, dataset: string): Promise<boolean> {
     const payload = { token, festival: dataset };
-    const res = await fetch(`https://api.dust.events/pushtokens`, {method: 'DELETE', body: JSON.stringify(payload)});
+    const res = await fetch(`https://api.dust.events/pushtokens`, { method: 'DELETE', body: JSON.stringify(payload) });
     return res.status == 200;
-  }
-
-  public async getOneTimeKey(key: string): Promise<string> {
-    if (key == '') return '';
-    const payload = { key };
-    const res = await fetch(`https://api.dust.events/one-time-key`, {method: 'DELETE', body: JSON.stringify(payload)});
-    const userInfo = await res.json();
-    return userInfo.name;
   }
 
   public async hasEverDownloaded(selected: Dataset) {

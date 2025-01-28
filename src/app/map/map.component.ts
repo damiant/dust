@@ -3,7 +3,7 @@ import {
   Component, ElementRef, Input, OnDestroy, OnInit, effect, input,
   viewChild, inject, output, model, ChangeDetectionStrategy, ChangeDetectorRef
 } from '@angular/core';
-import { LocationEnabledStatus, MapInfo, MapPoint, Pin } from '../data/models';
+import { LiveLocation, LocationEnabledStatus, MapInfo, MapPoint, Pin } from '../data/models';
 import { calculateRelativePosition, defaultMapRadius, distance, formatDistanceNice, mapPointToPin } from './map.utils';
 import { delay } from '../utils/utils';
 import { GeoService } from '../geolocation/geo.service';
@@ -16,31 +16,33 @@ import { environment } from 'src/environments/environment';
 import { IonButton, IonRouterOutlet, IonText, ToastController } from '@ionic/angular/standalone';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { DbService } from '../data/db.service';
-import { MapModel, MapResult, ScrollResult } from './map-model';
+import { LivePoint, MapModel, MapResult, ScrollResult } from './map-model';
 import { init3D } from './map';
 import { UiService } from '../ui/ui.service';
 import { Capacitor } from '@capacitor/core';
+import { LiveService } from './live.service';
 
 // How often is the map updated with a new location
 const geolocateInterval = 10000;
 
 @Component({
-    selector: 'app-map',
-    templateUrl: './map.component.html',
-    styleUrls: ['./map.component.scss'],
-    imports: [
-        RouterModule,
-        CommonModule,
-        MessageComponent,
-        IonText,
-        IonButton,
-        CachedImgComponent
-    ],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-map',
+  templateUrl: './map.component.html',
+  styleUrls: ['./map.component.scss'],
+  imports: [
+    RouterModule,
+    CommonModule,
+    MessageComponent,
+    IonText,
+    IonButton,
+    CachedImgComponent
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MapComponent implements OnInit, OnDestroy {
   private geo = inject(GeoService);
-  private db = inject(DbService)
+  private db = inject(DbService);
+  private live = inject(LiveService);
   private router = inject(Router);
   private settings = inject(SettingsService);
   private toastController = inject(ToastController);
@@ -74,7 +76,9 @@ export class MapComponent implements OnInit, OnDestroy {
   isHeader = input<boolean>(false);
   loadingDialog = model<boolean>(false);
   wasLoadingDialog = false;
+  private liveInterval: any;
   scrolled = output<ScrollResult>();
+
 
 
   @Input() set points(points: MapPoint[]) {
@@ -106,10 +110,81 @@ export class MapComponent implements OnInit, OnDestroy {
       this.fixGPSAndUpdate();
       this.pointsSet = true;
     }
+
+    this.live.update(this.updateLive.bind(this));
+    if (this.liveInterval) {
+      clearInterval(this.liveInterval);
+    }
+    this.liveInterval = setInterval(() => {
+      this.live.update(this.updateLive.bind(this));
+    }, 60500); // 1 minute and 5 seconds update the map
     this._change.detectChanges();
   }
   get points() {
     return this._points;
+  }
+
+  private async updateLive(locations: LiveLocation[]) {
+    let doUpdate = false;
+    const livePoints: LivePoint[] = [];
+    for (const location of locations) {
+      for (const [i, p] of this._points.entries()) {
+        if ((p.info) && `${p.info?.id}` === `u-${location.id}`) {
+          const gpsCoord = { lat: location.lat, lng: location.lng };
+          const isAtBurn = this.isAtBurn(p.info.title, gpsCoord);
+          const isOldData = this.isOldData(location.timestamp);
+          if (isOldData) {
+            console.warn(`Location of ${p.info.title} is old.`);
+            break;
+          }
+          if (!isAtBurn) {
+            console.warn(`Location of ${p.info.title} is not at the burn.`);
+            break;
+          }
+          // Only update if they are with 20 miles from the burn
+          p.gps = gpsCoord;
+          const pt = await this.geo.gpsToPoint(p.gps);
+          p.x = pt.x;
+          p.y = pt.y;
+          p.info.bgColor = 'live';
+          doUpdate = true;
+          livePoints.push({ idx: i, x: pt.x, y: pt.y });
+          console.log(`${p.info.title} is at ${p.gps.lat}, ${p.gps.lng}`);
+          break;
+        }
+      }
+    }
+    if (doUpdate) {
+      // TODO: Trigger  UI update of map
+      setTimeout(() => {
+      this.mapResult?.liveUpdated(livePoints);
+      },100);
+    }
+  }
+
+  private isOldData(timestamp: string): boolean {
+    // Timestamp comes in as epoch time
+    try {
+      const now = new Date().getTime();
+      const diff = now - parseInt(timestamp);
+      return (diff > 8.64e+7); // 24 hours
+    } catch {
+      return false;
+    }
+  }
+
+  private isAtBurn(name: string, gps: GpsCoord): boolean {
+    if (!this.settings.settings.dataset) {
+      return true;
+    }
+    const burn: GpsCoord = { lat: this.settings.settings.dataset.lat, lng: this.settings.settings.dataset?.long };
+    const dist = distance(gps, burn);
+    if (dist < 20) {
+      return true;
+    }
+    console.warn(`${name} is ${formatDistanceNice(dist)} from the event`);
+    return false;
+    // 
   }
 
   public async capture(): Promise<string | undefined> {
@@ -240,8 +315,8 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   // This is called when searching on the map
-  public triggerClick(pointIdx: number[]) {
-    this.pinClicked(pointIdx);
+  public triggerClick(pointIdx: number) {
+    this.pinClicked([pointIdx]);
     this.mapResult?.pinSelected(`${pointIdx}`);
 
     this.popover().nativeElement.style.setProperty('left', `10px`);
@@ -358,15 +433,17 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   // eslint-disable-next-line unused-imports/no-unused-vars
-  private pinClicked(pinUUIDs: number[], event?: PointerEvent) {
+  private pinClicked(indexes: number[], event?: PointerEvent) {
     this.infoList = [];
-    for (const uuid of pinUUIDs) {
-      const point = this._points[uuid];
+    for (const index of indexes) {
+      const point = this._points[index];
       if (point?.info) {
         this.infoList.push(point.info);
       }
     }
-    if (this.infoList.length == 0) return;
+    if (this.infoList.length == 0) {
+      return;
+    }
     //this.popover().event = event;
     //    this.popover().event = event;
     setTimeout(() => {
@@ -524,6 +601,9 @@ export class MapComponent implements OnInit, OnDestroy {
     if (this.watchId) {
       (navigator as any).compass.clearWatch(this.watchId);
       this.watchId = undefined;
+    }
+    if (this.liveInterval) {
+      clearInterval(this.liveInterval);
     }
     if (this.geoInterval) {
       clearInterval(this.geoInterval);

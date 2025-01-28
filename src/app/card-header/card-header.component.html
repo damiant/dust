@@ -2,7 +2,7 @@
   <h1 class="card-header">{{title()}}</h1>
   @if (!addHidden()) {
   <ion-fab-button class="fab-header" (click)="addClicked.emit()" size="small">
-    <ion-icon name="add"></ion-icon>
+    <ion-icon [name]="icon()"></ion-icon>
   </ion-fab-button>
   }
 </div>

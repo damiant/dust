@@ -222,6 +222,7 @@ export interface Dataset {
   unknownDates: boolean; // Whether the dates are unknown
   year: string; // Year name
   id: string; // Identifier for the remote dataset at data.dust.events
+  uid: number; // Unique numerical identifier
   start: string; // When it starts
   end: string; // When it ends
   lat: number; // Latitude (for directions)
@@ -278,6 +279,7 @@ export enum Names {
   links = 'links',
   map = 'map',
   location = 'location',
+  live = 'locations', // Live locations
   geo = 'geo', // Burning Man only
   ice = 'ice', // Burning Man only
   medical = 'medical', // Burning Man only
@@ -345,6 +347,7 @@ export interface MapInfo {
   href?: string;
   bgColor?: PinColor;
   label?: string;
+  id?: string; // Unique identifier for art/camp etc
 }
 
 export interface Reminder {
@@ -409,6 +412,14 @@ export interface DatasetResult {
   rsl: number;
   revision: number;
   pinTypes: Record<string, number>;
+}
+
+export interface LiveLocation {
+  festivalId: number;
+  id: number;
+  lng: number;
+  lat: number;
+  timestamp: string;
 }
 
 export interface RSLOccurrence {

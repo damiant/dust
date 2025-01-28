@@ -7,12 +7,13 @@ import {
     DirectionalLight,
     MeshPhongMaterial,
     Texture,
-    SRGBColorSpace
+    SRGBColorSpace,
+    Vector3
 } from 'three';
 import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import { SVGLoader, SVGResult } from 'three/examples/jsm/loaders/SVGLoader.js';
-import { MapModel, MapPin, MapResult, PinColor } from './map-model';
+import { LivePoint, MapModel, MapPin, MapResult, PinColor } from './map-model';
 import { delay } from '../utils/utils';
 
 
@@ -86,6 +87,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         scrolled: () => { },
         pinSelected: () => { },
         pinUnselected: () => { },
+        liveUpdated: () => { },
         capture: async () => { return undefined; },
         pinData: {},
         dispose: () => { }
@@ -230,7 +232,6 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
             const mat: Material = result.pinData[key].background.material as Material;
             if (key !== id) {
                 mat.opacity = 0.25;
-
             }
         }
         centerOn(result.pinData[id].pin, 16);
@@ -347,16 +348,36 @@ async function createScene(map: MapModel, font: any, scene: Scene, mixers: Anima
             renderFn();
         }
         result.myPosition = (x: number, y: number) => {
-            const nx = Math.trunc(x * map.width / 10000) - map.width / 2;
-            const nz = Math.trunc(y * map.height / 10000) - map.height / 2;
-            background.position.x = nx;
-            background.position.z = nz;
-            compass.position.x = nx;
-            compass.position.z = nz;
+            setMapXY(compass.position, x, y, map);
+            setMapXY(background.position, x, y, map);
             renderFn();
         }
     }
+    result.liveUpdated = (locations: LivePoint[]) => {
+        // Update matching locations
+        let changed = false;
+        for (const location of locations) {
+            const data = result.pinData[`${location.idx}`];
+            if (setMapXY(data.pin.position, location.x, location.y, map)) {
+                changed = true;
+            }
+            setMapXY(data.background.position, location.x, location.y, map);
+            const m: MeshPhongMaterial = data.background.material as MeshPhongMaterial;
+            m.color = new Color(0xCACA00);
+        }
+        if (changed) {
+            renderFn();
+        }
+    };
     return p;
+}
+// Returns true if the position changed
+function setMapXY(v: Vector3, x: number, y: number, map: MapModel): boolean {
+    const px = v.x;
+    const pz = v.z;
+    v.x = Math.trunc(x * map.width / 10000) - map.width / 2;;
+    v.z = Math.trunc(y * map.height / 10000) - map.height / 2;
+    return px !== v.x || pz !== v.z;
 }
 
 // Pins are sized to a 10,000 x 10,000 grid. Scale this to the map size.
@@ -396,6 +417,8 @@ function getMaterial(pinColor: PinColor): MeshPhongMaterial {
             return new MeshPhongMaterial({ color: 0x9E9E9E, transparent: true });
         case 'warning':
             return new MeshPhongMaterial({ color: 0xffc409, transparent: true });
+        case 'live':
+            return new MeshPhongMaterial({ color: 0xCACA00, transparent: true });
         case 'compass':
             return new MeshPhongMaterial({ color: 0x8bc34a });
         case 'medical':

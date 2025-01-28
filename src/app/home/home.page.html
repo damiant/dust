@@ -126,6 +126,7 @@
   @if (vm.eventIsHappening) {
   <app-pins-card (clickThing)="clickThing($event)" [things]="vm.things"></app-pins-card>
   }
+  <app-participate></app-participate>
   <div class="center text-dim">
     <p (click)="vm.moreOpen = true">{{vm.version}}</p>
   </div>

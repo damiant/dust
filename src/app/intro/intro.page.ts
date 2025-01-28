@@ -205,7 +205,7 @@ export class IntroPage {
       this.vm.selected = p;
       this.subtitle.set(this.vm.selected.subTitle);
     }
-    
+
     this.opened.set(true);
   }
 
@@ -237,14 +237,15 @@ export class IntroPage {
   async ionViewDidEnter() {
     this.vm.enableCarousel = true;
     this.ui.setNavigationBar(ThemePrimaryColor);
-    await delay(500);
-    if (Capacitor.isNativePlatform()) {
-      await StatusBar.setStyle({ style: Style.Dark });
-      await this.ui.setStatusBarBackgroundColor();
-      await SplashScreen.hide();
-      await delay(200);
-      await this.ui.setStatusBarBackgroundColor();
-    }
+    delay(500).then(async () => {
+      if (Capacitor.isNativePlatform()) {
+        await StatusBar.setStyle({ style: Style.Dark });
+        await this.ui.setStatusBarBackgroundColor();
+        await SplashScreen.hide();
+        await delay(200);
+        await this.ui.setStatusBarBackgroundColor();
+      }
+    });
 
     if (this.vm.eventAlreadySelected) {
       console.log(`Auto starting = ${this.vm.eventAlreadySelected}...`);

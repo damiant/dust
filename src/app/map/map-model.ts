@@ -10,9 +10,13 @@ export interface MapModel {
     compass: MapPin | undefined;
 
     // When a user clicks a pin this signal emits the uuid
-    pinClicked: (uuids: number[], event: PointerEvent) => void;
+    pinClicked: (indexes: number[], event: PointerEvent) => void;
+}
 
-
+export interface LivePoint {
+    idx: number;
+    x: number;
+    y: number;
 }
 
 export interface ScrollResult {
@@ -30,13 +34,14 @@ export interface MapResult {
     // When a user searches for a pin and one is found
     pinSelected: (pinUUID: string) => void;
     pinUnselected: () => void;
+    liveUpdated: (locations: LivePoint[]) => void;
     pinData: { [key: string]: AddPinResult; },
     dispose: () => void;
     currentHex?: any;
     currentObject?: any;
 }
 
-export type PinColor = 'primary' | 'secondary' | 'tertiary' | 'compass' | 'medical' | 'warning' | 'accent';
+export type PinColor = 'primary' | 'secondary' | 'tertiary' | 'compass' | 'medical' | 'warning' | 'accent' | 'live';
 
 export interface MapPin {
     uuid: string;

@@ -4,7 +4,6 @@ import { Preferences } from '@capacitor/preferences';
 import { set, get } from 'idb-keyval';
 
 export const SettingNames = {
-  OwnerOf: 'OwnerOf', // Used for what a logged in dust user owns (eg camp name, burn name)
   MapURI: 'mapUri'
 }
 
