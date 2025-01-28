@@ -1,9 +1,8 @@
 import { inject, Injectable } from "@angular/core";
-import { Dataset, Group, Link } from "../data/models";
+import { Group, Link } from "../data/models";
 import { DbService } from "../data/db.service";
 import { UiService } from "../ui/ui.service";
 import { SettingsService } from "../data/settings.service";
-import { decodeToken } from "../data/auth";
 
 @Injectable({
     providedIn: 'root',
