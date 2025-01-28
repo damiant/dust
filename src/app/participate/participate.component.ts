@@ -39,7 +39,7 @@ export class ParticipateComponent implements OnInit {
 
     if (ownerOf) {
       this.cta.set(`Manage`);
-      this.message.set(`${ownerOf}.`);
+      this.message.set(`${ownerOf}`);
     }
   }
 

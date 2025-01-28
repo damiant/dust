@@ -1,8 +1,8 @@
 @if (participate()) {
   <app-card-header title="Participate" icon="arrow-forward-outline" (addClicked)="signIn()"></app-card-header>
-  <ion-card>
+  <ion-card (click)="signIn()">
     <ion-card-content>
-      <div class="center">
+      <div class="center" style="padding-top:0">
         <ion-text class="large" color="medium"
           ><a (click)="signIn()">{{ cta() }}</a> {{ message() }}</ion-text
         >
