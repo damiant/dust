@@ -45,6 +45,7 @@ import {
   notificationsOutline,
   notificationsOffOutline,
   logInOutline,
+  openOutline,
 } from 'ionicons/icons';
 import { Animation, StatusBar } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
@@ -62,6 +63,7 @@ import { daysHighlighted } from '../utils/date-utils';
 import { RatingService } from '../rating.service';
 import { PushNotificationService } from '../notifications/push-notification.service';
 import { LinkService } from '../link/link.service';
+import { ParticipateComponent } from "../participate/participate.component";
 
 interface HomeState {
   moreClicks: number;
@@ -94,25 +96,24 @@ interface HomeState {
     templateUrl: './home.page.html',
     styleUrls: ['./home.page.scss'],
     imports: [IonLoading,
-        IonModal,
-        CommonModule,
-        FormsModule,
-        RouterModule,
-        FriendsComponent,
-        IonContent,
-        IonCard,
-        IonList,
-        IonItem,
-        IonIcon,
-        IonFabButton,
-        TileContainerComponent,
-        TileComponent,
-        EventsCardComponent,
-        RemindersComponent,
-        PinsCardComponent,
-        LinkComponent,
-        CardHeaderComponent
-    ]
+    IonModal,
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    FriendsComponent,
+    IonContent,
+    IonCard,
+    IonList,
+    IonItem,
+    IonIcon,
+    IonFabButton,
+    TileContainerComponent,
+    TileComponent,
+    EventsCardComponent,
+    RemindersComponent,
+    PinsCardComponent,
+    LinkComponent,    
+    CardHeaderComponent, ParticipateComponent]
 })
 export class HomePage implements OnInit {
   private ui = inject(UiService);
@@ -180,6 +181,7 @@ export class HomePage implements OnInit {
       notificationsOutline,
       notificationsOffOutline,
       ellipsisVerticalSharp,
+      openOutline,
       searchSharp
     });
     effect(() => {

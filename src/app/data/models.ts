@@ -222,6 +222,7 @@ export interface Dataset {
   unknownDates: boolean; // Whether the dates are unknown
   year: string; // Year name
   id: string; // Identifier for the remote dataset at data.dust.events
+  uid: number; // Unique numerical identifier
   start: string; // When it starts
   end: string; // When it ends
   lat: number; // Latitude (for directions)
