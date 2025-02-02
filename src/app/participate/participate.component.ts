@@ -23,14 +23,20 @@ export class ParticipateComponent implements OnInit {
 
   ngOnInit() {
     const ds = this.db.selectedDataset();
-    console.log(ds);
+    
     this.token = decodeToken();
+
     const ownerOf = this.entity(this.token, ds);
     if (ds.camp_registration || ds.event_registration) {
       if (!this.db.isHistorical()) {
         // Only edit if event is in the past
         this.participate.set(true);
       }
+    }
+    if (this.token && this.hasNoAccessRights(this.token)) {
+      this.cta.set(`Open`);
+      this.message.set(`${ds.title}`);
+      return;
     }
     if (this.token && this.token.festivals.length > 0) {
       // Allow edit if admin
@@ -73,6 +79,14 @@ export class ParticipateComponent implements OnInit {
       return `your events`;
     }
     return `${ds.title}`;
+  }
+
+  private hasNoAccessRights(token: Token): boolean {
+    return token.camps.length == 0 &&
+      token.art.length == 0 &&
+      token.events.length == 0 &&
+      token.viewFestivals.length == 0 &&
+      token.festivals.length == 0
   }
 
 }
