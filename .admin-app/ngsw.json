@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1738514111252,
+  "timestamp": 1738515350952,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -31,7 +31,6 @@
         "/chunk-55PDQDPP.js",
         "/chunk-57PFVVYC.js",
         "/chunk-57XEOR4I.js",
-        "/chunk-5Q3TBYTD.js",
         "/chunk-5SMFGKZU.js",
         "/chunk-5X4HMWFG.js",
         "/chunk-5XX6UVZ5.js",
@@ -187,8 +186,9 @@
         "/chunk-ZFRBVYF7.js",
         "/chunk-ZJUMW6JE.js",
         "/chunk-ZK77574X.js",
+        "/chunk-ZPD5464Y.js",
         "/index.html",
-        "/main-7CIHZE2D.js",
+        "/main-KN32B4AD.js",
         "/manifest.webmanifest",
         "/polyfills-4BK4MXU4.js",
         "/styles-B7NYZGCT.css"
@@ -293,7 +293,6 @@
     "/chunk-55PDQDPP.js": "bdc2b714205c8979cf60732d1ac6db18955e520e",
     "/chunk-57PFVVYC.js": "2a4bbce8c647c7f141888b11015f7069fc011405",
     "/chunk-57XEOR4I.js": "ca07de48ae763de58bf3908eefa440d663c48429",
-    "/chunk-5Q3TBYTD.js": "8b703c5b57fc8ee3582c77e02a29c88045ab646e",
     "/chunk-5SMFGKZU.js": "e6840063bfb8f0bdb0f89d490fce01348f773223",
     "/chunk-5X4HMWFG.js": "637e8d413bb1c292a5bfe547d31561915dc83e4e",
     "/chunk-5XX6UVZ5.js": "16c0d85c29be2e2c6ee2b83d71320b359c6cd9e2",
@@ -449,8 +448,9 @@
     "/chunk-ZFRBVYF7.js": "82c24b5e7d5ad6f6de382bcf6575c6806681fece",
     "/chunk-ZJUMW6JE.js": "10ab9f191b1e34439e6d0ee9045370b47544bf6a",
     "/chunk-ZK77574X.js": "5c33a8f9eef8769620f1f031bb28c8a97a2d8f88",
-    "/index.html": "e552be96d94e3a2aac0a8f9b22978531e28af82b",
-    "/main-7CIHZE2D.js": "c1c807befaef232aa72db75b96af1de9bcbe2a91",
+    "/chunk-ZPD5464Y.js": "5a232b73be3a1e7f620034fe4599ede046140d21",
+    "/index.html": "1470bcffb2340707a753645582f27137710420a4",
+    "/main-KN32B4AD.js": "190f8a18aba77a1c38b535fb7a7ef56791965076",
     "/manifest.webmanifest": "28fbdb700e7301e2e3ff9b467c412c87eb6ce260",
     "/media/gelion-bold-QP3I5GAI.woff": "d8fd81dc51daf56b8043572c54d373d9b4ccc908",
     "/media/gelion-medium-QORO7MMW.woff": "c7f8cb08d42ad40a5f941a6a9adf4f6d3336272c",
