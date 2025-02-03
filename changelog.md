@@ -1,4 +1,9 @@
 ## Changes
+
+### 2.71
+
+- Admin updates: email entry, music validation
+
 ### 2.69
 
 - Fix for auto opening event
