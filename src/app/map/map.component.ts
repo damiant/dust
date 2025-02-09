@@ -248,7 +248,7 @@ export class MapComponent implements OnInit, OnDestroy {
     if (now) {
       if (await this.geo.requestPermission()) {
         this.settings.settings.locationEnabled = LocationEnabledStatus.Enabled;
-        this.settings.save();
+        await this.settings.save();
         this.checkGeolocation();
       } else {
         // User denied location so hide the loading dialog if shown
@@ -260,7 +260,7 @@ export class MapComponent implements OnInit, OnDestroy {
       if (this.loadingDialog()) {
         this.hideLoadingDialog();
       }
-      this.settings.setLastGeoAlert();
+      await this.settings.setLastGeoAlert();
     }
   }
 

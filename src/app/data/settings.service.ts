@@ -12,8 +12,9 @@ export const SettingNames = {
 })
 export class SettingsService {
   public settings!: Settings;
-  constructor() {
-    this.settings = this.getSettings();
+
+  public async init() {
+    this.settings = await this.getSettings();
     this.validate();
   }
 
@@ -61,9 +62,9 @@ export class SettingsService {
   }
 
   public async setBoolean(key: string, value: boolean): Promise<void> {
-      await this.setInteger(key, value ? 1 : 0);
+    await this.setInteger(key, value ? 1 : 0);
   }
-  
+
   public async getBoolean(key: string): Promise<boolean> {
     try {
       const value = await get(key);
@@ -82,15 +83,15 @@ export class SettingsService {
       if (!value) {
         return false;
       }
-      return true;      
+      return true;
     } catch {
       return false;
     }
   }
 
-  public getSettings(): Settings {
+  public async getSettings(): Promise<Settings> {
     try {
-      const settings = JSON.parse(localStorage['settings']);
+      const settings = JSON.parse(await this.getPref('settings'));
       settings.longEvents = true;
       return settings;
     } catch {
@@ -109,6 +110,7 @@ export class SettingsService {
         offlineEvents: [],
         list: false,
         scrollLeft: 0,
+        lastDatasetId: ''
       };
     }
   }
@@ -117,25 +119,37 @@ export class SettingsService {
     return this.settings.eventTitle;
   }
 
-  public clearSelectedEvent() {
+  public async clearSelectedEvent() {
     this.settings.datasetId = '';
     this.settings.dataset = undefined;
     this.settings.eventTitle = '';
-    this.save();
+    await this.save();
   }
 
-  public save() {
-    localStorage['settings'] = JSON.stringify(this.settings);
+  public async save() {
+    await this.setPref('settings', JSON.stringify(this.settings));
   }
 
-  public setLastGeoAlert() {
+  private async getPref(key: string): Promise<string> {
+    const r = await Preferences.get({ key: key });
+    if (r.value == null) {
+      throw new Error(`Key ${key} not found`);
+    }
+    return r.value;
+  }
+
+  private async setPref(key: string, value: string): Promise<void> {
+     await Preferences.set({ key, value });
+  }
+
+  public async setLastGeoAlert() {
     this.settings.lastGeoAlert = Date.now();
-    this.save();
+    await this.save();
   }
 
-  public setLastAboutAlert() {
+  public async setLastAboutAlert() {
     this.settings.lastAboutAlert = Date.now();
-    this.save();
+    await this.save();
   }
 
   public shouldAboutAlert(): boolean {
