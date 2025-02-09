@@ -1,5 +1,9 @@
 ## Changes
 
+### 2.73
+
+- Remember last burn selected
+
 ### 2.71
 
 - Admin updates: email entry, music validation

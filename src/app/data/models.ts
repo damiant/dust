@@ -203,6 +203,7 @@ export interface Settings {
   lastAboutAlert: number | undefined; // Last time the user got a message about the selected event
   lastLongEvents: number | undefined; // Last time the user got a message about long events
   list: boolean; // Display cards as a list
+  lastDatasetId: string; // Remember the last dataset
 }
 
 

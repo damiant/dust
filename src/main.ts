@@ -9,6 +9,7 @@ import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
 //import { provideServiceWorker } from '@angular/service-worker';
 import { DbService } from './app/data/db.service';
+import { SettingsService } from './app/data/settings.service';
 
 if (environment.production) {
   enableProdMode();
@@ -21,6 +22,8 @@ bootstrapApplication(AppComponent, {
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideAppInitializer(async () => {
       const dbService = inject(DbService);
+      const settings = inject(SettingsService);
+      await settings.init();
       await dbService.initWorker();
     }),
     provideExperimentalZonelessChangeDetection(),

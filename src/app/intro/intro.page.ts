@@ -116,6 +116,7 @@ export class IntroPage {
   private shareService = inject(ShareService);
   private pinEntry = viewChild.required(PinEntryComponent);
   private _change = inject(ChangeDetectorRef);
+
   isFiltered = false;
   vm: IntroState = initialState();
   download: WritableSignal<string> = signal('');
@@ -137,7 +138,7 @@ export class IntroPage {
       if (shareItem.type == ShareInfoType.preview) {
         this.db.overrideDataset = shareItem.id;
         await this.ionViewWillEnter();
-        await this.ionViewDidEnter();
+        await this.afterEnter();
       }
     });
   }
@@ -147,66 +148,75 @@ export class IntroPage {
   }
 
   async ionViewWillEnter() {
-    const cardLoaded = structuredClone(this.vm.cardLoaded);
-    this.vm = initialState();
-    this.vm.list = this.settingsService.settings.list;
-    this.vm.cardLoaded = cardLoaded;
-    this.vm.showing = this.settingsService.settings.datasetFilter ?? 'all';
-    // Whether the user has selected an event already
-    this.vm.eventAlreadySelected =
-      !isWhiteSpace(this.settingsService.settings.datasetId) && !this.settingsService.settings.preventAutoStart;
-    console.log(`eventAlreadySelected ${this.vm.eventAlreadySelected} prevAuto=${this.settingsService.settings.preventAutoStart} ${JSON.stringify(this.settingsService.settings.datasetId)} ${isWhiteSpace(this.settingsService.settings.datasetId)}`)
-    if (this.settingsService.settings.dataset) {
-      const end = new Date(this.settingsService.settings.dataset.end);
-      const until = daysUntil(end, now());
-      if (until < -30) {
-        // event has already ended. We shouldn't auto start
-        console.warn(`Event ended ${Math.abs(until)} days ago. Not opening automatically.`);
-        this.vm.eventAlreadySelected = false;
+    try {
+      const cardLoaded = structuredClone(this.vm.cardLoaded);
+      this.vm = initialState();
+      this.vm.list = this.settingsService.settings.list;
+      this.vm.cardLoaded = cardLoaded;
+      this.vm.showing = this.settingsService.settings.datasetFilter ?? 'all';
+      // Whether the user has selected an event already
+      this.vm.eventAlreadySelected =
+        !isWhiteSpace(this.settingsService.settings.datasetId) && !this.settingsService.settings.preventAutoStart;
+      console.log(`eventAlreadySelected ${this.vm.eventAlreadySelected} prevAuto=${this.settingsService.settings.preventAutoStart} ${JSON.stringify(this.settingsService.settings.datasetId)} ${isWhiteSpace(this.settingsService.settings.datasetId)}`)
+      if (this.settingsService.settings.dataset) {
+        const end = new Date(this.settingsService.settings.dataset.end);
+        const until = daysUntil(end, now());
+        if (until < -30) {
+          // event has already ended. We shouldn't auto start
+          console.warn(`Event ended ${Math.abs(until)} days ago. Not opening automatically.`);
+          this.vm.eventAlreadySelected = false;
+        }
       }
-    }
 
-    this.vm.downloading = true;
-    // Get Cached Values
-    this.vm.cards = await this.api.loadDatasets(this.vm.showing, undefined, true);
-    // Get Live Values (ie if updated)
-    this.vm.cards = await this.api.loadDatasets(this.vm.showing);
-    if (this.vm.cards.length == 0) {
-      this.vm.message = `Check your network connection and try starting again.`;
-      this.vm.showMessage = true;
-      this._change.markForCheck();
-      return;
-    }
-    this.vm.downloading = false;
-    const idx = this.vm.cards.findIndex((c) => this.api.datasetId(c) == this.settingsService.settings.datasetId);
-    if (idx >= 0) {
-      this.vm.selected = this.vm.cards[idx];
-      this.subtitle.set(this.vm.selected.subTitle);
-      if (this.carousel()) {
-        this.carousel()!.setScrollLeft(this.settingsService.settings.scrollLeft);
-      }
-    }
-    const preview = this.db.overrideDataset;
-    this._change.markForCheck();
-    if (preview) {
-      const all = await this.api.loadDatasets(this.vm.showing, true);
-      console.info('overriding preview', preview);
-      //await this.db.clear();
-      const found = all.find((d) => d.name == preview);
-      if (!found) {
-        console.error(`${preview} not found in [${all.map((c) => c.name).join(',')}]`);
+      this.vm.downloading = true;
+      // Get Cached Values
+      this.vm.cards = await this.api.loadDatasets(this.vm.showing, undefined, true);
+      // Get Live Values (ie if updated)
+      console.log(`Get live datasets`);
+      this.vm.cards = await this.api.loadDatasets(this.vm.showing);
+      if (this.vm.cards.length == 0) {
+        this.vm.message = `Check your network connection and try starting again.`;
+        this.vm.showMessage = true;
+        this._change.markForCheck();
         return;
       }
-      let p: Dataset = JSON.parse(JSON.stringify(found));
-      this.settingsService.settings.dataset = p;
-      this.settingsService.settings.datasetId = p.id;
-      this.settingsService.settings.eventTitle = p.title;
-      this.vm.eventAlreadySelected = true;
-      this.vm.selected = p;
-      this.subtitle.set(this.vm.selected.subTitle);
+      this.vm.downloading = false;
+      console.log(`Find dataset ${this.settingsService.settings.datasetId}`);
+      const idx = this.vm.cards.findIndex((c) => this.api.datasetId(c) == this.settingsService.settings.datasetId);
+      if (idx >= 0) {
+        this.vm.selected = this.vm.cards[idx];
+        this.subtitle.set(this.vm.selected.subTitle);
+        if (this.carousel()) {
+          this.carousel()!.setScrollLeft(this.settingsService.settings.scrollLeft);
+        }
+      } else {
+        console.error(`Did not find dataset ${this.settingsService.settings.datasetId}`);
+      }
+      const preview = this.db.overrideDataset;
+      this._change.markForCheck();
+      if (preview) {
+        const all = await this.api.loadDatasets(this.vm.showing, true);
+        console.info('overriding preview', preview);
+        //await this.db.clear();
+        const found = all.find((d) => d.name == preview);
+        if (!found) {
+          console.error(`${preview} not found in [${all.map((c) => c.name).join(',')}]`);
+          return;
+        }
+        let p: Dataset = JSON.parse(JSON.stringify(found));
+        this.settingsService.settings.dataset = p;
+        this.settingsService.settings.datasetId = p.id;
+        this.settingsService.settings.eventTitle = p.title;
+        this.vm.eventAlreadySelected = true;
+        this.vm.selected = p;
+        this.subtitle.set(this.vm.selected.subTitle);
+      }
+      console.log(`Completed ionViewWillEnter`);
+      this.opened.set(true);
+    } finally {
+      await delay(100);
+      this.afterEnter();
     }
-
-    this.opened.set(true);
   }
 
   async selectedFilter(v: string) {
@@ -220,7 +230,7 @@ export class IntroPage {
     this.subtitle.set('');
     this.vm.cards = await this.api.loadDatasets(v as DatasetFilter);
     this.settingsService.settings.datasetFilter = v as DatasetFilter;
-    this.settingsService.save();
+    await this.settingsService.save();
     if (this.carousel()) {
       this.carousel()!.setScrollLeft(0);
     }
@@ -230,11 +240,11 @@ export class IntroPage {
   async toggleList() {
     this.vm.list = !this.vm.list;
     this.settingsService.settings.list = this.vm.list;
-    this.settingsService.save();
+    await this.settingsService.save();
     this._change.markForCheck();
   }
 
-  async ionViewDidEnter() {
+  async afterEnter() {
     this.vm.enableCarousel = true;
     this.ui.setNavigationBar(ThemePrimaryColor);
     delay(500).then(async () => {
@@ -266,8 +276,7 @@ export class IntroPage {
     }
     await this.db.clear();
     console.log('Done clearing');
-    this.settingsService.clearSelectedEvent();
-    this.settingsService.save();
+    await this.settingsService.clearSelectedEvent();
     document.location.href = '';
   }
 
@@ -293,7 +302,7 @@ export class IntroPage {
 
       // Need to save this otherwise it will think we cant start this event
       this.settingsService.setOffline(this.settingsService.settings.datasetId);
-      this.settingsService.save();
+      await this.settingsService.save();
 
     } finally {
       this.vm.downloading = false;
@@ -307,6 +316,11 @@ export class IntroPage {
       console.error(
         'We should not get into this state but just in case we have bad state data we need to have the user select the event',
       );
+      if (`${this.settingsService.settings.lastDatasetId}` !== '') {
+        this.settingsService.settings.datasetId = this.settingsService.settings.lastDatasetId;
+        //await this.ionViewWillEnter();
+        return;
+      }
     }
     if (!this.vm.selected) return;
     this.vm.selected.class = 'launching';
@@ -318,7 +332,7 @@ export class IntroPage {
       if (!await this.verifyPin()) {
         this.settingsService.settings.preventAutoStart = false;
         this.vm.eventAlreadySelected = false;
-        this.settingsService.save();
+        await this.settingsService.save();
         return;
       }
     }
@@ -362,7 +376,7 @@ export class IntroPage {
       } else {
         this.vm.message = `Camps, Art and Events will be released in the app closer to the event. There are ${x} days until the man burns.`;
       }
-      this.settingsService.setLastAboutAlert();
+      await this.settingsService.setLastAboutAlert();
       this.vm.showMessage = true;
       this._change.detectChanges();
     } else {
@@ -439,7 +453,8 @@ export class IntroPage {
       this.settingsService.settings.preventAutoStart = false;
       this.vm.eventAlreadySelected = false;
 
-      this.settingsService.save();
+      this.settingsService.settings.lastDatasetId = this.settingsService.settings.datasetId;
+      await this.settingsService.save();
       this.ui.setStatusBarBasedOnTheme();
       this.db.overrideDataset = undefined;
       await this.router.navigateByUrl('/tabs/profile');
@@ -466,18 +481,17 @@ export class IntroPage {
     return success;
   }
 
-  open(card: Dataset, isClick?: boolean) {
+  async open(card: Dataset, isClick?: boolean): Promise<void> {
     if (isClick && this.vm.selected && this.vm.selected.id == card.id) {
       // Already selected so treat it like you pressed get dusty button
       if (this.vm.ready) {
-        this.go();
+        await this.go();
       }
       return;
     }
     this.vm.selected = card;
     this.subtitle.set(this.vm.selected.subTitle);
-    this.save();
-
+    await this.save();
   }
 
   slideChanged(slide: SlideSelect) {
