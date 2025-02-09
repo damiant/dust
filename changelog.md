@@ -1,5 +1,9 @@
 ## Changes
 
+### 2.73
+
+- Fix to handle restarts of the app when managing a camp/burn
+
 ### 2.71
 
 - Admin updates: email entry, music validation

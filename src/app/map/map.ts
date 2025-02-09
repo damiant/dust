@@ -449,6 +449,8 @@ async function addPin(
     scene: Scene, disposables: MapDisposable[]): Promise<AddPinResult> {
     const geometry = new CylinderGeometry(pin.size, pin.size, 1, 24);
     const mesh = new Mesh(geometry, material);
+    // Adding pin.size to x,z help get the pin closer to where they are supposed to be (maybe)
+    //mesh.position.set(pin.x + pin.size, 1, pin.z + pin.size);
     mesh.position.set(pin.x, 1, pin.z);
     mesh.uuid = pin.uuid;
     if (pin.animated) {
