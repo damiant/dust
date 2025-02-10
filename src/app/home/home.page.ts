@@ -325,7 +325,7 @@ export class HomePage implements OnInit {
 
   async addCalendar() {
     await this.dismiss();
-    const success = await this.calendar.add({
+    this.calendar.add({
       calendar: this.db.selectedDataset().title,
       name: this.db.selectedDataset().title,
       location: ' ',

@@ -21,14 +21,14 @@ export class CalendarService {
     this.events.push(event);
   }
 
-  async launch(): Promise<void> {
+  async launch(): Promise<string> {
     // POST to api.dust.events/calendar
     // returns url and launch it
     const res = await fetch(`https://api.dust.events/calendar`, { method: 'POST', body: JSON.stringify(this.events) });
     const { url } = await res.json();
+    console.log(`Received calendar`, url);
     this.events = [];
-    window.open(url, "_blank");
-    
+    return url;    
   }
 
   changeTimeZone(date: Date, timeZone: string) {

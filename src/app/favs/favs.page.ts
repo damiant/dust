@@ -32,7 +32,6 @@ import { addIcons } from 'ionicons';
 import { star, starOutline, mapOutline, printOutline, calendarOutline } from 'ionicons/icons';
 import { CalendarService } from '../calendar.service';
 import { ToastController } from '@ionic/angular';
-import { plural } from '../utils/utils';
 import { MessageComponent } from '../message/message.component';
 
 
@@ -119,6 +118,7 @@ export class FavsPage implements OnInit {
   public db = inject(DbService);
   private toastController = inject(ToastController);
   private _change = inject(ChangeDetectorRef);
+  private calendarUrl: string | undefined;
   private router = inject(Router);
   vm: FavsState = initialState();
 
@@ -360,11 +360,25 @@ export class FavsPage implements OnInit {
     this.update();
   }
 
-  async syncCalendar(events: Event[], doSync: boolean) {
+  async syncCalendar() {
+    this.calendarUrl = await this.generateCalendar(this.vm.events);
+    this.vm.showCalendarMessage = true;
+    this._change.detectChanges();
+  }
+
+  async launchCalendar() {
+    window.open(this.calendarUrl, "_blank");
+    await this.ui.presentToast(
+      `${this.vm.events.length} events synced with your ${this.db.selectedDataset().title} calendar.`,
+      this.toastController,
+    );
+    this._change.detectChanges();
+  }
+
+  async generateCalendar(events: Event[]): Promise<string> {
     const list: string[] = [];
     this.vm.showCalendarMessage = false;
     this._change.detectChanges();
-    if (!doSync) return;
     for (const event of events) {
       list.push(event.title);
       const location = event.location ? ` (${event.location})` : '';
@@ -378,11 +392,6 @@ export class FavsPage implements OnInit {
         timeZone: this.db.selectedDataset().timeZone,
       });
     }
-    await this.calendar.launch();
-    await this.ui.presentToast(
-      `${events.length} event${plural(events.length)} synced with your ${this.db.selectedDataset().title} calendar.`,
-      this.toastController,
-    );
-    this._change.detectChanges();
+    return await this.calendar.launch();
   }
 }
