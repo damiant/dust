@@ -80,36 +80,36 @@ function initialState(): FavsState {
 }
 
 @Component({
-    selector: 'app-favs',
-    templateUrl: './favs.page.html',
-    styleUrls: ['./favs.page.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-        IonItemOption, 
-        IonItemOptions, 
-        IonItemSliding,
-        IonItem,
-        CommonModule,
-        FormsModule,
-        RouterModule,
-        EventComponent,
-        IonContent,
-        IonButtons,
-        IonButton,
-        IonIcon,
-        IonHeader,
-        IonToolbar,
-        IonTitle,
-        IonActionSheet,
-        IonText,
-        IonBadge,
-        CampComponent,
-        MapModalComponent,
-        ArtComponent,
-        CategoryComponent,
-        SearchComponent,
-        MessageComponent
-    ]
+  selector: 'app-favs',
+  templateUrl: './favs.page.html',
+  styleUrls: ['./favs.page.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    IonItemOption,
+    IonItemOptions,
+    IonItemSliding,
+    IonItem,
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    EventComponent,
+    IonContent,
+    IonButtons,
+    IonButton,
+    IonIcon,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonActionSheet,
+    IonText,
+    IonBadge,
+    CampComponent,
+    MapModalComponent,
+    ArtComponent,
+    CategoryComponent,
+    SearchComponent,
+    MessageComponent
+  ]
 })
 export class FavsPage implements OnInit {
   private fav = inject(FavoritesService);
@@ -362,39 +362,23 @@ export class FavsPage implements OnInit {
 
   async syncCalendar(events: Event[], doSync: boolean) {
     const list: string[] = [];
-    let attempts = 1;
     this.vm.showCalendarMessage = false;
     this._change.detectChanges();
     if (!doSync) return;
     for (const event of events) {
       list.push(event.title);
       const location = event.location ? ` (${event.location})` : '';
-      let success = false;
-      while (attempts < 2 && !success) {
-        const hasPermission = await this.calendar.add({
-          calendar: this.db.selectedDataset().title,
-          name: event.title,
-          description: event.description,
-          start: event.occurrence_set[0].start_time,
-          end: event.occurrence_set[0].end_time,
-          location: event.camp + location,
-          timeZone: this.db.selectedDataset().timeZone,
-        });
-        if (!hasPermission) {
-          if (attempts == 1) {
-            // On Android it will fail the first time, but succeed the second time
-            await delay(1000);
-            attempts++;
-          } else {
-            this.ui.presentDarkToast(`Unable to add events to the calendar. Check permissions.`, this.toastController);
-            return;
-          }
-        } else {
-          success = true;
-        }
-      }
+      this.calendar.add({
+        calendar: this.db.selectedDataset().title,
+        name: event.title,
+        description: event.description,
+        start: event.occurrence_set[0].start_time,
+        end: event.occurrence_set[0].end_time,
+        location: event.camp + location,
+        timeZone: this.db.selectedDataset().timeZone,
+      });
     }
-    await this.calendar.deleteOld(this.db.selectedDataset().title, list);
+    await this.calendar.launch();
     await this.ui.presentToast(
       `${events.length} event${plural(events.length)} synced with your ${this.db.selectedDataset().title} calendar.`,
       this.toastController,

@@ -59,7 +59,6 @@
     "@hugotomazi/capacitor-navigation-bar": "4.0.1",
     "@ionic/angular": "8.4.2",
     "capacitor-print-webview": "6.0.3",
-    "cordova-plugin-calendar-ios-fix": "5.1.6",
     "cordova-plugin-device-orientation": "3.0.0",
     "fuse.js": "7.0.0",
     "idb-keyval": "^6.2.1",
