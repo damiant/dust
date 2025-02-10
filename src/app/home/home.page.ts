@@ -92,10 +92,10 @@ interface HomeState {
 }
 
 @Component({
-    selector: 'app-home',
-    templateUrl: './home.page.html',
-    styleUrls: ['./home.page.scss'],
-    imports: [IonLoading,
+  selector: 'app-home',
+  templateUrl: './home.page.html',
+  styleUrls: ['./home.page.scss'],
+  imports: [IonLoading,
     IonModal,
     CommonModule,
     FormsModule,
@@ -112,7 +112,7 @@ interface HomeState {
     EventsCardComponent,
     RemindersComponent,
     PinsCardComponent,
-    LinkComponent,    
+    LinkComponent,
     CardHeaderComponent, ParticipateComponent]
 })
 export class HomePage implements OnInit {
@@ -130,10 +130,10 @@ export class HomePage implements OnInit {
   private platform = inject(Platform);
   public db = inject(DbService);
   private ratingService = inject(RatingService);
-  private linkService = inject(LinkService);  
+  private linkService = inject(LinkService);
   private _change = inject(ChangeDetectorRef);
   private ionContent = viewChild.required(IonContent);
-  private ionModal = viewChild.required(IonModal);  
+  private ionModal = viewChild.required(IonModal);
   public vm: HomeState = {
     moreClicks: 0,
     moreOpen: false,
@@ -143,7 +143,7 @@ export class HomePage implements OnInit {
     hiddenPanel: false,
     downloading: false,
     directionsOpen: false,
-    eventIsHappening: false,    
+    eventIsHappening: false,
     favEventsToday: [],
     imageUrl: '',
     eventTitle: '',
@@ -230,7 +230,7 @@ export class HomePage implements OnInit {
     this.vm.endDate = addDays(new Date(this.db.selectedDataset().end), 7).toISOString();
     this.vm.highlightedDates = daysHighlighted(this.db.selectedDataset().start, this.db.selectedDataset().end);
     this.vm.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
-    
+
 
     this.vm.things = this.favs.things();
     this.vm.version = `Version ${version}`;
@@ -280,9 +280,9 @@ export class HomePage implements OnInit {
     const enabled = this.pushNotifications.enabled();
     await this.pushNotifications.storeNotifications(!enabled);
     this.ui.presentToast(
-      this.pushNotifications.enabled() ? 
-      `You have subscribed to notifications from ${this.settings.settings.eventTitle}` :
-      `You have unsubscribed from notifications from ${this.settings.settings.eventTitle}`
+      this.pushNotifications.enabled() ?
+        `You have subscribed to notifications from ${this.settings.settings.eventTitle}` :
+        `You have unsubscribed from notifications from ${this.settings.settings.eventTitle}`
       , this.toastController);
   }
 
@@ -317,7 +317,7 @@ export class HomePage implements OnInit {
     await this.dismiss();
     await Share.share({
       title: `${this.db.selectedDataset().title}`,
-      text: `${this.db.selectedDataset().title} - ${this.db.selectedDataset().region}. ${this.db.eventInfo()}`,      
+      text: `${this.db.selectedDataset().title} - ${this.db.selectedDataset().region}. ${this.db.eventInfo()}`,
       url: `https://${this.db.selectedDataset().id}.dust.events/home/`,
       dialogTitle: `Share ${this.db.selectedDataset().title} with friends`,
     });
@@ -336,10 +336,8 @@ export class HomePage implements OnInit {
       lat: this.db.selectedDataset().lat,
       lng: this.db.selectedDataset().long,
     });
-    if (success) {
-      const device = (this.platform.is('iphone') || this.platform.is('android')) ? 'phone' : 'device';
-      this.ui.presentToast(`${this.db.selectedDataset().title} has been added to your ${device}'s calendar.`, this.toastController);
-    }
+    const device = (this.platform.is('iphone') || this.platform.is('android')) ? 'phone' : 'device';
+    this.ui.presentToast(`${this.db.selectedDataset().title} has been added to your ${device}'s calendar.`, this.toastController);
   }
 
   async about() {
@@ -347,7 +345,7 @@ export class HomePage implements OnInit {
     this.router.navigateByUrl('/about');
   }
 
-  async feedback() {    
+  async feedback() {
     await this.dismiss();
   }
 
@@ -359,7 +357,7 @@ export class HomePage implements OnInit {
   async ionViewWillEnter() {
     if (Capacitor.isNativePlatform() && !this.ui.isAndroid()) {
       await StatusBar.hide({ animation: Animation.Fade });
-    }    
+    }
   }
 
   async ionViewWillLeave() {
