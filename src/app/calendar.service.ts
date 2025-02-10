@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Calendar } from '@awesome-cordova-plugins/calendar';
-import { Capacitor } from '@capacitor/core';
 
 export interface CalendarEvent {
   calendar: string;

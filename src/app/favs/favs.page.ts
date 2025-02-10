@@ -32,7 +32,7 @@ import { addIcons } from 'ionicons';
 import { star, starOutline, mapOutline, printOutline, calendarOutline } from 'ionicons/icons';
 import { CalendarService } from '../calendar.service';
 import { ToastController } from '@ionic/angular';
-import { delay, plural } from '../utils/utils';
+import { plural } from '../utils/utils';
 import { MessageComponent } from '../message/message.component';
 
 
