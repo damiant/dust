@@ -217,7 +217,7 @@ SPEC CHECKSUMS:
   CapacitorStatusBar: 3b9ac7d0684770522c532d1158a1434512ab1477
   CapacitorTextZoom: be3bee30e5bf4bc623539877e6241dff861d631e
   CapawesomeCapacitorAppUpdate: 3c05b5c8e42f9c6a88d666093406e9336d9bfdb1
-  CordovaPlugins: 4a0275d645b505e247181b2766e2bf6dc0e5707e
+  CordovaPlugins: 4ebce45cc9ccfdb8c7695490dd00eec481a89979
   FirebaseCore: 6b32c57269bd999aab34354c3923d92a6e5f3f84
   FirebaseCoreInternal: 35731192cab10797b88411be84940d2beb33a238
   FirebaseInstallations: 6ef4a1c7eb2a61ee1f74727d7f6ce2e72acf1414

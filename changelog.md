@@ -1,5 +1,8 @@
 ## Changes
 
+### 2.74
+- Calendar sync has been reworked
+
 ### 2.73
 
 - Remember last burn selected

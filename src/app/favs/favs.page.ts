@@ -32,7 +32,6 @@ import { addIcons } from 'ionicons';
 import { star, starOutline, mapOutline, printOutline, calendarOutline } from 'ionicons/icons';
 import { CalendarService } from '../calendar.service';
 import { ToastController } from '@ionic/angular';
-import { delay, plural } from '../utils/utils';
 import { MessageComponent } from '../message/message.component';
 
 
@@ -80,36 +79,36 @@ function initialState(): FavsState {
 }
 
 @Component({
-    selector: 'app-favs',
-    templateUrl: './favs.page.html',
-    styleUrls: ['./favs.page.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-        IonItemOption, 
-        IonItemOptions, 
-        IonItemSliding,
-        IonItem,
-        CommonModule,
-        FormsModule,
-        RouterModule,
-        EventComponent,
-        IonContent,
-        IonButtons,
-        IonButton,
-        IonIcon,
-        IonHeader,
-        IonToolbar,
-        IonTitle,
-        IonActionSheet,
-        IonText,
-        IonBadge,
-        CampComponent,
-        MapModalComponent,
-        ArtComponent,
-        CategoryComponent,
-        SearchComponent,
-        MessageComponent
-    ]
+  selector: 'app-favs',
+  templateUrl: './favs.page.html',
+  styleUrls: ['./favs.page.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    IonItemOption,
+    IonItemOptions,
+    IonItemSliding,
+    IonItem,
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    EventComponent,
+    IonContent,
+    IonButtons,
+    IonButton,
+    IonIcon,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonActionSheet,
+    IonText,
+    IonBadge,
+    CampComponent,
+    MapModalComponent,
+    ArtComponent,
+    CategoryComponent,
+    SearchComponent,
+    MessageComponent
+  ]
 })
 export class FavsPage implements OnInit {
   private fav = inject(FavoritesService);
@@ -119,6 +118,7 @@ export class FavsPage implements OnInit {
   public db = inject(DbService);
   private toastController = inject(ToastController);
   private _change = inject(ChangeDetectorRef);
+  private calendarUrl: string | undefined;
   private router = inject(Router);
   vm: FavsState = initialState();
 
@@ -360,45 +360,38 @@ export class FavsPage implements OnInit {
     this.update();
   }
 
-  async syncCalendar(events: Event[], doSync: boolean) {
-    const list: string[] = [];
-    let attempts = 1;
-    this.vm.showCalendarMessage = false;
+  async syncCalendar() {
+    this.calendarUrl = await this.generateCalendar(this.vm.events);
+    this.vm.showCalendarMessage = true;
     this._change.detectChanges();
-    if (!doSync) return;
-    for (const event of events) {
-      list.push(event.title);
-      const location = event.location ? ` (${event.location})` : '';
-      let success = false;
-      while (attempts < 2 && !success) {
-        const hasPermission = await this.calendar.add({
-          calendar: this.db.selectedDataset().title,
-          name: event.title,
-          description: event.description,
-          start: event.occurrence_set[0].start_time,
-          end: event.occurrence_set[0].end_time,
-          location: event.camp + location,
-          timeZone: this.db.selectedDataset().timeZone,
-        });
-        if (!hasPermission) {
-          if (attempts == 1) {
-            // On Android it will fail the first time, but succeed the second time
-            await delay(1000);
-            attempts++;
-          } else {
-            this.ui.presentDarkToast(`Unable to add events to the calendar. Check permissions.`, this.toastController);
-            return;
-          }
-        } else {
-          success = true;
-        }
-      }
-    }
-    await this.calendar.deleteOld(this.db.selectedDataset().title, list);
+  }
+
+  async launchCalendar() {
+    window.open(this.calendarUrl, "_blank");
     await this.ui.presentToast(
-      `${events.length} event${plural(events.length)} synced with your ${this.db.selectedDataset().title} calendar.`,
+      `${this.vm.events.length} events synced with your ${this.db.selectedDataset().title} calendar.`,
       this.toastController,
     );
     this._change.detectChanges();
+  }
+
+  async generateCalendar(events: Event[]): Promise<string> {
+    const list: string[] = [];
+    this.vm.showCalendarMessage = false;
+    this._change.detectChanges();
+    for (const event of events) {
+      list.push(event.title);
+      const location = event.location ? ` (${event.location})` : '';
+      this.calendar.add({
+        calendar: this.db.selectedDataset().title,
+        name: event.title,
+        description: event.description,
+        start: event.occurrence_set[0].start_time,
+        end: event.occurrence_set[0].end_time,
+        location: event.camp + location,
+        timeZone: this.db.selectedDataset().timeZone,
+      });
+    }
+    return await this.calendar.launch();
   }
 }

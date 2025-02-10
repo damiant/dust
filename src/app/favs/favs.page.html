@@ -4,7 +4,7 @@
     <ion-buttons class="b-pad-r" slot="end">
       <ion-button fill="clear" routerLink="/print-favs"><ion-icon name="print-outline"></ion-icon></ion-button>
       @if (vm.events.length > 0) {
-      <ion-button fill="clear" (click)="vm.showCalendarMessage = true"><ion-icon
+      <ion-button fill="clear" (click)="syncCalendar()"><ion-icon
           name="calendar-outline"></ion-icon></ion-button>
       }
 
@@ -29,7 +29,7 @@
       <app-search placeholder="Find Favorites" (search)="searchFavs($event)" />
     </ion-toolbar>
   </ion-header>
-  <app-message [secondButton]="'Not Now'" (dismissed)="syncCalendar(this.vm.events, $event)"
+  <app-message (dismissed)="launchCalendar()"
     [show]="vm.showCalendarMessage" title="Sync Calendar"
     message="This will sync your favorite events with your phone's calendar"></app-message>
   <ion-action-sheet [isOpen]="vm.isActionSheetOpen" header="Actions" [buttons]="actionSheetButtons"
