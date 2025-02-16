@@ -6,7 +6,7 @@
     async function download(name) {
         const res = await fetch(`https://api.dust.events/data/${name}/schedule.json`);
         const data = await res.json();
-        console.log(data);
+        log(data);
         createListWithTemplate(data);
     }
 

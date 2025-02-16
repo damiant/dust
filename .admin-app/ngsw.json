@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1739329863438,
+  "timestamp": 1739731488880,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -208,7 +208,6 @@
         "/assets/art.svg",
         "/assets/camp-invite.html",
         "/assets/camp.svg",
-        "/assets/dust-demo.mp4",
         "/assets/events.html",
         "/assets/fonts/gelion-bold.woff",
         "/assets/fonts/gelion-medium.woff",
@@ -249,8 +248,7 @@
     "/assets/art.svg": "d4aa318ab21cc2ece5183b9b072fd406ad3327b3",
     "/assets/camp-invite.html": "e3cccbce0d0f2ea75053feaf5f2159f0f194bc9d",
     "/assets/camp.svg": "32bc6c8a763bbd083417000ba69f58e0f7da5be8",
-    "/assets/dust-demo.mp4": "fb148f99dc96476880e8857526c2f32e8bfef981",
-    "/assets/events.html": "001f39e4a6d552604b08296b903652a979cec635",
+    "/assets/events.html": "cc7ac1daafdfe3b59e8f065295e8dc639848602e",
     "/assets/fonts/gelion-bold.woff": "d8fd81dc51daf56b8043572c54d373d9b4ccc908",
     "/assets/fonts/gelion-medium.woff": "c7f8cb08d42ad40a5f941a6a9adf4f6d3336272c",
     "/assets/fonts/gelion-regular.woff": "ca6421b39351cb5f96735195f58c9c73a8057e5e",
