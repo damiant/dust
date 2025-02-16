@@ -148,7 +148,13 @@ export class ApiService {
         dataset.imageUrl = dataset.imageUrl.replace('[@static]', static_dust_events);
         dataset.active = true;
       } else {
-        dataset.imageUrl = dataset.imageUrl ? `${data_dust_events}${dataset.imageUrl}` : '';
+        if (dataset.imageUrl) {
+          if (!dataset.imageUrl.startsWith(data_dust_events)) {
+            dataset.imageUrl = `${data_dust_events}${dataset.imageUrl}`;
+          }
+        } else {
+          dataset.imageUrl = '';
+        }
       }
       dataset.dist = distance(
         { lat: dataset.lat, lng: dataset.long },
