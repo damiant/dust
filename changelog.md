@@ -1,5 +1,9 @@
 ## Changes
 
+## 2.77
+
+- Download progress shown if downloading for the first time.
+
 ### 2.74
 - Calendar sync has been reworked
 

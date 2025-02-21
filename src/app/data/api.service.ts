@@ -127,10 +127,10 @@ export class ApiService {
     return false;
   }
 
-  public async loadDatasets(filter: DatasetFilter, inactive?: boolean, cached?: boolean): Promise<Dataset[]> {
-    const options: GetOptions = cached ?
+  public async loadDatasets(args: { filter: DatasetFilter, inactive?: boolean, cached?: boolean, timeout?: number }): Promise<Dataset[]> {
+    const options: GetOptions = args.cached ?
       { onlyRead: true, defaultValue: [] } :
-      { freshOnce: true, timeout: 5000 };
+      { freshOnce: true, timeout: args.timeout ?? 5000 };
     const [rDatasets, rFestivals, rLocation] = await Promise.allSettled([
       this.dbService.get(Names.festivals, Names.festivals, options),
       this.dbService.get(Names.datasets, Names.datasets, options),
@@ -139,7 +139,7 @@ export class ApiService {
     const location: WebLocation = rLocation.status == 'fulfilled' ? rLocation.value : {};
     const festivals = rFestivals.status == 'fulfilled' ? rFestivals.value : [];
     const datasets = rDatasets.status == 'fulfilled' ? rDatasets.value : [];
-    return this.cleanNames([...festivals, ...datasets], location, filter, inactive);
+    return this.cleanNames([...festivals, ...datasets], location, args.filter, args.inactive);
   }
 
   private cleanNames(datasets: Dataset[], location: WebLocation, filter: DatasetFilter, inactive?: boolean): Dataset[] {
