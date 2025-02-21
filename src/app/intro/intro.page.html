@@ -29,6 +29,13 @@
     [title]="vm.selected ? 'About '+vm.selected.year : ''"
     [message]="vm.message"
   ></app-message>
+  @if (vm.waiting) {
+    <ion-loading
+      spinner="circular"
+      [isOpen]="vm.waiting"
+      [message]="'Waiting on the first download...'"
+    ></ion-loading>
+    }
 
   @if (vm.list && !vm.eventAlreadySelected) {
   <app-burn-card [cards]="vm.cards" [selected]="vm.selected" (clicked)="open($event, true)"></app-burn-card>

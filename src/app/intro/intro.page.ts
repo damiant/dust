@@ -12,7 +12,8 @@ import {
   IonTitle,
   IonToolbar,
   IonFab,
-  IonFabButton
+  IonFabButton,
+  IonLoading
 } from '@ionic/angular/standalone';
 import { PinEntryComponent } from '../pin-entry/pin-entry.component';
 import { Router, RouterModule } from '@angular/router';
@@ -54,6 +55,7 @@ interface IntroState {
   scrollLeft: number;
   list: boolean;
   enableCarousel: boolean;
+  waiting: boolean; // Still waiting for download
   showing: DatasetFilter;
 }
 
@@ -63,6 +65,7 @@ function initialState(): IntroState {
     showMessage: false,
     downloading: false,
     showPinModal: false,
+    waiting: false,
     eventAlreadySelected: true,
     cards: [],
     selected: undefined,
@@ -100,6 +103,7 @@ function initialState(): IntroState {
     CarouselItemComponent,
     PinEntryComponent,
     BurnCardComponent,
+    IonLoading,
     BarComponent,
   ]
 })
@@ -170,16 +174,24 @@ export class IntroPage {
 
       this.vm.downloading = true;
       // Get Cached Values
-      this.vm.cards = await this.api.loadDatasets(this.vm.showing, undefined, true);
+      this.vm.cards = await this.api.loadDatasets({ filter: this.vm.showing, cached: true });
+
+      const isFirstRun = (this.vm.cards.length == 0);
+      if (isFirstRun) {
+        // First time downloading. Its possible we have no or bad network
+        this.vm.waiting = true;
+        this._change.markForCheck();
+      }
       // Get Live Values (ie if updated)
       console.log(`Get live datasets`);
-      this.vm.cards = await this.api.loadDatasets(this.vm.showing);
+      this.vm.cards = await this.api.loadDatasets({ filter: this.vm.showing, timeout: isFirstRun ? 30000 : 5000 });
       if (this.vm.cards.length == 0) {
         this.vm.message = `Check your network connection and try starting again.`;
         this.vm.showMessage = true;
         this._change.markForCheck();
         return;
       }
+      this.vm.waiting = false;
       this.vm.downloading = false;
       console.log(`Find dataset ${this.settingsService.settings.datasetId}`);
       const idx = this.vm.cards.findIndex((c) => this.api.datasetId(c) == this.settingsService.settings.datasetId);
@@ -195,7 +207,7 @@ export class IntroPage {
       const preview = this.db.overrideDataset;
       this._change.markForCheck();
       if (preview) {
-        const all = await this.api.loadDatasets(this.vm.showing, true);
+        const all = await this.api.loadDatasets({ filter: this.vm.showing, cached: true });
         console.info('overriding preview', preview);
         //await this.db.clear();
         const found = all.find((d) => d.name == preview);
@@ -228,7 +240,7 @@ export class IntroPage {
     this.vm.selected = undefined;
     this.vm.showing = v as DatasetFilter;
     this.subtitle.set('');
-    this.vm.cards = await this.api.loadDatasets(v as DatasetFilter);
+    this.vm.cards = await this.api.loadDatasets({ filter: v as DatasetFilter });
     this.settingsService.settings.datasetFilter = v as DatasetFilter;
     await this.settingsService.save();
     if (this.carousel()) {

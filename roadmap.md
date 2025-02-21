@@ -3,6 +3,7 @@
 💚 Quick Win
 🩷 High Impact
 🔥 Important
+- 🔥 When clicking a push notification message it will open the wrong burn
 - 🔥 Events in search should be filtered to upcoming/soon
 - 🔥 Show top 10 closest things including restrooms on search default page
 - 🔥 Allow event to be added outside of event range for ticket sales (if admin) with auto-notification
