@@ -3,6 +3,7 @@
 ## 2.77
 
 - Download progress shown if downloading for the first time.
+- Volunteeripate integration
 
 ### 2.74
 - Calendar sync has been reworked

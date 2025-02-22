@@ -58,7 +58,7 @@ export class TabsPage implements OnInit {
           case ShareInfoType.camp:
             return await this.navTo('camp', shareItem.id);
           case ShareInfoType.event:
-            return await this.navTo('event', shareItem.id);
+            return await this.navTo('event', shareItem.id);          
         }
       }
     });
