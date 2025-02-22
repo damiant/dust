@@ -31,14 +31,12 @@
     [message]="vm.message"
   ></app-message>
   @if (vm.waiting) {
-    <ion-loading
-      spinner="circular"
-      [isOpen]="vm.waiting"
-      [message]="'Dust requires internet access only when it is opened for the first time...'"
-    ></ion-loading>
-    }
-
-  @if (vm.list && !vm.eventAlreadySelected) {
+  <ion-loading
+    spinner="circular"
+    [isOpen]="vm.waiting"
+    [message]="'Dust requires internet access only when it is opened for the first time...'"
+  ></ion-loading>
+  } @if (vm.list && !vm.eventAlreadySelected) {
   <app-burn-card [cards]="vm.cards" [selected]="vm.selected" (clicked)="open($event, true)"></app-burn-card>
   } @else {
   <app-carousel
@@ -51,13 +49,14 @@
     <app-carousel-item (click)="open(card, true)">
       <app-cached-img
         errorImage="./assets/error-img.png"
+        loadingImage="./assets/busy-img.png"
         (loaded)="vm.cardLoaded[card.id] = true"
         [loading]="'eager'"
         [ngClass]="(vm.selected?.id === card.id) ? 'select ' + vm.selected?.class : 'unselect'"
         [src]="card.imageUrl"
       />
-      <p [hidden]="!vm.cardLoaded[card.id]" aria-hidden="true">{{card.title}}</p>
-      <p class="region" [hidden]="!vm.cardLoaded[card.id]" aria-hidden="true">{{card.region}}</p>
+      <p [ngClass]="!vm.cardLoaded[card.id] ? 'busy' : ''" aria-hidden="true">{{card.title}}</p>
+      <p [ngClass]="!vm.cardLoaded[card.id] ? 'busy' : ''" aria-hidden="true" class="region">{{card.region}}</p>
     </app-carousel-item>
     }
   </app-carousel>

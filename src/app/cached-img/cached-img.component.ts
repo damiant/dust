@@ -1,5 +1,5 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, input, inject, output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, input, inject, output, signal } from '@angular/core';
 import { getCachedImage } from '../data/cache-store';
 
 export type ImageLocation = 'top' | 'bottom';
@@ -23,9 +23,10 @@ export class CachedImgComponent {
   _src: string | undefined;
   alt = input<string>('');
   src = input<string>();
-  isReady = false;
+  isReady = signal(false);
   loading = input('lazy');
   errorImage = input<string>('');
+  loadingImage = input<string>('');
   loaded = output<boolean>()
 
   constructor() {
@@ -44,14 +45,14 @@ export class CachedImgComponent {
 
   ready() {
     this._change.markForCheck();
-    this.isReady = true;
+    this.isReady.set(true);
     this.loaded.emit(true);
   }
 
   errored() {
     if (this.errorImage() == '') return;
     this._src = this.errorImage();
-    this.isReady = true;
+    this.isReady.set(true);
     this._change.markForCheck();
   }
 }
