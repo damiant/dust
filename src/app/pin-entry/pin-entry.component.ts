@@ -1,7 +1,8 @@
-import { Component, input, model, output } from '@angular/core';
-import { IonButton, IonIcon, IonText, IonModal, IonInput } from "@ionic/angular/standalone";
+import { Component, inject, input, model, output } from '@angular/core';
+import { IonButton, IonIcon, IonText, IonModal, IonInput, ToastController } from "@ionic/angular/standalone";
 import { decryptString } from '../utils/utils';
 import { FormsModule } from '@angular/forms';
+import { UiService } from '../ui/ui.service';
 
 @Component({
     selector: 'app-pin-entry',
@@ -14,7 +15,9 @@ export class PinEntryComponent {
   dismissed = output<boolean>();
   correctPin = input<string>('');
   message = input<string>('A PIN is required to access this event. This is delivered by email or at greeters.');
-  enteredPin = '';
+  enteredPin = model('');
+  private toastController = inject(ToastController);
+  private ui = inject(UiService);
   constructor() { }
 
   close() {
@@ -28,7 +31,7 @@ export class PinEntryComponent {
 
   async checkPin(): Promise<boolean> {
     const correctPin = await decryptString(this.correctPin(), 'd1e0fa-b0b0-4b79-a6ca-8ffdf8be88');
-    return correctPin == this.enteredPin;
+    return correctPin == this.enteredPin();
   }
 
   async tryPin(modal: IonModal) {
@@ -36,7 +39,8 @@ export class PinEntryComponent {
       await modal.dismiss();
       await this.dismiss();
     } else {
-      this.enteredPin = '';
+      this.enteredPin.set('');
+      this.ui.presentDarkToast('Incorrect PIN', this.toastController);
     }
   }
 }

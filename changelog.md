@@ -1,4 +1,14 @@
 ## Changes
+
+## 2.77
+
+- Download progress shown if downloading for the first time.
+- Improved messaging on bad network when first opened.
+- Fix for PIN based burns
+- Fix Map view easily swiping up on iPads
+- Fix scrolling in landscape mode on iPad
+- Volunteeripate integration (feature flagged)
+
 ### 2.76
 - Fix for image url loading incorrectly
 

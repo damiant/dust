@@ -29,6 +29,11 @@ interface Version {
   version: string;
 }
 
+export interface DownloadStatus {
+  status: string;
+  firstDownload: boolean; // First time downloading
+}
+
 export interface SendResult {
   datasetResult?: DatasetResult;
   success: boolean;
@@ -127,10 +132,10 @@ export class ApiService {
     return false;
   }
 
-  public async loadDatasets(filter: DatasetFilter, inactive?: boolean, cached?: boolean): Promise<Dataset[]> {
-    const options: GetOptions = cached ?
+  public async loadDatasets(args: { filter: DatasetFilter, inactive?: boolean, cached?: boolean, timeout?: number }): Promise<Dataset[]> {
+    const options: GetOptions = args.cached ?
       { onlyRead: true, defaultValue: [] } :
-      { freshOnce: true, timeout: 5000 };
+      { freshOnce: true, timeout: args.timeout ?? 5000 };
     const [rDatasets, rFestivals, rLocation] = await Promise.allSettled([
       this.dbService.get(Names.festivals, Names.festivals, options),
       this.dbService.get(Names.datasets, Names.datasets, options),
@@ -139,7 +144,7 @@ export class ApiService {
     const location: WebLocation = rLocation.status == 'fulfilled' ? rLocation.value : {};
     const festivals = rFestivals.status == 'fulfilled' ? rFestivals.value : [];
     const datasets = rDatasets.status == 'fulfilled' ? rDatasets.value : [];
-    return this.cleanNames([...festivals, ...datasets], location, filter, inactive);
+    return this.cleanNames([...festivals, ...datasets], location, args.filter, args.inactive);
   }
 
   private cleanNames(datasets: Dataset[], location: WebLocation, filter: DatasetFilter, inactive?: boolean): Dataset[] {
@@ -261,14 +266,21 @@ export class ApiService {
 
   public async hasEverDownloaded(selected: Dataset) {
     const dataset = this.datasetId(selected);
-    const myRevision = await this.dbService.get(dataset, Names.revision, { onlyRead: true, defaultValue: { revision: 0 } });
-    return (myRevision > 0);
+    const myRevision = this.checkUndefined(await this.dbService.get(dataset, Names.revision, { onlyRead: true, defaultValue: { revision: 0 } }));
+    return (myRevision && myRevision > 0);
+  }
+
+  private checkUndefined(v: any): any {    
+    if (`${JSON.stringify(v)}` === '[]') {
+      return undefined;
+    }
+    return v;
   }
 
   public async download(
     selected: Dataset | undefined,
     force: boolean,
-    downloadSignal: WritableSignal<string>,
+    downloadSignal: WritableSignal<DownloadStatus>,
   ): Promise<DownloadResult> {
     let dataset = '';
     let nextRevision: Revision | undefined;
@@ -285,13 +297,17 @@ export class ApiService {
       dataset = this.datasetId(selected);
 
       console.log(`get revision live ${dataset}`);
-      myRevision = await this.dbService.get(dataset, Names.revision, { onlyRead: true, defaultValue: { revision: 0 } });
-      nextRevision = await this.dbService.get(dataset, Names.revision, {
+      myRevision = this.checkUndefined(await this.dbService.get(dataset, Names.revision, { onlyRead: true, defaultValue: { revision: 0 } }));
+      if (!myRevision) {        
+        downloadSignal.set({ status: selected ? selected.title : ' ', firstDownload: true });      
+      }
+      nextRevision = this.checkUndefined(await this.dbService.get(dataset, Names.revision, {
         onlyFresh: true,
-        timeout: 2000,
+        timeout: myRevision ? 2000 : 60000, // 1 Minute to download if we have never downloaded
         defaultValue: { revision: 0 },
-      });
+      }));
       console.log(`Next revision is ${JSON.stringify(nextRevision)} force is ${force}`);
+      
       console.log(`My revision is ${JSON.stringify(myRevision)}`);
 
       // Check the current revision
@@ -326,7 +342,7 @@ export class ApiService {
     console.log(`Will attempt download to ${JSON.stringify(nextRevision)}`);
     if (!nextRevision) return 'error';
 
-    downloadSignal.set(selected ? selected.title : ' ');
+    downloadSignal.set({ status: selected ? selected.title : ' ', firstDownload: myRevision === undefined });
     const currentVersion = await this.getVersion();
     const revision: Revision = nextRevision;
     const [rEvents, rArt, rCamps, rPins, rLinks, rRSL, rMap, rGeo, rRestrooms, rIce, rMedical] =
@@ -358,13 +374,15 @@ export class ApiService {
         console.info(`download.map ${map.filename} ext=${ext}`);
         uri = await this.dbService.getLiveBinary(dataset, map.filename, currentVersion);
         console.info(`download.map uri=${uri}`);
+        downloadSignal.set({ status: `${selected.title}  Map`, firstDownload: myRevision === undefined });
         uri = await getCachedImage(uri);
+        console.info(`download.map completed`);
       }
     }
 
     if (this.badData(events, art, camps)) {
       console.error(`Download has no events, art or camps and has failed.`);
-      downloadSignal.set('');
+      downloadSignal.set({ status: '', firstDownload: false });
       return 'error';
     } else {
       console.log(`Data passed checks for events, art and camps`);
@@ -375,7 +393,7 @@ export class ApiService {
     map.uri = uri;
     await this.dbService.writeData(dataset, Names.map, map);
 
-    downloadSignal.set('');
+    downloadSignal.set({ status: '', firstDownload: false });
     return 'success';
   }
 }

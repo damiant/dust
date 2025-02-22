@@ -54,7 +54,7 @@ import { LinkComponent } from '../link/link.component';
 import { CalendarService } from '../calendar.service';
 import { EventsCardComponent } from '../events-card/events-card.component';
 import { FavoritesService } from '../favs/favorites.service';
-import { ApiService } from '../data/api.service';
+import { ApiService, DownloadStatus } from '../data/api.service';
 import { addDays, delay } from '../utils/utils';
 import { PinsCardComponent } from '../pins-card/pins-card.component';
 import { UpdateService } from '../update.service';
@@ -160,7 +160,7 @@ export class HomePage implements OnInit {
     presentingElement: undefined,
   }
 
-  download: WritableSignal<string> = signal('');
+  download: WritableSignal<DownloadStatus> = signal({ status: '', firstDownload: false });
   directionText: WritableSignal<string> = signal('');
 
   constructor() {
