@@ -36,6 +36,15 @@ export interface GetOptions {
   revision?: number; // This is used for cache busting
 }
 
+export type Feature = 
+'volunteeripate' | // Volunteeripate shift syncing
+'art' | // Art button showing
+'messages' | // Messages tab showing
+'rsl' | // Music tab showing
+'private' | // Private events / Reminders
+'friends' | // Friends List
+'';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -48,7 +57,7 @@ export class DbService {
   public selectedYear = signal('');
   public selectedDataset = signal(this.defaultDataset);
   public selectedImage = computed(() => { const r = `${this.selectedDataset().imageUrl}`; console.info(r); return r });
-  public featuresHidden = signal(['']);
+  public featuresHidden: WritableSignal<Feature[]> = signal(['']);
   public networkStatus = signal('');
   public resume = signal('');
   public restart: WritableSignal<string> = signal('');

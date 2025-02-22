@@ -22,6 +22,7 @@ import { SettingsService } from '../data/settings.service';
 import { CardHeaderComponent } from '../card-header/card-header.component';
 import { VolunteeripateService } from '../volunteeripate/volunteeripate.service';
 import { ShareInfoType, ShareService } from '../share/share.service';
+import { DbService } from '../data/db.service';
 
 @Component({
   selector: 'app-reminders',
@@ -49,6 +50,7 @@ export class RemindersComponent implements OnInit {
   private ui = inject(UiService);
   private toastController = inject(ToastController);
   public events: Reminder[] = [];
+  public db = inject(DbService);
   public startEvent = input<string>('');
   public endEvent = input<string>('');
   public highlightedDates = input<any[]>([]);

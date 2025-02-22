@@ -17,7 +17,7 @@ import {
 } from '@ionic/angular/standalone';
 import { PinEntryComponent } from '../pin-entry/pin-entry.component';
 import { Router, RouterModule } from '@angular/router';
-import { DbService } from '../data/db.service';
+import { DbService, Feature } from '../data/db.service';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { SettingsService } from '../data/settings.service';
 import { FavoritesService } from '../favs/favorites.service';
@@ -473,7 +473,7 @@ export class IntroPage {
       }
       this.fav.init(this.settingsService.settings.datasetId);
 
-      const hidden = [];
+      const hidden: Feature[] = [];
       // Hide music if there is none
       if (result.rsl == 0) {
         hidden.push('rsl');
@@ -488,6 +488,7 @@ export class IntroPage {
       if (`${this.settingsService.settings.dataset?.mastodonHandle}`.length == 0 && this.settingsService.settings.dataset?.inboxEmail !== 'Y') {
         hidden.push('messages');
       }
+      hidden.push('volunteeripate');
       this.db.featuresHidden.set(hidden);
       this.settingsService.setOffline(this.settingsService.settings.datasetId);
 
