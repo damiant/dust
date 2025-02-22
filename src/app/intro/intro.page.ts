@@ -24,7 +24,7 @@ import { FavoritesService } from '../favs/favorites.service';
 import { MessageComponent } from '../message/message.component';
 import { addDays, daysUntil, delay, isWhiteSpace, now } from '../utils/utils';
 import { Dataset, DatasetFilter } from '../data/models';
-import { ApiService, SendResult } from '../data/api.service';
+import { ApiService, DownloadStatus, SendResult } from '../data/api.service';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
 import { ThemePrimaryColor, UiService } from '../ui/ui.service';
@@ -57,6 +57,7 @@ interface IntroState {
   list: boolean;
   enableCarousel: boolean;
   waiting: boolean; // Still waiting for download
+  firstDownloadMessage: string;
   showing: DatasetFilter;
 }
 
@@ -74,6 +75,7 @@ function initialState(): IntroState {
     enableCarousel: false,
     pinPromise: undefined,
     messageButtonlabel: 'Continue',
+    firstDownloadMessage: '',
     cardLoaded: {},
     clearCount: 0,
     scrollLeft: 0,
@@ -125,7 +127,7 @@ export class IntroPage {
 
   isFiltered = false;
   vm: IntroState = initialState();
-  download: WritableSignal<string> = signal('');
+  download: WritableSignal<DownloadStatus> = signal({ status: '', firstDownload: false });
   subtitle: WritableSignal<string> = signal('');
   opened = signal(false);
   carousel = viewChild(CarouselComponent);
@@ -134,8 +136,12 @@ export class IntroPage {
     addIcons({ arrowForwardOutline, chevronUpOutline, chevronUpCircleSharp, cloudDownloadOutline });
     effect(() => {
       const downloading = this.download();
-      if (downloading !== '') {
-        //this.ui.presentDarkToast(`Downloading ${downloading}`, this.toastController);
+      console.log(`Download status ${downloading.status} firstDownload is ${downloading.firstDownload}`);
+      if (downloading.firstDownload) {
+        this.vm.waiting = true;
+        this.vm.firstDownloadMessage = `Downloading ${downloading.status}...`;
+      } else {
+        this.vm.waiting = false;
       }
       this._change.markForCheck();
     });
@@ -182,12 +188,12 @@ export class IntroPage {
       if (isFirstRun) {
         // First time downloading. Its possible we have no or bad network
         this.vm.waiting = true;
+        this.vm.firstDownloadMessage = `Downloading the list of burns...`;
         this._change.markForCheck();
       }
       // Get Live Values (ie if updated)
       console.log(`Get live datasets`);
-      this.vm.cards = await this.api.loadDatasets({ filter: this.vm.showing, timeout: isFirstRun ? 30000 : 5000 });
-      console.log(`Got live datasets`, this.vm.cards);
+      this.vm.cards = await this.api.loadDatasets({ filter: this.vm.showing, timeout: isFirstRun ? 30000 : 5000 });      
       if (this.vm.cards.length == 0) {
         const status = await Network.getStatus();
         this.vm.message = status.connected ?
@@ -302,7 +308,8 @@ export class IntroPage {
     document.location.href = '';
   }
 
-  async preDownload() {
+  // Returns false with failure
+  async preDownload(): Promise<boolean> {
     try {
       if (this.api.hasStarted(this.vm.selected!)) {
         const status = await Network.getStatus();
@@ -310,7 +317,7 @@ export class IntroPage {
           const hasEverDownloaded = await this.api.hasEverDownloaded(this.vm.selected!);
           if (hasEverDownloaded) {
             console.log(`Avoiding downloading because event has started and we are on cell service`);
-            return;
+            return true;
           } else {
             // We are forced to download because we have never downloaded this event
           }
@@ -320,16 +327,32 @@ export class IntroPage {
       this.vm.downloading = true;
       // If we are using a preview then force
       const forceDownload = !!this.db.overrideDataset;
-      await this.api.download(this.vm.selected, forceDownload, this.download);
+      const result = await this.api.download(this.vm.selected, forceDownload, this.download);
 
+      if (result == 'error') {
+        // This can happen if bad network
+        // this.ui.presentDarkToast(
+        //   `Unable to download ${this.vm.selected?.title}.`,
+        //   this.toastController,
+        // );
+        // await this.preventAutoStart();        
+        // return false;
+      }
       // Need to save this otherwise it will think we cant start this event
       this.settingsService.setOffline(this.settingsService.settings.datasetId);
-      await this.settingsService.save();
-
+      await this.settingsService.save();      
+      return true;
     } finally {
       this.vm.downloading = false;
-      this.download.set('');
-    }
+      this.download.set({ status: '', firstDownload: false });
+      return false;
+    }    
+  }
+
+  private async preventAutoStart() {
+    this.settingsService.settings.preventAutoStart = false;
+    this.vm.eventAlreadySelected = false;
+    await this.settingsService.save();
   }
 
   async go() {
@@ -349,27 +372,17 @@ export class IntroPage {
 
     // If event has started (hasStarted)
     // and network is cell
-    await this.preDownload();
+    if (!await this.preDownload()) {
+      console.log(`Predownload failed`);
+      // This can happen if offline and just need to launch
+    }
+    console.log(`Starting.....`);
     if (!isWhiteSpace(this.vm.selected.pin)) {
       if (!await this.verifyPin()) {
-        this.settingsService.settings.preventAutoStart = false;
-        this.vm.eventAlreadySelected = false;
-        await this.settingsService.save();
+        await this.preventAutoStart();
         return;
       }
     }
-
-    /*  We now predownload the data instead  
-        try {
-          this.vm.downloading = true;
-          // If we are using a preview then force
-          const forceDownload = !!this.db.overrideDataset;
-          await this.api.download(this.vm.selected, forceDownload, this.download);
-        } finally {
-          this.vm.downloading = false;
-          this.download.set('');
-        }
-          */
 
     const start = new Date(this.vm.selected.start);
     const manBurns = addDays(start, 6);
