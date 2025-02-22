@@ -27,13 +27,14 @@
     (dismissed)="launch()"
     [show]="vm.showMessage"
     [title]="vm.selected ? 'About '+vm.selected.year : ''"
+    [buttonLabel]="vm.messageButtonlabel"
     [message]="vm.message"
   ></app-message>
   @if (vm.waiting) {
     <ion-loading
       spinner="circular"
       [isOpen]="vm.waiting"
-      [message]="'Waiting on the first download...'"
+      [message]="'Dust requires internet access only when it is opened for the first time...'"
     ></ion-loading>
     }
 

@@ -50,6 +50,7 @@ interface IntroState {
   cards: Dataset[];
   selected: Dataset | undefined;
   message: string;
+  messageButtonlabel: string;
   cardLoaded: any;
   clearCount: number;
   scrollLeft: number;
@@ -72,6 +73,7 @@ function initialState(): IntroState {
     message: '',
     enableCarousel: false,
     pinPromise: undefined,
+    messageButtonlabel: 'Continue',
     cardLoaded: {},
     clearCount: 0,
     scrollLeft: 0,
@@ -185,9 +187,17 @@ export class IntroPage {
       // Get Live Values (ie if updated)
       console.log(`Get live datasets`);
       this.vm.cards = await this.api.loadDatasets({ filter: this.vm.showing, timeout: isFirstRun ? 30000 : 5000 });
+      console.log(`Got live datasets`, this.vm.cards);
       if (this.vm.cards.length == 0) {
-        this.vm.message = `Check your network connection and try starting again.`;
+        const status = await Network.getStatus();
+        this.vm.message = status.connected ?
+          `Dust needs to download the list of burns when you first install it but it looks like you have poor cell service. Can you check for better cell or wifi service and try again.` :
+          `Dust needs to download the list of burns  when you first install it but it looks like you may be in airplane mode or offline. Can you check for cell or wifi service and try again.`;
+
         this.vm.showMessage = true;
+        this.vm.messageButtonlabel = 'Retry';
+        this.vm.waiting = false;
+        this.vm.downloading = false;
         this._change.markForCheck();
         return;
       }
@@ -399,6 +409,12 @@ export class IntroPage {
 
   async launch(attempt: number = 1) {
     try {
+      const isFirstRun = (this.vm.cards.length == 0);
+      if (isFirstRun) {
+        // We don't have a list of burns. Lets start again. This can happen if the user starts the app for the first time and has no or bad network access.
+        this.ionViewWillEnter();
+        return;
+      }
       if (!this.vm.selected) return;
       this.db.selectedDataset.set(this.vm.selected);
       let showYear = `${new Date().getFullYear()}` !== this.vm.selected.year && this.vm.selected.year !== '0000';

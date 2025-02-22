@@ -12,7 +12,7 @@
         </ion-button>
 
         <ion-button [disabled]="disabled" color="primary" (click)="dismiss(true); modal.dismiss()" size="large"
-          shape="round">Continue<ion-icon name="arrow-forward-outline"></ion-icon></ion-button>
+          shape="round">{{buttonLabel()}}<ion-icon name="arrow-forward-outline"></ion-icon></ion-button>
       </div>
     </div>
   </ng-template>

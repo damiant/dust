@@ -17,6 +17,7 @@ export class MessageComponent {
 
   message = input('');
   title = input('');
+  buttonLabel = input('Continue');
   disabled = false;
   dismissed = output<boolean>();
   constructor() {
