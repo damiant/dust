@@ -4,6 +4,7 @@
 
 - Download progress shown if downloading for the first time.
 - Improved messaging on bad network when first opened.
+- Fix for PIN based burns
 - Volunteeripate integration
 
 ### 2.76

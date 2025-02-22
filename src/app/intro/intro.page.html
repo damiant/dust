@@ -65,7 +65,7 @@
   <app-pin-entry
     [correctPin]="vm.selected ? vm.selected.pin : ''"
     (dismissed)="closePin()"
-    [show]="vm.showPinModal"
+    [show]="vm.showPinModal()"
   ></app-pin-entry>
   <p class="subtitle">{{subtitle()}}</p>
   <div [hidden]="vm.eventAlreadySelected" class="footer">

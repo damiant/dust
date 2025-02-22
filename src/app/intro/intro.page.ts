@@ -1,4 +1,4 @@
-import { Component, WritableSignal, effect, signal, viewChild, inject, ChangeDetectorRef } from '@angular/core';
+import { Component, WritableSignal, effect, signal, viewChild, inject, ChangeDetectorRef, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -44,7 +44,7 @@ interface IntroState {
   ready: boolean;
   showMessage: boolean;
   downloading: boolean;
-  showPinModal: boolean;
+  showPinModal: WritableSignal<boolean>;
   pinPromise: Promise<boolean> | undefined;
   eventAlreadySelected: boolean;
   cards: Dataset[];
@@ -66,7 +66,7 @@ function initialState(): IntroState {
     ready: true,
     showMessage: false,
     downloading: false,
-    showPinModal: false,
+    showPinModal: signal(false),
     waiting: false,
     eventAlreadySelected: true,
     cards: [],
@@ -556,7 +556,7 @@ export class IntroPage {
     if (this.vm.selected && await this.settingsService.pinPassed(this.vm.selected.id, this.vm.selected.pin)) {
       return true;
     };
-    this.vm.showPinModal = true;
+    this.vm.showPinModal.set(true);    
     this.vm.pinPromise = new Promise<boolean>((resolve) => {
       this.pinEntry().dismissed.subscribe(async (match) => {
         if (match) {
@@ -570,7 +570,7 @@ export class IntroPage {
   }
 
   async closePin() {
-    this.vm.showPinModal = false;
+    this.vm.showPinModal.set(false); 
 
   }
 }
