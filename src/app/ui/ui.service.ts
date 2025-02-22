@@ -67,7 +67,9 @@ export class UiService {
   }
 
   public swipedDown(r: ScrollResult): boolean {
-    if (r.deltaY > 100 && Math.abs(r.deltaX) < 50) {
+    const largeDevice = window.innerHeight > 1000; // Eg iPad
+    const swipeRequired = largeDevice ? 300 : 100;
+    if (r.deltaY > swipeRequired && Math.abs(r.deltaX) < 50) {
       return true;
     }
     return false;

@@ -5,6 +5,8 @@
 - Download progress shown if downloading for the first time.
 - Improved messaging on bad network when first opened.
 - Fix for PIN based burns
+- Fix Map view easily swiping up on iPads
+- Fix scrolling in landscape mode on iPad
 - Volunteeripate integration
 
 ### 2.76
