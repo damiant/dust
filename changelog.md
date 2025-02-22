@@ -1,4 +1,6 @@
 ## Changes
+### 2.76
+- Fix for image url loading incorrectly
 
 ### 2.74
 - Calendar sync has been reworked
