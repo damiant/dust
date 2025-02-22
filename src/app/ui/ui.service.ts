@@ -9,8 +9,6 @@ import { Share, ShareOptions } from '@capacitor/share';
 import { Browser } from '@capacitor/browser';
 import { ScrollResult } from '../map/map-model';
 import { FileSharer, ShareFileOptions } from '@byteowls/capacitor-filesharer';
-import { ApiService } from '../data/api.service';
-import { SettingsService } from '../data/settings.service';
 import { SplashScreen } from '@capacitor/splash-screen';
 export const ThemePrimaryColor = '#F61067';
 
@@ -21,9 +19,6 @@ export class UiService {
   public navCtrl = inject(NavController);
   public textZoom = signal(1);
   private clickedTab = signal('');
-  private lastUrl = '';
-  private api = inject(ApiService);
-  private settings = inject(SettingsService);
 
   constructor() {
   }
@@ -83,7 +78,7 @@ export class UiService {
       window.open(url, '_blank');
       return;
     }
-    this.lastUrl = url;
+    
     if (url.startsWith('./admin')) {
       await SplashScreen.show();
       location.href = url;

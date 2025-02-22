@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, effect, inject, input } from '@angular/core';
 import {
   IonCard,
   IonCardContent,
@@ -20,28 +20,32 @@ import { addIcons } from 'ionicons';
 import { add, calendar } from 'ionicons/icons';
 import { SettingsService } from '../data/settings.service';
 import { CardHeaderComponent } from '../card-header/card-header.component';
+import { VolunteeripateService } from '../volunteeripate/volunteeripate.service';
+import { ShareInfoType, ShareService } from '../share/share.service';
 
 @Component({
-    selector: 'app-reminders',
-    templateUrl: './reminders.component.html',
-    styleUrls: ['./reminders.component.scss'],
-    imports: [
-        CommonModule,
-        IonCard,
-        IonIcon,
-        IonCardContent,
-        IonList,
-        IonText,
-        IonItem,
-        IonLabel,
-        CardHeaderComponent
-    ],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-reminders',
+  templateUrl: './reminders.component.html',
+  styleUrls: ['./reminders.component.scss'],
+  imports: [
+    CommonModule,
+    IonCard,
+    IonIcon,
+    IonCardContent,
+    IonList,
+    IonText,
+    IonItem,
+    IonLabel,
+    CardHeaderComponent
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RemindersComponent implements OnInit {
   private modalCtrl = inject(ModalController);
   private fav = inject(FavoritesService);
   private settings = inject(SettingsService);
+  private shareService = inject(ShareService);
+  private volunteeripate = inject(VolunteeripateService);
   private ui = inject(UiService);
   private toastController = inject(ToastController);
   public events: Reminder[] = [];
@@ -53,10 +57,21 @@ export class RemindersComponent implements OnInit {
 
   constructor() {
     addIcons({ add, calendar });
+    effect(async () => {
+      const shareItem = this.shareService.hasShare();
+      if (shareItem && shareItem.type == ShareInfoType.volunteeripate) {        
+        this.applyReminders(await this.volunteeripate.getShifts(shareItem.volunteeripateToken!));
+
+      }
+    });
   }
 
   ngOnInit() {
     this.update();
+  }
+
+  private async applyReminders(reminders: any) {
+    console.log('TODO: Create reminders from volunteeripate shifts', reminders);
   }
 
   async addReminder(event?: Reminder) {
@@ -122,6 +137,10 @@ export class RemindersComponent implements OnInit {
 
     this.events = favs.privateEvents;
     this._change.markForCheck();
+  }
+
+  openVolunteeripate(): void {
+    this.volunteeripate.signIn();
   }
 
   async editReminder(event: Reminder) {
