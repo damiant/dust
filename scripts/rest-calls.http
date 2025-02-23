@@ -1,3 +1,0 @@
-GET https://tothemoonburn.volunteeripate.com/shift_data?dust_id=to-the-moon-24 HTTP/1.1
-content-type: application/json
-Authorization: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ2b2x1bnRlZXJpcGF0ZSIsImF1ZCI6IkRVU1QiLCJpYXQiOjE3NDAyMzQ1NTAsIm5iZiI6MTc0MDIzNDU2MCwiZXhwIjoxNzQwMjM4MTUwLCJ1c2VyX2lkIjpudWxsLCJlbWFpbCI6bnVsbH0.lnH9jALNVrCg72KHC6mhOSaCiUDPGvEDcn0dEbnfehg"

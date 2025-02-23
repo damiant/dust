@@ -61,8 +61,9 @@ export class RemindersComponent implements OnInit {
     addIcons({ add, calendar });
     effect(async () => {
       const shareItem = this.shareService.hasShare();
-      if (shareItem && shareItem.type == ShareInfoType.volunteeripate) {        
-        this.applyReminders(await this.volunteeripate.getShifts(shareItem.volunteeripateToken!));
+      if (shareItem && shareItem.type == ShareInfoType.token) {
+        console.log(`Share found ${shareItem.id} ${shareItem.path}`);
+        this.applyReminders(await this.volunteeripate.getShifts(shareItem.id));
 
       }
     });

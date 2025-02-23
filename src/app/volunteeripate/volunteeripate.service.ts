@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { Browser } from "@capacitor/browser";
 import { CapacitorHttp, HttpResponse } from '@capacitor/core';
 
 export interface Shifts {
@@ -22,7 +23,7 @@ export class VolunteeripateService {
     }
 
     async signIn(): Promise<void> {
-        const redirectUrl = `https://dust.events/?volunteeripate`;
+        const redirectUrl = `https://dust.events/volunteeripate${Math.random()}`;
         const url = `https://${this.url()}/?dust_redirect=${encodeURIComponent(redirectUrl)}`;
         window.open(url, '_blank');
     }
@@ -30,16 +31,19 @@ export class VolunteeripateService {
     async getShifts(token: string): Promise<Shifts> {
         const url = `https://${this.url()}/shift_data?dust_id=to-the-moon-24`;
         try {
-            const options = { url, headers: {
-                 'Authorization': 'Bearer ' + token,
-                 'Content-Type': 'application/json'
-                 } };
+            const options = {
+                url, headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                }
+            };
             console.log(`Called volunteeripate ${url} with token "${token}"`);
             const response: HttpResponse = await CapacitorHttp.post(options);
             if (response.status !== 200) {
                 alert(`Failed to get shifts`);
             } else {
                 const data = await response.data;
+                alert(`${data}`);
                 console.log(data);
             }
         } catch (e) {
