@@ -148,7 +148,11 @@ export class ApiService {
   }
 
   private cleanNames(datasets: Dataset[], location: WebLocation, filter: DatasetFilter, inactive?: boolean): Dataset[] {
+    const isWeb = !Capacitor.isNativePlatform();
     for (const dataset of datasets) {
+      if (isWeb && dataset.id == 'eforest-draft') {
+        dataset.active = true;
+      }
       if (dataset.imageUrl?.includes('[@static]')) {
         dataset.imageUrl = dataset.imageUrl.replace('[@static]', static_dust_events);
         dataset.active = true;

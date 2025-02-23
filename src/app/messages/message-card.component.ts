@@ -9,7 +9,7 @@ import {
   IonIcon,
   IonText, IonAvatar, IonFabButton
 } from '@ionic/angular/standalone';
-import { Item } from '../message/mastodon-feed';
+import { Item } from '../message/rss-feed';
 import { addIcons } from 'ionicons';
 import { checkmarkOutline } from 'ionicons/icons';
 import { FadeIn, FadeOut } from '../ui/animation';

@@ -193,7 +193,7 @@ export class IntroPage {
       }
       // Get Live Values (ie if updated)
       console.log(`Get live datasets`);
-      this.vm.cards = await this.api.loadDatasets({ filter: this.vm.showing, timeout: isFirstRun ? 30000 : 5000 });      
+      this.vm.cards = await this.api.loadDatasets({ filter: this.vm.showing, timeout: isFirstRun ? 30000 : 5000 });
       if (this.vm.cards.length == 0) {
         const status = await Network.getStatus();
         this.vm.message = status.connected ?
@@ -340,13 +340,13 @@ export class IntroPage {
       }
       // Need to save this otherwise it will think we cant start this event
       this.settingsService.setOffline(this.settingsService.settings.datasetId);
-      await this.settingsService.save();      
+      await this.settingsService.save();
       return true;
     } finally {
       this.vm.downloading = false;
       this.download.set({ status: '', firstDownload: false });
       return false;
-    }    
+    }
   }
 
   private async preventAutoStart() {
@@ -485,7 +485,9 @@ export class IntroPage {
         hidden.push('friends');
         //hidden.push('private');
       }
-      if (`${this.settingsService.settings.dataset?.mastodonHandle}`.length == 0 && this.settingsService.settings.dataset?.inboxEmail !== 'Y') {
+      if (`${this.settingsService.settings.dataset?.mastodonHandle}`.length == 0 &&
+        this.settingsService.settings.dataset?.inboxEmail !== 'Y' &&
+        `${this.settingsService.settings.dataset?.rssFeed}`.length == 0) {
         hidden.push('messages');
       }
       //hidden.push('volunteeripate');
@@ -557,7 +559,7 @@ export class IntroPage {
     if (this.vm.selected && await this.settingsService.pinPassed(this.vm.selected.id, this.vm.selected.pin)) {
       return true;
     };
-    this.vm.showPinModal.set(true);    
+    this.vm.showPinModal.set(true);
     this.vm.pinPromise = new Promise<boolean>((resolve) => {
       this.pinEntry().dismissed.subscribe(async (match) => {
         if (match) {
@@ -571,7 +573,7 @@ export class IntroPage {
   }
 
   async closePin() {
-    this.vm.showPinModal.set(false); 
+    this.vm.showPinModal.set(false);
 
   }
 }
