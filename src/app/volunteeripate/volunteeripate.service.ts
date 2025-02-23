@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { Browser } from "@capacitor/browser";
 import { CapacitorHttp, HttpResponse } from '@capacitor/core';
 
 export interface Shifts {
