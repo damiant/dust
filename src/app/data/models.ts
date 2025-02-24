@@ -234,6 +234,7 @@ export interface Dataset {
   mapDirection: number; // Compass rotation for North
   mastodonHandle: string; // Mastodon handle
   inboxEmail: string; // Has inbox email Y/N
+  rssFeed: string; // RSS Feed
   directions: string | undefined; // Directions text
   pin: string;
   class?: string; // Animation

@@ -50,7 +50,7 @@ export type Feature =
 })
 export class DbService {
   private defaultDataset: Dataset = {
-    name: '', year: '', id: '', uid: 0, title: '', region: '', website: '', unknownDates: false, start: '', end: '', subTitle: '', lat: 0, long: 0, inboxEmail: '',
+    name: '', year: '', id: '', uid: 0, title: '', region: '', website: '', unknownDates: false, start: '', end: '', subTitle: '', lat: 0, long: 0, inboxEmail: '', rssFeed: '',
     mapDirection: 0, imageUrl: '', timeZone: '', active: false, pin: '', directions: undefined, mastodonHandle: '', camp_registration: false, event_registration: false,
   };
   public selectedDay = signal(noDate());

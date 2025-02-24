@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { Item, MastodonFeed } from './mastodon-feed';
+import { Item, RSSFeed } from './rss-feed';
 import { DbService } from '../data/db.service';
 import { Names } from '../data/models';
 import { Email } from './emails';
@@ -21,14 +21,15 @@ export interface Message {
 })
 export class MessagesService {
     public email = signal<Email[]>([]);
-    public feed = signal<MastodonFeed>({} as any);
+    public feed = signal<RSSFeed>({} as any);
     private db = inject(DbService);
     private settings = inject(SettingsService);
 
-    private async updateData(datasetId: string, mastodonHandle: string | undefined, inboxEmail: boolean): Promise<void> {
-        if (mastodonHandle) {
-            const res = await fetch(this.mastodonURL(mastodonHandle), { method: 'GET' });
-            const data: MastodonFeed = await res.json();
+    private async updateData(datasetId: string, rssFeed: string | undefined, mastodonHandle: string | undefined, inboxEmail: boolean): Promise<void> {
+        const url = mastodonHandle ? this.mastodonURL(mastodonHandle) : rssFeed;
+        if (url) {
+            const res = await fetch(url, { method: 'GET' });
+            const data: RSSFeed = await res.json();
             await this.db.writeData(datasetId, Names.messages, data);
             await this.cleanup(data);
             this.feed.set(data);
@@ -42,15 +43,15 @@ export class MessagesService {
         }
     }
 
-    public async getMessages(datasetId: string, mastodonHandle: string | undefined, inboxEmail: boolean): Promise<void> {
+    public async getMessages(datasetId: string, rssFeed: string | undefined, mastodonHandle: string | undefined, inboxEmail: boolean): Promise<void> {
         const data = await this.db.readData(datasetId, Names.messages);
         await this.cleanup(data);
         this.feed.set(data);
         const emails = await this.db.readData(datasetId, Names.emails);
         await this.cleanupEmail(emails);
-        this.email.set(emails);
-        if (mastodonHandle || inboxEmail) {
-            this.updateData(datasetId, mastodonHandle, inboxEmail);
+        this.email.set(emails);        
+        if (mastodonHandle || inboxEmail || rssFeed) {
+            this.updateData(datasetId, rssFeed,  mastodonHandle, inboxEmail);
         }
     }
 
@@ -79,7 +80,7 @@ export class MessagesService {
         return list;
     }
 
-    private async cleanup(data: MastodonFeed) {
+    private async cleanup(data: RSSFeed) {
         if (!data.rss || !data.rss.channel) return;
         let list = await this.getReadMessageHashes();
         for (let item of data.rss.channel.item) {
