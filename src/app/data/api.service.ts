@@ -144,13 +144,14 @@ export class ApiService {
     const location: WebLocation = rLocation.status == 'fulfilled' ? rLocation.value : {};
     const festivals = rFestivals.status == 'fulfilled' ? rFestivals.value : [];
     const datasets = rDatasets.status == 'fulfilled' ? rDatasets.value : [];
-    return this.cleanNames([...festivals, ...datasets], location, args.filter, args.inactive);
+    const devMode = await this.settingsService.getInteger('developermode');
+    return this.cleanNames([...festivals, ...datasets], location, args.filter, args.inactive, devMode === 1);
   }
 
-  private cleanNames(datasets: Dataset[], location: WebLocation, filter: DatasetFilter, inactive?: boolean): Dataset[] {
-    const isWeb = !Capacitor.isNativePlatform();
+  private cleanNames(datasets: Dataset[], location: WebLocation, filter: DatasetFilter, inactive?: boolean, devMode?: boolean): Dataset[] {
+    
     for (const dataset of datasets) {
-      if (isWeb && dataset.id == 'eforest-draft') {
+      if (devMode && dataset.id == 'eforest-draft') {
         dataset.active = true;
       }
       if (dataset.imageUrl?.includes('[@static]')) {

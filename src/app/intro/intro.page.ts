@@ -304,6 +304,8 @@ export class IntroPage {
     }
     await this.db.clear();
     console.log('Done clearing');
+    const devMode = await this.settingsService.getInteger('developermode');
+    await this.settingsService.setInteger('developermode',devMode == 0 ? 1 : 0);
     await this.settingsService.clearSelectedEvent();
     document.location.href = '';
   }
