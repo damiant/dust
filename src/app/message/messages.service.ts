@@ -91,13 +91,16 @@ export class MessagesService {
             item.pubDate = dt.toLocaleDateString('en-us', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' });
             item.read = list.includes(this.hashOfItem(item));
 
+            if (item.title) {
+                item.title = this.decodeHTMLEntities(item.title);
+            }
             item.description = item.description
-            .replace(/\u00AD/g, '')
-            .replace(/\u200C/g, '')
-            .replace(/\u00A0/g, '')
-            .replace(/\s+/g, ' ')
-            .replace(/ ͏/g, '')
-            .replace(/\s{2,}/g, ' ');
+                .replace(/\u00AD/g, '')
+                .replace(/\u200C/g, '')
+                .replace(/\u00A0/g, '')
+                .replace(/\s+/g, ' ')
+                .replace(/ ͏/g, '')
+                .replace(/\s{2,}/g, ' ');
         }
     }
 
@@ -142,5 +145,20 @@ export class MessagesService {
     private rssFeedUrl(url: string | undefined): string | undefined {
         if (!url) return undefined;
         return `https://api.dust.events/rss?feed=${encodeURIComponent(url)}`;
+    }
+
+    private decodeHTMLEntities(text: string) {
+        const entities: any = {
+            "&#8221;": "”",
+            "&#8216;": "‘",
+            "&#8217;": "’",
+            "&#8220;": "“",
+            "&#8230;": "…",
+            // Add more entities as needed
+        };
+
+        return text.replace(/&#[0-9]+;/g, (match) => {
+            return entities[match] || match;
+        });
     }
 }

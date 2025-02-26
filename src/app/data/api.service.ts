@@ -154,6 +154,9 @@ export class ApiService {
       if (devMode && dataset.id == 'eforest-draft') {
         dataset.active = true;
       }
+      if (dataset.id.includes('ttitd')) {
+        dataset.rssFeed = 'https://journal.burningman.org/feed/';
+      }
       if (dataset.imageUrl?.includes('[@static]')) {
         dataset.imageUrl = dataset.imageUrl.replace('[@static]', static_dust_events);
         dataset.active = true;
