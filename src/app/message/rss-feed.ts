@@ -41,6 +41,7 @@ export interface RSSFeed {
     "media:content"?: MediaContent
     category: any
     read: boolean
+    title?: string
     reading: boolean
   }
   

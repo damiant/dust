@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, OnInit, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, OnInit, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   IonCard,
@@ -6,14 +6,15 @@ import {
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
-  IonIcon,
-  IonText, IonAvatar, IonFabButton
+  IonText, IonAvatar,
+  IonButton
 } from '@ionic/angular/standalone';
 import { Item } from '../message/rss-feed';
 import { addIcons } from 'ionicons';
 import { checkmarkOutline } from 'ionicons/icons';
 import { FadeIn, FadeOut } from '../ui/animation';
 import { delay } from '../utils/utils';
+import { UiService } from '../ui/ui.service';
 
 export type ArtImageStyle = 'top' | 'side' | 'none';
 
@@ -23,7 +24,7 @@ export type ArtImageStyle = 'top' | 'side' | 'none';
     styleUrls: ['./message-card.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [FadeOut(500), FadeIn(300)],
-    imports: [IonFabButton,
+    imports: [
         IonAvatar,
         CommonModule,
         IonCard,
@@ -32,7 +33,7 @@ export type ArtImageStyle = 'top' | 'side' | 'none';
         IonCardSubtitle,
         IonCardContent,
         IonText,
-        IonIcon,
+        IonButton
     ]
 })
 export class MessageCardComponent implements OnInit {
@@ -41,6 +42,7 @@ export class MessageCardComponent implements OnInit {
   hideImage = signal(false);
   out = signal(false);
   in = signal(false);
+  ui = inject(UiService);
 
   constructor() {
     addIcons({ checkmarkOutline });
@@ -54,6 +56,10 @@ export class MessageCardComponent implements OnInit {
   markAsRead() {
     this.out.set(true);
     this.read.emit();
+  }
+
+  open() {
+    this.ui.openUrl(this.item().link);
   }
 
 }

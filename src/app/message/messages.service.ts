@@ -26,7 +26,7 @@ export class MessagesService {
     private settings = inject(SettingsService);
 
     private async updateData(datasetId: string, rssFeed: string | undefined, mastodonHandle: string | undefined, inboxEmail: boolean): Promise<void> {
-        const url = mastodonHandle ? this.mastodonURL(mastodonHandle) : rssFeed;
+        const url = mastodonHandle ? this.mastodonURL(mastodonHandle) : this.rssFeedUrl(rssFeed);
         if (url) {
             const res = await fetch(url, { method: 'GET' });
             const data: RSSFeed = await res.json();
@@ -49,9 +49,9 @@ export class MessagesService {
         this.feed.set(data);
         const emails = await this.db.readData(datasetId, Names.emails);
         await this.cleanupEmail(emails);
-        this.email.set(emails);        
+        this.email.set(emails);
         if (mastodonHandle || inboxEmail || rssFeed) {
-            this.updateData(datasetId, rssFeed,  mastodonHandle, inboxEmail);
+            this.updateData(datasetId, rssFeed, mastodonHandle, inboxEmail);
         }
     }
 
@@ -81,13 +81,23 @@ export class MessagesService {
     }
 
     private async cleanup(data: RSSFeed) {
+
         if (!data.rss || !data.rss.channel) return;
         let list = await this.getReadMessageHashes();
         for (let item of data.rss.channel.item) {
-            item.avatar = data.rss.channel.image.url;
+            item.avatar = data.rss.channel.image?.url;
+
             const dt = new Date(item.pubDate);
             item.pubDate = dt.toLocaleDateString('en-us', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' });
             item.read = list.includes(this.hashOfItem(item));
+
+            item.description = item.description
+            .replace(/\u00AD/g, '')
+            .replace(/\u200C/g, '')
+            .replace(/\u00A0/g, '')
+            .replace(/\s+/g, ' ')
+            .replace(/ ͏/g, '')
+            .replace(/\s{2,}/g, ' ');
         }
     }
 
@@ -108,16 +118,16 @@ export class MessagesService {
             email.html = replaceAll(email.html, 'Click here</a>', '</a>');
             email.html = replaceAll(email.html, 'inbox@dust.events', 'you');
             email.html = replaceAll(email.html, 'Unsubscribe instantly</a>', '</a>');
-            email.html = replaceAll(email.html, 'list-manage.com/unsubscribe?','');
-            email.html = replaceAll(email.html, 'list-manage.com/profile?','');
+            email.html = replaceAll(email.html, 'list-manage.com/unsubscribe?', '');
+            email.html = replaceAll(email.html, 'list-manage.com/profile?', '');
             email.html = replaceAll(email.html, 'unsubscribe', '');
-            email.html = replaceAll(email.html, '<img src="https://cdn-images.mailchimp.com/monkey_rewards/intuit-mc-rewards-2.png"','<div ');
+            email.html = replaceAll(email.html, '<img src="https://cdn-images.mailchimp.com/monkey_rewards/intuit-mc-rewards-2.png"', '<div ');
             email.read = list.includes(this.hashOfEmail(email));
         }
     }
 
 
-    private mastodonURL(mastodonHandle: string): string {
+    private mastodonURL(mastodonHandle: string): string | undefined {
         // Format is @username@username
         const tmp = mastodonHandle.split('@');
         if (tmp.length < 3) {
@@ -127,5 +137,10 @@ export class MessagesService {
         const username = tmp[1];
         const server = tmp[2];
         return `https://api.dust.events/rss?feed=${server}/@${username}`;
+    }
+
+    private rssFeedUrl(url: string | undefined): string | undefined {
+        if (!url) return undefined;
+        return `https://api.dust.events/rss?feed=${encodeURIComponent(url)}`;
     }
 }

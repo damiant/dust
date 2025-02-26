@@ -43,8 +43,10 @@ export class MessagesPage implements OnInit {
     });
 
     effect(async () => {
-      this.db.resume();
-      await this.update();
+      const resumed = this.db.resume();
+      if (resumed.length > 0) {
+        await this.update();
+      }
     });
    }
 
@@ -59,6 +61,7 @@ export class MessagesPage implements OnInit {
   }
 
   private async update() {
+    
     await this.messages.getMessages(
       this.settings.settings.datasetId,
       this.settings.settings.dataset?.rssFeed,

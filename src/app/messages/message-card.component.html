@@ -1,29 +1,44 @@
 <ion-card class="image-container" class="item" [@fadeOut]="out()" [@fadeIn]="in()">
-  <div class="right">
+  <!-- <div class="right">
     <ion-fab-button size="small" (click)="markAsRead()"><ion-icon name="checkmark-outline"></ion-icon></ion-fab-button>
-  </div>
+  </div> -->
   @if (item()['media:content']?.medium === 'image') {
     <div class="image-container" [class.hide]="hideImage()">
-      <img (load)="in.set(true)" (error)="hideImage.set(true)" loading="lazy" class="image" [src]="item()['media:content']?.url" />
+      <img
+        (load)="in.set(true)"
+        (error)="hideImage.set(true)"
+        loading="lazy"
+        class="image"
+        [src]="item()['media:content']?.url"
+      />
     </div>
   }
 
   <ion-card-header>
     <ion-card-title>
-      
-      {{ item().pubDate }}
+      {{ item().title ?? item().pubDate }}
+      <!-- {{ item().pubDate }} -->
     </ion-card-title>
     @if (item().category) {
       <ion-card-subtitle> {{ item().category }}</ion-card-subtitle>
+    } @else {
+      <ion-card-subtitle> {{ item().pubDate }}</ion-card-subtitle>
     }
   </ion-card-header>
 
   <ion-card-content>
-    <ion-avatar>
-      <img [src]="item().avatar" />
-    </ion-avatar>
-    <ion-text [innerHTML]="item().description"></ion-text>
-    <ion-text color="primary"></ion-text>
+    @if (item().avatar) {
+      <ion-avatar>
+        <img [src]="item().avatar" />
+      </ion-avatar>
+    }
+    
+    <div class="body" [innerHTML]="item().description"></div>
 
+    <ion-text color="primary"></ion-text>
+    <div class="buttons">
+      <ion-button mode="md" fill="outline" (click)="open()">Open</ion-button>
+      <ion-button mode="md" color="primary" (click)="markAsRead()">Mark Read</ion-button>
+    </div>
   </ion-card-content>
 </ion-card>
