@@ -28,7 +28,7 @@ export class VolunteeripateService {
     }
 
     async getShifts(token: string): Promise<Shifts> {
-        const url = `https://${this.url()}/shift_data?dust_id=to-the-moon-24`;
+        const url = `https://${this.url()}/shift_data.json`; //?dust_id=to-the-moon-24
         try {
             const options = {
                 url, headers: {
