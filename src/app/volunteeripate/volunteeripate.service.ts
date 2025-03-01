@@ -42,7 +42,7 @@ export class VolunteeripateService {
                 alert(`Failed to get shifts`);
             } else {
                 const data = await response.data;
-                alert(`${data}`);
+                alert(`${JSON.stringify(data)}`);
                 console.log(data);
             }
         } catch (e) {
