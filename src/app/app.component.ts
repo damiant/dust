@@ -44,8 +44,9 @@ export class AppComponent implements OnInit {
         const tmp = event.url.split('?');
         if (tmp.length > 1) {
           const kv = tmp[1].split('=');
-          const volunteeripateToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ2b2x1bnRlZXJpcGF0ZSIsImF1ZCI6IkRVU1QiLCJpYXQiOjE3NDAyMzQ1NTAsIm5iZiI6MTc0MDIzNDU2MCwiZXhwIjoxNzQwMjM4MTUwLCJ1c2VyX2lkIjpudWxsLCJlbWFpbCI6bnVsbH0.lnH9jALNVrCg72KHC6mhOSaCiUDPGvEDcn0dEbnfehg';
-          this.shareService.notify(kv[0] as ShareInfoType, kv[1], volunteeripateToken);          
+          const u = new URL(event.url);
+          const path = u.pathname;          
+          this.shareService.notify(kv[0] as ShareInfoType, kv[1], path);          
         }
       } catch (e) {
         console.error('appUrlOpen', e);

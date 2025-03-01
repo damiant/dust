@@ -219,7 +219,7 @@ function getTimeRange(from: string, to: string): string {
   return `${from} - ${to}`;
 }
 
-export function isWhiteSpace(s: string): boolean {
+export function isWhiteSpace(s: string | undefined): boolean {
   if (!s) return true;
   if (s.trim() == '') return true;
   return false;

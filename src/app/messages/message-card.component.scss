@@ -1,37 +1,63 @@
 .image {
-    min-height: 180px;
-    width: 100%;
-    object-fit:contain;
-    margin-bottom: -5px;
+  min-height: 180px;
+  width: 100%;
+  object-fit: contain;
+  margin-bottom: -5px;
 }
 
 .image-container {
-    min-height: 180px;
-    width: 100%;
-    object-fit: cover;
-    background-color: rgba(0, 0, 0, 0.1);
+  min-height: 180px;
+  width: 100%;
+  object-fit: cover;
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .hide {
-    display: none;
+  display: none;
 }
 
 .top {
-    height: 360px;
+  height: 360px;
+}
+
+.body {
+   
+    // zoom: 0.5;
+    // -moz-transform: scale(0.5);
+
 }
 
 .item {
-    height: calc(var(--text-zoom) * 50 + 156px)
+  height: calc(var(--text-zoom) * 50 + 156px);
 }
 
-ion-avatar {  
-    float: left;
-    margin-right: 0.5rem;
+.msg-container {
+  display: flex;
+  flex-direction: row;  
+}
+.msg {
+    max-width: 500px;    
+}
+
+ion-avatar {
+  float: left;
+  margin-right: 0.5rem;
 }
 
 .right {
-    top: 0.5rem;
-    position: absolute;
-    right: 0.5rem;
-    z-index: 1;
+  top: 0.5rem;
+  position: absolute;
+  right: 0.5rem;
+  z-index: 1;
+}
+
+.buttons {
+  padding-top: 1rem;  
+  width: 100%;
+  text-align: center;
+}
+
+.br {
+    background-color: green;
+    height: 10px;
 }

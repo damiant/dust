@@ -8,11 +8,7 @@
           etc.</ion-text>
       </div>
       }
-      <div class="center">
-        @if (!db.featuresHidden().includes('volunteeripate')) {
-        <ion-text (click)="openVolunteeripate()" class="large" color="primary">Sync your volunteer shifts from Volunteeripate.</ion-text>
-        }
-      </div> 
+
       @for (event of events; track event) {
       <ion-item (click)="editReminder(event)">
         <span slot="start" class="cal-title">{{ event.startTime }}</span>
@@ -29,6 +25,11 @@
         </ion-label>
       </ion-item>
       }
+      <div class="center">
+        @if (!db.featuresHidden().includes('volunteeripate')) {
+        <ion-text (click)="openVolunteeripate()" class="large" color="primary">Sync with Volunteeripate</ion-text>
+        }
+      </div> 
     </ion-list>
   </ion-card-content>
 </ion-card>

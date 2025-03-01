@@ -1,5 +1,9 @@
 ## Changes
 
+## 2.78
+
+- RSS Feed support
+
 ## 2.77
 
 - Download progress shown if downloading for the first time.
