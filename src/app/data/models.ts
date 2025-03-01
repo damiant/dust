@@ -239,6 +239,8 @@ export interface Dataset {
   pin: string;
   class?: string; // Animation
   active: boolean; // Displayed publicly
+  volunteeripateSubdomain: string; // Volunteeripate Subdomain
+  volunteeripateIdentifier: string; // Volunteeripate Identifier
   camp_registration: boolean;
   event_registration: boolean;
   subTitle: string; // Calculated

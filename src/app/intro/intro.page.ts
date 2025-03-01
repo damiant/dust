@@ -487,12 +487,15 @@ export class IntroPage {
         hidden.push('friends');
         //hidden.push('private');
       }
+
+      if (isWhiteSpace(this.settingsService.settings.dataset?.volunteeripateSubdomain)) {
+        hidden.push('volunteeripate');
+      }
       if (`${this.settingsService.settings.dataset?.mastodonHandle}`.length == 0 &&
         this.settingsService.settings.dataset?.inboxEmail !== 'Y' &&
         `${this.settingsService.settings.dataset?.rssFeed}`.length == 0) {
         hidden.push('messages');
       }
-      //hidden.push('volunteeripate');
       this.db.featuresHidden.set(hidden);
       this.settingsService.setOffline(this.settingsService.settings.datasetId);
 
