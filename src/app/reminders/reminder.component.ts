@@ -16,6 +16,7 @@ import {
   ModalController,
   PickerColumn,
   ToastController,
+  IonTextarea,
 } from '@ionic/angular/standalone';
 import { Reminder } from '../data/models';
 import { FormsModule } from '@angular/forms';
@@ -50,6 +51,7 @@ export enum ReminderResult {
         IonHeader,
         IonTitle,
         IonToolbar,
+        IonTextarea
     ],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
