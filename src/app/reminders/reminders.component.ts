@@ -13,7 +13,7 @@ import {
 import { FavoritesService } from '../favs/favorites.service';
 import { Reminder } from '../data/models';
 import { CommonModule } from '@angular/common';
-import { clone, delay, getDayName } from '../utils/utils';
+import { clone, delay, getDayName, isWhiteSpace } from '../utils/utils';
 import { ReminderComponent, ReminderResult } from './reminder.component';
 import { UiService } from '../ui/ui.service';
 import { addIcons } from 'ionicons';
@@ -64,7 +64,9 @@ export class RemindersComponent implements OnInit {
       if (shareItem && shareItem.type == ShareInfoType.token) {
         console.log(`Share found ${shareItem.id} ${shareItem.path}`);
         const subdomain = this.settings.settings.dataset?.volunteeripateSubdomain ?? '';
-        this.applyReminders(await this.volunteeripate.getShifts(subdomain, shareItem.id));
+        if (!isWhiteSpace(subdomain)) {
+          this.applyReminders(await this.volunteeripate.getShifts(subdomain, shareItem.id));
+        }
       }
     });
   }
