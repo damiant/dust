@@ -74,3 +74,4 @@ resources/android/**/*
 scripts/rsl
 # Local Netlify folder
 .netlify
+**/*.http

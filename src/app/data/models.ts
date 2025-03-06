@@ -234,10 +234,13 @@ export interface Dataset {
   mapDirection: number; // Compass rotation for North
   mastodonHandle: string; // Mastodon handle
   inboxEmail: string; // Has inbox email Y/N
+  rssFeed: string; // RSS Feed
   directions: string | undefined; // Directions text
   pin: string;
   class?: string; // Animation
   active: boolean; // Displayed publicly
+  volunteeripateSubdomain: string; // Volunteeripate Subdomain
+  volunteeripateIdentifier: string; // Volunteeripate Identifier
   camp_registration: boolean;
   event_registration: boolean;
   subTitle: string; // Calculated
