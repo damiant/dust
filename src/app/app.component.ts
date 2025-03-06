@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
         if (tmp.length > 1) {
           const kv = tmp[1].split('=');
           const u = new URL(event.url);
-          const path = u.pathname;          
+          const path = u.pathname;
           this.shareService.notify(kv[0] as ShareInfoType, kv[1], path);          
         }
       } catch (e) {
