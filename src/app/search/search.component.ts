@@ -14,7 +14,7 @@ import { IonSearchbar } from '@ionic/angular/standalone';
 export class SearchComponent implements OnInit {
   placeholder = input('');
   openFocused = input(false);
-  search = output<string>();
+  searched = output<string>();
   private _change = inject(ChangeDetectorRef);
   searchBar = viewChild.required(IonSearchbar)
 
@@ -33,7 +33,7 @@ export class SearchComponent implements OnInit {
 
   onSubmit() {
     if (this.form.value.search) {      
-      this.search.emit(this.form.value.search);
+      this.searched.emit(this.form.value.search);
     }
     if (Capacitor.getPlatform() != 'web') {
       Keyboard.hide();
@@ -41,6 +41,6 @@ export class SearchComponent implements OnInit {
   }
 
   handleInput(event: any) {    
-    this.search.emit(event.target.value);
+    this.searched.emit(event.target.value);
   }
 }

@@ -22,7 +22,7 @@
         </ion-buttons>
       </ion-toolbar>
       <ion-toolbar>
-        <app-search placeholder="Find Art" (search)="search($event)"></app-search>
+        <app-search placeholder="Find Art" (searched)="search($event)"></app-search>
         @if (vm.artTypes.length > 0) {
         <ion-buttons class="b-pad-r" slot="end">
           <app-category [showSortBy]="false" id="art-types" allTitle="All Types" [(category)]="vm.artType"
