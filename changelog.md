@@ -4,6 +4,7 @@
 
 - iOS 14 minimum support
 - Android 15 support
+- Verification links for login
 
 ## 2.78
 
