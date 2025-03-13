@@ -7,7 +7,7 @@ import { DbService } from '../data/db.service';
 import { FavoritesService } from '../favs/favorites.service';
 import { Art, Camp, Event, RSLEvent } from '../data/models';
 import { delay } from '../utils/utils';
-import { PrintWebview } from 'capacitor-print-webview';
+import { PrintWebview } from '@webnativellc/capacitor-print-webview';
 
 interface PrintState {
   hide: boolean;

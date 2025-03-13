@@ -1,64 +1,61 @@
 PODS:
-  - ByteowlsCapacitorFilesharer (6.0.0):
-    - Capacitor
-  - Capacitor (6.2.0):
+  - Capacitor (7.1.0):
     - CapacitorCordova
-  - CapacitorApp (6.0.2):
+  - CapacitorApp (7.0.0):
     - Capacitor
-  - CapacitorAppLauncher (6.0.3):
+  - CapacitorAppLauncher (7.0.0):
     - Capacitor
-  - CapacitorBrowser (6.0.4):
+  - CapacitorBrowser (7.0.0):
     - Capacitor
-  - CapacitorCommunityInAppReview (6.0.0):
+  - CapacitorCommunityInAppReview (7.0.0):
     - Capacitor
-  - CapacitorCommunityKeepAwake (5.0.1):
+  - CapacitorCommunityKeepAwake (7.0.0):
     - Capacitor
-  - CapacitorCordova (6.2.0)
-  - CapacitorFilesystem (6.0.2):
+  - CapacitorCordova (7.1.0)
+  - CapacitorFilesystem (7.0.0):
     - Capacitor
-  - CapacitorGeolocation (6.0.2):
+  - CapacitorGeolocation (7.1.1):
     - Capacitor
-  - CapacitorHaptics (6.0.2):
+    - IONGeolocationLib (~> 1.0)
+  - CapacitorHaptics (7.0.0):
     - Capacitor
-  - CapacitorKeyboard (6.0.3):
+  - CapacitorKeyboard (7.0.0):
     - Capacitor
-  - CapacitorLocalNotifications (6.1.1):
+  - CapacitorLocalNotifications (7.0.0):
     - Capacitor
-  - CapacitorNetwork (6.0.3):
+  - CapacitorNetwork (7.0.0):
     - Capacitor
-  - CapacitorPreferences (6.0.3):
+  - CapacitorPreferences (7.0.0):
     - Capacitor
-  - CapacitorPrintWebview (6.0.3):
+  - CapacitorPushNotifications (7.0.0):
     - Capacitor
-  - CapacitorPushNotifications (6.0.3):
+  - CapacitorScreenOrientation (7.0.0):
     - Capacitor
-  - CapacitorScreenOrientation (6.0.3):
+  - CapacitorShare (7.0.0):
     - Capacitor
-  - CapacitorShare (6.0.3):
+  - CapacitorSplashScreen (7.0.0):
     - Capacitor
-  - CapacitorSplashScreen (6.0.3):
+  - CapacitorStatusBar (7.0.0):
     - Capacitor
-  - CapacitorStatusBar (6.0.2):
+  - CapacitorTextZoom (7.0.0):
     - Capacitor
-  - CapacitorTextZoom (6.0.3):
+  - CapawesomeCapacitorAppUpdate (7.0.1):
     - Capacitor
-  - CapawesomeCapacitorAppUpdate (6.0.0):
-    - Capacitor
-  - CordovaPlugins (6.2.0):
+  - CordovaPlugins (7.1.0):
     - CapacitorCordova
-  - FirebaseCore (11.4.2):
-    - FirebaseCoreInternal (< 12.0, >= 11.4.2)
+  - FirebaseCore (11.9.0):
+    - FirebaseCoreInternal (~> 11.9.0)
     - GoogleUtilities/Environment (~> 8.0)
     - GoogleUtilities/Logger (~> 8.0)
-  - FirebaseCoreInternal (11.4.2):
+  - FirebaseCoreInternal (11.9.0):
     - "GoogleUtilities/NSData+zlib (~> 8.0)"
-  - FirebaseInstallations (11.4.0):
-    - FirebaseCore (~> 11.0)
+  - FirebaseInstallations (11.9.0):
+    - FirebaseCore (~> 11.9.0)
     - GoogleUtilities/Environment (~> 8.0)
     - GoogleUtilities/UserDefaults (~> 8.0)
     - PromisesObjC (~> 2.4)
-  - FirebaseMessaging (11.4.0):
-    - FirebaseCore (~> 11.0)
+  - FirebaseMessaging (11.9.0):
+    - FirebaseCore (~> 11.9.0)
     - FirebaseInstallations (~> 11.0)
     - GoogleDataTransport (~> 10.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 8.0)
@@ -93,17 +90,21 @@ PODS:
   - GoogleUtilities/UserDefaults (8.0.2):
     - GoogleUtilities/Logger
     - GoogleUtilities/Privacy
-  - HugotomaziCapacitorNavigationBar (4.0.1):
-    - Capacitor
+  - IONGeolocationLib (1.0.0)
   - nanopb (3.30910.0):
     - nanopb/decode (= 3.30910.0)
     - nanopb/encode (= 3.30910.0)
   - nanopb/decode (3.30910.0)
   - nanopb/encode (3.30910.0)
   - PromisesObjC (2.4.0)
+  - WebnativellcCapacitorFilesharer (7.0.4):
+    - Capacitor
+  - WebnativellcCapacitorNavigationBar (7.0.0):
+    - Capacitor
+  - WebnativellcCapacitorPrintWebview (7.0.1):
+    - Capacitor
 
 DEPENDENCIES:
-  - "ByteowlsCapacitorFilesharer (from `../../node_modules/@byteowls/capacitor-filesharer`)"
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorApp (from `../../node_modules/@capacitor/app`)"
   - "CapacitorAppLauncher (from `../../node_modules/@capacitor/app-launcher`)"
@@ -118,7 +119,6 @@ DEPENDENCIES:
   - "CapacitorLocalNotifications (from `../../node_modules/@capacitor/local-notifications`)"
   - "CapacitorNetwork (from `../../node_modules/@capacitor/network`)"
   - "CapacitorPreferences (from `../../node_modules/@capacitor/preferences`)"
-  - CapacitorPrintWebview (from `../../node_modules/capacitor-print-webview`)
   - "CapacitorPushNotifications (from `../../node_modules/@capacitor/push-notifications`)"
   - "CapacitorScreenOrientation (from `../../node_modules/@capacitor/screen-orientation`)"
   - "CapacitorShare (from `../../node_modules/@capacitor/share`)"
@@ -128,7 +128,9 @@ DEPENDENCIES:
   - "CapawesomeCapacitorAppUpdate (from `../../node_modules/@capawesome/capacitor-app-update`)"
   - CordovaPlugins (from `../capacitor-cordova-ios-plugins`)
   - FirebaseMessaging
-  - "HugotomaziCapacitorNavigationBar (from `../../node_modules/@hugotomazi/capacitor-navigation-bar`)"
+  - "WebnativellcCapacitorFilesharer (from `../../node_modules/@webnativellc/capacitor-filesharer`)"
+  - "WebnativellcCapacitorNavigationBar (from `../../node_modules/@webnativellc/capacitor-navigation-bar`)"
+  - "WebnativellcCapacitorPrintWebview (from `../../node_modules/@webnativellc/capacitor-print-webview`)"
 
 SPEC REPOS:
   trunk:
@@ -138,12 +140,11 @@ SPEC REPOS:
     - FirebaseMessaging
     - GoogleDataTransport
     - GoogleUtilities
+    - IONGeolocationLib
     - nanopb
     - PromisesObjC
 
 EXTERNAL SOURCES:
-  ByteowlsCapacitorFilesharer:
-    :path: "../../node_modules/@byteowls/capacitor-filesharer"
   Capacitor:
     :path: "../../node_modules/@capacitor/ios"
   CapacitorApp:
@@ -172,8 +173,6 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/network"
   CapacitorPreferences:
     :path: "../../node_modules/@capacitor/preferences"
-  CapacitorPrintWebview:
-    :path: "../../node_modules/capacitor-print-webview"
   CapacitorPushNotifications:
     :path: "../../node_modules/@capacitor/push-notifications"
   CapacitorScreenOrientation:
@@ -190,44 +189,49 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capawesome/capacitor-app-update"
   CordovaPlugins:
     :path: "../capacitor-cordova-ios-plugins"
-  HugotomaziCapacitorNavigationBar:
-    :path: "../../node_modules/@hugotomazi/capacitor-navigation-bar"
+  WebnativellcCapacitorFilesharer:
+    :path: "../../node_modules/@webnativellc/capacitor-filesharer"
+  WebnativellcCapacitorNavigationBar:
+    :path: "../../node_modules/@webnativellc/capacitor-navigation-bar"
+  WebnativellcCapacitorPrintWebview:
+    :path: "../../node_modules/@webnativellc/capacitor-print-webview"
 
 SPEC CHECKSUMS:
-  ByteowlsCapacitorFilesharer: ea14537059851aed44df8c52f0984f61cd34f53b
-  Capacitor: 1f3c7b9802d958cd8c4eb63895fff85dff2e1eea
-  CapacitorApp: 2a8c3a0b0814322e5e6e15fe595f02c3808f0f8b
-  CapacitorAppLauncher: a9fb7da942e89fa9cb2bb1e579c8bd2ab81652a5
-  CapacitorBrowser: ef0529d16cd8839281050c350e7bbee4f5c6d65f
-  CapacitorCommunityInAppReview: c69a9392f39a10f28092d823cfa979637f4fa079
-  CapacitorCommunityKeepAwake: e2ddd50812e3407f8dc3a2c28e97d66e9b59b2f5
-  CapacitorCordova: b33e7f4aa4ed105dd43283acdd940964374a87d9
-  CapacitorFilesystem: c832a3f6d4870c3872688e782ae8e33665e6ecbf
-  CapacitorGeolocation: 9db9e7ed7cfb5d5d8f01b108ab483ad9c9d2865d
-  CapacitorHaptics: b53409aaca1203f79c6d0eb3ed5de40556339518
-  CapacitorKeyboard: 460c6f9ec5e52c84f2742d5ce2e67bbc7ab0ebb0
-  CapacitorLocalNotifications: 113dcab0b40781e8463bfdbbd6b54c6116361644
-  CapacitorNetwork: da96b5fff8d05b67f4658503aabb22f65bda2c0f
-  CapacitorPreferences: 9f9935bce493977183511362131a93f7b260191a
-  CapacitorPrintWebview: d2c9d1cf8b058cce3bf19e20d3567e3378f6be15
-  CapacitorPushNotifications: 2912e63470b895aefadff55c49f1fb8d82769423
-  CapacitorScreenOrientation: 3bb823f5d265190301cdc5d58a568a287d98972a
-  CapacitorShare: 7af6ca761ce62030e8e9fbd2eb82416f5ceced38
-  CapacitorSplashScreen: 68893659d77b5f82d753b3a70475082845e3039c
-  CapacitorStatusBar: 3b9ac7d0684770522c532d1158a1434512ab1477
-  CapacitorTextZoom: be3bee30e5bf4bc623539877e6241dff861d631e
-  CapawesomeCapacitorAppUpdate: 3c05b5c8e42f9c6a88d666093406e9336d9bfdb1
-  CordovaPlugins: 4ebce45cc9ccfdb8c7695490dd00eec481a89979
-  FirebaseCore: 6b32c57269bd999aab34354c3923d92a6e5f3f84
-  FirebaseCoreInternal: 35731192cab10797b88411be84940d2beb33a238
-  FirebaseInstallations: 6ef4a1c7eb2a61ee1f74727d7f6ce2e72acf1414
-  FirebaseMessaging: f8a160d99c2c2e5babbbcc90c4a3e15db036aee2
+  Capacitor: bceb785fb78f5e81e4a9e37843bc1c24bd9c7194
+  CapacitorApp: 9cb31064a6c6bb2b1438583733a7bf45557fc1da
+  CapacitorAppLauncher: e2c8917b37032e53694869df963e581ddcf112fb
+  CapacitorBrowser: 55c21db47416dcc8fc3b623e18fd7d09acb26081
+  CapacitorCommunityInAppReview: f84baf01f45e8698e34585b71740ba967ec8cd10
+  CapacitorCommunityKeepAwake: ae762ce29b53147d28cfcaae5273cd1db0c38fc4
+  CapacitorCordova: 866217f32c1d25b326c568a10ea3ed0c36b13e29
+  CapacitorFilesystem: 59a2b7b56a897c6a3de4d04c5718e1d80de9d2f5
+  CapacitorGeolocation: c0755715aaadf5c86dc0053e1127b368444c914b
+  CapacitorHaptics: 7be406a91e4eb87287f321c6c68e1709d6837b3a
+  CapacitorKeyboard: 4db71e694e7afb5d7c0be09b05495c19f7d6c914
+  CapacitorLocalNotifications: c9577978cd598af5e2b5615548b8222b3b10d7e2
+  CapacitorNetwork: 30c2e78a0ed32530656cb426c8ee6c2caec10dbf
+  CapacitorPreferences: 8e4bef1f937fc991a19d7ea99330c36a62edd24b
+  CapacitorPushNotifications: 2e0132cd2f1a5d696bcbfc3725c2b6ffcb9275d4
+  CapacitorScreenOrientation: 45e36e1121cdba1634eb12077c5e99391055116f
+  CapacitorShare: d94c53d7656f1ce8f6712ae8d19ab0c18a69259f
+  CapacitorSplashScreen: 7e7a0a1113833032f196b3af6fa437baccacf5bc
+  CapacitorStatusBar: a8c4c83ed2e973bdafb979e80e4b00d027832cb7
+  CapacitorTextZoom: 254c75dffb54d34d582a4f14cc7ba432fcfb5cad
+  CapawesomeCapacitorAppUpdate: d1f04c1c870388248889908cf2ca960c7fdbf0ef
+  CordovaPlugins: 3fe6b481280b19dfaec5b188f4910d9c1f1b88d2
+  FirebaseCore: 7cfcf7e8b33985c06478fd2b96e2f7101eb61a1c
+  FirebaseCoreInternal: 154779013b85b4b290fdba38414df475f42e3096
+  FirebaseInstallations: c76d4931a485fc0cc2dc1d62d3ed0369846ea4b8
+  FirebaseMessaging: 07e196b68580e68104df5c1c1b09ac26d04b24ea
   GoogleDataTransport: aae35b7ea0c09004c3797d53c8c41f66f219d6a7
   GoogleUtilities: 26a3abef001b6533cf678d3eb38fd3f614b7872d
-  HugotomaziCapacitorNavigationBar: 57d7cd51c65ef5e40159bafb0095ee99fab432ba
+  IONGeolocationLib: 81f33f88d025846946de2cf63b0c7628e7c6bc9d
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
+  WebnativellcCapacitorFilesharer: e3a5930240633db3335040251d66aac6762ff111
+  WebnativellcCapacitorNavigationBar: 8232f95b82547c0e3a5200d4d8a5220d9bf6607c
+  WebnativellcCapacitorPrintWebview: 77ba57165787f6c86d83dac56fd6e3c3c3c5098d
 
-PODFILE CHECKSUM: 2f3c8ac9a29e14fc4489654838e7e82a83ae6f7e
+PODFILE CHECKSUM: dc032ae391d24e5f6790d0048272e4b7aad9e96a
 
 COCOAPODS: 1.16.2

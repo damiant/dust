@@ -2,9 +2,6 @@
 include ':capacitor-android'
 project(':capacitor-android').projectDir = new File('../node_modules/@capacitor/android/capacitor')
 
-include ':byteowls-capacitor-filesharer'
-project(':byteowls-capacitor-filesharer').projectDir = new File('../node_modules/@byteowls/capacitor-filesharer/android')
-
 include ':capacitor-community-in-app-review'
 project(':capacitor-community-in-app-review').projectDir = new File('../node_modules/@capacitor-community/in-app-review/android')
 
@@ -62,8 +59,11 @@ project(':capacitor-text-zoom').projectDir = new File('../node_modules/@capacito
 include ':capawesome-capacitor-app-update'
 project(':capawesome-capacitor-app-update').projectDir = new File('../node_modules/@capawesome/capacitor-app-update/android')
 
-include ':hugotomazi-capacitor-navigation-bar'
-project(':hugotomazi-capacitor-navigation-bar').projectDir = new File('../node_modules/@hugotomazi/capacitor-navigation-bar/android')
+include ':webnativellc-capacitor-filesharer'
+project(':webnativellc-capacitor-filesharer').projectDir = new File('../node_modules/@webnativellc/capacitor-filesharer/android')
 
-include ':capacitor-print-webview'
-project(':capacitor-print-webview').projectDir = new File('../node_modules/capacitor-print-webview/android')
+include ':webnativellc-capacitor-navigation-bar'
+project(':webnativellc-capacitor-navigation-bar').projectDir = new File('../node_modules/@webnativellc/capacitor-navigation-bar/android')
+
+include ':webnativellc-capacitor-print-webview'
+project(':webnativellc-capacitor-print-webview').projectDir = new File('../node_modules/@webnativellc/capacitor-print-webview/android')

@@ -4,11 +4,11 @@ import { randomInt } from '../utils/utils';
 import { IonContent, NavController, ToastController } from '@ionic/angular/standalone';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
-import { NavigationBar } from '@hugotomazi/capacitor-navigation-bar';
+import { NavigationBar } from '@webnativellc/capacitor-navigation-bar';
 import { Share, ShareOptions } from '@capacitor/share';
 import { Browser } from '@capacitor/browser';
 import { ScrollResult } from '../map/map-model';
-import { FileSharer, ShareFileOptions } from '@byteowls/capacitor-filesharer';
+import { FileSharer, ShareFileOptions } from '@webnativellc/capacitor-filesharer';
 import { SplashScreen } from '@capacitor/splash-screen';
 export const ThemePrimaryColor = '#F61067';
 
