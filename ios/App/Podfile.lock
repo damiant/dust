@@ -1,5 +1,5 @@
 PODS:
-  - Capacitor (7.1.0):
+  - Capacitor (7.0.1):
     - CapacitorCordova
   - CapacitorApp (7.0.0):
     - Capacitor
@@ -11,7 +11,7 @@ PODS:
     - Capacitor
   - CapacitorCommunityKeepAwake (7.0.0):
     - Capacitor
-  - CapacitorCordova (7.1.0)
+  - CapacitorCordova (7.0.1)
   - CapacitorFilesystem (7.0.0):
     - Capacitor
   - CapacitorGeolocation (7.1.1):
@@ -41,7 +41,7 @@ PODS:
     - Capacitor
   - CapawesomeCapacitorAppUpdate (7.0.1):
     - Capacitor
-  - CordovaPlugins (7.1.0):
+  - CordovaPlugins (7.0.1):
     - CapacitorCordova
   - FirebaseCore (11.9.0):
     - FirebaseCoreInternal (~> 11.9.0)
@@ -197,13 +197,13 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@webnativellc/capacitor-print-webview"
 
 SPEC CHECKSUMS:
-  Capacitor: bceb785fb78f5e81e4a9e37843bc1c24bd9c7194
+  Capacitor: de199cba6c8b20995428ad0b7cb0bc6ca625ffd4
   CapacitorApp: 9cb31064a6c6bb2b1438583733a7bf45557fc1da
   CapacitorAppLauncher: e2c8917b37032e53694869df963e581ddcf112fb
   CapacitorBrowser: 55c21db47416dcc8fc3b623e18fd7d09acb26081
   CapacitorCommunityInAppReview: f84baf01f45e8698e34585b71740ba967ec8cd10
   CapacitorCommunityKeepAwake: ae762ce29b53147d28cfcaae5273cd1db0c38fc4
-  CapacitorCordova: 866217f32c1d25b326c568a10ea3ed0c36b13e29
+  CapacitorCordova: 63d476958d5022d76f197031e8b7ea3519988c64
   CapacitorFilesystem: 59a2b7b56a897c6a3de4d04c5718e1d80de9d2f5
   CapacitorGeolocation: c0755715aaadf5c86dc0053e1127b368444c914b
   CapacitorHaptics: 7be406a91e4eb87287f321c6c68e1709d6837b3a
@@ -218,7 +218,7 @@ SPEC CHECKSUMS:
   CapacitorStatusBar: a8c4c83ed2e973bdafb979e80e4b00d027832cb7
   CapacitorTextZoom: 254c75dffb54d34d582a4f14cc7ba432fcfb5cad
   CapawesomeCapacitorAppUpdate: d1f04c1c870388248889908cf2ca960c7fdbf0ef
-  CordovaPlugins: 3fe6b481280b19dfaec5b188f4910d9c1f1b88d2
+  CordovaPlugins: 43f51b3526e5c0518079124cc2b4c580cb431f1d
   FirebaseCore: 7cfcf7e8b33985c06478fd2b96e2f7101eb61a1c
   FirebaseCoreInternal: 154779013b85b4b290fdba38414df475f42e3096
   FirebaseInstallations: c76d4931a485fc0cc2dc1d62d3ed0369846ea4b8

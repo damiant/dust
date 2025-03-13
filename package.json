@@ -19,7 +19,7 @@
     "precommit": "ng lint",
     "lint": "export NODE_OPTIONS='--max-old-space-size=8192' && ng lint",
     "prettify": "prettier \"**/*.{ts,html}\" --write",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "private": true,
   "dependencies": {
