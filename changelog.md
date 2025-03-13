@@ -1,5 +1,10 @@
 ## Changes
 
+## 2.79
+
+- iOS 14 minimum support
+- Android 15 support
+
 ## 2.78
 
 - RSS Feed support
