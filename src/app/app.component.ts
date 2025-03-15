@@ -8,6 +8,8 @@ import { IntegrityService } from './data/integrity.service';
 import { DbService } from './data/db.service';
 import { UiService } from './ui/ui.service';
 import { SettingsService } from './data/settings.service';
+import { SafeArea, SafeAreaInsets } from 'capacitor-plugin-safe-area';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-root',
@@ -54,10 +56,29 @@ export class AppComponent implements OnInit {
 
     });
 
+    SafeArea.getSafeAreaInsets().then((data) => {
+      this.applyInsets(data);
+    });
+    await SafeArea.addListener('safeAreaChanged', data => {
+      this.applyInsets(data);
+    });
+
     // Test application integrity
     // setTimeout(() => {
     //   this.integrityService.testIntegrity();
     // }, 10000);
+  }
+
+  private applyInsets(data: SafeAreaInsets) {
+      if (Capacitor.getPlatform() === 'ios') return; // iOS handles safe areas well
+      const { insets } = data;
+      console.log('SafeAreaInsets', insets);
+      for (const [key, value] of Object.entries(insets)) {
+        document.documentElement.style.setProperty(
+          `--safe-area-inset-${key}`,
+          `${value}px`,
+        );
+      }
   }
 
   stackChanged() {

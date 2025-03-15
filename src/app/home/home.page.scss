@@ -6,6 +6,14 @@ ion-list {
     --ion-item-background: transparent;
 }
 
+ion-content {
+    --padding-top: var(--safe-area-inset-top);
+}
+
+.top {
+    margin-top: calc(var(--safe-area-inset-top) * 1.1 + 0.2rem);
+}
+
 .flex {
     display: flex;
     justify-content: center;

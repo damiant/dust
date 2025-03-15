@@ -7,7 +7,11 @@ ion-tab-bar.ios {
     bottom: 0;
     left: 0;
     width: 100%;
+
+    // This is for Android which doesn't do safe area properly
+    padding-bottom: var(--safe-area-inset-bottom);
 }
+
 
 ion-badge {
     margin-left: -5px;

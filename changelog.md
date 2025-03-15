@@ -1,5 +1,9 @@
 ## Changes
 
+## 2.80
+
+- Fix for safe area padding on Android
+
 ## 2.79
 
 - iOS 14 minimum support

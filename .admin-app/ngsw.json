@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1741865621560,
+  "timestamp": 1741866196416,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -191,7 +191,7 @@
         "/chunk-ZR5H7GNT.js",
         "/chunk-ZXKMGT5C.js",
         "/index.html",
-        "/main-4WWK7WRW.js",
+        "/main-OVHLCTGZ.js",
         "/manifest.webmanifest",
         "/polyfills-4BK4MXU4.js",
         "/styles-QRDYAMUQ.css"
@@ -457,8 +457,8 @@
     "/chunk-ZPXCODCV.js": "7083ea388dc3a2cc8e3ebbb8986b7da10584432e",
     "/chunk-ZR5H7GNT.js": "7bb8d17ea0c24e2d4bac4c23cbf83c567781aeb2",
     "/chunk-ZXKMGT5C.js": "802f1b50ebe4e3f736375e3d3d168faf7a16b9cc",
-    "/index.html": "c53aafbdc5cbd441b3997b510998abb8f5598d0a",
-    "/main-4WWK7WRW.js": "69e1ab15757c3171c5d6966fe580216da029a10f",
+    "/index.html": "36d39042db586910176d495c957388f61e72a7f5",
+    "/main-OVHLCTGZ.js": "331aea0eb2bd64c6befdd445e84cda48ce296374",
     "/manifest.webmanifest": "28fbdb700e7301e2e3ff9b467c412c87eb6ce260",
     "/media/gelion-bold-QP3I5GAI.woff": "d8fd81dc51daf56b8043572c54d373d9b4ccc908",
     "/media/gelion-medium-QORO7MMW.woff": "c7f8cb08d42ad40a5f941a6a9adf4f6d3336272c",

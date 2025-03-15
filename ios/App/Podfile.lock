@@ -25,6 +25,8 @@ PODS:
     - Capacitor
   - CapacitorNetwork (7.0.0):
     - Capacitor
+  - CapacitorPluginSafeArea (4.0.0):
+    - Capacitor
   - CapacitorPreferences (7.0.0):
     - Capacitor
   - CapacitorPushNotifications (7.0.0):
@@ -118,6 +120,7 @@ DEPENDENCIES:
   - "CapacitorKeyboard (from `../../node_modules/@capacitor/keyboard`)"
   - "CapacitorLocalNotifications (from `../../node_modules/@capacitor/local-notifications`)"
   - "CapacitorNetwork (from `../../node_modules/@capacitor/network`)"
+  - CapacitorPluginSafeArea (from `../../node_modules/capacitor-plugin-safe-area`)
   - "CapacitorPreferences (from `../../node_modules/@capacitor/preferences`)"
   - "CapacitorPushNotifications (from `../../node_modules/@capacitor/push-notifications`)"
   - "CapacitorScreenOrientation (from `../../node_modules/@capacitor/screen-orientation`)"
@@ -171,6 +174,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/local-notifications"
   CapacitorNetwork:
     :path: "../../node_modules/@capacitor/network"
+  CapacitorPluginSafeArea:
+    :path: "../../node_modules/capacitor-plugin-safe-area"
   CapacitorPreferences:
     :path: "../../node_modules/@capacitor/preferences"
   CapacitorPushNotifications:
@@ -210,6 +215,7 @@ SPEC CHECKSUMS:
   CapacitorKeyboard: 4db71e694e7afb5d7c0be09b05495c19f7d6c914
   CapacitorLocalNotifications: c9577978cd598af5e2b5615548b8222b3b10d7e2
   CapacitorNetwork: 30c2e78a0ed32530656cb426c8ee6c2caec10dbf
+  CapacitorPluginSafeArea: 22031c3436269ca80fac90ec2c94bc7c1e59a81d
   CapacitorPreferences: 8e4bef1f937fc991a19d7ea99330c36a62edd24b
   CapacitorPushNotifications: 2e0132cd2f1a5d696bcbfc3725c2b6ffcb9275d4
   CapacitorScreenOrientation: 45e36e1121cdba1634eb12077c5e99391055116f
@@ -232,6 +238,6 @@ SPEC CHECKSUMS:
   WebnativellcCapacitorNavigationBar: 8232f95b82547c0e3a5200d4d8a5220d9bf6607c
   WebnativellcCapacitorPrintWebview: 77ba57165787f6c86d83dac56fd6e3c3c3c5098d
 
-PODFILE CHECKSUM: dc032ae391d24e5f6790d0048272e4b7aad9e96a
+PODFILE CHECKSUM: eb60d1ba1aa746e7f5b57a9719bd3546a7c064ee
 
 COCOAPODS: 1.16.2

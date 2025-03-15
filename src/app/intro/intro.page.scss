@@ -3,6 +3,10 @@ ion-button {
   --background: black;
 }
 
+.top {
+  margin-top: calc(var(--safe-area-inset-top) * 1.1);
+}
+
 .footer {
   position: fixed;
   left: 0;

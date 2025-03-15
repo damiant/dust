@@ -58,6 +58,7 @@
     "@webnativellc/capacitor-filesharer": "7.0.4",
     "@webnativellc/capacitor-navigation-bar": "^7.0.0",
     "@webnativellc/capacitor-print-webview": "7.0.1",
+    "capacitor-plugin-safe-area": "4.0.0",
     "cordova-plugin-device-orientation": "3.0.0",
     "fuse.js": "7.0.0",
     "idb-keyval": "^6.2.1",
