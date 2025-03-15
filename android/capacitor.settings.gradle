@@ -67,3 +67,6 @@ project(':webnativellc-capacitor-navigation-bar').projectDir = new File('../node
 
 include ':webnativellc-capacitor-print-webview'
 project(':webnativellc-capacitor-print-webview').projectDir = new File('../node_modules/@webnativellc/capacitor-print-webview/android')
+
+include ':capacitor-plugin-safe-area'
+project(':capacitor-plugin-safe-area').projectDir = new File('../node_modules/capacitor-plugin-safe-area/android')

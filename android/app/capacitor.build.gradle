@@ -31,6 +31,7 @@ dependencies {
     implementation project(':webnativellc-capacitor-filesharer')
     implementation project(':webnativellc-capacitor-navigation-bar')
     implementation project(':webnativellc-capacitor-print-webview')
+    implementation project(':capacitor-plugin-safe-area')
 
 }
 

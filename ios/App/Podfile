@@ -33,6 +33,7 @@ def capacitor_pods
   pod 'WebnativellcCapacitorFilesharer', :path => '../../node_modules/@webnativellc/capacitor-filesharer'
   pod 'WebnativellcCapacitorNavigationBar', :path => '../../node_modules/@webnativellc/capacitor-navigation-bar'
   pod 'WebnativellcCapacitorPrintWebview', :path => '../../node_modules/@webnativellc/capacitor-print-webview'
+  pod 'CapacitorPluginSafeArea', :path => '../../node_modules/capacitor-plugin-safe-area'
   pod 'CordovaPlugins', :path => '../capacitor-cordova-ios-plugins'
 end
 

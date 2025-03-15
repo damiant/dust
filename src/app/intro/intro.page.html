@@ -1,4 +1,4 @@
-<ion-fab slot="fixed" vertical="top" horizontal="start">
+<ion-fab class="top" slot="fixed" vertical="top" horizontal="start">
   <ion-fab-button (click)="toggleList()">
     @if (vm.ready && !vm.downloading) {
     <ion-icon [name]="vm.list ? 'albums-outline' : 'list-outline'"></ion-icon>
