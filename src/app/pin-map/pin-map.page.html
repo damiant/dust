@@ -20,7 +20,7 @@
 
     <ion-toolbar>
       <ion-title size="large">{{title()}}</ion-title>
-      <app-search [hidden]="!showSearch()" slot="end" placeholder="" (search)="search($event)" />
+      <app-search [hidden]="!showSearch()" slot="end" placeholder="" (searched)="search($event)" />
     </ion-toolbar>
 
   </ion-header>

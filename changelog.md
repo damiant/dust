@@ -1,5 +1,11 @@
 ## Changes
 
+## 2.79
+
+- iOS 14 minimum support
+- Android 15 support
+- Verification links for login
+
 ## 2.78
 
 - RSS Feed support

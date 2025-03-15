@@ -18,7 +18,7 @@
       <ion-title size="large">Search</ion-title>
     </ion-toolbar>
     <ion-toolbar>
-      <app-search [openFocused]="true" placeholder="Find Events, Camps & Art" (search)="search($event)" />
+      <app-search [openFocused]="true" placeholder="Find Events, Camps & Art" (searched)="search($event)" />
     </ion-toolbar>
   </ion-header>
   @if (!hasTerms()) {

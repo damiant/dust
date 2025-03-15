@@ -26,7 +26,7 @@
       </ion-buttons>
     </ion-toolbar>
     <ion-toolbar>
-      <app-search placeholder="Find Favorites" (search)="searchFavs($event)" />
+      <app-search placeholder="Find Favorites" (searched)="searchFavs($event)" />
     </ion-toolbar>
   </ion-header>
   <app-message (dismissed)="launchCalendar()"

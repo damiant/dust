@@ -18,7 +18,7 @@
         </ion-buttons>
       </ion-toolbar>
       <ion-toolbar>
-        <app-search placeholder="Find Events" (search)="searchEvents($event)" />
+        <app-search placeholder="Find Events" (searched)="searchEvents($event)" />
         <ion-buttons class="b-pad-r" slot="end">
           <app-category [showSortBy]="false" id="event-categories" allTitle="All Events" [(category)]="vm.category"
             (categoryChange)="categoryChanged()" (sortTypeChange)="sortTypeChanged($event)"
