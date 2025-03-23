@@ -40,7 +40,13 @@ export class VolunteeripateService {
             if (response.status !== 200) {
                 alert(`Failed to get shifts`);
             } else {
-                const shifts: Shift[] = await response.data;
+                const data = await response.data;
+                if (data.error) {
+                    alert(data.error);
+                    return [];
+                }
+                const shifts: Shift[] = data;                
+                console.log(`Received shifts`, shifts);
                 return shifts;
             }
         } catch (e) {

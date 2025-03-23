@@ -1,5 +1,9 @@
 ## Changes
 
+## 2.81
+
+- Fix for Volunteeripate when no shifts for user
+
 ## 2.80
 
 - Fix for safe area padding on Android
