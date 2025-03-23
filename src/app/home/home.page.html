@@ -1,4 +1,4 @@
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" [class.android]="vm.isAndroid">
   <div class="header" [ngStyle]="{'background-image': 'url('+ vm.imageUrl+')'}">
     <ion-fab-button class="search-btn top" (click)="search()" size="small">
       <ion-icon name="search-sharp"></ion-icon>

@@ -89,6 +89,7 @@ interface HomeState {
   hasIce: boolean;
   version: string;
   presentingElement: any;
+  isAndroid: boolean;
 }
 
 @Component({
@@ -158,6 +159,7 @@ export class HomePage implements OnInit {
     hasIce: true,
     version: '',
     presentingElement: undefined,
+    isAndroid: Capacitor.getPlatform() === 'android'
   }
 
   download: WritableSignal<DownloadStatus> = signal({ status: '', firstDownload: false });
