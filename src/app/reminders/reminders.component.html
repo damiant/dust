@@ -3,33 +3,40 @@
   <ion-card-content>
     <ion-list>
       @if (events.length === 0) {
-      <div class="center">
-        <ion-text class="large" color="medium">Press + to add a reminder for a private event, volunteer shift
-          etc.</ion-text>
-      </div>
+        <div class="center">
+          <ion-text class="large" color="medium"
+            >Press + to add a reminder for a private event, volunteer shift etc.</ion-text
+          >
+        </div>
       }
 
       @for (event of events; track event) {
-      <ion-item (click)="editReminder(event)">
-        <span slot="start" class="cal-title">{{ event.startTime }}</span>
-        <ion-icon slot="start" style="margin-top: -14px; font-size: 40px" aria-hidden="true"
-          [src]="'assets/icon/calendar.svg'"></ion-icon>
+        <ion-item (click)="editReminder(event)">
+          <span slot="start" class="cal-title">{{ event.startTime }}</span>
+          <ion-icon
+            slot="start"
+            style="margin-top: -14px; font-size: 40px"
+            aria-hidden="true"
+            [src]="'assets/icon/calendar.svg'"
+          ></ion-icon>
 
-        <ion-label>
-          {{ event.startDay }}
-          @if (event.address) {
-          &#64; {{ event.address }}
-          }
-          <p>{{ event.title }}</p>
-          <p>{{ event.notes }}&nbsp;</p>
-        </ion-label>
-      </ion-item>
+          <ion-label>
+            {{ event.startDay }}
+            @if (event.address) {
+              &#64; {{ event.address }}
+            }
+            <p>{{ event.title }}</p>
+            <p>{{ event.notes }}&nbsp;</p>
+          </ion-label>
+        </ion-item>
       }
+      
       <div class="center">
         @if (!db.featuresHidden().includes('volunteeripate')) {
-        <ion-text (click)="openVolunteeripate()" class="large" color="primary">Sync with Volunteeripate</ion-text>
+          <ion-text (click)="openVolunteeripate()" class="large" color="primary">Sync with Volunteeripate</ion-text>
         }
-      </div> 
+      </div>
     </ion-list>
   </ion-card-content>
 </ion-card>
+

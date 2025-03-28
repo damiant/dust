@@ -55,7 +55,7 @@ import { CalendarService } from '../calendar.service';
 import { EventsCardComponent } from '../events-card/events-card.component';
 import { FavoritesService } from '../favs/favorites.service';
 import { ApiService, DownloadStatus } from '../data/api.service';
-import { addDays, delay } from '../utils/utils';
+import { addDays, delay, localTimeZone } from '../utils/utils';
 import { PinsCardComponent } from '../pins-card/pins-card.component';
 import { UpdateService } from '../update.service';
 import { CardHeaderComponent } from '../card-header/card-header.component';
@@ -88,6 +88,7 @@ interface HomeState {
   hasRestrooms: boolean;
   hasIce: boolean;
   version: string;
+  timezone: string;
   presentingElement: any;
   isAndroid: boolean;
 }
@@ -158,6 +159,7 @@ export class HomePage implements OnInit {
     hasRestrooms: true,
     hasIce: true,
     version: '',
+    timezone: '',
     presentingElement: undefined,
     isAndroid: Capacitor.getPlatform() === 'android'
   }
@@ -236,6 +238,10 @@ export class HomePage implements OnInit {
 
     this.vm.things = this.favs.things();
     this.vm.version = `Version ${version}`;
+    if (localTimeZone !== this.db.getTimeZone()) {
+      this.vm.timezone = `Times shown in ${this.db.getTimeZone()}. `;
+    }
+
     this._change.markForCheck();
     this.notifications();
   }
