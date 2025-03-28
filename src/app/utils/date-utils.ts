@@ -11,3 +11,24 @@ export function daysHighlighted(start: string, end: string): any[] {
     }
     return result;
 }
+
+export function getTimeInTimeZone(epoch: number, timeZone: string): string {
+    const offset = getTimeZoneOffsetHours(timeZone);
+    return new Date(epoch + (offset * 60 * 60 * 1000)).toISOString().replace('Z','');
+
+}
+
+function getTimeZoneOffsetHours(timeZone: string): number {
+    const date = new Date();
+    const timeZoneString = new Intl.DateTimeFormat("en-US",  { timeZone, timeZoneName: "longOffset" }).formatToParts(date)
+        .find(part => part.type === "timeZoneName")?.value;
+    if (!timeZoneString) return 0;
+
+    const match = timeZoneString.match(/GMT([+-]\d{2}):?(\d{2})?/);
+    if (!match) return 0;
+
+    const hours = parseInt(match[1], 10);
+    const minutes = match[2] ? parseInt(match[2], 10) : 0;
+
+    return hours + minutes / 60; // Convert minutes to fraction of an hour
+}

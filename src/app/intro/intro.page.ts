@@ -225,7 +225,6 @@ export class IntroPage {
       if (preview) {
         const all = await this.api.loadDatasets({ filter: this.vm.showing, cached: true });
         console.info('overriding preview', preview);
-        //await this.db.clear();
         const found = all.find((d) => d.name == preview);
         if (!found) {
           console.error(`${preview} not found in [${all.map((c) => c.name).join(',')}]`);
@@ -332,13 +331,6 @@ export class IntroPage {
       const result = await this.api.download(this.vm.selected, forceDownload, this.download);
 
       if (result == 'error') {
-        // This can happen if bad network
-        // this.ui.presentDarkToast(
-        //   `Unable to download ${this.vm.selected?.title}.`,
-        //   this.toastController,
-        // );
-        // await this.preventAutoStart();        
-        // return false;
       }
       // Need to save this otherwise it will think we cant start this event
       this.settingsService.setOffline(this.settingsService.settings.datasetId);
@@ -365,7 +357,6 @@ export class IntroPage {
       );
       if (`${this.settingsService.settings.lastDatasetId}` !== '') {
         this.settingsService.settings.datasetId = this.settingsService.settings.lastDatasetId;
-        //await this.ionViewWillEnter();
         return;
       }
     }
@@ -485,7 +476,6 @@ export class IntroPage {
       }
       if (!this.settingsService.isBurningMan()) {
         hidden.push('friends');
-        //hidden.push('private');
       }
 
       if (isWhiteSpace(this.settingsService.settings.dataset?.volunteeripateSubdomain)) {

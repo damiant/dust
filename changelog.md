@@ -1,4 +1,11 @@
 ## Changes
+## 2.82
+- Fix for timezone for Volunteeripate shifts
+
+## 2.81
+
+- Fix for Volunteeripate when no shifts for user
+- Fix for safe areas on iOS
 
 ## 2.80
 

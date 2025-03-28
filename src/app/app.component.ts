@@ -9,7 +9,6 @@ import { DbService } from './data/db.service';
 import { UiService } from './ui/ui.service';
 import { SettingsService } from './data/settings.service';
 import { SafeArea, SafeAreaInsets } from 'capacitor-plugin-safe-area';
-import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-root',
@@ -69,8 +68,7 @@ export class AppComponent implements OnInit {
     // }, 10000);
   }
 
-  private applyInsets(data: SafeAreaInsets) {
-      if (Capacitor.getPlatform() === 'ios') return; // iOS handles safe areas well
+  private applyInsets(data: SafeAreaInsets) {      
       const { insets } = data;
       console.log('SafeAreaInsets', insets);
       for (const [key, value] of Object.entries(insets)) {

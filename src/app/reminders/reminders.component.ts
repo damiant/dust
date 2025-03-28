@@ -23,6 +23,7 @@ import { CardHeaderComponent } from '../card-header/card-header.component';
 import { Shift, VolunteeripateService } from '../volunteeripate/volunteeripate.service';
 import { ShareInfoType, ShareService } from '../share/share.service';
 import { DbService } from '../data/db.service';
+import { getTimeInTimeZone } from '../utils/date-utils';
 
 @Component({
   selector: 'app-reminders',
@@ -85,10 +86,11 @@ export class RemindersComponent implements OnInit {
     }
     const titles: string[] = [];
     let count = 0;
+    const timeZone = this.db.getTimeZone();
     for (const shift of shifts) {
       id++;
-      const start = new Date(shift.shift_start * 1000).toISOString().replace('Z', '');
-      const end = new Date(shift.shift_end * 1000).toISOString().replace('Z', '');
+      const start = getTimeInTimeZone(shift.shift_start * 1000, timeZone);
+      const end = getTimeInTimeZone(shift.shift_end * 1000, timeZone);
       const timeRange = (start != end) ? `${this.timeString(start)} to ${this.timeString(end)}` : `${this.timeString(start)}`
       let title = shift.shift_title;
       let n = 2;
