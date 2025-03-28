@@ -1,4 +1,6 @@
 ## Changes
+## 2.82
+- Fix for timezone for Volunteeripate shifts
 
 ## 2.81
 
