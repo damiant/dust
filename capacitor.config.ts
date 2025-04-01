@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'ionic.ttitd',
-  appName: 'ttitd',
+  appId: 'nexus.concepts.dust',
+  appName: 'dust',
   webDir: 'www/browser',
   loggingBehavior: 'none',
   server: {
