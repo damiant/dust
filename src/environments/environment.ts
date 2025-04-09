@@ -1,3 +1,5 @@
+import { Environment } from "./environment.model";
+
 export const environment: Environment = {
   production: false,
   simulatedTime: undefined,
@@ -5,5 +7,4 @@ export const environment: Environment = {
   latitudeOffset: undefined,
   longitudeOffset: undefined,
   overrideLocations: false,
-  builderApiKey: 'ef6c1e711b19437398f323c0542ec2e7',
 };
