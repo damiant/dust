@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-15
+    runs-on: macos-16
     name: Build iOS app
     steps:
       - name: Checkout source
