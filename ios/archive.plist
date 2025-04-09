@@ -7,7 +7,7 @@
 <key>provisioningProfiles</key>
 <dict>
     <key>nexus.concepts.dust</key>
-    <string>dust</string>
+    <string>dust-distribution</string>
 </dict>
 </dict>
 </plist>
