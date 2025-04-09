@@ -1,4 +1,9 @@
 ## Changes
+
+## 2.84
+
+- Feature to set pin size
+
 ## 2.82
 - Fix for timezone for Volunteeripate shifts
 

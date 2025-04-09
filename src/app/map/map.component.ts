@@ -380,6 +380,7 @@ export class MapComponent implements OnInit, OnDestroy {
       width: 0,
       height: 0,
       defaultPinSize: pinSize,
+      pinSizeMultiplier: this.db.selectedDataset().pin_size_multiplier,
       pins: [],
       backgroundColor: this.ui.darkMode() ? 0x111111 : 0xDDDDDD,
       compass: { uuid: 'compass', x: compassPt.x, z: compassPt.y, color: 'compass', size: pinSize, label: '' },
