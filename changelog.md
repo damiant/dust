@@ -4,6 +4,7 @@
 
 - Fix for events with multiple times on the same day
 - Fix the ensure all day events are listed last
+- Fix messages tab showing up when no messaging setup
 
 ## 2.84
 

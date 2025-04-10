@@ -481,7 +481,7 @@ export class IntroPage {
       if (isWhiteSpace(this.settingsService.settings.dataset?.volunteeripateSubdomain)) {
         hidden.push('volunteeripate');
       }
-      if (`${this.settingsService.settings.dataset?.mastodonHandle}`.length == 0 &&
+      if (`${this.settingsService.settings.dataset?.mastodonHandle}`.length < 3 &&
         this.settingsService.settings.dataset?.inboxEmail !== 'Y' &&
         `${this.settingsService.settings.dataset?.rssFeed}`.length == 0) {
         hidden.push('messages');
