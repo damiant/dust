@@ -192,12 +192,14 @@ export function getOccurrenceTimeString(start: Date, end: Date, day: Date | unde
     const timeRange = getTimeRange(startTime, endTime);
     if (timeRange == 'All Day') {
       return {
+        start: start,
         long: `${timeRange} ${day}`,
         short: timeRange
       }
     }
     // Length of time: `${ time(start, tz) }(${ timeBetween(end, start) })`;
     return {
+      start: start,
       // Uncomment to show hours
       //long: `${ day } ${ timeRange }(${ timeBetween(end, start) })`,
       long: `${day} ${timeRange}`,

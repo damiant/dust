@@ -144,8 +144,7 @@ export class ApiService {
     const location: WebLocation = rLocation.status == 'fulfilled' ? rLocation.value : {};
     const festivals = rFestivals.status == 'fulfilled' ? rFestivals.value : [];
     const datasets = rDatasets.status == 'fulfilled' ? rDatasets.value : [];
-    const devMode = await this.settingsService.getInteger('developermode');
-    console.log(datasets);
+    const devMode = await this.settingsService.getInteger('developermode');    
     return this.cleanNames([...festivals, ...datasets], location, args.filter, args.inactive, devMode === 1);
   }
 

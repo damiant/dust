@@ -248,6 +248,7 @@ export interface Dataset {
 }
 
 export interface TimeString {
+  start: Date;
   short: string;
   long: string;
 }

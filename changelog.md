@@ -1,5 +1,9 @@
 ## Changes
 
+## 2.85
+
+- Fix for events with multiple times on the same day
+
 ## 2.84
 
 - Feature to set pin size
