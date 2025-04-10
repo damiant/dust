@@ -943,6 +943,7 @@ export class DataManager implements WorkerClass {
           let e = first ? event : JSON.parse(JSON.stringify(event));          
           first = false;
           e.start = timeString.start;
+          e.all_day = this.hoursBetween(timeString.start, timeString.end) > 6;
           e.timeString = timeString.short;
           e.longTimeString = timeString.long;
           e.event_type.label = e.event_type.label.replace(/,/g, ', ');

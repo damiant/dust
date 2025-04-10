@@ -249,6 +249,7 @@ export interface Dataset {
 
 export interface TimeString {
   start: Date;
+  end: Date;
   short: string;
   long: string;
 }

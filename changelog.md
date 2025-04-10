@@ -3,6 +3,7 @@
 ## 2.85
 
 - Fix for events with multiple times on the same day
+- Fix the ensure all day events are listed last
 
 ## 2.84
 
