@@ -1,19 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>Favorites</ion-title>
-    <ion-buttons class="b-pad-r" slot="end">
-      <ion-button fill="clear" routerLink="/print-favs"><ion-icon name="print-outline"></ion-icon></ion-button>
-      @if (vm.events.length > 0) {
-      <ion-button fill="clear" (click)="syncCalendar()"><ion-icon
-          name="calendar-outline"></ion-icon></ion-button>
-      }
-
-      <app-category id="fav-categories" allTitle="All" (categoryChange)="filterChanged()" [(category)]="vm.filter"
-        [categories]="vm.filters" slot="end"></app-category>
-    </ion-buttons>
-    @if (db.selectedYear() !== '') {
-    <ion-badge class="pad-right" (click)="home()" slot="end">{{db.selectedYear()}}</ion-badge>
-    }
+    
   </ion-toolbar>
 </ion-header>
 
@@ -22,8 +10,19 @@
     <ion-toolbar>
       <ion-title size="large">Favorites</ion-title>
       <ion-buttons class="b-pad-r" slot="end">
-        <ion-text class="right-side">{{vm.filter}}</ion-text>
+        <ion-button fill="clear" routerLink="/print-favs"><ion-icon name="print-outline"></ion-icon></ion-button>
+        @if (vm.events.length > 0) {
+        <ion-button fill="clear" (click)="syncCalendar()"><ion-icon
+            name="calendar-outline"></ion-icon></ion-button>
+        }
+  
+        <app-category id="fav-categories" allTitle="All" (categoryChange)="filterChanged()" [(category)]="vm.filter"
+          [categories]="vm.filters" slot="end"></app-category>
       </ion-buttons>
+      @if (db.selectedYear() !== '') {
+      <ion-badge class="pad-right" (click)="home()" slot="end">{{db.selectedYear()}}</ion-badge>
+      }
+
     </ion-toolbar>
     <ion-toolbar>
       <app-search placeholder="Find Favorites" (searched)="searchFavs($event)" />

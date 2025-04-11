@@ -1,4 +1,16 @@
 ## Changes
+
+## 2.85
+
+- Fix for events with multiple times on the same day
+- Fix the ensure all day events are listed last
+- Fix messages tab showing up when no messaging setup
+- Fix for favorite printing not appearing on Android
+
+## 2.84
+
+- Feature to set pin size
+
 ## 2.82
 - Fix for timezone for Volunteeripate shifts
 

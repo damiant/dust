@@ -101,7 +101,6 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
     scene.background = new Color(map.backgroundColor);
     scene.add(await mapImage(map, disposables));
 
-
     const w = container.clientWidth;
     const h = container.clientHeight;
 
@@ -329,7 +328,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
 async function createScene(map: MapModel, font: any, scene: Scene, mixers: AnimationMixer[], disposables: MapDisposable[], renderFn: () => void, result: MapResult) {
     let p: AddPinResult | undefined = undefined;
     for (const pin of map.pins) {
-        scaleToMap(pin, map.width, map.height);
+        scaleToMap(pin, map.width, map.height, map.pinSizeMultiplier);
         const material = getMaterial(pin.color);
         p = await addPin(pin, material, font, 0, map.width, mixers, scene, disposables);
         result.pinData[pin.uuid] = p;
@@ -337,7 +336,7 @@ async function createScene(map: MapModel, font: any, scene: Scene, mixers: Anima
 
     if (map.compass) {
         map.compass.animated = map.pins.length > 1;
-        scaleToMap(map.compass, map.width, map.height);
+        scaleToMap(map.compass, map.width, map.height, map.pinSizeMultiplier);
         const { pin: compass, background: background } = await addPin(map.compass, getMaterial('compass'), font, 0, map.width, mixers, scene, disposables);
         if (p) {
             p.compass = compass;
@@ -381,10 +380,10 @@ function setMapXY(v: Vector3, x: number, y: number, map: MapModel): boolean {
 }
 
 // Pins are sized to a 10,000 x 10,000 grid. Scale this to the map size.
-function scaleToMap(pin: MapPin, width: number, height: number) {
+function scaleToMap(pin: MapPin, width: number, height: number, pinSizeMultiplier = 1.0) {
     pin.x = Math.trunc(pin.x * width / 10000);
     pin.z = Math.trunc(pin.z * height / 10000);
-    pin.size = Math.trunc(pin.size * width / 10000);
+    pin.size = Math.trunc(pin.size * width / 10000) * pinSizeMultiplier;
 
     // The map is centered at 0,0, so move pins
     pin.x -= width / 2;

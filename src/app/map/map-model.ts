@@ -6,6 +6,7 @@ export interface MapModel {
     height: number;
     defaultPinSize: number;
     pins: MapPin[];
+    pinSizeMultiplier: number;
     backgroundColor: number;
     compass: MapPin | undefined;
 

@@ -243,10 +243,13 @@ export interface Dataset {
   volunteeripateIdentifier: string; // Volunteeripate Identifier
   camp_registration: boolean;
   event_registration: boolean;
+  pin_size_multiplier: number;
   subTitle: string; // Calculated
 }
 
 export interface TimeString {
+  start: Date;
+  end: Date;
   short: string;
   long: string;
 }

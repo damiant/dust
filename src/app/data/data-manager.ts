@@ -16,6 +16,7 @@ import {
   MapPoint,
   MapSet,
   Names,
+  OccurrenceSet,
   Pin,
   PlacedPin,
   RSLEvent,
@@ -931,19 +932,28 @@ export class DataManager implements WorkerClass {
       const match = this.eventContains(query, event, allDay)
       if (
         match != 'No Match' &&
-        this.eventIsCategory(category, event) &&
-        this.onDay(day, event, timeRange, showPast)
+        this.eventIsCategory(category, event)
+        
       ) {
-        const timeString = this.getTimeString(event, day);
-        event.timeString = timeString.short;
-        event.longTimeString = timeString.long;
-        event.event_type.label = event.event_type.label.replace(/,/g, ', ');
-        event.distance = distance(coords!, event.gpsCoords);
-        event.distanceInfo = formatDistance(event.distance);
-        if (match == 'Important') {
-          result.unshift(event);
-        } else {
-          result.push(event);
+        const occurrences = this.onDayList(day, event, timeRange, showPast);
+        const timeStrings = this.getTimeStrings(day, occurrences);
+
+        let first = true;
+        for (const timeString of timeStrings) {
+          let e = first ? event : JSON.parse(JSON.stringify(event));          
+          first = false;
+          e.start = timeString.start;
+          e.all_day = this.hoursBetween(timeString.start, timeString.end) > 6;
+          e.timeString = timeString.short;
+          e.longTimeString = timeString.long;
+          e.event_type.label = e.event_type.label.replace(/,/g, ', ');
+          e.distance = distance(coords!, e.gpsCoords);
+          e.distanceInfo = formatDistance(e.distance);
+          if (match == 'Important') {
+            result.unshift(e);
+          } else {
+            result.push(e);
+          }
         }
       }
     }
@@ -969,7 +979,7 @@ export class DataManager implements WorkerClass {
     if (top) {
       while (events.length > top) {
         events.pop();
-      }      
+      }
     }
   }
 
@@ -980,7 +990,7 @@ export class DataManager implements WorkerClass {
     if (top) {
       while (events.length > top) {
         events.pop();
-      }      
+      }
     }
   }
 
@@ -1003,7 +1013,7 @@ export class DataManager implements WorkerClass {
     if (top) {
       while (camps.length > top) {
         camps.pop();
-      }      
+      }
     }
   }
 
@@ -1168,18 +1178,22 @@ export class DataManager implements WorkerClass {
     return event.event_type?.label.includes(category);
   }
 
-  private getTimeString(event: Event, day: Date | undefined): TimeString {
-    for (let occurrence of event.occurrence_set) {
-      event.start = new Date(occurrence.start_time);
-      const res = this.getOccurrenceTimeStringCached(
-        event.start,
+  private getTimeStrings(day: Date | undefined, occurrences: OccurrenceSet[]): TimeString[] {
+    const result: TimeString[] = [];
+    for (let occurrence of occurrences) {      
+      const res = this.getOccurrenceTimeStringCached(        
+        new Date(occurrence.start_time),
         new Date(occurrence.end_time),
         day);
       if (res) {
-        return res;
+        if (!day) {
+          return [res];
+        }
+        result.push(res);
       }
+      // 
     }
-    return { short: 'Dont know', long: 'Dont know' };
+    return result;
   }
 
   private getOccurrenceTimeStringCached(start: Date, end: Date, day: Date | undefined): TimeString | undefined {
@@ -1256,6 +1270,36 @@ export class DataManager implements WorkerClass {
       }
     }
     return false;
+  }
+
+  private onDayList(day: Date | undefined, event: Event, timeRange: TimeRange | undefined, showPast: boolean): OccurrenceSet[] {
+    if (!day && !timeRange) return event.occurrence_set;
+    const result: OccurrenceSet[] = [];
+    for (let occurrence of event.occurrence_set) {
+      const start = new Date(occurrence.start_time);
+      const end = new Date(occurrence.end_time);
+
+      if (day) {
+        if ((!occurrence.old || showPast) && (sameDay(start, day) || sameDay(end, day))) {
+          result.push(occurrence);
+        }
+      } else if (timeRange) {
+        // if event starts after range start and ends before range end
+        // if event is before timeRange.start then not now
+        // if event starts after timeRange.end then not now     
+
+        if (start < timeRange.start && end > timeRange.end) {
+          result.push(occurrence); // Event is overlapping time range
+        }
+        if (start > timeRange.start && start < timeRange.end) {
+          result.push(occurrence); // Event is overlapping the start of the time range
+        }
+        if (end > timeRange.start && end < timeRange.end) {
+          result.push(occurrence); // Event is overlapping the end of the time range
+        }
+      }
+    }
+    return result;
   }
 
   private addDay(date: Date) {
