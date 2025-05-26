@@ -7,7 +7,7 @@ PODS:
     - Capacitor
   - CapacitorBrowser (7.0.1):
     - Capacitor
-  - CapacitorCommunityInAppReview (7.0.0):
+  - CapacitorCommunityInAppReview (7.0.1):
     - Capacitor
   - CapacitorCommunityKeepAwake (7.0.0):
     - Capacitor
@@ -206,7 +206,7 @@ SPEC CHECKSUMS:
   CapacitorApp: febecbb9582cb353aed037e18ec765141f880fe9
   CapacitorAppLauncher: bab4ca931a308252d2bafcb78ca6a364bd1d4c4e
   CapacitorBrowser: 6299776d496e968505464884d565992faa20444a
-  CapacitorCommunityInAppReview: f84baf01f45e8698e34585b71740ba967ec8cd10
+  CapacitorCommunityInAppReview: a8f26c4e48a8ccc9df0acf1c7bca39844c325572
   CapacitorCommunityKeepAwake: ae762ce29b53147d28cfcaae5273cd1db0c38fc4
   CapacitorCordova: 63d476958d5022d76f197031e8b7ea3519988c64
   CapacitorFilesystem: e6261c410436f54908c11f94336c5b58286b1db0
