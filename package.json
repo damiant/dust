@@ -32,7 +32,7 @@
     "@angular/platform-browser": "^19.2.5",
     "@angular/platform-browser-dynamic": "^19.2.5",
     "@angular/router": "^19.2.5",
-    "@capacitor-community/in-app-review": "7.0.0",
+    "@capacitor-community/in-app-review": "7.0.1",
     "@capacitor-community/keep-awake": "7.0.0",
     "@capacitor/android": "7.0.1",
     "@capacitor/app": "7.0.1",

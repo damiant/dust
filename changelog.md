@@ -1,4 +1,7 @@
 ## Changes
+## 2.87
+
+- Updates for registration
 
 ## 2.85
 
