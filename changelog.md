@@ -1,4 +1,8 @@
 ## Changes
+## 2.88
+
+- Update from Angular 19 to 20
+
 ## 2.87
 
 - Updates for registration

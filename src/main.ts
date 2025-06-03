@@ -1,4 +1,4 @@
-import { provideAppInitializer, enableProdMode, provideExperimentalZonelessChangeDetection, inject } from '@angular/core';
+import { provideAppInitializer, enableProdMode, inject, provideZonelessChangeDetection } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { RouteReuseStrategy, provideRouter, withComponentInputBinding } from '@angular/router';
 import { provideIonicAngular, IonicRouteStrategy } from '@ionic/angular/standalone';
@@ -26,7 +26,7 @@ bootstrapApplication(AppComponent, {
       await settings.init();
       await dbService.initWorker();
     }),
-    provideExperimentalZonelessChangeDetection(),
+    provideZonelessChangeDetection(),
     //provideZoneChangeDetection({ eventCoalescing: true }),
     provideIonicAngular({ mode: 'ios', swipeBackEnabled: true }),    
     provideRouter(routes, withComponentInputBinding()),

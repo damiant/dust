@@ -1,11 +1,11 @@
-<ion-card class="image-container" class="item" [@fadeOut]="out()" [@fadeIn]="in()">
+<ion-card class="image-container" class="item" [@fadeOut]="fout()" [@fadeIn]="fin()">
   <!-- <div class="right">
     <ion-fab-button size="small" (click)="markAsRead()"><ion-icon name="checkmark-outline"></ion-icon></ion-fab-button>
   </div> -->
   @if (item()['media:content']?.medium === 'image') {
     <div class="image-container" [class.hide]="hideImage()">
       <img
-        (load)="in.set(true)"
+        (load)="fin.set(true)"
         (error)="hideImage.set(true)"
         loading="lazy"
         class="image"
