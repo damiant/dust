@@ -32,7 +32,7 @@ export class UpdateService {
     }
 
     if (Capacitor.getPlatform() == 'ios') {
-      await AppUpdate.openAppStore();
+      await AppUpdate.openAppStore({ appId: '6456943178'});
     } else {
       if (result.immediateUpdateAllowed) {
         await AppUpdate.performImmediateUpdate();
