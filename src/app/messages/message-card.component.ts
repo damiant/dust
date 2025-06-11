@@ -40,8 +40,8 @@ export class MessageCardComponent implements OnInit {
   item = input.required<Item>();
   read = output();
   hideImage = signal(false);
-  out = signal(false);
-  in = signal(false);
+  fout = signal(false);
+  fin = signal(false);
   ui = inject(UiService);
 
   constructor() {
@@ -50,11 +50,11 @@ export class MessageCardComponent implements OnInit {
 
   async ngOnInit() {
     await delay(500);
-    this.in.set(true);
+    this.fin.set(true);
   }
 
   markAsRead() {
-    this.out.set(true);
+    this.fout.set(true);
     this.read.emit();
   }
 
