@@ -33,6 +33,7 @@ import {
   hasValue,
   nowAtEvent,
   sameDay,
+  static_dust_events,
   titlePlural,
 } from '../utils/utils';
 import { defaultMapRadius, distance, formatDistance, locationStringToPin, mapPointToPoint } from '../map/map.utils';
@@ -373,7 +374,11 @@ export class DataManager implements WorkerClass {
       }
 
       if (camp.imageUrl) {
-        camp.imageUrl = `${data_dust_events}${camp.imageUrl}`;
+        if (this.dataset.startsWith('ttitd')) {
+          camp.imageUrl = `${static_dust_events}${camp.imageUrl}`;
+        } else {
+          camp.imageUrl = `${data_dust_events}${camp.imageUrl}`;
+        }
       }
       if (locationsHidden.camps) {
         camp.location_string = locationsHidden.campMessage;
@@ -933,14 +938,14 @@ export class DataManager implements WorkerClass {
       if (
         match != 'No Match' &&
         this.eventIsCategory(category, event)
-        
+
       ) {
         const occurrences = this.onDayList(day, event, timeRange, showPast);
         const timeStrings = this.getTimeStrings(day, occurrences);
 
         let first = true;
         for (const timeString of timeStrings) {
-          let e = first ? event : JSON.parse(JSON.stringify(event));          
+          let e = first ? event : JSON.parse(JSON.stringify(event));
           first = false;
           e.start = timeString.start;
           e.all_day = this.hoursBetween(timeString.start, timeString.end) > 6;
@@ -1180,8 +1185,8 @@ export class DataManager implements WorkerClass {
 
   private getTimeStrings(day: Date | undefined, occurrences: OccurrenceSet[]): TimeString[] {
     const result: TimeString[] = [];
-    for (let occurrence of occurrences) {      
-      const res = this.getOccurrenceTimeStringCached(        
+    for (let occurrence of occurrences) {
+      const res = this.getOccurrenceTimeStringCached(
         new Date(occurrence.start_time),
         new Date(occurrence.end_time),
         day);

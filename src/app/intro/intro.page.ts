@@ -393,8 +393,8 @@ export class IntroPage {
     this.db.setLocationHidden({
       art: hideArtLocations,
       camps: hideCampLocations,
-      artMessage: 'Location available August 25',
-      campMessage: 'Location available August 18'
+      artMessage: 'Location available August 24',
+      campMessage: 'Location available August 17'
     });
     this.opened.set(false);
 
