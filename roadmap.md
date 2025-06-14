@@ -33,11 +33,6 @@
 - 🔴 Show history of previously viewed items in the search all area
 - 🟠 Say "Check In" which will store the event or camp in history
 
-## Calendar Fixes
-- 🔴 Possibly duplicating calendar entries on Android
-- 🔴 Switch to using the Capacitor plugin  https://ebarooni.github.io/capacitor-calendar/
-- 🔴 Sync calendar does not delete events you have removed from favorites
-
 ## Bugs
 - 🔴💚 Search - if exact the show match - if fuzzy then do not show
 - 🔴 If you closed app on events and were scrolled to a point then see if you can scroll back there
@@ -49,7 +44,6 @@
 - 🔥 Unresponsive after a certain amount of use???
 - 🔥 Nearby apparently did not work for some - even when location enabled
 - 🔵 Add changelog to whatchanged text
-- 🔴 Dark side of the mug has a 27 hour event
 - 🟠 All day events for Burning Man are entered as 2 x12 hour. Need to clean these up
 - 🔵 If you favorite an event and return to the event list it is not starred (maybe for recurring)
 - 🔴💚 Add a timeout for the "getting location". Set to 10 seconds
