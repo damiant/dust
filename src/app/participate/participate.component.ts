@@ -4,6 +4,7 @@ import { CardHeaderComponent } from '../card-header/card-header.component';
 import { DbService } from '../data/db.service';
 import { Dataset } from '../data/models';
 import { decodeToken, Token } from '../data/auth';
+import { SettingsService } from '../data/settings.service';
 
 @Component({
   selector: 'app-participate',
@@ -13,6 +14,7 @@ import { decodeToken, Token } from '../data/auth';
 })
 export class ParticipateComponent implements OnInit {
   db = inject(DbService);
+  settings = inject(SettingsService);;
   participate = signal(false);
   cta = signal('Sign In');
   private token: Token | undefined;
@@ -46,6 +48,9 @@ export class ParticipateComponent implements OnInit {
     if (ownerOf) {
       this.cta.set(`Manage`);
       this.message.set(`${ownerOf}`);
+    }
+    if (this.settings.isBurningMan()) {
+      this.participate.set(false);
     }
   }
 
