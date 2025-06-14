@@ -1,6 +1,10 @@
 ## Changes
+## 2.89
+- Fix for iOS to update from the app store
+
 ## 2.88
 
+- Show camp images for Burning Man
 - Update from Angular 19 to 20
 
 ## 2.87
