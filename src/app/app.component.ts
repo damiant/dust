@@ -56,19 +56,6 @@ export class AppComponent implements OnInit {
 
     });
 
-    if (Capacitor.getPlatform() === 'android') {
-      const style = document.createElement('style');
-      style.innerHTML = `
-         ion-header {
-            padding-top: var(--safe-area-inset-top);
-         }
-         .lheader {
-            padding-top: 0 !important;
-         }
-      `;
-      document.head.appendChild(style);
-    }
-
     SafeArea.getSafeAreaInsets().then((data) => {
       this.applyInsets(data);
     });

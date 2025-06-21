@@ -142,9 +142,9 @@ export class TabsPage implements OnInit {
     if (Capacitor.isNativePlatform() && !this.ui.isAndroid()) {
       const isHidden = this.currentTab == 'profile';
       if (isHidden) {
-        StatusBar.hide({ animation: Animation.Fade });
+        StatusBar.hide();//{ animation: Animation.Fade });
       } else {
-        StatusBar.show({ animation: Animation.Fade });
+        StatusBar.show();//{ animation: Animation.Fade });
       }
     }
   }

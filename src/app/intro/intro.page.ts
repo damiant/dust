@@ -276,7 +276,7 @@ export class IntroPage {
     this.ui.setNavigationBar(ThemePrimaryColor);
     delay(500).then(async () => {
       if (Capacitor.isNativePlatform()) {
-        await StatusBar.setStyle({ style: Style.Dark });
+        await StatusBar.setStyle({ style: Style.Dark });        
         await this.ui.setStatusBarBackgroundColor();
         await SplashScreen.hide();
         await delay(200);
