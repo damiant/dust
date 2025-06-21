@@ -1,15 +1,13 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
-import { AppUpdate, AppUpdateAvailability } from '@capawesome/capacitor-app-update';
+import { AppUpdate } from '@capawesome/capacitor-app-update';
 import { AlertController } from '@ionic/angular/standalone';
 import { Network } from '@capacitor/network';
-import { LiveUpdateService } from './live-update.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UpdateService {
-  liveUpdate = inject(LiveUpdateService);
 
   public async checkVersion(alert: AlertController) {
     if (Capacitor.getPlatform() == 'web') return;
@@ -21,10 +19,6 @@ export class UpdateService {
       return;
     }
     const result = await AppUpdate.getAppUpdateInfo();
-    if (result.updateAvailability !== AppUpdateAvailability.UPDATE_AVAILABLE) {
-      //await this.liveUpdate.checkVersion(alert);
-      return;
-    }
     // Let use know about update
     const willUpdate = await this.presentConfirm(alert, 'An update to the dust app is required. Update now?');
     if (!willUpdate) {
@@ -32,7 +26,7 @@ export class UpdateService {
     }
 
     if (Capacitor.getPlatform() == 'ios') {
-      await AppUpdate.openAppStore();
+      await AppUpdate.openAppStore({ appId: '6456943178'});
     } else {
       if (result.immediateUpdateAllowed) {
         await AppUpdate.performImmediateUpdate();
