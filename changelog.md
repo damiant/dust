@@ -1,4 +1,8 @@
 ## Changes
+## 2.90 
+- Android fix
+- Fix for participate not showing in Burning Man
+
 ## 2.88
 
 - Update from Angular 19 to 20
