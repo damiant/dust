@@ -1,6 +1,6 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
-import { AppUpdate, AppUpdateAvailability } from '@capawesome/capacitor-app-update';
+import { AppUpdate } from '@capawesome/capacitor-app-update';
 import { AlertController } from '@ionic/angular/standalone';
 import { Network } from '@capacitor/network';
 
