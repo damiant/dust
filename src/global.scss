@@ -10,132 +10,142 @@
  */
 
 /* Core CSS required for Ionic components to work properly */
-@import "@ionic/angular/css/core.css";
+@import '@ionic/angular/css/core.css';
 
 /* Basic CSS for apps built with Ionic */
-@import "@ionic/angular/css/normalize.css";
-@import "@ionic/angular/css/structure.css";
-@import "@ionic/angular/css/typography.css";
+@import '@ionic/angular/css/normalize.css';
+@import '@ionic/angular/css/structure.css';
+@import '@ionic/angular/css/typography.css';
 @import '@ionic/angular/css/display.css';
 
 /* Optional CSS utils that can be commented out */
-@import "@ionic/angular/css/padding.css";
-@import "@ionic/angular/css/float-elements.css";
-@import "@ionic/angular/css/text-alignment.css";
-@import "@ionic/angular/css/text-transformation.css";
-@import "@ionic/angular/css/flex-utils.css";
+@import '@ionic/angular/css/padding.css';
+@import '@ionic/angular/css/float-elements.css';
+@import '@ionic/angular/css/text-alignment.css';
+@import '@ionic/angular/css/text-transformation.css';
+@import '@ionic/angular/css/flex-utils.css';
 
 @font-face {
-    font-family: 'Gelion Regular';
-    font-style: normal;
-    font-weight: normal;
-    src: local('Gelion Regular'), url('media/gelion-regular.woff') format('woff');
+  font-family: 'Gelion Regular';
+  font-style: normal;
+  font-weight: normal;
+  src:
+    local('Gelion Regular'),
+    url('media/gelion-regular.woff') format('woff');
 }
 
 @font-face {
-    font-family: 'Grotesk Bold';
-    font-style: normal;
-    font-weight: normal;
-    src: local('Grotesk Bold'), url('media/grotesk-bold.woff') format('woff');
+  font-family: 'Grotesk Bold';
+  font-style: normal;
+  font-weight: normal;
+  src:
+    local('Grotesk Bold'),
+    url('media/grotesk-bold.woff') format('woff');
 }
 
 @font-face {
-    font-family: 'Gelion Medium';
-    font-style: normal;
-    font-weight: normal;
-    src: local('Gelion Medium'), url('media/gelion-medium.woff') format('woff');
+  font-family: 'Gelion Medium';
+  font-style: normal;
+  font-weight: normal;
+  src:
+    local('Gelion Medium'),
+    url('media/gelion-medium.woff') format('woff');
 }
 
 @font-face {
-    font-family: 'Gelion Semi Bold';
-    font-style: normal;
-    font-weight: normal;
-    src: local('Gelion Semi Bold'), url('media/gelion-semibold.woff') format('woff');
+  font-family: 'Gelion Semi Bold';
+  font-style: normal;
+  font-weight: normal;
+  src:
+    local('Gelion Semi Bold'),
+    url('media/gelion-semibold.woff') format('woff');
 }
 
 @font-face {
-    font-family: 'Gelion Bold';
-    font-style: normal;
-    font-weight: normal;
-    src: local('Gelion Bold'), url('media/gelion-bold.woff') format('woff');
+  font-family: 'Gelion Bold';
+  font-style: normal;
+  font-weight: normal;
+  src:
+    local('Gelion Bold'),
+    url('media/gelion-bold.woff') format('woff');
 }
 
 @font-face {
-    font-family: 'Nunito';
-    font-style: normal;
-    font-weight: normal;
-    src: local('Nunito'), url('media/nunito-extrabold.woff') format('woff');
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: normal;
+  src:
+    local('Nunito'),
+    url('media/nunito-extrabold.woff') format('woff');
 }
-
 
 h1 {
-    font-family: 'Gelion Bold';
-    font-size: 2rem !important;
+  font-family: 'Gelion Bold';
+  font-size: 2rem !important;
 }
 
 h2 {
-    font-size: 1.5rem !important;
+  font-size: 1.5rem !important;
 }
 
 p {
-    font-family: 'Gelion Regular' !important;
+  font-family: 'Gelion Regular' !important;
 }
 
 p.large {
-    font-size: 1.3rem !important;
+  font-size: 1.3rem !important;
 }
 
 ion-card-header {
-    padding-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 ion-card-title {
-    font-size: 20px;
-    width: 80vw;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  font-size: 20px;
+  width: 80vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 ion-card-subtitle {
-    width: 80vw;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  width: 80vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 ion-text.one-line {
-    width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .clamp1 {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    line-clamp: 1;
-    -webkit-box-orient: vertical;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 
-
 .selectable {
-    -webkit-user-select: text;
-    -moz-user-select: text;
-    -ms-user-select: text;
-    user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
 }
 
 h2,
 ion-card-title {
-    font-family: 'Gelion Semi Bold';
-    font-weight: normal;
+  font-family: 'Gelion Semi Bold';
+  font-weight: normal;
 }
 
 ion-title {
-    font-family: 'Grotesk Bold';
-    font-weight: normal;
+  font-family: 'Grotesk Bold';
+  font-weight: normal;
 }
 
 // This ensures it only is used on Android devices
@@ -146,43 +156,43 @@ ion-title {
 // }
 
 .ic-txt {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 .clamp {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    -webkit-box-orient: vertical;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .clamp3 {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
-    -webkit-box-orient: vertical;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 
 ion-badge.pad-right {
-    margin-right: 0.8rem;
+  margin-right: 0.8rem;
 }
 
 ion-item {
-    font-size: 1.2rem;
+  font-size: 1.2rem;
 }
 
 ion-label {
-    font-family: 'Gelion Regular' !important;
+  font-family: 'Gelion Regular' !important;
 }
 
 .bold {
-    font-family: 'Gelion Semi Bold' !important;
+  font-family: 'Gelion Semi Bold' !important;
 }
 
 .large {
-    font-size: larger;
+  font-size: larger;
 }
 
 ion-text,
@@ -190,224 +200,218 @@ ion-card-content,
 ion-card-subtitle,
 ion-segment-button,
 ion-back-button {
-    font-family: 'Gelion Regular';
+  font-family: 'Gelion Regular';
 }
 
 .center {
-    padding-top: 1rem;
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+  padding-top: 1rem;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .text {
-    line-height: 1.5;
-    opacity: 0.5;
+  line-height: 1.5;
+  opacity: 0.5;
 }
 
 .text-dim {
-    line-height: 1.5;
-    opacity: 0.15;
+  line-height: 1.5;
+  opacity: 0.15;
 }
 
 [hidden] {
-    display: none !important;
+  display: none !important;
 }
 
 .pad-top {
-    padding-top: 5rem;
+  padding-top: 5rem;
 }
 
 .right-side {
-    padding-right: 0.5rem;
-    margin-top: -1rem;
+  padding-right: 0.5rem;
+  margin-top: -1rem;
 }
 
 cdk-virtual-scroll-viewport {
-    height: 100%;
-    width: 100%;
+  height: 100%;
+  width: 100%;
 }
 
 .virtual-scroll-container {
-    width: 100%;
-    max-width: 100%;
-    height: calc(100% - 60px - env(safe-area-inset-bottom));
+  width: 100%;
+  max-width: 100%;
+  height: calc(100% - 60px - env(safe-area-inset-bottom));
 }
 
-
 @keyframes pulse {
-    0% {
-        transform: scale(1.0);
-    }
+  0% {
+    transform: scale(1);
+  }
 
-    50% {
-        transform: scale(1.9);
-    }
+  50% {
+    transform: scale(1.9);
+  }
 
-    100% {
-        transform: scale(1.0);
-    }
+  100% {
+    transform: scale(1);
+  }
 }
 
 @keyframes blink {
-    0% {
-        transform: scale(1.0);
-        border-color: var(--ion-color-light);
-        background-color: var(--ion-color-primary);
-    }
+  0% {
+    transform: scale(1);
+    border-color: var(--ion-color-light);
+    background-color: var(--ion-color-primary);
+  }
 
-    50% {
-        transform: scale(3.0);
-        border-color: var(--ion-color-dark);
-        background-color: var(--ion-color-light);
-    }
+  50% {
+    transform: scale(3);
+    border-color: var(--ion-color-dark);
+    background-color: var(--ion-color-light);
+  }
 
-    100% {
-        transform: scale(1.0);
-        border-color: transparent;
-        background-color: var(--ion-color-primary);
-    }
+  100% {
+    transform: scale(1);
+    border-color: transparent;
+    background-color: var(--ion-color-primary);
+  }
 }
 
 @keyframes pin {
-    0% {
-        background-color: var(--ion-color-primary);
-    }
+  0% {
+    background-color: var(--ion-color-primary);
+  }
 
-    50% {
-        background-color: var(--ion-color-light);
-    }
+  50% {
+    background-color: var(--ion-color-light);
+  }
 
-    100% {
-        background-color: var(--ion-color-primary);
-    }
+  100% {
+    background-color: var(--ion-color-primary);
+  }
 }
 
 @media screen and (min-width: 1024px) {
+  ion-card-title,
+  ion-card-subtitle {
+    width: 60vw;
+  }
 
-    ion-card-title,
-    ion-card-subtitle {
-        width: 60vw;
-    }
+  ion-content.app-page {
+    --padding-start: 10vw;
+    --padding-end: 10vw;
+    --overflow: hidden;
+  }
 
-    ion-content.app-page {
-        --padding-start: 10vw;
-        --padding-end: 10vw;
-        --overflow: hidden;
-    }
+  ion-tab-bar {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
 
-    ion-tab-bar {
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-    }
+  ion-icon {
+    font-size: xx-large;
+  }
 
-    ion-icon {
-        font-size: xx-large;
-    }
+  ion-tab-button {
+    font-size: large;
+  }
 
-    ion-tab-button {
-        font-size: large;
-    }
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
 
-    ::-webkit-scrollbar {
-        width: 10px;
-    }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
 
-    ::-webkit-scrollbar-track {
-        background: transparent;
-    }
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+  }
 
-    ::-webkit-scrollbar-thumb {
-        background: #888;
-        border-radius: 10px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-        background: #555;
-    }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
 }
 
 .page-focus:focus-visible {
-    outline: none;
+  outline: none;
 }
-
 
 :root {
-    --zoom: 1;
+  --zoom: 1;
 }
+
 
 
 @media print {
+  ion-header,
+  ion-backdrop,
+  .tabbar,
+  ion-footer,
+  ion-content::part(background) {
+    display: none !important;
+  }
 
-    ion-header,
-    ion-backdrop,
-    .tabbar,
-    ion-footer,
-    ion-content::part(background) {
-        display: none !important;
-    }
+  ion-nav {
+    contain: none;
+    overflow: visible;
+  }
 
-    ion-nav {
-        contain: none;
-        overflow: visible;
-    }
+  ion-split-pane {
+    display: block;
+  }
 
-    ion-split-pane {
-        display: block;
-    }
+  .scroll-content,
+  ion-modal,
+  ion-modal .modal-wrapper,
+  ion-modal .ion-page,
+  ion-modal .ion-page > ion-content,
+  .ion-page,
+  .ion-page > ion-content,
+  ion-split-pane,
+  ion-tab,
+  ion-tabs,
+  ion-router-outlet,
+  .app-root,
+  ion-content::part(scroll),
+  body {
+    contain: none;
+    position: initial;
+    height: auto !important; // auto !important;
+    overflow: visible !important;
+    max-height: initial !important;
+  }
 
-    .scroll-content,
-    ion-modal,
-    ion-modal .modal-wrapper,
-    ion-modal .ion-page,
-    ion-modal .ion-page>ion-content,
-    .ion-page,
-    .ion-page>ion-content,
-    ion-split-pane,
-    ion-tab,
-    ion-tabs,
-    ion-router-outlet,
-    .app-root,
-    ion-content::part(scroll),
-    body {
-        contain: none;
-        position: initial;
-        height: auto !important; // auto !important;
-        overflow: visible !important;
-        max-height: initial !important;
-    }
+  body {
+    height: var(--body-height) !important;
+    max-height: unset !important;
+    zoom: var(--zoom);
+  }
 
-    body {
-        height: var(--body-height) !important;
-        max-height: unset !important;
-        zoom: var(--zoom);
-    }
+  ion-content {
+    --offset-bottom: unset !important;
+    display: unset !important;
+    position: unset !important;
+    height: unset !important;
+    contain: none !important;
+  }
 
-    ion-content {
-        --offset-bottom: unset !important;
-        display: unset !important;
-        ;
-        position: unset !important;
-        ;
-        height: unset !important;
-        contain: none !important;
-    }
+  ion-tab-bar {
+    display: none;
+  }
 
-    ion-tab-bar {
-        display: none;
-    }
+  ion-router-outlet {
+    overflow: auto !important;
+    contain: none !important;
+    position: initial !important;
+  }
 
-    ion-router-outlet {
-        overflow: auto !important;
-        contain: none !important;
-        position: initial !important;
-    }
-
-    .fixed-content,
-    .scroll-content {
-        margin-top: 0 !important;
-    }
-
+  .fixed-content,
+  .scroll-content {
+    margin-top: 0 !important;
+  }
 }

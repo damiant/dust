@@ -359,6 +359,7 @@ export class IntroPage {
         this.settingsService.settings.datasetId = this.settingsService.settings.lastDatasetId;
         return;
       }
+      location.reload();
     }
     if (!this.vm.selected) return;
     this.vm.selected.class = 'launching';

@@ -54,7 +54,7 @@
     "@capacitor/status-bar": "7.0.1",
     "@capacitor/text-zoom": "7.0.1",
     "@capawesome/capacitor-app-update": "7.0.1",
-    "@ionic/angular": "8.5.3",
+    "@ionic/angular": "8.6.2",
     "@webnativellc/capacitor-filesharer": "7.0.4",
     "@webnativellc/capacitor-navigation-bar": "^7.0.0",
     "@webnativellc/capacitor-print-webview": "7.0.1",
