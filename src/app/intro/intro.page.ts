@@ -304,7 +304,7 @@ export class IntroPage {
     await this.db.clear();
     console.log('Done clearing');
     const devMode = await this.settingsService.getInteger('developermode');
-    await this.settingsService.setInteger('developermode',devMode == 0 ? 1 : 0);
+    await this.settingsService.setInteger('developermode', devMode == 0 ? 1 : 0);
     await this.settingsService.clearSelectedEvent();
     document.location.href = '';
   }
@@ -359,6 +359,7 @@ export class IntroPage {
         this.settingsService.settings.datasetId = this.settingsService.settings.lastDatasetId;
         return;
       }
+      location.reload();
     }
     if (!this.vm.selected) return;
     this.vm.selected.class = 'launching';

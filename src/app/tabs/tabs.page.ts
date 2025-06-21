@@ -15,16 +15,16 @@ import { IonIcon, IonLabel, IonTabBar, IonTabButton, IonTabs, IonBadge } from '@
 import { addIcons } from 'ionicons';
 import { musicalNotesOutline, ellipsisVertical, mailOutline } from 'ionicons/icons';
 import { Capacitor } from '@capacitor/core';
-import { Animation, StatusBar } from '@capacitor/status-bar';
+import { StatusBar } from '@capacitor/status-bar';
 import { ScreenOrientation } from '@capacitor/screen-orientation';
 import { FavoritesService } from '../favs/favorites.service';
 import { TextZoom } from '@capacitor/text-zoom';
 
 @Component({
-    selector: 'app-tabs',
-    templateUrl: 'tabs.page.html',
-    styleUrls: ['tabs.page.scss'],
-    imports: [IonBadge, CommonModule, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel]
+  selector: 'app-tabs',
+  templateUrl: 'tabs.page.html',
+  styleUrls: ['tabs.page.scss'],
+  imports: [IonBadge, CommonModule, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel]
 })
 export class TabsPage implements OnInit {
   public db = inject(DbService);
@@ -58,7 +58,7 @@ export class TabsPage implements OnInit {
           case ShareInfoType.camp:
             return await this.navTo('camp', shareItem.id);
           case ShareInfoType.event:
-            return await this.navTo('event', shareItem.id);          
+            return await this.navTo('event', shareItem.id);
         }
       }
     });
@@ -142,9 +142,9 @@ export class TabsPage implements OnInit {
     if (Capacitor.isNativePlatform() && !this.ui.isAndroid()) {
       const isHidden = this.currentTab == 'profile';
       if (isHidden) {
-        StatusBar.hide({ animation: Animation.Fade });
+        StatusBar.hide();
       } else {
-        StatusBar.show({ animation: Animation.Fade });
+        StatusBar.show();
       }
     }
   }

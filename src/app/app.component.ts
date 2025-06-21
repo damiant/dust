@@ -47,7 +47,7 @@ export class AppComponent implements OnInit {
           const kv = tmp[1].split('=');
           const u = new URL(event.url);
           const path = u.pathname;
-          this.shareService.notify(kv[0] as ShareInfoType, kv[1], path);          
+          this.shareService.notify(kv[0] as ShareInfoType, kv[1], path);
         }
       } catch (e) {
         console.error('appUrlOpen', e);
@@ -68,15 +68,15 @@ export class AppComponent implements OnInit {
     // }, 10000);
   }
 
-  private applyInsets(data: SafeAreaInsets) {      
-      const { insets } = data;
-      console.log('SafeAreaInsets', insets);
-      for (const [key, value] of Object.entries(insets)) {
-        document.documentElement.style.setProperty(
-          `--safe-area-inset-${key}`,
-          `${value}px`,
-        );
-      }
+  private applyInsets(data: SafeAreaInsets) {
+    const { insets } = data;
+    console.log('SafeAreaInsets', insets);
+    for (const [key, value] of Object.entries(insets)) {
+      document.documentElement.style.setProperty(
+        `--safe-area-inset-${key}`,
+        `${value}px`,
+      );
+    }
   }
 
   stackChanged() {
