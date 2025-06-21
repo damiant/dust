@@ -15,7 +15,7 @@ import { IonIcon, IonLabel, IonTabBar, IonTabButton, IonTabs, IonBadge } from '@
 import { addIcons } from 'ionicons';
 import { musicalNotesOutline, ellipsisVertical, mailOutline } from 'ionicons/icons';
 import { Capacitor } from '@capacitor/core';
-import { Animation, StatusBar } from '@capacitor/status-bar';
+import { StatusBar } from '@capacitor/status-bar';
 import { ScreenOrientation } from '@capacitor/screen-orientation';
 import { FavoritesService } from '../favs/favorites.service';
 import { TextZoom } from '@capacitor/text-zoom';
