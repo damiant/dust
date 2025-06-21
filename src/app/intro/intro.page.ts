@@ -276,7 +276,7 @@ export class IntroPage {
     this.ui.setNavigationBar(ThemePrimaryColor);
     delay(500).then(async () => {
       if (Capacitor.isNativePlatform()) {
-        await StatusBar.setStyle({ style: Style.Dark });        
+        await StatusBar.setStyle({ style: Style.Dark });
         await this.ui.setStatusBarBackgroundColor();
         await SplashScreen.hide();
         await delay(200);
@@ -304,7 +304,7 @@ export class IntroPage {
     await this.db.clear();
     console.log('Done clearing');
     const devMode = await this.settingsService.getInteger('developermode');
-    await this.settingsService.setInteger('developermode',devMode == 0 ? 1 : 0);
+    await this.settingsService.setInteger('developermode', devMode == 0 ? 1 : 0);
     await this.settingsService.clearSelectedEvent();
     document.location.href = '';
   }
