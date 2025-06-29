@@ -381,7 +381,7 @@ export class HomePage implements OnInit {
     } else {
       if (!this.settings.settings.dataset?.lat) {
         // Golden Spike at Burning Man
-        return { lat: 40.786969, long: -119.204101 };
+        return { lat: 40.786958, long: -119.202994 };
       } else {
         return undefined;
       }
