@@ -1,0 +1,659 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Back" defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Cache Management</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="loadCacheStats()" [disabled]="loading()">
+        <ion-icon name="refresh-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding-bottom">
+  <ion-refresher slot="fixed" (ionRefresh)="onRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  @if (loading()) {
+    <div class="loading-container">
+      <ion-text>
+        <h3>Loading cache statistics...</h3>
+      </ion-text>
+      <ion-progress-bar type="indeterminate"></ion-progress-bar>
+    </div>
+  } @else if (cacheStats()) {
+    <!-- Segment Navigation -->
+    <ion-segment
+      [value]="selectedSegment()"
+      (ionChange)="segmentChanged($event)"
+      class="segment-container">
+      <ion-segment-button value="overview">
+        <ion-label>Overview</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="categories">
+        <ion-label>Files</ion-label>
+      </ion-segment-button>
+      <!-- Data tab hidden - allows deletion across events which may be undesirable -->
+      <!-- <ion-segment-button value="data">
+        <ion-label>Data</ion-label>
+      </ion-segment-button> -->
+      <ion-segment-button value="events">
+        <ion-label>Events</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <!-- Overview Tab -->
+    @if (selectedSegment() === 'overview') {
+      <div class="content-container">
+        <!-- Total Storage Card -->
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>
+              <ion-icon name="save-outline"></ion-icon>
+              Total Cache Usage (All Events)
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <div class="stats-grid">
+              <div class="stat-item">
+                <ion-text color="primary">
+                  <h2>{{ formatBytes(cacheStats()!.totalSize + (dataCacheStats()?.totalSize || 0)) }}</h2>
+                </ion-text>
+                <ion-text color="medium">
+                  <p>Total Storage</p>
+                </ion-text>
+              </div>
+              <div class="stat-item">
+                <ion-text color="primary">
+                  <h2>{{ cacheStats()!.fileCount }}</h2>
+                </ion-text>
+                <ion-text color="medium">
+                  <p>Files Cached</p>
+                </ion-text>
+              </div>
+              <div class="stat-item">
+                <ion-text color="secondary">
+                  <h2>{{ formatBytes(dataCacheStats()?.totalSize || 0) }}</h2>
+                </ion-text>
+                <ion-text color="medium">
+                  <p>Data Cache</p>
+                </ion-text>
+              </div>
+              <div class="stat-item">
+                <ion-text color="secondary">
+                  <h2>{{ getTotalDataRecords() }}</h2>
+                </ion-text>
+                <ion-text color="medium">
+                  <p>Data Records</p>
+                </ion-text>
+              </div>
+            </div>
+          </ion-card-content>
+        </ion-card>
+
+        <!-- Quick Actions Card -->
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>
+              <ion-icon name="cloud-download-outline"></ion-icon>
+              Quick Actions for {{ currentEventName() }}
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-button
+              expand="block"
+              fill="outline"
+              (click)="downloadData()"
+              [disabled]="downloadingData()"
+              class="action-button">
+              <ion-icon name="cloud-download-outline" slot="start"></ion-icon>
+              @if (downloadingData()) {
+                {{ downloadStatus().status || 'Downloading Data...' }}
+              } @else {
+                Download Data for {{ currentEventName() }}
+              }
+            </ion-button>
+            
+            <ion-button
+              expand="block"
+              fill="outline"
+              (click)="preDownloadAudioTours()"
+              class="action-button">
+              <ion-icon name="musical-notes-outline" slot="start"></ion-icon>
+              Download Audio Tours for {{ currentEventName() }}
+            </ion-button>
+            
+            <ion-button
+              expand="block"
+              fill="outline"
+              (click)="preDownloadImages()"
+              class="action-button">
+              <ion-icon name="images-outline" slot="start"></ion-icon>
+              Download Images for {{ currentEventName() }}
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+
+        <!-- Cache Maintenance Card -->
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>
+              <ion-icon name="build-outline"></ion-icon>
+              Cache Maintenance
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <!-- Duplicate Files Analysis -->
+            <div class="maintenance-section">
+              <div class="maintenance-header">
+                <ion-button
+                  expand="block"
+                  fill="outline"
+                  color="medium"
+                  (click)="analyzeDuplicates()"
+                  [disabled]="analyzingDuplicates()"
+                  class="action-button">
+                  <ion-icon name="copy-outline" slot="start"></ion-icon>
+                  @if (analyzingDuplicates()) {
+                    Analyzing Duplicates...
+                  } @else {
+                    Analyze Duplicate Images
+                  }
+                </ion-button>
+              </div>
+              
+              @if (duplicateAnalysis()) {
+                <div class="analysis-results">
+                  @if (duplicateAnalysis()!.totalFiles > 0) {
+                    <ion-text color="warning">
+                      <p><strong>{{ duplicateAnalysis()!.totalFiles }} duplicate files found</strong> ({{ formatBytes(duplicateAnalysis()!.totalSize) }})</p>
+                    </ion-text>
+                    <ion-button
+                      expand="block"
+                      fill="solid"
+                      color="warning"
+                      (click)="cleanupDuplicates()"
+                      class="action-button">
+                      <ion-icon name="trash-outline" slot="start"></ion-icon>
+                      Clean Up {{ duplicateAnalysis()!.totalFiles }} Duplicate Files
+                    </ion-button>
+                  } @else {
+                    <ion-text color="success">
+                      <p><ion-icon name="checkmark-circle-outline"></ion-icon> No duplicate files found</p>
+                    </ion-text>
+                  }
+                </div>
+              }
+            </div>
+            
+            <!-- Orphaned Files Analysis -->
+            <div class="maintenance-section">
+              <div class="maintenance-header">
+                <ion-button
+                  expand="block"
+                  fill="outline"
+                  color="medium"
+                  (click)="analyzeOrphaned()"
+                  [disabled]="analyzingOrphaned()"
+                  class="action-button">
+                  <ion-icon name="trash-bin-outline" slot="start"></ion-icon>
+                  @if (analyzingOrphaned()) {
+                    Analyzing Orphaned Files...
+                  } @else {
+                    Analyze Orphaned Files
+                  }
+                </ion-button>
+              </div>
+              
+              @if (orphanedAnalysis()) {
+                <div class="analysis-results">
+                  @if (orphanedAnalysis()!.totalFiles > 0) {
+                    <ion-text color="warning">
+                      <p><strong>{{ orphanedAnalysis()!.totalFiles }} orphaned files found</strong> ({{ formatBytes(orphanedAnalysis()!.totalSize) }})</p>
+                    </ion-text>
+                    <ion-button
+                      expand="block"
+                      fill="solid"
+                      color="warning"
+                      (click)="cleanupOrphaned()"
+                      class="action-button">
+                      <ion-icon name="trash-outline" slot="start"></ion-icon>
+                      Clean Up {{ orphanedAnalysis()!.totalFiles }} Orphaned Files
+                    </ion-button>
+                  } @else {
+                    <ion-text color="success">
+                      <p><ion-icon name="checkmark-circle-outline"></ion-icon> No orphaned files found</p>
+                    </ion-text>
+                  }
+                </div>
+              }
+            </div>
+            
+            <ion-text color="medium">
+              <p><small>Use these tools to analyze and clean up old duplicate files and free up storage space after cache system updates.</small></p>
+            </ion-text>
+          </ion-card-content>
+        </ion-card>
+
+        <!-- Storage Breakdown -->
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Storage Breakdown</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <!-- File Cache Breakdown -->
+            @for (type of [CacheFileType.AUDIO, CacheFileType.IMAGE, CacheFileType.MAP, CacheFileType.OTHER]; track type) {
+              @if (cacheStats()!.categories[type].count > 0) {
+                <div class="breakdown-item">
+                  <div class="breakdown-header">
+                    <ion-icon [name]="getTypeIcon(type)" [color]="getTypeColor(type)"></ion-icon>
+                    <ion-label>
+                      <h3>{{ type | titlecase }} Files</h3>
+                      <p>{{ cacheStats()!.categories[type].count }} files</p>
+                    </ion-label>
+                    <ion-text [color]="getTypeColor(type)">
+                      <strong>{{ formatBytes(cacheStats()!.categories[type].size) }}</strong>
+                    </ion-text>
+                  </div>
+                  <ion-progress-bar
+                    [value]="cacheStats()!.categories[type].size / (cacheStats()!.totalSize + (dataCacheStats()?.totalSize || 0))"
+                    [color]="getTypeColor(type)">
+                  </ion-progress-bar>
+                </div>
+              }
+            }
+            
+            <!-- Data Cache Breakdown -->
+            @if (dataCacheStats() && dataCacheStats()!.totalSize > 0) {
+              <div class="breakdown-item">
+                <div class="breakdown-header">
+                  <ion-icon name="document-outline" color="secondary"></ion-icon>
+                  <ion-label>
+                    <h3>Data Cache</h3>
+                    <p>{{ getTotalDataRecords() }} records</p>
+                  </ion-label>
+                  <ion-text color="secondary">
+                    <strong>{{ formatBytes(dataCacheStats()!.totalSize) }}</strong>
+                  </ion-text>
+                </div>
+                <ion-progress-bar
+                  [value]="dataCacheStats()!.totalSize / (cacheStats()!.totalSize + dataCacheStats()!.totalSize)"
+                  color="secondary">
+                </ion-progress-bar>
+              </div>
+            }
+          </ion-card-content>
+        </ion-card>
+      </div>
+    }
+
+    <!-- Categories Tab -->
+    @if (selectedSegment() === 'categories') {
+      <div class="content-container">
+        @for (type of [CacheFileType.AUDIO, CacheFileType.IMAGE, CacheFileType.MAP, CacheFileType.OTHER]; track type) {
+          @if (cacheStats()!.categories[type].count > 0) {
+            <ion-card>
+              <ion-card-header>
+                <ion-card-title>
+                  <ion-icon [name]="getTypeIcon(type)" [color]="getTypeColor(type)"></ion-icon>
+                  {{ type | titlecase }} Files
+                  <ion-chip [color]="getTypeColor(type)">
+                    {{ cacheStats()!.categories[type].count }}
+                  </ion-chip>
+                </ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                <div class="category-stats">
+                  <div class="stat-row">
+                    <ion-text color="medium">Total Size:</ion-text>
+                    <ion-text [color]="getTypeColor(type)">
+                      <strong>{{ formatBytes(cacheStats()!.categories[type].size) }}</strong>
+                    </ion-text>
+                  </div>
+                  <div class="stat-row">
+                    <ion-text color="medium">File Count:</ion-text>
+                    <ion-text [color]="getTypeColor(type)">
+                      <strong>{{ cacheStats()!.categories[type].count }}</strong>
+                    </ion-text>
+                  </div>
+                </div>
+                
+                <ion-button 
+                  expand="block" 
+                  fill="outline" 
+                  color="danger"
+                  (click)="clearCacheByType(type)"
+                  class="clear-button">
+                  <ion-icon name="trash-outline" slot="start"></ion-icon>
+                  Clear All {{ type | titlecase }} Files
+                </ion-button>
+              </ion-card-content>
+            </ion-card>
+          }
+        }
+      </div>
+    }
+
+    <!-- Data Tab -->
+    @if (selectedSegment() === 'data') {
+      <div class="content-container">
+        @if (dataCacheStats()) {
+          <!-- Data Cache Overview Card -->
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>
+                <ion-icon name="document-outline"></ion-icon>
+                Data Cache Overview
+              </ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <div class="stats-grid">
+                <div class="stat-item">
+                  <ion-text color="primary">
+                    <h2>{{ formatBytes(dataCacheStats()!.totalSize) }}</h2>
+                  </ion-text>
+                  <ion-text color="medium">
+                    <p>Total Data Size</p>
+                  </ion-text>
+                </div>
+                <div class="stat-item">
+                  <ion-text color="primary">
+                    <h2>{{ getTotalDataRecords() }}</h2>
+                  </ion-text>
+                  <ion-text color="medium">
+                    <p>Data Records</p>
+                  </ion-text>
+                </div>
+              </div>
+              
+              <ion-button
+                expand="block"
+                fill="outline"
+                color="danger"
+                (click)="clearAllDataCache()"
+                class="clear-button clear-all">
+                <ion-icon name="trash-outline" slot="start"></ion-icon>
+                Clear All Data Cache
+              </ion-button>
+            </ion-card-content>
+          </ion-card>
+
+          <!-- Data Categories -->
+          @for (type of [CacheDataType.EVENTS, CacheDataType.CAMPS, CacheDataType.ART, CacheDataType.RSL, CacheDataType.PINS, CacheDataType.LINKS, CacheDataType.GEO, CacheDataType.SETTINGS, CacheDataType.FAVORITES, CacheDataType.OTHER_DATA]; track type) {
+            @if (dataCacheStats()!.categories[type].count > 0) {
+              <ion-card>
+                <ion-card-header>
+                  <ion-card-title>
+                    <ion-icon [name]="getDataTypeIcon(type)" [color]="getDataTypeColor(type)"></ion-icon>
+                    {{ type | titlecase }} Data
+                    <ion-chip [color]="getDataTypeColor(type)">
+                      {{ getDataTypeRecordCount(type) }} records
+                    </ion-chip>
+                  </ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                  <div class="category-stats">
+                    <div class="stat-row">
+                      <ion-text color="medium">Total Size:</ion-text>
+                      <ion-text [color]="getDataTypeColor(type)">
+                        <strong>{{ formatBytes(dataCacheStats()!.categories[type].size) }}</strong>
+                      </ion-text>
+                    </div>
+                    <div class="stat-row">
+                      <ion-text color="medium">Data Entries:</ion-text>
+                      <ion-text [color]="getDataTypeColor(type)">
+                        <strong>{{ dataCacheStats()!.categories[type].count }}</strong>
+                      </ion-text>
+                    </div>
+                    <div class="stat-row">
+                      <ion-text color="medium">Total Records:</ion-text>
+                      <ion-text [color]="getDataTypeColor(type)">
+                        <strong>{{ getDataTypeRecordCount(type) }}</strong>
+                      </ion-text>
+                    </div>
+                  </div>
+                  
+                  <ion-button
+                    expand="block"
+                    fill="outline"
+                    color="danger"
+                    (click)="clearDataCacheByType(type)"
+                    class="clear-button">
+                    <ion-icon name="trash-outline" slot="start"></ion-icon>
+                    Clear {{ type | titlecase }} Data
+                  </ion-button>
+                </ion-card-content>
+              </ion-card>
+            }
+          }
+
+          <!-- Note about event-specific data -->
+          <ion-card color="light">
+            <ion-card-content>
+              <ion-text color="medium">
+                <p><strong>Event-Specific Data:</strong> Data associated with specific events is managed in the "Events" tab alongside cached files. This section shows data organized by category type.</p>
+              </ion-text>
+            </ion-card-content>
+          </ion-card>
+        } @else {
+          <ion-card>
+            <ion-card-content>
+              <div class="empty-state">
+                <ion-icon name="document-outline" size="large" color="medium"></ion-icon>
+                <ion-text color="medium">
+                  <h3>No Data Cache Found</h3>
+                  <p>No locally stored data found. Visit events and use the app to see cached data here.</p>
+                </ion-text>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        }
+      </div>
+    }
+
+    <!-- Events Tab -->
+    @if (selectedSegment() === 'events') {
+      <div class="content-container">
+        @if (getAllEventsWithData().length === 0) {
+          <ion-card>
+            <ion-card-content>
+              <div class="empty-state">
+                <ion-icon name="save-outline" size="large" color="medium"></ion-icon>
+                <ion-text color="medium">
+                  <h3>No Event Data Found</h3>
+                  <p>No cached files or data found for any events. Visit events and use the app to see statistics here.</p>
+                </ion-text>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        } @else {
+          <!-- Info Card -->
+          <ion-card color="light">
+            <ion-card-content>
+              <ion-text color="medium">
+                <p><strong>Event Cache Overview:</strong> This shows cached files and data for all events you've visited. Each event's content is stored separately and can be managed individually.</p>
+              </ion-text>
+            </ion-card-content>
+          </ion-card>
+          @for (event of getAllEventsWithData(); track event.eventId) {
+            <ion-card>
+              <ion-card-header>
+                <ion-card-title>
+                  {{ event.eventName }}
+                  <ion-chip color="primary">
+                    {{ event.count }} files
+                  </ion-chip>
+                  @if (getEventDataInfo(event.eventId)) {
+                    <ion-chip color="secondary">
+                      {{ getEventDataInfo(event.eventId)!.count }} data records
+                    </ion-chip>
+                  }
+                </ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                <!-- File Cache Stats -->
+                <div class="event-stats">
+                  <div class="stat-inline">
+                    <ion-icon name="folder-outline" color="primary"></ion-icon>
+                    <ion-text color="medium">
+                      Files Total: <ion-text color="primary"><strong>{{ formatBytes(event.size) }}</strong></ion-text>
+                    </ion-text>
+                  </div>
+                  @if (event.audioFiles > 0) {
+                    <div class="stat-inline">
+                      <ion-icon name="musical-notes-outline" color="success"></ion-icon>
+                      <ion-text color="medium">
+                        Audio Files: <ion-text color="success"><strong>{{ event.audioFiles }}</strong></ion-text>
+                      </ion-text>
+                    </div>
+                  }
+                  @if (event.imageFiles > 0) {
+                    <div class="stat-inline">
+                      <ion-icon name="images-outline" color="tertiary"></ion-icon>
+                      <ion-text color="medium">
+                        Image Files: <ion-text color="tertiary"><strong>{{ event.imageFiles }}</strong></ion-text>
+                      </ion-text>
+                    </div>
+                  }
+                  
+                  <!-- Data Cache Stats -->
+                  @if (getEventDataInfo(event.eventId)) {
+                    <div class="stat-inline">
+                      <ion-icon name="document-outline" color="secondary"></ion-icon>
+                      <ion-text color="medium">
+                        Data Total: <ion-text color="secondary"><strong>{{ formatBytes(getEventDataInfo(event.eventId)!.size) }}</strong></ion-text>
+                      </ion-text>
+                    </div>
+                  }
+                </div>
+                
+                <!-- File Management Buttons -->
+                <div class="selective-clear-buttons">
+                  <ion-text color="medium">
+                    <h4>File Management</h4>
+                  </ion-text>
+                  
+                  @if (event.audioFiles > 0) {
+                    <ion-button
+                      expand="block"
+                      fill="outline"
+                      color="warning"
+                      (click)="clearEventCacheByType(event.eventId, event.eventName, CacheFileType.AUDIO)"
+                      class="clear-button selective-clear">
+                      <ion-icon name="musical-notes-outline" slot="start"></ion-icon>
+                      Clear Audio Files ({{ event.audioFiles }})
+                    </ion-button>
+                  }
+                  
+                  @if (event.imageFiles > 0) {
+                    <ion-button
+                      expand="block"
+                      fill="outline"
+                      color="warning"
+                      (click)="clearEventCacheByType(event.eventId, event.eventName, CacheFileType.IMAGE)"
+                      class="clear-button selective-clear">
+                      <ion-icon name="images-outline" slot="start"></ion-icon>
+                      Clear Image Files ({{ event.imageFiles }})
+                    </ion-button>
+                  }
+                  
+                  <ion-button
+                    expand="block"
+                    fill="outline"
+                    color="danger"
+                    (click)="clearEventCache(event.eventId, event.eventName)"
+                    class="clear-button">
+                    <ion-icon name="trash-outline" slot="start"></ion-icon>
+                    Clear All {{ event.eventName }} Files
+                  </ion-button>
+                </div>
+                
+                <!-- Data Management Section (Always Show) -->
+                <div class="selective-clear-buttons">
+                  <ion-button
+                    fill="clear"
+                    expand="block"
+                    (click)="toggleDataSection(event.eventId)"
+                    class="data-section-toggle">
+                    <ion-icon
+                      [name]="isDataSectionExpanded(event.eventId) ? 'chevron-down-outline' : 'chevron-forward-outline'"
+                      slot="start">
+                    </ion-icon>
+                    <ion-text color="medium">
+                      <h4>Data Management</h4>
+                    </ion-text>
+                  </ion-button>
+                  
+                  @if (isDataSectionExpanded(event.eventId)) {
+                    <div class="data-management-content">
+                      @if (getEventDataInfo(event.eventId)) {
+                        <!-- Detailed Data Breakdown -->
+                        @if (getEventDataDetails(event.eventId).length > 0) {
+                          <div class="data-breakdown">
+                            <ion-text color="medium">
+                              <p><strong>Data stored for {{ event.eventName }}:</strong></p>
+                            </ion-text>
+                            @for (dataDetail of getEventDataDetails(event.eventId); track dataDetail.type) {
+                              <div class="data-detail-item">
+                                <ion-text color="secondary">
+                                  <p>• {{ dataDetail.type }}: {{ dataDetail.count }} records ({{ formatBytes(dataDetail.size) }})</p>
+                                </ion-text>
+                              </div>
+                            }
+                          </div>
+                        }
+                        
+                        <ion-button
+                          expand="block"
+                          fill="outline"
+                          color="warning"
+                          (click)="clearEventDataCache(event.eventId, event.eventName)"
+                          class="clear-button">
+                          <ion-icon name="document-outline" slot="start"></ion-icon>
+                          Clear {{ event.eventName }} Data ({{ getEventDataInfo(event.eventId)!.count }} records)
+                        </ion-button>
+                      } @else {
+                        <!-- No Data State -->
+                        <div class="no-data-state">
+                          <ion-text color="medium">
+                            <p>No locally stored data found for {{ event.eventName }}.</p>
+                            <p><small>Data will appear here when you browse events, camps, art, and other content in the app.</small></p>
+                          </ion-text>
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
+                
+                <!-- Clear Everything Button -->
+                <ion-button
+                  expand="block"
+                  fill="solid"
+                  color="danger"
+                  (click)="clearEventEverything(event.eventId, event.eventName)"
+                  class="clear-button clear-all">
+                  <ion-icon name="trash-outline" slot="start"></ion-icon>
+                  Clear All {{ event.eventName }} Files & Data
+                </ion-button>
+              </ion-card-content>
+            </ion-card>
+          }
+        }
+      </div>
+    }
+  } @else {
+    <div class="error-container">
+      <ion-text color="danger">
+        <h3>Failed to Load Cache Statistics</h3>
+        <p>Please try refreshing the page.</p>
+      </ion-text>
+      <ion-button (click)="loadCacheStats()" fill="outline">
+        <ion-icon name="refresh-outline" slot="start"></ion-icon>
+        Retry
+      </ion-button>
+    </div>
+  }
+</ion-content>

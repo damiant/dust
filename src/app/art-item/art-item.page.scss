@@ -44,3 +44,54 @@ ion-label.text {
 .pad-left {
     padding-left: 2.9rem;
 }
+
+.audio-container {
+  width: 100%;
+  
+  audio {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.audio-loading {
+  padding: 1rem 0;
+  
+  ion-text {
+    display: block;
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+}
+
+.offline-indicator {
+  --background: var(--ion-color-success-tint);
+  --color: var(--ion-color-success-contrast);
+  font-size: 0.75rem;
+  height: 24px;
+  
+  ion-icon {
+    font-size: 0.9rem;
+    margin-right: 0.25rem;
+  }
+  
+  ion-label {
+    font-weight: 500;
+  }
+}
+
+// Responsive audio controls
+@media (max-width: 768px) {
+  .audio-container {
+    audio {
+      height: 40px; // Slightly larger touch targets on mobile
+    }
+  }
+}
+
+// Dark mode adjustments
+@media (prefers-color-scheme: dark) {
+  .offline-indicator {
+    --background: var(--ion-color-success-shade);
+  }
+}
