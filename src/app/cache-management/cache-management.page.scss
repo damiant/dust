@@ -1,0 +1,217 @@
+.loading-container, .error-container {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.segment-container {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  
+  ion-segment {
+    width: 100% !important;
+    margin: 0 !important;
+    
+    ion-segment-button {
+      flex: 1 !important;
+      min-width: 0 !important;
+    }
+  }
+}
+
+.content-container {
+  padding: 1rem;
+  padding-bottom: calc(1rem + var(--ion-tab-bar-height, 56px) + env(safe-area-inset-bottom, 0px));
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.stat-item { text-align: center; }
+
+.action-button, .clear-button { margin-top: 1rem; }
+
+.action-button:first-of-type {
+  // Slightly enhance the first action button (Download Data) for better visibility
+  --border-width: 2px;
+  font-weight: 500;
+}
+
+.breakdown-item, ion-card { margin-bottom: 1rem; }
+
+.breakdown-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  
+  ion-label { flex: 1; }
+}
+
+.category-stats, .event-stats { margin-bottom: 1.5rem; }
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  
+  &:last-child { margin-bottom: 0; }
+}
+
+.event-stats .stat-row {
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  
+  ion-text:first-of-type { flex: 1; }
+}
+
+.stat-inline {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  
+  &:last-child { margin-bottom: 0; }
+  
+  ion-text {
+    display: inline;
+    
+    ion-text {
+      display: inline;
+    }
+  }
+}
+
+.selective-clear-buttons {
+  margin: 1rem 0 0.5rem 0;
+  
+  .selective-clear { margin-bottom: 0.5rem; }
+}
+
+.clear-button.clear-all {
+  border-top: 1px solid var(--ion-color-light-shade);
+  padding-top: 1rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.data-breakdown {
+  margin: 0.75rem 0 1rem 0;
+  padding: 1rem;
+  background: var(--ion-color-step-50);
+  border-radius: 8px;
+  border-left: 3px solid var(--ion-color-secondary);
+}
+
+.data-section-toggle {
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  --background: transparent;
+  --background-activated: transparent;
+  --background-focused: transparent;
+  --background-hover: transparent;
+  --ripple-color: transparent;
+  --color: var(--ion-color-step-600);
+  height: auto;
+  min-height: auto;
+  margin: 0.25rem 0 0 0;
+  text-align: left;
+  
+  ion-text {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+}
+
+.data-management-content {
+  padding-left: 16px;
+  border-left: 2px solid var(--ion-color-light);
+  margin-left: 8px;
+  margin-top: 0.5rem;
+}
+
+.no-data-state {
+  padding: 1rem;
+  text-align: center;
+  background: var(--ion-color-light);
+  border-radius: 8px;
+  margin: 8px 0;
+}
+
+.analysis-results {
+  background: var(--ion-color-light);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 0.75rem;
+  border-left: 4px solid var(--ion-color-warning);
+  
+  p {
+    margin: 0 0 0.75rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    
+    &:last-child { margin-bottom: 0; }
+  }
+  
+  ion-button { margin-top: 0.75rem; }
+  
+  &.success {
+    border-left-color: var(--ion-color-success);
+    background: var(--ion-color-success-tint);
+  }
+}
+
+@media (max-width: 768px) {
+  .stats-grid { grid-template-columns: 1fr; }
+  
+  .content-container {
+    padding: 0.75rem;
+    padding-bottom: calc(0.75rem + var(--ion-tab-bar-height, 56px) + env(safe-area-inset-bottom, 0px) + 1rem);
+  }
+  
+  .breakdown-header {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    
+    ion-text {
+      width: 100%;
+      text-align: right;
+    }
+  }
+  
+  .stat-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+    
+    &.event-stats .stat-row {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+  
+  .data-breakdown { padding: 0.5rem; }
+}
+
+@media (prefers-color-scheme: dark) {
+  .analysis-results {
+    background: var(--ion-color-step-100);
+    color: var(--ion-color-step-850);
+    
+    &.success {
+      background: var(--ion-color-success-shade);
+      color: var(--ion-color-success-contrast);
+    }
+  }
+}
