@@ -56,7 +56,7 @@ import {
 import { CacheStats, CacheFileType, getCacheStats, clearCacheByType, clearCacheByEvent, clearCacheByEventAndType, preDownloadAudio, getCachedImage, cleanupDuplicateImages, clearOrphanedImages, analyzeDuplicateImages, analyzeOrphanedImages, DuplicateAnalysis, OrphanedAnalysis, getDataCacheStats, clearDataCacheByType, clearDataCacheByEvent, clearAllDataCache, CacheDataType, DataCacheStats, shouldRefreshCache, isAudioCached } from '../data/cache-store';
 import { DbService } from '../data/db.service';
 import { SettingsService } from '../data/settings.service';
-import { Art, Dataset } from '../data/models';
+import { Art } from '../data/models';
 import { ApiService, DownloadStatus } from '../data/api.service';
 
 interface EventCacheInfo {
