@@ -47,15 +47,10 @@
 
     <!-- Overview Tab -->
     @if (selectedSegment() === 'overview') {
+      <h1>Summary</h1>
       <div class="content-container">
         <!-- Total Storage Card -->
         <ion-card>
-          <ion-card-header>
-            <ion-card-title>
-              <ion-icon name="save-outline"></ion-icon>
-              Total Cache Usage (All Events)
-            </ion-card-title>
-          </ion-card-header>
           <ion-card-content>
             <div class="stats-grid">
               <div class="stat-item">
@@ -95,13 +90,8 @@
         </ion-card>
 
         <!-- Quick Actions Card -->
+         <h1>{{ currentEventName() }}</h1>
         <ion-card>
-          <ion-card-header>
-            <ion-card-title>
-              <ion-icon name="cloud-download-outline"></ion-icon>
-              Quick Actions for {{ currentEventName() }}
-            </ion-card-title>
-          </ion-card-header>
           <ion-card-content>
             <ion-button
               expand="block"
@@ -113,7 +103,7 @@
               @if (downloadingData()) {
                 {{ downloadStatus().status || 'Downloading Data...' }}
               } @else {
-                Download Data for {{ currentEventName() }}
+                Download Data
               }
             </ion-button>
             
@@ -123,7 +113,7 @@
               (click)="preDownloadAudioTours()"
               class="action-button">
               <ion-icon name="musical-notes-outline" slot="start"></ion-icon>
-              Download Audio Tours for {{ currentEventName() }}
+              Download Audio Tours
             </ion-button>
             
             <ion-button
@@ -132,7 +122,7 @@
               (click)="preDownloadImages()"
               class="action-button">
               <ion-icon name="images-outline" slot="start"></ion-icon>
-              Download Images for {{ currentEventName() }}
+              Download Images
             </ion-button>
           </ion-card-content>
         </ion-card>
@@ -239,10 +229,8 @@
         </ion-card>
 
         <!-- Storage Breakdown -->
+         <h1>Storage</h1>
         <ion-card>
-          <ion-card-header>
-            <ion-card-title>Storage Breakdown</ion-card-title>
-          </ion-card-header>
           <ion-card-content>
             <!-- File Cache Breakdown -->
             @for (type of [CacheFileType.AUDIO, CacheFileType.IMAGE, CacheFileType.MAP, CacheFileType.OTHER]; track type) {
@@ -251,7 +239,7 @@
                   <div class="breakdown-header">
                     <ion-icon [name]="getTypeIcon(type)" [color]="getTypeColor(type)"></ion-icon>
                     <ion-label>
-                      <h3>{{ type | titlecase }} Files</h3>
+                      <h3>{{ type | titlecase }}s</h3>
                       <p>{{ cacheStats()!.categories[type].count }} files</p>
                     </ion-label>
                     <ion-text [color]="getTypeColor(type)">
@@ -272,7 +260,7 @@
                 <div class="breakdown-header">
                   <ion-icon name="document-outline" color="secondary"></ion-icon>
                   <ion-label>
-                    <h3>Data Cache</h3>
+                    <h3>Cache</h3>
                     <p>{{ getTotalDataRecords() }} records</p>
                   </ion-label>
                   <ion-text color="secondary">
@@ -295,16 +283,8 @@
       <div class="content-container">
         @for (type of [CacheFileType.AUDIO, CacheFileType.IMAGE, CacheFileType.MAP, CacheFileType.OTHER]; track type) {
           @if (cacheStats()!.categories[type].count > 0) {
+            <h1>{{ type | titlecase }} Files</h1>
             <ion-card>
-              <ion-card-header>
-                <ion-card-title>
-                  <ion-icon [name]="getTypeIcon(type)" [color]="getTypeColor(type)"></ion-icon>
-                  {{ type | titlecase }} Files
-                  <ion-chip [color]="getTypeColor(type)">
-                    {{ cacheStats()!.categories[type].count }}
-                  </ion-chip>
-                </ion-card-title>
-              </ion-card-header>
               <ion-card-content>
                 <div class="category-stats">
                   <div class="stat-row">
@@ -479,20 +459,8 @@
             </ion-card-content>
           </ion-card>
           @for (event of getAllEventsWithData(); track event.eventId) {
+            <h1>{{ event.eventName}}</h1>
             <ion-card>
-              <ion-card-header>
-                <ion-card-title>
-                  {{ event.eventName }}
-                  <ion-chip color="primary">
-                    {{ event.count }} files
-                  </ion-chip>
-                  @if (getEventDataInfo(event.eventId)) {
-                    <ion-chip color="secondary">
-                      {{ getEventDataInfo(event.eventId)!.count }} data records
-                    </ion-chip>
-                  }
-                </ion-card-title>
-              </ion-card-header>
               <ion-card-content>
                 <!-- File Cache Stats -->
                 <div class="event-stats">
