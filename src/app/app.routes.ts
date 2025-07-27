@@ -50,4 +50,8 @@ export const routes: Routes = [
     path: 'messages',
     loadComponent: () => import('./messages/messages.page').then( m => m.MessagesPage)
   },
+  {
+    path: 'cache-management',
+    loadComponent: () => import('./cache-management/cache-management.page').then( m => m.CacheManagementPage)
+  },
 ];

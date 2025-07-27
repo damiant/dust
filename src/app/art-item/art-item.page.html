@@ -47,13 +47,28 @@
       <ion-label color="primary" (click)="map()">{{art.location_string ?? 'Map'}}</ion-label>
     </ion-item>
 
-    @if (art.audio) {
+    @if (art.audio && (cachedAudioUrl() || !audioLoading())) {
     <ion-item>
       <ion-icon slot="start" name="volume-high-outline"></ion-icon>
       <ion-label>
-        <audio controls style="width: 100%">
-          <source [src]="art.audio" type="audio/mpeg">
-        </audio>
+        @if (audioLoading()) {
+          <div class="audio-loading">
+            <ion-text color="medium">Loading audio...</ion-text>
+            <ion-progress-bar type="indeterminate"></ion-progress-bar>
+          </div>
+        } @else {
+          <div class="audio-container">
+            <audio controls style="width: 100%">
+              <source [src]="cachedAudioUrl() || art.audio" type="audio/mpeg">
+            </audio>
+            @if (isAudioAvailableOffline()) {
+              <ion-chip color="success" class="offline-indicator">
+                <ion-icon name="checkmark-circle-outline"></ion-icon>
+                <ion-label>Available Offline</ion-label>
+              </ion-chip>
+            }
+          </div>
+        }
       </ion-label>
     </ion-item>
     }

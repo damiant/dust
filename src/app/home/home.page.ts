@@ -46,6 +46,7 @@ import {
   notificationsOffOutline,
   logInOutline,
   openOutline,
+  saveOutline,
 } from 'ionicons/icons';
 import { Animation, StatusBar } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
@@ -186,7 +187,8 @@ export class HomePage implements OnInit {
       notificationsOffOutline,
       ellipsisVerticalSharp,
       openOutline,
-      searchSharp
+      searchSharp,
+      saveOutline
     });
     effect(() => {
       this.ui.scrollUpContent('profile', this.ionContent());
@@ -213,7 +215,8 @@ export class HomePage implements OnInit {
 
   async init() {
     this.vm.presentingElement = document.querySelector('.ion-page');
-    const imageUrl = await getCachedImage(this.db.selectedImage());
+    const eventId = this.settings.settings.datasetId;
+    const imageUrl = await getCachedImage(this.db.selectedImage(), eventId);
     this.db.checkInit();
     const { version, build } = Capacitor.getPlatform() == 'web' ? { version: '0.0.0', build: '0' } : await App.getInfo();
     await this.db.setVersion(`${version} (${build})`);
@@ -352,6 +355,11 @@ export class HomePage implements OnInit {
   async about() {
     await this.dismiss();
     this.router.navigateByUrl('/about');
+  }
+
+  async offlineStorage() {
+    await this.dismiss();
+    this.router.navigateByUrl('/tabs/profile/cache-management');
   }
 
   async feedback() {
