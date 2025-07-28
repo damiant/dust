@@ -1,4 +1,8 @@
 ## Changes
+
+## 2.93
+- Update golden spike location for Burning Man
+
 ## 2.92
 - Updates for Android 16
 - Allow any address when entering a reminder
