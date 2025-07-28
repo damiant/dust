@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
-import { AppUpdate } from '@capawesome/capacitor-app-update';
+import { AppUpdate, AppUpdateResultCode } from '@capawesome/capacitor-app-update';
 import { AlertController } from '@ionic/angular/standalone';
 import { Network } from '@capacitor/network';
 
@@ -26,10 +26,15 @@ export class UpdateService {
     }
 
     if (Capacitor.getPlatform() == 'ios') {
-      await AppUpdate.openAppStore({ appId: '6456943178'});
+      await AppUpdate.openAppStore({ appId: '6456943178' });
     } else {
       if (result.immediateUpdateAllowed) {
-        await AppUpdate.performImmediateUpdate();
+        const code = await AppUpdate.performImmediateUpdate();
+        if (code && code.code === AppUpdateResultCode.OK) {
+          console.log('Update performed successfully');
+        } else {
+          this.presentConfirm(alert, `Update failed with code: ${code.code}`);
+        }
       }
     }
   }
