@@ -9,18 +9,15 @@ import {
   IonItem,
   IonLabel,
   IonInput,
-  IonModal,
-  IonPickerLegacy,
+  IonModal,  
   IonTitle,
   IonToolbar,
   ModalController,
-  PickerColumn,
   ToastController,
   IonTextarea,
 } from '@ionic/angular/standalone';
 import { Reminder } from '../data/models';
 import { FormsModule } from '@angular/forms';
-import { StreetService } from '../map/street.service';
 import { CommonModule } from '@angular/common';
 import { now, uniqueId } from '../utils/utils';
 
@@ -55,7 +52,6 @@ export enum ReminderResult {
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ReminderComponent implements OnInit {
-  private streetService = inject(StreetService);
   private modalCtrl = inject(ModalController);
   private toastController = inject(ToastController);
   private _change = inject(ChangeDetectorRef);
