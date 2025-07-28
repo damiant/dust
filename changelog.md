@@ -1,6 +1,7 @@
 ## Changes
 ## 2.92
 - Updates for Android 16
+- Allow any address when entering a reminder
 
 ## 2.90 
 - Android fix
