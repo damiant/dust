@@ -1,4 +1,7 @@
 ## Changes
+## 2.92
+- Updates for Android 16
+
 ## 2.90 
 - Android fix
 - Fix for participate not showing in Burning Man
