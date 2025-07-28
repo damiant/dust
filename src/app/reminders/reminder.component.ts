@@ -9,18 +9,15 @@ import {
   IonItem,
   IonLabel,
   IonInput,
-  IonModal,
-  IonPickerLegacy,
+  IonModal,  
   IonTitle,
   IonToolbar,
   ModalController,
-  PickerColumn,
   ToastController,
   IonTextarea,
 } from '@ionic/angular/standalone';
 import { Reminder } from '../data/models';
 import { FormsModule } from '@angular/forms';
-import { StreetService } from '../map/street.service';
 import { CommonModule } from '@angular/common';
 import { now, uniqueId } from '../utils/utils';
 
@@ -43,7 +40,6 @@ export enum ReminderResult {
         IonModal,
         IonDatetimeButton,
         IonDatetime,
-        IonPickerLegacy,
         IonContent,
         IonInput,
         IonButtons,
@@ -56,14 +52,12 @@ export enum ReminderResult {
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ReminderComponent implements OnInit {
-  private streetService = inject(StreetService);
   private modalCtrl = inject(ModalController);
   private toastController = inject(ToastController);
   private _change = inject(ChangeDetectorRef);
-  noAddress = 'Choose Address';
+  noAddress = '';
   dtReady = false;
   initialTime = now().toISOString();
-  public addresses: PickerColumn[];
   public isEdit = false;
   public showAddress = true;
   public startEvent = '';
@@ -77,11 +71,7 @@ export class ReminderComponent implements OnInit {
     address: this.noAddress,
     notes: '',
   };
-
-  constructor() {
-    this.addresses = this.streetService.getAddresses();
-  }
-
+  
   public pickerButtons = [
     {
       text: 'Cancel',
@@ -97,9 +87,6 @@ export class ReminderComponent implements OnInit {
   ];
 
   ngOnInit() {
-    if (this.event?.address) {
-      this.streetService.setAddress(this.event.address, this.addresses);
-    }
     console.log(this.startEvent, this.endEvent);
     setTimeout(() => {
       this.dtReady = true;

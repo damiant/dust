@@ -16,11 +16,9 @@
   </ion-item>
 
   @if (showAddress) {
-  <ion-item id="pick-address">
-    <ion-label>Address</ion-label>
-    <ion-button size="small" [class.button]="event.address === noAddress" class="slim" slot="end" color="light">{{
-      event.address
-      }}</ion-button>
+  <ion-item id="pick-address">    
+    <ion-input autocapitalize="words" name="Address" id="Address" label="Address" [(ngModel)]="event.address"
+      placeholder="The events location"></ion-input>
   </ion-item>
   }
   <ion-item>
@@ -31,7 +29,6 @@
   </ion-item>
   <ion-modal [keepContentsMounted]="true">
     <ng-template>
-
       <ion-datetime [highlightedDates]="highlightedDates" [showDefaultButtons]="true" [min]="startEvent"
         [max]="endEvent" minuteValues="0,15,30,45" [(ngModel)]="event.start" id="datetime"></ion-datetime>
     </ng-template>
@@ -46,5 +43,4 @@
     <ion-button (click)="deleteEvent()" shape="round">Delete</ion-button>
   </div>
   }
-  <ion-picker-legacy trigger="pick-address" [columns]="addresses" [buttons]="pickerButtons"></ion-picker-legacy>
 </ion-content>

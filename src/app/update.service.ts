@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
-import { AppUpdate } from '@capawesome/capacitor-app-update';
+import { AppUpdate, AppUpdateResultCode } from '@capawesome/capacitor-app-update';
 import { AlertController } from '@ionic/angular/standalone';
 import { Network } from '@capacitor/network';
+
+let updateCheckDone = false;
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +20,11 @@ export class UpdateService {
       console.log(`Network connect is not wifi so not checking for udpates`)
       return;
     }
+    if (updateCheckDone) {
+      console.log('Update check already done, skipping');
+      return;
+    }
+    updateCheckDone = true;
     const result = await AppUpdate.getAppUpdateInfo();
     // Let use know about update
     const willUpdate = await this.presentConfirm(alert, 'An update to the dust app is required. Update now?');
@@ -26,10 +33,15 @@ export class UpdateService {
     }
 
     if (Capacitor.getPlatform() == 'ios') {
-      await AppUpdate.openAppStore({ appId: '6456943178'});
+      await AppUpdate.openAppStore({ appId: '6456943178' });
     } else {
       if (result.immediateUpdateAllowed) {
-        await AppUpdate.performImmediateUpdate();
+        const code = await AppUpdate.performImmediateUpdate();
+        if (code && code.code === AppUpdateResultCode.OK) {
+          console.log('Update performed successfully');
+        } else {
+          this.presentConfirm(alert, `Update failed with code: ${code.code}`);
+        }
       }
     }
   }
