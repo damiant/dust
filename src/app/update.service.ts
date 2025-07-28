@@ -4,6 +4,8 @@ import { AppUpdate, AppUpdateResultCode } from '@capawesome/capacitor-app-update
 import { AlertController } from '@ionic/angular/standalone';
 import { Network } from '@capacitor/network';
 
+let updateCheckDone = false;
+
 @Injectable({
   providedIn: 'root',
 })
@@ -18,6 +20,11 @@ export class UpdateService {
       console.log(`Network connect is not wifi so not checking for udpates`)
       return;
     }
+    if (updateCheckDone) {
+      console.log('Update check already done, skipping');
+      return;
+    }
+    updateCheckDone = true;
     const result = await AppUpdate.getAppUpdateInfo();
     // Let use know about update
     const willUpdate = await this.presentConfirm(alert, 'An update to the dust app is required. Update now?');
