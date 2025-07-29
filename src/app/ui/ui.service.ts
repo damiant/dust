@@ -34,12 +34,6 @@ export class UiService {
     if (this.isAndroid()) {
       let bcolor = color ? color : this.darkMode() ? '#000000' : '#FFFFFF';
       await NavigationBar.setColor({ color: bcolor, darkButtons: !this.darkMode() });
-      NavigationBar.addListener(NavigationBarPluginEvents.SHOW, () => {
-              document.documentElement.style.setProperty(
-        `--safe-area-inset-bottom`,
-        `0px`,
-      );
-      });
     }
   }
 
