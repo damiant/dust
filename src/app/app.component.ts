@@ -78,9 +78,10 @@ export class AppComponent implements OnInit {
     const { insets } = data;
     console.log('SafeAreaInsets', insets);
     if (Capacitor.getPlatform() == 'android') {
-      delay(3000).then(() => {
-        alert(`Navigation bar height: ${this.getNavigationBarHeight()}`);
-      });
+      if (this.getNavigationBarHeight() > 40) {
+        // navigation bar has buttons (usually 48 vs 15)
+        data.insets.bottom = 0;
+      }
     }
     for (const [key, value] of Object.entries(insets)) {
       document.documentElement.style.setProperty(
