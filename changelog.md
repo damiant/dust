@@ -1,4 +1,10 @@
 ## Changes
+
+## 2.93
+- Update golden spike location for Burning Man
+- Fix for check for app updates
+- Fix for button style nativation type on Android
+
 ## 2.92
 - Updates for Android 16
 - Allow any address when entering a reminder

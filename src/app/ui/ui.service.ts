@@ -4,7 +4,7 @@ import { randomInt } from '../utils/utils';
 import { IonContent, NavController, ToastController } from '@ionic/angular/standalone';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
-import { NavigationBar } from '@webnativellc/capacitor-navigation-bar';
+import { NavigationBar, NavigationBarPluginEvents } from '@webnativellc/capacitor-navigation-bar';
 import { Share, ShareOptions } from '@capacitor/share';
 import { Browser } from '@capacitor/browser';
 import { ScrollResult } from '../map/map-model';

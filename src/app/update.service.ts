@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
-import { AppUpdate, AppUpdateResultCode } from '@capawesome/capacitor-app-update';
+import { AppUpdate, AppUpdateAvailability, AppUpdateResultCode } from '@capawesome/capacitor-app-update';
 import { AlertController } from '@ionic/angular/standalone';
 import { Network } from '@capacitor/network';
 
@@ -26,6 +26,12 @@ export class UpdateService {
     }
     updateCheckDone = true;
     const result = await AppUpdate.getAppUpdateInfo();
+    if (result.updateAvailability !==
+      AppUpdateAvailability.UPDATE_AVAILABLE) {
+      console.log('No update available');
+      return;
+    }
+
     // Let use know about update
     const willUpdate = await this.presentConfirm(alert, 'An update to the dust app is required. Update now?');
     if (!willUpdate) {
@@ -40,7 +46,7 @@ export class UpdateService {
         if (code && code.code === AppUpdateResultCode.OK) {
           console.log('Update performed successfully');
         } else {
-          this.presentConfirm(alert, `Update failed with code: ${code.code}`);
+          this.presentConfirm(alert, `Please visit the store and update manually. Update failed with code: ${code.code}`);
         }
       }
     }
