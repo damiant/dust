@@ -10,7 +10,6 @@ import { UiService } from './ui/ui.service';
 import { SettingsService } from './data/settings.service';
 import { SafeArea, SafeAreaInsets } from 'capacitor-plugin-safe-area';
 import { Capacitor } from '@capacitor/core';
-import { delay } from './utils/utils';
 
 @Component({
   selector: 'app-root',
