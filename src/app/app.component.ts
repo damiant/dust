@@ -10,6 +10,7 @@ import { UiService } from './ui/ui.service';
 import { SettingsService } from './data/settings.service';
 import { SafeArea, SafeAreaInsets } from 'capacitor-plugin-safe-area';
 import { Capacitor } from '@capacitor/core';
+import { delay } from './utils/utils';
 
 @Component({
   selector: 'app-root',
@@ -77,7 +78,9 @@ export class AppComponent implements OnInit {
     const { insets } = data;
     console.log('SafeAreaInsets', insets);
     if (Capacitor.getPlatform() == 'android') {
-      alert(`Navigation bar height: ${this.getNavigationBarHeight()}`);
+      delay(3000).then(() => {
+        alert(`Navigation bar height: ${this.getNavigationBarHeight()}`);
+      });
     }
     for (const [key, value] of Object.entries(insets)) {
       document.documentElement.style.setProperty(
