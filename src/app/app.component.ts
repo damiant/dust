@@ -79,7 +79,8 @@ export class AppComponent implements OnInit {
     if (Capacitor.getPlatform() == 'android') {
       if (this.getNavigationBarHeight() > 40) {
         // navigation bar has buttons (usually 48 vs 15)
-        data.insets.bottom = 0;
+        // Reported breaks Galaxy S22 by putting under the navigation bar
+        //data.insets.bottom = 0;
       }
     }
     for (const [key, value] of Object.entries(insets)) {

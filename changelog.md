@@ -1,4 +1,6 @@
 ## Changes
+## 2.94
+- Revert fix for button style navigation type
 
 ## 2.93
 - Update golden spike location for Burning Man
