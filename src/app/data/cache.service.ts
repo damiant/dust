@@ -9,7 +9,7 @@ import { Art, Camp } from "./models";
 export class CacheService {
     private db = inject(DbService);
 
-    public async download(status: WritableSignal<string>): Promise<void> {
+    public async download(status: WritableSignal<string>): Promise<string> {
         // Get all art from the database
         const arts = await this.db.findArts(undefined, undefined);
         const imagesUrls = this.getArtImages(arts);
@@ -18,7 +18,12 @@ export class CacheService {
         const camps = await this.db.findCamps('', undefined);
         this.getCampImages(camps, imagesUrls);
 
+        const currentTime = Date.now();
         await this.cacheImages(imagesUrls, status);
+        if (currentTime - Date.now() >= 1000) {
+            return `Images are now available offline.`;
+        }
+        return '';
     }
 
     private getArtImages(arts: Art[]): string[] {
@@ -51,13 +56,22 @@ export class CacheService {
 
     private async cacheImages(imageUrls: string[], status: WritableSignal<string>): Promise<void> {
         let id = 1;
+        let lastUpdateTime = 0;
+        
         for (const imageUrl of imageUrls) {
             try {
-                status.set(`Downloading image ${id++} of ${imageUrls.length}`);
+                const currentTime = Date.now();
+                if (currentTime - lastUpdateTime >= 500) {
+                    status.set(`${id} of ${imageUrls.length} images downloaded`);
+                    lastUpdateTime = currentTime;
+                }
+                
                 // Attempt to cache each image
                 await getCachedImage(imageUrl);
+                id++;
             } catch (error) {
                 console.error(`Failed to cache image: ${imageUrl}`, error);
+                id++;
             }
         }
     }

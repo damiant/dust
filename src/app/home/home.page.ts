@@ -442,7 +442,11 @@ export class HomePage implements OnInit {
       const status = await Network.getStatus();
       // Only download if on WiFi
       if (status.connectionType === 'wifi') {
-        await this.cache.download(this.downloadStatus);
+        const status = await this.cache.download(this.downloadStatus);
+        if (status !== '') {
+          this.ui.presentToast(status, this.toastController);
+        }
+
       }
     } finally {
       this.vm.downloading = false;
