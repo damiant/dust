@@ -137,7 +137,8 @@ export class FavoritesService {
   }
 
   private starredEvent(id: string, occurrence: OccurrenceSet) {
-    return this.favorites.events.includes(`${id}-${occurrence.start_time}`);
+    return this.favorites.events.includes(`${id}-${occurrence.start_time}`) ||
+    this.favorites.events.includes(`${id}`);
   }
 
   public async setEventStars(event: Event) {
@@ -564,7 +565,7 @@ export class FavoritesService {
 
   private async load() {
     try {
-      this.favorites = JSON.parse(await this.get(DbId.favorites, this.favorites));
+      this.favorites = JSON.parse(await this.get(DbId.favorites, this.favorites));      
       await this.getThings();
     } catch {
       this.favorites = this.noData();

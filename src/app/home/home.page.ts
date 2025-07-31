@@ -67,6 +67,7 @@ import { ParticipateComponent } from "../participate/participate.component";
 import { getCachedImage } from '../data/cache-store';
 import { CacheService } from '../data/cache.service';
 import { Network } from '@capacitor/network';
+import { BurnPlannerService } from '../data/burn-planner.service';
 
 interface HomeState {
   moreClicks: number;
@@ -124,6 +125,7 @@ export class HomePage implements OnInit {
   private ui = inject(UiService);
   private settings = inject(SettingsService);
   private map = inject(MapService);
+  private burnPlanner = inject(BurnPlannerService);
   private toastController = inject(ToastController);
   private alertController = inject(AlertController);
   public pushNotifications = inject(PushNotificationService);
