@@ -13,7 +13,7 @@ import {
   IonToolbar,
   IonFab,
   IonFabButton,
-  IonLoading
+  IonLoading,
 } from '@ionic/angular/standalone';
 import { PinEntryComponent } from '../pin-entry/pin-entry.component';
 import { Router, RouterModule } from '@angular/router';
@@ -39,6 +39,7 @@ import { UpdateService } from '../update.service';
 import { ShareInfoType, ShareService } from '../share/share.service';
 import { BurnCardComponent } from '../burn-card/burn-card.component';
 import { BarComponent } from '../bar/bar.component';
+import { BurnPlannerService } from '../data/burn-planner.service';
 
 interface IntroState {
   ready: boolean;
@@ -109,7 +110,7 @@ function initialState(): IntroState {
     BurnCardComponent,
     IonLoading,
     BarComponent,
-  ]
+  ],
 })
 export class IntroPage {
   private db = inject(DbService);
@@ -122,6 +123,7 @@ export class IntroPage {
   private alertController = inject(AlertController);
   private toastController = inject(ToastController);
   private shareService = inject(ShareService);
+  private burnPlanner = inject(BurnPlannerService);
   private pinEntry = viewChild.required(PinEntryComponent);
   private _change = inject(ChangeDetectorRef);
 
@@ -152,6 +154,9 @@ export class IntroPage {
         await this.ionViewWillEnter();
         await this.afterEnter();
       }
+      if (shareItem.type == ShareInfoType.burnPlanner) {
+        return await this.burnPlanner.import(shareItem.id);
+      }
     });
   }
 
@@ -169,7 +174,9 @@ export class IntroPage {
       // Whether the user has selected an event already
       this.vm.eventAlreadySelected =
         !isWhiteSpace(this.settingsService.settings.datasetId) && !this.settingsService.settings.preventAutoStart;
-      console.log(`eventAlreadySelected ${this.vm.eventAlreadySelected} prevAuto=${this.settingsService.settings.preventAutoStart} ${JSON.stringify(this.settingsService.settings.datasetId)} ${isWhiteSpace(this.settingsService.settings.datasetId)}`)
+      console.log(
+        `eventAlreadySelected ${this.vm.eventAlreadySelected} prevAuto=${this.settingsService.settings.preventAutoStart} ${JSON.stringify(this.settingsService.settings.datasetId)} ${isWhiteSpace(this.settingsService.settings.datasetId)}`,
+      );
       if (this.settingsService.settings.dataset) {
         const end = new Date(this.settingsService.settings.dataset.end);
         const until = daysUntil(end, now());
@@ -184,7 +191,7 @@ export class IntroPage {
       // Get Cached Values
       this.vm.cards = await this.api.loadDatasets({ filter: this.vm.showing, cached: true });
 
-      const isFirstRun = (this.vm.cards.length == 0);
+      const isFirstRun = this.vm.cards.length == 0;
       if (isFirstRun) {
         // First time downloading. Its possible we have no or bad network
         this.vm.waiting = true;
@@ -196,9 +203,9 @@ export class IntroPage {
       this.vm.cards = await this.api.loadDatasets({ filter: this.vm.showing, timeout: isFirstRun ? 30000 : 5000 });
       if (this.vm.cards.length == 0) {
         const status = await Network.getStatus();
-        this.vm.message = status.connected ?
-          `Dust needs to download the list of burns when you first install it but it looks like you have poor cell service. Can you check for better cell or wifi service and try again.` :
-          `Dust needs to download the list of burns  when you first install it but it looks like you may be in airplane mode or offline. Can you check for cell or wifi service and try again.`;
+        this.vm.message = status.connected
+          ? `Dust needs to download the list of burns when you first install it but it looks like you have poor cell service. Can you check for better cell or wifi service and try again.`
+          : `Dust needs to download the list of burns  when you first install it but it looks like you may be in airplane mode or offline. Can you check for cell or wifi service and try again.`;
 
         this.vm.showMessage = true;
         this.vm.messageButtonlabel = 'Retry';
@@ -366,13 +373,13 @@ export class IntroPage {
 
     // If event has started (hasStarted)
     // and network is cell
-    if (!await this.preDownload()) {
+    if (!(await this.preDownload())) {
       console.log(`Predownload failed`);
       // This can happen if offline and just need to launch
     }
     console.log(`Starting.....`);
     if (!isWhiteSpace(this.vm.selected.pin)) {
-      if (!await this.verifyPin()) {
+      if (!(await this.verifyPin())) {
         await this.preventAutoStart();
         return;
       }
@@ -395,11 +402,15 @@ export class IntroPage {
       art: hideArtLocations,
       camps: hideCampLocations,
       artMessage: 'Location available August 24',
-      campMessage: 'Location available August 17'
+      campMessage: 'Location available August 17',
     });
     this.opened.set(false);
 
-    if ((hideArtLocations || hideCampLocations) && !this.vm.eventAlreadySelected && this.settingsService.shouldAboutAlert()) {
+    if (
+      (hideArtLocations || hideCampLocations) &&
+      !this.vm.eventAlreadySelected &&
+      this.settingsService.shouldAboutAlert()
+    ) {
       if (x < 80) {
         this.vm.message = `Locations for camps and art will be released in the app shortly before gates open. There are ${x} days until the man burns.`;
       } else {
@@ -416,7 +427,7 @@ export class IntroPage {
 
   async launch(attempt: number = 1) {
     try {
-      const isFirstRun = (this.vm.cards.length == 0);
+      const isFirstRun = this.vm.cards.length == 0;
       if (isFirstRun) {
         // We don't have a list of burns. Lets start again. This can happen if the user starts the app for the first time and has no or bad network access.
         this.ionViewWillEnter();
@@ -482,9 +493,11 @@ export class IntroPage {
       if (isWhiteSpace(this.settingsService.settings.dataset?.volunteeripateSubdomain)) {
         hidden.push('volunteeripate');
       }
-      if (`${this.settingsService.settings.dataset?.mastodonHandle}`.length < 3 &&
+      if (
+        `${this.settingsService.settings.dataset?.mastodonHandle}`.length < 3 &&
         this.settingsService.settings.dataset?.inboxEmail !== 'Y' &&
-        `${this.settingsService.settings.dataset?.rssFeed}`.length == 0) {
+        `${this.settingsService.settings.dataset?.rssFeed}`.length == 0
+      ) {
         hidden.push('messages');
       }
       this.db.featuresHidden.set(hidden);
@@ -545,16 +558,18 @@ export class IntroPage {
   save() {
     this.settingsService.settings.datasetId = this.api.datasetId(this.vm.selected!);
     this.settingsService.settings.dataset = this.vm.selected;
-    this.settingsService.settings.mapRotation = this.settingsService.isBurningMan() ? 45 : -(this.vm.selected!.mapDirection ?? 0); // Burning Mans map is rotate 45 degrees
+    this.settingsService.settings.mapRotation = this.settingsService.isBurningMan()
+      ? 45
+      : -(this.vm.selected!.mapDirection ?? 0); // Burning Mans map is rotate 45 degrees
     this.settingsService.settings.eventTitle = this.vm.selected!.title;
     this.settingsService.settings.scrollLeft = this.vm.scrollLeft;
     this.settingsService.save();
   }
 
   async verifyPin(): Promise<boolean> {
-    if (this.vm.selected && await this.settingsService.pinPassed(this.vm.selected.id, this.vm.selected.pin)) {
+    if (this.vm.selected && (await this.settingsService.pinPassed(this.vm.selected.id, this.vm.selected.pin))) {
       return true;
-    };
+    }
     this.vm.showPinModal.set(true);
     this.vm.pinPromise = new Promise<boolean>((resolve) => {
       this.pinEntry().dismissed.subscribe(async (match) => {
@@ -570,6 +585,5 @@ export class IntroPage {
 
   async closePin() {
     this.vm.showPinModal.set(false);
-
   }
 }
