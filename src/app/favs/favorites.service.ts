@@ -188,6 +188,7 @@ export class FavoritesService {
     event: Event,
     selectedDay: Date,
     occurrence?: OccurrenceSet,
+    disableHaptics?: boolean,
   ): Promise<string | undefined> {
     const id = this.eventId(event, occurrence);
     this.favorites.events = this.include(star, id, this.favorites.events);
@@ -208,8 +209,10 @@ export class FavoritesService {
         selectedDay,
       );
       this.newFavs.set(this.newFavs() + 1);
-      await Haptics.impact({ style: ImpactStyle.Heavy });
-      this.ratingService.rateAfterUsage();
+      if (!disableHaptics) {
+        await Haptics.impact({ style: ImpactStyle.Heavy });
+        this.ratingService.rateAfterUsage();
+      }
       return result.error ? result.error : result.message;
     } else {
       // Remove notifications

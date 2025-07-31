@@ -92,7 +92,7 @@ export class BurnPlannerService {
         // Look up event with title hosted by camp and favorite it
         const list = await this.db.findEventsByCamp(ev.hosted_by_camp, ev.title);
         for (const event of list) {
-          await this.favs.starEvent(true, event, event.start);
+          await this.favs.starEvent(true, event, this.db.selectedDay(), undefined, true);
           count++;
         }
       }
