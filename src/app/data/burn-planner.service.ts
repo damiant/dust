@@ -3,6 +3,7 @@ import { CapacitorHttp, HttpResponse } from '@capacitor/core';
 import { ToastController } from '@ionic/angular/standalone';
 import { FavoritesService } from '../favs/favorites.service';
 import { DbService } from './db.service';
+import { delay } from '../utils/utils';
 
 export interface BurnPlannerData {
   events: Event[];
@@ -93,6 +94,7 @@ export class BurnPlannerService {
         const list = await this.db.findEventsByCamp(ev.hosted_by_camp, ev.title);
         for (const event of list) {
           await this.favs.starEvent(true, event, this.db.selectedDay(), undefined, true);
+          await delay(500);
           count++;
         }
       }
