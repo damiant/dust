@@ -76,7 +76,7 @@
   <ion-loading
     spinner="circular"
     [isOpen]="vm.downloading"
-    [message]="'Updating '+db.selectedDataset().title"
+    [message]="downloadStatus()"
   ></ion-loading>
   }
   <app-tile-container>

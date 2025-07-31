@@ -167,7 +167,7 @@ export class HomePage implements OnInit {
     presentingElement: undefined,
     isAndroid: Capacitor.getPlatform() === 'android'
   }
-
+  downloadStatus: WritableSignal<string> = signal('');
   download: WritableSignal<DownloadStatus> = signal({ status: '', firstDownload: false });
   directionText: WritableSignal<string> = signal('');
 
@@ -416,6 +416,7 @@ export class HomePage implements OnInit {
     try {
       await this.dismiss();
       this.vm.downloading = true;
+      this.downloadStatus.set(`Updating ${this.db.selectedDataset().title}`);
       if (this.db.networkStatus() == 'none') {
         this.ui.presentToast('No network connection. Maybe turn off airplane mode?', this.toastController);
         return;
@@ -427,6 +428,7 @@ export class HomePage implements OnInit {
       switch (result) {
         case 'success': {
           this.vm.downloading = false;
+          this.downloadStatus.set(`Downloading images`);
           this.ui.presentToast('Update complete', this.toastController);
           this.home();
           return;
@@ -440,7 +442,7 @@ export class HomePage implements OnInit {
       const status = await Network.getStatus();
       // Only download if on WiFi
       if (status.connectionType === 'wifi') {
-        await this.cache.download();
+        await this.cache.download(this.downloadStatus);
       }
     } finally {
       this.vm.downloading = false;

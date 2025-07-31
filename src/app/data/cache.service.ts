@@ -1,4 +1,4 @@
-import { Injectable, inject } from "@angular/core";
+import { Injectable, Signal, WritableSignal, inject } from "@angular/core";
 import { DbService } from "./db.service";
 import { getCachedImage } from "./cache-store";
 import { Art, Camp } from "./models";
@@ -9,7 +9,7 @@ import { Art, Camp } from "./models";
 export class CacheService {
     private db = inject(DbService);
 
-    public async download(): Promise<void> {
+    public async download(status: WritableSignal<string>): Promise<void> {
         // Get all art from the database
         const arts = await this.db.findArts(undefined, undefined);
         const imagesUrls = this.getArtImages(arts);
@@ -18,7 +18,7 @@ export class CacheService {
         const camps = await this.db.findCamps('', undefined);
         this.getCampImages(camps, imagesUrls);
 
-        await this.cacheImages(imagesUrls);
+        await this.cacheImages(imagesUrls, status);
     }
 
     private getArtImages(arts: Art[]): string[] {
@@ -49,9 +49,11 @@ export class CacheService {
         }
     }
 
-    private async cacheImages(imageUrls: string[]): Promise<void> {
+    private async cacheImages(imageUrls: string[], status: WritableSignal<string>): Promise<void> {
+        let id = 1;
         for (const imageUrl of imageUrls) {
             try {
+                status.set(`Downloading image ${id++} of ${imageUrls.length}`);
                 // Attempt to cache each image
                 await getCachedImage(imageUrl);
             } catch (error) {
