@@ -23,7 +23,6 @@ export class CachedImgComponent {
   _src: string | undefined;
   alt = input<string>('');
   src = input<string>();
-  eventId = input<string>();
   isReady = signal(false);
   loading = input('lazy');
   errorImage = input<string>('');
@@ -33,10 +32,9 @@ export class CachedImgComponent {
   constructor() {
     effect(async () => {
       const src = this.src();
-      const eventId = this.eventId();
       if (src) {
         try {
-          this._src = await getCachedImage(src, eventId);
+          this._src = await getCachedImage(src);
           this._change.markForCheck();
         } catch {
           this.errored();

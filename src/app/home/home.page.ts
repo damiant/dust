@@ -50,7 +50,6 @@ import {
 } from 'ionicons/icons';
 import { Animation, StatusBar } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
-import { getCachedImage } from '../data/cache-store';
 import { LinkComponent } from '../link/link.component';
 import { CalendarService } from '../calendar.service';
 import { EventsCardComponent } from '../events-card/events-card.component';
@@ -65,6 +64,7 @@ import { RatingService } from '../rating.service';
 import { PushNotificationService } from '../notifications/push-notification.service';
 import { LinkService } from '../link/link.service';
 import { ParticipateComponent } from "../participate/participate.component";
+import { getCachedImage } from '../data/cache-store';
 
 interface HomeState {
   moreClicks: number;
@@ -215,8 +215,7 @@ export class HomePage implements OnInit {
 
   async init() {
     this.vm.presentingElement = document.querySelector('.ion-page');
-    const eventId = this.settings.settings.datasetId;
-    const imageUrl = await getCachedImage(this.db.selectedImage(), eventId);
+    const imageUrl = await getCachedImage(this.db.selectedImage());
     this.db.checkInit();
     const { version, build } = Capacitor.getPlatform() == 'web' ? { version: '0.0.0', build: '0' } : await App.getInfo();
     await this.db.setVersion(`${version} (${build})`);
@@ -355,11 +354,6 @@ export class HomePage implements OnInit {
   async about() {
     await this.dismiss();
     this.router.navigateByUrl('/about');
-  }
-
-  async offlineStorage() {
-    await this.dismiss();
-    this.router.navigateByUrl('/tabs/profile/cache-management');
   }
 
   async feedback() {

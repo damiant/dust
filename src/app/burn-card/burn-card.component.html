@@ -6,7 +6,6 @@
         (loaded)="loaded[card.id] = true"
         [loading]="'eager'"
         [src]="card.imageUrl"
-        [eventId]="card.id"
       />
       <div class="info" [hidden]="!loaded[card.id]">
         <h3>{{ card.title }}</h3>

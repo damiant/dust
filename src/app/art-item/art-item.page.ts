@@ -10,7 +10,7 @@ import { UiService } from '../ui/ui.service';
 import { SettingsService } from '../data/settings.service';
 import { ShareInfoType } from '../share/share.service';
 import { toMapPoint } from '../map/map.utils';
-import { getCachedAudio, isAudioCached } from '../data/cache-store';
+import { getCachedAudio } from '../data/cache-store';
 import {
   IonBackButton,
   IonButton,
@@ -25,7 +25,6 @@ import {
   IonToolbar,
   IonModal,
   IonProgressBar,
-  IonChip,
   ToastController
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -55,7 +54,6 @@ import { canCreate } from '../map/map';
     IonLabel,
     IonText,
     IonProgressBar,
-    IonChip,
     CachedImgComponent,
     EventPage
   ]
@@ -81,7 +79,6 @@ export class ArtItemPage implements OnInit {
   star = false;
   cachedAudioUrl = signal<string | undefined>(undefined);
   audioLoading = signal(false);
-  isAudioAvailableOffline = signal(false);
 
   constructor() {
     addIcons({ star, starOutline, shareOutline, personOutline, locateOutline, locationOutline, volumeHighOutline, checkmarkCircleOutline });
@@ -116,36 +113,18 @@ export class ArtItemPage implements OnInit {
 
   private async setupAudio() {
     if (!this.art?.audio) return;
-
-    const eventId = this.settings.settings.datasetId;
     
     try {
-      // Check if audio is already cached
-      this.isAudioAvailableOffline.set(await isAudioCached(this.art.audio, eventId));
-      
-      // If we're offline, only show audio if it's cached
-      if (this.db.networkStatus() === 'none') {
-        if (this.isAudioAvailableOffline()) {
-          // Load cached audio
-          this.audioLoading.set(true);
-          const cachedUrl = await getCachedAudio(this.art.audio, eventId);
-          this.cachedAudioUrl.set(cachedUrl);
-        } else {
-          // Hide audio option when offline and not cached
-          this.art.audio = undefined;
-        }
-      } else {
         // Online: try to cache audio for future offline use
         this.audioLoading.set(true);
         try {
-          const cachedUrl = await getCachedAudio(this.art.audio, eventId);
+          const cachedUrl = await getCachedAudio(this.art.audio);
           this.cachedAudioUrl.set(cachedUrl);
-          this.isAudioAvailableOffline.set(true);
         } catch (error) {
           console.warn('Failed to cache audio, using original URL:', error);
           this.cachedAudioUrl.set(this.art.audio);
         }
-      }
+      
     } catch (error) {
       console.error('Error setting up audio:', error);
       // Fallback to original behavior

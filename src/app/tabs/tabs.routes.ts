@@ -48,10 +48,6 @@ export const routes: Routes = [
         loadComponent: () => import('../about/about.page').then((m) => m.AboutPage),
       },
       {
-        path: 'profile/cache-management',
-        loadComponent: () => import('../cache-management/cache-management.page').then((m) => m.CacheManagementPage),
-      },
-      {
         path: '',
         redirectTo: '/tabs/events',
         pathMatch: 'full',
