@@ -66,6 +66,7 @@ import { LinkService } from '../link/link.service';
 import { ParticipateComponent } from "../participate/participate.component";
 import { getCachedImage } from '../data/cache-store';
 import { CacheService } from '../data/cache.service';
+import { Network } from '@capacitor/network';
 
 interface HomeState {
   moreClicks: number;
@@ -436,7 +437,11 @@ export class HomePage implements OnInit {
         }
       }
       this.vm.downloading = true;
-      await this.cache.download();
+      const status = await Network.getStatus();
+      // Only download if on WiFi
+      if (status.connectionType === 'wifi') {
+        await this.cache.download();
+      }
     } finally {
       this.vm.downloading = false;
       this._change.detectChanges();
