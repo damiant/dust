@@ -81,7 +81,8 @@ export class BurnPlannerService {
   private db = inject(DbService);
   public async import(path: string | undefined): Promise<void> {
     if (!path) return;
-    const data = await this.getData(path);
+    const url = decodeURI(path);
+    const data = await this.getData(url);
     console.log(data);
     if (!data?.events) return;
     let count = 0;

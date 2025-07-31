@@ -19,6 +19,7 @@ import { StatusBar } from '@capacitor/status-bar';
 import { ScreenOrientation } from '@capacitor/screen-orientation';
 import { FavoritesService } from '../favs/favorites.service';
 import { TextZoom } from '@capacitor/text-zoom';
+import { BurnPlannerService } from '../data/burn-planner.service';
 
 @Component({
   selector: 'app-tabs',
@@ -34,6 +35,7 @@ export class TabsPage implements OnInit {
   private notificationService = inject(NotificationService);
   private shareService = inject(ShareService);
   private settings = inject(SettingsService);
+  private burnPlanner = inject(BurnPlannerService);
   private router = inject(Router);
   ready = false;
   currentTab: string | undefined;
@@ -59,6 +61,8 @@ export class TabsPage implements OnInit {
             return await this.navTo('camp', shareItem.id);
           case ShareInfoType.event:
             return await this.navTo('event', shareItem.id);
+          case ShareInfoType.burnPlanner:
+            return await this.burnPlanner.import(shareItem.id);
         }
       }
     });
