@@ -104,12 +104,17 @@ export class BurnPlannerService {
     const options = {
       url,
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
       },
+      readTimeout: 30000,
     };
     try {
       const response: HttpResponse = await CapacitorHttp.get(options);
-      return JSON.parse(response.data);
+      if (response.status !== 200) {
+        this.presentToast(`Burn Planner returned ${response.status} from ${url}`);
+        return undefined;
+      }
+      return await response.data;
     } catch {
       this.presentToast('Failed to get Burn Planner data from ' + url);
       return undefined;
@@ -120,7 +125,7 @@ export class BurnPlannerService {
     const toast = await this.toastController.create({
       message,
       color: 'primary',
-      duration: 1500,
+      duration: 2500,
       swipeGesture: 'vertical',
       position: 'bottom',
     });
