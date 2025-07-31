@@ -154,9 +154,6 @@ export class IntroPage {
         await this.ionViewWillEnter();
         await this.afterEnter();
       }
-      if (shareItem.type == ShareInfoType.burnPlanner) {
-        return await this.burnPlanner.import(shareItem.id);
-      }
     });
   }
 

@@ -82,6 +82,7 @@ export class BurnPlannerService {
   public async import(path: string | undefined): Promise<void> {
     if (!path) return;
     const url = decodeURIComponent(path);
+    this.presentToast(`Importing Burn Planner Events...`);
     const data = await this.getData(url);
     console.log(data);
     if (!data?.events) return;
@@ -103,7 +104,7 @@ export class BurnPlannerService {
     const options = {
       url,
       headers: {
-        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
     };
     try {
