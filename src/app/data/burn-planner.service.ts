@@ -84,8 +84,7 @@ export class BurnPlannerService {
     if (!path) return;
     const url = decodeURIComponent(path);
     this.presentToast(`Importing Burn Planner Events...`);
-    const data = await this.getData(url);
-    console.log(data);
+    const data = await this.getData(url);    
     if (!data?.events) return;
     let count = 0;
     for (const ev of data.events) {
