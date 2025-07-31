@@ -13,6 +13,7 @@ export enum ShareInfoType {
   camp = 'camp',
   preview = 'preview',
   token = 'token',
+  burnPlanner = 'planner-events'
 }
 
 @Injectable({

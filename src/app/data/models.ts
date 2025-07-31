@@ -461,6 +461,7 @@ export enum DataMethods {
   GetEvents = 'getEvents',
   GetLinks = 'getLinks',
   GetEventList = 'getEventList',
+  FindEventByCamp = 'findEventByCamp',
   GetRSLEventList = 'getRSLEventList',
   GetCampList = 'getCampList',
   GetArtList = 'getArtList',
