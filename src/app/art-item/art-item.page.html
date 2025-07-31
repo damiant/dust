@@ -61,12 +61,6 @@
             <audio controls style="width: 100%">
               <source [src]="cachedAudioUrl() || art.audio" type="audio/mpeg">
             </audio>
-            @if (isAudioAvailableOffline()) {
-              <ion-chip color="success" class="offline-indicator">
-                <ion-icon name="checkmark-circle-outline"></ion-icon>
-                <ion-label>Available Offline</ion-label>
-              </ion-chip>
-            }
           </div>
         }
       </ion-label>

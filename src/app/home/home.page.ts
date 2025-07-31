@@ -50,7 +50,6 @@ import {
 } from 'ionicons/icons';
 import { Animation, StatusBar } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
-import { getCachedImage } from '../data/cache-store';
 import { LinkComponent } from '../link/link.component';
 import { CalendarService } from '../calendar.service';
 import { EventsCardComponent } from '../events-card/events-card.component';
@@ -65,6 +64,9 @@ import { RatingService } from '../rating.service';
 import { PushNotificationService } from '../notifications/push-notification.service';
 import { LinkService } from '../link/link.service';
 import { ParticipateComponent } from "../participate/participate.component";
+import { getCachedImage } from '../data/cache-store';
+import { CacheService } from '../data/cache.service';
+import { Network } from '@capacitor/network';
 
 interface HomeState {
   moreClicks: number;
@@ -130,6 +132,7 @@ export class HomePage implements OnInit {
   private router = inject(Router);
   private updateService = inject(UpdateService);
   private api = inject(ApiService);
+  private cache = inject(CacheService);
   private platform = inject(Platform);
   public db = inject(DbService);
   private ratingService = inject(RatingService);
@@ -164,7 +167,7 @@ export class HomePage implements OnInit {
     presentingElement: undefined,
     isAndroid: Capacitor.getPlatform() === 'android'
   }
-
+  downloadStatus: WritableSignal<string> = signal('');
   download: WritableSignal<DownloadStatus> = signal({ status: '', firstDownload: false });
   directionText: WritableSignal<string> = signal('');
 
@@ -215,8 +218,7 @@ export class HomePage implements OnInit {
 
   async init() {
     this.vm.presentingElement = document.querySelector('.ion-page');
-    const eventId = this.settings.settings.datasetId;
-    const imageUrl = await getCachedImage(this.db.selectedImage(), eventId);
+    const imageUrl = await getCachedImage(this.db.selectedImage());
     this.db.checkInit();
     const { version, build } = Capacitor.getPlatform() == 'web' ? { version: '0.0.0', build: '0' } : await App.getInfo();
     await this.db.setVersion(`${version} (${build})`);
@@ -357,11 +359,6 @@ export class HomePage implements OnInit {
     this.router.navigateByUrl('/about');
   }
 
-  async offlineStorage() {
-    await this.dismiss();
-    this.router.navigateByUrl('/tabs/profile/cache-management');
-  }
-
   async feedback() {
     await this.dismiss();
   }
@@ -419,6 +416,7 @@ export class HomePage implements OnInit {
     try {
       await this.dismiss();
       this.vm.downloading = true;
+      this.downloadStatus.set(`Updating ${this.db.selectedDataset().title}`);
       if (this.db.networkStatus() == 'none') {
         this.ui.presentToast('No network connection. Maybe turn off airplane mode?', this.toastController);
         return;
@@ -430,6 +428,7 @@ export class HomePage implements OnInit {
       switch (result) {
         case 'success': {
           this.vm.downloading = false;
+          this.downloadStatus.set(`Downloading images`);
           this.ui.presentToast('Update complete', this.toastController);
           this.home();
           return;
@@ -438,6 +437,16 @@ export class HomePage implements OnInit {
           this.ui.presentToast('You have the latest camps, events & art for this event', this.toastController);
           this.updateService.checkVersion(this.alertController);
         }
+      }
+      this.vm.downloading = true;
+      const status = await Network.getStatus();
+      // Only download if on WiFi
+      if (status.connectionType === 'wifi') {
+        const status = await this.cache.download(this.downloadStatus);
+        if (status !== '') {
+          this.ui.presentToast(status, this.toastController);
+        }
+
       }
     } finally {
       this.vm.downloading = false;

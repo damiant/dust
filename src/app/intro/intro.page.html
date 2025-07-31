@@ -54,7 +54,6 @@
         [loading]="'eager'"
         [ngClass]="(vm.selected?.id === card.id) ? 'select ' + vm.selected?.class : 'unselect'"
         [src]="card.imageUrl"
-        [eventId]="card.id"
       />
       <p [ngClass]="!vm.cardLoaded[card.id] ? 'busy' : ''" aria-hidden="true">{{card.title}}</p>
       <p [ngClass]="!vm.cardLoaded[card.id] ? 'busy' : ''" aria-hidden="true" class="region">{{card.region}}</p>

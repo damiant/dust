@@ -50,11 +50,6 @@
           Download Update
         </ion-item>
 
-        <ion-item (click)="offlineStorage()" detail="true">
-          <ion-icon slot="start" name="save-outline"></ion-icon>
-          Offline Storage
-        </ion-item>
-
         <ion-item (click)="about()" detail="true">
           <ion-icon slot="start" name="information-circle-outline"></ion-icon>
           About
@@ -81,7 +76,7 @@
   <ion-loading
     spinner="circular"
     [isOpen]="vm.downloading"
-    [message]="'Updating '+db.selectedDataset().title"
+    [message]="downloadStatus()"
   ></ion-loading>
   }
   <app-tile-container>

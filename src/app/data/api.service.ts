@@ -62,8 +62,7 @@ export class ApiService {
         onlyRead: true,
         defaultValue: { filename: '', uri: '' },
       });
-      console.warn(`Get cached image for ${ds}`);
-      const mapUri = await getCachedImage(mapData.uri, ds);
+      const mapUri = await getCachedImage(mapData.uri);
       await this.settingsService.setMapURI(mapIsOffline ? '' : mapUri);
       console.log(`Download? revision is ${revision.revision} and default is ${currentRevision}`);
       if (revision.revision <= currentRevision) {
@@ -383,7 +382,7 @@ export class ApiService {
         uri = await this.dbService.getLiveBinary(dataset, map.filename, currentVersion);
         console.info(`download.map uri=${uri}`);
         downloadSignal.set({ status: `${selected.title}  Map`, firstDownload: myRevision === undefined });
-        uri = await getCachedImage(uri, dataset);
+        uri = await getCachedImage(uri);
         console.info(`download.map completed`);
       }
     }
