@@ -19,12 +19,13 @@ import { StatusBar } from '@capacitor/status-bar';
 import { ScreenOrientation } from '@capacitor/screen-orientation';
 import { FavoritesService } from '../favs/favorites.service';
 import { TextZoom } from '@capacitor/text-zoom';
+import { BurnPlannerService } from '../data/burn-planner.service';
 
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss'],
-  imports: [IonBadge, CommonModule, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel]
+  imports: [IonBadge, CommonModule, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel],
 })
 export class TabsPage implements OnInit {
   public db = inject(DbService);
@@ -34,6 +35,7 @@ export class TabsPage implements OnInit {
   private notificationService = inject(NotificationService);
   private shareService = inject(ShareService);
   private settings = inject(SettingsService);
+  private burnPlanner = inject(BurnPlannerService);
   private router = inject(Router);
   ready = false;
   currentTab: string | undefined;
@@ -59,6 +61,11 @@ export class TabsPage implements OnInit {
             return await this.navTo('camp', shareItem.id);
           case ShareInfoType.event:
             return await this.navTo('event', shareItem.id);
+          case ShareInfoType.burnPlanner:
+            return await this.burnPlanner.import(shareItem.id);
+          default: 
+            console.error(`Unknown share type ${shareItem.type}`);
+            return;
         }
       }
     });
@@ -72,7 +79,7 @@ export class TabsPage implements OnInit {
       if (Capacitor.getPlatform() !== 'web') {
         const result = await TextZoom.getPreferred();
         this.ui.textZoom.set(result.value);
-        document.documentElement.style.setProperty("--text-zoom", `${this.ui.textZoom()}`);
+        document.documentElement.style.setProperty('--text-zoom', `${this.ui.textZoom()}`);
       }
       const until = await this.daysUntilStarts();
       console.log(`${until} days until event.`);

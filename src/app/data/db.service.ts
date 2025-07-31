@@ -50,14 +50,42 @@ export type Feature =
 })
 export class DbService {
   private defaultDataset: Dataset = {
-    name: '', year: '', id: '', uid: 0, title: '', region: '', website: '', unknownDates: false, start: '', end: '', subTitle: '', lat: 0, long: 0, inboxEmail: '', rssFeed: '',
-    volunteeripateIdentifier: '', volunteeripateSubdomain: '', pin_size_multiplier: 1,
-    mapDirection: 0, imageUrl: '', timeZone: '', active: false, pin: '', directions: undefined, mastodonHandle: '', camp_registration: false, event_registration: false,
+    name: '',
+    year: '',
+    id: '',
+    uid: 0,
+    title: '',
+    region: '',
+    website: '',
+    unknownDates: false,
+    start: '',
+    end: '',
+    subTitle: '',
+    lat: 0,
+    long: 0,
+    inboxEmail: '',
+    rssFeed: '',
+    volunteeripateIdentifier: '',
+    volunteeripateSubdomain: '',
+    pin_size_multiplier: 1,
+    mapDirection: 0,
+    imageUrl: '',
+    timeZone: '',
+    active: false,
+    pin: '',
+    directions: undefined,
+    mastodonHandle: '',
+    camp_registration: false,
+    event_registration: false,
   };
   public selectedDay = signal(noDate());
   public selectedYear = signal('');
   public selectedDataset = signal(this.defaultDataset);
-  public selectedImage = computed(() => { const r = `${this.selectedDataset().imageUrl}`; console.info(r); return r });
+  public selectedImage = computed(() => {
+    const r = `${this.selectedDataset().imageUrl}`;
+    console.info(r);
+    return r;
+  });
   public featuresHidden: WritableSignal<Feature[]> = signal(['']);
   public networkStatus = signal('');
   public resume = signal('');
@@ -86,7 +114,6 @@ export class DbService {
   public artLocationsHidden = computed(() => {
     return this.locationsHidden().art;
   });
-
 
   public async initWorker(): Promise<void> {
     if (!this.initialized) {
@@ -137,8 +164,15 @@ export class DbService {
 
   public async populate(dataset: string, timezone: string): Promise<DatasetResult> {
     this.initWorker(); // Just to double check
-    const result: DatasetResult = await call(this.worker, DataMethods.Populate, dataset, this.getLocationsHidden(), environment, timezone);
-    await this.writeData(dataset, Names.summary, result)
+    const result: DatasetResult = await call(
+      this.worker,
+      DataMethods.Populate,
+      dataset,
+      this.getLocationsHidden(),
+      environment,
+      timezone,
+    );
+    await this.writeData(dataset, Names.summary, result);
     return result;
   }
 
@@ -146,14 +180,14 @@ export class DbService {
     // This is whether the event is in the past
     const end = new Date(this.selectedDataset().end);
     const until = daysUntil(end, nowAtEvent(this.getTimeZone()));
-    return (until < 0);
+    return until < 0;
   }
 
   public eventHasntBegun(): boolean {
     // This is whether the event has not started yet
     const start = new Date(this.selectedDataset().start);
     const until = daysUntil(start, now());
-    return (until > 0);
+    return until > 0;
   }
 
   public checkInit() {
@@ -187,7 +221,7 @@ export class DbService {
     timeRange: TimeRange | undefined,
     allDay: boolean,
     showPast: boolean,
-    top: number
+    top: number,
   ): Promise<ItemList> {
     return await call(this.worker, DataMethods.FindAll, query, day, category, coords, timeRange, allDay, showPast, top);
   }
@@ -200,9 +234,24 @@ export class DbService {
     timeRange: TimeRange | undefined,
     allDay: boolean,
     showPast: boolean,
-    top?: number
+    top?: number,
   ): Promise<Event[]> {
-    return await call(this.worker, DataMethods.FindEvents, query, day, category, coords, timeRange, allDay, showPast, top);
+    return await call(
+      this.worker,
+      DataMethods.FindEvents,
+      query,
+      day,
+      category,
+      coords,
+      timeRange,
+      allDay,
+      showPast,
+      top,
+    );
+  }
+
+  public async findEventsByCamp(campUniqueId: string, title: string): Promise<Event[]> {
+    return await call(this.worker, DataMethods.FindEventByCamp, campUniqueId, title);
   }
 
   public async getEventList(ids: string[]): Promise<Event[]> {
@@ -276,7 +325,6 @@ export class DbService {
         let url = this.livePath(dataset, name);
         if (options.revision) {
           url += `?revision=${options.revision}`;
-
         }
         if (!!options.onlyFresh) {
           return await this.fetch(this._getkey(dataset, name), url, options.timeout ?? 30000);
@@ -315,7 +363,7 @@ export class DbService {
   }
 
   private _getkey(dataset: string, name: string): string {
-    return `${dataset}-${name}`
+    return `${dataset}-${name}`;
   }
 
   private async _write(key: string, url: string, timeout = 30000): Promise<any> {
@@ -393,7 +441,12 @@ export class DbService {
     return await call(this.worker, DataMethods.FindCamps, query, near, top, campType);
   }
 
-  public async findArts(query: string | undefined, coords: GpsCoord | undefined, top?: number, artType?: string): Promise<Art[]> {
+  public async findArts(
+    query: string | undefined,
+    coords: GpsCoord | undefined,
+    top?: number,
+    artType?: string,
+  ): Promise<Art[]> {
     return await call(this.worker, DataMethods.FindArts, query, coords, top, artType);
   }
 
@@ -479,13 +532,12 @@ export class DbService {
   }
 
   private isStatic(dataset: string): boolean {
-    return (dataset.toLowerCase().includes('ttitd') || dataset == 'datasets');
+    return dataset.toLowerCase().includes('ttitd') || dataset == 'datasets';
   }
 
   public async getLiveBinary(dataset: string, filename: string, revision: string): Promise<string> {
     const domain = this.isStatic(dataset) ? static_dust_events : data_dust_events;
     return `${domain}${dataset}/${filename}?${revision}`;
   }
-
 }
 

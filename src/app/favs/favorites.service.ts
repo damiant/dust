@@ -137,7 +137,8 @@ export class FavoritesService {
   }
 
   private starredEvent(id: string, occurrence: OccurrenceSet) {
-    return this.favorites.events.includes(`${id}-${occurrence.start_time}`);
+    return this.favorites.events.includes(`${id}-${occurrence.start_time}`) ||
+    this.favorites.events.includes(`${id}`);
   }
 
   public async setEventStars(event: Event) {
@@ -188,6 +189,7 @@ export class FavoritesService {
     event: Event,
     selectedDay: Date,
     occurrence?: OccurrenceSet,
+    disableHaptics?: boolean,
   ): Promise<string | undefined> {
     const id = this.eventId(event, occurrence);
     this.favorites.events = this.include(star, id, this.favorites.events);
@@ -208,8 +210,10 @@ export class FavoritesService {
         selectedDay,
       );
       this.newFavs.set(this.newFavs() + 1);
-      await Haptics.impact({ style: ImpactStyle.Heavy });
-      this.ratingService.rateAfterUsage();
+      if (!disableHaptics) {
+        await Haptics.impact({ style: ImpactStyle.Heavy });
+        this.ratingService.rateAfterUsage();
+      }
       return result.error ? result.error : result.message;
     } else {
       // Remove notifications
@@ -561,7 +565,7 @@ export class FavoritesService {
 
   private async load() {
     try {
-      this.favorites = JSON.parse(await this.get(DbId.favorites, this.favorites));
+      this.favorites = JSON.parse(await this.get(DbId.favorites, this.favorites));      
       await this.getThings();
     } catch {
       this.favorites = this.noData();
