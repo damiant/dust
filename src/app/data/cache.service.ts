@@ -1,4 +1,4 @@
-import { Injectable, Signal, WritableSignal, inject } from "@angular/core";
+import { Injectable, WritableSignal, inject } from "@angular/core";
 import { DbService } from "./db.service";
 import { getCachedImage } from "./cache-store";
 import { Art, Camp } from "./models";
