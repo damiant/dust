@@ -19,7 +19,6 @@ import { StatusBar } from '@capacitor/status-bar';
 import { ScreenOrientation } from '@capacitor/screen-orientation';
 import { FavoritesService } from '../favs/favorites.service';
 import { TextZoom } from '@capacitor/text-zoom';
-import { BurnPlannerService } from '../data/burn-planner.service';
 
 @Component({
   selector: 'app-tabs',
