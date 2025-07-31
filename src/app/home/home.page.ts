@@ -65,6 +65,7 @@ import { PushNotificationService } from '../notifications/push-notification.serv
 import { LinkService } from '../link/link.service';
 import { ParticipateComponent } from "../participate/participate.component";
 import { getCachedImage } from '../data/cache-store';
+import { CacheService } from '../data/cache.service';
 
 interface HomeState {
   moreClicks: number;
@@ -130,6 +131,7 @@ export class HomePage implements OnInit {
   private router = inject(Router);
   private updateService = inject(UpdateService);
   private api = inject(ApiService);
+  private cache = inject(CacheService);
   private platform = inject(Platform);
   public db = inject(DbService);
   private ratingService = inject(RatingService);
@@ -433,6 +435,8 @@ export class HomePage implements OnInit {
           this.updateService.checkVersion(this.alertController);
         }
       }
+      this.vm.downloading = true;
+      await this.cache.download();
     } finally {
       this.vm.downloading = false;
       this._change.detectChanges();
