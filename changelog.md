@@ -1,4 +1,10 @@
 ## Changes
+## 2.96
+- Import events via link (for https://burn-planner.web.app/)
+
+## 2.95
+- Images are now downloaded offline when choosing "Download Update" from the more menu
+
 ## 2.94
 - Revert fix for button style navigation type
 
