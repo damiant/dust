@@ -67,6 +67,28 @@
               "outputHashing": "all",
               "serviceWorker": "src/ngsw-config.json"
             },
+            "offline": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kb",
+                  "maximumError": "6kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.offline.ts"
+                }
+              ],
+              "outputHashing": "all",
+              "serviceWorker": "src/ngsw-config.json"
+            },
             "vegas": {
               "budgets": [
                 {
@@ -132,6 +154,9 @@
             },
             "vegas": {
               "buildTarget": "app:build:vegas"
+            },
+            "offline": {
+              "buildTarget": "app:build:offline"
             },
             "development": {
               "buildTarget": "app:build:development"

@@ -8,6 +8,7 @@
     "start": "ng serve",
     "build": "ng build && bun scripts/copy-admin.ts",
     "build-prod": "NG_BUILD_OPTIMIZE_CHUNKS=1 ng build --configuration=production  && bun scripts/copy-admin.ts",
+    "build-offline": "ng build --configuration=offline && bun scripts/copy-online.ts",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "copy-admin": "bun scripts/copy-admin.ts",

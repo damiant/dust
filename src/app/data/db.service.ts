@@ -19,13 +19,21 @@ import {
   ItemList,
 } from './models';
 import { call, registerWorker } from './worker-interface';
-import { BurningManTimeZone, clone, data_dust_events, daysUntil, noDate, now, nowAtEvent, r2data_dust_events, static_dust_events } from '../utils/utils';
+import {
+  BurningManTimeZone,
+  clone,
+  data_dust_events,
+  daysUntil,
+  noDate,
+  now,
+  nowAtEvent,
+  r2data_dust_events,
+  static_dust_events,
+} from '../utils/utils';
 import { GpsCoord, Point } from '../map/geo.utils';
 import { environment } from 'src/environments/environment';
 import { Network } from '@capacitor/network';
 import { Directory, Filesystem } from '@capacitor/filesystem';
-
-
 
 export interface GetOptions {
   timeout?: number; // Timeout when reading live
@@ -36,14 +44,14 @@ export interface GetOptions {
   revision?: number; // This is used for cache busting
 }
 
-export type Feature = 
-'volunteeripate' | // Volunteeripate shift syncing
-'art' | // Art button showing
-'messages' | // Messages tab showing
-'rsl' | // Music tab showing
-'private' | // Private events / Reminders
-'friends' | // Friends List
-'';
+export type Feature =
+  | 'volunteeripate' // Volunteeripate shift syncing
+  | 'art' // Art button showing
+  | 'messages' // Messages tab showing
+  | 'rsl' // Music tab showing
+  | 'private' // Private events / Reminders
+  | 'friends' // Friends List
+  | '';
 
 @Injectable({
   providedIn: 'root',
@@ -316,8 +324,15 @@ export class DbService {
           onlyRead = true;
         }
       }
+      
+
       if (!status.connected) {
         onlyRead = true;
+      }
+
+      if (environment.offline) {        
+        options.onlyFresh = true;
+        onlyRead = false;
       }
       if (onlyRead) {
         return await this._read(this._getkey(dataset, name));
@@ -540,4 +555,3 @@ export class DbService {
     return `${domain}${dataset}/${filename}?${revision}`;
   }
 }
-
