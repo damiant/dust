@@ -366,7 +366,7 @@ export class DataManager implements WorkerClass {
     let artLocationNames: any = {};
     this.campTypes = new Set<string>();
     this.artTypes = new Set<string>();
-
+    
     for (let camp of this.camps) {
       const pin = this.locateCamp(camp);
 
@@ -379,7 +379,7 @@ export class DataManager implements WorkerClass {
         camp.pin = pin;
       } else {
         // If the camp has been placed with gps then use it and infer x,y
-        if ((camp.pin as any).lat) {
+        if ((camp.pin as any)?.lat) {
           camp.gpsCoord = { lat: (camp.pin as any).lat, lng: (camp.pin as any).lng };
           camp.pin = gpsToMap(camp.gpsCoord);
         }
@@ -415,7 +415,7 @@ export class DataManager implements WorkerClass {
         art.pin = pin;
       } else {
         // If the art has been placed with gps then use it and infer x,y
-        if ((art.pin as any).lat) {
+        if ((art.pin as any)?.lat) {
           art.gpsCoords = { lat: (art.pin as any).lat, lng: (art.pin as any).lng };
           art.pin = gpsToMap(art.gpsCoords);
         }
@@ -551,8 +551,13 @@ export class DataManager implements WorkerClass {
 
       event.all_day = allLong;
     }
-    for (const rslEvent of this.rslEvents) {
-      this.addRSLDay(this.asDateTime(rslEvent.day));
+
+    try {
+      for (const rslEvent of this.rslEvents) {
+        this.addRSLDay(this.asDateTime(rslEvent.day));
+      }
+    } catch (err) {
+      this.consoleError(`Failed to add RSL days: ${err}`);
     }
 
     this.cache = new Map<string, TimeString>();
@@ -587,7 +592,7 @@ export class DataManager implements WorkerClass {
       const map = await this.loadData(ds.map);
 
       this.consoleLog(
-        `Setting dataset in worker: ${this.events.length} events, ${this.camps.length} camps, ${this.art.length} art, ${!!map} map`,
+        `Setting dataset in worker: ${this.events.length} events, ${this.camps.length} camps, ${this.art.length} art, ${!!map} map ${this.pins.length} pins`,
       );
       result = {
         events: this.events.length,
@@ -919,7 +924,7 @@ export class DataManager implements WorkerClass {
     const events = this.findEvents('', undefined, '', undefined, undefined, false, false);
     return events.filter((e) => e.hosted_by_camp == campId && e.title.toLowerCase() == title.toLowerCase());
   }
-  
+
   public findEvents(
     query: string,
     day: Date | undefined,

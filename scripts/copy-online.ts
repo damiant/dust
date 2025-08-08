@@ -76,7 +76,7 @@ async function go() {
     mkdirSync(outputFolder);
   }
   const year = `${new Date().getFullYear()}`;
-  const revision = 1;
+  const revision = 2;
   await getData(year, revision);
 }
 
