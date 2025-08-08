@@ -61,9 +61,9 @@
               "serviceWorker": "src/ngsw-config.json"
             },
             "offline": {
-              "optimization": false,
+              "optimization": true,
               "extractLicenses": false,
-              "sourceMap": true,
+              "sourceMap": false,
               "namedChunks": true,
               "budgets": [
                 {

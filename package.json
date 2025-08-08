@@ -9,6 +9,7 @@
     "build": "ng build && bun scripts/copy-admin.ts",
     "build-prod": "NG_BUILD_OPTIMIZE_CHUNKS=1 ng build --configuration=production  && bun scripts/copy-admin.ts",
     "build-offline": "ng build --configuration=offline --base-href=/dust/ && bun scripts/copy-online.ts",
+    "copy-offline": "rsync -avh www/browser /Volumes/stuff --progress",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "copy-admin": "bun scripts/copy-admin.ts",

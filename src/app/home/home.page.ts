@@ -241,7 +241,9 @@ export class HomePage implements OnInit {
     this.vm.endDate = addDays(new Date(this.db.selectedDataset().end), 7).toISOString();
     this.vm.highlightedDates = daysHighlighted(this.db.selectedDataset().start, this.db.selectedDataset().end);
     this.vm.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
-    await StatusBar.hide();
+    if (Capacitor.isNativePlatform()) {
+      await StatusBar.hide();
+    }
 
 
     this.vm.things = this.favs.things();
