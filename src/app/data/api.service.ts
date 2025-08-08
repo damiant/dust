@@ -99,7 +99,7 @@ export class ApiService {
     if (!environment.production) {
       console.warn(`Using non-production: ${JSON.stringify(environment)}`);
     }
-    console.info(`dbService.setDataset ${JSON.stringify(datasetInfo)}...`);
+    
     const result = await this.dbService.setDataset(datasetInfo);
     await this.reportWorkerLogs();
 
@@ -110,7 +110,6 @@ export class ApiService {
       console.log(`Bad data. Will redownload`);
       return { success: false };
     }
-    console.info(`dbService.setDataset complete ${JSON.stringify(result)}`);
     return { success: true, datasetResult: result };
   }
 

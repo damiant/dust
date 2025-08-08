@@ -27,7 +27,6 @@ export class CarouselComponent implements OnDestroy {
       if (enabled) {
         this.enable();
       } else {
-        console.log('disable carousel');
         this.disable();
       }
     });

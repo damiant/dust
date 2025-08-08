@@ -230,9 +230,9 @@ export class HomePage implements OnInit {
     await this.favs.getThings();
     this.vm.groups = await this.linkService.getGroupedLinks();
     this.vm.imageUrl = imageUrl;
-    this.vm.hasRestrooms = this.hasValue(summary.pinTypes, 'Restrooms');
-    this.vm.hasMedical = this.hasValue(summary.pinTypes, 'Medical');
-    this.vm.hasIce = this.hasValue(summary.pinTypes, 'Ice');
+    this.vm.hasRestrooms = this.hasValue(summary?.pinTypes, 'Restrooms');
+    this.vm.hasMedical = this.hasValue(summary?.pinTypes, 'Medical');
+    this.vm.hasIce = this.hasValue(summary?.pinTypes, 'Ice');
     this.vm.mapPin = this.getMapPin();
     this.vm.longEvents = this.settings.settings.longEvents;
     this.vm.eventIsHappening = !this.db.eventHasntBegun() && !this.db.isHistorical();

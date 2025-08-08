@@ -109,7 +109,7 @@ export class ArtPage {
       this.vm.imageStyle = 'top';
       this.calcCardHeight();
       this.init();
-    }, { allowSignalWrites: true });
+    });
   }
 
   isThisYear(): boolean {
