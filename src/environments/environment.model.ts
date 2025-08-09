@@ -5,4 +5,5 @@ export interface Environment {
     latitudeOffset?: number;
     longitudeOffset?: number;
     overrideLocations?: boolean;
+    offline?: boolean; // Whether the output of the app is all static assets
 }

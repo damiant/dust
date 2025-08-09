@@ -276,6 +276,9 @@ export function locationStringToPin(location: string, mapRadius: number, facing:
   if (location.toLowerCase().includes('center camp')) {
     location = '6:00 & A';
   }
+  if (location.toLowerCase().includes('man pavilion')) {
+    location = "12:00 1', Open Playa";
+  }
   const pin = mapPointToPin(toMapPoint(location, undefined, undefined, facing), mapRadius);
   if (pin == undefined && location !== 'None' && location !== 'Mobile') {
     console.warn(`Location "${location}" could not be found`);

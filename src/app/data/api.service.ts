@@ -64,8 +64,9 @@ export class ApiService {
       });
       const mapUri = await getCachedImage(mapData.uri);
       await this.settingsService.setMapURI(mapIsOffline ? '' : mapUri);
-      console.log(`Download? revision is ${revision.revision} and default is ${currentRevision}`);
-      if (revision.revision <= currentRevision) {
+      const offlineWeb = environment.offline && Capacitor.getPlatform() === 'web';
+      console.log(`Download? revision is ${revision.revision} and default is ${currentRevision}. offlineWeb=${offlineWeb}`);
+      if (revision.revision <= currentRevision && !offlineWeb) {
         console.warn(
           `Did not read data from storage as it is at revision ${revision.revision} but current is ${currentRevision}`,
         );
@@ -98,7 +99,7 @@ export class ApiService {
     if (!environment.production) {
       console.warn(`Using non-production: ${JSON.stringify(environment)}`);
     }
-    console.info(`dbService.setDataset ${JSON.stringify(datasetInfo)}...`);
+    
     const result = await this.dbService.setDataset(datasetInfo);
     await this.reportWorkerLogs();
 
@@ -109,7 +110,6 @@ export class ApiService {
       console.log(`Bad data. Will redownload`);
       return { success: false };
     }
-    console.info(`dbService.setDataset complete ${JSON.stringify(result)}`);
     return { success: true, datasetResult: result };
   }
 

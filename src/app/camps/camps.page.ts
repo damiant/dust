@@ -111,7 +111,6 @@ export class CampsPage {
         this.vm = initialState();
         this.update('');
       },
-      { allowSignalWrites: true },
     );
   }
 

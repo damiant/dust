@@ -10,13 +10,13 @@ export const BurningManTimeZone = 'America/Los_Angeles';
 //export const CurrentYear = 'ttitd-2023';
 
 // Data is for dust admin generated datasets
-export const data_dust_events = 'https://api.dust.events/data/'
+export const data_dust_events = environment.offline ? '/dust/data/store/' : 'https://api.dust.events/data/'
 
 // Static data is for burning man datasets
-export const static_dust_events = 'https://api.dust.events/static/'
+export const static_dust_events = environment.offline ? '/dust/data/static/' : 'https://api.dust.events/static/';
 
 // Static content that was generated
-export const r2data_dust_events = 'https://data.dust.events/'
+export const r2data_dust_events = environment.offline ? '/dust/data/other/' : 'https://data.dust.events/'
 
 /**
  * @deprecated nowAtEvent should be used instead

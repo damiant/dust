@@ -20,9 +20,7 @@
           "options": {
             "outputPath": "www",
             "index": "src/index.html",
-            "polyfills": [
-              "src/polyfills.ts"
-            ],
+            "polyfills": ["src/polyfills.ts"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -33,16 +31,11 @@
               },
               "src/manifest.webmanifest"
             ],
-            "styles": [
-              "src/global.scss",
-              "src/theme/variables.scss"
-            ],
+            "styles": ["src/global.scss", "src/theme/variables.scss"],
             "scripts": [],
             "webWorkerTsConfig": "tsconfig.worker.json",
             "browser": "src/main.ts",
-            "allowedCommonJsDependencies": [
-              "file-saver"
-            ]
+            "allowedCommonJsDependencies": ["file-saver"]
           },
           "configurations": {
             "production": {
@@ -62,6 +55,32 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all",
+              "serviceWorker": "src/ngsw-config.json"
+            },
+            "offline": {
+              "optimization": true,
+              "extractLicenses": false,
+              "sourceMap": false,
+              "namedChunks": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kb",
+                  "maximumError": "6kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.offline.ts"
                 }
               ],
               "outputHashing": "all",
@@ -133,6 +152,9 @@
             "vegas": {
               "buildTarget": "app:build:vegas"
             },
+            "offline": {
+              "buildTarget": "app:build:offline"
+            },
             "development": {
               "buildTarget": "app:build:development"
             },
@@ -167,10 +189,7 @@
               },
               "src/manifest.webmanifest"
             ],
-            "styles": [
-              "src/theme/variables.scss",
-              "src/global.scss"
-            ],
+            "styles": ["src/theme/variables.scss", "src/global.scss"],
             "scripts": [],
             "webWorkerTsConfig": "tsconfig.worker.json"
           },
@@ -184,19 +203,14 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": [
-              "src/**/*.ts",
-              "src/**/*.html"
-            ]
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
         }
       }
     }
   },
   "cli": {
-    "schematicCollections": [
-      "@ionic/angular-toolkit"
-    ],
+    "schematicCollections": ["@ionic/angular-toolkit"],
     "analytics": false
   },
   "schematics": {

@@ -137,8 +137,7 @@ export class IntroPage {
   constructor() {
     addIcons({ arrowForwardOutline, chevronUpOutline, chevronUpCircleSharp, cloudDownloadOutline });
     effect(() => {
-      const downloading = this.download();
-      console.log(`Download status ${downloading.status} firstDownload is ${downloading.firstDownload}`);
+      const downloading = this.download();      
       if (downloading.firstDownload) {
         this.vm.waiting = true;
         this.vm.firstDownloadMessage = `Downloading ${downloading.status}...`;
@@ -213,7 +212,6 @@ export class IntroPage {
       }
       this.vm.waiting = false;
       this.vm.downloading = false;
-      console.log(`Find dataset ${this.settingsService.settings.datasetId}`);
       const idx = this.vm.cards.findIndex((c) => this.api.datasetId(c) == this.settingsService.settings.datasetId);
       if (idx >= 0) {
         this.vm.selected = this.vm.cards[idx];
@@ -242,7 +240,6 @@ export class IntroPage {
         this.vm.selected = p;
         this.subtitle.set(this.vm.selected.subTitle);
       }
-      console.log(`Completed ionViewWillEnter`);
       this.opened.set(true);
     } finally {
       await delay(100);
@@ -293,7 +290,6 @@ export class IntroPage {
       this._change.markForCheck();
       await this.go();
     } else {
-      console.log('Did not auto start');
       // We are not auto starting with an event. We'll check versions (without await)
       this.updateService.checkVersion(this.alertController);
     }

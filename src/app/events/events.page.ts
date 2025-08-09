@@ -142,7 +142,6 @@ export class EventsPage implements OnInit, OnDestroy {
         this.vm = initialState();
         this.init();
       },
-      { allowSignalWrites: true },
     );
 
     effect(async () => {

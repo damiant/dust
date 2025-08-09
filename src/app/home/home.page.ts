@@ -230,9 +230,9 @@ export class HomePage implements OnInit {
     await this.favs.getThings();
     this.vm.groups = await this.linkService.getGroupedLinks();
     this.vm.imageUrl = imageUrl;
-    this.vm.hasRestrooms = this.hasValue(summary.pinTypes, 'Restrooms');
-    this.vm.hasMedical = this.hasValue(summary.pinTypes, 'Medical');
-    this.vm.hasIce = this.hasValue(summary.pinTypes, 'Ice');
+    this.vm.hasRestrooms = this.hasValue(summary?.pinTypes, 'Restrooms');
+    this.vm.hasMedical = this.hasValue(summary?.pinTypes, 'Medical');
+    this.vm.hasIce = this.hasValue(summary?.pinTypes, 'Ice');
     this.vm.mapPin = this.getMapPin();
     this.vm.longEvents = this.settings.settings.longEvents;
     this.vm.eventIsHappening = !this.db.eventHasntBegun() && !this.db.isHistorical();
@@ -241,7 +241,9 @@ export class HomePage implements OnInit {
     this.vm.endDate = addDays(new Date(this.db.selectedDataset().end), 7).toISOString();
     this.vm.highlightedDates = daysHighlighted(this.db.selectedDataset().start, this.db.selectedDataset().end);
     this.vm.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
-    await StatusBar.hide();
+    if (Capacitor.isNativePlatform()) {
+      await StatusBar.hide();
+    }
 
 
     this.vm.things = this.favs.things();
