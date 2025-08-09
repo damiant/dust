@@ -30,6 +30,8 @@ export class CachePanelComponent implements OnInit {
     return ``;
   });
   isCached = signal<boolean>(true);
+  private initialMessage = `To go completely offline you can download images and audio which may take a few minutes and can take 1 to 50mb of space.`;
+  cachedMessage = signal(this.initialMessage);
   isOnline = computed(() => {
     const status = this.db.networkStatus();
     return (status !== 'none');
@@ -38,6 +40,11 @@ export class CachePanelComponent implements OnInit {
 
   async ngOnInit() {
     this.isCached.set(await this.cache.isCached());
+    if (!await this.cache.cachedBefore()) {
+      this.cachedMessage.set(this.initialMessage);
+    } else {
+      this.cachedMessage.set(`Updates were applied but there may be images and audio which is not stored offlined.`);
+    }
   }
 
   async goOffline() {

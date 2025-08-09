@@ -35,6 +35,11 @@ export class CacheService {
         return cached === r;
     }
 
+    public async cachedBefore(): Promise<boolean> {
+        const cached = await this.settings.getInteger(`${this.settings.settings.datasetId}-cachedRevision`);
+        return !cached || cached === 0;
+    }
+
     public async download(status: WritableSignal<CacheStatus>, abort: WritableSignal<boolean>): Promise<string> {
         // Get all art from the database
         const arts = await this.db.findArts(undefined, undefined);
