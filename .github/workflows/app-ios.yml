@@ -71,7 +71,7 @@ jobs:
           agvtool new-version -all ${{ github.run_id }}
 
       - name: Build project
-        run: xcodebuild -workspace './ios/App/App.xcworkspace' -scheme App -destination 'platform=iOS Simulator,name=iPhone 14 Pro,OS=16.4' -archivePath App.xcarchive archive
+        run: xcodebuild -workspace './ios/App/App.xcworkspace' -scheme App -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=18.5' -archivePath App.xcarchive archive
 
       - name: Create binary (.ipa)
         run: xcodebuild archive -archivePath App.xcarchive -exportArchive -exportOptionsPlist ./ios/archive.plist -exportPath output -allowProvisioningUpdates
