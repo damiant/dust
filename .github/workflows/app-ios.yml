@@ -70,6 +70,9 @@ jobs:
           cd ios/App
           agvtool new-version -all ${{ github.run_id }}
 
+      - name: Select Xcode Version
+        run: sudo xcode-select -s /Applications/Xcode_16.4.app/Contents/Developer
+
       - name: Build project
         run: xcodebuild -workspace './ios/App/App.xcworkspace' -scheme App -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=18.5' -archivePath App.xcarchive archive
 
