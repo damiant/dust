@@ -366,12 +366,15 @@ export class DataManager implements WorkerClass {
     let artLocationNames: any = {};
     this.campTypes = new Set<string>();
     this.artTypes = new Set<string>();
-    
+
     for (let camp of this.camps) {
       const pin = this.locateCamp(camp);
 
       if (camp.camp_type && camp.camp_type.trim() != '') {
-        this.campTypes.add(titlePlural(camp.camp_type));
+        const list = camp.camp_type.split(',');
+        for (const type of list) {
+          this.campTypes.add(titlePlural(type.trim()));
+        }
       }
       if (pin) {
         const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
