@@ -73,11 +73,7 @@
   </ion-modal>
 
   @if (vm.downloading) {
-  <ion-loading
-    spinner="circular"
-    [isOpen]="vm.downloading"
-    [message]="downloadStatus()"
-  ></ion-loading>
+  <ion-loading spinner="circular" [isOpen]="vm.downloading" [message]="downloadStatus()"></ion-loading>
   }
   <app-tile-container>
     @if (!db.allLocationsHidden()) {
@@ -127,9 +123,9 @@
   <app-pins-card (clickThing)="clickThing($event)" [things]="vm.things"></app-pins-card>
   }
   <app-participate></app-participate>
+  <app-cache-panel />
   <div class="center text-dim">
-    <p (click)="vm.moreOpen = true">
-      {{ vm.timezone }} {{vm.version}}</p>
+    <p (click)="vm.moreOpen = true">{{ vm.timezone }} {{vm.version}}</p>
   </div>
   <div (click)="moreClick()" class="pad-top" (click)="vm.hiddenPanel = !vm.hiddenPanel"></div>
   <div class="pad-top"></div>

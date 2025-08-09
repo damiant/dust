@@ -1,7 +1,7 @@
 import { Component, input, output } from '@angular/core';
 import { IonFabButton, IonIcon } from "@ionic/angular/standalone";
 import { addIcons } from 'ionicons';
-import { arrowForwardOutline } from 'ionicons/icons';
+import { arrowForwardOutline, stop } from 'ionicons/icons';
 
 @Component({
   selector: 'app-card-header',
@@ -16,6 +16,6 @@ export class CardHeaderComponent {
   addHidden = input<boolean>(false);
 
   constructor() {
-    addIcons({ arrowForwardOutline });
+    addIcons({ arrowForwardOutline, stop });
   }
 }

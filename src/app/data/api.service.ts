@@ -284,6 +284,10 @@ export class ApiService {
     return v;
   }
 
+  public async getRevision(datasetId: string): Promise<Revision | undefined> {
+    return this.checkUndefined(await this.dbService.get(datasetId, Names.revision, { onlyRead: true, defaultValue: { revision: 0 } }));
+  }
+
   public async download(
     selected: Dataset | undefined,
     force: boolean,
