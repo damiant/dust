@@ -77,7 +77,7 @@ jobs:
         run: xcodebuild -workspace './ios/App/App.xcworkspace' -allowProvisioningUpdates -scheme App -destination generic/platform=iOS -archivePath App.xcarchive archive
 
       - name: Create binary (.ipa)
-        run: xcodebuild archive -archivePath App.xcarchive -exportArchive -exportOptionsPlist ./ios/archive.plist -exportPath output -allowProvisioningUpdates
+        run: xcodebuild archive -archivePath App.xcarchive -allowProvisioningUpdates -exportArchive -exportOptionsPlist ./ios/archive.plist -exportPath output -allowProvisioningUpdates
 
       - name: Create private key for TestFlight
         run: |
