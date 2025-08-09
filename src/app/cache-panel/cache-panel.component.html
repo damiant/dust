@@ -1,0 +1,22 @@
+@if (!isCached()) {
+  @if (isOnline()) {
+    <app-card-header
+      title="Go Offline"
+      [icon]="downloading() ? 'stop' : 'arrow-forward-outline'"
+      (addClicked)="goOffline()"
+    ></app-card-header>
+    <ion-card>
+      <ion-card-content>
+        @if (downloading()) {
+          <ion-text class="clamp3 ion-padding-bottom">{{ cacheStatus().status }}</ion-text>
+          <ion-progress-bar [value]="cacheStatus().at / cacheStatus().count"></ion-progress-bar>
+        } @else {
+          <ion-text class="clamp3"
+            >To go completely offline you can download images and audio which may take a few minutes and can take 1 to
+            50mb of space. {{ networkWarning() }}</ion-text
+          >
+        }
+      </ion-card-content>
+    </ion-card>
+  }
+}

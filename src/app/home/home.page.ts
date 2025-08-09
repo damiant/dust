@@ -67,7 +67,7 @@ import { ParticipateComponent } from "../participate/participate.component";
 import { getCachedImage } from '../data/cache-store';
 import { CacheService } from '../data/cache.service';
 import { Network } from '@capacitor/network';
-import { BurnPlannerService } from '../data/burn-planner.service';
+import { CachePanelComponent } from "../cache-panel/cache-panel.component";
 
 interface HomeState {
   moreClicks: number;
@@ -119,13 +119,12 @@ interface HomeState {
     RemindersComponent,
     PinsCardComponent,
     LinkComponent,
-    CardHeaderComponent, ParticipateComponent]
+    CardHeaderComponent, ParticipateComponent, CachePanelComponent]
 })
 export class HomePage implements OnInit {
   private ui = inject(UiService);
   private settings = inject(SettingsService);
   private map = inject(MapService);
-  private burnPlanner = inject(BurnPlannerService);
   private toastController = inject(ToastController);
   private alertController = inject(AlertController);
   public pushNotifications = inject(PushNotificationService);
@@ -446,7 +445,9 @@ export class HomePage implements OnInit {
       const status = await Network.getStatus();
       // Only download if on WiFi
       if (status.connectionType === 'wifi') {
-        const status = await this.cache.download(this.downloadStatus);
+        const abortDownload = signal(false);
+        const cacheStatus = signal(this.cache.InitialCacheStatus());
+        const status = await this.cache.download(cacheStatus, abortDownload);
         if (status !== '') {
           this.ui.presentToast(status, this.toastController);
         }
