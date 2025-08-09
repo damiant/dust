@@ -4,6 +4,7 @@
 - Fix for man pavillion location
 - Fix for GPS coordinates missing latitude
 - Offline option for audio and images
+- Fix for multiple camp types
 
 ## 2.96
 - Import events via link (for https://burn-planner.web.app/)
