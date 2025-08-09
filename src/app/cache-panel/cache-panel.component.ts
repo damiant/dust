@@ -61,7 +61,6 @@ export class CachePanelComponent implements OnInit {
         this.ui.presentToast(status, this.toastController);
       }
       this.isCached.set(await this.cache.isCached());
-      console.log(`isCached: ${this.isCached()}`);
     } finally {
       this.downloading.set(false);
       this.cacheStatus.set(this.cache.InitialCacheStatus());
