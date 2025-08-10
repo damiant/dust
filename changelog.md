@@ -2,6 +2,7 @@
 
 ## 2.98
 - Show friends on the map
+- Option to only show non recurring events
 - Camp image is now shown on the popover for event locations
 - Camp image shown when pressing a pin on the map for an event
 - Fix extra line showing under reminders

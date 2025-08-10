@@ -225,7 +225,7 @@ export class EventsPage implements OnInit, OnDestroy {
     this.setToday(today);
     await this.db.checkEvents();
     this.vm.days = await this.db.getDays(Names.events);
-    this.db.getCategories().then((categories) => (this.vm.categories = categories));
+    this.db.getCategories().then((categories) => (this.vm.categories = [...categories, 'No Recurring']));
     this.vm.defaultDay = this.chooseDefaultDay(now());
     await this.update();
   }
