@@ -4,7 +4,7 @@ import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MapComponent } from '../map/map.component';
 import { DbService } from '../data/db.service';
-import { Art, MapPoint, MapSet, MapType, Names } from '../data/models';
+import { Art, MapPoint, MapSet, MapType, Names, Pin } from '../data/models';
 import { GpsCoord } from '../map/geo.utils';
 import { GeoService } from '../geolocation/geo.service';
 import { toMapPoint } from '../map/map.utils';
@@ -142,6 +142,8 @@ export class PinMapPage {
         return await this.db.getPins(Names.other);
       case MapType.Things:
         return await this.getThings();
+      case MapType.Friends:
+        return await this.getFriends();
       case MapType.All:
         return await this.getAll();
       default:
@@ -191,6 +193,31 @@ export class PinMapPage {
         const point = await this.convertToPoint(art);
         if (point) points.push(point);
       }
+    }
+    return {
+      title,
+      description: '',
+      points,
+    };
+  }
+
+
+  private async getFriends(): Promise<MapSet> {
+    const title = 'Friends';
+    this.title.set(title);
+
+    const favs = await this.favs.getFavorites();
+    const friends = favs.friends;
+    const points = [];
+    this.smallPins = friends.length > 100;
+    for (let friend of friends) {
+      if (friend.address) {
+        const point = await this.convertToPt(friend.name, friend.notes ?? '', friend.name, '', friend.address, '', undefined);
+        if (point) points.push(point);
+      }
+    }
+    if (friends.length === 0) {
+      this.ui.presentToast(`You can add friends from the home page or from camp details.`, this.toast);
     }
     return {
       title,
@@ -362,6 +389,21 @@ export class PinMapPage {
       id: art.uid,
       imageUrl: art.images && art.images[0] ? art.images[0].thumbnail_url : '',
       href: '/art/' + art.uid + '+' + this.title(),
+    };
+    return point;
+  }
+
+    private async convertToPt(title: string, moreInfo: string, label: string, id: string, location_string: string, imageUrl: string, pin: Pin | undefined): Promise<MapPoint | undefined> {
+    let point = toMapPoint(location_string, undefined, pin);
+    if (point.street == 'unplaced') return undefined;
+    point.info = {
+      title,
+      subtitle: '',
+      location: moreInfo,
+      label,
+      id,
+      imageUrl,
+      href: undefined,
     };
     return point;
   }

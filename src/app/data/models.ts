@@ -303,6 +303,7 @@ export enum MapType {
   Medical = 'medical',
   Other = 'other',
   Things = 'things',
+  Friends = 'friends',
   All = 'all'
 }
 
@@ -322,6 +323,7 @@ export interface PlacedPin {
 export interface Friend {
   name: string;
   address: string;
+  camp?: string;
   notes: string;
 }
 

@@ -51,6 +51,7 @@ export type Feature =
   | 'rsl' // Music tab showing
   | 'private' // Private events / Reminders
   | 'friends' // Friends List
+  | 'livemap' // Live items on the map
   | '';
 
 @Injectable({
@@ -161,11 +162,15 @@ export class DbService {
     return undefined;
   }
 
+  tzError = false;
   public getTimeZone(): string {
     let timezone = this.selectedDataset().timeZone;
     if (!timezone) {
       timezone = BurningManTimeZone;
-      console.error(`Shouldnt get an empty timezone`);
+      if (!this.tzError) {
+        console.error(`Shouldnt get an empty timezone`);
+        this.tzError = true;
+      }
     }
     return timezone;
   }
@@ -324,13 +329,13 @@ export class DbService {
           onlyRead = true;
         }
       }
-      
+
 
       if (!status.connected) {
         onlyRead = true;
       }
 
-      if (environment.offline) {        
+      if (environment.offline) {
         options.onlyFresh = true;
         onlyRead = false;
       }

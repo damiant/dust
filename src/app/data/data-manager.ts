@@ -1198,6 +1198,9 @@ export class DataManager implements WorkerClass {
   private eventIsCategory(category: string, event: Event): boolean {
     if (category === '') return true;
     if (!event.event_type?.label) return true;
+    if (category === 'No Recurring') {
+      return event.occurrence_set.length === 1 && !event.all_day;
+    }
     return event.event_type?.label.includes(category);
   }
 

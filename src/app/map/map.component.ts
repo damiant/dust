@@ -111,13 +111,16 @@ export class MapComponent implements OnInit, OnDestroy {
       this.pointsSet = true;
     }
 
-    this.live.update(this.updateLive.bind(this));
-    if (this.liveInterval) {
-      clearInterval(this.liveInterval);
-    }
-    this.liveInterval = setInterval(() => {
+    if (!this.db.featuresHidden().includes('livemap')) {
       this.live.update(this.updateLive.bind(this));
-    }, 60500); // 1 minute and 5 seconds update the map
+      if (this.liveInterval) {
+        clearInterval(this.liveInterval);
+      }
+      // 1 minute and 5 seconds update the map
+      this.liveInterval = setInterval(() => {
+        this.live.update(this.updateLive.bind(this));
+      }, 60500);
+    }
     this._change.detectChanges();
   }
   get points() {
@@ -157,8 +160,8 @@ export class MapComponent implements OnInit, OnDestroy {
     if (doUpdate) {
       // TODO: Trigger  UI update of map
       setTimeout(() => {
-      this.mapResult?.liveUpdated(livePoints);
-      },100);
+        this.mapResult?.liveUpdated(livePoints);
+      }, 100);
     }
   }
 

@@ -12,22 +12,24 @@ import {
   IonLabel,
   IonList,
   IonModal,
+  IonPopover,
   IonText,
   IonToolbar,
   ToastController,
 } from '@ionic/angular/standalone';
 import { ActivatedRoute } from '@angular/router';
 import { DbService } from '../data/db.service';
-import { Camp, Event, MapPoint, RSLEvent, RSLOccurrence } from '../data/models';
+import { Camp, Event, Friend, MapPoint, RSLEvent, RSLOccurrence } from '../data/models';
 import { MapComponent } from '../map/map.component';
 import { EventPage } from '../event/event.page';
 import { FavoritesService } from '../favs/favorites.service';
+import { FriendsService } from '../friends/friends.service';
 import { UiService } from '../ui/ui.service';
 import { SettingsService } from '../data/settings.service';
 import { toMapPoint } from '../map/map.utils';
 import { getOrdinalNum } from '../utils/utils';
 import { addIcons } from 'ionicons';
-import { star, starOutline, shareOutline, locationOutline, calendarOutline } from 'ionicons/icons';
+import { star, starOutline, shareOutline, locationOutline, calendarOutline, ellipsisVertical, personAddOutline } from 'ionicons/icons';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { canCreate } from '../map/map';
 import { ScrollResult } from '../map/map-model';
@@ -54,6 +56,7 @@ import { ScrollResult } from '../map/map-model';
         IonLabel,
         IonText,
         IonModal,
+        IonPopover,
         CachedImgComponent,
     ]
 })
@@ -61,6 +64,7 @@ export class CampPage implements OnInit {
   private route = inject(ActivatedRoute);
   private db = inject(DbService);
   private fav = inject(FavoritesService);
+  private friendsService = inject(FriendsService);
   private settings = inject(SettingsService);
   private toastController = inject(ToastController);
   private ui = inject(UiService);
@@ -75,9 +79,10 @@ export class CampPage implements OnInit {
   star = false;
   showMap = false;
   backText = 'Camps';
+  isPopoverOpen = false;
 
   constructor() {
-    addIcons({ star, starOutline, shareOutline, locationOutline, calendarOutline });
+    addIcons({ star, starOutline, shareOutline, locationOutline, calendarOutline, ellipsisVertical, personAddOutline });
   }
 
   async ngOnInit() {
@@ -121,6 +126,21 @@ export class CampPage implements OnInit {
     }
   }
 
+  public async addFriend() {
+    this.closePopover();
+    const hideCamp = this.db.locationsHidden().camps;
+    const friend: Friend = {
+      name: '',
+      address: hideCamp ? '' : this.camp?.location_string || '',
+      camp: this.camp?.uid,
+      notes: `@${this.camp?.name}`,
+    }
+    
+    if (await this.friendsService.addFriend(friend, true)) {
+      this.ui.presentToast(`Your friend has been added to the list`, this.toastController);
+    }
+  }
+
   // d is in the format of 2024-07-23
   private toDate(d: string): string {
     const t = d.split('-');
@@ -149,6 +169,15 @@ export class CampPage implements OnInit {
       text: `Check out ${this.camp?.name} at ${this.settings.eventTitle()} using the dust app. `,
       url,
     });
+    this.closePopover();    
+  }
+
+  openPopover() {
+    this.isPopoverOpen = true;
+  }
+
+  closePopover() {
+    this.isPopoverOpen = false;
   }
 
   scrolled(result: ScrollResult) {

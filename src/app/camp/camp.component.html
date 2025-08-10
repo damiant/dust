@@ -1,4 +1,4 @@
-<ion-card role="button" [routerLink]="'/camp/' + camp().uid + '+' + title()" class="item">
+<ion-card role="button" (click)="openCamp()" class="item">
   @if (camp().imageUrl) {
   <div class="image">
     <app-cached-img class="image" [alt]="camp().name" [src]="camp().imageUrl" />

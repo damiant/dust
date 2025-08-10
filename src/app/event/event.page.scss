@@ -9,6 +9,13 @@
     object-fit: cover;
 }
 
+.popover-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    --border-radius: 0.25rem;
+}
+
 ion-popover {
     --min-width: 95vw;
 }

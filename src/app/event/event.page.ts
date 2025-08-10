@@ -97,6 +97,7 @@ export class EventPage implements OnInit, OnDestroy {
   mapSubtitle = '';
   campDescription = '';
   locationInfo = '';
+  campImage: string | undefined;
   prevDisabled = false;
   nextDisabled = false;
   routerOutlet: IonRouterOutlet = inject(IonRouterOutlet);
@@ -153,10 +154,12 @@ export class EventPage implements OnInit, OnDestroy {
       this.event = await this.db.findEvent(id);
       this.mapTitle = this.event.camp;
       this.mapSubtitle = this.event.location;
+      const camp = await this.db.findCamp(this.event?.hosted_by_camp!);
       const mapPoint = toMapPoint(this.event.location, {
         title: this.event.title,
         location: this.event.location,
         subtitle: this.event.camp,
+        imageUrl: this.event.imageUrl ?? camp?.imageUrl
       });
       if (this.event.pin) {
         mapPoint.x = this.event.pin.x;
@@ -214,6 +217,7 @@ export class EventPage implements OnInit, OnDestroy {
     const camp = await this.db.findCamp(this.event?.hosted_by_camp!);
     if (camp) {
       this.campDescription = camp.description!;
+      this.campImage = camp.imageUrl;
       this.isOpen = true;
     }
     this._change.detectChanges();

@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 import { Camp } from '../data/models';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import {
   IonCard,
   IonCardContent,
@@ -33,6 +33,11 @@ export class CampComponent {
   camp = input.required<Camp>();
   title = input('Camps');
   mapClick = output<any>();
+  router = inject(Router);
+
+  openCamp() {
+    this.router.navigate(['/camp/' + this.camp().uid + '+' + this.title()]);
+  }
 
   map(camp: Camp, ev: any) {
     this.mapClick.emit(camp);

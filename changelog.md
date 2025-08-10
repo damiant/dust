@@ -1,5 +1,15 @@
 ## Changes
 
+## 2.98
+- Show friends on the map
+- Option to only show non recurring events
+- Camp image is now shown on the popover for event locations
+- Camp image shown when pressing a pin on the map for an event
+- Fix extra line showing under reminders
+- Add friend now available from the camp menu
+- Fix crash when clicking location of camps
+- Fix for bug in art scrolling
+
 ## 2.97
 - Fix for man pavillion location
 - Fix for GPS coordinates missing latitude
