@@ -303,6 +303,7 @@ export enum MapType {
   Medical = 'medical',
   Other = 'other',
   Things = 'things',
+  Friends = 'friends',
   All = 'all'
 }
 

@@ -91,6 +91,7 @@ interface HomeState {
   highlightedDates: any[];
   hasRestrooms: boolean;
   hasIce: boolean;
+  hasFriends: boolean;
   version: string;
   timezone: string;
   presentingElement: any;
@@ -163,6 +164,7 @@ export class HomePage implements OnInit {
     hasMedical: true,
     hasRestrooms: true,
     hasIce: true,
+    hasFriends: true,
     version: '',
     timezone: '',
     presentingElement: undefined,
@@ -227,11 +229,16 @@ export class HomePage implements OnInit {
       onlyRead: true,
     });
     await this.favs.getThings();
+    this.vm.hasFriends = false;
+    this.favs.getFavorites().then(favs => {
+      this.vm.hasFriends = favs.friends.length > 0;
+    });
+    
     this.vm.groups = await this.linkService.getGroupedLinks();
     this.vm.imageUrl = imageUrl;
     this.vm.hasRestrooms = this.hasValue(summary?.pinTypes, 'Restrooms');
-    this.vm.hasMedical = this.hasValue(summary?.pinTypes, 'Medical');
-    this.vm.hasIce = this.hasValue(summary?.pinTypes, 'Ice');
+    this.vm.hasMedical = this.hasValue(summary?.pinTypes, 'Medical');    
+    this.vm.hasIce = this.hasValue(summary?.pinTypes, 'Ice');    
     this.vm.mapPin = this.getMapPin();
     this.vm.longEvents = this.settings.settings.longEvents;
     this.vm.eventIsHappening = !this.db.eventHasntBegun() && !this.db.isHistorical();
