@@ -345,7 +345,7 @@ export class FavsPage implements OnInit {
   }
 
   eventsTrackBy(index: number, event: Event) {
-    return event.uid;
+    return `${event.uid}-${index}`;
   }
 
   campsTrackBy(index: number, camp: Camp) {

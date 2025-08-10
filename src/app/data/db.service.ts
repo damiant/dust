@@ -51,6 +51,7 @@ export type Feature =
   | 'rsl' // Music tab showing
   | 'private' // Private events / Reminders
   | 'friends' // Friends List
+  | 'livemap' // Live items on the map
   | '';
 
 @Injectable({

@@ -472,6 +472,11 @@ export class IntroPage {
       this.fav.init(this.settingsService.settings.datasetId);
 
       const hidden: Feature[] = [];
+
+      // Hide Live Mutant Vehicle on map
+      hidden.push('livemap');
+
+      
       // Hide music if there is none
       if (result.rsl == 0) {
         hidden.push('rsl');
