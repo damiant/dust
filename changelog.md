@@ -7,6 +7,7 @@
 - Fix extra line showing under reminders
 - Add friend now available from the camp menu
 - Fix crash when clicking location of camps
+- Fix for bug in art scrolling
 
 ## 2.97
 - Fix for man pavillion location

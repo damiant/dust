@@ -1,5 +1,5 @@
 <ion-card [ngClass]="imageStyle()" class="item" (click)="click()">
-  @if (imageStyle() !== 'none' && art().images) {
+  @if (imageStyle() !== 'none' && art().images && art().images.length > 0) {
   <div [class]="imageContainerCSSStyle()">
     <app-cached-img [class]="imageCSSStyle()" [src]="art().images && art().images[0].thumbnail_url" />
   </div>
