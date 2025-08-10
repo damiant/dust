@@ -322,6 +322,7 @@ export interface PlacedPin {
 export interface Friend {
   name: string;
   address: string;
+  camp?: string;
   notes: string;
 }
 

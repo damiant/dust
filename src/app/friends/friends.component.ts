@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, effect, inject } from '@angular/core';
 import {
   IonCard,
   IonCardContent,
@@ -7,81 +7,85 @@ import {
   IonLabel,
   IonList,
   IonText,
-  ModalController,
 } from '@ionic/angular/standalone';
-import { FriendComponent, FriendResult } from '../friend/friend.component';
 import { FavoritesService } from '../favs/favorites.service';
+import { FriendsService } from './friends.service';
 import { Friend } from '../data/models';
 import { CommonModule } from '@angular/common';
-import { clone, delay } from '../utils/utils';
+import { clone } from '../utils/utils';
 import { addIcons } from 'ionicons';
 import { add, person } from 'ionicons/icons';
 import { CardHeaderComponent } from "../card-header/card-header.component";
+import { DbService } from '../data/db.service';
 
 @Component({
-    selector: 'app-friends',
-    templateUrl: './friends.component.html',
-    styleUrls: ['./friends.component.scss'],
-    imports: [
-        CommonModule,
-        IonCard,
-        IonCardContent,
-        IonList,
-        IonText,
-        IonItem,
-        IonIcon,
-        IonLabel,
-        CardHeaderComponent
-    ],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-friends',
+  templateUrl: './friends.component.html',
+  styleUrls: ['./friends.component.scss'],
+  imports: [
+    CommonModule,
+    IonCard,
+    IonCardContent,
+    IonList,
+    IonText,
+    IonItem,
+    IonIcon,
+    IonLabel,
+    CardHeaderComponent
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FriendsComponent implements OnInit {
-  private modalCtrl = inject(ModalController);
   private fav = inject(FavoritesService);
+  private db = inject(DbService);
+  private friendsService = inject(FriendsService);
   public friends: Friend[] = [];
   private _change = inject(ChangeDetectorRef);
   private editingFriend: Friend | undefined;
 
+
   constructor() {
     addIcons({ add, person });
+    effect(() => {
+      const change = this.fav.changed();
+      if (change > 1) {
+        this.update();
+      }
+    });
   }
 
   ngOnInit() {
+    this.checkFriendsCamps();
     this.update();
   }
 
-  async addFriend(friend?: Friend) {
-    const e: any = document.getElementById('my-outlet');
-    const modal = await this.modalCtrl.create({
-      component: FriendComponent,
-      presentingElement: e,
-      componentProps: friend
-        ? {
-          friend: friend,
-          isEdit: friend,
+  private async checkFriendsCamps() {
+    if (this.db.locationsHidden().camps) return;
+    let updates = false;
+    const favs = await this.fav.getFavorites();
+    for (const friend of favs.friends) {
+      if (friend.camp && friend.camp.length > 0) {
+        const camp = await this.db.findCamp(friend.camp);
+        if (camp && camp.location_string && friend.address.length === 0) {
+          const before = clone(friend);
+          friend.address = camp.location_string;
+          await this.fav.updateFriend(friend, before);
+          console.log(`Friend ${friend.name} has camp address: ${friend.address}`);
+          updates = true;
         }
-        : undefined,
-    });
-    modal.present();
-
-    const { data, role } = await modal.onWillDismiss();
-    delay(800); // Time for animation
-    switch (role) {
-      case FriendResult.confirm: {
-        if (friend) {
-          await this.fav.updateFriend(data, friend);
-        } else {
-          await this.fav.addFriend(data);
-        }
-        await this.update();
-        return;
-      }
-      case FriendResult.delete: {
-        await this.fav.deleteFriend(this.editingFriend!);
-        await this.update();
-        return;
       }
     }
+    if (updates) {
+      this.update();
+    }
+  }
+
+  async addFriend(friend?: Friend) {
+    if (friend) {
+      this.editingFriend = clone(friend);
+    }
+    await this.friendsService.addFriend(friend);
+    await this.update();
   }
 
   async update() {
@@ -92,6 +96,6 @@ export class FriendsComponent implements OnInit {
 
   async editFriend(friend: Friend) {
     this.editingFriend = clone(friend);
-    this.addFriend(friend);
+    await this.addFriend(friend);
   }
 }

@@ -13,16 +13,37 @@
           }
         </ion-button>
       </div>
-      <ion-button aria-label="Share camp information" (click)="share()">
-        <ion-icon color="primary" name="share-outline"></ion-icon>
+      <ion-button aria-label="Open menu" (click)="openPopover()" id="menu-trigger">
+        <ion-icon color="primary" name="ellipsis-vertical"></ion-icon>
       </ion-button>
+
+      <ion-popover trigger="menu-trigger" [isOpen]="isPopoverOpen" (didDismiss)="closePopover()" showBackdrop="true">
+        <ng-template>
+          <ion-content>
+            <ion-list>
+              <ion-item detail="false" aria-label="Share camp information" button (click)="share()">
+                <ion-icon name="share-outline" slot="start"></ion-icon>
+                <ion-label>Share</ion-label>
+              </ion-item>
+              <ion-item detail="false" aria-label="Add Friend" button (click)="addFriend()">
+                <ion-icon name="person-add-outline" slot="start"></ion-icon>
+                <ion-label>Add Friend</ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-content>
+        </ng-template>
+      </ion-popover>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="app-page">
-  <ion-modal [isOpen]="showEvent" (didDismiss)="showEvent = false" [initialBreakpoint]="0.9"
-    [breakpoints]="[0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]">
+  <ion-modal
+    [isOpen]="showEvent"
+    (didDismiss)="showEvent = false"
+    [initialBreakpoint]="0.9"
+    [breakpoints]="[0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]"
+  >
     <ng-template>
       <app-event [filterDays]="false" imageLocation="bottom" class="pad" [eventId]="eventId"></app-event>
     </ng-template>
@@ -45,9 +66,10 @@
     <ion-item (click)="noop()">
       <ion-icon aria-hidden="true" slot="start" name="location-outline"></ion-icon>
       <div role="text" attr.aria-label="Located at {{camp.location_string}}">
-        <ion-label aria-hidden="true">{{camp.location_string}}
-          @if (camp.landmark) {
-          <br /><span class="sub">{{camp.landmark}}. ({{camp.facing}})</span>
+        <ion-label aria-hidden="true"
+          >{{camp.location_string}} @if (camp.landmark) { <br /><span class="sub"
+            >{{camp.landmark}}. ({{camp.facing}})</span
+          >
           }
         </ion-label>
       </div>
@@ -55,8 +77,9 @@
     }
 
     <ion-item>
-      <ion-text style="padding-right: 1rem; white-space: pre-line"
-        class="text selectable">{{camp.description}}</ion-text>
+      <ion-text style="padding-right: 1rem; white-space: pre-line" class="text selectable"
+        >{{camp.description}}</ion-text
+      >
     </ion-item>
   </ion-list>
   } @if (events.length > 0) {
@@ -92,8 +115,7 @@
       @for (occurrence of event.occurrences; track occurrence) {
       <ion-item class="small" (click)="toggleRSLStar(occurrence, event)">
         <ion-label class="text">
-          <span class="time">{{occurrence.timeRange}}</span> {{occurrence.who}}
-          @if(occurrence.star === true) {
+          <span class="time">{{occurrence.timeRange}}</span> {{occurrence.who}} @if(occurrence.star === true) {
           <ion-icon class="star" color="primary" name="star"></ion-icon>
           }
         </ion-label>
