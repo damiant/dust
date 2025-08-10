@@ -3,6 +3,7 @@
 ## 2.98
 - Camp image is now shown on the popover for event locations
 - Camp image shown when pressing a pin on the map for an event
+- Fix extra line showing under reminders
 
 ## 2.97
 - Fix for man pavillion location
