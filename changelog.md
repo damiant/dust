@@ -1,5 +1,8 @@
 ## Changes
 
+## 2.98
+- Camp image is now shown on the popover for event locations
+
 ## 2.97
 - Fix for man pavillion location
 - Fix for GPS coordinates missing latitude
