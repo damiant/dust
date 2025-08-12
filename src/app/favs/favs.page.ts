@@ -362,6 +362,9 @@ export class FavsPage implements OnInit {
 
   async syncCalendar() {
     this.calendarUrl = await this.generateCalendar(this.vm.events);
+    if (this.calendarUrl === '') {
+      return;
+    }
     this.vm.showCalendarMessage = true;
     this._change.detectChanges();
   }
