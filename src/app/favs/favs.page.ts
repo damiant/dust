@@ -13,7 +13,7 @@ import {
   IonTitle,
   IonToolbar,
   IonItem,
-  IonItemSliding, IonItemOptions, IonItemOption
+  IonItemSliding, IonItemOptions, IonItemOption, IonPopover, IonList, IonLabel
 } from '@ionic/angular/standalone';
 import { Router, RouterModule } from '@angular/router';
 import { Art, Camp, Event, MapPoint } from '../data/models';
@@ -29,9 +29,9 @@ import { SearchComponent } from '../search/search.component';
 import { distance, formatDistanceMiles, toMapPoint } from '../map/map.utils';
 import { GeoService } from '../geolocation/geo.service';
 import { addIcons } from 'ionicons';
-import { star, starOutline, mapOutline, printOutline, calendarOutline } from 'ionicons/icons';
+import { star, starOutline, mapOutline, printOutline, calendarOutline, trashOutline } from 'ionicons/icons';
 import { CalendarService } from '../calendar.service';
-import { ToastController } from '@ionic/angular';
+import { ToastController, AlertController } from '@ionic/angular';
 import { MessageComponent } from '../message/message.component';
 
 
@@ -83,7 +83,7 @@ function initialState(): FavsState {
   templateUrl: './favs.page.html',
   styleUrls: ['./favs.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
+  imports: [IonLabel, IonList, IonPopover,
     IonItemOption,
     IonItemOptions,
     IonItemSliding,
@@ -117,15 +117,17 @@ export class FavsPage implements OnInit {
   private calendar = inject(CalendarService);
   public db = inject(DbService);
   private toastController = inject(ToastController);
+  private alertController = inject(AlertController);
   private _change = inject(ChangeDetectorRef);
   private calendarUrl: string | undefined;
   private router = inject(Router);
   vm: FavsState = initialState();
 
   ionContent = viewChild.required(IonContent);
+  isPopoverOpen = false;
 
   constructor() {
-    addIcons({ printOutline, calendarOutline, mapOutline, star, starOutline });
+    addIcons({ printOutline, calendarOutline, mapOutline, star, starOutline, trashOutline });
     effect(async () => {
       this.fav.changed();
       await this.update();
@@ -160,6 +162,32 @@ export class FavsPage implements OnInit {
   async ionViewWillEnter() {
     this.fav.newFavs.set(0);
     await this.update();
+  }
+
+  async clearFavs() {
+        this.isPopoverOpen = false;
+    const alert = await this.alertController.create({
+      header: 'Clear Favorites',
+      message: 'Are you sure you want to remove all favorites? This action cannot be undone.',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Clear All',
+          role: 'destructive',
+          handler: async () => {
+
+            await this.fav.clearFavs();
+            this.fav.changed();
+            await this.update();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
   home() {
@@ -227,6 +255,14 @@ export class FavsPage implements OnInit {
   rslClick(rslId: string) {
     this.vm.isActionSheetOpen = true;
     this.vm.rslId = rslId;
+  }
+
+  openPopover() {
+    this.isPopoverOpen = true;
+  }
+
+  closePopover() {
+    this.isPopoverOpen = false;
   }
 
   groupClick(gevent: Event) {

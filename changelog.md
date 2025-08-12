@@ -2,6 +2,7 @@
 
 ## 2.99
 - Fix for calendar export when offline
+- Feature to clear favorites
 
 ## 2.98
 - Show friends on the map

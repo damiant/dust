@@ -99,6 +99,14 @@ export class FavoritesService {
     }
   }
 
+  public async clearFavs() {
+    this.favorites.events = [];
+    this.favorites.art = [];
+    this.favorites.camps = [];
+    this.favorites.rslEvents = [];
+    await this.saveFavorites();
+  }
+
   public setFavorites(events: RSLEvent[], favs: string[]) {
     for (let event of events) {
       for (let occurrence of event.occurrences) {
