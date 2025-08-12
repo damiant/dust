@@ -1,6 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, input, inject, output, signal } from '@angular/core';
 import { getCachedImage } from '../data/cache-store';
+import { environment } from 'src/environments/environment';
 
 export type ImageLocation = 'top' | 'bottom';
 
@@ -31,9 +32,12 @@ export class CachedImgComponent {
 
   constructor() {
     effect(async () => {
-      const src = this.src();
+      let src = this.src();
       if (src) {
         try {
+          if (environment.offline) {
+            src = src.replace('https://api.dust.events/static/','/dust/data/static/');
+          }
           this._src = await getCachedImage(src);
           this._change.markForCheck();
         } catch {
