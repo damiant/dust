@@ -13,6 +13,7 @@ export interface CalendarEvent {
   timeZone: string;
   lat?: number;
   lng?: number;
+  id: string;
 }
 @Injectable({
   providedIn: 'root',
