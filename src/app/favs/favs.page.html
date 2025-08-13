@@ -15,7 +15,22 @@
         <ion-button fill="clear" (click)="syncCalendar()"><ion-icon
             name="calendar-outline"></ion-icon></ion-button>
         }
-  
+        <ion-button aria-label="Open menu" (click)="openPopover()" id="menu-trigger">
+        <ion-icon color="primary" name="ellipsis-vertical"></ion-icon>
+      </ion-button>
+
+      <ion-popover trigger="menu-trigger" [isOpen]="isPopoverOpen" (didDismiss)="closePopover()" showBackdrop="true">
+        <ng-template>
+          <ion-content>
+            <ion-list lines="none">
+              <ion-item detail="false" aria-label="Clear Favorites" button (click)="clearFavs()">
+                <ion-icon name="trash-outline" slot="start"></ion-icon>
+                <ion-label>Clear Favorites</ion-label>
+              </ion-item>             
+            </ion-list>
+          </ion-content>
+        </ng-template>
+      </ion-popover>
         <app-category id="fav-categories" allTitle="All" (categoryChange)="filterChanged()" [(category)]="vm.filter"
           [categories]="vm.filters" slot="end"></app-category>
       </ion-buttons>

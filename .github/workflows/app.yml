@@ -35,7 +35,7 @@ jobs:
 
     - name: Build
       run: |
-        bun run build
+        bun run build-prod
 
     - name: Deploy preview.dust.events (Netlify website)
       uses: nwtgck/actions-netlify@v2.0

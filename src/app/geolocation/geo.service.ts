@@ -77,7 +77,7 @@ export class GeoService {
   }
 
   public async getPosition(): Promise<GpsCoord> {
-    if (!Capacitor.isNativePlatform()) {
+    if (!Capacitor.isNativePlatform() || environment.gps) {
       console.error(`On web we return the coord of center camp`);
       this.gpsPosition.set({ lng: -119.21121456711064, lat: 40.780501492435846, timeStamp: new Date().getTime() });
       return this.gpsPosition();
