@@ -350,6 +350,7 @@ export class HomePage implements OnInit {
   async addCalendar() {
     await this.dismiss();
     this.calendar.add({
+      id: `dust-${this.db.selectedDataset().id}`,
       calendar: this.db.selectedDataset().title,
       name: this.db.selectedDataset().title,
       location: ' ',
@@ -445,7 +446,8 @@ export class HomePage implements OnInit {
         }
         case 'already-updated': {
           this.ui.presentToast('You have the latest camps, events & art for this event', this.toastController);
-          this.updateService.checkVersion(this.alertController);
+          this.vm.downloading = false;
+          await this.updateService.checkVersion(this.alertController);
         }
       }
       this.vm.downloading = true;

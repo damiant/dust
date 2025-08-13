@@ -290,6 +290,7 @@ export class IntroPage {
       this._change.markForCheck();
       await this.go();
     } else {
+      this._change.markForCheck();
       // We are not auto starting with an event. We'll check versions (without await)
       this.updateService.checkVersion(this.alertController);
     }

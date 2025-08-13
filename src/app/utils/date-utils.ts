@@ -18,7 +18,7 @@ export function getTimeInTimeZone(epoch: number, timeZone: string): string {
 
 }
 
-function getTimeZoneOffsetHours(timeZone: string): number {
+export function getTimeZoneOffsetHours(timeZone: string): number {
     const date = new Date();
     const timeZoneString = new Intl.DateTimeFormat("en-US",  { timeZone, timeZoneName: "longOffset" }).formatToParts(date)
         .find(part => part.type === "timeZoneName")?.value;

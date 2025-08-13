@@ -13,6 +13,7 @@ export interface CalendarEvent {
   timeZone: string;
   lat?: number;
   lng?: number;
+  id: string;
 }
 @Injectable({
   providedIn: 'root',
@@ -24,12 +25,14 @@ export class CalendarService {
 
   add(event: CalendarEvent): void {
     this.events.push(event);
+    
   }
 
   async launch(): Promise<string> {
     // POST to api.dust.events/calendar
     // returns url and launch it
     try {
+      console.log(this.events);
       const status = await Network.getStatus();
       if (!status.connected) {
         this.ui.presentToast(`The calendar export feature requires internet access but you do not have a connection.`, this.toast, undefined, 5000);

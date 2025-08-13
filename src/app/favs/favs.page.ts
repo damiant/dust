@@ -33,6 +33,7 @@ import { star, starOutline, mapOutline, printOutline, calendarOutline, trashOutl
 import { CalendarService } from '../calendar.service';
 import { ToastController, AlertController } from '@ionic/angular';
 import { MessageComponent } from '../message/message.component';
+import { getTimeZoneOffsetHours } from '../utils/date-utils';
 
 
 enum Filter {
@@ -165,7 +166,7 @@ export class FavsPage implements OnInit {
   }
 
   async clearFavs() {
-        this.isPopoverOpen = false;
+    this.isPopoverOpen = false;
     const alert = await this.alertController.create({
       header: 'Clear Favorites',
       message: 'Are you sure you want to remove all favorites? This action cannot be undone.',
@@ -418,6 +419,7 @@ export class FavsPage implements OnInit {
     const list: string[] = [];
     this.vm.showCalendarMessage = false;
     this._change.detectChanges();
+    await this.addReminders();
     for (const event of events) {
       list.push(event.title);
       const location = event.location ? ` (${event.location})` : '';
@@ -428,9 +430,33 @@ export class FavsPage implements OnInit {
         start: event.occurrence_set[0].start_time,
         end: event.occurrence_set[0].end_time,
         location: event.camp + location,
-        timeZone: this.db.selectedDataset().timeZone,
+        timeZone: this.db.getTimeZone(),
+        id: `dust-${event.uid}`
       });
     }
     return await this.calendar.launch();
+  }
+
+  private async addReminders() {
+    const favs = await this.fav.getFavorites();
+    
+    for (let event of favs.privateEvents) {
+      const e = new Date(event.start);
+      const offset = getTimeZoneOffsetHours(this.db.getTimeZone());
+      e.setUTCMinutes(e.getUTCMinutes() + 60);
+      e.setUTCHours(e.getUTCHours() + offset);
+      const end = e.toISOString().replace('Z','');
+
+      this.calendar.add({
+        id: `dust-reminder-${event.id}`,
+        calendar: this.db.selectedDataset().title,
+        name: event.title,
+        description: event.notes,
+        start: event.start,
+        end: end,
+        location: event.address,
+        timeZone: this.db.getTimeZone(),
+      });
+    }
   }
 }

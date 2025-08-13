@@ -1,4 +1,7 @@
 ## Changes
+## 2.100
+- Fix for timezone when exporting to calendar
+- Calendar export now includes reminders
 
 ## 2.99
 - Fix for calendar export when offline
