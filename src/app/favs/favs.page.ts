@@ -165,7 +165,7 @@ export class FavsPage implements OnInit {
   }
 
   async clearFavs() {
-        this.isPopoverOpen = false;
+    this.isPopoverOpen = false;
     const alert = await this.alertController.create({
       header: 'Clear Favorites',
       message: 'Are you sure you want to remove all favorites? This action cannot be undone.',
@@ -418,6 +418,7 @@ export class FavsPage implements OnInit {
     const list: string[] = [];
     this.vm.showCalendarMessage = false;
     this._change.detectChanges();
+    await this.addReminders();
     for (const event of events) {
       list.push(event.title);
       const location = event.location ? ` (${event.location})` : '';
@@ -432,5 +433,20 @@ export class FavsPage implements OnInit {
       });
     }
     return await this.calendar.launch();
+  }
+
+  private async addReminders() {
+    const favs = await this.fav.getFavorites();
+    for (let event of favs.privateEvents) {
+      this.calendar.add({
+        calendar: this.db.selectedDataset().title,
+        name: event.title,
+        description: event.notes,
+        start: event.start,
+        end: event.start,
+        location: event.address,
+        timeZone: this.db.getTimeZone(),
+      });
+    }
   }
 }
