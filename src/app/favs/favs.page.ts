@@ -428,7 +428,7 @@ export class FavsPage implements OnInit {
         start: event.occurrence_set[0].start_time,
         end: event.occurrence_set[0].end_time,
         location: event.camp + location,
-        timeZone: this.db.selectedDataset().timeZone,
+        timeZone: this.db.getTimeZone(),
       });
     }
     return await this.calendar.launch();
