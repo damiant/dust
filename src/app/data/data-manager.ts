@@ -373,7 +373,9 @@ export class DataManager implements WorkerClass {
       if (camp.camp_type && camp.camp_type.trim() != '') {
         const list = camp.camp_type.split(',');
         for (const type of list) {
-          this.campTypes.add(titlePlural(type.trim()));
+          if (type !== 'undefined') {
+            this.campTypes.add(titlePlural(type.trim()));
+          }
         }
       }
       if (pin) {
@@ -1179,9 +1181,9 @@ export class DataManager implements WorkerClass {
     return result;
   }
 
-  private typeMatch(value: string | undefined, type: string | undefined): boolean {
-    if (!value) return false;
-    return titlePlural(value) === type;
+  private typeMatch(campTypes: string | undefined, type: string | undefined): boolean {
+    if (!campTypes) return false;
+    return `${campTypes?.toLowerCase()}`.includes(`${type?.toLowerCase()}`);
   }
 
   private artMatches(query: string, art: Art): MatchType {
