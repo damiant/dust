@@ -1,6 +1,7 @@
 ## Changes
 ## 2.101
 - Fix for camp types showing undefined
+- Fix camp type filtering
 
 ## 2.100
 - Fix for timezone when exporting to calendar

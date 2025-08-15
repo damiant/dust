@@ -1181,9 +1181,9 @@ export class DataManager implements WorkerClass {
     return result;
   }
 
-  private typeMatch(value: string | undefined, type: string | undefined): boolean {
-    if (!value) return false;
-    return titlePlural(value) === type;
+  private typeMatch(campTypes: string | undefined, type: string | undefined): boolean {
+    if (!campTypes) return false;
+    return `${campTypes?.toLowerCase()}`.includes(`${type?.toLowerCase()}`);
   }
 
   private artMatches(query: string, art: Art): MatchType {
