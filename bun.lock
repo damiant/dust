@@ -47,7 +47,7 @@
         "ionicons": "^7.4.0",
         "ngxtension": "5.1.0",
         "rxjs": "~7.8.2",
-        "three": "0.178.0",
+        "three": "0.179.1",
         "tslib": "^2.8.1",
       },
       "devDependencies": {
@@ -2064,7 +2064,7 @@
 
     "thingies": ["thingies@1.21.0", "", { "peerDependencies": { "tslib": "^2" } }, "sha512-hsqsJsFMsV+aD4s3CWKk85ep/3I9XzYV/IXaSouJMYIoDlgyi11cBhsqYe9/geRfB0YIikBQg6raRaM+nIMP9g=="],
 
-    "three": ["three@0.178.0", "", {}, "sha512-ybFIB0+x8mz0wnZgSGy2MO/WCO6xZhQSZnmfytSPyNpM0sBafGRVhdaj+erYh5U+RhQOAg/eXqw5uVDiM2BjhQ=="],
+    "three": ["three@0.179.1", "", {}, "sha512-5y/elSIQbrvKOISxpwXCR4sQqHtGiOI+MKLc3SsBdDXA2hz3Mdp3X59aUp8DyybMa34aeBwbFTpdoLJaUDEWSw=="],
 
     "through2": ["through2@4.0.2", "", { "dependencies": { "readable-stream": "3" } }, "sha512-iOqSav00cVxEEICeD7TjLB1sueEL+81Wpzp2bY17uZjZN0pWZPuo4suZ/61VujxmqSGFfgOcNuTZ85QJwNZQpw=="],
 

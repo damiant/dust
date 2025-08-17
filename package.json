@@ -8,7 +8,7 @@
     "start": "ng serve",
     "build-prod": "NG_BUILD_OPTIMIZE_CHUNKS=1 ng build --configuration=production  && bun scripts/copy-admin.ts",
     "build-offline-mango": "ng build --configuration=offline --base-href=/dust/",
-    "build-offline-part2": "bun scripts/copy-online.ts && cp -r /Users/damiantarnawsky/Code/dust-admin/burning-man/dist/* /Users/damiantarnawsky/Code/dust/www/browser/data/static/",    
+    "build-offline-part2": "bun scripts/copy-online.ts && cp -r /Users/damiantarnawsky/Code/dust-admin/burning-man/dist/* /Users/damiantarnawsky/Code/dust/www/browser/data/static/",
     "copy-offline": "rsync -avh www/browser/* /Volumes/stuff --progress",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
@@ -68,7 +68,7 @@
     "ionicons": "^7.4.0",
     "ngxtension": "5.1.0",
     "rxjs": "~7.8.2",
-    "three": "0.178.0",
+    "three": "0.179.1",
     "tslib": "^2.8.1"
   },
   "devDependencies": {
