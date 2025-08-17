@@ -27,7 +27,11 @@ export function toMapPoint(location: string | undefined, info?: MapInfo, pin?: P
     }
     return { street: '', clock: '' };
   }
+
   let l = location.toLowerCase();
+  if (l === 'airport') {
+    l = `4:45 8000', Open Playa`
+  }
   if (l.includes('ring road')) {
     // eg rod's ring road @ 7:45
     return convertRods(l, info);
