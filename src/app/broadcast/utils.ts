@@ -26,6 +26,26 @@ async function post(endpoint: string, data: any): Promise<void> {
     }
 }
 
+export function encryptedMV(artId: string): string {
+    const key = artId.replace('u-','');
+    return hashToFourDigitCode(key);
+}
+
+function hashToFourDigitCode(str: string) {
+  // Basic hash function
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash << 5) - hash + str.charCodeAt(i);
+    hash |= 0; // keep it a 32-bit integer
+  }
+
+  // Make it a positive number and map to 0–9999
+  const num = Math.abs(hash) % 10000;
+
+  // Zero-pad to 4 digits
+  return num.toString().padStart(4, '0');
+}
+
 export function liveBurnId(festivalId: string): string {
     if (festivalId === 'ttitd-2025') {
         return '113'; // Dataset id for BRC Mutant Vehicles
