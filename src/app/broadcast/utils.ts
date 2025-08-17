@@ -8,8 +8,8 @@ export function asInt(s: any): number | undefined {
     return parseInt(s, 10);
 }
 
-export async function broadcastPost(festivalId: string, art: Art, postion: Position): Promise<void> {
-    await post('live', { festivalId, lng: postion.coords.longitude, lat: postion.coords.latitude, id: art.uid });
+export async function broadcastPost(festivalId: string, art: Art, postion: Position, pin: string): Promise<void> {
+    await post('live', { festivalId, lng: postion.coords.longitude, lat: postion.coords.latitude, id: art.uid, pin });
 }
 
 async function post(endpoint: string, data: any): Promise<void> {

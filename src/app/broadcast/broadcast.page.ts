@@ -182,7 +182,7 @@ export class BroadcastPage implements OnInit {
       return;
     }
     try {
-      await broadcastPost(this.datasetId, this.art()!, position);
+      await broadcastPost(this.datasetId, this.art()!, position, this.pin());
       this.apiError.set(false);
       this.setMessage();
     } catch {
