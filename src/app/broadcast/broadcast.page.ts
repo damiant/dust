@@ -1,9 +1,10 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
   IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardContent,
-  IonButton, IonIcon, IonCardHeader, IonButtons, IonBackButton, IonFabButton, IonFab } from '@ionic/angular/standalone';
+  IonButton, IonIcon, IonCardHeader, IonButtons, IonBackButton, IonFabButton, IonFab
+} from '@ionic/angular/standalone';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import { CallbackID, Geolocation, Position } from '@capacitor/geolocation';
@@ -18,13 +19,14 @@ import { Art } from 'src/app/data/models';
 import { UiService } from 'src/app/ui/ui.service';
 import { DbService } from '../data/db.service';
 import { SettingsService } from '../data/settings.service';
+import { PinEntryComponent } from '../pin-entry/pin-entry.component';
 
 @Component({
   selector: 'app-broadcast',
   templateUrl: './broadcast.page.html',
   styleUrls: ['./broadcast.page.scss'],
   standalone: true,
-  imports: [IonFab, IonFabButton, IonBackButton, IonIcon,
+  imports: [IonFab, IonFabButton, IonBackButton, IonIcon, PinEntryComponent,
     IonButton, RouterModule, IonButtons, IonCardHeader, IonCardContent, IonCard,
     IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
 })
@@ -36,6 +38,7 @@ export class BroadcastPage implements OnInit {
   public location = false;
   public apiError = false;
   public awake = false;
+  public authenticated = false;
   public message = signal('');
 
   private datasetId = '';
@@ -46,6 +49,7 @@ export class BroadcastPage implements OnInit {
   private watchId: CallbackID | undefined;
   private position: Position | undefined;
   private db = inject(DbService);
+  private locationR = inject(Location);
   private connectionStatus: ConnectionStatus | undefined;
 
 
@@ -60,13 +64,12 @@ export class BroadcastPage implements OnInit {
     this.art = await this.db.findArt(id);
     this.datasetId = liveBurnId(this.settings.settings.datasetId);
 
-    
+
     this.setMessage();
     Network.addListener('networkStatusChange', status => {
       this.processNetwork(status);
     });
-    await delay(500);
-    this.start();
+
   }
 
   async start(): Promise<void> {
@@ -180,7 +183,7 @@ export class BroadcastPage implements OnInit {
       await broadcastPost(this.datasetId, this.art, position);
       this.apiError = false;
       this.setMessage();
-    } catch (err) {
+    } catch {
       this.wifi = false;
       this.apiError = true;
       this.setMessage();
@@ -208,6 +211,15 @@ export class BroadcastPage implements OnInit {
     this.running = false;
     this.setMessage();
     await this.keepAwake(false);
+  }
+
+  async closePin(correctPIN: boolean): Promise<void> {
+    if (correctPIN) {
+      await delay(500);
+      this.start();
+    } else {
+      this.locationR.back();
+    }
   }
 
 }
