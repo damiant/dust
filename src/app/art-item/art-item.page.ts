@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject, 
 
 import { FormsModule } from '@angular/forms';
 import { Art, Event, MapPoint } from '../data/models';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { DbService } from '../data/db.service';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { FavoritesService } from '../favs/favorites.service';
@@ -66,6 +66,7 @@ export class ArtItemPage implements OnInit {
   private fav = inject(FavoritesService);
   private _change = inject(ChangeDetectorRef);
   private toastController = inject(ToastController);
+  private router = inject(Router);
   art: Art | undefined;
   showMap = false;
   mapPoints: MapPoint[] = [];
@@ -76,6 +77,7 @@ export class ArtItemPage implements OnInit {
   mapSubtitle = '';
   backText = 'Art';
   hometown = '';
+  private imageTaps = 0;
   star = false;
   cachedAudioUrl = signal<string | undefined>(undefined);
   audioLoading = signal(false);
@@ -154,6 +156,18 @@ export class ArtItemPage implements OnInit {
     }
     if (!canCreate()) return;
     this.showMap = true;
+  }
+
+  
+  async tapImage() {
+    this.imageTaps++;
+    if (this.imageTaps > 2) {
+      this.imageTaps = 0;
+      if (this.art?.art_type == 'Mutant Vehicle') {
+        // Route to broadcast page
+        this.router.navigate(['/broadcast/' + this.art.uid + '+Art']);
+      }
+    }    
   }
 
   async toggleStar() {

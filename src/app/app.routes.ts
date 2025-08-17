@@ -21,6 +21,10 @@ export const routes: Routes = [
     path: 'art/:id',
     loadComponent: () => import('./art-item/art-item.page').then((m) => m.ArtItemPage),
   },
+    {
+    path: 'broadcast/:id',
+    loadComponent: () => import('./broadcast/broadcast.page').then((m) => m.BroadcastPage),
+  },
   {
     path: 'map/:mapType',
     loadComponent: () => import('./pin-map/pin-map.page').then((m) => m.PinMapPage),

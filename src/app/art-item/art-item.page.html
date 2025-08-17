@@ -101,7 +101,7 @@
       @for (image of art.images; track image) {
       <div class="center">
         @if (image.thumbnail_url) {
-        <app-cached-img [src]="image.thumbnail_url" [alt]="art.name" />
+        <app-cached-img (click)="tapImage()" [src]="image.thumbnail_url" [alt]="art.name" />
         }
       </div>
       }
