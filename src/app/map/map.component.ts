@@ -127,12 +127,15 @@ export class MapComponent implements OnInit, OnDestroy {
     return this._points;
   }
 
+  private matchesId(m: MapPoint, l: LiveLocation): boolean {
+    return (m.info?.id === `u-${l.id}`) || (m.info?.id === `${l.id}`);
+  }
   private async updateLive(locations: LiveLocation[]) {
     let doUpdate = false;
     const livePoints: LivePoint[] = [];
     for (const location of locations) {
       for (const [i, p] of this._points.entries()) {
-        if ((p.info) && `${p.info?.id}` === `u-${location.id}`) {
+        if (this.matchesId(p, location) && p.info) {
           const gpsCoord = { lat: location.lat, lng: location.lng };
           const isAtBurn = this.isAtBurn(p.info.title, gpsCoord);
           const isOldData = this.isOldData(location.timestamp);
@@ -141,7 +144,7 @@ export class MapComponent implements OnInit, OnDestroy {
             break;
           }
           if (!isAtBurn) {
-            console.warn(`Location of ${p.info.title} is not at the burn.`);
+            console.warn(`Location of ${p.info.title} (${JSON.stringify(gpsCoord)}) is not at the burn.`);
             break;
           }
           // Only update if they are with 20 miles from the burn
@@ -151,8 +154,9 @@ export class MapComponent implements OnInit, OnDestroy {
           p.y = pt.y;
           p.info.bgColor = 'live';
           doUpdate = true;
+          p.gps.lat = gpsCoord.lat;
+          p.gps.lng = gpsCoord.lng;
           livePoints.push({ idx: i, x: pt.x, y: pt.y });
-          console.log(`${p.info.title} is at ${p.gps.lat}, ${p.gps.lng}`);
           break;
         }
       }
@@ -182,7 +186,8 @@ export class MapComponent implements OnInit, OnDestroy {
     }
     const burn: GpsCoord = { lat: this.settings.settings.dataset.lat, lng: this.settings.settings.dataset?.long };
     const dist = distance(gps, burn);
-    if (dist < 20) {
+    const maxDist = environment.production ? 20 : 1000;
+    if (dist < maxDist) {
       return true;
     }
     console.warn(`${name} is ${formatDistanceNice(dist)} from the event`);
@@ -509,10 +514,12 @@ export class MapComponent implements OnInit, OnDestroy {
     let closestIdx = 0;
     let name = 'Closest point';
     let idx = 0;
+    let loggedError = false;
     for (let point of this.selectedPoint ? [this.selectedPoint] : this._points) {
       if (!point.gps || !point.gps.lat) {
-        if (!environment.production) {
-          console.error(`MapPoint is missing gps coordinate: ${JSON.stringify(point)}`);
+        if (!environment.production && !loggedError) {
+          console.log(`MapPoint is missing gps coordinate: ${JSON.stringify(point)}`);
+          loggedError = true;
         }
       }
       if (point.gps) {

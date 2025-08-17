@@ -1,4 +1,3 @@
-import { Position } from '@capacitor/geolocation';
 import { Art } from 'src/app/data/models';
 
 export function asInt(s: any): number | undefined {
@@ -8,8 +7,8 @@ export function asInt(s: any): number | undefined {
     return parseInt(s, 10);
 }
 
-export async function broadcastPost(festivalId: string, art: Art, postion: Position, pin: string): Promise<void> {
-    await post('live', { festivalId, lng: postion.coords.longitude, lat: postion.coords.latitude, id: art.uid, pin });
+export async function broadcastPost(festivalId: string, art: Art, lng: number, lat: number, pin: string): Promise<void> {
+    await post('live', { festivalId, lng, lat, id: art.uid, pin });
 }
 
 async function post(endpoint: string, data: any): Promise<void> {
@@ -46,6 +45,12 @@ function hashToFourDigitCode(str: string) {
   return num.toString().padStart(4, '0');
 }
 
+export function liveBurnDataset(festivalId: string): string {
+    if (festivalId === 'ttitd-2025') {
+        return 'brc-mutant-vehicles'; // Dataset id for BRC Mutant Vehicles
+    }
+    return `${festivalId}`;
+}
 export function liveBurnId(festivalId: string): string {
     if (festivalId === 'ttitd-2025') {
         return '113'; // Dataset id for BRC Mutant Vehicles

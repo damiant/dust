@@ -20,6 +20,7 @@ import { UiService } from 'src/app/ui/ui.service';
 import { DbService } from '../data/db.service';
 import { SettingsService } from '../data/settings.service';
 import { PinEntryComponent } from '../pin-entry/pin-entry.component';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-broadcast',
@@ -148,7 +149,7 @@ export class BroadcastPage implements OnInit {
   private processPosition(position: Position): void {
     console.log(`Processing position ${position}`);
     this.position = position;
-    this.broadcast(position)
+    this.broadcast(position);
     this.setMessage();
   }
 
@@ -182,7 +183,15 @@ export class BroadcastPage implements OnInit {
       return;
     }
     try {
-      await broadcastPost(this.datasetId, this.art()!, position, this.pin());
+
+      let lat = position.coords.latitude;
+      let lng = position.coords.longitude;
+      if (!Capacitor.isNativePlatform()) {
+        lat = 40.786958;
+        lng = -119.202994;
+      }
+
+      await broadcastPost(this.datasetId, this.art()!, lng, lat, this.pin());
       this.apiError.set(false);
       this.setMessage();
     } catch {

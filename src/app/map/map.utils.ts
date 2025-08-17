@@ -1,3 +1,4 @@
+import { environment } from 'src/environments/environment';
 import { MapInfo, MapPoint, Pin } from '../data/models';
 import { GpsCoord } from './geo.utils';
 
@@ -235,7 +236,9 @@ export function mapPointToPin(point: MapPoint, mapRadius: number): Pin | undefin
       } else if (point.street == 'none' || point.street == 'mobile') {
         return undefined;
       } else {
-        console.error('Invalid Point', point);
+        if (!environment.production) {
+          //console.error('Invalid Point', point);
+        }
         return undefined;
       }
     }

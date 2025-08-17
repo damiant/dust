@@ -27,14 +27,14 @@
               <ion-fab-button
                 (click)="checkLocation()"
                 [disabled]="!running()"
-                [color]="location() ? 'tertiary' : running() ? 'warning' : 'light'"
+                [color]="location() ? 'tertiary' : !running() ? 'warning' : 'light'"
               >
                 <ion-icon name="location-sharp"></ion-icon>
               </ion-fab-button>
               <ion-fab-button
                 (click)="checkNetwork()"
                 [disabled]="!running()"
-                [color]="wifi() ? 'tertiary' : running() ? 'warning' : 'light'"
+                [color]="wifi() ? 'tertiary' : !running() ? 'warning' : 'light'"
               >
                 <ion-icon name="wifi-sharp"></ion-icon>
               </ion-fab-button>

@@ -22,7 +22,7 @@ import { App } from '@capacitor/app';
 import { environment } from 'src/environments/environment';
 import { getCachedImage } from './cache-store';
 import { distance } from '../map/map.utils';
-import { liveBurnId } from '../broadcast/utils';
+import { liveBurnDataset } from '../broadcast/utils';
 
 export type DownloadResult = 'success' | 'error' | 'already-updated';
 
@@ -248,7 +248,7 @@ export class ApiService {
   }
 
   public async getLiveLocations(): Promise<LiveLocation[]> {
-    const ds = liveBurnId(this.settingsService.settings.datasetId);
+    const ds = liveBurnDataset(this.settingsService.settings.datasetId);
     const s = Date.now() / 30000; // Changes every 30 seconds to give Cloudflare a chance to cache
     const liveUrl = this.dbService.livePath(ds, Names.live) + `?${s}`;
     try {

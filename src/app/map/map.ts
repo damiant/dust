@@ -238,7 +238,6 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
     container.addEventListener('pointerup', pointerUp);
 
     result.pinSelected = (id: string) => {
-        console.log('pin select', id);
         for (let key of Object.keys(result.pinData)) {
             const mat: Material = result.pinData[key].background.material as Material;
             if (key !== id) {
