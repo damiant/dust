@@ -22,6 +22,7 @@ import { App } from '@capacitor/app';
 import { environment } from 'src/environments/environment';
 import { getCachedImage } from './cache-store';
 import { distance } from '../map/map.utils';
+import { liveBurnDataset } from '../broadcast/utils';
 
 export type DownloadResult = 'success' | 'error' | 'already-updated';
 
@@ -99,7 +100,7 @@ export class ApiService {
     if (!environment.production) {
       console.warn(`Using non-production: ${JSON.stringify(environment)}`);
     }
-    
+
     const result = await this.dbService.setDataset(datasetInfo);
     await this.reportWorkerLogs();
 
@@ -143,12 +144,12 @@ export class ApiService {
     const location: WebLocation = rLocation.status == 'fulfilled' ? rLocation.value : {};
     const festivals = rFestivals.status == 'fulfilled' ? rFestivals.value : [];
     const datasets = rDatasets.status == 'fulfilled' ? rDatasets.value : [];
-    const devMode = await this.settingsService.getInteger('developermode');    
+    const devMode = await this.settingsService.getInteger('developermode');
     return this.cleanNames([...festivals, ...datasets], location, args.filter, args.inactive, devMode === 1);
   }
 
   private cleanNames(datasets: Dataset[], location: WebLocation, filter: DatasetFilter, inactive?: boolean, devMode?: boolean): Dataset[] {
-    
+
     for (const dataset of datasets) {
       if (devMode && dataset.id == 'eforest-draft') {
         dataset.active = true;
@@ -247,7 +248,7 @@ export class ApiService {
   }
 
   public async getLiveLocations(): Promise<LiveLocation[]> {
-    const ds = this.settingsService.settings.datasetId;
+    const ds = liveBurnDataset(this.settingsService.settings.datasetId);
     const s = Date.now() / 30000; // Changes every 30 seconds to give Cloudflare a chance to cache
     const liveUrl = this.dbService.livePath(ds, Names.live) + `?${s}`;
     try {
@@ -277,7 +278,7 @@ export class ApiService {
     return (myRevision && myRevision > 0);
   }
 
-  private checkUndefined(v: any): any {    
+  private checkUndefined(v: any): any {
     if (`${JSON.stringify(v)}` === '[]') {
       return undefined;
     }
@@ -309,8 +310,8 @@ export class ApiService {
 
       console.log(`get revision live ${dataset}`);
       myRevision = this.checkUndefined(await this.dbService.get(dataset, Names.revision, { onlyRead: true, defaultValue: { revision: 0 } }));
-      if (!myRevision) {        
-        downloadSignal.set({ status: selected ? selected.title : ' ', firstDownload: true });      
+      if (!myRevision) {
+        downloadSignal.set({ status: selected ? selected.title : ' ', firstDownload: true });
       }
       nextRevision = this.checkUndefined(await this.dbService.get(dataset, Names.revision, {
         onlyFresh: true,
@@ -318,7 +319,7 @@ export class ApiService {
         defaultValue: { revision: 0 },
       }));
       console.log(`Next revision is ${JSON.stringify(nextRevision)} force is ${force}`);
-      
+
       console.log(`My revision is ${JSON.stringify(myRevision)}`);
 
       // Check the current revision

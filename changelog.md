@@ -1,4 +1,10 @@
 ## Changes
+## 2.102
+- Make GPS optional on Android
+- Memory leak fix for OpenGL / Map
+- Airport location
+- Mutant Vehicles on the map
+
 ## 2.101
 - Fix for camp types showing undefined
 - Fix camp type filtering

@@ -44,9 +44,6 @@ async function mapImage(map: MapModel, disposables: any[]): Promise<Mesh | Group
 
 type MapDisposable = BufferGeometry | Material | Material[];
 
-let renderer: WebGLRenderer;
-let camera: PerspectiveCamera;
-let controls: MapControls;
 let depth = 0;
 let mouseY = 0;
 let mouseX = 0;
@@ -79,6 +76,10 @@ function getCaptureBase64(el: HTMLElement) {
 }
 
 export async function init3D(container: HTMLElement, map: MapModel): Promise<MapResult> {
+    if (!canCreate()) {
+        throw new Error('Cannot create multiple 3D map instances simultaneously');
+    }
+    
     depth++;
     const result: MapResult = {
         rotateCompass: () => { },
@@ -104,11 +105,26 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
     const w = container.clientWidth;
     const h = container.clientHeight;
 
-    if (!renderer) {
-        renderer = new WebGLRenderer({ antialias: true });
-        renderer.setPixelRatio(window.devicePixelRatio);
-        renderer.setSize(w, h);
-    }
+    // Create local renderer instance instead of global
+    const renderer = new WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(w, h);
+
+    // Add WebGL context loss/restore event handlers
+    const canvas = renderer.domElement;
+    const handleContextLost = (event: Event) => {
+        event.preventDefault();
+        console.warn('WebGL context lost. Stopping animation loop.');
+        renderer.setAnimationLoop(null);
+    };
+    
+    const handleContextRestored = () => {
+        console.log('WebGL context restored. Resuming animation loop.');
+        renderer.setAnimationLoop(renderFn);
+    };
+    
+    canvas.addEventListener('webglcontextlost', handleContextLost, false);
+    canvas.addEventListener('webglcontextrestored', handleContextRestored, false);
 
     container.appendChild(renderer.domElement);
 
@@ -125,25 +141,21 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         }
     };
 
-    if (!camera) {
-        camera = new PerspectiveCamera(130, w / h, 1, 10000);
-    }
+    // Create local camera instance instead of global
+    const camera = new PerspectiveCamera(130, w / h, 1, 10000);
     camera.position.set(0, map.height / targetZoomLevel, 20);
 
-    // controls
-    if (!controls) {
-        controls = new MapControls(camera, renderer.domElement);
-
-        //controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
-        controls.enableDamping = false; // an animation loop is required when either damping or auto-rotation are enabled
-        controls.dampingFactor = 0.05;
-        controls.screenSpacePanning = false;
-        controls.zoomToCursor = true;
-        controls.enableRotate = false;
-        controls.minDistance = 50;
-        controls.maxDistance = map.height;
-        controls.maxPolarAngle = Math.PI / 2;
-    }
+    // Create local controls instance instead of global
+    const controls = new MapControls(camera, renderer.domElement);
+    //controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
+    controls.enableDamping = false; // an animation loop is required when either damping or auto-rotation are enabled
+    controls.dampingFactor = 0.05;
+    controls.screenSpacePanning = false;
+    controls.zoomToCursor = true;
+    controls.enableRotate = false;
+    controls.minDistance = 50;
+    controls.maxDistance = map.height;
+    controls.maxPolarAngle = Math.PI / 2;
 
     controls.target.set(0, 0, 0);
 
@@ -226,7 +238,6 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
     container.addEventListener('pointerup', pointerUp);
 
     result.pinSelected = (id: string) => {
-        console.log('pin select', id);
         for (let key of Object.keys(result.pinData)) {
             const mat: Material = result.pinData[key].background.material as Material;
             if (key !== id) {
@@ -291,32 +302,54 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
     renderer.setAnimationLoop(renderFn);
     result.dispose = () => {
         depth--;
+        
+        // Stop the animation loop first
+        renderer.setAnimationLoop(null);
+        
+        // Stop and dispose of all animation mixers
+        for (const mixer of mixers) {
+            mixer.stopAllAction();
+            mixer.uncacheRoot(mixer.getRoot());
+        }
+        mixers.length = 0;
+        
+        // Dispose of all tracked disposables
         for (let d of disposables) {
             if (Array.isArray(d)) {
                 for (let d2 of d) {
                     d2.dispose();
-
                 }
             } else {
                 d.dispose();
             }
         }
         disposables = [];
+        
+        // Clear the scene
         scene.clear();
-        //controls.dispose();
-
-        // ambientLight.dispose();
-        // dirLight2.dispose();
+        
+        // Dispose of Three.js objects
+        controls.dispose();
         dirLight1.dispose();
+        
+        // Remove event listeners
         window.removeEventListener('resize', windowResize);
         container.removeEventListener('pointermove', pointerMove);
         container.removeEventListener('pointerdown', pointerDown);
         container.removeEventListener('pointerup', pointerUp);
         container.removeEventListener('click', containerClick);
+        canvas.removeEventListener('webglcontextlost', handleContextLost);
+        canvas.removeEventListener('webglcontextrestored', handleContextRestored);
+        
+        // Remove the canvas from DOM
+        if (renderer.domElement.parentNode) {
+            renderer.domElement.parentNode.removeChild(renderer.domElement);
+        }
+        
+        // Dispose of the renderer
+        renderer.dispose();
+        
         console.log('after dispose', renderer.info);
-        //renderer.renderLists.dispose();
-        //renderer.dispose();
-        //dom.remove();
 
         try {
             console.log((performance as any).memory.usedJSHeapSize);

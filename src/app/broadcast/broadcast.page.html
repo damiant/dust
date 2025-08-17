@@ -1,0 +1,69 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Broadcast Location</ion-title>
+    <ion-buttons slot="end"> </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <app-pin-entry
+    message="Enter your mutant vehicle PIN"
+    [encrypted]="false"
+    [correctPin]="pin()"
+    (dismissed)="closePin($event)"
+    [show]="!authenticated()"
+  ></app-pin-entry>
+  <div class="pad-below grid1">
+    <div class="grid-item">
+      <ion-card>
+        <ion-card-header>
+          <div class="pad"></div>
+                    @if(running() || true) {
+          <ion-fab horizontal="center">
+            <ion-buttons>
+              <ion-fab-button
+                (click)="checkLocation()"
+                [disabled]="!running()"
+                [color]="location() ? 'tertiary' : !running() ? 'warning' : 'light'"
+              >
+                <ion-icon name="location-sharp"></ion-icon>
+              </ion-fab-button>
+              <ion-fab-button
+                (click)="checkNetwork()"
+                [disabled]="!running()"
+                [color]="wifi() ? 'tertiary' : !running() ? 'warning' : 'light'"
+              >
+                <ion-icon name="wifi-sharp"></ion-icon>
+              </ion-fab-button>
+
+              <ion-fab-button
+                (click)="checkAwake()"
+                [disabled]="!running()"
+                [color]="awake() ? 'tertiary' : running() ? 'warning' : 'light'"
+              >
+                <ion-icon name="cafe-sharp"></ion-icon>
+              </ion-fab-button>
+            </ion-buttons>
+          </ion-fab>
+          }
+          <h2>{{art()?.name}}</h2>
+        </ion-card-header>
+        <ion-card-content>
+          <div class="message">{{message()}}</div>
+          <div style="text-align: center; padding-top: 0.5rem" class="dim">
+            @if (processing()) {
+            <ion-button shape="round" size="large" color="light">Connecting</ion-button>
+            } @else { @if (!running()) {
+            <ion-button (click)="start()" shape="round" size="large" color="primary">Start</ion-button>
+            } @else {
+            <ion-button (click)="stop()" shape="round" size="large" color="primary">Stop</ion-button>
+            } }
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+</ion-content>

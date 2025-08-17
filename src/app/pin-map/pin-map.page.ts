@@ -1,5 +1,7 @@
-import { Component, Signal, WritableSignal, computed, signal, input, inject, ViewChild, 
-  effect, viewChild, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component, Signal, WritableSignal, computed, signal, input, inject, ViewChild,
+  effect, viewChild, ChangeDetectorRef, ChangeDetectionStrategy
+} from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MapComponent } from '../map/map.component';
@@ -31,25 +33,25 @@ import { SettingsService } from '../data/settings.service';
 
 
 @Component({
-    selector: 'app-pin-map',
-    templateUrl: './pin-map.page.html',
-    styleUrls: ['./pin-map.page.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [IonLoading, IonButton,
-        CommonModule,
-        FormsModule,
-        MapComponent,
-        IonContent,
-        IonHeader,
-        IonItem,
-        IonToolbar,
-        IonTitle,
-        IonButtons,
-        IonBackButton,
-        IonText,
-        IonIcon,
-        SearchComponent
-    ]
+  selector: 'app-pin-map',
+  templateUrl: './pin-map.page.html',
+  styleUrls: ['./pin-map.page.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [IonLoading, IonButton,
+    CommonModule,
+    FormsModule,
+    MapComponent,
+    IonContent,
+    IonHeader,
+    IonItem,
+    IonToolbar,
+    IonTitle,
+    IonButtons,
+    IonBackButton,
+    IonText,
+    IonIcon,
+    SearchComponent
+  ]
 })
 export class PinMapPage {
   private db = inject(DbService);
@@ -155,7 +157,7 @@ export class PinMapPage {
     this.title.set(pinType);
     this.applyMapType(mapType, mapSet);
     if (mapSet.points.length > 0) return mapSet;
-    const ms = await this.db.getPins(pinType);    
+    const ms = await this.db.getPins(pinType);
     this.applyMapType(mapType, ms);
     if (mapType == MapType.Restrooms) {
       this.exportForBM(ms);
@@ -374,7 +376,7 @@ export class PinMapPage {
   private async convertToPoint(art: Art): Promise<MapPoint | undefined> {
     let point = toMapPoint(art.location_string!, undefined, art.pin);
     if (point.street == 'unplaced') return undefined;
-    if (!art.location && !art.pin?.x) {
+    if (!art.location && !art.pin?.x && art.art_type !== 'Mutant Vehicle') {
       console.error(`Bad art found`, art);
     }
     if (art.location?.gps_latitude && art.location?.gps_longitude) {
@@ -393,7 +395,7 @@ export class PinMapPage {
     return point;
   }
 
-    private async convertToPt(title: string, moreInfo: string, label: string, id: string, location_string: string, imageUrl: string, pin: Pin | undefined): Promise<MapPoint | undefined> {
+  private async convertToPt(title: string, moreInfo: string, label: string, id: string, location_string: string, imageUrl: string, pin: Pin | undefined): Promise<MapPoint | undefined> {
     let point = toMapPoint(location_string, undefined, pin);
     if (point.street == 'unplaced') return undefined;
     point.info = {

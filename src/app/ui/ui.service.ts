@@ -1,7 +1,7 @@
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Injectable, signal, inject } from '@angular/core';
 import { randomInt } from '../utils/utils';
-import { IonContent, NavController, ToastController } from '@ionic/angular/standalone';
+import { AlertController, IonContent, NavController, ToastController } from '@ionic/angular/standalone';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
 import { NavigationBar } from '@webnativellc/capacitor-navigation-bar';
@@ -149,4 +149,15 @@ export class UiService {
   public darkMode(): boolean {
     return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
   }
+
+  public async presentAlert(alert: AlertController, message: string, title?: string): Promise<void> {
+    const a = await alert.create({
+        header: title ?? 'Message',
+        message,
+        buttons: ['OK'],
+    });
+
+    await a.present();
+    await a.onDidDismiss();
+}
 }

@@ -1,0 +1,30 @@
+.message {
+    min-height: 6rem;   
+}
+
+.pad {
+    padding: 2rem;
+}
+
+.img {
+    min-height: 14rem;
+}
+
+ion-card-title {
+    text-align: center;
+    font-size: var(--fs2);
+}
+
+ion-card-content {
+    font-size: var(--fs3);
+    text-align: center;
+}
+
+h2 {
+    text-align: center;
+}
+
+ion-fab-button {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}

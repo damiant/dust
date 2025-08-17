@@ -1,3 +1,4 @@
+import { environment } from 'src/environments/environment';
 import { MapInfo, MapPoint, Pin } from '../data/models';
 import { GpsCoord } from './geo.utils';
 
@@ -26,7 +27,11 @@ export function toMapPoint(location: string | undefined, info?: MapInfo, pin?: P
     }
     return { street: '', clock: '' };
   }
+
   let l = location.toLowerCase();
+  if (l === 'airport') {
+    l = `4:45 8000', Open Playa`
+  }
   if (l.includes('ring road')) {
     // eg rod's ring road @ 7:45
     return convertRods(l, info);
@@ -235,7 +240,9 @@ export function mapPointToPin(point: MapPoint, mapRadius: number): Pin | undefin
       } else if (point.street == 'none' || point.street == 'mobile') {
         return undefined;
       } else {
-        console.error('Invalid Point', point);
+        if (!environment.production) {
+          //console.error('Invalid Point', point);
+        }
         return undefined;
       }
     }
