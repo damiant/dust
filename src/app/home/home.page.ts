@@ -47,6 +47,7 @@ import {
   logInOutline,
   openOutline,
   saveOutline,
+  mapOutline,
 } from 'ionicons/icons';
 import { Animation, StatusBar } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
@@ -189,6 +190,7 @@ export class HomePage implements OnInit {
       logInOutline,
       cloudDownloadOutline,
       closeSharp,
+      mapOutline,
       notificationsOutline,
       notificationsOffOutline,
       ellipsisVerticalSharp,
@@ -233,12 +235,12 @@ export class HomePage implements OnInit {
     this.favs.getFavorites().then(favs => {
       this.vm.hasFriends = favs.friends.length > 0;
     });
-    
+
     this.vm.groups = await this.linkService.getGroupedLinks();
     this.vm.imageUrl = imageUrl;
     this.vm.hasRestrooms = this.hasValue(summary?.pinTypes, 'Restrooms');
-    this.vm.hasMedical = this.hasValue(summary?.pinTypes, 'Medical');    
-    this.vm.hasIce = this.hasValue(summary?.pinTypes, 'Ice');    
+    this.vm.hasMedical = this.hasValue(summary?.pinTypes, 'Medical');
+    this.vm.hasIce = this.hasValue(summary?.pinTypes, 'Ice');
     this.vm.mapPin = this.getMapPin();
     this.vm.longEvents = this.settings.settings.longEvents;
     this.vm.eventIsHappening = !this.db.eventHasntBegun() && !this.db.isHistorical();
@@ -345,6 +347,24 @@ export class HomePage implements OnInit {
       url: `https://${this.db.selectedDataset().id}.dust.events/home/`,
       dialogTitle: `Share ${this.db.selectedDataset().title} with friends`,
     });
+  }
+
+  async enableLiveMap() {
+    await this.dismiss();
+    if (!this.db.featuresHidden().includes('livemap')) {
+      this.ui.presentToast('The Live Mutant Vehicle Map is already enabled', this.toastController);
+      return;
+    }
+    const features = this.db.featuresHidden();
+    const update = features.filter(f => f !== 'livemap');
+    this.db.featuresHidden.set(update);
+    const status = await Network.getStatus();
+    if (status.connectionType === 'none') {
+      this.ui.presentToast('The Live Mutant Vehicle Map feature requires a network connection. Maybe turn off airplane mode?', this.toastController);
+      return;
+    }
+
+    this.ui.presentToast(`Live Mutant Vehicle Map enabled. This feature is experimental for 2025`, this.toastController, undefined, 6000);
   }
 
   async addCalendar() {
