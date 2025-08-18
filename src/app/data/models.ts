@@ -440,7 +440,7 @@ export interface RSLOccurrence {
   startTime: string; // Local format Date
   endTime: string; // Local format Date
   old?: boolean; // Calculated: has the event passed
-  star?: boolean; // Calculated  
+  star?: boolean; // Calculated
   who: string;
 }
 
