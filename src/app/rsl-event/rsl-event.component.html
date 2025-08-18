@@ -10,11 +10,20 @@
 
         @if (event().wa) {
           <ion-icon
-            color="event().wa"
+            color="medium"
             (click)="wheelchair()"
             class="wheelchair"
             size="small"
             [src]="'assets/icon/wheelchair.svg'"
+          ></ion-icon>
+        }
+        @if (event().lm) {
+          <ion-icon
+            name="musical-notes"
+            color="medium"
+            (click)="liveMusic($event)"
+            class="wheelchair"
+            size="small"
           ></ion-icon>
         }
       </ion-card-title>
@@ -45,17 +54,7 @@
       @for (occurrence of event().occurrences; track occurrence.id) {
         <div (click)="toggleStar(occurrence)">
           <ion-text [class.old]="occurrence.old" class="one-line">
-            <span class="time">
-              @if (occurrence.lm) {
-                <ion-icon
-                  name="musical-notes"
-                  [color]="event().wa ? 'primary' : 'medium'"
-                  (click)="liveMusic($event)"
-                  class="wheelchair"
-                  size="small"
-                ></ion-icon>
-              }
-              {{ occurrence.timeRange.length > 10 ? occurrence.time : occurrence.timeRange }}</span
+            <span class="time"> {{ occurrence.timeRange.length > 10 ? occurrence.time : occurrence.timeRange }}</span
             >{{ occurrence.who }}
 
             <ion-icon class="star" color="primary" [hidden]="!occurrence.star" name="star"></ion-icon>

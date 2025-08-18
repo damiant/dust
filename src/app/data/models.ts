@@ -391,6 +391,7 @@ export interface RSLEvent {
   gpsCoords?: GpsCoord;
   pin?: Pin; // Added by dust
   wa: boolean; // Wheelchair accessible
+  lm?: boolean; // Live music
   waNotes: string;
   distance: number;
   distanceInfo: string;
@@ -439,8 +440,7 @@ export interface RSLOccurrence {
   startTime: string; // Local format Date
   endTime: string; // Local format Date
   old?: boolean; // Calculated: has the event passed
-  star?: boolean; // Calculated
-  lm?: boolean; // Live Music
+  star?: boolean; // Calculated  
   who: string;
 }
 
