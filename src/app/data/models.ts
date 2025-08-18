@@ -440,6 +440,7 @@ export interface RSLOccurrence {
   endTime: string; // Local format Date
   old?: boolean; // Calculated: has the event passed
   star?: boolean; // Calculated
+  lm?: boolean; // Live Music
   who: string;
 }
 

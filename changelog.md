@@ -1,4 +1,7 @@
 ## Changes
+## 2.103
+- Add Live Music and Wheelchair Accessible icons for Rock Star Librarian events
+
 ## 2.102
 - Make GPS optional on Android
 - Memory leak fix for OpenGL / Map
