@@ -391,6 +391,8 @@ export interface RSLEvent {
   gpsCoords?: GpsCoord;
   pin?: Pin; // Added by dust
   wa: boolean; // Wheelchair accessible
+  lm?: boolean; // Live music
+  rr?: boolean; // Rock Star Librarian Recommended
   waNotes: string;
   distance: number;
   distanceInfo: string;

@@ -14,11 +14,6 @@
 - 🔴 Important: Clean up favorites as we may archive a particular year
 - 🔴 Schedule send messages (eg for tickets available)
 
-## Volunteeripate
-- 🔴 Connect to get Tickets and Volunteer shifts
-- 🔴 Sync with Volunteeripate to update UI (shift become reminders, ticket is QR Code)
-- 🔴 POST api with API_KEY to send message for lost child alert
-
 ## Notifications
 - 🔴 Background check messages on open (if after 1 hour). If new messages show badge
 - 🔴 Clear message badge on opening messages page
@@ -33,34 +28,19 @@
 - 🔴 Show history of previously viewed items in the search all area
 - 🟠 Say "Check In" which will store the event or camp in history
 
-## Calendar Fixes
-- 🔴 Possibly duplicating calendar entries on Android
-- 🔴 Switch to using the Capacitor plugin  https://ebarooni.github.io/capacitor-calendar/
-- 🔴 Sync calendar does not delete events you have removed from favorites
-
 ## Bugs
-- 🔴💚 Search - if exact the show match - if fuzzy then do not show
 - 🔴 If you closed app on events and were scrolled to a point then see if you can scroll back there
 - 🔴 Verify filtered events dont save the filtered version
 - 🔴 Verify if there are no events that it doesnt try to download them
-- 🔴💚 If powered then give better GPS accuracy and update the map with centering
 - 🔥 Test when firefox is the default browser on Android
-- 🔥 If offline and unable to download an event then show message 'Unable to download data for [event]'
 - 🔥 Unresponsive after a certain amount of use???
 - 🔥 Nearby apparently did not work for some - even when location enabled
-- 🔵 Add changelog to whatchanged text
-- 🔴 Dark side of the mug has a 27 hour event
-- 🟠 All day events for Burning Man are entered as 2 x12 hour. Need to clean these up
-- 🔵 If you favorite an event and return to the event list it is not starred (maybe for recurring)
 - 🔴💚 Add a timeout for the "getting location". Set to 10 seconds
-- 🔵 iOS: The filter on the home page for "regionals" etc cannot be dismissed by clicking elsewhere (works on Android)
 - 🔵 Images are in `webp` but you when you use the share plugin these image types dont appear (at least on iOS). Maybe convert to png?
 - 🔵 Dark mode tooltips on the map need a visible border
 - 🔵 Search keyboard hint should be "search" instead of "go"
 
 ## Map
-- 🔥🩷💚 Bigger icon for your current location
-- 🔴 Map should have toggles for art, restrooms, camps, infrastructure
 - 🔴 Share a location via AirDrop
 - 🟠 Show full camp names as you zoom into the map
 - 🔵 Show a message when map is shown for the first time "Use 2 fingers or double tap to zoom into the map"
@@ -75,9 +55,6 @@
 - 🟠🩷 Whats near me for favorites (near me on fav page)
 
 ## Friends
-- 🔴 Add friend by camp name
-- 🔴 Sort friends by location (maybe distance)
-- 🔴 Add friends should be faster - camp name requested
 - 🟠 Share events others are interested in (airdrop maybe)
 - 🟠 Share/Collaborate with friends on your favorites list
 - 🔵 Show QR Code for profile
@@ -94,8 +71,6 @@
 
 ## Events
 - 🔴🩷 Ending soon tag on events with < 25% time left
-- 🟠 Need to know if an event repeats (ie not as important)
-- 🟠 Option to confirm/deny an event for those with connectivity
 - 🟠 Ability to search for events between 2 times (eg 2 to 4pm)
 - 🟠 Option to "Suggest a change" to an event - allows temporary change that can be approved by camp lead
 - 🔴 Option to show reminder or not on events (some events are important and some are not)
@@ -131,13 +106,10 @@
 - 🟠 Allow camp leads to interact with dust / event editing etc
 
 ## Art
-- 🔵 Art tour audio
 - 🔵 Next / Previous buttons for art like events
 
 ## Miscellaneous
 - 🔵 Feature to highlight downloading an update in the week before the event if it was updated more than a week ago
-- 🟠 Option to pre-download all content (images etc)
-- 🔴 Like button instead of favorites?
 - 🟠 Document what camp leads can do to add other camp leads and document the process
 - 🟠 Document ways to disconnect and not use your phone
 
@@ -173,7 +145,3 @@
 ## Lock Screen Image
 - 🟠 Wallpaper background generator
 - 🔵 Create lock screen image: use name, location, email, camp, emergency name, emergency phone. Save to photos
-
-## Info
-- Audio Guide https://soundcloud.com/burningman/sets/2023-art-audio-guide
-- PWA to Microsoft store: https://www.pwabuilder.com/

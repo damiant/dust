@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output, inject, computed } from '@angular/core';
 import {
   IonCard,
   IonCardContent,
@@ -13,7 +13,7 @@ import { RSLEvent, RSLOccurrence } from '../data/models';
 import { CommonModule } from '@angular/common';
 import { FavoritesService } from '../favs/favorites.service';
 import { addIcons } from 'ionicons';
-import { car, star, starOutline } from 'ionicons/icons';
+import { car, musicalNotes, star, starOutline } from 'ionicons/icons';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 
 export interface ArtCarEvent {
@@ -22,21 +22,21 @@ export interface ArtCarEvent {
 }
 
 @Component({
-    selector: 'app-rsl-event',
-    templateUrl: './rsl-event.component.html',
-    styleUrls: ['./rsl-event.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-        CommonModule,
-        IonCard,
-        IonCardHeader,
-        IonCardTitle,
-        IonCardSubtitle,
-        IonCardContent,
-        IonIcon,
-        IonText,
-        CachedImgComponent,
-    ]
+  selector: 'app-rsl-event',
+  templateUrl: './rsl-event.component.html',
+  styleUrls: ['./rsl-event.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CommonModule,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardSubtitle,
+    IonCardContent,
+    IonIcon,
+    IonText,
+    CachedImgComponent,
+  ]
 })
 export class RslEventComponent {
   private fav = inject(FavoritesService);
@@ -44,9 +44,16 @@ export class RslEventComponent {
   event = input.required<RSLEvent>();
   mapClick = output<RSLEvent>();
   artCarClick = output<ArtCarEvent>();
+  location = computed(() => {
+    const event = this.event();
+    if (event.location && event.location !== 'On The Playa') {
+      return `- ${event.location}`;
+    }
+    return '';
+  });
 
   constructor() {
-    addIcons({ car, star, starOutline });
+    addIcons({ car, star, starOutline, musicalNotes });
   }
 
   public map(event: RSLEvent) {
@@ -75,9 +82,19 @@ export class RslEventComponent {
     await toast.present();
   }
 
+  public liveMusic(e: any) {
+    e.stopPropagation();
+    this.presentToast('This is live music.', 'top');
+  }
+
+  public rslr(e: any) {
+    e.stopPropagation();
+    this.presentToast('Rock Star Librarian Recommended.', 'top');
+  }
+
   public wheelchair() {
     if (this.event().wa) {
-      this.presentToast('This camp is wheelchair accessible. ' + this.event().waNotes, 'top');
+      this.presentToast('This camp is wheelchair accessible. ' + (this.event().waNotes ?? ''), 'top');
     } else {
       if (this.event().waNotes) {
         this.presentToast(this.event().waNotes, 'top');

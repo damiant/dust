@@ -40,6 +40,7 @@ export class BroadcastPage implements OnInit {
   public apiError = signal(false);
   public awake = signal(false);
   public authenticated = signal(false);
+  public busy = signal(true);
   public message = signal('');
   public pin = signal('0000');
 
@@ -65,8 +66,15 @@ export class BroadcastPage implements OnInit {
     const id = tmp[0];
     this.art.set(await this.db.findArt(id));
     this.pin.set(encryptedMV(this.art()!.uid));
+    const existing = await this.settings.get(`mv-pin-${this.art()?.uid}`);
+    if (existing == this.pin()) {
+      this.authenticated.set(true);
+      setTimeout(() => {
+        this.start();
+      }, 500);
+    }
     this.datasetId = liveBurnId(this.settings.settings.datasetId);
-
+    this.busy.set(false);
 
     this.setMessage();
     Network.addListener('networkStatusChange', status => {
@@ -227,6 +235,7 @@ export class BroadcastPage implements OnInit {
   async closePin(correctPIN: boolean): Promise<void> {
     if (correctPIN) {
       this.authenticated.set(true);
+      this.settings.set(`mv-pin-${this.art()?.uid}`, this.pin());
       await delay(500);
       this.start();
     } else {
