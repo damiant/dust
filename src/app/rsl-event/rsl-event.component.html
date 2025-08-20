@@ -42,8 +42,35 @@
     } @else {
       <ion-card-title (click)="carClick($event)"
         ><ion-icon style="font-size: 26px; margin-bottom: -8px" color="primary" name="car"></ion-icon>
-        {{ event().artCar }}</ion-card-title
-      >
+        {{ event().artCar }}
+        @if (event().rr) {
+          <ion-icon
+            color="medium"
+            (click)="rslr($event)"
+            class="wheelchair"
+            size="small"
+            [src]="'assets/icon/rsl-icon.svg'"
+          ></ion-icon>
+        }
+        @if (event().wa) {
+          <ion-icon
+            color="medium"
+            (click)="wheelchair()"
+            class="wheelchair"
+            size="small"
+            [src]="'assets/icon/wheelchair.svg'"
+          ></ion-icon>
+        }
+        @if (event().lm) {
+          <ion-icon
+            name="musical-notes"
+            color="medium"
+            (click)="liveMusic($event)"
+            class="wheelchair"
+            size="small"
+          ></ion-icon>
+        }
+      </ion-card-title>
       <ion-card-subtitle>
         {{ event().title }}<span> {{ location() }}</span></ion-card-subtitle
       >
