@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output, inject, computed } from '@angular/core';
 import {
   IonCard,
   IonCardContent,
@@ -44,6 +44,13 @@ export class RslEventComponent {
   event = input.required<RSLEvent>();
   mapClick = output<RSLEvent>();
   artCarClick = output<ArtCarEvent>();
+  location = computed(() => {
+    const event = this.event();
+    if (event.location && event.location !== 'On The Playa') {
+      return `- ${event.location}`;
+    }
+    return '';
+  });
 
   constructor() {
     addIcons({ car, star, starOutline, musicalNotes });
@@ -78,6 +85,11 @@ export class RslEventComponent {
   public liveMusic(e: any) {
     e.stopPropagation();
     this.presentToast('This is live music.', 'top');
+  }
+
+  public rslr(e: any) {
+    e.stopPropagation();
+    this.presentToast('Rock Star Librarian Recommended.', 'top');
   }
 
   public wheelchair() {

@@ -8,6 +8,15 @@
       <ion-card-title (click)="map(event())"
         >{{ event().camp }}
 
+        @if (event().rr) {
+          <ion-icon
+            color="medium"
+            (click)="rslr($event)"
+            class="wheelchair"
+            size="small"
+            [src]="'assets/icon/rsl-icon.svg'"
+          ></ion-icon>
+        }
         @if (event().wa) {
           <ion-icon
             color="medium"
@@ -36,7 +45,7 @@
         {{ event().artCar }}</ion-card-title
       >
       <ion-card-subtitle>
-        <span>{{ event().title }}</span></ion-card-subtitle
+        {{ event().title }}<span> {{ location() }}</span></ion-card-subtitle
       >
     }
     <ng-template #artCar>
