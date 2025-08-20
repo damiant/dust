@@ -14,7 +14,7 @@
     [encrypted]="false"
     [correctPin]="pin()"
     (dismissed)="closePin($event)"
-    [show]="!authenticated()"
+    [show]="!authenticated() && !busy()"
   ></app-pin-entry>
   <div class="pad-below grid1">
     <div class="grid-item">
