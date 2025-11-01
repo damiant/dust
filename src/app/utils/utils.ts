@@ -91,6 +91,16 @@ export function titlePlural(s: string): string {
   return s;
 }
 
+/**
+ * Normalizes a string by removing diacritics (accents) from characters.
+ * For example: "crêpe" becomes "crepe", "RËIA" becomes "REIA"
+ * This is useful for search functionality to match strings regardless of accents.
+ */
+export function removeDiacritics(str: string): string {
+  if (!str) return str;
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
 export function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(() => resolve(), ms));
 }
