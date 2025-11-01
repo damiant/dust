@@ -106,11 +106,7 @@ export class PinMapPage {
   }
 
   async ionViewWillEnter() {
-    const mapSet = await this.mapFor(this.mapType());
-    this.points = mapSet.points;
-    this.title.set(mapSet.title);
-    this.description = mapSet.description;
-    this._change.detectChanges();
+    await this.refreshMap();
   }
 
   private async refreshMap() {
