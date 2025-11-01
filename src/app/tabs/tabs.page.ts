@@ -20,6 +20,7 @@ import { ScreenOrientation } from '@capacitor/screen-orientation';
 import { FavoritesService } from '../favs/favorites.service';
 import { TextZoom } from '@capacitor/text-zoom';
 import { BurnPlannerService } from '../data/burn-planner.service';
+import { GeoService } from '../geolocation/geo.service';
 
 @Component({
   selector: 'app-tabs',
@@ -37,6 +38,7 @@ export class TabsPage implements OnInit {
   private settings = inject(SettingsService);
   private burnPlanner = inject(BurnPlannerService);
   private router = inject(Router);
+  private geo = inject(GeoService);
   ready = false;
   currentTab: string | undefined;
   private activeTab?: HTMLElement;
@@ -94,6 +96,7 @@ export class TabsPage implements OnInit {
         await this.db.populate(this.settings.settings.datasetId, timeZone);
       }
       this.ui.setStatusBarBasedOnTheme();
+      this.geo.resetPosition();
       this.db.resume.set(new Date().toISOString());
     });
 

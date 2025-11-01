@@ -139,4 +139,8 @@ export class GeoService {
   public async gpsToPoint(coord: GpsCoord): Promise<Point> {
     return await this.db.gpsToPoint(coord);
   }
+
+  public resetPosition(): void {
+    this.lastGpsUpdate = noDate();
+  }
 }
