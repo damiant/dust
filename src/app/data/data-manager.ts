@@ -828,6 +828,21 @@ export class DataManager implements WorkerClass {
     return query;
   }
 
+  /**
+   * Custom getFn for Fuse.js that normalizes string values by removing diacritics.
+   * This allows fuzzy search to match strings regardless of accents.
+   */
+  private normalizingGetFn(obj: any, path: string | string[]): any {
+    const value = Fuse.config.getFn(obj, path);
+    if (typeof value === 'string') {
+      return removeDiacritics(value);
+    }
+    if (Array.isArray(value)) {
+      return value.map(v => typeof v === 'string' ? removeDiacritics(v) : v);
+    }
+    return value;
+  }
+
   private sortRSLEventsByDay(events: RSLEvent[]) {
     events.sort((a: RSLEvent, b: RSLEvent) => {
       return new Date(a.day).getTime() - new Date(b.day).getTime();
@@ -953,16 +968,7 @@ export class DataManager implements WorkerClass {
       const fuse = new Fuse(events, { 
         keys: ['title', 'description', 'camp', 'location'], 
         ignoreLocation: true,
-        getFn: (obj, path) => {
-          const value = Fuse.config.getFn(obj, path);
-          if (typeof value === 'string') {
-            return removeDiacritics(value);
-          }
-          if (Array.isArray(value)) {
-            return value.map(v => typeof v === 'string' ? removeDiacritics(v) : v);
-          }
-          return value;
-        }
+        getFn: this.normalizingGetFn.bind(this)
       });
       const found = fuse.search(query, { limit: top ? top : 10 });
       for (let c of found) {
@@ -1099,16 +1105,7 @@ export class DataManager implements WorkerClass {
       const fuse = new Fuse(this.camps, { 
         keys: ['name', 'description', 'location_string'], 
         ignoreLocation: true,
-        getFn: (obj, path) => {
-          const value = Fuse.config.getFn(obj, path);
-          if (typeof value === 'string') {
-            return removeDiacritics(value);
-          }
-          if (Array.isArray(value)) {
-            return value.map(v => typeof v === 'string' ? removeDiacritics(v) : v);
-          }
-          return value;
-        }
+        getFn: this.normalizingGetFn.bind(this)
       });
       const found = fuse.search(query, { limit: top ? top : 10 });
       for (let c of found) {
@@ -1174,16 +1171,7 @@ export class DataManager implements WorkerClass {
       const fuse = new Fuse(this.art, {
         keys: ['name', 'description', 'location_string', 'artist'],
         ignoreLocation: true,
-        getFn: (obj, path) => {
-          const value = Fuse.config.getFn(obj, path);
-          if (typeof value === 'string') {
-            return removeDiacritics(value);
-          }
-          if (Array.isArray(value)) {
-            return value.map(v => typeof v === 'string' ? removeDiacritics(v) : v);
-          }
-          return value;
-        }
+        getFn: this.normalizingGetFn.bind(this)
       });
       const found = fuse.search(query, { limit: top ? top : 10 });
       for (let c of found) {
