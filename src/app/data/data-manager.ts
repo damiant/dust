@@ -32,6 +32,7 @@ import {
   getOccurrenceTimeString,
   hasValue,
   nowAtEvent,
+  removeDiacritics,
   sameDay,
   static_dust_events,
   titlePlural,
@@ -822,9 +823,24 @@ export class DataManager implements WorkerClass {
 
   private scrubQuery(query: string): string {
     if (query) {
-      query = query.toLowerCase().trim();
+      query = removeDiacritics(query.toLowerCase().trim());
     }
     return query;
+  }
+
+  /**
+   * Custom getFn for Fuse.js that normalizes string values by removing diacritics.
+   * This allows fuzzy search to match strings regardless of accents.
+   */
+  private normalizingGetFn(obj: any, path: string | string[]): any {
+    const value = Fuse.config.getFn(obj, path);
+    if (typeof value === 'string') {
+      return removeDiacritics(value);
+    }
+    if (Array.isArray(value)) {
+      return value.map(v => typeof v === 'string' ? removeDiacritics(v) : v);
+    }
+    return value;
   }
 
   private sortRSLEventsByDay(events: RSLEvent[]) {
@@ -845,17 +861,17 @@ export class DataManager implements WorkerClass {
 
   private rslEventContains(event: RSLEvent, query: string): boolean {
     if (query == '') return true;
-    if (event.camp.toLowerCase().includes(query)) return true;
-    if (event.artCar && event.artCar.toLowerCase().includes(query)) return true;
-    if (event.title && event.title.toLowerCase().includes(query)) return true;
-    if (event.location.toLowerCase().includes(query)) return true;
+    if (removeDiacritics(event.camp.toLowerCase()).includes(query)) return true;
+    if (event.artCar && removeDiacritics(event.artCar.toLowerCase()).includes(query)) return true;
+    if (event.title && removeDiacritics(event.title.toLowerCase()).includes(query)) return true;
+    if (removeDiacritics(event.location.toLowerCase()).includes(query)) return true;
     for (let occurrence of event.occurrences) {
-      if (occurrence.who.toLowerCase().includes(query)) {
-        event.occurrences = event.occurrences.filter((o) => o.who.toLowerCase().includes(query));
+      if (removeDiacritics(occurrence.who.toLowerCase()).includes(query)) {
+        event.occurrences = event.occurrences.filter((o) => removeDiacritics(o.who.toLowerCase()).includes(query));
         return true;
       }
-      if (occurrence.timeRange.toLowerCase().includes(query)) {
-        event.occurrences = event.occurrences.filter((o) => o.timeRange.toLowerCase().includes(query));
+      if (removeDiacritics(occurrence.timeRange.toLowerCase()).includes(query)) {
+        event.occurrences = event.occurrences.filter((o) => removeDiacritics(o.timeRange.toLowerCase()).includes(query));
         return true;
       }
     }
@@ -949,7 +965,11 @@ export class DataManager implements WorkerClass {
           (event) => this.onDay(day, event, timeRange, showPast) && this.eventIsCategory(category, event),
         );
       }
-      const fuse = new Fuse(events, { keys: ['title', 'description', 'camp', 'location'], ignoreLocation: true });
+      const fuse = new Fuse(events, { 
+        keys: ['title', 'description', 'camp', 'location'], 
+        ignoreLocation: true,
+        getFn: this.normalizingGetFn.bind(this)
+      });
       const found = fuse.search(query, { limit: top ? top : 10 });
       for (let c of found) {
         result.push(c.item);
@@ -1082,7 +1102,11 @@ export class DataManager implements WorkerClass {
     if (query && !this.isClockString(query)) {
       query = this.scrubQuery(query);
 
-      const fuse = new Fuse(this.camps, { keys: ['name', 'description', 'location_string'], ignoreLocation: true });
+      const fuse = new Fuse(this.camps, { 
+        keys: ['name', 'description', 'location_string'], 
+        ignoreLocation: true,
+        getFn: this.normalizingGetFn.bind(this)
+      });
       const found = fuse.search(query, { limit: top ? top : 10 });
       for (let c of found) {
         result.push(c.item);
@@ -1122,10 +1146,14 @@ export class DataManager implements WorkerClass {
     if (query == '' || !query) {
       result = 'Match';
     } else {
-      if (camp.name.toLowerCase().includes(query) || camp.location_string?.toLowerCase().includes(query)) {
+      const normalizedName = removeDiacritics(camp.name.toLowerCase());
+      const normalizedLocation = camp.location_string ? removeDiacritics(camp.location_string.toLowerCase()) : '';
+      const normalizedDescription = camp.description ? removeDiacritics(camp.description.toLowerCase()) : '';
+      
+      if (normalizedName.includes(query) || normalizedLocation.includes(query)) {
         result = 'Important';
       } else {
-        if (camp.description?.toLowerCase().includes(query)) {
+        if (normalizedDescription.includes(query)) {
           result = 'Match';
         }
       }
@@ -1143,6 +1171,7 @@ export class DataManager implements WorkerClass {
       const fuse = new Fuse(this.art, {
         keys: ['name', 'description', 'location_string', 'artist'],
         ignoreLocation: true,
+        getFn: this.normalizingGetFn.bind(this)
       });
       const found = fuse.search(query, { limit: top ? top : 10 });
       for (let c of found) {
@@ -1188,10 +1217,14 @@ export class DataManager implements WorkerClass {
 
   private artMatches(query: string, art: Art): MatchType {
     if (query == '') return 'Match';
-    if (art.name.toLowerCase().includes(query) || art.location_string?.toLowerCase().includes(query)) {
+    const normalizedName = removeDiacritics(art.name.toLowerCase());
+    const normalizedLocation = art.location_string ? removeDiacritics(art.location_string.toLowerCase()) : '';
+    const normalizedDescription = art.description ? removeDiacritics(art.description.toLowerCase()) : '';
+    
+    if (normalizedName.includes(query) || normalizedLocation.includes(query)) {
       return 'Important';
     }
-    if (art.description?.toLowerCase().includes(query)) {
+    if (normalizedDescription.includes(query)) {
       return 'Match';
     }
     return 'No Match';
@@ -1259,14 +1292,20 @@ export class DataManager implements WorkerClass {
       if (event.all_day) return 'No Match';
     }
     if (terms == '' || !terms) return 'Match';
+    
+    const normalizedTitle = removeDiacritics(event.title.toLowerCase());
+    const normalizedCamp = event.camp ? removeDiacritics(event.camp.toLowerCase()) : '';
+    const normalizedLocation = event.location ? removeDiacritics(event.location.toLowerCase()) : '';
+    const normalizedDescription = removeDiacritics(event.description.toLowerCase());
+    
     if (
-      event.title.toLowerCase().includes(terms) ||
-      event.camp?.toLowerCase().includes(terms) ||
-      event.location?.toLowerCase().includes(terms)
+      normalizedTitle.includes(terms) ||
+      normalizedCamp.includes(terms) ||
+      normalizedLocation.includes(terms)
     ) {
       return 'Important';
     }
-    if (event.description.toLowerCase().includes(terms)) {
+    if (normalizedDescription.includes(terms)) {
       return 'Match';
     }
 
