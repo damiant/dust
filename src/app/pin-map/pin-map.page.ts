@@ -97,9 +97,23 @@ export class PinMapPage {
       }
       this._change.markForCheck();
     });
+    effect(async () => {
+      const resumed = this.db.resume();
+      if (resumed.length > 0 && this.mapType() === MapType.Now) {
+        await this.refreshMap();
+      }
+    });
   }
 
   async ionViewWillEnter() {
+    const mapSet = await this.mapFor(this.mapType());
+    this.points = mapSet.points;
+    this.title.set(mapSet.title);
+    this.description = mapSet.description;
+    this._change.detectChanges();
+  }
+
+  private async refreshMap() {
     const mapSet = await this.mapFor(this.mapType());
     this.points = mapSet.points;
     this.title.set(mapSet.title);
