@@ -9,6 +9,7 @@ import { MapSet, MapType } from '../data/models';
 import { GeoService } from '../geolocation/geo.service';
 import { GpsCoord } from '../map/geo.utils';
 import { calculateRelativePosition, distance, formatDistanceNiceShort } from '../map/map.utils';
+import { removeDiacritics } from '../utils/utils';
 
 interface SearchItem {
   title: string;
@@ -91,11 +92,12 @@ export class SearchPage {
       items.push(...this.mapSetToSearchItems(list.medical, MapType.Medical, 'assets/icon/medical.svg', this.vm.gps, top));
       items.push(...this.mapSetToSearchItems(list.ice, MapType.Ice, 'assets/icon/ice.svg', this.vm.gps, top));
       if (terms) {
+        const normalizedTerms = removeDiacritics(terms.toLowerCase());
         items.sort((a: SearchItem, b: SearchItem) => {
-          if (a.title.toLowerCase().includes(terms.toLowerCase())) {
+          if (removeDiacritics(a.title.toLowerCase()).includes(normalizedTerms)) {
             return -1;
           }
-          if (b.title.toLowerCase().includes(terms.toLowerCase())) {
+          if (removeDiacritics(b.title.toLowerCase()).includes(normalizedTerms)) {
             return 1;
           }
           return 0;
