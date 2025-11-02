@@ -97,11 +97,30 @@ export class PinMapPage {
       }
       this._change.markForCheck();
     });
+    effect(async () => {
+      const resumed = this.db.resume();
+      if (resumed.length > 0 && this.mapType() === MapType.Now) {
+        await this.refreshMap();
+      }
+    });
+    effect(async () => {
+      // Monitor mapType and thingName changes
+      const mt = this.mapType();
+      const tn = this.thingName();
+      if (mt || tn) {
+        await this.refreshMap();
+      }
+    });
   }
 
   async ionViewWillEnter() {
+    await this.refreshMap();
+  }
+
+  private async refreshMap() {
     const mapSet = await this.mapFor(this.mapType());
-    this.points = mapSet.points;
+    // Create a new array reference to trigger change detection
+    this.points = [...mapSet.points];
     this.title.set(mapSet.title);
     this.description = mapSet.description;
     this._change.detectChanges();

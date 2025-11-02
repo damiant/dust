@@ -84,7 +84,8 @@ export class MapComponent implements OnInit, OnDestroy {
   @Input() set points(points: MapPoint[]) {
     if (this.pointsSet) {
       // The map is already showing. 
-      if (this.points.length > 1) {
+      // Check if points array reference is the same (navigation back scenario)
+      if (this._points === points) {
         return; // Points didn't change (probably clicking back)
       }
 
