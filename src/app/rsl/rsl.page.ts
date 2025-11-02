@@ -245,7 +245,8 @@ export class RslPage {
   }
 
   public async dayChange(event: any) {
-    this.vm.day = new Date(event.target.value);
+    const value = event.target.value;
+    this.vm.day = value === 'all' ? noDate() : new Date(value);
 
     this.updateTitle();
     await this.update(true);
