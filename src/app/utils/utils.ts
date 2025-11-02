@@ -44,7 +44,7 @@ export function nowRange(timeZone: string): TimeRange {
   const start = nowAtEvent(timeZone);
   const end = nowAtEvent(timeZone);
   const minute = 1000 * 60;
-  start.setTime(start.getTime() - 20 * minute);
+  start.setTime(start.getTime() - 5 * minute);
   end.setTime(end.getTime() + 60 * minute);
   return { start, end };
 }

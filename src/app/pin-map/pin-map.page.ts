@@ -103,6 +103,14 @@ export class PinMapPage {
         await this.refreshMap();
       }
     });
+    effect(async () => {
+      // Monitor mapType and thingName changes
+      const mt = this.mapType();
+      const tn = this.thingName();
+      if (mt || tn) {
+        await this.refreshMap();
+      }
+    });
   }
 
   async ionViewWillEnter() {
@@ -111,7 +119,8 @@ export class PinMapPage {
 
   private async refreshMap() {
     const mapSet = await this.mapFor(this.mapType());
-    this.points = mapSet.points;
+    // Create a new array reference to trigger change detection
+    this.points = [...mapSet.points];
     this.title.set(mapSet.title);
     this.description = mapSet.description;
     this._change.detectChanges();
