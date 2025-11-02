@@ -181,6 +181,7 @@ export class RslPage {
       return;
     }
     const wasSearch = this.vm.search?.length > 0;
+    const isAllDays = sameDay(this.vm.day, noDate());
     const days = await this.db.searchRSL(this.vm.search, this.db.isHistorical());
     if (this.vm.events.length > 0) {
       this.vm.noEvents = false;
@@ -196,7 +197,9 @@ export class RslPage {
       const otherDays = days.map((d) => `${d.name}`).join(', ');
       this.vm.noEvents = true;
       this.vm.noEventsMessage = wasSearch
-        ? `There are no events matching "${this.vm.search}" for this day but there are on ${otherDays}.`
+        ? isAllDays
+          ? `There are no events matching "${this.vm.search}".`
+          : `There are no events matching "${this.vm.search}" for this day but there are on ${otherDays}.`
         : 'There are no events on this day.';
     }
   }
