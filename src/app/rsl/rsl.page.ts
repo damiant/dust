@@ -40,7 +40,7 @@ interface RSLState {
   mapTitle: string;
   mapSubtitle: string;
   title: string;
-  defaultDay: any;
+  defaultDay: Date | string;
   showMap: boolean;
   noEvents: boolean;
   noEventsMessage: string;
