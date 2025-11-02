@@ -811,6 +811,9 @@ export class DataManager implements WorkerClass {
         this.sortRSLEventsByDistance(result);
       } else if (campId) {
         this.sortRSLEventsByDay(result);
+      } else if (!fDay) {
+        // When "All" is selected (fDay is undefined), sort by date
+        this.sortRSLEventsByDay(result);
       } else {
         this.sortRSLEventsByName(result);
       }
