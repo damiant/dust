@@ -1,4 +1,7 @@
 ## Changes
+## 2.108
+- Music tab now has an "All" option to search and view events across all days
+
 ## 2.103
 - Add Live Music and Wheelchair Accessible icons for Rock Star Librarian events
 - Add Rock Star Librarian Recommended icons
