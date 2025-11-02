@@ -294,4 +294,8 @@ export class RslPage {
     }
     this.update(true);
   }
+
+  isAllDaysSelected(): boolean {
+    return sameDay(this.vm.day, noDate());
+  }
 }
