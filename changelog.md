@@ -1,6 +1,9 @@
 ## Changes
 ## 2.108
 - Music tab now has an "All" option to search and view events across all days
+- Now map is updated when you resume the app
+- Search will find diacritics (eg Crepe)
+- Geolocation will update on the map when you resume the app
 
 ## 2.103
 - Add Live Music and Wheelchair Accessible icons for Rock Star Librarian events

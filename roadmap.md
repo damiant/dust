@@ -61,8 +61,6 @@
 - 🔵 Share profile
 
 ## Music
-- 🔴 Music should have an "all" option.
-- 🔴 Music search should work on all days
 - 🔴 Sunrise/sunset label on music sets
 - 🔴 line crossing over midnight.
 - 🔴 Music by start time (column for location)
