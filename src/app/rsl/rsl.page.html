@@ -22,6 +22,9 @@
     </ion-toolbar>
     <ion-toolbar>
       <ion-segment (ionChange)="dayChange($event)" [(ngModel)]="vm.defaultDay" [scrollable]="true">
+        <ion-segment-button [id]="'all-days'" [value]="'all'">
+          All
+        </ion-segment-button>
         @for (day of vm.days; track day) {
         <ion-segment-button [id]="vm.day === day.date ? 'today' : 'day'+day.dayName" [class.bold]="day.today"
           [value]="day.date">
@@ -48,7 +51,7 @@
   } @if (vm.noEvents) {
   <div class="message large"><ion-text>{{vm.noEventsMessage}}</ion-text></div>
   } @for (event of vm.events; track eventsTrackBy($index, event)) {
-  <app-rsl-event [event]="event" (mapClick)="map($event)" (artCarClick)="artCar($event)"></app-rsl-event>
+  <app-rsl-event [event]="event" [showDayName]="isAllDaysSelected()" (mapClick)="map($event)" (artCarClick)="artCar($event)"></app-rsl-event>
   }
   <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
     <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>

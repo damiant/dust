@@ -90,7 +90,7 @@
       @for (occurrence of event().occurrences; track occurrence.id) {
         <div (click)="toggleStar(occurrence)">
           <ion-text [class.old]="occurrence.old" class="one-line">
-            <span class="time"> {{ occurrence.timeRange.length > 10 ? occurrence.time : occurrence.timeRange }}</span
+            <span class="time">@if (dayName()) {{{ dayName() }} }{{ occurrence.timeRange.length > 10 ? occurrence.time : occurrence.timeRange }}</span
             >{{ occurrence.who }}
 
             <ion-icon class="star" color="primary" [hidden]="!occurrence.star" name="star"></ion-icon>

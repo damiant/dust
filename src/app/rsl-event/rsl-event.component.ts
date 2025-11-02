@@ -42,6 +42,7 @@ export class RslEventComponent {
   private fav = inject(FavoritesService);
   private toast = inject(ToastController);
   event = input.required<RSLEvent>();
+  showDayName = input<boolean>(false);
   mapClick = output<RSLEvent>();
   artCarClick = output<ArtCarEvent>();
   location = computed(() => {
@@ -50,6 +51,17 @@ export class RslEventComponent {
       return `- ${event.location}`;
     }
     return '';
+  });
+
+  dayName = computed(() => {
+    if (!this.showDayName()) return '';
+    const event = this.event();
+    if (!event.day) return '';
+    
+    // Parse the day string (format: yyyy-mm-dd)
+    const date = new Date(event.day);
+    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    return dayNames[date.getUTCDay()];
   });
 
   constructor() {

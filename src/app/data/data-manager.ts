@@ -31,6 +31,7 @@ import {
   getDayNameFromDate,
   getOccurrenceTimeString,
   hasValue,
+  noDate,
   nowAtEvent,
   removeDiacritics,
   sameDay,
@@ -755,7 +756,7 @@ export class DataManager implements WorkerClass {
       const events: RSLEvent[] = await this.read(this.getId(Names.rsl), []);
       const result: RSLEvent[] = [];
       query = this.scrubQuery(query);
-      const fDay = day ? this.toRSLDateFormat(day) : undefined;
+      const fDay = day && !sameDay(day, noDate()) ? this.toRSLDateFormat(day) : undefined;
       const today = this.now(this.timezone);
       const campPins: any = {};
       for (let event of events) {
