@@ -141,7 +141,6 @@ export class PinMapPage {
     const currentThingName = this.thingName();
     const mapSet = await this.mapFor(currentMapType);
     
-    // Only update if the data has changed
     // This prevents the map from refreshing unnecessarily when navigating back
     if (this.lastMapType !== currentMapType || this.lastThingName !== currentThingName) {
       this.points = [...mapSet.points];
