@@ -245,6 +245,11 @@ export interface Dataset {
   event_registration: boolean;
   pin_size_multiplier: number;
   subTitle: string; // Calculated
+  theme: Theme | undefined;
+}
+
+export interface Theme {
+  primaryColor: string;
 }
 
 export interface TimeString {

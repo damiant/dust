@@ -86,6 +86,7 @@ export class DbService {
     mastodonHandle: '',
     camp_registration: false,
     event_registration: false,
+    theme: undefined,
   };
   public selectedDay = signal(noDate());
   public selectedYear = signal('');
