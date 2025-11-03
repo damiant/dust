@@ -1,5 +1,9 @@
 ## Changes
 
+## 2.109
+
+- Theme support: Festivals can now customize the primary color via dataset configuration
+
 ## 2.108
 
 - Music tab now has an "All" option to search and view events across all days
