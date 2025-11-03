@@ -1,15 +1,12 @@
 ## Changes
 
-## 2.109
-
-- Theme support: Festivals can now customize the primary color via dataset configuration
-
 ## 2.108
 
 - Music tab now has an "All" option to search and view events across all days
 - Now map is updated when you resume the app
 - Search will find diacritics (eg Crepe)
 - Geolocation will update on the map when you resume the app
+- Theme support: Burns can now customize the primary color
 
 ## 2.103
 

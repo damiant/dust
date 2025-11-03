@@ -200,11 +200,29 @@ export class SettingsService {
    * Apply the theme from the selected dataset
    * Sets the --ion-color-primary CSS variable based on theme.primaryColor
    * Falls back to ThemePrimaryColor if theme is undefined
+   * Sets it on both :root and body with !important to override dark mode media query
    */
   public applyTheme(): void {
     const primaryColor = this.settings.dataset?.theme?.primaryColor;
     const validatedColor = this.isValidColor(primaryColor) ? primaryColor! : ThemePrimaryColor;
+    
+    // Set on :root
     document.documentElement.style.setProperty('--ion-color-primary', validatedColor);
+    
+    // Create or update a style element to override dark mode with !important
+    let styleEl = document.getElementById('theme-override-styles') as HTMLStyleElement;
+    if (!styleEl) {
+      styleEl = document.createElement('style');
+      styleEl.id = 'theme-override-styles';
+      document.head.appendChild(styleEl);
+    }
+    
+    // Use !important to override the media query
+    styleEl.textContent = `
+      body {
+        --ion-color-primary: ${validatedColor} !important;
+      }
+    `;
   }
 
   /**
