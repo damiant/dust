@@ -83,8 +83,8 @@ export class PinMapPage {
   isGettingGPS = false;
   canClearThing = false;
   clearLabel = 'Clear';
-  private lastMapType = '';
-  private lastThingName = '';
+  private lastMapType: string | undefined;
+  private lastThingName: string | undefined;
   showSearch: Signal<boolean> = computed(() => {
     return this.mapType() == MapType.All || this.mapType() == MapType.Art;
   });
