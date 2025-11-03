@@ -236,6 +236,7 @@ export class IntroPage {
         this.settingsService.settings.dataset = p;
         this.settingsService.settings.datasetId = p.id;
         this.settingsService.settings.eventTitle = p.title;
+        this.settingsService.applyTheme();
         this.vm.eventAlreadySelected = true;
         this.vm.selected = p;
         this.subtitle.set(this.vm.selected.subTitle);

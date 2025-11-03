@@ -123,6 +123,7 @@ export class SettingsService {
     this.settings.datasetId = '';
     this.settings.dataset = undefined;
     this.settings.eventTitle = '';
+    this.applyTheme();
     await this.save();
   }
 
