@@ -6,6 +6,7 @@
 - Now map is updated when you resume the app
 - Search will find diacritics (eg Crepe)
 - Geolocation will update on the map when you resume the app
+- Theme support: Burns can now customize the primary color
 
 ## 2.103
 

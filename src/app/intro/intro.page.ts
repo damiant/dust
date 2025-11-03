@@ -236,6 +236,7 @@ export class IntroPage {
         this.settingsService.settings.dataset = p;
         this.settingsService.settings.datasetId = p.id;
         this.settingsService.settings.eventTitle = p.title;
+        this.settingsService.applyTheme();
         this.vm.eventAlreadySelected = true;
         this.vm.selected = p;
         this.subtitle.set(this.vm.selected.subTitle);
@@ -561,6 +562,7 @@ export class IntroPage {
       : -(this.vm.selected!.mapDirection ?? 0); // Burning Mans map is rotate 45 degrees
     this.settingsService.settings.eventTitle = this.vm.selected!.title;
     this.settingsService.settings.scrollLeft = this.vm.scrollLeft;
+    this.settingsService.applyTheme();
     this.settingsService.save();
   }
 

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { LocationEnabledStatus, Settings } from './models';
 import { Preferences } from '@capacitor/preferences';
 import { set, get } from 'idb-keyval';
+import { ThemePrimaryColor } from '../ui/ui.service';
 
 export const SettingNames = {
   MapURI: 'mapUri',
@@ -16,6 +17,7 @@ export class SettingsService {
   public async init() {
     this.settings = await this.getSettings();
     this.validate();
+    this.applyTheme();
   }
 
   private validate() {
@@ -122,6 +124,7 @@ export class SettingsService {
     this.settings.datasetId = '';
     this.settings.dataset = undefined;
     this.settings.eventTitle = '';
+    this.applyTheme();
     await this.save();
   }
 
@@ -191,5 +194,49 @@ export class SettingsService {
 
   public async setPin(datasetId: string, pin: string): Promise<void> {
     await Preferences.set({ key: `${datasetId}-pin`, value: pin });
+  }
+
+  /**
+   * Apply the theme from the selected dataset
+   * Sets the --ion-color-primary CSS variable based on theme.primaryColor
+   * Falls back to ThemePrimaryColor if theme is undefined
+   * Sets it on both :root and body with !important to override dark mode media query
+   */
+  public applyTheme(): void {
+    const primaryColor = this.settings.dataset?.theme?.primaryColor;
+    const validatedColor = this.isValidColor(primaryColor) ? primaryColor! : ThemePrimaryColor;
+    
+    // Set on :root
+    document.documentElement.style.setProperty('--ion-color-primary', validatedColor);
+    
+    // Create or update a style element to override dark mode with !important
+    let styleEl = document.getElementById('theme-override-styles') as HTMLStyleElement;
+    if (!styleEl) {
+      styleEl = document.createElement('style');
+      styleEl.id = 'theme-override-styles';
+      document.head.appendChild(styleEl);
+    }
+    
+    // Use !important to override the media query
+    styleEl.textContent = `
+      body {
+        --ion-color-primary: ${validatedColor} !important;
+      }
+    `;
+  }
+
+  /**
+   * Validates if a string is a valid CSS color value
+   * Supports hex colors, rgb/rgba, and named colors
+   */
+  private isValidColor(color: string | undefined): boolean {
+    if (!color) return false;
+    // Simple validation for hex colors (#RGB, #RRGGBB, #RRGGBBAA)
+    const hexPattern = /^#([0-9A-Fa-f]{3}){1,2}([0-9A-Fa-f]{2})?$/;
+    if (hexPattern.test(color)) return true;
+    // For other formats, use browser's CSS validation
+    const style = new Option().style;
+    style.color = color;
+    return style.color !== '';
   }
 }
