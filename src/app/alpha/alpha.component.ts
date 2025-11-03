@@ -19,11 +19,11 @@ import { takeUntil } from 'rxjs/operators';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 
 @Component({
-    selector: 'app-alphabetical-scroll-bar',
-    templateUrl: './alpha.component.html',
-    styleUrls: ['./alpha.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [CommonModule]
+  selector: 'app-alphabetical-scroll-bar',
+  templateUrl: './alpha.component.html',
+  styleUrls: ['./alpha.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CommonModule],
 })
 export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, OnDestroy {
   private _cdr = inject(ChangeDetectorRef);

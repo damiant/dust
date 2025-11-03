@@ -11,7 +11,8 @@ import {
   ToastController,
   IonModal,
   Platform,
-  AlertController, IonLoading
+  AlertController,
+  IonLoading,
 } from '@ionic/angular/standalone';
 import { UiService } from '../ui/ui.service';
 import { Share } from '@capacitor/share';
@@ -64,11 +65,11 @@ import { daysHighlighted } from '../utils/date-utils';
 import { RatingService } from '../rating.service';
 import { PushNotificationService } from '../notifications/push-notification.service';
 import { LinkService } from '../link/link.service';
-import { ParticipateComponent } from "../participate/participate.component";
+import { ParticipateComponent } from '../participate/participate.component';
 import { getCachedImage } from '../data/cache-store';
 import { CacheService } from '../data/cache.service';
 import { Network } from '@capacitor/network';
-import { CachePanelComponent } from "../cache-panel/cache-panel.component";
+import { CachePanelComponent } from '../cache-panel/cache-panel.component';
 
 interface HomeState {
   moreClicks: number;
@@ -103,7 +104,8 @@ interface HomeState {
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
-  imports: [IonLoading,
+  imports: [
+    IonLoading,
     IonModal,
     CommonModule,
     FormsModule,
@@ -121,7 +123,10 @@ interface HomeState {
     RemindersComponent,
     PinsCardComponent,
     LinkComponent,
-    CardHeaderComponent, ParticipateComponent, CachePanelComponent]
+    CardHeaderComponent,
+    ParticipateComponent,
+    CachePanelComponent,
+  ],
 })
 export class HomePage implements OnInit {
   private ui = inject(UiService);
@@ -169,8 +174,8 @@ export class HomePage implements OnInit {
     version: '',
     timezone: '',
     presentingElement: undefined,
-    isAndroid: Capacitor.getPlatform() === 'android'
-  }
+    isAndroid: Capacitor.getPlatform() === 'android',
+  };
   downloadStatus: WritableSignal<string> = signal('');
   download: WritableSignal<DownloadStatus> = signal({ status: '', firstDownload: false });
   directionText: WritableSignal<string> = signal('');
@@ -196,7 +201,7 @@ export class HomePage implements OnInit {
       ellipsisVerticalSharp,
       openOutline,
       searchSharp,
-      saveOutline
+      saveOutline,
     });
     effect(() => {
       this.ui.scrollUpContent('profile', this.ionContent());
@@ -225,14 +230,15 @@ export class HomePage implements OnInit {
     this.vm.presentingElement = document.querySelector('.ion-page');
     const imageUrl = await getCachedImage(this.db.selectedImage());
     this.db.checkInit();
-    const { version, build } = Capacitor.getPlatform() == 'web' ? { version: '0.0.0', build: '0' } : await App.getInfo();
+    const { version, build } =
+      Capacitor.getPlatform() == 'web' ? { version: '0.0.0', build: '0' } : await App.getInfo();
     await this.db.setVersion(`${version} (${build})`);
     const summary: DatasetResult = await this.db.get(this.settings.settings.datasetId, Names.summary, {
       onlyRead: true,
     });
     await this.favs.getThings();
     this.vm.hasFriends = false;
-    this.favs.getFavorites().then(favs => {
+    this.favs.getFavorites().then((favs) => {
       this.vm.hasFriends = favs.friends.length > 0;
     });
 
@@ -252,7 +258,6 @@ export class HomePage implements OnInit {
     if (Capacitor.isNativePlatform()) {
       await StatusBar.hide();
     }
-
 
     this.vm.things = this.favs.things();
     this.vm.version = `Version ${version}`;
@@ -279,8 +284,6 @@ export class HomePage implements OnInit {
     this.router.navigateByUrl(`/map/things/${thing.name}`);
   }
 
-
-
   hasValue(v: Record<string, number>, property: string): boolean {
     return v && v.hasOwnProperty(property) && v[property] > 0;
   }
@@ -306,10 +309,11 @@ export class HomePage implements OnInit {
     const enabled = this.pushNotifications.enabled();
     await this.pushNotifications.storeNotifications(!enabled);
     this.ui.presentToast(
-      this.pushNotifications.enabled() ?
-        `You have subscribed to notifications from ${this.settings.settings.eventTitle}` :
-        `You have unsubscribed from notifications from ${this.settings.settings.eventTitle}`
-      , this.toastController);
+      this.pushNotifications.enabled()
+        ? `You have subscribed to notifications from ${this.settings.settings.eventTitle}`
+        : `You have unsubscribed from notifications from ${this.settings.settings.eventTitle}`,
+      this.toastController,
+    );
   }
 
   home() {
@@ -356,15 +360,23 @@ export class HomePage implements OnInit {
       return;
     }
     const features = this.db.featuresHidden();
-    const update = features.filter(f => f !== 'livemap');
+    const update = features.filter((f) => f !== 'livemap');
     this.db.featuresHidden.set(update);
     const status = await Network.getStatus();
     if (status.connectionType === 'none') {
-      this.ui.presentToast('The Live Mutant Vehicle Map feature requires a network connection. Maybe turn off airplane mode?', this.toastController);
+      this.ui.presentToast(
+        'The Live Mutant Vehicle Map feature requires a network connection. Maybe turn off airplane mode?',
+        this.toastController,
+      );
       return;
     }
 
-    this.ui.presentToast(`Live Mutant Vehicle Map enabled. This feature is experimental for 2025`, this.toastController, undefined, 6000);
+    this.ui.presentToast(
+      `Live Mutant Vehicle Map enabled. This feature is experimental for 2025`,
+      this.toastController,
+      undefined,
+      6000,
+    );
   }
 
   async addCalendar() {
@@ -381,8 +393,11 @@ export class HomePage implements OnInit {
       lat: this.db.selectedDataset().lat,
       lng: this.db.selectedDataset().long,
     });
-    const device = (this.platform.is('iphone') || this.platform.is('android')) ? 'phone' : 'device';
-    this.ui.presentToast(`${this.db.selectedDataset().title} has been added to your ${device}'s calendar.`, this.toastController);
+    const device = this.platform.is('iphone') || this.platform.is('android') ? 'phone' : 'device';
+    this.ui.presentToast(
+      `${this.db.selectedDataset().title} has been added to your ${device}'s calendar.`,
+      this.toastController,
+    );
   }
 
   async about() {
@@ -397,7 +412,6 @@ export class HomePage implements OnInit {
   async dismiss() {
     await this.ionModal().dismiss();
   }
-
 
   async ionViewWillEnter() {
     if (Capacitor.isNativePlatform() && !this.ui.isAndroid()) {
@@ -480,7 +494,6 @@ export class HomePage implements OnInit {
         if (status !== '') {
           this.ui.presentToast(status, this.toastController);
         }
-
       }
     } finally {
       this.vm.downloading = false;

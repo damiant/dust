@@ -1,13 +1,13 @@
 <ion-card [ngClass]="imageStyle()" class="item" (click)="click()">
   @if (imageStyle() !== 'none' && art().images && art().images.length > 0) {
-  <div [class]="imageContainerCSSStyle()">
-    <app-cached-img [class]="imageCSSStyle()" [src]="art().images && art().images[0].thumbnail_url" />
-  </div>
+    <div [class]="imageContainerCSSStyle()">
+      <app-cached-img [class]="imageCSSStyle()" [src]="art().images && art().images[0].thumbnail_url" />
+    </div>
   }
   <ion-card-header>
     <ion-card-title>
       @if (art().audio) {
-      <ion-icon name="volume-high-outline" style="padding-right: 0.25em"></ion-icon>
+        <ion-icon name="volume-high-outline" style="padding-right: 0.25em"></ion-icon>
       }
       {{ art().name }}
     </ion-card-title>

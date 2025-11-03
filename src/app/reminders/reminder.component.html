@@ -11,26 +11,45 @@
 </ion-header>
 <ion-content class="ion-padding">
   <ion-item>
-    <ion-input autocapitalize="words" name="Title" id="Title" label="Title" [(ngModel)]="event.title"
-      placeholder="The events title"></ion-input>
+    <ion-input
+      autocapitalize="words"
+      name="Title"
+      id="Title"
+      label="Title"
+      [(ngModel)]="event.title"
+      placeholder="The events title"
+    ></ion-input>
   </ion-item>
 
   @if (showAddress) {
-  <ion-item id="pick-address">    
-    <ion-input autocapitalize="words" name="Address" id="Address" label="Address" [(ngModel)]="event.address"
-      placeholder="The events location"></ion-input>
-  </ion-item>
+    <ion-item id="pick-address">
+      <ion-input
+        autocapitalize="words"
+        name="Address"
+        id="Address"
+        label="Address"
+        [(ngModel)]="event.address"
+        placeholder="The events location"
+      ></ion-input>
+    </ion-item>
   }
   <ion-item>
     <ion-label>Time</ion-label>
-    @if(dtReady) {
-    <ion-datetime-button datetime="datetime"></ion-datetime-button>
+    @if (dtReady) {
+      <ion-datetime-button datetime="datetime"></ion-datetime-button>
     }
   </ion-item>
   <ion-modal [keepContentsMounted]="true">
     <ng-template>
-      <ion-datetime [highlightedDates]="highlightedDates" [showDefaultButtons]="true" [min]="startEvent"
-        [max]="endEvent" minuteValues="0,15,30,45" [(ngModel)]="event.start" id="datetime"></ion-datetime>
+      <ion-datetime
+        [highlightedDates]="highlightedDates"
+        [showDefaultButtons]="true"
+        [min]="startEvent"
+        [max]="endEvent"
+        minuteValues="0,15,30,45"
+        [(ngModel)]="event.start"
+        id="datetime"
+      ></ion-datetime>
     </ng-template>
   </ion-modal>
 
@@ -39,8 +58,8 @@
   </ion-item>
 
   @if (isEdit) {
-  <div class="center">
-    <ion-button (click)="deleteEvent()" shape="round">Delete</ion-button>
-  </div>
+    <div class="center">
+      <ion-button (click)="deleteEvent()" shape="round">Delete</ion-button>
+    </div>
   }
 </ion-content>

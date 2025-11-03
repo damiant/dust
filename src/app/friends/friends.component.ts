@@ -1,13 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, effect, inject } from '@angular/core';
-import {
-  IonCard,
-  IonCardContent,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonText,
-} from '@ionic/angular/standalone';
+import { IonCard, IonCardContent, IonIcon, IonItem, IonLabel, IonList, IonText } from '@ionic/angular/standalone';
 import { FavoritesService } from '../favs/favorites.service';
 import { FriendsService } from './friends.service';
 import { Friend } from '../data/models';
@@ -15,25 +7,15 @@ import { CommonModule } from '@angular/common';
 import { clone } from '../utils/utils';
 import { addIcons } from 'ionicons';
 import { add, person } from 'ionicons/icons';
-import { CardHeaderComponent } from "../card-header/card-header.component";
+import { CardHeaderComponent } from '../card-header/card-header.component';
 import { DbService } from '../data/db.service';
 
 @Component({
   selector: 'app-friends',
   templateUrl: './friends.component.html',
   styleUrls: ['./friends.component.scss'],
-  imports: [
-    CommonModule,
-    IonCard,
-    IonCardContent,
-    IonList,
-    IonText,
-    IonItem,
-    IonIcon,
-    IonLabel,
-    CardHeaderComponent
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  imports: [CommonModule, IonCard, IonCardContent, IonList, IonText, IonItem, IonIcon, IonLabel, CardHeaderComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FriendsComponent implements OnInit {
   private fav = inject(FavoritesService);
@@ -42,7 +24,6 @@ export class FriendsComponent implements OnInit {
   public friends: Friend[] = [];
   private _change = inject(ChangeDetectorRef);
   private editingFriend: Friend | undefined;
-
 
   constructor() {
     addIcons({ add, person });

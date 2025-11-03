@@ -1,57 +1,57 @@
 ion-label {
-    margin-top: 0.1rem;
-    margin-bottom: 0.1rem;
+  margin-top: 0.1rem;
+  margin-bottom: 0.1rem;
 }
 
 ion-label.text {
-    opacity: 0.5;
+  opacity: 0.5;
 }
 
 ion-item.event {
-    font-weight: bold;
-    --padding-top: 1rem;
-    --padding-bottom: 0px;
-    --min-height: unset;
+  font-weight: bold;
+  --padding-top: 1rem;
+  --padding-bottom: 0px;
+  --min-height: unset;
 }
 
 ion-icon.event-icon {
-    margin-top: 0;
-    margin-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 ion-item.small {
-    --padding-top: 0px;
-    --padding-bottom: 0px;
-    --min-height: unset;
+  --padding-top: 0px;
+  --padding-bottom: 0px;
+  --min-height: unset;
 }
 
 .image {
-    width: 100%;
-    object-fit: cover;
+  width: 100%;
+  object-fit: cover;
 }
 
 .pad {
-    padding: 1rem;
+  padding: 1rem;
 }
 
 .pad-left {
-    padding-left: 2.9rem;
+  padding-left: 2.9rem;
 }
 
 .star {
-    padding-left: 0.2rem;
-    margin-bottom: -2px;
+  padding-left: 0.2rem;
+  margin-bottom: -2px;
 }
 
 .sub {
-    font-size: 1rem;
+  font-size: 1rem;
 }
 
 .time {
-    display: inline-block;
-    width: 105px;
-    text-align: right;
-    opacity: 1;
-    padding-right: 0.5rem;
-    font-size: 1rem;
+  display: inline-block;
+  width: 105px;
+  text-align: right;
+  opacity: 1;
+  padding-right: 0.5rem;
+  font-size: 1rem;
 }

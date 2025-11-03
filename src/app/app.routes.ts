@@ -21,7 +21,7 @@ export const routes: Routes = [
     path: 'art/:id',
     loadComponent: () => import('./art-item/art-item.page').then((m) => m.ArtItemPage),
   },
-    {
+  {
     path: 'broadcast/:id',
     loadComponent: () => import('./broadcast/broadcast.page').then((m) => m.BroadcastPage),
   },
@@ -44,14 +44,14 @@ export const routes: Routes = [
   },
   {
     path: 'search',
-    loadComponent: () => import('./search/search.page').then(m => m.SearchPage)
+    loadComponent: () => import('./search/search.page').then((m) => m.SearchPage),
   },
   {
     path: 'print-favs',
-    loadComponent: () => import('./print-favs/print-favs.page').then( m => m.PrintFavsPage)
+    loadComponent: () => import('./print-favs/print-favs.page').then((m) => m.PrintFavsPage),
   },
   {
     path: 'messages',
-    loadComponent: () => import('./messages/messages.page').then( m => m.MessagesPage)
-  }
+    loadComponent: () => import('./messages/messages.page').then((m) => m.MessagesPage),
+  },
 ];

@@ -1,65 +1,64 @@
 ion-content {
-    --ion-background-color: #FFFFFF;
+  --ion-background-color: #ffffff;
 }
 
 ion-icon {
-    color: black;
-    float: right;
-    margin: 1rem;
-    margin-top: env(safe-area-inset-top);
+  color: black;
+  float: right;
+  margin: 1rem;
+  margin-top: env(safe-area-inset-top);
 }
 
 h2,
 h3,
 p {
-    color: black;
+  color: black;
 }
 
 h3 {
-    font-size: 12px;
-    font-weight: bold;
-    padding: 0;
-    margin: 0;
-    margin-top: 1rem;
-    margin-bottom: 0.5rem;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 0;
+  margin: 0;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 p {
-    font-size: 9px;
-    margin: 0;
+  font-size: 9px;
+  margin: 0;
 }
 
 .line {
-    height: 1px;
-    background-color: #999;
-
+  height: 1px;
+  background-color: #999;
 }
 
 .row {
-    width: max(30vw, 240px);
-    display: flex;
-    flex-direction: row;
-    column-gap: 10px;
-    //border-right: 1px solid #999;
+  width: max(30vw, 240px);
+  display: flex;
+  flex-direction: row;
+  column-gap: 10px;
+  //border-right: 1px solid #999;
 }
 
 .row-a {
-    width: 45px;
-    text-align: right;
+  width: 45px;
+  text-align: right;
 }
 
 .row-b {
-    flex: 1;
-    padding-bottom: 5px;
-    padding-right: 1rem;
+  flex: 1;
+  padding-bottom: 5px;
+  padding-right: 1rem;
 }
 
 .page {
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    column-gap: 10px;
-    height: 100vh;
-    //width: 100vw;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  column-gap: 10px;
+  height: 100vh;
+  //width: 100vw;
 }

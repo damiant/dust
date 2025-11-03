@@ -1,27 +1,27 @@
 .rotate {
-    animation: rotate 2s infinite;
+  animation: rotate 2s infinite;
 }
 
 @keyframes rotate {
-    from {
-        -webkit-transform: rotate(0deg)
-    }
+  from {
+    -webkit-transform: rotate(0deg);
+  }
 
-    to {
-        -webkit-transform: rotate(360deg)
-    }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
 .shadow {
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-    border-radius: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  border-radius: 1rem;
 }
 
 app-search {
-    margin-top: 0.5rem;
-    width: 150px;
+  margin-top: 0.5rem;
+  width: 150px;
 }
 
 ion-item {
-    --border-radius: 1rem;
+  --border-radius: 1rem;
 }

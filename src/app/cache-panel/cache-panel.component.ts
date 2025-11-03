@@ -1,5 +1,5 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { IonCard, IonText, IonCardContent, ToastController, IonProgressBar } from "@ionic/angular/standalone";
+import { IonCard, IonText, IonCardContent, ToastController, IonProgressBar } from '@ionic/angular/standalone';
 import { CardHeaderComponent } from '../card-header/card-header.component';
 
 import { CacheService, CacheStatus } from '../data/cache.service';
@@ -11,10 +11,9 @@ import { DbService } from '../data/db.service';
   templateUrl: './cache-panel.component.html',
   styleUrls: ['./cache-panel.component.scss'],
   standalone: true,
-  imports: [IonProgressBar, IonCardContent, IonCard, IonText, CardHeaderComponent]
+  imports: [IonProgressBar, IonCardContent, IonCard, IonText, CardHeaderComponent],
 })
 export class CachePanelComponent implements OnInit {
-
   cache = inject(CacheService);
   ui = inject(UiService);
   db = inject(DbService);
@@ -34,13 +33,12 @@ export class CachePanelComponent implements OnInit {
   cachedMessage = signal(this.initialMessage);
   isOnline = computed(() => {
     const status = this.db.networkStatus();
-    return (status !== 'none');
-  }
-  );
+    return status !== 'none';
+  });
 
   async ngOnInit() {
     this.isCached.set(await this.cache.isCached());
-    if (!await this.cache.cachedBefore()) {
+    if (!(await this.cache.cachedBefore())) {
       this.cachedMessage.set(this.initialMessage);
     } else {
       this.cachedMessage.set(`Updates were applied but there may be images and audio which is not stored offlined.`);
@@ -66,5 +64,4 @@ export class CachePanelComponent implements OnInit {
       this.cacheStatus.set(this.cache.InitialCacheStatus());
     }
   }
-
 }

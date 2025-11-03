@@ -137,7 +137,7 @@ export class IntroPage {
   constructor() {
     addIcons({ arrowForwardOutline, chevronUpOutline, chevronUpCircleSharp, cloudDownloadOutline });
     effect(() => {
-      const downloading = this.download();      
+      const downloading = this.download();
       if (downloading.firstDownload) {
         this.vm.waiting = true;
         this.vm.firstDownloadMessage = `Downloading ${downloading.status}...`;
@@ -477,7 +477,6 @@ export class IntroPage {
       // Hide Live Mutant Vehicle on map
       hidden.push('livemap');
 
-      
       // Hide music if there is none
       if (result.rsl == 0) {
         hidden.push('rsl');

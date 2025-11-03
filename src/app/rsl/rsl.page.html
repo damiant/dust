@@ -13,21 +13,21 @@
           (click)="rslLogo()" />
       </ion-item> -->
       <ion-buttons class="b-pad-r" slot="end">
-        <app-sort [padChecked]=false id="music-sort" (sortTypeChange)="sortTypeChanged($event)"></app-sort>
+        <app-sort [padChecked]="false" id="music-sort" (sortTypeChange)="sortTypeChanged($event)"></app-sort>
       </ion-buttons>
     </ion-toolbar>
     <ion-toolbar>
       <app-search placeholder="Find Events & DJs" (searched)="searchEvents($event)" />
-
     </ion-toolbar>
     <ion-toolbar>
       <ion-segment (ionChange)="dayChange($event)" [(ngModel)]="vm.defaultDay" [scrollable]="true">
-        <ion-segment-button [id]="'all-days'" [value]="'all'">
-          All
-        </ion-segment-button>
+        <ion-segment-button [id]="'all-days'" [value]="'all'"> All </ion-segment-button>
         @for (day of vm.days; track day) {
-        <ion-segment-button [id]="vm.day === day.date ? 'today' : 'day'+day.dayName" [class.bold]="day.today"
-          [value]="day.date">
+        <ion-segment-button
+          [id]="vm.day === day.date ? 'today' : 'day'+day.dayName"
+          [class.bold]="day.today"
+          [value]="day.date"
+        >
           {{day.name}}<br />{{day.dayName}}
         </ion-segment-button>
         }
@@ -39,8 +39,12 @@
       <ion-content class="ion-padding"> {{vm.message}} </ion-content>
     </ng-template>
   </ion-popover>
-  <app-map-modal [title]="vm.mapTitle" [subtitle]="vm.mapSubtitle" [(show)]="vm.showMap"
-    [points]="vm.mapPoints"></app-map-modal>
+  <app-map-modal
+    [title]="vm.mapTitle"
+    [subtitle]="vm.mapSubtitle"
+    [(show)]="vm.showMap"
+    [points]="vm.mapPoints"
+  ></app-map-modal>
   @if (!vm.noEvents && this.vm.events.length === 0) {
   <div>
     <app-skeleton-event></app-skeleton-event>
@@ -51,7 +55,12 @@
   } @if (vm.noEvents) {
   <div class="message large"><ion-text>{{vm.noEventsMessage}}</ion-text></div>
   } @for (event of vm.events; track eventsTrackBy($index, event)) {
-  <app-rsl-event [event]="event" [showDayName]="isAllDaysSelected()" (mapClick)="map($event)" (artCarClick)="artCar($event)"></app-rsl-event>
+  <app-rsl-event
+    [event]="event"
+    [showDayName]="isAllDaysSelected()"
+    (mapClick)="map($event)"
+    (artCarClick)="artCar($event)"
+  ></app-rsl-event>
   }
   <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
     <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>

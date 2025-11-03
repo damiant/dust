@@ -13,7 +13,8 @@ import {
   IonToolbar,
   ModalController,
   PickerColumn,
-  ToastController, IonAlert
+  ToastController,
+  IonAlert,
 } from '@ionic/angular/standalone';
 import { Friend } from '../data/models';
 import { StreetService } from '../map/street.service';
@@ -27,23 +28,24 @@ export enum FriendResult {
 }
 
 @Component({
-    selector: 'app-friend',
-    templateUrl: './friend.component.html',
-    styleUrls: ['./friend.component.scss'],
-    imports: [IonAlert,
-        CommonModule,
-        FormsModule,
-        IonItem,
-        IonButton,
-        IonPickerLegacy,
-        IonContent,
-        IonButtons,
-        IonToolbar,
-        IonTitle,
-        IonInput,
-        IonHeader,
-    ],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-friend',
+  templateUrl: './friend.component.html',
+  styleUrls: ['./friend.component.scss'],
+  imports: [
+    IonAlert,
+    CommonModule,
+    FormsModule,
+    IonItem,
+    IonButton,
+    IonPickerLegacy,
+    IonContent,
+    IonButtons,
+    IonToolbar,
+    IonTitle,
+    IonInput,
+    IonHeader,
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FriendComponent implements OnInit {
   private modalCtrl = inject(ModalController);
@@ -58,17 +60,13 @@ export class FriendComponent implements OnInit {
     {
       text: 'Delete',
       role: 'confirm',
-      handler: () => {
-
-      },
+      handler: () => {},
     },
     {
       text: 'Cancel',
       role: 'cancel',
-      handler: () => {
-      },
+      handler: () => {},
     },
-
   ];
 
   public addresses: PickerColumn[];
@@ -132,6 +130,5 @@ export class FriendComponent implements OnInit {
     this.deleting = false;
     if (ev.detail.role !== 'confirm') return;
     return this.modalCtrl.dismiss(this.friend, FriendResult.delete);
-
   }
 }

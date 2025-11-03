@@ -21,7 +21,7 @@ import { RatingService } from '../rating.service';
 
 enum DbId {
   favorites = 'favorites',
-  things = 'things'
+  things = 'things',
 }
 
 @Injectable({
@@ -145,8 +145,7 @@ export class FavoritesService {
   }
 
   private starredEvent(id: string, occurrence: OccurrenceSet) {
-    return this.favorites.events.includes(`${id}-${occurrence.start_time}`) ||
-    this.favorites.events.includes(`${id}`);
+    return this.favorites.events.includes(`${id}-${occurrence.start_time}`) || this.favorites.events.includes(`${id}`);
   }
 
   public async setEventStars(event: Event) {
@@ -309,9 +308,7 @@ export class FavoritesService {
       happening: false,
       longTimeString: '',
     };
-    let title = event.address ?
-      event.title + ' @ ' + event.address :
-      event.title;
+    let title = event.address ? event.title + ' @ ' + event.address : event.title;
     const result = await this.notificationService.scheduleAll(
       {
         id: event.id,
@@ -415,7 +412,7 @@ export class FavoritesService {
         }
       }
     } else {
-      things = things.filter(t => t.name != name);
+      things = things.filter((t) => t.name != name);
     }
     this.things.update(() => [...things]);
     await this.saveThings(this.things());
@@ -439,7 +436,12 @@ export class FavoritesService {
     await Preferences.set({ key: `${this.dataset}-${DbId.things}`, value: JSON.stringify(things) });
   }
 
-  public async getEventList(ids: string[], historical: boolean, rslEvents: RSLEvent[], today: boolean): Promise<Event[]> {
+  public async getEventList(
+    ids: string[],
+    historical: boolean,
+    rslEvents: RSLEvent[],
+    today: boolean,
+  ): Promise<Event[]> {
     let events = await this.db.getEventList(this.eventsFrom(ids));
 
     // Group events and Set event time string to favorited event occurrence
@@ -477,8 +479,9 @@ export class FavoritesService {
         event_type: { abbr: '', label: '', id: 0 },
         gpsCoords: { lat: 0, lng: 0 },
         slug: this.rslId(rslEvent, o),
-        description: `${o.who} is playing ${party}${rslEvent.artCar ? 'on the ' + rslEvent.artCar + ' mutant vehicle' : 'at ' + rslEvent.camp
-          }.`,
+        description: `${o.who} is playing ${party}${
+          rslEvent.artCar ? 'on the ' + rslEvent.artCar + ' mutant vehicle' : 'at ' + rslEvent.camp
+        }.`,
         occurrence_set: [
           {
             start_time: o.startTime,
@@ -573,7 +576,7 @@ export class FavoritesService {
 
   private async load() {
     try {
-      this.favorites = JSON.parse(await this.get(DbId.favorites, this.favorites));      
+      this.favorites = JSON.parse(await this.get(DbId.favorites, this.favorites));
       await this.getThings();
     } catch {
       this.favorites = this.noData();

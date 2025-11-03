@@ -8,11 +8,22 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="app-page">
-  <app-alphabetical-scroll-bar [hidden]="vm.byDist" [alphabet]="'#ABCDEFGHIJKLMNOPQRSTUVWXYZ'"
-    [disableInvalidLetters]="false" [prioritizeHidingInvalidLetters]="true" [letterMagnification]="true"
-    [magnifyDividers]="true" [magnificationMultiplier]="2" [magnificationCurve]="[1, .7, .6, .4, .2, 0]"
-    [exactX]="false" [navigateOnHover]="true" [letterSpacing]="'0.5%'" [offsetSizeCheckInterval]="100"
-    (letterChange)="goToLetterGroup($event)" (isActive)="!$event"></app-alphabetical-scroll-bar>
+  <app-alphabetical-scroll-bar
+    [hidden]="vm.byDist"
+    [alphabet]="'#ABCDEFGHIJKLMNOPQRSTUVWXYZ'"
+    [disableInvalidLetters]="false"
+    [prioritizeHidingInvalidLetters]="true"
+    [letterMagnification]="true"
+    [magnifyDividers]="true"
+    [magnificationMultiplier]="2"
+    [magnificationCurve]="[1, .7, .6, .4, .2, 0]"
+    [exactX]="false"
+    [navigateOnHover]="true"
+    [letterSpacing]="'0.5%'"
+    [offsetSizeCheckInterval]="100"
+    (letterChange)="goToLetterGroup($event)"
+    (isActive)="!$event"
+  ></app-alphabetical-scroll-bar>
   <div [class.side]="!vm.byDist" class="virtual-scroll-container ion-content-scroll-host" cdkVirtualScrollingElement>
     <ion-header collapse="condense">
       <ion-toolbar>
@@ -25,8 +36,14 @@
         <app-search placeholder="Find Art" (searched)="search($event)"></app-search>
         @if (vm.artTypes.length > 0) {
         <ion-buttons class="b-pad-r" slot="end">
-          <app-category [showSortBy]="false" id="art-types" allTitle="All Types" [(category)]="vm.artType"
-            (categoryChange)="categoryChanged()" [categories]="vm.artTypes"></app-category>
+          <app-category
+            [showSortBy]="false"
+            id="art-types"
+            allTitle="All Types"
+            [(category)]="vm.artType"
+            (categoryChange)="categoryChanged()"
+            [categories]="vm.artTypes"
+          ></app-category>
         </ion-buttons>
         }
       </ion-toolbar>

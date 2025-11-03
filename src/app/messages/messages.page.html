@@ -4,36 +4,25 @@
       <ion-back-button text="Back"></ion-back-button>
     </ion-buttons>
     <ion-title>Messages</ion-title>
-
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="app-page">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Messages
-      </ion-title>
-    </ion-toolbar>    
+      <ion-title size="large">Messages </ion-title>
+    </ion-toolbar>
   </ion-header>
-  @if (feed().rss && feed().rss.channel) {
-    @for (message of feed().rss.channel.item; track $index) {
-      @if (!message.read) {
-      <app-message-card (read)="markMessageAsRead(message)" [item]="message"></app-message-card>
-      }
-    }
-  }
-  @if (emails().length > 0) {
-    @for (email of emails(); track $index) {
-      @if (!email.read) {
-         <app-email-card  (read)="markAsRead(email)" [email]="email"></app-email-card>      
-      }
-    }
-  }
-  @if (unread() === 0) {
-    <div style="padding: 3rem"></div>
-    <div class="center">
+  @if (feed().rss && feed().rss.channel) { @for (message of feed().rss.channel.item; track $index) { @if (!message.read)
+  {
+  <app-message-card (read)="markMessageAsRead(message)" [item]="message"></app-message-card>
+  } } } @if (emails().length > 0) { @for (email of emails(); track $index) { @if (!email.read) {
+  <app-email-card (read)="markAsRead(email)" [email]="email"></app-email-card>
+  } } } @if (unread() === 0) {
+  <div style="padding: 3rem"></div>
+  <div class="center">
     <ion-text>No unread messages</ion-text>
-    </div>
+  </div>
   }
   <div style="padding: 3rem"></div>
 </ion-content>

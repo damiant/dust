@@ -7,15 +7,15 @@ export const streets = [
   0.283, // Esplanade
   0.335, // A
   0.367, // B
-  0.400, // C
-  0.430, // D
+  0.4, // C
+  0.43, // D
   0.462, // E
   0.519, // F
   0.553, // G
   0.584, // H
   0.615, // I
   0.641, // J
-  0.670 // K
+  0.67, // K
 ];
 
 export const defaultMapRadius = 5000;
@@ -30,7 +30,7 @@ export function toMapPoint(location: string | undefined, info?: MapInfo, pin?: P
 
   let l = location.toLowerCase();
   if (l === 'airport') {
-    l = `4:45 8000', Open Playa`
+    l = `4:45 8000', Open Playa`;
   }
   if (l.includes('ring road')) {
     // eg rod's ring road @ 7:45
@@ -60,17 +60,17 @@ export function toMapPoint(location: string | undefined, info?: MapInfo, pin?: P
   }
 
   const tmp = l.split('&');
-  const mp: MapPoint = (tmp[0].includes(':')) ? {
-    street: tmp[1]?.trim(),
-    clock: tmp[0]?.trim(),
-    info
-  } :
-    {
-      street: tmp[0]?.trim(),
-      clock: tmp[1]?.trim(),
-      info
-    };
-
+  const mp: MapPoint = tmp[0].includes(':')
+    ? {
+        street: tmp[1]?.trim(),
+        clock: tmp[0]?.trim(),
+        info,
+      }
+    : {
+        street: tmp[0]?.trim(),
+        clock: tmp[1]?.trim(),
+        info,
+      };
 
   if (facing) {
     // This shifts off the street so that the camp is facing the man
@@ -194,23 +194,19 @@ export function formatDistanceMiles(dist: number, short = false): string {
     return '';
   }
   if (imperial()) {
-    return short ?
-      `${Math.round(dist * 10) / 10}mi` :
-      `${Math.round(dist * 10) / 10} miles`;
+    return short ? `${Math.round(dist * 10) / 10}mi` : `${Math.round(dist * 10) / 10} miles`;
   } else {
     const km = dist * 1.60934;
-    return short ?
-      `${Math.round(km * 10) / 10}km` :
-      `${Math.round(km * 10) / 10} km`;
+    return short ? `${Math.round(km * 10) / 10}km` : `${Math.round(km * 10) / 10} km`;
   }
 }
 
 export function formatDistanceNice(dist: number): string {
-  return (dist >= 0.25) ? formatDistanceMiles(dist) : formatDistanceFt(dist);
+  return dist >= 0.25 ? formatDistanceMiles(dist) : formatDistanceFt(dist);
 }
 
 export function formatDistanceNiceShort(dist: number): string {
-  return (dist >= 0.25) ? formatDistanceMiles(dist, true) : formatDistanceFt(dist).replace(' ', '');
+  return dist >= 0.25 ? formatDistanceMiles(dist, true) : formatDistanceFt(dist).replace(' ', '');
 }
 
 export function formatDistanceFt(dist: number): string {
@@ -249,7 +245,9 @@ export function mapPointToPin(point: MapPoint, mapRadius: number): Pin | undefin
     return plot(
       clockOffset(toClock(point.clock), point.clockShift),
       streetOffset(toStreetRadius(point.street), point.streetShift),
-      undefined, mapRadius);
+      undefined,
+      mapRadius,
+    );
   } else if (point.feet) {
     if (point.streetOffset && point.clockOffset) {
       const offset = getPoint(toClock(point.clockOffset), toStreetRadius(point.streetOffset), mapRadius);
@@ -310,7 +308,7 @@ export function getPoint(clock: number, rad: number, circleRadius: number): Pin 
 }
 
 export function clockToDegree(c: number): number {
-  const r = 30.0 // 360 / 12;
+  const r = 30.0; // 360 / 12;
   return (c - (3 % 12)) * r;
 }
 
@@ -340,7 +338,12 @@ export function toClock(clock: string): number {
   return result;
 }
 
-export function calculateRelativePosition(you: GpsCoord, pin: GpsCoord, compassRotation: number, arrows = false): string {
+export function calculateRelativePosition(
+  you: GpsCoord,
+  pin: GpsCoord,
+  compassRotation: number,
+  arrows = false,
+): string {
   // Convert degrees to radians
   const degToRad = (degrees: number) => degrees * (Math.PI / 180);
   const radToDeg = (radians: number) => radians * (180 / Math.PI);
@@ -362,8 +365,7 @@ export function calculateRelativePosition(you: GpsCoord, pin: GpsCoord, compassR
 
   // Bearing formula
   const y = Math.sin(pinLon - userLon) * Math.cos(pinLat);
-  const x = Math.cos(userLat) * Math.sin(pinLat) -
-    Math.sin(userLat) * Math.cos(pinLat) * Math.cos(pinLon - userLon);
+  const x = Math.cos(userLat) * Math.sin(pinLat) - Math.sin(userLat) * Math.cos(pinLat) * Math.cos(pinLon - userLon);
   const bearingToPin = Math.atan2(y, x);
 
   // Convert bearing to degrees
@@ -372,7 +374,7 @@ export function calculateRelativePosition(you: GpsCoord, pin: GpsCoord, compassR
 
   // Calculate difference between bearing and heading
   let angleDiff = bearingToPinDeg - compassRotation;
-  angleDiff = (angleDiff + 180) % 360 - 180;
+  angleDiff = ((angleDiff + 180) % 360) - 180;
 
   // ↖ ↗ ↙ ↘ ↑ ← ↓ →
   if (arrows) {

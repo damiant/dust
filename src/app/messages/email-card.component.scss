@@ -1,32 +1,32 @@
 .image {
-    min-height: 180px;
-    width: 100%;
-    object-fit:contain;
-    margin-bottom: -5px;
+  min-height: 180px;
+  width: 100%;
+  object-fit: contain;
+  margin-bottom: -5px;
 }
 
 .image-container {
-    min-height: 180px;
-    width: 100%;
-    object-fit: cover;
-    background-color: rgba(0, 0, 0, 0.1);
+  min-height: 180px;
+  width: 100%;
+  object-fit: cover;
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .hide {
-    display: none;
+  display: none;
 }
 
 .top {
-    height: 360px;
+  height: 360px;
 }
 
 .item {
-    height: calc(var(--text-zoom) * 50 + 156px)
+  height: calc(var(--text-zoom) * 50 + 156px);
 }
 
 .right {
-    top: 0.5rem;
-    position: absolute;
-    right: 0.5rem;
-    z-index: 1;
+  top: 0.5rem;
+  position: absolute;
+  right: 0.5rem;
+  z-index: 1;
 }

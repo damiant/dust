@@ -16,21 +16,21 @@ import {
 } from '@ionic/angular/standalone';
 
 @Component({
-    selector: 'app-fav-map',
-    templateUrl: './fav-map.page.html',
-    styleUrls: ['./fav-map.page.scss'],
-    imports: [
-        CommonModule,
-        FormsModule,
-        MapComponent,
-        IonHeader,
-        IonContent,
-        IonTitle,
-        IonToast,
-        IonToolbar,
-        IonButtons,
-        IonBackButton,
-    ]
+  selector: 'app-fav-map',
+  templateUrl: './fav-map.page.html',
+  styleUrls: ['./fav-map.page.scss'],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MapComponent,
+    IonHeader,
+    IonContent,
+    IonTitle,
+    IonToast,
+    IonToolbar,
+    IonButtons,
+    IonBackButton,
+  ],
 })
 export class FavMapPage {
   private fav = inject(FavoritesService);

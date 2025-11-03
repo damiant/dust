@@ -36,7 +36,7 @@ export interface ArtCarEvent {
     IonIcon,
     IonText,
     CachedImgComponent,
-  ]
+  ],
 })
 export class RslEventComponent {
   private fav = inject(FavoritesService);
@@ -57,7 +57,7 @@ export class RslEventComponent {
     if (!this.showDayName()) return '';
     const event = this.event();
     if (!event.day) return '';
-    
+
     // Parse the day string (format: yyyy-mm-dd)
     const date = new Date(event.day);
     const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];

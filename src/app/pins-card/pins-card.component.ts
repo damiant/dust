@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, input, output } from '@angular/core';
-import { IonCard, IonItem, IonIcon, IonNote, ModalController } from "@ionic/angular/standalone";
+import { IonCard, IonItem, IonIcon, IonNote, ModalController } from '@ionic/angular/standalone';
 import { Thing } from '../data/models';
 import { locationOutline, add } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
@@ -7,20 +7,14 @@ import { ThingComponent, ThingResult } from '../thing/thing.component';
 
 import { clone, delay } from '../utils/utils';
 import { FavoritesService } from '../favs/favorites.service';
-import { CardHeaderComponent } from "../card-header/card-header.component";
+import { CardHeaderComponent } from '../card-header/card-header.component';
 
 @Component({
-    selector: 'app-pins-card',
-    templateUrl: './pins-card.component.html',
-    styleUrls: ['./pins-card.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-        IonNote,
-        IonIcon,
-        IonItem,
-        IonCard,
-        CardHeaderComponent
-    ]
+  selector: 'app-pins-card',
+  templateUrl: './pins-card.component.html',
+  styleUrls: ['./pins-card.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [IonNote, IonIcon, IonItem, IonCard, CardHeaderComponent],
 })
 export class PinsCardComponent {
   private modalCtrl = inject(ModalController);
@@ -49,9 +43,9 @@ export class PinsCardComponent {
       presentingElement: e,
       componentProps: thing
         ? {
-          thing: thing,
-          isEdit: thing,
-        }
+            thing: thing,
+            isEdit: thing,
+          }
         : undefined,
     });
     modal.present();
@@ -72,6 +66,4 @@ export class PinsCardComponent {
       }
     }
   }
-
-
 }

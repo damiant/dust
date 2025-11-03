@@ -21,6 +21,7 @@
     "precommit": "ng lint",
     "lint": "export NODE_OPTIONS='--max-old-space-size=8192' && ng lint",
     "prettify": "prettier \"**/*.{ts,html}\" --write",
+    "format": "prettier \"src/**/*.{ts,html,css,scss,json,md}\" --write",
     "prepare": "husky"
   },
   "private": true,
@@ -114,7 +115,7 @@
   ],
   "husky": {
     "hooks": {
-      "pre-commit": "bunx lint-staged && bun run lint",
+      "pre-commit": "bunx lint-staged && bun run lint && bun run format",
       "pre-push": "bun run lint"
     }
   },

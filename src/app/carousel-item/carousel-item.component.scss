@@ -1,28 +1,28 @@
 .item {
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 
-    background-color: transparent;
-    min-width: calc(80vw - 30px);
-    min-height: calc(60vw + 50px);
-    max-width: calc(80vw - 30px);
-    max-height: calc(60vw + 50px);
+  background-color: transparent;
+  min-width: calc(80vw - 30px);
+  min-height: calc(60vw + 50px);
+  max-width: calc(80vw - 30px);
+  max-height: calc(60vw + 50px);
 
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
-    padding-bottom: 3rem;
-    display: flex;
-    align-items: center;
-    align-self: flex-start;
-    justify-content: center;
-    flex-direction: column;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  padding-bottom: 3rem;
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+  justify-content: center;
+  flex-direction: column;
 }
 
 @media screen and (min-width: 700px) {
-    .item {
-        min-width: 15rem;
-        min-height: 20rem;
-        max-width: 15rem;
-        max-height: 20rem;
-    }
+  .item {
+    min-width: 15rem;
+    min-height: 20rem;
+    max-width: 15rem;
+    max-height: 20rem;
+  }
 }

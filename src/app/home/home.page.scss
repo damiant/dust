@@ -1,83 +1,83 @@
 ion-item:last-child {
-    --inner-border-width: 0;
+  --inner-border-width: 0;
 }
 
 ion-list {
-    --ion-item-background: transparent;
+  --ion-item-background: transparent;
 }
 
 ion-content .android {
-    --padding-top: var(--safe-area-inset-top);
+  --padding-top: var(--safe-area-inset-top);
 }
 
 .top {
-    margin-top: calc(var(--safe-area-inset-top) * 1.1 + 0.2rem);
+  margin-top: calc(var(--safe-area-inset-top) * 1.1 + 0.2rem);
 }
 
 .flex {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 5rem;
 }
 
 ion-button.tile {
-    --background: var(--ion-item-background);
-    --color: var(--ion-color-text);
+  --background: var(--ion-item-background);
+  --color: var(--ion-color-text);
 }
 
 .box {
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 
-    border-radius: 16px;
-    box-shadow: rgba(0, 0, 0, 0.12) 0px 4px 16px;
+  border-radius: 16px;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 4px 16px;
 }
 
 .close-btn {
-    position: absolute;
-    top: 0.2rem;
-    z-index: 1;
-    right: 0.8rem;
-    left: auto
+  position: absolute;
+  top: 0.2rem;
+  z-index: 1;
+  right: 0.8rem;
+  left: auto;
 }
 
 .search-btn {
-    position: absolute;
-    top: 0.2rem;
-    z-index: 1;
-    left: 0.8rem;
-    right: auto
+  position: absolute;
+  top: 0.2rem;
+  z-index: 1;
+  left: 0.8rem;
+  right: auto;
 }
 
 .header {
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    height: 100vw; //300px;
-    max-height: 430px;
-    border-top-left-radius: 20px !important;
-    border-top-right-radius: 20px !important;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vw; //300px;
+  max-height: 430px;
+  border-top-left-radius: 20px !important;
+  border-top-right-radius: 20px !important;
 }
 
 ion-toolbar {
-    --background: none;
+  --background: none;
 }
 
 ion-fab-button {
-    --background: rgba(0, 0, 0, 0.5) !important;
+  --background: rgba(0, 0, 0, 0.5) !important;
 }
 
 .back-title {
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 20px;
-    padding-left: 1rem;
-    padding-right: 1rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 20px;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .txt {
-    white-space: pre-line; // Adds breaks with /n
-    line-height: 150%;
-    font-size: 0.75rem;
+  white-space: pre-line; // Adds breaks with /n
+  line-height: 150%;
+  font-size: 0.75rem;
 }

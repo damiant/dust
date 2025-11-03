@@ -65,7 +65,7 @@ export class TabsPage implements OnInit {
             return await this.navTo('event', shareItem.id);
           case ShareInfoType.burnPlanner:
             return await this.burnPlanner.import(shareItem.id);
-          default: 
+          default:
             console.error(`Unknown share type ${shareItem.type}`);
             return;
         }

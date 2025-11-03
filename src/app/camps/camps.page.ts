@@ -41,7 +41,7 @@ interface CampsState {
   alphaIndex: number[];
   alphaValues: string[];
   cardHeight: number;
-  isScrollDisabled: boolean
+  isScrollDisabled: boolean;
   byDist: boolean;
   displayedDistMessage: boolean;
 }
@@ -88,7 +88,7 @@ function initialState(): CampsState {
     CategoryComponent,
     AlphabeticalScrollBarComponent,
     SortComponent,
-  ]
+  ],
 })
 export class CampsPage {
   public db = inject(DbService);
@@ -104,14 +104,12 @@ export class CampsPage {
     effect(() => {
       this.ui.scrollUp('camps', this.virtualScroll());
     });
-    effect(
-      () => {
-        const _year = this.db.selectedYear();
-        this.db.checkInit();
-        this.vm = initialState();
-        this.update('');
-      },
-    );
+    effect(() => {
+      const _year = this.db.selectedYear();
+      this.db.checkInit();
+      this.vm = initialState();
+      this.update('');
+    });
   }
 
   home() {

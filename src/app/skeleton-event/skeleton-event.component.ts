@@ -12,12 +12,6 @@ import {
   selector: 'app-skeleton-event',
   templateUrl: './skeleton-event.component.html',
   styleUrls: ['./skeleton-event.component.scss'],
-  imports: [
-    IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonCardSubtitle,
-    IonSkeletonText,
-    IonCardContent]
+  imports: [IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonSkeletonText, IonCardContent],
 })
-export class SkeletonEventComponent { }
+export class SkeletonEventComponent {}

@@ -1,6 +1,16 @@
 import {
-  Component, Signal, WritableSignal, computed, signal, input, inject, ViewChild,
-  effect, viewChild, ChangeDetectorRef, ChangeDetectionStrategy
+  Component,
+  Signal,
+  WritableSignal,
+  computed,
+  signal,
+  input,
+  inject,
+  ViewChild,
+  effect,
+  viewChild,
+  ChangeDetectorRef,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -20,7 +30,9 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
-  IonIcon, IonButton, IonLoading
+  IonIcon,
+  IonButton,
+  IonLoading,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { compassOutline, shareOutline } from 'ionicons/icons';
@@ -31,13 +43,14 @@ import { UiService } from '../ui/ui.service';
 import { ToastController } from '@ionic/angular';
 import { SettingsService } from '../data/settings.service';
 
-
 @Component({
   selector: 'app-pin-map',
   templateUrl: './pin-map.page.html',
   styleUrls: ['./pin-map.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IonLoading, IonButton,
+  imports: [
+    IonLoading,
+    IonButton,
     CommonModule,
     FormsModule,
     MapComponent,
@@ -50,8 +63,8 @@ import { SettingsService } from '../data/settings.service';
     IonBackButton,
     IonText,
     IonIcon,
-    SearchComponent
-  ]
+    SearchComponent,
+  ],
 })
 export class PinMapPage {
   private db = inject(DbService);
@@ -93,7 +106,7 @@ export class PinMapPage {
           this.location.back();
         }
       } else {
-        console.error('gps is ', g)
+        console.error('gps is ', g);
       }
       this._change.markForCheck();
     });
@@ -134,17 +147,16 @@ export class PinMapPage {
       if (p.info) {
         if (p.info?.title.toLowerCase().includes(value.toLowerCase())) {
           found = idx;
-        };
+        }
         if (p.info?.subtitle.toLowerCase().includes(value.toLowerCase())) {
           found = idx;
-        };
+        }
       }
       idx++;
     }
     if (found != -1) {
       this.map.triggerClick(found);
     }
-
   }
 
   private async mapFor(mapType: string): Promise<MapSet> {
@@ -154,7 +166,11 @@ export class PinMapPage {
       case MapType.Now:
         return await this.getEventsNow();
       case MapType.Restrooms:
-        return await this.fallback(await this.db.getGPSPoints(Names.restrooms, 'Block of restrooms'), 'Restrooms', mapType);
+        return await this.fallback(
+          await this.db.getGPSPoints(Names.restrooms, 'Block of restrooms'),
+          'Restrooms',
+          mapType,
+        );
       case MapType.Ice:
         return await this.fallback(await this.db.getMapPoints(Names.ice), 'Ice', mapType);
       case MapType.Medical:
@@ -187,9 +203,9 @@ export class PinMapPage {
   // Used to export restrooms placed on a test map and use it for Burning Man dataset
   private exportForBM(ms: MapSet) {
     const js = {
-      "title": "Restrooms",
-      "description": "Tip: At night, look for the blue light on poles marking porta potty banks.",
-      "points": []
+      title: 'Restrooms',
+      description: 'Tip: At night, look for the blue light on poles marking porta potty banks.',
+      points: [],
     };
     for (const pin of ms.points) {
       if (pin.gps) {
@@ -222,7 +238,6 @@ export class PinMapPage {
     };
   }
 
-
   private async getFriends(): Promise<MapSet> {
     const title = 'Friends';
     this.title.set(title);
@@ -233,7 +248,15 @@ export class PinMapPage {
     this.smallPins = friends.length > 100;
     for (let friend of friends) {
       if (friend.address) {
-        const point = await this.convertToPt(friend.name, friend.notes ?? '', friend.name, '', friend.address, '', undefined);
+        const point = await this.convertToPt(
+          friend.name,
+          friend.notes ?? '',
+          friend.name,
+          '',
+          friend.address,
+          '',
+          undefined,
+        );
         if (point) points.push(point);
       }
     }
@@ -258,8 +281,7 @@ export class PinMapPage {
         } else {
           this.canClearThing = true;
 
-          this.clearLabel = ['My Camp', 'My Bike'].includes(this.thingName()) ?
-            'Clear' : 'Delete';
+          this.clearLabel = ['My Camp', 'My Bike'].includes(this.thingName()) ? 'Clear' : 'Delete';
         }
       }
       if (thing.gps) {
@@ -269,7 +291,7 @@ export class PinMapPage {
           title: thing.name,
           label: this.iconFor(thing.name),
           location: '',
-          subtitle: `Saved ${this.since(thing.lastChanged)}. ${thing.notes}`
+          subtitle: `Saved ${this.since(thing.lastChanged)}. ${thing.notes}`,
         };
         result.points.push(pt);
         console.log(`thing.${thing.name} is ${thing.gps.lat}, ${thing.gps.lng}. x=${pt.x}, y=${pt.y}`);
@@ -311,7 +333,7 @@ export class PinMapPage {
     await this.ui.shareFile({
       filename: `${this.title()}.png`,
       contentType: 'image/png',
-      base64Data: img
+      base64Data: img,
     });
   }
 
@@ -335,7 +357,7 @@ export class PinMapPage {
             href: '/camp/' + camp.uid + '+' + 'Map',
           },
           camp.pin,
-          camp.facing
+          camp.facing,
         );
         if (point) points.push(point);
       }
@@ -365,9 +387,15 @@ export class PinMapPage {
       if (!point.info) {
         let label = undefined;
         switch (type) {
-          case Names.restrooms: label = 'R'; break;
-          case Names.ice: label = 'I'; break;
-          case Names.medical: label = '+'; break;
+          case Names.restrooms:
+            label = 'R';
+            break;
+          case Names.ice:
+            label = 'I';
+            break;
+          case Names.medical:
+            label = '+';
+            break;
         }
         point.info = { title: map.title, location: '', subtitle: `${index + 1} of ${map.points.length}`, label };
       }
@@ -414,7 +442,15 @@ export class PinMapPage {
     return point;
   }
 
-  private async convertToPt(title: string, moreInfo: string, label: string, id: string, location_string: string, imageUrl: string, pin: Pin | undefined): Promise<MapPoint | undefined> {
+  private async convertToPt(
+    title: string,
+    moreInfo: string,
+    label: string,
+    id: string,
+    location_string: string,
+    imageUrl: string,
+    pin: Pin | undefined,
+  ): Promise<MapPoint | undefined> {
     let point = toMapPoint(location_string, undefined, pin);
     if (point.street == 'unplaced') return undefined;
     point.info = {
@@ -431,7 +467,10 @@ export class PinMapPage {
 
   private initials(name: string, defaultValue: string | undefined): string {
     if (defaultValue) return defaultValue;
-    let inits = name.split(' ').map((s) => s.charAt(0)).join('');
+    let inits = name
+      .split(' ')
+      .map((s) => s.charAt(0))
+      .join('');
     return inits.substring(0, 2).toUpperCase();
   }
 
@@ -452,7 +491,7 @@ export class PinMapPage {
           href: `event/${event.uid}+Now`,
         },
         event.pin,
-        event.facing
+        event.facing,
       );
       mapPoint.gps = await this.db.getMapPointGPS(mapPoint);
       points.push(mapPoint);
@@ -463,6 +502,4 @@ export class PinMapPage {
       points,
     };
   }
-
-
 }

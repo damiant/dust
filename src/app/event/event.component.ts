@@ -19,23 +19,23 @@ import { FavoritesService } from '../favs/favorites.service';
 import { DbService } from '../data/db.service';
 
 @Component({
-    selector: 'app-event',
-    templateUrl: './event.component.html',
-    styleUrls: ['./event.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-        CommonModule,
-        RouterModule,
-        IonButtons,
-        IonButton,
-        IonIcon,
-        IonCard,
-        IonCardHeader,
-        IonCardSubtitle,
-        IonCardContent,
-        IonText,
-        CachedImgComponent,
-    ]
+  selector: 'app-event',
+  templateUrl: './event.component.html',
+  styleUrls: ['./event.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CommonModule,
+    RouterModule,
+    IonButtons,
+    IonButton,
+    IonIcon,
+    IonCard,
+    IonCardHeader,
+    IonCardSubtitle,
+    IonCardContent,
+    IonText,
+    CachedImgComponent,
+  ],
 })
 export class EventComponent {
   private router = inject(Router);

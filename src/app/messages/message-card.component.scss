@@ -21,10 +21,8 @@
 }
 
 .body {
-   
-    // zoom: 0.5;
-    // -moz-transform: scale(0.5);
-
+  // zoom: 0.5;
+  // -moz-transform: scale(0.5);
 }
 
 .item {
@@ -33,10 +31,10 @@
 
 .msg-container {
   display: flex;
-  flex-direction: row;  
+  flex-direction: row;
 }
 .msg {
-    max-width: 500px;    
+  max-width: 500px;
 }
 
 ion-avatar {
@@ -52,12 +50,12 @@ ion-avatar {
 }
 
 .buttons {
-  padding-top: 1rem;  
+  padding-top: 1rem;
   width: 100%;
   text-align: center;
 }
 
 .br {
-    background-color: green;
-    height: 10px;
+  background-color: green;
+  height: 10px;
 }

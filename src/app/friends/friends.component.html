@@ -3,19 +3,19 @@
   <ion-card-content>
     <ion-list>
       @if (friends.length === 0) {
-      <div class="center">
-        <ion-text class="large" color="medium">Press + to add your friends and their location to this list.</ion-text>
-      </div>
+        <div class="center">
+          <ion-text class="large" color="medium">Press + to add your friends and their location to this list.</ion-text>
+        </div>
       }
       @for (friend of friends; track friend) {
-      <ion-item (click)="editFriend(friend)">
-        <ion-icon slot="start" aria-hidden="true" [src]="'assets/icon/person.svg'"></ion-icon>
-        <ion-label>
-          {{ friend.name }}
-          <p>{{ friend.notes }}</p>
-        </ion-label>
-        <ion-text slot="end">{{ friend.address }}</ion-text>
-      </ion-item>
+        <ion-item (click)="editFriend(friend)">
+          <ion-icon slot="start" aria-hidden="true" [src]="'assets/icon/person.svg'"></ion-icon>
+          <ion-label>
+            {{ friend.name }}
+            <p>{{ friend.notes }}</p>
+          </ion-label>
+          <ion-text slot="end">{{ friend.address }}</ion-text>
+        </ion-item>
       }
     </ion-list>
   </ion-card-content>

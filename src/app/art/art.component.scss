@@ -1,37 +1,36 @@
 .image {
-    height: 200px;
-    width: 100%;
-    object-fit: cover;
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
 }
 
 .image-container {
-    height: 200px;
-    width: 100%;
-    object-fit: cover;
-    background-color: rgba(0, 0, 0, 0.1);
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .side-image {
-    padding-left: 0.5rem;
-    float: right;
-    height: 156px;
-    width: 33vw;
-    min-width: 150px;
-    object-fit: cover;
+  padding-left: 0.5rem;
+  float: right;
+  height: 156px;
+  width: 33vw;
+  min-width: 150px;
+  object-fit: cover;
 }
 
 .top {
-    height: 360px;
+  height: 360px;
 }
 
 .item {
-    height: calc(var(--text-zoom) * 50 + 156px)
+  height: calc(var(--text-zoom) * 50 + 156px);
 }
 
 .side {
-
-    ion-card-title,
-    ion-card-subtitle {
-        padding-right: 34vw;
-    }
+  ion-card-title,
+  ion-card-subtitle {
+    padding-right: 34vw;
+  }
 }

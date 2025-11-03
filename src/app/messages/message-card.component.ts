@@ -6,8 +6,9 @@ import {
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
-  IonText, IonAvatar,
-  IonButton
+  IonText,
+  IonAvatar,
+  IonButton,
 } from '@ionic/angular/standalone';
 import { Item } from '../message/rss-feed';
 import { addIcons } from 'ionicons';
@@ -19,22 +20,22 @@ import { UiService } from '../ui/ui.service';
 export type ArtImageStyle = 'top' | 'side' | 'none';
 
 @Component({
-    selector: 'app-message-card',
-    templateUrl: './message-card.component.html',
-    styleUrls: ['./message-card.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    animations: [FadeOut(500), FadeIn(300)],
-    imports: [
-        IonAvatar,
-        CommonModule,
-        IonCard,
-        IonCardHeader,
-        IonCardTitle,
-        IonCardSubtitle,
-        IonCardContent,
-        IonText,
-        IonButton
-    ]
+  selector: 'app-message-card',
+  templateUrl: './message-card.component.html',
+  styleUrls: ['./message-card.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [FadeOut(500), FadeIn(300)],
+  imports: [
+    IonAvatar,
+    CommonModule,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardSubtitle,
+    IonCardContent,
+    IonText,
+    IonButton,
+  ],
 })
 export class MessageCardComponent implements OnInit {
   item = input.required<Item>();
@@ -61,5 +62,4 @@ export class MessageCardComponent implements OnInit {
   open() {
     this.ui.openUrl(this.item().link);
   }
-
 }

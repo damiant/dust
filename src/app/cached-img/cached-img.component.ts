@@ -1,5 +1,14 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, input, inject, output, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  effect,
+  input,
+  inject,
+  output,
+  signal,
+} from '@angular/core';
 import { getCachedImage } from '../data/cache-store';
 import { environment } from 'src/environments/environment';
 
@@ -28,7 +37,7 @@ export class CachedImgComponent {
   loading = input('lazy');
   errorImage = input<string>('');
   loadingImage = input<string>('');
-  loaded = output<boolean>()
+  loaded = output<boolean>();
 
   constructor() {
     effect(async () => {
@@ -36,7 +45,7 @@ export class CachedImgComponent {
       if (src) {
         try {
           if (environment.offline) {
-            src = src.replace('https://api.dust.events/static/','/dust/data/static/');
+            src = src.replace('https://api.dust.events/static/', '/dust/data/static/');
           }
           this._src = await getCachedImage(src);
           this._change.markForCheck();

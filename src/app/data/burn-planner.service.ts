@@ -81,13 +81,13 @@ export class BurnPlannerService {
   private favs = inject(FavoritesService);
   private db = inject(DbService);
   public async import(path: string | undefined): Promise<void> {
-    if (!path) { 
+    if (!path) {
       console.error('No path provided for Burn Planner import');
       return;
     }
     const url = decodeURIComponent(path);
     this.presentToast(`Importing Burn Planner Events...`);
-    const data = await this.getData(url);    
+    const data = await this.getData(url);
     if (!data?.events) {
       console.error('No events found in Burn Planner data', data);
       return;

@@ -75,11 +75,12 @@ export class NotificationService {
   }
 
   private changeTimezone(date: Date, timeZone: string): Date {
-
     // suppose the date is 12:00 UTC
-    var invDate = new Date(date.toLocaleString('en-US', {
-      timeZone: timeZone
-    }));
+    var invDate = new Date(
+      date.toLocaleString('en-US', {
+        timeZone: timeZone,
+      }),
+    );
 
     var diff = date.getTime() - invDate.getTime();
 

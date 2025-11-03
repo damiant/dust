@@ -24,29 +24,27 @@ export enum ThingResult {
 }
 
 @Component({
-    selector: 'app-thing',
-    templateUrl: './thing.component.html',
-    styleUrls: ['./thing.component.scss'],
-    imports: [
-        CommonModule,
-        FormsModule,
-        IonItem,
-        IonButton,
-        IonContent,
-        IonButtons,
-        IonToolbar,
-        IonTitle,
-        IonInput,
-        IonHeader,
-    ]
+  selector: 'app-thing',
+  templateUrl: './thing.component.html',
+  styleUrls: ['./thing.component.scss'],
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonItem,
+    IonButton,
+    IonContent,
+    IonButtons,
+    IonToolbar,
+    IonTitle,
+    IonInput,
+    IonHeader,
+  ],
 })
 export class ThingComponent {
   private modalCtrl = inject(ModalController);
   private toastController = inject(ToastController);
   thing: Thing = { name: '', notes: '' };
   isEdit: boolean = false;
-
-
 
   constructor() {
     addIcons({ add, person });
@@ -75,8 +73,6 @@ export class ThingComponent {
 
     await toast.present();
   }
-
-
 
   deleteThing() {
     return this.modalCtrl.dismiss(this.thing, ThingResult.delete);

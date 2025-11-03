@@ -1,8 +1,8 @@
 <div class="header-container">
-  <h1 class="card-header">{{title()}}</h1>
+  <h1 class="card-header">{{ title() }}</h1>
   @if (!addHidden()) {
-  <ion-fab-button class="fab-header" (click)="addClicked.emit()" size="small">
-    <ion-icon [name]="icon()"></ion-icon>
-  </ion-fab-button>
+    <ion-fab-button class="fab-header" (click)="addClicked.emit()" size="small">
+      <ion-icon [name]="icon()"></ion-icon>
+    </ion-fab-button>
   }
 </div>

@@ -24,7 +24,7 @@ async function getCachedFile(imageUrl: string, prefix: string): Promise<string> 
 async function read(imageName: string, fileType: string, prefix: string): Promise<string> {
   const readFile = await Filesystem.readFile({
     directory: Directory.Cache,
-    path: `${imageName}`
+    path: `${imageName}`,
   });
   return `data:${prefix}/${fileType};base64,${readFile.data}`;
 }
@@ -37,11 +37,11 @@ async function storeAndRead(imageUrl: string, imageName: string, fileType: strin
 async function storeImage(url: string, path: string) {
   const response = await fetch(url);
   const blob = await response.blob();
-  const base64Data = await blobToBase64(blob) as string;
+  const base64Data = (await blobToBase64(blob)) as string;
   const savedFile = await Filesystem.writeFile({
     path: `${path}`,
     data: base64Data,
-    directory: Directory.Cache
+    directory: Directory.Cache,
   });
   return savedFile;
 }

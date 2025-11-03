@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { IonCard, IonCardContent, IonText } from "@ionic/angular/standalone";
+import { IonCard, IonCardContent, IonText } from '@ionic/angular/standalone';
 import { CardHeaderComponent } from '../card-header/card-header.component';
 import { DbService } from '../data/db.service';
 import { Dataset } from '../data/models';
@@ -10,7 +10,7 @@ import { SettingsService } from '../data/settings.service';
   selector: 'app-participate',
   templateUrl: './participate.component.html',
   styleUrls: ['./participate.component.scss'],
-  imports: [IonCard, IonCardContent, CardHeaderComponent, IonText]
+  imports: [IonCard, IonCardContent, CardHeaderComponent, IonText],
 })
 export class ParticipateComponent implements OnInit {
   db = inject(DbService);
@@ -19,13 +19,11 @@ export class ParticipateComponent implements OnInit {
   cta = signal('Sign In');
   private token: Token | undefined;
   message = signal('if you want to register or edit a theme camp, event, mutant vehicle or art.');
-  constructor() {
-
-  }
+  constructor() {}
 
   ngOnInit() {
     const ds = this.db.selectedDataset();
-    
+
     this.token = decodeToken();
 
     const ownerOf = this.entity(this.token, ds);
@@ -77,7 +75,7 @@ export class ParticipateComponent implements OnInit {
     if (token.art.length == 1) {
       return `your art or mutant vehicle`;
     }
-    if (token.events.length = 1) {
+    if ((token.events.length = 1)) {
       return `your event`;
     }
     if (token.events.length > 1) {
@@ -87,11 +85,12 @@ export class ParticipateComponent implements OnInit {
   }
 
   private hasNoAccessRights(token: Token): boolean {
-    return token.camps.length == 0 &&
+    return (
+      token.camps.length == 0 &&
       token.art.length == 0 &&
       token.events.length == 0 &&
       token.viewFestivals.length == 0 &&
       token.festivals.length == 0
+    );
   }
-
 }

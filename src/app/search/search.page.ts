@@ -1,7 +1,21 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonSpinner, IonList, IonItem, IonLabel, IonIcon, IonText, IonNote } from '@ionic/angular/standalone';
+import {
+  IonContent,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
+  IonButtons,
+  IonBackButton,
+  IonSpinner,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonIcon,
+  IonText,
+  IonNote,
+} from '@ionic/angular/standalone';
 import { SearchComponent } from './search.component';
 import { DbService } from '../data/db.service';
 import { RouterModule } from '@angular/router';
@@ -28,7 +42,13 @@ interface SearchState {
   templateUrl: './search.page.html',
   styleUrls: ['./search.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IonText, IonIcon, IonLabel, IonItem, IonList, IonSpinner,
+  imports: [
+    IonText,
+    IonIcon,
+    IonLabel,
+    IonItem,
+    IonList,
+    IonSpinner,
     IonBackButton,
     IonButtons,
     IonContent,
@@ -40,7 +60,8 @@ interface SearchState {
     SearchComponent,
     CommonModule,
     RouterModule,
-    FormsModule]
+    FormsModule,
+  ],
 })
 export class SearchPage {
   public vm: SearchState = { items: [], busy: false, gps: undefined };
@@ -57,7 +78,7 @@ export class SearchPage {
     });
   }
 
-  async ionViewDidEnter() {    
+  async ionViewDidEnter() {
     this.updatePosition();
   }
 
@@ -88,8 +109,12 @@ export class SearchPage {
       items.push(...this.asSearchItems(list.camps, 'camp', 'assets/icon/camp.svg', this.vm.gps));
       items.push(...this.asSearchItems(list.art, 'art', 'assets/icon/art.svg', this.vm.gps));
       items.push(...this.asSearchItems(list.events, 'event', 'assets/icon/calendar.svg', this.vm.gps));
-      items.push(...this.mapSetToSearchItems(list.restrooms, MapType.Restrooms, 'assets/icon/toilet.svg', this.vm.gps, top));
-      items.push(...this.mapSetToSearchItems(list.medical, MapType.Medical, 'assets/icon/medical.svg', this.vm.gps, top));
+      items.push(
+        ...this.mapSetToSearchItems(list.restrooms, MapType.Restrooms, 'assets/icon/toilet.svg', this.vm.gps, top),
+      );
+      items.push(
+        ...this.mapSetToSearchItems(list.medical, MapType.Medical, 'assets/icon/medical.svg', this.vm.gps, top),
+      );
       items.push(...this.mapSetToSearchItems(list.ice, MapType.Ice, 'assets/icon/ice.svg', this.vm.gps, top));
       if (terms) {
         const normalizedTerms = removeDiacritics(terms.toLowerCase());
@@ -111,12 +136,18 @@ export class SearchPage {
     }
   }
 
-  private mapSetToSearchItems(mapset: MapSet, linkName: string, icon: string, gps: GpsCoord | undefined, top: number): SearchItem[] {
+  private mapSetToSearchItems(
+    mapset: MapSet,
+    linkName: string,
+    icon: string,
+    gps: GpsCoord | undefined,
+    top: number,
+  ): SearchItem[] {
     const r: SearchItem[] = [];
     for (const item of mapset.points) {
       if (item.gps) {
         const dist = this.dist(gps, item.gps);
-        r.push({ title: mapset.title, icon, link: `/map/${linkName}`, dist })
+        r.push({ title: mapset.title, icon, link: `/map/${linkName}`, dist });
       }
       if (r.length >= top) {
         break;
@@ -130,7 +161,7 @@ export class SearchPage {
     for (const item of items) {
       let title = item.name ?? item.title;
       const dist = this.dist(gps, item.gpsCoords ?? item.gpsCoord);
-      r.push({ title, icon, link: `/${linkName}/${item.uid}+Search`, dist })
+      r.push({ title, icon, link: `/${linkName}/${item.uid}+Search`, dist });
     }
     return r;
   }
@@ -141,10 +172,8 @@ export class SearchPage {
       if (dist > 4) {
         return '';
       }
-      return calculateRelativePosition(gps, pin, this.geo.heading().trueHeading, true) +
-        formatDistanceNiceShort(dist);
+      return calculateRelativePosition(gps, pin, this.geo.heading().trueHeading, true) + formatDistanceNiceShort(dist);
     }
     return '';
   }
-
 }

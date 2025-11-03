@@ -1,5 +1,5 @@
 import { Component, computed, input } from '@angular/core';
-import { IonCard, IonCardHeader, IonItem, IonCardTitle } from "@ionic/angular/standalone";
+import { IonCard, IonCardHeader, IonItem, IonCardTitle } from '@ionic/angular/standalone';
 import { Event } from '../data/models';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -11,10 +11,10 @@ interface Item {
 }
 
 @Component({
-    selector: 'app-events-card',
-    templateUrl: './events-card.component.html',
-    styleUrls: ['./events-card.component.scss'],
-    imports: [IonCardTitle, IonItem, CommonModule, IonCardHeader, IonCard, RouterModule]
+  selector: 'app-events-card',
+  templateUrl: './events-card.component.html',
+  styleUrls: ['./events-card.component.scss'],
+  imports: [IonCardTitle, IonItem, CommonModule, IonCardHeader, IonCard, RouterModule],
 })
 export class EventsCardComponent {
   items = computed(() => {
@@ -31,8 +31,8 @@ export class EventsCardComponent {
 
       items.push({
         lines: 'none',
-        class: (event.happening) ? 'now' : event.old ? 'old' : '',
-        time: (event.timeString == lastTime) ? '' : event.timeString
+        class: event.happening ? 'now' : event.old ? 'old' : '',
+        time: event.timeString == lastTime ? '' : event.timeString,
       });
 
       lastTime = event.timeString;
@@ -41,9 +41,5 @@ export class EventsCardComponent {
   });
   events = input<Event[]>([]);
 
-  constructor() {
-
-  }
-
-
+  constructor() {}
 }

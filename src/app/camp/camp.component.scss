@@ -1,16 +1,16 @@
 .item {
-    height: calc(var(--text-zoom) * 50 + 156px)
+  height: calc(var(--text-zoom) * 50 + 156px);
 }
 
 .image {
-    padding-left: 0.5rem;
-    float: right;
-    height: 156px;
-    width: 33vw;
-    min-width: 150px;
-    object-fit: cover;
+  padding-left: 0.5rem;
+  float: right;
+  height: 156px;
+  width: 33vw;
+  min-width: 150px;
+  object-fit: cover;
 }
 
 .title {
-    padding-right: 33vw;
+  padding-right: 33vw;
 }

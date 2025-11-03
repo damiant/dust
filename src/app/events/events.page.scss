@@ -1,45 +1,45 @@
 ion-segment {
-    margin-left: 12px;
-    margin-right: 12px;
+  margin-left: 12px;
+  margin-right: 12px;
 }
 
 // Hides the scroll bar without affecting scrolling
 ion-segment::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .item {
-    height: 156px;
+  height: 156px;
 }
 
 .bold {
-    font-weight: bold !important;
-    text-transform: capitalize;
+  font-weight: bold !important;
+  text-transform: capitalize;
 }
 
 .message {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    padding: 2rem;
-    opacity: 0.5;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 2rem;
+  opacity: 0.5;
 }
 
 .small {
-    font-size: 26px;
-    padding-bottom: 16px;
+  font-size: 26px;
+  padding-bottom: 16px;
 }
 
 .smaller {
-    font-size: 21px;
-    padding-bottom: 19px;
+  font-size: 21px;
+  padding-bottom: 19px;
 }
 
 // Fix the prevent it creating a larger than screen width
 ::ng-deep .cdk-virtual-scroll-content-wrapper {
-    max-width: 100%;
+  max-width: 100%;
 }
 
 .b-pad-r {
-    padding-right: 0.5rem;
+  padding-right: 0.5rem;
 }

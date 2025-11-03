@@ -2,8 +2,19 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
-  IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardContent,
-  IonButton, IonIcon, IonCardHeader, IonButtons, IonBackButton, IonFabButton, IonFab
+  IonContent,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
+  IonCard,
+  IonCardContent,
+  IonButton,
+  IonIcon,
+  IonCardHeader,
+  IonButtons,
+  IonBackButton,
+  IonFabButton,
+  IonFab,
 } from '@ionic/angular/standalone';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 
@@ -27,9 +38,25 @@ import { Capacitor } from '@capacitor/core';
   templateUrl: './broadcast.page.html',
   styleUrls: ['./broadcast.page.scss'],
   standalone: true,
-  imports: [IonFab, IonFabButton, IonBackButton, IonIcon, PinEntryComponent,
-    IonButton, RouterModule, IonButtons, IonCardHeader, IonCardContent, IonCard,
-    IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [
+    IonFab,
+    IonFabButton,
+    IonBackButton,
+    IonIcon,
+    PinEntryComponent,
+    IonButton,
+    RouterModule,
+    IonButtons,
+    IonCardHeader,
+    IonCardContent,
+    IonCard,
+    IonContent,
+    IonHeader,
+    IonTitle,
+    IonToolbar,
+    CommonModule,
+    FormsModule,
+  ],
 })
 export class BroadcastPage implements OnInit {
   public art = signal<Art | undefined>(undefined);
@@ -55,7 +82,6 @@ export class BroadcastPage implements OnInit {
   private locationR = inject(Location);
   private connectionStatus: ConnectionStatus | undefined;
 
-
   constructor() {
     addIcons({ locationSharp, wifiSharp, cafeSharp });
   }
@@ -77,16 +103,15 @@ export class BroadcastPage implements OnInit {
     this.busy.set(false);
 
     this.setMessage();
-    Network.addListener('networkStatusChange', status => {
+    Network.addListener('networkStatusChange', (status) => {
       this.processNetwork(status);
     });
-
   }
 
   async start(): Promise<void> {
     try {
       this.processing.set(true);
-      this.watchId = await Geolocation.watchPosition({}, position => {
+      this.watchId = await Geolocation.watchPosition({}, (position) => {
         if (!position) {
           this.location.set(false);
           console.error('No position');
@@ -129,16 +154,13 @@ export class BroadcastPage implements OnInit {
     if (this.apiError() && this.connectionStatus.connected) {
       message += `Network appears to be connected but unable to broadcast ${this.art()?.name}'s location. Possible bad cell service or backend error.`;
     }
-    this.ui.presentAlert(this.alert,
-      message,
-      `Network Status`);
+    this.ui.presentAlert(this.alert, message, `Network Status`);
   }
 
   async checkAwake(): Promise<void> {
     const result = await KeepAwake.isSupported();
     if (result.isSupported) {
-      this.ui.presentAlert(this.alert,
-        `Your device supports keeping the screen awake.`, `Awake Status`);
+      this.ui.presentAlert(this.alert, `Your device supports keeping the screen awake.`, `Awake Status`);
     } else {
       this.ui.presentAlert(this.alert, `Your device does not support keeping the screen awake.`, 'Error');
     }
@@ -149,9 +171,11 @@ export class BroadcastPage implements OnInit {
       this.ui.presentAlert(this.alert, `Location is disabled.`);
       return;
     }
-    this.ui.presentAlert(this.alert,
+    this.ui.presentAlert(
+      this.alert,
       `Last location was ${this.position.coords.latitude}, ${this.position.coords.longitude} at ${this.timeStamp()}.`,
-      `Location Status`);
+      `Location Status`,
+    );
   }
 
   private processPosition(position: Position): void {
@@ -180,7 +204,9 @@ export class BroadcastPage implements OnInit {
       this.message.set(`${this.art()?.name}'s location is being broadcast to the dust app.`);
       this.location.set(true);
     } else {
-      this.message.set(`This will broadcast the location of ${this.art()?.name} so that users of the dust app can find it on the map.`);
+      this.message.set(
+        `This will broadcast the location of ${this.art()?.name} so that users of the dust app can find it on the map.`,
+      );
       this.location.set(false);
     }
   }
@@ -191,7 +217,6 @@ export class BroadcastPage implements OnInit {
       return;
     }
     try {
-
       let lat = position.coords.latitude;
       let lng = position.coords.longitude;
       if (!Capacitor.isNativePlatform()) {
@@ -242,5 +267,4 @@ export class BroadcastPage implements OnInit {
       this.locationR.back();
     }
   }
-
 }

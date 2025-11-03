@@ -1,36 +1,36 @@
 ion-segment {
-    margin-left: 12px;
-    margin-right: 12px;
+  margin-left: 12px;
+  margin-right: 12px;
 }
 
 .header-collapse-condense ion-toolbar:first-of-type {
-    padding-top: 0;
+  padding-top: 0;
 }
 
 ion-toolbar {
-    --padding-top: 0;
+  --padding-top: 0;
 }
 
 @media (prefers-color-scheme: dark) {
-    .rslLogo {
-        filter: invert(75%);
-    }
+  .rslLogo {
+    filter: invert(75%);
+  }
 }
 
 // Hides the scroll bar without affecting scrolling
 ion-segment::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .b-pad-r {
-    padding-right: 0.5rem;
+  padding-right: 0.5rem;
 }
 
 .message {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    padding: 2rem;
-    opacity: 0.5;
-    text-align: center;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 2rem;
+  opacity: 0.5;
+  text-align: center;
 }

@@ -3,11 +3,11 @@ import { SettingsService } from './data/settings.service';
 import { InAppReview } from '@capacitor-community/in-app-review';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RatingService {
   settings = inject(SettingsService);
-  constructor() { }
+  constructor() {}
 
   public async rateAfterUsage() {
     const key = 'favCount';

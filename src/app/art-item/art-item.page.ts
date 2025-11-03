@@ -25,10 +25,19 @@ import {
   IonToolbar,
   IonModal,
   IonProgressBar,
-  ToastController
+  ToastController,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { star, starOutline, shareOutline, personOutline, locateOutline, locationOutline, volumeHighOutline, checkmarkCircleOutline } from 'ionicons/icons';
+import {
+  star,
+  starOutline,
+  shareOutline,
+  personOutline,
+  locateOutline,
+  locationOutline,
+  volumeHighOutline,
+  checkmarkCircleOutline,
+} from 'ionicons/icons';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { EventPage } from '../event/event.page';
 import { canCreate } from '../map/map';
@@ -38,7 +47,8 @@ import { canCreate } from '../map/map';
   templateUrl: './art-item.page.html',
   styleUrls: ['./art-item.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IonModal,
+  imports: [
+    IonModal,
     FormsModule,
     RouterModule,
     MapModalComponent,
@@ -55,8 +65,8 @@ import { canCreate } from '../map/map';
     IonText,
     IonProgressBar,
     CachedImgComponent,
-    EventPage
-  ]
+    EventPage,
+  ],
 })
 export class ArtItemPage implements OnInit {
   private route = inject(ActivatedRoute);
@@ -83,7 +93,16 @@ export class ArtItemPage implements OnInit {
   audioLoading = signal(false);
 
   constructor() {
-    addIcons({ star, starOutline, shareOutline, personOutline, locateOutline, locationOutline, volumeHighOutline, checkmarkCircleOutline });
+    addIcons({
+      star,
+      starOutline,
+      shareOutline,
+      personOutline,
+      locateOutline,
+      locationOutline,
+      volumeHighOutline,
+      checkmarkCircleOutline,
+    });
   }
 
   async ngOnInit() {
@@ -115,18 +134,17 @@ export class ArtItemPage implements OnInit {
 
   private async setupAudio() {
     if (!this.art?.audio) return;
-    
+
     try {
-        // Online: try to cache audio for future offline use
-        this.audioLoading.set(true);
-        try {
-          const cachedUrl = await getCachedAudio(this.art.audio);
-          this.cachedAudioUrl.set(cachedUrl);
-        } catch (error) {
-          console.warn('Failed to cache audio, using original URL:', error);
-          this.cachedAudioUrl.set(this.art.audio);
-        }
-      
+      // Online: try to cache audio for future offline use
+      this.audioLoading.set(true);
+      try {
+        const cachedUrl = await getCachedAudio(this.art.audio);
+        this.cachedAudioUrl.set(cachedUrl);
+      } catch (error) {
+        console.warn('Failed to cache audio, using original URL:', error);
+        this.cachedAudioUrl.set(this.art.audio);
+      }
     } catch (error) {
       console.error('Error setting up audio:', error);
       // Fallback to original behavior
@@ -151,14 +169,16 @@ export class ArtItemPage implements OnInit {
 
   map() {
     if (this.db.artLocationsHidden()) {
-      this.ui.presentDarkToast(`Art locations cannot be displayed yet. ${this.db.locationsHidden().artMessage}.`, this.toastController);
+      this.ui.presentDarkToast(
+        `Art locations cannot be displayed yet. ${this.db.locationsHidden().artMessage}.`,
+        this.toastController,
+      );
       return;
     }
     if (!canCreate()) return;
     this.showMap = true;
   }
 
-  
   async tapImage() {
     this.imageTaps++;
     if (this.imageTaps > 2) {
@@ -167,7 +187,7 @@ export class ArtItemPage implements OnInit {
         // Route to broadcast page
         this.router.navigate(['/broadcast/' + this.art.uid + '+Art']);
       }
-    }    
+    }
   }
 
   async toggleStar() {

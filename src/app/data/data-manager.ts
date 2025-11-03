@@ -842,7 +842,7 @@ export class DataManager implements WorkerClass {
       return removeDiacritics(value);
     }
     if (Array.isArray(value)) {
-      return value.map(v => typeof v === 'string' ? removeDiacritics(v) : v);
+      return value.map((v) => (typeof v === 'string' ? removeDiacritics(v) : v));
     }
     return value;
   }
@@ -875,7 +875,9 @@ export class DataManager implements WorkerClass {
         return true;
       }
       if (removeDiacritics(occurrence.timeRange.toLowerCase()).includes(query)) {
-        event.occurrences = event.occurrences.filter((o) => removeDiacritics(o.timeRange.toLowerCase()).includes(query));
+        event.occurrences = event.occurrences.filter((o) =>
+          removeDiacritics(o.timeRange.toLowerCase()).includes(query),
+        );
         return true;
       }
     }
@@ -969,10 +971,10 @@ export class DataManager implements WorkerClass {
           (event) => this.onDay(day, event, timeRange, showPast) && this.eventIsCategory(category, event),
         );
       }
-      const fuse = new Fuse(events, { 
-        keys: ['title', 'description', 'camp', 'location'], 
+      const fuse = new Fuse(events, {
+        keys: ['title', 'description', 'camp', 'location'],
         ignoreLocation: true,
-        getFn: this.normalizingGetFn.bind(this)
+        getFn: this.normalizingGetFn.bind(this),
       });
       const found = fuse.search(query, { limit: top ? top : 10 });
       for (let c of found) {
@@ -1106,10 +1108,10 @@ export class DataManager implements WorkerClass {
     if (query && !this.isClockString(query)) {
       query = this.scrubQuery(query);
 
-      const fuse = new Fuse(this.camps, { 
-        keys: ['name', 'description', 'location_string'], 
+      const fuse = new Fuse(this.camps, {
+        keys: ['name', 'description', 'location_string'],
         ignoreLocation: true,
-        getFn: this.normalizingGetFn.bind(this)
+        getFn: this.normalizingGetFn.bind(this),
       });
       const found = fuse.search(query, { limit: top ? top : 10 });
       for (let c of found) {
@@ -1153,7 +1155,7 @@ export class DataManager implements WorkerClass {
       const normalizedName = removeDiacritics(camp.name.toLowerCase());
       const normalizedLocation = camp.location_string ? removeDiacritics(camp.location_string.toLowerCase()) : '';
       const normalizedDescription = camp.description ? removeDiacritics(camp.description.toLowerCase()) : '';
-      
+
       if (normalizedName.includes(query) || normalizedLocation.includes(query)) {
         result = 'Important';
       } else {
@@ -1175,7 +1177,7 @@ export class DataManager implements WorkerClass {
       const fuse = new Fuse(this.art, {
         keys: ['name', 'description', 'location_string', 'artist'],
         ignoreLocation: true,
-        getFn: this.normalizingGetFn.bind(this)
+        getFn: this.normalizingGetFn.bind(this),
       });
       const found = fuse.search(query, { limit: top ? top : 10 });
       for (let c of found) {
@@ -1224,7 +1226,7 @@ export class DataManager implements WorkerClass {
     const normalizedName = removeDiacritics(art.name.toLowerCase());
     const normalizedLocation = art.location_string ? removeDiacritics(art.location_string.toLowerCase()) : '';
     const normalizedDescription = art.description ? removeDiacritics(art.description.toLowerCase()) : '';
-    
+
     if (normalizedName.includes(query) || normalizedLocation.includes(query)) {
       return 'Important';
     }
@@ -1296,17 +1298,13 @@ export class DataManager implements WorkerClass {
       if (event.all_day) return 'No Match';
     }
     if (terms == '' || !terms) return 'Match';
-    
+
     const normalizedTitle = removeDiacritics(event.title.toLowerCase());
     const normalizedCamp = event.camp ? removeDiacritics(event.camp.toLowerCase()) : '';
     const normalizedLocation = event.location ? removeDiacritics(event.location.toLowerCase()) : '';
     const normalizedDescription = removeDiacritics(event.description.toLowerCase());
-    
-    if (
-      normalizedTitle.includes(terms) ||
-      normalizedCamp.includes(terms) ||
-      normalizedLocation.includes(terms)
-    ) {
+
+    if (normalizedTitle.includes(terms) || normalizedCamp.includes(terms) || normalizedLocation.includes(terms)) {
       return 'Important';
     }
     if (normalizedDescription.includes(terms)) {

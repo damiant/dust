@@ -25,7 +25,6 @@ export class CalendarService {
 
   add(event: CalendarEvent): void {
     this.events.push(event);
-    
   }
 
   async launch(): Promise<string> {
@@ -35,14 +34,26 @@ export class CalendarService {
       console.log(this.events);
       const status = await Network.getStatus();
       if (!status.connected) {
-        this.ui.presentToast(`The calendar export feature requires internet access but you do not have a connection.`, this.toast, undefined, 5000);
+        this.ui.presentToast(
+          `The calendar export feature requires internet access but you do not have a connection.`,
+          this.toast,
+          undefined,
+          5000,
+        );
         return '';
-
       }
       this.ui.presentDarkToast('Exporting calendar...', this.toast);
-      const res = await fetch(`https://api.dust.events/calendar`, { method: 'POST', body: JSON.stringify(this.events) });
+      const res = await fetch(`https://api.dust.events/calendar`, {
+        method: 'POST',
+        body: JSON.stringify(this.events),
+      });
       if (res.status !== 200) {
-        this.ui.presentToast(`The calendar export feature requires internet access but an error ${res.status} occurred trying to access the feature.`, this.toast, undefined, 5000);
+        this.ui.presentToast(
+          `The calendar export feature requires internet access but an error ${res.status} occurred trying to access the feature.`,
+          this.toast,
+          undefined,
+          5000,
+        );
         return '';
       }
       const { url } = await res.json();

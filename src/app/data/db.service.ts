@@ -331,7 +331,6 @@ export class DbService {
         }
       }
 
-
       if (!status.connected) {
         onlyRead = true;
       }

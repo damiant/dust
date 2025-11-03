@@ -18,12 +18,10 @@ interface PrintState {
 }
 
 @Component({
-    selector: 'app-print-favs',
-    templateUrl: './print-favs.page.html',
-    styleUrls: ['./print-favs.page.scss'],
-    imports: [
-        CommonModule, FormsModule
-    ]
+  selector: 'app-print-favs',
+  templateUrl: './print-favs.page.html',
+  styleUrls: ['./print-favs.page.scss'],
+  imports: [CommonModule, FormsModule],
 })
 export class PrintFavsPage {
   private location = inject(Location);
@@ -53,7 +51,7 @@ export class PrintFavsPage {
   async init() {
     const favs = await this.fav.getFavorites();
     this.vm.music = await this.fav.getRSLEventList(favs.rslEvents);
-    this.vm.events = await this.fav.getEventList(favs.events, this.db.isHistorical(), [], false)
+    this.vm.events = await this.fav.getEventList(favs.events, this.db.isHistorical(), [], false);
     this.vm.camps = await this.db.getCampList(favs.camps);
     this.vm.art = await this.db.getArtList(favs.art);
     this.vm.hide = false;
@@ -64,5 +62,4 @@ export class PrintFavsPage {
     await delay(500);
     await PrintWebview.print();
   }
-
 }

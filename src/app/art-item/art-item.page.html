@@ -19,8 +19,12 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-modal [isOpen]="showEvent" (didDismiss)="showEvent = false" [initialBreakpoint]="0.9"
-    [breakpoints]="[0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]">
+  <ion-modal
+    [isOpen]="showEvent"
+    (didDismiss)="showEvent = false"
+    [initialBreakpoint]="0.9"
+    [breakpoints]="[0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]"
+  >
     <ng-template>
       <app-event [filterDays]="false" imageLocation="bottom" class="pad" [eventId]="eventId"></app-event>
     </ng-template>
@@ -38,8 +42,9 @@
     @if (art.artist) {
     <ion-item>
       <ion-icon slot="start" name="person-outline"></ion-icon>
-      <ion-label [color]="art.contact_email ? 'primary': ''" (click)="mailArtist()">{{art.artist}}
-        {{hometown}}</ion-label>
+      <ion-label [color]="art.contact_email ? 'primary': ''" (click)="mailArtist()"
+        >{{art.artist}} {{hometown}}</ion-label
+      >
     </ion-item>
     }
     <ion-item>
@@ -52,29 +57,31 @@
       <ion-icon slot="start" name="volume-high-outline"></ion-icon>
       <ion-label>
         @if (audioLoading()) {
-          <div class="audio-loading">
-            <ion-text color="medium">Loading audio...</ion-text>
-            <ion-progress-bar type="indeterminate"></ion-progress-bar>
-          </div>
+        <div class="audio-loading">
+          <ion-text color="medium">Loading audio...</ion-text>
+          <ion-progress-bar type="indeterminate"></ion-progress-bar>
+        </div>
         } @else {
-          <div class="audio-container">
-            <audio controls style="width: 100%">
-              <source [src]="cachedAudioUrl() || art.audio" type="audio/mpeg">
-            </audio>
-          </div>
+        <div class="audio-container">
+          <audio controls style="width: 100%">
+            <source [src]="cachedAudioUrl() || art.audio" type="audio/mpeg" />
+          </audio>
+        </div>
         }
       </ion-label>
     </ion-item>
     }
 
     <ion-item>
-      <ion-text style="padding-right: 1rem; white-space: pre-line"
-        class="text selectable">{{art.description}}</ion-text>
+      <ion-text style="padding-right: 1rem; white-space: pre-line" class="text selectable"
+        >{{art.description}}</ion-text
+      >
     </ion-item>
 
     <div class="center" [hidden]="star">
-      <ion-button size="large" style="padding-bottom: 1rem" (click)="toggleStar()" shape="round">Add To
-        Favorites</ion-button>
+      <ion-button size="large" style="padding-bottom: 1rem" (click)="toggleStar()" shape="round"
+        >Add To Favorites</ion-button
+      >
     </div>
 
     @if (events.length > 0) {

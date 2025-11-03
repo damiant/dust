@@ -1,16 +1,16 @@
 .item {
-    height: calc(var(--text-zoom) * 50 + 156px)
+  height: calc(var(--text-zoom) * 50 + 156px);
 }
 
 // Fix the prevent it creating a larger than screen width
 ::ng-deep .cdk-virtual-scroll-content-wrapper {
-    max-width: 100%;
+  max-width: 100%;
 }
 
 .b-pad-r {
-    padding-right: 0.5rem;
+  padding-right: 0.5rem;
 }
 
 .side {
-    padding-right: 16px;
+  padding-right: 16px;
 }

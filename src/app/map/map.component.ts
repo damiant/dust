@@ -1,7 +1,18 @@
 import { CommonModule } from '@angular/common';
 import {
-  Component, ElementRef, Input, OnDestroy, OnInit, effect, input,
-  viewChild, inject, output, model, ChangeDetectionStrategy, ChangeDetectorRef
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  effect,
+  input,
+  viewChild,
+  inject,
+  output,
+  model,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { LiveLocation, LocationEnabledStatus, MapInfo, MapPoint, Pin } from '../data/models';
 import { calculateRelativePosition, defaultMapRadius, distance, formatDistanceNice, mapPointToPin } from './map.utils';
@@ -29,15 +40,8 @@ const geolocateInterval = 10000;
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
-  imports: [
-    RouterModule,
-    CommonModule,
-    MessageComponent,
-    IonText,
-    IonButton,
-    CachedImgComponent
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  imports: [RouterModule, CommonModule, MessageComponent, IonText, IonButton, CachedImgComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MapComponent implements OnInit, OnDestroy {
   private geo = inject(GeoService);
@@ -79,11 +83,9 @@ export class MapComponent implements OnInit, OnDestroy {
   private liveInterval: any;
   scrolled = output<ScrollResult>();
 
-
-
   @Input() set points(points: MapPoint[]) {
     if (this.pointsSet) {
-      // The map is already showing. 
+      // The map is already showing.
       // Check if points array reference is the same (navigation back scenario)
       if (this._points === points) {
         return; // Points didn't change (probably clicking back)
@@ -129,7 +131,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   private matchesId(m: MapPoint, l: LiveLocation): boolean {
-    return (m.info?.id === `u-${l.id}`) || (m.info?.id === `${l.id}`);
+    return m.info?.id === `u-${l.id}` || m.info?.id === `${l.id}`;
   }
   private async updateLive(locations: LiveLocation[]) {
     let doUpdate = false;
@@ -175,7 +177,7 @@ export class MapComponent implements OnInit, OnDestroy {
     try {
       const now = new Date().getTime();
       const diff = now - parseInt(timestamp);
-      return (diff > 8.64e+7); // 24 hours
+      return diff > 8.64e7; // 24 hours
     } catch {
       return false;
     }
@@ -193,7 +195,7 @@ export class MapComponent implements OnInit, OnDestroy {
     }
     console.warn(`${name} is ${formatDistanceNice(dist)} from the event`);
     return false;
-    // 
+    //
   }
 
   public async capture(): Promise<string | undefined> {
@@ -224,7 +226,7 @@ export class MapComponent implements OnInit, OnDestroy {
       // Only select one point
       this.selectedPoint = undefined;
     }
-    this.hideCompass = !await this.db.hasGeoPoints();
+    this.hideCompass = !(await this.db.hasGeoPoints());
     await delay(150);
     this.update();
   }
@@ -232,7 +234,12 @@ export class MapComponent implements OnInit, OnDestroy {
   async locationClick() {
     await this.geo.checkPermissions();
     if (this.geo.gpsPermission() == 'denied') {
-      this.ui.presentToast('Location services need to be enabled in settings on your device', this.toastController, undefined, 5000);
+      this.ui.presentToast(
+        'Location services need to be enabled in settings on your device',
+        this.toastController,
+        undefined,
+        5000,
+      );
       return;
     }
     this.showGeolocationMessage();
@@ -293,12 +300,11 @@ export class MapComponent implements OnInit, OnDestroy {
       }
       if (change === 'denied') {
         this.footer = this.disabledMessage;
-
       }
       if (change === 'none') {
         this.footer = undefined;
       }
-      this.footerClass = (this.footer == this.disabledMessage) ? 'warning' : '';
+      this.footerClass = this.footer == this.disabledMessage ? 'warning' : '';
       this._change.detectChanges();
     });
   }
@@ -385,16 +391,16 @@ export class MapComponent implements OnInit, OnDestroy {
     }
 
     const map: MapModel = {
-      image: this.src,// 'assets/map2.webp',
+      image: this.src, // 'assets/map2.webp',
       width: 0,
       height: 0,
       defaultPinSize: pinSize,
       pinSizeMultiplier: this.db.selectedDataset().pin_size_multiplier,
       pins: [],
-      backgroundColor: this.ui.darkMode() ? 0x111111 : 0xDDDDDD,
+      backgroundColor: this.ui.darkMode() ? 0x111111 : 0xdddddd,
       compass: { uuid: 'compass', x: compassPt.x, z: compassPt.y, color: 'compass', size: pinSize, label: '' },
       pinClicked: this.pinClicked.bind(this),
-    }
+    };
 
     if (this.points.length == 1) {
       this.points[0].animated = true;
@@ -415,11 +421,12 @@ export class MapComponent implements OnInit, OnDestroy {
         }
         map.pins.push({
           uuid: `${i}`,
-          x: pin.x, z: pin.y,
+          x: pin.x,
+          z: pin.y,
           color: point.info?.bgColor ?? 'primary',
           animated: point.animated,
           size,
-          label
+          label,
         });
         if (sameList.length > 1) {
           for (const idx of sameList) {
@@ -435,7 +442,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.mapResult = await init3D(this.container().nativeElement, map);
     this.mapResult.scrolled = (result: ScrollResult) => {
       this.scrolled.emit(result);
-    }
+    };
     this._viewReady = true;
     this.mapClass = 'fade-in';
     await this.checkGeolocation();
@@ -481,7 +488,6 @@ export class MapComponent implements OnInit, OnDestroy {
     if (this.hideCompass) {
       return;
     }
-
 
     const hasGeo = await this.geo.checkPermissions();
 
@@ -551,7 +557,7 @@ export class MapComponent implements OnInit, OnDestroy {
       const dist = formatDistanceNice(least);
       if (least > 50) {
         if (this.settings.settings.locationEnabled === LocationEnabledStatus.Enabled) {
-          this.footer = (you.lat == 0) ? 'Calculating location' : 'You are outside of the Event';
+          this.footer = you.lat == 0 ? 'Calculating location' : 'You are outside of the Event';
         } else {
           this.footer = this.disabledMessage;
           this.footerClass = 'warning';
@@ -567,7 +573,6 @@ export class MapComponent implements OnInit, OnDestroy {
       }
     }
   }
-
 
   private setupCompass() {
     // Plugin is undefined on web
@@ -591,22 +596,24 @@ export class MapComponent implements OnInit, OnDestroy {
   mapClick(event: MouseEvent) {
     this.closePopover();
     let left = event.clientX - 100;
-    if (left < 0) { left = 0; }
+    if (left < 0) {
+      left = 0;
+    }
     if (left + 200 > window.innerWidth) {
       left = window.innerWidth - 200;
     }
     let top = event.clientY;
     if (top + 300 > window.innerHeight) {
       top = window.innerHeight - 300;
-      if (top < 0) { top = 0; }
+      if (top < 0) {
+        top = 0;
+      }
     }
     this.popover().nativeElement.style.setProperty('left', `${left}px`);
     this.popover().nativeElement.style.setProperty('top', `${top}px`);
   }
 
-  popReady() {
-
-  }
+  popReady() {}
 
   ngOnDestroy(): void {
     this.routerOutlet.swipeGesture = true;
@@ -624,7 +631,6 @@ export class MapComponent implements OnInit, OnDestroy {
       this.mapResult.dispose();
     }
   }
-
 
   private compassError(error: CompassError) {
     console.error(error);

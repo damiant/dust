@@ -1,41 +1,40 @@
-
 app-cached-img {
-    --width: 64px;
-    --height: 64px;
-    --border-radius: 0.5rem;
-    padding-right: 1rem;
+  --width: 64px;
+  --height: 64px;
+  --border-radius: 0.5rem;
+  padding-right: 1rem;
 }
 
 .row {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .select {
-    background-color: rgba(0,0,0,0.1);
-    border-radius: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
 }
 
 .card {
-    display: flex;
-    flex-direction: row;
-    width: 80%;
-    padding: 1rem;
+  display: flex;
+  flex-direction: row;
+  width: 80%;
+  padding: 1rem;
 }
 
 .info {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;        
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 p {
-    margin: 0;
+  margin: 0;
 }
 
 h3 {
-    font-family: 'Gelion Medium';
-    padding-top: 0;
-    padding-bottom: 0;
-    margin: 0;
+  font-family: 'Gelion Medium';
+  padding-top: 0;
+  padding-bottom: 0;
+  margin: 0;
 }

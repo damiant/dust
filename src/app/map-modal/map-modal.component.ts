@@ -4,10 +4,10 @@ import { MapPoint } from '../data/models';
 import { IonModal, IonText } from '@ionic/angular/standalone';
 
 @Component({
-    selector: 'app-map-modal',
-    templateUrl: './map-modal.component.html',
-    styleUrls: ['./map-modal.component.scss'],
-    imports: [MapComponent, IonModal, IonText]
+  selector: 'app-map-modal',
+  templateUrl: './map-modal.component.html',
+  styleUrls: ['./map-modal.component.scss'],
+  imports: [MapComponent, IonModal, IonText],
 })
 export class MapModalComponent {
   show = model(false);
