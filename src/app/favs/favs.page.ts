@@ -1,4 +1,12 @@
-import { Component, OnInit, effect, viewChild, inject, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  effect,
+  viewChild,
+  inject,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -13,7 +21,12 @@ import {
   IonTitle,
   IonToolbar,
   IonItem,
-  IonItemSliding, IonItemOptions, IonItemOption, IonPopover, IonList, IonLabel
+  IonItemSliding,
+  IonItemOptions,
+  IonItemOption,
+  IonPopover,
+  IonList,
+  IonLabel,
 } from '@ionic/angular/standalone';
 import { Router, RouterModule } from '@angular/router';
 import { Art, Camp, Event, MapPoint } from '../data/models';
@@ -34,7 +47,6 @@ import { CalendarService } from '../calendar.service';
 import { ToastController, AlertController } from '@ionic/angular';
 import { MessageComponent } from '../message/message.component';
 import { getTimeZoneOffsetHours } from '../utils/date-utils';
-
 
 enum Filter {
   All = '',
@@ -84,7 +96,10 @@ function initialState(): FavsState {
   templateUrl: './favs.page.html',
   styleUrls: ['./favs.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IonLabel, IonList, IonPopover,
+  imports: [
+    IonLabel,
+    IonList,
+    IonPopover,
     IonItemOption,
     IonItemOptions,
     IonItemSliding,
@@ -108,8 +123,8 @@ function initialState(): FavsState {
     ArtComponent,
     CategoryComponent,
     SearchComponent,
-    MessageComponent
-  ]
+    MessageComponent,
+  ],
 })
 export class FavsPage implements OnInit {
   private fav = inject(FavoritesService);
@@ -173,19 +188,18 @@ export class FavsPage implements OnInit {
       buttons: [
         {
           text: 'Cancel',
-          role: 'cancel'
+          role: 'cancel',
         },
         {
           text: 'Clear All',
           role: 'destructive',
           handler: async () => {
-
             await this.fav.clearFavs();
             this.fav.changed();
             await this.update();
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
 
     await alert.present();
@@ -407,7 +421,7 @@ export class FavsPage implements OnInit {
   }
 
   async launchCalendar() {
-    window.open(this.calendarUrl, "_blank");
+    window.open(this.calendarUrl, '_blank');
     await this.ui.presentToast(
       `${this.vm.events.length} events synced with your ${this.db.selectedDataset().title} calendar.`,
       this.toastController,
@@ -431,7 +445,7 @@ export class FavsPage implements OnInit {
         end: event.occurrence_set[0].end_time,
         location: event.camp + location,
         timeZone: this.db.getTimeZone(),
-        id: `dust-${event.uid}`
+        id: `dust-${event.uid}`,
       });
     }
     return await this.calendar.launch();
@@ -439,13 +453,13 @@ export class FavsPage implements OnInit {
 
   private async addReminders() {
     const favs = await this.fav.getFavorites();
-    
+
     for (let event of favs.privateEvents) {
       const e = new Date(event.start);
       const offset = getTimeZoneOffsetHours(this.db.getTimeZone());
       e.setUTCMinutes(e.getUTCMinutes() + 60);
       e.setUTCHours(e.getUTCHours() + offset);
-      const end = e.toISOString().replace('Z','');
+      const end = e.toISOString().replace('Z', '');
 
       this.calendar.add({
         id: `dust-reminder-${event.id}`,

@@ -1,30 +1,30 @@
 .page {
-    padding-left: 2rem;
-    padding-right: 2rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
 }
 
 .image {
-    padding-top: 1rem;
-    width: 100%;
-    object-fit: cover;
+  padding-top: 1rem;
+  width: 100%;
+  object-fit: cover;
 }
 
 .popover-image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    --border-radius: 0.25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  --border-radius: 0.25rem;
 }
 
 ion-popover {
-    --min-width: 95vw;
+  --min-width: 95vw;
 }
 
 .btn {
-    padding: 0.5rem;
-    float: right;
+  padding: 0.5rem;
+  float: right;
 }
 
 .text {
-    padding-bottom: 1rem;
+  padding-bottom: 1rem;
 }

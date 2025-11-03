@@ -1,4 +1,17 @@
-import { Component, OnInit, signal, input, viewChild, inject, OnDestroy, computed, effect, output, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  signal,
+  input,
+  viewChild,
+  inject,
+  OnDestroy,
+  computed,
+  effect,
+  output,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -47,29 +60,29 @@ import { EventChanged, EventsService } from '../events/events.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-    selector: 'app-event',
-    templateUrl: './event.page.html',
-    styleUrls: ['./event.page.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-        CommonModule,
-        FormsModule,
-        MapComponent,
-        IonItem,
-        IonButton,
-        IonText,
-        IonIcon,
-        IonLabel,
-        IonBadge,
-        IonContent,
-        IonList,
-        IonButtons,
-        IonToolbar,
-        IonBackButton,
-        IonHeader,
-        IonPopover,
-        CachedImgComponent,
-    ]
+  selector: 'app-event',
+  templateUrl: './event.page.html',
+  styleUrls: ['./event.page.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CommonModule,
+    FormsModule,
+    MapComponent,
+    IonItem,
+    IonButton,
+    IonText,
+    IonIcon,
+    IonLabel,
+    IonBadge,
+    IonContent,
+    IonList,
+    IonButtons,
+    IonToolbar,
+    IonBackButton,
+    IonHeader,
+    IonPopover,
+    CachedImgComponent,
+  ],
 })
 export class EventPage implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
@@ -108,7 +121,17 @@ export class EventPage implements OnInit, OnDestroy {
   imageLocation = input<ImageLocation>('top');
   opened = output<string>();
   constructor() {
-    addIcons({ shareOutline, locationOutline, chevronForwardOutline, chevronBackOutline, timeOutline, star, starOutline, pricetagOutline, closeCircleOutline });
+    addIcons({
+      shareOutline,
+      locationOutline,
+      chevronForwardOutline,
+      chevronBackOutline,
+      timeOutline,
+      star,
+      starOutline,
+      pricetagOutline,
+      closeCircleOutline,
+    });
     effect(() => {
       const position = this.eventsService.position();
       this.prevDisabled = position == 'start';
@@ -142,7 +165,6 @@ export class EventPage implements OnInit, OnDestroy {
     this.eventsService.leftEventPage.emit();
   }
 
-
   private async init(eventId: string | null) {
     try {
       let tmp = eventId?.split('+');
@@ -159,7 +181,7 @@ export class EventPage implements OnInit, OnDestroy {
         title: this.event.title,
         location: this.event.location,
         subtitle: this.event.camp,
-        imageUrl: this.event.imageUrl ?? camp?.imageUrl
+        imageUrl: this.event.imageUrl ?? camp?.imageUrl,
       });
       if (this.event.pin) {
         mapPoint.x = this.event.pin.x;
@@ -171,7 +193,7 @@ export class EventPage implements OnInit, OnDestroy {
       const selectedDay = this.db.selectedDay();
       const occurrences = JSON.parse(JSON.stringify(this.event.occurrence_set));
       const isNoDate = sameDay(selectedDay, noDate());
-      this.event.occurrence_set = occurrences.filter((o: any) => {      
+      this.event.occurrence_set = occurrences.filter((o: any) => {
         const isSelectedDay = dateMatches(selectedDay, o);
         if (!isNoDate && !isSelectedDay) {
           if (this.filterDays()) {
@@ -184,7 +206,7 @@ export class EventPage implements OnInit, OnDestroy {
         if (occurrences.every((o: any) => o.old)) {
           this.event.occurrence_set = occurrences;
         }
-      }   
+      }
       await this.fav.setEventStars(this.event);
     } finally {
       this.ready = true;
@@ -245,7 +267,7 @@ export class EventPage implements OnInit, OnDestroy {
     }
   }
 
-  noop() { }
+  noop() {}
 
   next() {
     this.eventsService.next.emit(`${this.event?.uid}`);
@@ -260,8 +282,9 @@ export class EventPage implements OnInit, OnDestroy {
     this.ui.share({
       title: this.event?.title,
       dialogTitle: this.event?.title,
-      text: `Check out ${this.event?.title} at ${this.event?.camp} (${this.event?.location
-        }) ${this.settings.eventTitle()} using the dust app. `,
+      text: `Check out ${this.event?.title} at ${this.event?.camp} (${
+        this.event?.location
+      }) ${this.settings.eventTitle()} using the dust app. `,
       url,
     });
   }

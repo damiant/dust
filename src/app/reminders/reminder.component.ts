@@ -9,7 +9,7 @@ import {
   IonItem,
   IonLabel,
   IonInput,
-  IonModal,  
+  IonModal,
   IonTitle,
   IonToolbar,
   ModalController,
@@ -28,28 +28,28 @@ export enum ReminderResult {
 }
 
 @Component({
-    selector: 'app-reminder',
-    templateUrl: './reminder.component.html',
-    styleUrls: ['./reminder.component.scss'],
-    imports: [
-        FormsModule,
-        CommonModule,
-        IonItem,
-        IonButton,
-        IonLabel,
-        IonModal,
-        IonDatetimeButton,
-        IonDatetime,
-        IonContent,
-        IonInput,
-        IonButtons,
-        IonButton,
-        IonHeader,
-        IonTitle,
-        IonToolbar,
-        IonTextarea
-    ],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-reminder',
+  templateUrl: './reminder.component.html',
+  styleUrls: ['./reminder.component.scss'],
+  imports: [
+    FormsModule,
+    CommonModule,
+    IonItem,
+    IonButton,
+    IonLabel,
+    IonModal,
+    IonDatetimeButton,
+    IonDatetime,
+    IonContent,
+    IonInput,
+    IonButtons,
+    IonButton,
+    IonHeader,
+    IonTitle,
+    IonToolbar,
+    IonTextarea,
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReminderComponent implements OnInit {
   private modalCtrl = inject(ModalController);
@@ -71,7 +71,7 @@ export class ReminderComponent implements OnInit {
     address: this.noAddress,
     notes: '',
   };
-  
+
   public pickerButtons = [
     {
       text: 'Cancel',

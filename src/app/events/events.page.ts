@@ -1,4 +1,13 @@
-import { Component, effect, viewChild, inject, OnDestroy, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  effect,
+  viewChild,
+  inject,
+  OnDestroy,
+  OnInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+} from '@angular/core';
 import {
   IonBadge,
   IonButton,
@@ -10,7 +19,7 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
-  ToastController
+  ToastController,
 } from '@ionic/angular/standalone';
 import { DbService } from '../data/db.service';
 import { Day, Event, MapPoint, Names } from '../data/models';
@@ -82,37 +91,37 @@ function initialState(): EventsState {
     byDist: false,
     isNow: false,
     timeRange: '',
-    displayedDistMessage: false
+    displayedDistMessage: false,
   };
 }
 
 @Component({
-    selector: 'app-events',
-    templateUrl: 'events.page.html',
-    styleUrls: ['events.page.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-        CommonModule,
-        RouterModule,
-        ScrollingModule,
-        MapModalComponent,
-        FormsModule,
-        EventComponent,
-        CategoryComponent,
-        IonSegment,
-        IonSegmentButton,
-        IonToolbar,
-        IonText,
-        IonButtons,
-        IonTitle,
-        IonHeader,
-        IonContent,
-        SkeletonEventComponent,
-        SearchComponent,
-        SortComponent,
-        IonButton,
-        IonBadge
-    ]
+  selector: 'app-events',
+  templateUrl: 'events.page.html',
+  styleUrls: ['events.page.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CommonModule,
+    RouterModule,
+    ScrollingModule,
+    MapModalComponent,
+    FormsModule,
+    EventComponent,
+    CategoryComponent,
+    IonSegment,
+    IonSegmentButton,
+    IonToolbar,
+    IonText,
+    IonButtons,
+    IonTitle,
+    IonHeader,
+    IonContent,
+    SkeletonEventComponent,
+    SearchComponent,
+    SortComponent,
+    IonButton,
+    IonBadge,
+  ],
 })
 export class EventsPage implements OnInit, OnDestroy {
   public db = inject(DbService);
@@ -135,14 +144,12 @@ export class EventsPage implements OnInit, OnDestroy {
     effect(() => {
       this.ui.scrollUp('events', this.virtualScroll());
     });
-    effect(
-      () => {
-        const _year = this.db.selectedYear();
-        this.db.checkInit();
-        this.vm = initialState();
-        this.init();
-      },
-    );
+    effect(() => {
+      const _year = this.db.selectedYear();
+      this.db.checkInit();
+      this.vm = initialState();
+      this.init();
+    });
 
     effect(async () => {
       const _r = this.db.resume();
@@ -162,14 +169,14 @@ export class EventsPage implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.nextSubscription = this.eventsService.next.subscribe((eventId: string) => {
-      const idx = this.vm.events.findIndex(e => e.uid == eventId);
+      const idx = this.vm.events.findIndex((e) => e.uid == eventId);
       if (idx == -1 || idx + 1 >= this.vm.events.length) return;
       const e = this.vm.events[idx + 1];
       this.eventsService.position.set(idx === this.vm.events.length - 2 ? 'end' : 'middle');
       this.eventsService.eventChanged.emit({ eventId: e.uid });
     });
     this.prevSubscription = this.eventsService.prev.subscribe((eventId) => {
-      const idx = this.vm.events.findIndex(e => e.uid == eventId);
+      const idx = this.vm.events.findIndex((e) => e.uid == eventId);
       if (idx <= 0) return;
       const e = this.vm.events[idx - 1];
       this.eventsService.position.set(idx === 1 ? 'start' : 'middle');
@@ -177,8 +184,8 @@ export class EventsPage implements OnInit, OnDestroy {
     });
     this.eventPageLeftSubscription = this.eventsService.leftEventPage.subscribe(() => {
       if (this.eventsService.currentEventId) {
-        const idx = this.vm.events.findIndex(e => e.uid == this.eventsService.currentEventId);
-        // Scrolls to the event you were looking at        
+        const idx = this.vm.events.findIndex((e) => e.uid == this.eventsService.currentEventId);
+        // Scrolls to the event you were looking at
         this.virtualScroll().scrollToIndex(idx, 'instant');
         (this.vm.events[idx] as any).highlighted = true;
         this._change.markForCheck();
@@ -193,7 +200,7 @@ export class EventsPage implements OnInit, OnDestroy {
   }
 
   opened(eventId: string) {
-    const idx = this.vm.events.findIndex(e => e.uid == eventId);
+    const idx = this.vm.events.findIndex((e) => e.uid == eventId);
     let position: EventPositionChange = 'middle';
     if (idx === 0) {
       position = 'start';
@@ -293,7 +300,7 @@ export class EventsPage implements OnInit, OnDestroy {
   }
 
   searchEvents(value: string) {
-    this.vm.search = value && (typeof value === 'string') ? value.toLowerCase() : '';
+    this.vm.search = value && typeof value === 'string' ? value.toLowerCase() : '';
     this.update(true);
   }
 
@@ -358,12 +365,13 @@ export class EventsPage implements OnInit, OnDestroy {
       coords, // Geolocation
       timeRange, // Time Range
       this.settings.settings.longEvents, // Filter events > 6 hrs
-      this.db.showPastEvents
+      this.db.showPastEvents,
     );
     const longEvents = await this.fav.setFavoritedList(this.vm.events);
     this.vm.noEvents = this.vm.events.length == 0;
     this.vm.noEventsMessage = this.noEventsMessage();
-    this.vm.pastEventOption = !this.vm.isNow && (this.vm.search?.length <= 0) && !this.db.eventHasntBegun() && !this.db.showPastEvents;
+    this.vm.pastEventOption =
+      !this.vm.isNow && this.vm.search?.length <= 0 && !this.db.eventHasntBegun() && !this.db.showPastEvents;
     if (scrollToTop) {
       this.virtualScroll().checkViewportSize();
       this.virtualScroll().scrollToOffset(0, 'smooth');

@@ -94,7 +94,7 @@ function initialState(): RSLState {
     SearchComponent,
     MapModalComponent,
     SkeletonEventComponent,
-  ]
+  ],
 })
 export class RslPage {
   private ui = inject(UiService);
@@ -112,14 +112,12 @@ export class RslPage {
     effect(() => {
       this.ui.scrollUpContent('rsl', this.ionContent());
     });
-    effect(
-      () => {
-        const _year = this.db.selectedYear();
-        this.db.checkInit();
-        this.vm = initialState();
-        this.init();
-      }
-    );
+    effect(() => {
+      const _year = this.db.selectedYear();
+      this.db.checkInit();
+      this.vm = initialState();
+      this.init();
+    });
     effect(async () => {
       const resumed = this.db.resume();
       if (resumed.length > 0) {

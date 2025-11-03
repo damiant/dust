@@ -10,14 +10,13 @@ let updateCheckDone = false;
   providedIn: 'root',
 })
 export class UpdateService {
-
   public async checkVersion(alert: AlertController) {
     if (Capacitor.getPlatform() == 'web') return;
 
     const status = await Network.getStatus();
     if (status.connectionType !== 'wifi') {
       // Only attempt an update if on wifi
-      console.log(`Network connect is not wifi so not checking for udpates`)
+      console.log(`Network connect is not wifi so not checking for udpates`);
       return;
     }
     if (updateCheckDone) {
@@ -26,8 +25,7 @@ export class UpdateService {
     }
     updateCheckDone = true;
     const result = await AppUpdate.getAppUpdateInfo();
-    if (result.updateAvailability !==
-      AppUpdateAvailability.UPDATE_AVAILABLE) {
+    if (result.updateAvailability !== AppUpdateAvailability.UPDATE_AVAILABLE) {
       console.log('No update available');
       return;
     }
@@ -46,7 +44,10 @@ export class UpdateService {
         if (code && code.code === AppUpdateResultCode.OK) {
           console.log('Update performed successfully');
         } else {
-          this.presentConfirm(alert, `Please visit the store and update manually. Update failed with code: ${code.code}`);
+          this.presentConfirm(
+            alert,
+            `Please visit the store and update manually. Update failed with code: ${code.code}`,
+          );
         }
       }
     }

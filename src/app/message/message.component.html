@@ -1,5 +1,11 @@
-<ion-modal #modal [canDismiss]="!disabled" [isOpen]="show()" (willDismiss)="close()" [initialBreakpoint]="0.5"
-  [breakpoints]="[0.5]">
+<ion-modal
+  #modal
+  [canDismiss]="!disabled"
+  [isOpen]="show()"
+  (willDismiss)="close()"
+  [initialBreakpoint]="0.5"
+  [breakpoints]="[0.5]"
+>
   <ng-template>
     <div class="center tall">
       <div class="pad">
@@ -7,12 +13,25 @@
         <ion-text>{{ message() }}</ion-text>
       </div>
       <div>
-        <ion-button [hidden]="secondButton() === ''" color="primary" (click)="dismiss(false); modal.dismiss()"
-          size="large" fill="outline" shape="round" class="pad-right">{{secondButton()}}
+        <ion-button
+          [hidden]="secondButton() === ''"
+          color="primary"
+          (click)="dismiss(false); modal.dismiss()"
+          size="large"
+          fill="outline"
+          shape="round"
+          class="pad-right"
+          >{{ secondButton() }}
         </ion-button>
 
-        <ion-button [disabled]="disabled" color="primary" (click)="dismiss(true); modal.dismiss()" size="large"
-          shape="round">{{buttonLabel()}}<ion-icon name="arrow-forward-outline"></ion-icon></ion-button>
+        <ion-button
+          [disabled]="disabled"
+          color="primary"
+          (click)="dismiss(true); modal.dismiss()"
+          size="large"
+          shape="round"
+          >{{ buttonLabel() }}<ion-icon name="arrow-forward-outline"></ion-icon
+        ></ion-button>
       </div>
     </div>
   </ng-template>

@@ -418,16 +418,16 @@ cdk-virtual-scroll-viewport {
 .download-progress-alert {
   .alert-message {
     text-align: left !important;
-    
+
     .download-progress-container {
       padding: 0.5rem 0;
-      
+
       p {
         margin: 0 0 1rem 0 !important;
         font-size: 1rem !important;
         color: var(--ion-text-color) !important;
       }
-      
+
       .progress-info {
         display: flex !important;
         justify-content: space-between !important;
@@ -437,10 +437,10 @@ cdk-virtual-scroll-viewport {
         color: var(--ion-color-medium) !important;
         font-weight: 500 !important;
       }
-      
+
       .progress-bar-container {
         margin-bottom: 1rem !important;
-        
+
         .progress-bar-track {
           width: 100% !important;
           height: 8px !important;
@@ -448,14 +448,14 @@ cdk-virtual-scroll-viewport {
           border-radius: 4px !important;
           overflow: hidden !important;
           position: relative !important;
-          
+
           .progress-bar-fill {
             height: 100% !important;
             border-radius: 4px !important;
             transition: width 0.3s ease-in-out !important;
             position: relative !important;
             background-color: var(--ion-color-primary) !important;
-            
+
             &::after {
               content: '' !important;
               position: absolute !important;
@@ -463,24 +463,19 @@ cdk-virtual-scroll-viewport {
               left: -100% !important;
               width: 100% !important;
               height: 100% !important;
-              background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.3),
-                transparent
-              ) !important;
+              background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent) !important;
               animation: shimmer 2s infinite !important;
             }
           }
         }
       }
-      
+
       .current-file {
         font-size: 0.85rem !important;
         color: var(--ion-color-medium) !important;
         line-height: 1.4 !important;
         word-break: break-word !important;
-        
+
         strong {
           color: var(--ion-text-color) !important;
         }
@@ -519,7 +514,7 @@ cdk-virtual-scroll-viewport {
         .progress-info {
           font-size: 0.8rem !important;
         }
-        
+
         .current-file {
           font-size: 0.8rem !important;
         }

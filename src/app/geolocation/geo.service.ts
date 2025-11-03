@@ -30,7 +30,7 @@ export class GeoService {
       return true;
     }
 
-    if (!await this.db.hasGeoPoints()) {
+    if (!(await this.db.hasGeoPoints())) {
       this.gpsPermission.set('none');
       return false;
     }
@@ -45,7 +45,7 @@ export class GeoService {
     if (!Capacitor.isNativePlatform()) {
       return true;
     }
-    if (!await this.db.hasGeoPoints()) {
+    if (!(await this.db.hasGeoPoints())) {
       this.gpsPermission.set('none');
       return false;
     }
@@ -83,7 +83,10 @@ export class GeoService {
       return this.gpsPosition();
     }
 
-    if ((!this.settings.shouldGeoAlert() && this.settings.settings.locationEnabled !== LocationEnabledStatus.Enabled) || !await this.db.hasGeoPoints()) {
+    if (
+      (!this.settings.shouldGeoAlert() && this.settings.settings.locationEnabled !== LocationEnabledStatus.Enabled) ||
+      !(await this.db.hasGeoPoints())
+    ) {
       this.gpsPosition.set(NoGPSCoord());
       return NoGPSCoord();
     }
@@ -107,8 +110,6 @@ export class GeoService {
     }
 
     console.timeEnd('geo.permissions');
-
-
 
     if (secondsBetween(this.lastGpsUpdate, new Date()) < 10) {
       return this.gpsPosition();

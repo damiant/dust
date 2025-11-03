@@ -16,7 +16,7 @@ import { Capacitor } from '@capacitor/core';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IonApp, IonRouterOutlet, CommonModule]
+  imports: [IonApp, IonRouterOutlet, CommonModule],
 })
 export class AppComponent implements OnInit {
   private notificationService = inject(NotificationService);
@@ -53,13 +53,12 @@ export class AppComponent implements OnInit {
       } catch (e) {
         console.error('appUrlOpen', e);
       }
-
     });
 
     SafeArea.getSafeAreaInsets().then((data) => {
       this.applyInsets(data);
     });
-    await SafeArea.addListener('safeAreaChanged', data => {
+    await SafeArea.addListener('safeAreaChanged', (data) => {
       this.applyInsets(data);
     });
 
@@ -84,10 +83,7 @@ export class AppComponent implements OnInit {
       }
     }
     for (const [key, value] of Object.entries(insets)) {
-      document.documentElement.style.setProperty(
-        `--safe-area-inset-${key}`,
-        `${value}px`,
-      );
+      document.documentElement.style.setProperty(`--safe-area-inset-${key}`, `${value}px`);
     }
   }
 

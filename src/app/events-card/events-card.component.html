@@ -1,17 +1,21 @@
 @if (events().length > 0) {
-<ion-card class="ion-padding-bottom">
-  <ion-card-header>
-    <ion-card-title>Today's Favorite Events</ion-card-title>
-  </ion-card-header>
-  @for (event of events(); track event.uid; let index = $index) {
-  <ion-item color="transparent" detail="true" [routerLink]="'/event/' + event.uid + '+' + 'Home'"
-    [lines]="items()[index].lines">
-    @if (event.happening) {
-    <p class="badge">NOW</p>
+  <ion-card class="ion-padding-bottom">
+    <ion-card-header>
+      <ion-card-title>Today's Favorite Events</ion-card-title>
+    </ion-card-header>
+    @for (event of events(); track event.uid; let index = $index) {
+      <ion-item
+        color="transparent"
+        detail="true"
+        [routerLink]="'/event/' + event.uid + '+' + 'Home'"
+        [lines]="items()[index].lines"
+      >
+        @if (event.happening) {
+          <p class="badge">NOW</p>
+        }
+        <span slot="start">{{ items()[index].time }}</span>
+        <p [ngClass]="items()[index].class">{{ event.title }}</p>
+      </ion-item>
     }
-    <span slot="start">{{items()[index].time}}</span>
-    <p [ngClass]="items()[index].class">{{event.title}}</p>
-  </ion-item>
-  }
-</ion-card>
+  </ion-card>
 }

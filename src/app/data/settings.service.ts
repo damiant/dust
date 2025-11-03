@@ -4,8 +4,8 @@ import { Preferences } from '@capacitor/preferences';
 import { set, get } from 'idb-keyval';
 
 export const SettingNames = {
-  MapURI: 'mapUri'
-}
+  MapURI: 'mapUri',
+};
 
 @Injectable({
   providedIn: 'root',
@@ -55,8 +55,7 @@ export class SettingsService {
         return 0;
       }
       return value;
-    }
-    catch {
+    } catch {
       return 0;
     }
   }
@@ -71,7 +70,7 @@ export class SettingsService {
       if (!value) {
         return false;
       }
-      return (value == 1);
+      return value == 1;
     } catch {
       return false;
     }
@@ -110,7 +109,7 @@ export class SettingsService {
         offlineEvents: [],
         list: false,
         scrollLeft: 0,
-        lastDatasetId: ''
+        lastDatasetId: '',
       };
     }
   }
@@ -139,7 +138,7 @@ export class SettingsService {
   }
 
   private async setPref(key: string, value: string): Promise<void> {
-     await Preferences.set({ key, value });
+    await Preferences.set({ key, value });
   }
 
   public async setLastGeoAlert() {
@@ -155,7 +154,7 @@ export class SettingsService {
   public shouldAboutAlert(): boolean {
     const lastAboutAlert = this.settings.lastAboutAlert ?? 0;
     if (lastAboutAlert == 0) return true;
-    return (Date.now() - lastAboutAlert > 86400000);
+    return Date.now() - lastAboutAlert > 86400000;
   }
 
   public setLastLongEventsAlert() {
@@ -166,13 +165,13 @@ export class SettingsService {
   public shouldLastLongEventsAlert(): boolean {
     const lastLongEvents = this.settings.lastLongEvents ?? 0;
     if (lastLongEvents == 0) return true;
-    return (Date.now() - lastLongEvents > 86400000);
+    return Date.now() - lastLongEvents > 86400000;
   }
 
   public shouldGeoAlert(): boolean {
     const lastGeoAlert = this.settings.lastGeoAlert ?? 0;
     if (lastGeoAlert == 0) return true;
-    return (Date.now() - lastGeoAlert > 86400000);
+    return Date.now() - lastGeoAlert > 86400000;
   }
 
   public setOffline(datasetId: string) {

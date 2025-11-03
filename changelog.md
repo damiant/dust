@@ -1,34 +1,42 @@
 ## Changes
+
 ## 2.108
+
 - Music tab now has an "All" option to search and view events across all days
 - Now map is updated when you resume the app
 - Search will find diacritics (eg Crepe)
 - Geolocation will update on the map when you resume the app
 
 ## 2.103
+
 - Add Live Music and Wheelchair Accessible icons for Rock Star Librarian events
 - Add Rock Star Librarian Recommended icons
 - Add additional location information for RSL events
 
 ## 2.102
+
 - Make GPS optional on Android
 - Memory leak fix for OpenGL / Map
 - Airport location
 - Mutant Vehicles on the map
 
 ## 2.101
+
 - Fix for camp types showing undefined
 - Fix camp type filtering
 
 ## 2.100
+
 - Fix for timezone when exporting to calendar
 - Calendar export now includes reminders
 
 ## 2.99
+
 - Fix for calendar export when offline
 - Feature to clear favorites
 
 ## 2.98
+
 - Show friends on the map
 - Option to only show non recurring events
 - Camp image is now shown on the popover for event locations
@@ -39,30 +47,37 @@
 - Fix for bug in art scrolling
 
 ## 2.97
+
 - Fix for man pavillion location
 - Fix for GPS coordinates missing latitude
 - Offline option for audio and images
 - Fix for multiple camp types
 
 ## 2.96
+
 - Import events via link (for https://burn-planner.web.app/)
 
 ## 2.95
+
 - Images are now downloaded offline when choosing "Download Update" from the more menu
 
 ## 2.94
+
 - Revert fix for button style navigation type
 
 ## 2.93
+
 - Update golden spike location for Burning Man
 - Fix for check for app updates
 - Fix for button style nativation type on Android
 
 ## 2.92
+
 - Updates for Android 16
 - Allow any address when entering a reminder
 
-## 2.90 
+## 2.90
+
 - Android fix
 - Fix for participate not showing in Burning Man
 
@@ -86,6 +101,7 @@
 - Feature to set pin size
 
 ## 2.82
+
 - Fix for timezone for Volunteeripate shifts
 
 ## 2.81
@@ -117,9 +133,11 @@
 - Volunteeripate integration (feature flagged)
 
 ### 2.76
+
 - Fix for image url loading incorrectly
 
 ### 2.74
+
 - Calendar sync has been reworked
 
 ### 2.73
@@ -173,6 +191,7 @@
 - Fix for scrolling on events and camps to prevent jitter
 
 ### 2.59
+
 - Private events are now reminders and are available in regional burns
 - Mutant Vehicles show location as "Out on the Playa"
 - Recurring events are shown with an icon
@@ -248,6 +267,7 @@
 - Fix issue where label of event disappeared.
 
 ## 2.44
+
 - Fix calendar sync for recurring events
 - Show map for camps even when art is hidden
 - Performance improvements
@@ -301,6 +321,7 @@
 - Smaller pins for maps with more than 50 pins
 
 ## 2.38
+
 - Improve swipe back and up detection
 - Search on map now zooms to and animates the found item
 - Swipe to remove favorite camps, events, art
@@ -311,23 +332,27 @@
 - Fix bug with location denial causing infinite spinner
 
 ## 2.37
+
 - Search for camps, events and art is sorted by importance
 - Show filter as icon if selected on the home page
 - Next and previous buttons for events
 - Fix for map zooming (cannot zoom out to 100%)
 
 ## 2.36
+
 - Tap on an event will now open it
 - Toast messages can be swiped away
 - Swipe back now works on pages with maps
 - Fix for private events displaying in the wrong timezone
 
 ## 2.35
+
 - Fix for private event adding on Android
 - Add landmarks for Burning Man camps
 - Use Km or metres when phone is set to non-US
 
 ## 2.34
+
 - Fix when visiting events on the now map
 
 ## 2.33

@@ -1,23 +1,22 @@
 .container {
-    display: flex;
-    align-items: center;
-    width: 100%;    
-    overflow-y: hidden;
-    overflow-x: auto;
-    padding-top: 3rem;
-    scroll-snap-type: x mandatory;
-    scroll-padding-left: calc(15vw);
-    scroll-behavior: smooth;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  overflow-y: hidden;
+  overflow-x: auto;
+  padding-top: 3rem;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: calc(15vw);
+  scroll-behavior: smooth;
 }
 
 div::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 @media screen and (min-width: 700px) {
-    .container {
-        justify-content: center;
-        flex-wrap: wrap;        
-    }
+  .container {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
 }
-

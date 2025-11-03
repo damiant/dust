@@ -16,7 +16,7 @@ const config: CapacitorConfig = {
       launchAutoHide: false,
     },
     PushNotifications: {
-      presentationOptions: ['badge', 'sound', 'alert']
+      presentationOptions: ['badge', 'sound', 'alert'],
     },
     LocalNotifications: {
       smallIcon: 'icon',
@@ -25,8 +25,8 @@ const config: CapacitorConfig = {
     },
     CapacitorUpdater: {
       autoUpdate: false,
-      statsUrl: "",
-    }
+      statsUrl: '',
+    },
   },
   android: {
     buildOptions: {

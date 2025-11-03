@@ -6,13 +6,7 @@
       "name": "app",
       "installMode": "prefetch",
       "resources": {
-        "files": [
-          "/favicon.ico",
-          "/index.html",
-          "/manifest.webmanifest",
-          "/*.css",
-          "/*.js"
-        ]
+        "files": ["/favicon.ico", "/index.html", "/manifest.webmanifest", "/*.css", "/*.js"]
       }
     },
     {
@@ -20,19 +14,14 @@
       "installMode": "lazy",
       "updateMode": "prefetch",
       "resources": {
-        "files": [
-          "/assets/**",
-          "/*.(eot|svg|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|ani)"
-        ]
+        "files": ["/assets/**", "/*.(eot|svg|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|ani)"]
       }
     }
   ],
   "dataGroups": [
     {
       "name": "api-performance",
-      "urls": [
-        "https://dust.events/**"
-      ],
+      "urls": ["https://dust.events/**"],
       "cacheConfig": {
         "strategy": "performance",
         "maxSize": 100,
@@ -41,9 +30,7 @@
     },
     {
       "name": "api-freshness",
-      "urls": [
-        "https://api.dust.events/**"
-      ],
+      "urls": ["https://api.dust.events/**"],
       "cacheConfig": {
         "strategy": "freshness",
         "maxSize": 100,
@@ -51,11 +38,5 @@
       }
     }
   ],
-  "navigationUrls": [
-    "/**",
-    "!/**/*.*",
-    "!/**/*__*",
-    "!/**/*__*/**",
-    "!/ngsw-worker.js"
-  ]
+  "navigationUrls": ["/**", "!/**/*.*", "!/**/*__*", "!/**/*__*/**", "!/ngsw-worker.js"]
 }

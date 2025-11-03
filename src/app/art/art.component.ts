@@ -17,28 +17,28 @@ import { volumeHighOutline } from 'ionicons/icons';
 export type ArtImageStyle = 'top' | 'side' | 'none';
 
 @Component({
-    selector: 'app-art',
-    templateUrl: './art.component.html',
-    styleUrls: ['./art.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-        CommonModule,
-        IonCard,
-        IonCardHeader,
-        IonCardTitle,
-        IonCardSubtitle,
-        IonCardContent,
-        CachedImgComponent,
-        IonText,
-        IonIcon,
-    ]
+  selector: 'app-art',
+  templateUrl: './art.component.html',
+  styleUrls: ['./art.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CommonModule,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardSubtitle,
+    IonCardContent,
+    CachedImgComponent,
+    IonText,
+    IonIcon,
+  ],
 })
 export class ArtComponent {
   art = input.required<Art>();
   title = input('Art');
   imageStyle = input<ArtImageStyle>('top');
-  imageContainerCSSStyle = computed(() => this.imageStyle() == 'top' ? 'image-container' : 'side-container');
-  imageCSSStyle = computed(() => this.imageStyle() == 'top' ? 'image' : 'side-image');
+  imageContainerCSSStyle = computed(() => (this.imageStyle() == 'top' ? 'image-container' : 'side-container'));
+  imageCSSStyle = computed(() => (this.imageStyle() == 'top' ? 'image' : 'side-image'));
   artClick = output<Art>();
 
   constructor() {

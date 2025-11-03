@@ -10,15 +10,13 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
   styleUrls: ['./bar.component.scss'],
   animations: [
     trigger('openClose', [
-      state('true', style({transform: 'translateY(0)', opacity: 1})),
-      state('false', style({transform: 'translateY(50px)', opacity: 0})),
+      state('true', style({ transform: 'translateY(0)', opacity: 1 })),
+      state('false', style({ transform: 'translateY(50px)', opacity: 0 })),
       transition('false => true', [animate('200ms ease-out')]),
-      transition('true => false', [animate('200ms ease-in')])      
+      transition('true => false', [animate('200ms ease-in')]),
     ]),
   ],
-  imports: [
-    CommonModule
-  ]
+  imports: [CommonModule],
 })
 export class BarComponent {
   opened = input(false);
@@ -26,13 +24,13 @@ export class BarComponent {
   options = [
     { id: 'past', name: 'Past' },
     { id: 'all', name: 'Upcoming' },
-    { id: 'bm', name: `)'(` }
+    { id: 'bm', name: `)'(` },
   ];
   selection = model(this.options[1].id);
   selected = output<string>();
 
   constructor() {
-    addIcons({ albumsOutline, listOutline })
+    addIcons({ albumsOutline, listOutline });
   }
 
   update(id: string) {

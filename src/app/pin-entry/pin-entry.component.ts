@@ -1,5 +1,5 @@
 import { Component, inject, input, model, output } from '@angular/core';
-import { IonButton, IonIcon, IonText, IonModal, IonInput, ToastController } from "@ionic/angular/standalone";
+import { IonButton, IonIcon, IonText, IonModal, IonInput, ToastController } from '@ionic/angular/standalone';
 import { decryptString } from '../utils/utils';
 import { FormsModule } from '@angular/forms';
 import { UiService } from '../ui/ui.service';
@@ -8,7 +8,7 @@ import { UiService } from '../ui/ui.service';
   selector: 'app-pin-entry',
   templateUrl: './pin-entry.component.html',
   styleUrls: ['./pin-entry.component.scss'],
-  imports: [IonInput, IonModal, IonText, IonButton, IonIcon, FormsModule]
+  imports: [IonInput, IonModal, IonText, IonButton, IonIcon, FormsModule],
 })
 export class PinEntryComponent {
   show = model(false);
@@ -19,7 +19,7 @@ export class PinEntryComponent {
   enteredPin = model('');
   private toastController = inject(ToastController);
   private ui = inject(UiService);
-  constructor() { }
+  constructor() {}
 
   close() {
     this.show.set(false);
@@ -31,9 +31,9 @@ export class PinEntryComponent {
   }
 
   async checkPin(): Promise<boolean> {
-    const correctPin = this.encrypted() ?
-      await decryptString(this.correctPin(), 'd1e0fa-b0b0-4b79-a6ca-8ffdf8be88') :
-      this.correctPin();
+    const correctPin = this.encrypted()
+      ? await decryptString(this.correctPin(), 'd1e0fa-b0b0-4b79-a6ca-8ffdf8be88')
+      : this.correctPin();
     return correctPin == this.enteredPin();
   }
 

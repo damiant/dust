@@ -6,17 +6,17 @@ import { Keyboard } from '@capacitor/keyboard';
 import { IonSearchbar } from '@ionic/angular/standalone';
 
 @Component({
-    selector: 'app-search',
-    templateUrl: './search.component.html',
-    styleUrls: ['./search.component.scss'],
-    imports: [ReactiveFormsModule, IonSearchbar]
+  selector: 'app-search',
+  templateUrl: './search.component.html',
+  styleUrls: ['./search.component.scss'],
+  imports: [ReactiveFormsModule, IonSearchbar],
 })
 export class SearchComponent implements OnInit {
   placeholder = input('');
   openFocused = input(false);
   searched = output<string>();
   private _change = inject(ChangeDetectorRef);
-  searchBar = viewChild.required(IonSearchbar)
+  searchBar = viewChild.required(IonSearchbar);
 
   form = new FormGroup({
     search: new FormControl(''),
@@ -32,7 +32,7 @@ export class SearchComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.form.value.search) {      
+    if (this.form.value.search) {
       this.searched.emit(this.form.value.search);
     }
     if (Capacitor.getPlatform() != 'web') {
@@ -40,7 +40,7 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  handleInput(event: any) {    
+  handleInput(event: any) {
     this.searched.emit(event.target.value);
   }
 }

@@ -15,7 +15,15 @@ import {
 } from './models';
 
 import { SettingsService } from './settings.service';
-import { asNumber, data_dust_events, daysUntil, diffNumbers, isAfter, nowAtEvent, static_dust_events } from '../utils/utils';
+import {
+  asNumber,
+  data_dust_events,
+  daysUntil,
+  diffNumbers,
+  isAfter,
+  nowAtEvent,
+  static_dust_events,
+} from '../utils/utils';
 import { DbService, GetOptions } from './db.service';
 import { Capacitor } from '@capacitor/core';
 import { App } from '@capacitor/app';
@@ -66,7 +74,9 @@ export class ApiService {
       const mapUri = await getCachedImage(mapData.uri);
       await this.settingsService.setMapURI(mapIsOffline ? '' : mapUri);
       const offlineWeb = environment.offline && Capacitor.getPlatform() === 'web';
-      console.log(`Download? revision is ${revision.revision} and default is ${currentRevision}. offlineWeb=${offlineWeb}`);
+      console.log(
+        `Download? revision is ${revision.revision} and default is ${currentRevision}. offlineWeb=${offlineWeb}`,
+      );
       if (revision.revision <= currentRevision && !offlineWeb) {
         console.warn(
           `Did not read data from storage as it is at revision ${revision.revision} but current is ${currentRevision}`,
@@ -132,14 +142,19 @@ export class ApiService {
     return false;
   }
 
-  public async loadDatasets(args: { filter: DatasetFilter, inactive?: boolean, cached?: boolean, timeout?: number }): Promise<Dataset[]> {
-    const options: GetOptions = args.cached ?
-      { onlyRead: true, defaultValue: [] } :
-      { freshOnce: true, timeout: args.timeout ?? 5000 };
+  public async loadDatasets(args: {
+    filter: DatasetFilter;
+    inactive?: boolean;
+    cached?: boolean;
+    timeout?: number;
+  }): Promise<Dataset[]> {
+    const options: GetOptions = args.cached
+      ? { onlyRead: true, defaultValue: [] }
+      : { freshOnce: true, timeout: args.timeout ?? 5000 };
     const [rDatasets, rFestivals, rLocation] = await Promise.allSettled([
       this.dbService.get(Names.festivals, Names.festivals, options),
       this.dbService.get(Names.datasets, Names.datasets, options),
-      this.dbService.get(Names.location, Names.location, options)
+      this.dbService.get(Names.location, Names.location, options),
     ]);
     const location: WebLocation = rLocation.status == 'fulfilled' ? rLocation.value : {};
     const festivals = rFestivals.status == 'fulfilled' ? rFestivals.value : [];
@@ -148,8 +163,13 @@ export class ApiService {
     return this.cleanNames([...festivals, ...datasets], location, args.filter, args.inactive, devMode === 1);
   }
 
-  private cleanNames(datasets: Dataset[], location: WebLocation, filter: DatasetFilter, inactive?: boolean, devMode?: boolean): Dataset[] {
-
+  private cleanNames(
+    datasets: Dataset[],
+    location: WebLocation,
+    filter: DatasetFilter,
+    inactive?: boolean,
+    devMode?: boolean,
+  ): Dataset[] {
     for (const dataset of datasets) {
       if (devMode && dataset.id == 'eforest-draft') {
         dataset.active = true;
@@ -274,8 +294,10 @@ export class ApiService {
 
   public async hasEverDownloaded(selected: Dataset) {
     const dataset = this.datasetId(selected);
-    const myRevision = this.checkUndefined(await this.dbService.get(dataset, Names.revision, { onlyRead: true, defaultValue: { revision: 0 } }));
-    return (myRevision && myRevision > 0);
+    const myRevision = this.checkUndefined(
+      await this.dbService.get(dataset, Names.revision, { onlyRead: true, defaultValue: { revision: 0 } }),
+    );
+    return myRevision && myRevision > 0;
   }
 
   private checkUndefined(v: any): any {
@@ -286,7 +308,9 @@ export class ApiService {
   }
 
   public async getRevision(datasetId: string): Promise<Revision | undefined> {
-    return this.checkUndefined(await this.dbService.get(datasetId, Names.revision, { onlyRead: true, defaultValue: { revision: 0 } }));
+    return this.checkUndefined(
+      await this.dbService.get(datasetId, Names.revision, { onlyRead: true, defaultValue: { revision: 0 } }),
+    );
   }
 
   public async download(
@@ -309,15 +333,19 @@ export class ApiService {
       dataset = this.datasetId(selected);
 
       console.log(`get revision live ${dataset}`);
-      myRevision = this.checkUndefined(await this.dbService.get(dataset, Names.revision, { onlyRead: true, defaultValue: { revision: 0 } }));
+      myRevision = this.checkUndefined(
+        await this.dbService.get(dataset, Names.revision, { onlyRead: true, defaultValue: { revision: 0 } }),
+      );
       if (!myRevision) {
         downloadSignal.set({ status: selected ? selected.title : ' ', firstDownload: true });
       }
-      nextRevision = this.checkUndefined(await this.dbService.get(dataset, Names.revision, {
-        onlyFresh: true,
-        timeout: myRevision ? 2000 : 60000, // 1 Minute to download if we have never downloaded
-        defaultValue: { revision: 0 },
-      }));
+      nextRevision = this.checkUndefined(
+        await this.dbService.get(dataset, Names.revision, {
+          onlyFresh: true,
+          timeout: myRevision ? 2000 : 60000, // 1 Minute to download if we have never downloaded
+          defaultValue: { revision: 0 },
+        }),
+      );
       console.log(`Next revision is ${JSON.stringify(nextRevision)} force is ${force}`);
 
       console.log(`My revision is ${JSON.stringify(myRevision)}`);

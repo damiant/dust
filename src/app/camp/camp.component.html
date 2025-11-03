@@ -1,14 +1,19 @@
 <ion-card role="button" (click)="openCamp()" class="item">
   @if (camp().imageUrl) {
-  <div class="image">
-    <app-cached-img class="image" [alt]="camp().name" [src]="camp().imageUrl" />
-  </div>
+    <div class="image">
+      <app-cached-img class="image" [alt]="camp().name" [src]="camp().imageUrl" />
+    </div>
   }
 
   <ion-card-header>
     <ion-card-title [class]="camp().imageUrl ? 'title' : ''" aria-hidden="true">{{ camp().name }}</ion-card-title>
-    <ion-card-subtitle [class]="camp().imageUrl ? 'title' : ''" aria-hidden="true" color="primary"
-      (click)="map(camp(), $event)">{{ camp().location_string }} {{ camp().distanceInfo }}</ion-card-subtitle>
+    <ion-card-subtitle
+      [class]="camp().imageUrl ? 'title' : ''"
+      aria-hidden="true"
+      color="primary"
+      (click)="map(camp(), $event)"
+      >{{ camp().location_string }} {{ camp().distanceInfo }}</ion-card-subtitle
+    >
   </ion-card-header>
 
   <ion-card-content attr.aria-label="{{ camp().name }} at {{ camp().location_string }}.{{ camp().description }}">

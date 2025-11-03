@@ -17,7 +17,7 @@ export interface Response {
   id: string;
   error?: any;
   data: any;
-  ms: number
+  ms: number;
 }
 
 export interface WorkerClass {

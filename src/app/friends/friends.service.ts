@@ -19,9 +19,9 @@ export class FriendsService {
       presentingElement: e,
       componentProps: friend
         ? {
-          friend: friend,
-          isEdit: friend  && !add,
-        }
+            friend: friend,
+            isEdit: friend && !add,
+          }
         : undefined,
     });
     modal.present();

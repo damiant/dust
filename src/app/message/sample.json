@@ -1,436 +1,430 @@
 {
-    "?xml": {
-      "version": "1.0",
-      "encoding": "UTF-8"
-    },
-    "rss": {
-      "channel": {
+  "?xml": {
+    "version": "1.0",
+    "encoding": "UTF-8"
+  },
+  "rss": {
+    "channel": {
+      "title": "Damian",
+      "description": "Public posts from @damiant@mastodon.online",
+      "link": "https://mastodon.online/@damiant",
+      "image": {
+        "url": "https://files.mastodon.online/accounts/avatars/109/277/829/895/449/310/original/f04c2c74add11d64.jpeg",
         "title": "Damian",
-        "description": "Public posts from @damiant@mastodon.online",
-        "link": "https://mastodon.online/@damiant",
-        "image": {
-          "url": "https://files.mastodon.online/accounts/avatars/109/277/829/895/449/310/original/f04c2c74add11d64.jpeg",
-          "title": "Damian",
-          "link": "https://mastodon.online/@damiant"
-        },
-        "lastBuildDate": "Fri, 01 Nov 2024 00:37:27 +0000",
-        "webfeeds:icon": "https://files.mastodon.online/accounts/avatars/109/277/829/895/449/310/original/f04c2c74add11d64.jpeg",
-        "generator": "Mastodon v4.3.1",
-        "item": [
-          {
-            "guid": {
-              "$text": "https://mastodon.online/@damiant/113404899976730109",
-              "isPermaLink": "true"
-            },
-            "link": "https://mastodon.online/@damiant/113404899976730109",
-            "pubDate": "Fri, 01 Nov 2024 00:37:27 +0000",
-            "description": "<p>Presented at Burn After Meeting and met a bunch of awesome passionate people helping create communities and getting things done!</p>",
-            "media:content": {
-              "media:rating": {
-                "$text": "nonadult",
-                "scheme": "urn:simple"
-              },
-              "url": "https://files.mastodon.online/media_attachments/files/113/404/897/720/549/048/original/8ef1a87f1671b3b2.jpeg",
-              "type": "image/jpeg",
-              "fileSize": "103255",
-              "medium": "image"
-            }
-          },
-          {
-            "guid": {
-              "$text": "https://mastodon.online/@damiant/113223665184964261",
-              "isPermaLink": "true"
-            },
-            "link": "https://mastodon.online/@damiant/113223665184964261",
-            "pubDate": "Mon, 30 Sep 2024 00:27:03 +0000",
-            "description": "<p>Just finished up importing the theme camps, art and events for Mosaic Experiment, the Ohio regional <a href=\"https://mastodon.online/tags/burningman\" class=\"mention hashtag\" rel=\"tag\">#<span>burningman</span></a> event happening October 3-6th. Its in the <a href=\"https://mastodon.online/tags/dust\" class=\"mention hashtag\" rel=\"tag\">#<span>dust</span></a> app which you can get from <a href=\"https://dust.events\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">dust.events</span><span class=\"invisible\"></span></a></p>",
-            "media:content": {
-              "media:rating": {
-                "$text": "nonadult",
-                "scheme": "urn:simple"
-              },
-              "media:description": {
-                "$text": "Screenshots of Mosaic Experiment in the dust app",
-                "type": "plain"
-              },
-              "url": "https://files.mastodon.online/media_attachments/files/113/223/664/964/310/558/original/ff03e8e51d76f0c1.png",
-              "type": "image/png",
-              "fileSize": "1434362",
-              "medium": "image"
-            },
-            "category": [
-              "burningman",
-              "dust"
-            ]
-          },
-          {
-            "guid": {
-              "$text": "https://mastodon.online/@damiant/113159973483292298",
-              "isPermaLink": "true"
-            },
-            "link": "https://mastodon.online/@damiant/113159973483292298",
-            "pubDate": "Wed, 18 Sep 2024 18:29:25 +0000",
-            "description": "<p>Marketing: blar blar &quot;personalization&quot; blar blar &quot;seamless control&quot;</p><p>Translation: We going to spy on you harder and put more Ads in your face. We&#39;ve hidden an opt out checkbox somewhere and hope you wont check it</p>",
-            "media:content": {
-              "media:rating": {
-                "$text": "nonadult",
-                "scheme": "urn:simple"
-              },
-              "media:description": {
-                "$text": "Message from Google Play: \"Google play will launch new personalization options that give you more seamless control of your personalization preferences\"",
-                "type": "plain"
-              },
-              "url": "https://files.mastodon.online/media_attachments/files/113/159/973/293/675/814/original/d31c7d434761c858.png",
-              "type": "image/png",
-              "fileSize": "16613",
-              "medium": "image"
-            }
-          },
-          {
-            "guid": {
-              "$text": "https://mastodon.online/@damiant/113159207040442732",
-              "isPermaLink": "true"
-            },
-            "link": "https://mastodon.online/@damiant/113159207040442732",
-            "pubDate": "Wed, 18 Sep 2024 15:14:30 +0000",
-            "description": "<p>Thanks so much <a href=\"https://mastodon.online/tags/sequoia\" class=\"mention hashtag\" rel=\"tag\">#<span>sequoia</span></a> for protecting me from this nefarious application called ESBuild. Coincidentally the application no longer compiles, I wonder why that is :)</p>",
-            "media:content": {
-              "media:rating": {
-                "$text": "nonadult",
-                "scheme": "urn:simple"
-              },
-              "media:description": {
-                "$text": "Dialog from MacOS Sequoia showing \"ESBuild\" not opened because Apple could not verify \"esbuild\" is free of malware that may harm your Mac or compromise your privacy.",
-                "type": "plain"
-              },
-              "url": "https://files.mastodon.online/media_attachments/files/113/159/206/851/808/408/original/0897bdea74152414.png",
-              "type": "image/png",
-              "fileSize": "21781",
-              "medium": "image"
-            },
-            "category": "sequoia"
-          },
-          {
-            "guid": {
-              "$text": "https://mastodon.online/@damiant/113102842354697171",
-              "isPermaLink": "true"
-            },
-            "link": "https://mastodon.online/@damiant/113102842354697171",
-            "pubDate": "Sun, 08 Sep 2024 16:20:13 +0000",
-            "description": "<p>Just added categorization for mutant vehicles and sound camps to the <a href=\"https://mastodon.online/tags/dust\" class=\"mention hashtag\" rel=\"tag\">#<span>dust</span></a> app (<a href=\"https://dust.events\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">dust.events</span><span class=\"invisible\"></span></a>) for use at Youtopia and SNRG regional <a href=\"https://mastodon.online/tags/burningman\" class=\"mention hashtag\" rel=\"tag\">#<span>burningman</span></a> events</p>",
-            "media:content": {
-              "media:rating": {
-                "$text": "nonadult",
-                "scheme": "urn:simple"
-              },
-              "media:description": {
-                "$text": "Screenshot of phone showing a list of mutant vehicles",
-                "type": "plain"
-              },
-              "url": "https://files.mastodon.online/media_attachments/files/113/102/831/593/000/490/original/fd16cd5a4a5dc4c1.jpeg",
-              "type": "image/jpeg",
-              "fileSize": "321370",
-              "medium": "image"
-            },
-            "category": [
-              "dust",
-              "burningman"
-            ]
-          },
-          {
-            "guid": {
-              "$text": "https://mastodon.online/@damiant/113093866177133687",
-              "isPermaLink": "true"
-            },
-            "link": "https://mastodon.online/@damiant/113093866177133687",
-            "pubDate": "Sat, 07 Sep 2024 02:17:28 +0000",
-            "description": "<p>&quot;This year I invested in pumpkins. They&#39;ve been going up the whole month of October, and I&#39;ve got a feeling they&#39;re going to peak right around January and BANG! That&#39;s when I&#39;ll cash in!&quot;</p><p>Running <a href=\"https://dust.events\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">dust.events</span><span class=\"invisible\"></span></a> is a lot like this around <a href=\"https://mastodon.online/tags/burningman\" class=\"mention hashtag\" rel=\"tag\">#<span>burningman</span></a> time</p>",
-            "media:content": {
-              "media:rating": {
-                "$text": "nonadult",
-                "scheme": "urn:simple"
-              },
-              "media:description": {
-                "$text": "Homer simpson with a happy halloween banner above him. Below is a graph showing 68 thousand unique users using dust for Burning Man with the graph dropping after labor day",
-                "type": "plain"
-              },
-              "url": "https://files.mastodon.online/media_attachments/files/113/093/865/968/763/702/original/1857af671f71242e.png",
-              "type": "image/png",
-              "fileSize": "1158928",
-              "medium": "image"
-            },
-            "category": "burningman"
-          },
-          {
-            "guid": {
-              "$text": "https://mastodon.online/@damiant/113088631679764776",
-              "isPermaLink": "true"
-            },
-            "link": "https://mastodon.online/@damiant/113088631679764776",
-            "pubDate": "Fri, 06 Sep 2024 04:06:16 +0000",
-            "description": "<p>New sticker for the water bottle. Wondering how many times I typed this as a kid <a href=\"https://mastodon.online/tags/c64\" class=\"mention hashtag\" rel=\"tag\">#<span>c64</span></a></p>",
-            "media:content": {
-              "media:rating": {
-                "$text": "nonadult",
-                "scheme": "urn:simple"
-              },
-              "url": "https://files.mastodon.online/media_attachments/files/113/088/622/971/544/433/original/93040a80dcc159e1.jpeg",
-              "type": "image/jpeg",
-              "fileSize": "595014",
-              "medium": "image"
-            },
-            "category": "c64"
-          },
-          {
-            "guid": {
-              "$text": "https://mastodon.online/@damiant/112980996373052718",
-              "isPermaLink": "true"
-            },
-            "link": "https://mastodon.online/@damiant/112980996373052718",
-            "pubDate": "Sun, 18 Aug 2024 03:53:11 +0000",
-            "description": "<p>Camp locations unlock in the dust app in a few hours. Check out the new feature for <a href=\"https://mastodon.online/tags/burningman\" class=\"mention hashtag\" rel=\"tag\">#<span>burningman</span></a> 2024 in dust. <a href=\"Https://dust.events\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\"></span><span class=\"\">Https://dust.events</span><span class=\"invisible\"></span></a></p>",
-            "media:content": {
-              "media:rating": {
-                "$text": "nonadult",
-                "scheme": "urn:simple"
-              },
-              "media:description": {
-                "$text": "A demonstration of the features in the dust app for Burning Man 2024",
-                "type": "plain"
-              },
-              "url": "https://files.mastodon.online/media_attachments/files/112/980/987/119/219/118/original/a7bfdb11f7c0da48.mp4",
-              "type": "video/mp4",
-              "fileSize": "67239217",
-              "medium": "video"
-            },
-            "category": "burningman"
-          },
-          {
-            "guid": {
-              "$text": "https://mastodon.online/@damiant/112038388665717373",
-              "isPermaLink": "true"
-            },
-            "link": "https://mastodon.online/@damiant/112038388665717373",
-            "pubDate": "Mon, 04 Mar 2024 16:35:39 +0000",
-            "description": "<p>Heard of Tap Jacking? This weeks tutorial is on mitigating tap jacking in an Android <a href=\"https://mastodon.online/tags/capacitor\" class=\"mention hashtag\" rel=\"tag\">#<span>capacitor</span></a> app: <a href=\"https://ionic.io/docs/tutorials/mobile-security/tap-jacking\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">ionic.io/docs/tutorials/mobile</span><span class=\"invisible\">-security/tap-jacking</span></a></p>",
-            "media:content": {
-              "media:rating": {
-                "$text": "nonadult",
-                "scheme": "urn:simple"
-              },
-              "media:description": {
-                "$text": "Mobile phone being clutched by the hand of a sinister actor",
-                "type": "plain"
-              },
-              "url": "https://files.mastodon.online/media_attachments/files/112/038/388/463/982/464/original/9e4f944621f298af.png",
-              "type": "image/png",
-              "fileSize": "1818854",
-              "medium": "image"
-            },
-            "category": "Capacitor"
-          },
-          {
-            "guid": {
-              "$text": "https://mastodon.online/@damiant/112016107758853227",
-              "isPermaLink": "true"
-            },
-            "link": "https://mastodon.online/@damiant/112016107758853227",
-            "pubDate": "Thu, 29 Feb 2024 18:09:19 +0000",
-            "description": "<p>Next tutorial on making your <a href=\"https://mastodon.online/tags/capacitor\" class=\"mention hashtag\" rel=\"tag\">#<span>capacitor</span></a> app secure is using Google Play service APIs to protect against known exploits:<br /><a href=\"https://ionic.io/docs/tutorials/mobile-security/android-security-provider\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">ionic.io/docs/tutorials/mobile</span><span class=\"invisible\">-security/android-security-provider</span></a></p>",
-            "media:content": {
-              "media:rating": {
-                "$text": "nonadult",
-                "scheme": "urn:simple"
-              },
-              "media:description": {
-                "$text": "An android phone with a security badge shield",
-                "type": "plain"
-              },
-              "url": "https://files.mastodon.online/media_attachments/files/112/016/107/606/032/641/original/2a06a4fe90859067.jpg",
-              "type": "image/jpeg",
-              "fileSize": "201257",
-              "medium": "image"
-            },
-            "category": "Capacitor"
-          },
-          {
-            "guid": {
-              "$text": "https://mastodon.online/@damiant/111999427362532536",
-              "isPermaLink": "true"
-            },
-            "link": "https://mastodon.online/@damiant/111999427362532536",
-            "pubDate": "Mon, 26 Feb 2024 19:27:17 +0000",
-            "description": "<p>I&#39;ve written a new article on Javascript Obfuscation in a  <a href=\"https://mastodon.online/tags/capacitorjs\" class=\"mention hashtag\" rel=\"tag\">#<span>capacitorjs</span></a> app. This another layer to securing your app and part of series on Mobile Security.<br /><a href=\"https://ionic.io/docs/tutorials/mobile-security/javascript-obfuscation\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">ionic.io/docs/tutorials/mobile</span><span class=\"invisible\">-security/javascript-obfuscation</span></a></p>",
-            "media:content": {
-              "media:rating": {
-                "$text": "nonadult",
-                "scheme": "urn:simple"
-              },
-              "media:description": {
-                "$text": "javascript code obscured",
-                "type": "plain"
-              },
-              "url": "https://files.mastodon.online/media_attachments/files/111/999/427/196/234/288/original/cd96e36df386ff53.png",
-              "type": "image/png",
-              "fileSize": "1177127",
-              "medium": "image"
-            },
-            "category": "capacitorjs"
-          },
-          {
-            "guid": {
-              "$text": "https://mastodon.online/@damiant/111942674461618868",
-              "isPermaLink": "true"
-            },
-            "link": "https://mastodon.online/@damiant/111942674461618868",
-            "pubDate": "Fri, 16 Feb 2024 18:54:16 +0000",
-            "description": "<p>It&#39;s been a fun challenge authoring events in an Admin App in PST timezone for a festival in EST timezone, stored in GMT timezone then displayed locally on attendees phones in EST when they get to the event or co-ordinating push notifications to happen at the right time when the pick events in whichever timezone they are in before flying to event! <a href=\"https://mastodon.online/tags/loveburn\" class=\"mention hashtag\" rel=\"tag\">#<span>loveburn</span></a></p>",
-            "media:content": {
-              "media:rating": {
-                "$text": "nonadult",
-                "scheme": "urn:simple"
-              },
-              "media:description": {
-                "$text": "Love burn DJ lineup for thursday in Miami",
-                "type": "plain"
-              },
-              "url": "https://files.mastodon.online/media_attachments/files/111/942/674/231/082/662/original/c1b119586b3fbe50.jpeg",
-              "type": "image/jpeg",
-              "fileSize": "194440",
-              "medium": "image"
-            },
-            "category": "loveburn"
-          },
-          {
-            "guid": {
-              "$text": "https://mastodon.online/@damiant/111928540935698579",
-              "isPermaLink": "true"
-            },
-            "link": "https://mastodon.online/@damiant/111928540935698579",
-            "pubDate": "Wed, 14 Feb 2024 06:59:56 +0000",
-            "description": "<p>I’ve added The Love Burn, happening this weekend in Miami, to the dust app (<a href=\"https://dust.events?app\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">dust.events?app</span><span class=\"invisible\"></span></a>). The backend is now built using <a href=\"https://mastodon.online/tags/Cloudflare\" class=\"mention hashtag\" rel=\"tag\">#<span>Cloudflare</span></a> workers, D1 for database and R2 for static storage. I’ve now got imports from Airtable and Google Maps KML format. End result is theme camps are on the map with GPS directions to restrooms.</p>",
-            "media:content": {
-              "media:rating": {
-                "$text": "nonadult",
-                "scheme": "urn:simple"
-              },
-              "url": "https://files.mastodon.online/media_attachments/files/111/928/523/257/831/004/original/c71310b5b66b3dd9.jpeg",
-              "type": "image/jpeg",
-              "fileSize": "321231",
-              "medium": "image"
-            },
-            "category": "cloudflare"
-          },
-          {
-            "guid": {
-              "$text": "https://mastodon.online/@damiant/111902214080765442",
-              "isPermaLink": "true"
-            },
-            "link": "https://mastodon.online/@damiant/111902214080765442",
-            "pubDate": "Fri, 09 Feb 2024 15:24:40 +0000",
-            "description": "<p>For iOS, the Device Check API can be added to a <a href=\"https://mastodon.online/tags/capacitorjs\" class=\"mention hashtag\" rel=\"tag\">#<span>capacitorjs</span></a> app by following this tutorial:<br /><a href=\"https://ionic.io/docs/tutorials/mobile-security/device-check\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">ionic.io/docs/tutorials/mobile</span><span class=\"invisible\">-security/device-check</span></a></p><p>Any API call is validated as coming from the App Store. You can extend on this with App Attestation for similar functionality to the Play Integrity API.</p><p>Validating your API calls in this way is critical when you want to prevent cheating in games, or reducing fraudulent transactions. It’s also an additional mobile security layer you can add to sure up your <a href=\"https://mastodon.online/tags/capacitorjs\" class=\"mention hashtag\" rel=\"tag\">#<span>capacitorjs</span></a> app.</p>",
-            "category": "capacitorjs"
-          },
-          {
-            "guid": {
-              "$text": "https://mastodon.online/@damiant/111902212449320651",
-              "isPermaLink": "true"
-            },
-            "link": "https://mastodon.online/@damiant/111902212449320651",
-            "pubDate": "Fri, 09 Feb 2024 15:24:15 +0000",
-            "description": "<p>How do you know it&#39;s your app that is calling your API and not a threat actor?</p><p>You can do this on iOS with Device Check and on Android with Play Integrity… </p><p>For Android, the Play Integrity API can be added to a @capacitorjs app by following this tutorial: <a href=\"https://ionic.io/docs/tutorials/mobile-security/play-integrity\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">ionic.io/docs/tutorials/mobile</span><span class=\"invisible\">-security/play-integrity</span></a></p><p>Any API call is validated as coming from an untampered App from a verified user of the Play Store.</p><p>🧵</p>"
-          },
-          {
-            "guid": {
-              "$text": "https://mastodon.online/@damiant/111707089588451982",
-              "isPermaLink": "true"
-            },
-            "link": "https://mastodon.online/@damiant/111707089588451982",
-            "pubDate": "Sat, 06 Jan 2024 04:21:56 +0000",
-            "description": "<p>Spent a few thous traveling back to Australia to pick up one of these bad boys….</p>",
-            "media:content": {
-              "media:rating": {
-                "$text": "nonadult",
-                "scheme": "urn:simple"
-              },
-              "url": "https://files.mastodon.online/media_attachments/files/111/707/084/422/975/138/original/64da918bdcb87be1.jpeg",
-              "type": "image/jpeg",
-              "fileSize": "1299231",
-              "medium": "image"
-            }
-          },
-          {
-            "guid": {
-              "$text": "https://mastodon.online/@damiant/111700838024624888",
-              "isPermaLink": "true"
-            },
-            "link": "https://mastodon.online/@damiant/111700838024624888",
-            "pubDate": "Fri, 05 Jan 2024 01:52:05 +0000",
-            "description": "<p>Working on the next iteration of <a href=\"https://dust.events\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">dust.events</span><span class=\"invisible\"></span></a> with some sweet visuals for each years <a href=\"https://mastodon.online/tags/burningman\" class=\"mention hashtag\" rel=\"tag\">#<span>burningman</span></a> theme.</p>",
-            "media:content": {
-              "media:rating": {
-                "$text": "nonadult",
-                "scheme": "urn:simple"
-              },
-              "url": "https://files.mastodon.online/media_attachments/files/111/700/836/115/687/540/original/f057c887fc1f0642.jpeg",
-              "type": "image/jpeg",
-              "fileSize": "242529",
-              "medium": "image"
-            },
-            "category": "burningman"
-          },
-          {
-            "guid": {
-              "$text": "https://mastodon.online/@damiant/111692817764086718",
-              "isPermaLink": "true"
-            },
-            "link": "https://mastodon.online/@damiant/111692817764086718",
-            "pubDate": "Wed, 03 Jan 2024 15:52:26 +0000",
-            "description": "<p><span class=\"h-card\" translate=\"no\"><a href=\"https://rss-parrot.net/u/birb\" class=\"u-url mention\">@<span>birb</span></a></span> <a href=\"https://ionic.io/blog/tag/framework/feed\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">ionic.io/blog/tag/framework/fe</span><span class=\"invisible\">ed</span></a></p>"
-          },
-          {
-            "guid": {
-              "$text": "https://mastodon.online/@damiant/111179372911848402",
-              "isPermaLink": "true"
-            },
-            "link": "https://mastodon.online/@damiant/111179372911848402",
-            "pubDate": "Wed, 04 Oct 2023 23:36:39 +0000",
-            "description": "<p>SNRGward bound!</p>",
-            "media:content": {
-              "media:rating": {
-                "$text": "nonadult",
-                "scheme": "urn:simple"
-              },
-              "url": "https://files.mastodon.online/media_attachments/files/111/179/372/103/807/245/original/50163ffcd4683a11.jpeg",
-              "type": "image/jpeg",
-              "fileSize": "1223977",
-              "medium": "image"
-            }
-          },
-          {
-            "guid": {
-              "$text": "https://mastodon.online/@damiant/111122694945842664",
-              "isPermaLink": "true"
-            },
-            "link": "https://mastodon.online/@damiant/111122694945842664",
-            "pubDate": "Sun, 24 Sep 2023 23:22:42 +0000",
-            "description": "<p>Garage build of a 10ft sunflower is done, ready to burn at SNRG <a href=\"https://mastodon.online/tags/burningman\" class=\"mention hashtag\" rel=\"tag\">#<span>burningman</span></a> regional in a couple of weeks.</p>",
-            "media:content": {
-              "media:rating": {
-                "$text": "nonadult",
-                "scheme": "urn:simple"
-              },
-              "url": "https://files.mastodon.online/media_attachments/files/111/122/691/973/447/804/original/e58f18013c935a3e.jpeg",
-              "type": "image/jpeg",
-              "fileSize": "2781128",
-              "medium": "image"
-            },
-            "category": "burningman"
-          }
-        ]
+        "link": "https://mastodon.online/@damiant"
       },
-      "version": "2.0",
-      "xmlns:webfeeds": "http://webfeeds.org/rss/1.0",
-      "xmlns:media": "http://search.yahoo.com/mrss/"
-    }
+      "lastBuildDate": "Fri, 01 Nov 2024 00:37:27 +0000",
+      "webfeeds:icon": "https://files.mastodon.online/accounts/avatars/109/277/829/895/449/310/original/f04c2c74add11d64.jpeg",
+      "generator": "Mastodon v4.3.1",
+      "item": [
+        {
+          "guid": {
+            "$text": "https://mastodon.online/@damiant/113404899976730109",
+            "isPermaLink": "true"
+          },
+          "link": "https://mastodon.online/@damiant/113404899976730109",
+          "pubDate": "Fri, 01 Nov 2024 00:37:27 +0000",
+          "description": "<p>Presented at Burn After Meeting and met a bunch of awesome passionate people helping create communities and getting things done!</p>",
+          "media:content": {
+            "media:rating": {
+              "$text": "nonadult",
+              "scheme": "urn:simple"
+            },
+            "url": "https://files.mastodon.online/media_attachments/files/113/404/897/720/549/048/original/8ef1a87f1671b3b2.jpeg",
+            "type": "image/jpeg",
+            "fileSize": "103255",
+            "medium": "image"
+          }
+        },
+        {
+          "guid": {
+            "$text": "https://mastodon.online/@damiant/113223665184964261",
+            "isPermaLink": "true"
+          },
+          "link": "https://mastodon.online/@damiant/113223665184964261",
+          "pubDate": "Mon, 30 Sep 2024 00:27:03 +0000",
+          "description": "<p>Just finished up importing the theme camps, art and events for Mosaic Experiment, the Ohio regional <a href=\"https://mastodon.online/tags/burningman\" class=\"mention hashtag\" rel=\"tag\">#<span>burningman</span></a> event happening October 3-6th. Its in the <a href=\"https://mastodon.online/tags/dust\" class=\"mention hashtag\" rel=\"tag\">#<span>dust</span></a> app which you can get from <a href=\"https://dust.events\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">dust.events</span><span class=\"invisible\"></span></a></p>",
+          "media:content": {
+            "media:rating": {
+              "$text": "nonadult",
+              "scheme": "urn:simple"
+            },
+            "media:description": {
+              "$text": "Screenshots of Mosaic Experiment in the dust app",
+              "type": "plain"
+            },
+            "url": "https://files.mastodon.online/media_attachments/files/113/223/664/964/310/558/original/ff03e8e51d76f0c1.png",
+            "type": "image/png",
+            "fileSize": "1434362",
+            "medium": "image"
+          },
+          "category": ["burningman", "dust"]
+        },
+        {
+          "guid": {
+            "$text": "https://mastodon.online/@damiant/113159973483292298",
+            "isPermaLink": "true"
+          },
+          "link": "https://mastodon.online/@damiant/113159973483292298",
+          "pubDate": "Wed, 18 Sep 2024 18:29:25 +0000",
+          "description": "<p>Marketing: blar blar &quot;personalization&quot; blar blar &quot;seamless control&quot;</p><p>Translation: We going to spy on you harder and put more Ads in your face. We&#39;ve hidden an opt out checkbox somewhere and hope you wont check it</p>",
+          "media:content": {
+            "media:rating": {
+              "$text": "nonadult",
+              "scheme": "urn:simple"
+            },
+            "media:description": {
+              "$text": "Message from Google Play: \"Google play will launch new personalization options that give you more seamless control of your personalization preferences\"",
+              "type": "plain"
+            },
+            "url": "https://files.mastodon.online/media_attachments/files/113/159/973/293/675/814/original/d31c7d434761c858.png",
+            "type": "image/png",
+            "fileSize": "16613",
+            "medium": "image"
+          }
+        },
+        {
+          "guid": {
+            "$text": "https://mastodon.online/@damiant/113159207040442732",
+            "isPermaLink": "true"
+          },
+          "link": "https://mastodon.online/@damiant/113159207040442732",
+          "pubDate": "Wed, 18 Sep 2024 15:14:30 +0000",
+          "description": "<p>Thanks so much <a href=\"https://mastodon.online/tags/sequoia\" class=\"mention hashtag\" rel=\"tag\">#<span>sequoia</span></a> for protecting me from this nefarious application called ESBuild. Coincidentally the application no longer compiles, I wonder why that is :)</p>",
+          "media:content": {
+            "media:rating": {
+              "$text": "nonadult",
+              "scheme": "urn:simple"
+            },
+            "media:description": {
+              "$text": "Dialog from MacOS Sequoia showing \"ESBuild\" not opened because Apple could not verify \"esbuild\" is free of malware that may harm your Mac or compromise your privacy.",
+              "type": "plain"
+            },
+            "url": "https://files.mastodon.online/media_attachments/files/113/159/206/851/808/408/original/0897bdea74152414.png",
+            "type": "image/png",
+            "fileSize": "21781",
+            "medium": "image"
+          },
+          "category": "sequoia"
+        },
+        {
+          "guid": {
+            "$text": "https://mastodon.online/@damiant/113102842354697171",
+            "isPermaLink": "true"
+          },
+          "link": "https://mastodon.online/@damiant/113102842354697171",
+          "pubDate": "Sun, 08 Sep 2024 16:20:13 +0000",
+          "description": "<p>Just added categorization for mutant vehicles and sound camps to the <a href=\"https://mastodon.online/tags/dust\" class=\"mention hashtag\" rel=\"tag\">#<span>dust</span></a> app (<a href=\"https://dust.events\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">dust.events</span><span class=\"invisible\"></span></a>) for use at Youtopia and SNRG regional <a href=\"https://mastodon.online/tags/burningman\" class=\"mention hashtag\" rel=\"tag\">#<span>burningman</span></a> events</p>",
+          "media:content": {
+            "media:rating": {
+              "$text": "nonadult",
+              "scheme": "urn:simple"
+            },
+            "media:description": {
+              "$text": "Screenshot of phone showing a list of mutant vehicles",
+              "type": "plain"
+            },
+            "url": "https://files.mastodon.online/media_attachments/files/113/102/831/593/000/490/original/fd16cd5a4a5dc4c1.jpeg",
+            "type": "image/jpeg",
+            "fileSize": "321370",
+            "medium": "image"
+          },
+          "category": ["dust", "burningman"]
+        },
+        {
+          "guid": {
+            "$text": "https://mastodon.online/@damiant/113093866177133687",
+            "isPermaLink": "true"
+          },
+          "link": "https://mastodon.online/@damiant/113093866177133687",
+          "pubDate": "Sat, 07 Sep 2024 02:17:28 +0000",
+          "description": "<p>&quot;This year I invested in pumpkins. They&#39;ve been going up the whole month of October, and I&#39;ve got a feeling they&#39;re going to peak right around January and BANG! That&#39;s when I&#39;ll cash in!&quot;</p><p>Running <a href=\"https://dust.events\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">dust.events</span><span class=\"invisible\"></span></a> is a lot like this around <a href=\"https://mastodon.online/tags/burningman\" class=\"mention hashtag\" rel=\"tag\">#<span>burningman</span></a> time</p>",
+          "media:content": {
+            "media:rating": {
+              "$text": "nonadult",
+              "scheme": "urn:simple"
+            },
+            "media:description": {
+              "$text": "Homer simpson with a happy halloween banner above him. Below is a graph showing 68 thousand unique users using dust for Burning Man with the graph dropping after labor day",
+              "type": "plain"
+            },
+            "url": "https://files.mastodon.online/media_attachments/files/113/093/865/968/763/702/original/1857af671f71242e.png",
+            "type": "image/png",
+            "fileSize": "1158928",
+            "medium": "image"
+          },
+          "category": "burningman"
+        },
+        {
+          "guid": {
+            "$text": "https://mastodon.online/@damiant/113088631679764776",
+            "isPermaLink": "true"
+          },
+          "link": "https://mastodon.online/@damiant/113088631679764776",
+          "pubDate": "Fri, 06 Sep 2024 04:06:16 +0000",
+          "description": "<p>New sticker for the water bottle. Wondering how many times I typed this as a kid <a href=\"https://mastodon.online/tags/c64\" class=\"mention hashtag\" rel=\"tag\">#<span>c64</span></a></p>",
+          "media:content": {
+            "media:rating": {
+              "$text": "nonadult",
+              "scheme": "urn:simple"
+            },
+            "url": "https://files.mastodon.online/media_attachments/files/113/088/622/971/544/433/original/93040a80dcc159e1.jpeg",
+            "type": "image/jpeg",
+            "fileSize": "595014",
+            "medium": "image"
+          },
+          "category": "c64"
+        },
+        {
+          "guid": {
+            "$text": "https://mastodon.online/@damiant/112980996373052718",
+            "isPermaLink": "true"
+          },
+          "link": "https://mastodon.online/@damiant/112980996373052718",
+          "pubDate": "Sun, 18 Aug 2024 03:53:11 +0000",
+          "description": "<p>Camp locations unlock in the dust app in a few hours. Check out the new feature for <a href=\"https://mastodon.online/tags/burningman\" class=\"mention hashtag\" rel=\"tag\">#<span>burningman</span></a> 2024 in dust. <a href=\"Https://dust.events\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\"></span><span class=\"\">Https://dust.events</span><span class=\"invisible\"></span></a></p>",
+          "media:content": {
+            "media:rating": {
+              "$text": "nonadult",
+              "scheme": "urn:simple"
+            },
+            "media:description": {
+              "$text": "A demonstration of the features in the dust app for Burning Man 2024",
+              "type": "plain"
+            },
+            "url": "https://files.mastodon.online/media_attachments/files/112/980/987/119/219/118/original/a7bfdb11f7c0da48.mp4",
+            "type": "video/mp4",
+            "fileSize": "67239217",
+            "medium": "video"
+          },
+          "category": "burningman"
+        },
+        {
+          "guid": {
+            "$text": "https://mastodon.online/@damiant/112038388665717373",
+            "isPermaLink": "true"
+          },
+          "link": "https://mastodon.online/@damiant/112038388665717373",
+          "pubDate": "Mon, 04 Mar 2024 16:35:39 +0000",
+          "description": "<p>Heard of Tap Jacking? This weeks tutorial is on mitigating tap jacking in an Android <a href=\"https://mastodon.online/tags/capacitor\" class=\"mention hashtag\" rel=\"tag\">#<span>capacitor</span></a> app: <a href=\"https://ionic.io/docs/tutorials/mobile-security/tap-jacking\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">ionic.io/docs/tutorials/mobile</span><span class=\"invisible\">-security/tap-jacking</span></a></p>",
+          "media:content": {
+            "media:rating": {
+              "$text": "nonadult",
+              "scheme": "urn:simple"
+            },
+            "media:description": {
+              "$text": "Mobile phone being clutched by the hand of a sinister actor",
+              "type": "plain"
+            },
+            "url": "https://files.mastodon.online/media_attachments/files/112/038/388/463/982/464/original/9e4f944621f298af.png",
+            "type": "image/png",
+            "fileSize": "1818854",
+            "medium": "image"
+          },
+          "category": "Capacitor"
+        },
+        {
+          "guid": {
+            "$text": "https://mastodon.online/@damiant/112016107758853227",
+            "isPermaLink": "true"
+          },
+          "link": "https://mastodon.online/@damiant/112016107758853227",
+          "pubDate": "Thu, 29 Feb 2024 18:09:19 +0000",
+          "description": "<p>Next tutorial on making your <a href=\"https://mastodon.online/tags/capacitor\" class=\"mention hashtag\" rel=\"tag\">#<span>capacitor</span></a> app secure is using Google Play service APIs to protect against known exploits:<br /><a href=\"https://ionic.io/docs/tutorials/mobile-security/android-security-provider\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">ionic.io/docs/tutorials/mobile</span><span class=\"invisible\">-security/android-security-provider</span></a></p>",
+          "media:content": {
+            "media:rating": {
+              "$text": "nonadult",
+              "scheme": "urn:simple"
+            },
+            "media:description": {
+              "$text": "An android phone with a security badge shield",
+              "type": "plain"
+            },
+            "url": "https://files.mastodon.online/media_attachments/files/112/016/107/606/032/641/original/2a06a4fe90859067.jpg",
+            "type": "image/jpeg",
+            "fileSize": "201257",
+            "medium": "image"
+          },
+          "category": "Capacitor"
+        },
+        {
+          "guid": {
+            "$text": "https://mastodon.online/@damiant/111999427362532536",
+            "isPermaLink": "true"
+          },
+          "link": "https://mastodon.online/@damiant/111999427362532536",
+          "pubDate": "Mon, 26 Feb 2024 19:27:17 +0000",
+          "description": "<p>I&#39;ve written a new article on Javascript Obfuscation in a  <a href=\"https://mastodon.online/tags/capacitorjs\" class=\"mention hashtag\" rel=\"tag\">#<span>capacitorjs</span></a> app. This another layer to securing your app and part of series on Mobile Security.<br /><a href=\"https://ionic.io/docs/tutorials/mobile-security/javascript-obfuscation\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">ionic.io/docs/tutorials/mobile</span><span class=\"invisible\">-security/javascript-obfuscation</span></a></p>",
+          "media:content": {
+            "media:rating": {
+              "$text": "nonadult",
+              "scheme": "urn:simple"
+            },
+            "media:description": {
+              "$text": "javascript code obscured",
+              "type": "plain"
+            },
+            "url": "https://files.mastodon.online/media_attachments/files/111/999/427/196/234/288/original/cd96e36df386ff53.png",
+            "type": "image/png",
+            "fileSize": "1177127",
+            "medium": "image"
+          },
+          "category": "capacitorjs"
+        },
+        {
+          "guid": {
+            "$text": "https://mastodon.online/@damiant/111942674461618868",
+            "isPermaLink": "true"
+          },
+          "link": "https://mastodon.online/@damiant/111942674461618868",
+          "pubDate": "Fri, 16 Feb 2024 18:54:16 +0000",
+          "description": "<p>It&#39;s been a fun challenge authoring events in an Admin App in PST timezone for a festival in EST timezone, stored in GMT timezone then displayed locally on attendees phones in EST when they get to the event or co-ordinating push notifications to happen at the right time when the pick events in whichever timezone they are in before flying to event! <a href=\"https://mastodon.online/tags/loveburn\" class=\"mention hashtag\" rel=\"tag\">#<span>loveburn</span></a></p>",
+          "media:content": {
+            "media:rating": {
+              "$text": "nonadult",
+              "scheme": "urn:simple"
+            },
+            "media:description": {
+              "$text": "Love burn DJ lineup for thursday in Miami",
+              "type": "plain"
+            },
+            "url": "https://files.mastodon.online/media_attachments/files/111/942/674/231/082/662/original/c1b119586b3fbe50.jpeg",
+            "type": "image/jpeg",
+            "fileSize": "194440",
+            "medium": "image"
+          },
+          "category": "loveburn"
+        },
+        {
+          "guid": {
+            "$text": "https://mastodon.online/@damiant/111928540935698579",
+            "isPermaLink": "true"
+          },
+          "link": "https://mastodon.online/@damiant/111928540935698579",
+          "pubDate": "Wed, 14 Feb 2024 06:59:56 +0000",
+          "description": "<p>I’ve added The Love Burn, happening this weekend in Miami, to the dust app (<a href=\"https://dust.events?app\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">dust.events?app</span><span class=\"invisible\"></span></a>). The backend is now built using <a href=\"https://mastodon.online/tags/Cloudflare\" class=\"mention hashtag\" rel=\"tag\">#<span>Cloudflare</span></a> workers, D1 for database and R2 for static storage. I’ve now got imports from Airtable and Google Maps KML format. End result is theme camps are on the map with GPS directions to restrooms.</p>",
+          "media:content": {
+            "media:rating": {
+              "$text": "nonadult",
+              "scheme": "urn:simple"
+            },
+            "url": "https://files.mastodon.online/media_attachments/files/111/928/523/257/831/004/original/c71310b5b66b3dd9.jpeg",
+            "type": "image/jpeg",
+            "fileSize": "321231",
+            "medium": "image"
+          },
+          "category": "cloudflare"
+        },
+        {
+          "guid": {
+            "$text": "https://mastodon.online/@damiant/111902214080765442",
+            "isPermaLink": "true"
+          },
+          "link": "https://mastodon.online/@damiant/111902214080765442",
+          "pubDate": "Fri, 09 Feb 2024 15:24:40 +0000",
+          "description": "<p>For iOS, the Device Check API can be added to a <a href=\"https://mastodon.online/tags/capacitorjs\" class=\"mention hashtag\" rel=\"tag\">#<span>capacitorjs</span></a> app by following this tutorial:<br /><a href=\"https://ionic.io/docs/tutorials/mobile-security/device-check\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">ionic.io/docs/tutorials/mobile</span><span class=\"invisible\">-security/device-check</span></a></p><p>Any API call is validated as coming from the App Store. You can extend on this with App Attestation for similar functionality to the Play Integrity API.</p><p>Validating your API calls in this way is critical when you want to prevent cheating in games, or reducing fraudulent transactions. It’s also an additional mobile security layer you can add to sure up your <a href=\"https://mastodon.online/tags/capacitorjs\" class=\"mention hashtag\" rel=\"tag\">#<span>capacitorjs</span></a> app.</p>",
+          "category": "capacitorjs"
+        },
+        {
+          "guid": {
+            "$text": "https://mastodon.online/@damiant/111902212449320651",
+            "isPermaLink": "true"
+          },
+          "link": "https://mastodon.online/@damiant/111902212449320651",
+          "pubDate": "Fri, 09 Feb 2024 15:24:15 +0000",
+          "description": "<p>How do you know it&#39;s your app that is calling your API and not a threat actor?</p><p>You can do this on iOS with Device Check and on Android with Play Integrity… </p><p>For Android, the Play Integrity API can be added to a @capacitorjs app by following this tutorial: <a href=\"https://ionic.io/docs/tutorials/mobile-security/play-integrity\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">ionic.io/docs/tutorials/mobile</span><span class=\"invisible\">-security/play-integrity</span></a></p><p>Any API call is validated as coming from an untampered App from a verified user of the Play Store.</p><p>🧵</p>"
+        },
+        {
+          "guid": {
+            "$text": "https://mastodon.online/@damiant/111707089588451982",
+            "isPermaLink": "true"
+          },
+          "link": "https://mastodon.online/@damiant/111707089588451982",
+          "pubDate": "Sat, 06 Jan 2024 04:21:56 +0000",
+          "description": "<p>Spent a few thous traveling back to Australia to pick up one of these bad boys….</p>",
+          "media:content": {
+            "media:rating": {
+              "$text": "nonadult",
+              "scheme": "urn:simple"
+            },
+            "url": "https://files.mastodon.online/media_attachments/files/111/707/084/422/975/138/original/64da918bdcb87be1.jpeg",
+            "type": "image/jpeg",
+            "fileSize": "1299231",
+            "medium": "image"
+          }
+        },
+        {
+          "guid": {
+            "$text": "https://mastodon.online/@damiant/111700838024624888",
+            "isPermaLink": "true"
+          },
+          "link": "https://mastodon.online/@damiant/111700838024624888",
+          "pubDate": "Fri, 05 Jan 2024 01:52:05 +0000",
+          "description": "<p>Working on the next iteration of <a href=\"https://dust.events\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">dust.events</span><span class=\"invisible\"></span></a> with some sweet visuals for each years <a href=\"https://mastodon.online/tags/burningman\" class=\"mention hashtag\" rel=\"tag\">#<span>burningman</span></a> theme.</p>",
+          "media:content": {
+            "media:rating": {
+              "$text": "nonadult",
+              "scheme": "urn:simple"
+            },
+            "url": "https://files.mastodon.online/media_attachments/files/111/700/836/115/687/540/original/f057c887fc1f0642.jpeg",
+            "type": "image/jpeg",
+            "fileSize": "242529",
+            "medium": "image"
+          },
+          "category": "burningman"
+        },
+        {
+          "guid": {
+            "$text": "https://mastodon.online/@damiant/111692817764086718",
+            "isPermaLink": "true"
+          },
+          "link": "https://mastodon.online/@damiant/111692817764086718",
+          "pubDate": "Wed, 03 Jan 2024 15:52:26 +0000",
+          "description": "<p><span class=\"h-card\" translate=\"no\"><a href=\"https://rss-parrot.net/u/birb\" class=\"u-url mention\">@<span>birb</span></a></span> <a href=\"https://ionic.io/blog/tag/framework/feed\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">ionic.io/blog/tag/framework/fe</span><span class=\"invisible\">ed</span></a></p>"
+        },
+        {
+          "guid": {
+            "$text": "https://mastodon.online/@damiant/111179372911848402",
+            "isPermaLink": "true"
+          },
+          "link": "https://mastodon.online/@damiant/111179372911848402",
+          "pubDate": "Wed, 04 Oct 2023 23:36:39 +0000",
+          "description": "<p>SNRGward bound!</p>",
+          "media:content": {
+            "media:rating": {
+              "$text": "nonadult",
+              "scheme": "urn:simple"
+            },
+            "url": "https://files.mastodon.online/media_attachments/files/111/179/372/103/807/245/original/50163ffcd4683a11.jpeg",
+            "type": "image/jpeg",
+            "fileSize": "1223977",
+            "medium": "image"
+          }
+        },
+        {
+          "guid": {
+            "$text": "https://mastodon.online/@damiant/111122694945842664",
+            "isPermaLink": "true"
+          },
+          "link": "https://mastodon.online/@damiant/111122694945842664",
+          "pubDate": "Sun, 24 Sep 2023 23:22:42 +0000",
+          "description": "<p>Garage build of a 10ft sunflower is done, ready to burn at SNRG <a href=\"https://mastodon.online/tags/burningman\" class=\"mention hashtag\" rel=\"tag\">#<span>burningman</span></a> regional in a couple of weeks.</p>",
+          "media:content": {
+            "media:rating": {
+              "$text": "nonadult",
+              "scheme": "urn:simple"
+            },
+            "url": "https://files.mastodon.online/media_attachments/files/111/122/691/973/447/804/original/e58f18013c935a3e.jpeg",
+            "type": "image/jpeg",
+            "fileSize": "2781128",
+            "medium": "image"
+          },
+          "category": "burningman"
+        }
+      ]
+    },
+    "version": "2.0",
+    "xmlns:webfeeds": "http://webfeeds.org/rss/1.0",
+    "xmlns:media": "http://search.yahoo.com/mrss/"
   }
+}

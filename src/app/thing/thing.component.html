@@ -11,8 +11,14 @@
 </ion-header>
 <ion-content class="ion-padding">
   <ion-item>
-    <ion-input autocapitalize="words" name="Name" id="Name" label="Name" [(ngModel)]="thing.name"
-      placeholder="Name of the pin"></ion-input>
+    <ion-input
+      autocapitalize="words"
+      name="Name"
+      id="Name"
+      label="Name"
+      [(ngModel)]="thing.name"
+      placeholder="Name of the pin"
+    ></ion-input>
   </ion-item>
 
   <ion-item>
@@ -20,8 +26,8 @@
   </ion-item>
 
   @if (isEdit) {
-  <div class="center">
-    <ion-button (click)="deleteThing()" shape="round">Delete</ion-button>
-  </div>
+    <div class="center">
+      <ion-button (click)="deleteThing()" shape="round">Delete</ion-button>
+    </div>
   }
 </ion-content>

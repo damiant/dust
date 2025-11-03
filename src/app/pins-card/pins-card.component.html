@@ -1,9 +1,9 @@
 <app-card-header title="Find" (addClicked)="addThing()"></app-card-header>
 <ion-card class="ion-padding-top ion-padding-bottom">
   @for (thing of things(); track thing.name; let index = $index) {
-  <ion-item (click)="doClickThing(thing)" lines="none" color="transparent" detail="true">
-    <ion-icon slot="start" name="location-outline"></ion-icon> {{thing.name}}
-    <ion-note slot="end">{{thing.gps ? '' : 'Location not set'}}</ion-note>
-  </ion-item>
+    <ion-item (click)="doClickThing(thing)" lines="none" color="transparent" detail="true">
+      <ion-icon slot="start" name="location-outline"></ion-icon> {{ thing.name }}
+      <ion-note slot="end">{{ thing.gps ? '' : 'Location not set' }}</ion-note>
+    </ion-item>
   }
 </ion-card>

@@ -51,7 +51,7 @@ export enum LocationName {
   Unavailable = 'Location Available Soon',
   Undefined = '',
   Unplaced = 'Unplaced',
-  Mobile = 'Out on the Playa'
+  Mobile = 'Out on the Playa',
 }
 
 export interface Revision {
@@ -110,7 +110,7 @@ export interface Camp {
   landmark: string;
   facing: string;
   pin: Pin;
-  camp_type?: string,
+  camp_type?: string;
   distance: number;
   distanceInfo: string;
   year: number;
@@ -152,7 +152,7 @@ export interface Art {
   self_guided_tour_map: number;
   label?: string; // Added by dust
   uid: string;
-  art_type?: string,
+  art_type?: string;
   url?: string;
   year: number;
 }
@@ -205,7 +205,6 @@ export interface Settings {
   list: boolean; // Display cards as a list
   lastDatasetId: string; // Remember the last dataset
 }
-
 
 /**
  * Way to filter datasets
@@ -277,7 +276,7 @@ export interface WebLocation {
 }
 
 export enum Names {
-  festivals = 'festivals', // Get from the root path at https://data.dust.events/  
+  festivals = 'festivals', // Get from the root path at https://data.dust.events/
   datasets = 'datasets',
   events = 'events',
   art = 'art',
@@ -297,7 +296,7 @@ export enum Names {
   medical = 'medical', // Burning Man only
   restrooms = 'restrooms', // Burning Man only
   summary = 'summary', // Event summary (DatasetResult)
-  other = 'other' // Other pin types (Shuttle Stop etc)
+  other = 'other', // Other pin types (Shuttle Stop etc)
 }
 
 export enum MapType {
@@ -309,7 +308,7 @@ export enum MapType {
   Other = 'other',
   Things = 'things',
   Friends = 'friends',
-  All = 'all'
+  All = 'all',
 }
 
 export interface Pin {
@@ -499,5 +498,5 @@ export enum DataMethods {
   Fetch = 'fetch',
   ReadData = 'readData',
   WriteData = 'writeData',
-  Clear = 'clear'
+  Clear = 'clear',
 }

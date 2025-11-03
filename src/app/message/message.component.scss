@@ -1,33 +1,33 @@
 .tall {
-    min-height: 40vh;
+  min-height: 40vh;
 
-    padding-top: 0;
-    padding-bottom: 2rem;
-    flex-direction: column;
+  padding-top: 0;
+  padding-bottom: 2rem;
+  flex-direction: column;
 }
 
 .pad {
-    padding-left: 10vw;
-    padding-right: 10vw;
+  padding-left: 10vw;
+  padding-right: 10vw;
 }
 
 .footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
-    padding: 2rem;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  padding: 2rem;
 }
 
 ion-button {
-    padding-top: 2rem;
+  padding-top: 2rem;
 }
 
 ion-text {
-    font-size: larger;
+  font-size: larger;
 }
 
 .pad-right {
-    padding-right: 0.5rem;
+  padding-right: 0.5rem;
 }

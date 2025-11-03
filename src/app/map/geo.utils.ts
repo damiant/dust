@@ -37,13 +37,13 @@ function affineTransformation(
     toXY: function (gpsPoint: GpsCoord) {
       return {
         x: A * gpsPoint.lat + B * gpsPoint.lng + C,
-        y: D * gpsPoint.lat + E * gpsPoint.lng + F
+        y: D * gpsPoint.lat + E * gpsPoint.lng + F,
       };
     },
     toGPS: function (x: number, y: number) {
       return {
         lat: (E * x - B * y + BF - CE) / det,
-        lng: (-D * x + A * y + CD - AF) / det
+        lng: (-D * x + A * y + CD - AF) / det,
       };
     },
   };

@@ -29,18 +29,8 @@ import { getTimeInTimeZone } from '../utils/date-utils';
   selector: 'app-reminders',
   templateUrl: './reminders.component.html',
   styleUrls: ['./reminders.component.scss'],
-  imports: [
-    CommonModule,
-    IonCard,
-    IonIcon,
-    IonCardContent,
-    IonList,
-    IonText,
-    IonItem,
-    IonLabel,
-    CardHeaderComponent
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  imports: [CommonModule, IonCard, IonIcon, IonCardContent, IonList, IonText, IonItem, IonLabel, CardHeaderComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RemindersComponent implements OnInit {
   private modalCtrl = inject(ModalController);
@@ -91,7 +81,8 @@ export class RemindersComponent implements OnInit {
       id++;
       const start = getTimeInTimeZone(shift.shift_start * 1000, timeZone);
       const end = getTimeInTimeZone(shift.shift_end * 1000, timeZone);
-      const timeRange = (start != end) ? `${this.timeString(start)} to ${this.timeString(end)}` : `${this.timeString(start)}`
+      const timeRange =
+        start != end ? `${this.timeString(start)} to ${this.timeString(end)}` : `${this.timeString(start)}`;
       let title = shift.shift_title;
       let n = 2;
       while (titles.includes(title)) {
@@ -104,7 +95,7 @@ export class RemindersComponent implements OnInit {
         notes: `${timeRange}. ${shift.department_title}. ${shift.shift_description}`,
         address: shift.department_title,
         start, // 2025-04-30T07:00:00
-        id: `${id}`
+        id: `${id}`,
       };
       await this.fav.addReminder(reminder);
       count++;
@@ -120,20 +111,20 @@ export class RemindersComponent implements OnInit {
       presentingElement: e,
       componentProps: event
         ? {
-          event: event,
-          startEvent: this.startEvent(),
-          endEvent: this.endEvent(),
-          highlightedDates: this.highlightedDates(),
-          isEdit: event,
-          showAddress: this.settings.isBurningMan()
-        }
+            event: event,
+            startEvent: this.startEvent(),
+            endEvent: this.endEvent(),
+            highlightedDates: this.highlightedDates(),
+            isEdit: event,
+            showAddress: this.settings.isBurningMan(),
+          }
         : {
-          startEvent: this.startEvent(),
-          endEvent: this.endEvent(),
-          highlightedDates: this.highlightedDates(),
-          isEdit: false,
-          showAddress: this.settings.isBurningMan()
-        },
+            startEvent: this.startEvent(),
+            endEvent: this.endEvent(),
+            highlightedDates: this.highlightedDates(),
+            isEdit: false,
+            showAddress: this.settings.isBurningMan(),
+          },
     });
     await modal.present();
 

@@ -1,44 +1,44 @@
 .item {
-    height: calc(var(--text-zoom) * 50 + 156px)
+  height: calc(var(--text-zoom) * 50 + 156px);
 }
 
 h1 {
-    padding-left: 1.5rem;
-    margin-bottom: -1rem;
+  padding-left: 1.5rem;
+  margin-bottom: -1rem;
 }
 
 .badge {
-    position: absolute;
-    right: 0;
-    margin: 0.5rem;
-    padding: 0.25rem;
-    color: var(--ion-color-primary-contrast);
-    font-family: 'Grotesk Bold';
-    transform: rotate(5deg);
-    z-index: 1;
-    background-color: var(--ion-color-primary);
-    font-size: x-small;
-    font-weight: bold;
+  position: absolute;
+  right: 0;
+  margin: 0.5rem;
+  padding: 0.25rem;
+  color: var(--ion-color-primary-contrast);
+  font-family: 'Grotesk Bold';
+  transform: rotate(5deg);
+  z-index: 1;
+  background-color: var(--ion-color-primary);
+  font-size: x-small;
+  font-weight: bold;
 }
 
 .highlight {
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 .image {
-    padding-left: 0.5rem;
-    float: right;
-    height: 156px;
-    width: 33vw;
-    min-width: 150px;
-    object-fit: cover;
+  padding-left: 0.5rem;
+  float: right;
+  height: 156px;
+  width: 33vw;
+  min-width: 150px;
+  object-fit: cover;
 }
 
 .type {
-    color: var(--ion-color-bright);
-    padding-top: 0.5rem;
+  color: var(--ion-color-bright);
+  padding-top: 0.5rem;
 }
 
 .title {
-    padding-right: 33vw;
+  padding-right: 33vw;
 }

@@ -1,4 +1,4 @@
-import { Environment } from "./environment.model";
+import { Environment } from './environment.model';
 
 export const environment: Environment = {
   production: true,
@@ -7,5 +7,5 @@ export const environment: Environment = {
   overrideLocations: false,
   latitudeOffset: undefined,
   longitudeOffset: undefined,
-  offline: true
+  offline: true,
 };

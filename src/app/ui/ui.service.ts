@@ -20,8 +20,7 @@ export class UiService {
   public textZoom = signal(1);
   private clickedTab = signal('');
 
-  constructor() {
-  }
+  constructor() {}
 
   public scrollUp(name: string, virtualScroll: CdkVirtualScrollViewport) {
     const tab = this.clickedTab();
@@ -80,7 +79,7 @@ export class UiService {
       window.open(url, '_blank');
       return;
     }
-    
+
     if (url.startsWith('./admin')) {
       await SplashScreen.show();
       location.href = url;
@@ -152,12 +151,12 @@ export class UiService {
 
   public async presentAlert(alert: AlertController, message: string, title?: string): Promise<void> {
     const a = await alert.create({
-        header: title ?? 'Message',
-        message,
-        buttons: ['OK'],
+      header: title ?? 'Message',
+      message,
+      buttons: ['OK'],
     });
 
     await a.present();
     await a.onDidDismiss();
-}
+  }
 }

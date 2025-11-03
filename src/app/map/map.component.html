@@ -1,39 +1,50 @@
 <div [hidden]="!isOpen" class="popover" z-index="1" #popover>
   @if (infoList) {
-  @if (infoList.length === 1) {
-  @let info = infoList[0];
-  <div style="width: 100%" (click)="link(info.href)">
-    <b>{{ info.title }}</b><br />{{ info.location }}<br />{{ info.subtitle }}
-    <div class="center">
-      @if (info.imageUrl) {
-      <app-cached-img (loaded)="popReady()" class="pop" [src]="info.imageUrl" [alt]="info.title"
-        (click)="link(info.href)" />
+    @if (infoList.length === 1) {
+      @let info = infoList[0];
+      <div style="width: 100%" (click)="link(info.href)">
+        <b>{{ info.title }}</b
+        ><br />{{ info.location }}<br />{{ info.subtitle }}
+        <div class="center">
+          @if (info.imageUrl) {
+            <app-cached-img
+              (loaded)="popReady()"
+              class="pop"
+              [src]="info.imageUrl"
+              [alt]="info.title"
+              (click)="link(info.href)"
+            />
+          }
+        </div>
+        <div class="center">
+          @if (info.href) {
+            <ion-button #popButton [disabled]="!isOpen" (click)="link(info.href)" size="small" shape="round"
+              >View</ion-button
+            >
+          }
+        </div>
+      </div>
+    } @else if (infoList.length > 1) {
+      <div class="row-header">{{ infoList[0].location }}</div>
+      @for (info of infoList; track $index) {
+        <div class="row" (click)="link(info.href)">{{ info.title }}</div>
       }
-    </div>
-    <div class="center">
-      @if (info.href) {
-      <ion-button #popButton [disabled]="!isOpen" (click)="link(info.href)" size="small" shape="round">View</ion-button>
-      }
-    </div>
-  </div>
-  } @else if (infoList.length > 1) {
-  <div class="row-header">{{ infoList[0].location }}</div>
-  @for (info of infoList; track $index) {
-  <div class="row" (click)="link(info.href)">{{ info.title }}</div>
-  }
-  }
+    }
   }
 </div>
 
-<app-message [secondButton]="secondButton" (dismissed)="enableGeoLocation($event)" [show]="showMessage"
-  [title]="'Geolocation'" message="By enabling geolocation you can see where you are on the map."></app-message>
+<app-message
+  [secondButton]="secondButton"
+  (dismissed)="enableGeoLocation($event)"
+  [show]="showMessage"
+  [title]="'Geolocation'"
+  message="By enabling geolocation you can see where you are on the map."
+></app-message>
 
-<div #container [ngClass]="mapClass" (click)="mapClick($event)" [style]="height()" style="width:100%;">
-
-</div>
+<div #container [ngClass]="mapClass" (click)="mapClick($event)" [style]="height()" style="width: 100%"></div>
 
 @if (footer) {
-<div [style.paddingBottom.px]="footerPadding()" [ngClass]="isHeader() ? 'header' : 'footer'">
-  <ion-text [ngClass]="footerClass" (click)="locationClick()">{{ footer }}</ion-text>
-</div>
+  <div [style.paddingBottom.px]="footerPadding()" [ngClass]="isHeader() ? 'header' : 'footer'">
+    <ion-text [ngClass]="footerClass" (click)="locationClick()">{{ footer }}</ion-text>
+  </div>
 }

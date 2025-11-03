@@ -4,7 +4,7 @@
 /** Ionic CSS Variables **/
 :root {
   /** primary **/
-  --ion-color-primary: #F61067;
+  --ion-color-primary: #f61067;
   --ion-color-primary-rgb: 56, 128, 255;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
@@ -12,7 +12,7 @@
   --ion-color-primary-tint: #aa134d;
 
   /** secondary **/
-  --ion-color-secondary: #2196F3;
+  --ion-color-secondary: #2196f3;
   --ion-color-secondary-rgb: 61, 194, 255;
   --ion-color-secondary-contrast: #ffffff;
   --ion-color-secondary-contrast-rgb: 255, 255, 255;
@@ -20,12 +20,12 @@
   --ion-color-secondary-tint: #50c8ff;
 
   /** tertiary **/
-    --ion-color-tertiary: #19c32a;
-    --ion-color-tertiary-rgb: 106, 100, 255;
-    --ion-color-tertiary-contrast: #ffffff;
-    --ion-color-tertiary-contrast-rgb: 255, 255, 255;
-    --ion-color-tertiary-shade: #16ab25;
-    --ion-color-tertiary-tint: #1bd62e;
+  --ion-color-tertiary: #19c32a;
+  --ion-color-tertiary-rgb: 106, 100, 255;
+  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+  --ion-color-tertiary-shade: #16ab25;
+  --ion-color-tertiary-tint: #1bd62e;
 
   /** success **/
   --ion-color-success: #2dd36f;
@@ -85,7 +85,7 @@
    */
 
   body {
-    --ion-color-primary: #F61067;
+    --ion-color-primary: #f61067;
     --ion-color-primary-rgb: 66, 140, 255;
     --ion-color-primary-contrast: #ffffff;
     --ion-color-primary-contrast-rgb: 255, 255, 255;
@@ -99,12 +99,12 @@
     --ion-color-secondary-shade: #46b0e0;
     --ion-color-secondary-tint: #62ceff;
 
-  --ion-color-tertiary: #19c32a;
-  --ion-color-tertiary-rgb: 106, 100, 255;
-  --ion-color-tertiary-contrast: #ffffff;
-  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
-  --ion-color-tertiary-shade: #16ab25;
-  --ion-color-tertiary-tint: #1bd62e;
+    --ion-color-tertiary: #19c32a;
+    --ion-color-tertiary-rgb: 106, 100, 255;
+    --ion-color-tertiary-contrast: #ffffff;
+    --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+    --ion-color-tertiary-shade: #16ab25;
+    --ion-color-tertiary-tint: #1bd62e;
 
     --ion-color-success: #2fdf75;
     --ion-color-success-rgb: 47, 223, 117;
@@ -194,7 +194,6 @@
     // --ion-toolbar-background: var(--ion-color-step-150);
     // --ion-toolbar-border-color: var(--ion-color-step-250);
   }
-
 
   /*
    * Material Design Dark Theme

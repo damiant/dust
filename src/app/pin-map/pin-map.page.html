@@ -17,19 +17,20 @@
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
-
     <ion-toolbar>
       <ion-title size="large">{{title()}}</ion-title>
       <app-search [hidden]="!showSearch()" slot="end" placeholder="" (searched)="search($event)" />
     </ion-toolbar>
-
   </ion-header>
   <div [hidden]="description === ''" style="position: absolute" class="ion-padding rounded">
     <ion-item class="shadow" lines="none">
       <ion-text class="text">{{description}}</ion-text>
     </ion-item>
   </div>
-  <ion-loading spinner="circular" [isOpen]="isGettingGPS"
-    message="Getting Location: This may take up to 10 seconds."></ion-loading>
+  <ion-loading
+    spinner="circular"
+    [isOpen]="isGettingGPS"
+    message="Getting Location: This may take up to 10 seconds."
+  ></ion-loading>
   <app-map #map [(loadingDialog)]="isGettingGPS" [smallPins]="smallPins" [points]="points"></app-map>
 </ion-content>

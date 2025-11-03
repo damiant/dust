@@ -29,7 +29,7 @@
           ></ion-icon>
           {{pushNotifications.enabled() ? 'Unsubscribe': 'Subscribe'}}
         </ion-item>
-        
+
         <ion-item (click)="enableLiveMap()" detail="true">
           <ion-icon slot="start" name="map-outline"></ion-icon>
           Enable Live Mutant Vehicle Map
@@ -105,7 +105,12 @@
     <app-tile title="Art" routerLink="/map/art" imgSrc="assets/icon/art.svg"></app-tile>
     }
     <app-tile [hidden]="!vm.hasIce" title="Ice" routerLink="/map/ice" imgSrc="assets/icon/ice.svg"></app-tile>
-    <app-tile [hidden]="!vm.hasFriends" title="Friends" routerLink="/map/friends" imgSrc="assets/icon/person.svg"></app-tile>
+    <app-tile
+      [hidden]="!vm.hasFriends"
+      title="Friends"
+      routerLink="/map/friends"
+      imgSrc="assets/icon/person.svg"
+    ></app-tile>
     <app-tile title="Directions" [hidden]="!vm.mapPin" (click)="directions()" iconName="compass-outline"></app-tile>
     <app-tile title="More" (click)="vm.moreOpen = true" iconName="ellipsis-vertical-sharp"></app-tile>
   </app-tile-container>

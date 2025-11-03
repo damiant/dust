@@ -29,36 +29,44 @@ import { SettingsService } from '../data/settings.service';
 import { toMapPoint } from '../map/map.utils';
 import { getOrdinalNum } from '../utils/utils';
 import { addIcons } from 'ionicons';
-import { star, starOutline, shareOutline, locationOutline, calendarOutline, ellipsisVertical, personAddOutline } from 'ionicons/icons';
+import {
+  star,
+  starOutline,
+  shareOutline,
+  locationOutline,
+  calendarOutline,
+  ellipsisVertical,
+  personAddOutline,
+} from 'ionicons/icons';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { canCreate } from '../map/map';
 import { ScrollResult } from '../map/map-model';
 
 @Component({
-    selector: 'app-camp',
-    templateUrl: './camp.page.html',
-    styleUrls: ['./camp.page.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-        CommonModule,
-        FormsModule,
-        MapComponent,
-        EventPage,
-        IonHeader,
-        IonToolbar,
-        IonButtons,
-        IonBackButton,
-        IonButton,
-        IonIcon,
-        IonContent,
-        IonList,
-        IonItem,
-        IonLabel,
-        IonText,
-        IonModal,
-        IonPopover,
-        CachedImgComponent,
-    ]
+  selector: 'app-camp',
+  templateUrl: './camp.page.html',
+  styleUrls: ['./camp.page.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CommonModule,
+    FormsModule,
+    MapComponent,
+    EventPage,
+    IonHeader,
+    IonToolbar,
+    IonButtons,
+    IonBackButton,
+    IonButton,
+    IonIcon,
+    IonContent,
+    IonList,
+    IonItem,
+    IonLabel,
+    IonText,
+    IonModal,
+    IonPopover,
+    CachedImgComponent,
+  ],
 })
 export class CampPage implements OnInit {
   private route = inject(ActivatedRoute);
@@ -92,7 +100,7 @@ export class CampPage implements OnInit {
     const id = tmp[0];
     this.backText = tmp[1];
     this.camp = await this.db.findCamp(id);
-    this.star = this.camp && await this.fav.isFavCamp(this.camp.uid);
+    this.star = this.camp && (await this.fav.isFavCamp(this.camp.uid));
     this.events = await this.db.getCampEvents(id);
 
     const rslEvents = await this.db.getCampRSLEvents(id);
@@ -108,7 +116,7 @@ export class CampPage implements OnInit {
         this.camp.location_string!,
         { title: this.camp.name, location: this.camp.location_string!, subtitle: '', imageUrl: this.camp.imageUrl },
         this.camp.pin,
-        this.camp.facing
+        this.camp.facing,
       );
       this.mapPoints = [mp];
     } else {
@@ -134,8 +142,8 @@ export class CampPage implements OnInit {
       address: hideCamp ? '' : this.camp?.location_string || '',
       camp: this.camp?.uid,
       notes: `@${this.camp?.name}`,
-    }
-    
+    };
+
     if (await this.friendsService.addFriend(friend, true)) {
       this.ui.presentToast(`Your friend has been added to the list`, this.toastController);
     }
@@ -158,7 +166,7 @@ export class CampPage implements OnInit {
     this.showEvent = true;
   }
 
-  noop() { }
+  noop() {}
 
   share() {
     //const url = `https://dust.events?${ShareInfoType.camp}=${this.camp?.uid}`;
@@ -169,7 +177,7 @@ export class CampPage implements OnInit {
       text: `Check out ${this.camp?.name} at ${this.settings.eventTitle()} using the dust app. `,
       url,
     });
-    this.closePopover();    
+    this.closePopover();
   }
 
   openPopover() {

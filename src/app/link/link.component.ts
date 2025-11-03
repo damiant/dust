@@ -15,11 +15,11 @@ import {
 import { CommonModule } from '@angular/common';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 @Component({
-    selector: 'app-link',
-    templateUrl: './link.component.html',
-    styleUrls: ['./link.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [IonCardContent, IonIcon, IonItem, CommonModule, CachedImgComponent]
+  selector: 'app-link',
+  templateUrl: './link.component.html',
+  styleUrls: ['./link.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [IonCardContent, IonIcon, IonItem, CommonModule, CachedImgComponent],
 })
 export class LinkComponent {
   private ui = inject(UiService);
@@ -49,13 +49,14 @@ export class LinkComponent {
   type = computed(() => {
     let txt: string = this.text();
     let url: string = this.url();
-    if ( url && (
-      url.endsWith('.jpeg') ||
-      url.endsWith('.jpg') ||
-      url.endsWith('.webp') ||
-      url.endsWith('.gif') ||
-      url.endsWith('.png')
-    )) {
+    if (
+      url &&
+      (url.endsWith('.jpeg') ||
+        url.endsWith('.jpg') ||
+        url.endsWith('.webp') ||
+        url.endsWith('.gif') ||
+        url.endsWith('.png'))
+    ) {
       return 'image';
     }
     if (txt.includes('<')) {
@@ -88,7 +89,16 @@ export class LinkComponent {
   });
 
   constructor() {
-    addIcons({ linkOutline, compass, compassOutline, callOutline, mailOutline, ticketOutline, tvOutline, createOutline });
+    addIcons({
+      linkOutline,
+      compass,
+      compassOutline,
+      callOutline,
+      mailOutline,
+      ticketOutline,
+      tvOutline,
+      createOutline,
+    });
   }
 
   link(url: string) {

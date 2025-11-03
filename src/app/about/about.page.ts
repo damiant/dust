@@ -15,21 +15,21 @@ import { addIcons } from 'ionicons';
 import { logoTwitter, logoInstagram, mailOutline } from 'ionicons/icons';
 
 @Component({
-    selector: 'app-about',
-    templateUrl: './about.page.html',
-    styleUrls: ['./about.page.scss'],
-    imports: [
-        CommonModule,
-        FormsModule,
-        IonHeader,
-        IonToolbar,
-        IonButtons,
-        IonBackButton,
-        IonTitle,
-        IonContent,
-        IonText,
-        IonIcon,
-    ]
+  selector: 'app-about',
+  templateUrl: './about.page.html',
+  styleUrls: ['./about.page.scss'],
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonHeader,
+    IonToolbar,
+    IonButtons,
+    IonBackButton,
+    IonTitle,
+    IonContent,
+    IonText,
+    IonIcon,
+  ],
 })
 export class AboutPage {
   constructor() {
