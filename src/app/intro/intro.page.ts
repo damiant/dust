@@ -561,6 +561,7 @@ export class IntroPage {
       : -(this.vm.selected!.mapDirection ?? 0); // Burning Mans map is rotate 45 degrees
     this.settingsService.settings.eventTitle = this.vm.selected!.title;
     this.settingsService.settings.scrollLeft = this.vm.scrollLeft;
+    this.settingsService.applyTheme();
     this.settingsService.save();
   }
 

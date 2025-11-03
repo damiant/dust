@@ -16,6 +16,7 @@ export class SettingsService {
   public async init() {
     this.settings = await this.getSettings();
     this.validate();
+    this.applyTheme();
   }
 
   private validate() {
@@ -191,5 +192,15 @@ export class SettingsService {
 
   public async setPin(datasetId: string, pin: string): Promise<void> {
     await Preferences.set({ key: `${datasetId}-pin`, value: pin });
+  }
+
+  /**
+   * Apply the theme from the selected dataset
+   * Sets the --ion-color-primary CSS variable based on theme.primaryColor
+   * Falls back to #f61067 if theme is undefined
+   */
+  public applyTheme(): void {
+    const primaryColor = this.settings.dataset?.theme?.primaryColor ?? '#f61067';
+    document.documentElement.style.setProperty('--ion-color-primary', primaryColor);
   }
 }
