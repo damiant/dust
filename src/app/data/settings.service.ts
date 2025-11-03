@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { LocationEnabledStatus, Settings } from './models';
 import { Preferences } from '@capacitor/preferences';
 import { set, get } from 'idb-keyval';
+import { ThemePrimaryColor } from '../ui/ui.service';
 
 export const SettingNames = {
   MapURI: 'mapUri',
@@ -198,10 +199,26 @@ export class SettingsService {
   /**
    * Apply the theme from the selected dataset
    * Sets the --ion-color-primary CSS variable based on theme.primaryColor
-   * Falls back to #f61067 if theme is undefined
+   * Falls back to ThemePrimaryColor if theme is undefined
    */
   public applyTheme(): void {
-    const primaryColor = this.settings.dataset?.theme?.primaryColor ?? '#f61067';
-    document.documentElement.style.setProperty('--ion-color-primary', primaryColor);
+    const primaryColor = this.settings.dataset?.theme?.primaryColor;
+    const validatedColor = this.isValidColor(primaryColor) ? primaryColor! : ThemePrimaryColor;
+    document.documentElement.style.setProperty('--ion-color-primary', validatedColor);
+  }
+
+  /**
+   * Validates if a string is a valid CSS color value
+   * Supports hex colors, rgb/rgba, and named colors
+   */
+  private isValidColor(color: string | undefined): boolean {
+    if (!color) return false;
+    // Simple validation for hex colors (#RGB, #RRGGBB, #RRGGBBAA)
+    const hexPattern = /^#([0-9A-Fa-f]{3}){1,2}([0-9A-Fa-f]{2})?$/;
+    if (hexPattern.test(color)) return true;
+    // For other formats, use browser's CSS validation
+    const style = new Option().style;
+    style.color = color;
+    return style.color !== '';
   }
 }
