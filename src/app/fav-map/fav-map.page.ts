@@ -40,8 +40,16 @@ export class FavMapPage {
   title = '';
 
   ionViewWillEnter() {
-    this.title = this.fav.getMapPointsTitle();
-    this.points = this.fav.getMapPoints();
+    const newTitle = this.fav.getMapPointsTitle();
+    const newPoints = this.fav.getMapPoints();
+    
+    // Only update if the reference has changed (which means favorites were modified)
+    // This prevents unnecessary map refresh when just navigating back
+    if (this.points !== newPoints) {
+      this.title = newTitle;
+      this.points = newPoints;
+    }
+    
     if (this.db.anyLocationsHidden()) {
       this.isToastOpen = true;
     }

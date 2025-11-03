@@ -83,6 +83,8 @@ export class PinMapPage {
   isGettingGPS = false;
   canClearThing = false;
   clearLabel = 'Clear';
+  private lastMapType: string | undefined;
+  private lastThingName: string | undefined;
   showSearch: Signal<boolean> = computed(() => {
     return this.mapType() == MapType.All || this.mapType() == MapType.Art;
   });
@@ -127,15 +129,27 @@ export class PinMapPage {
   }
 
   async ionViewWillEnter() {
-    await this.refreshMap();
+    // Only refresh if mapType or thingName has actually changed
+    // This prevents unnecessary refresh when navigating back
+    if (this.lastMapType !== this.mapType() || this.lastThingName !== this.thingName()) {
+      await this.refreshMap();
+    }
   }
 
   private async refreshMap() {
-    const mapSet = await this.mapFor(this.mapType());
-    // Create a new array reference to trigger change detection
-    this.points = [...mapSet.points];
-    this.title.set(mapSet.title);
-    this.description = mapSet.description;
+    const currentMapType = this.mapType();
+    const currentThingName = this.thingName();
+    const mapSet = await this.mapFor(currentMapType);
+    
+    // This prevents the map from refreshing unnecessarily when navigating back
+    if (this.lastMapType !== currentMapType || this.lastThingName !== currentThingName) {
+      this.points = [...mapSet.points];
+      this.title.set(mapSet.title);
+      this.description = mapSet.description;
+      this.lastMapType = currentMapType;
+      this.lastThingName = currentThingName;
+    }
+    
     this._change.detectChanges();
   }
 
