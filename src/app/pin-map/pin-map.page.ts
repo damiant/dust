@@ -141,16 +141,16 @@ export class PinMapPage {
     const currentThingName = this.thingName();
     const mapSet = await this.mapFor(currentMapType);
     
-    // Only create a new array reference if the data has changed
+    // Only update if the data has changed
     // This prevents the map from refreshing unnecessarily when navigating back
     if (this.lastMapType !== currentMapType || this.lastThingName !== currentThingName) {
       this.points = [...mapSet.points];
+      this.title.set(mapSet.title);
+      this.description = mapSet.description;
       this.lastMapType = currentMapType;
       this.lastThingName = currentThingName;
     }
     
-    this.title.set(mapSet.title);
-    this.description = mapSet.description;
     this._change.detectChanges();
   }
 
