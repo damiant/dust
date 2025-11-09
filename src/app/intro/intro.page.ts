@@ -22,7 +22,7 @@ import { SplashScreen } from '@capacitor/splash-screen';
 import { SettingsService } from '../data/settings.service';
 import { FavoritesService } from '../favs/favorites.service';
 import { MessageComponent } from '../message/message.component';
-import { addDays, daysUntil, delay, isWhiteSpace, now } from '../utils/utils';
+import { addDays, clone, daysUntil, delay, isWhiteSpace, now } from '../utils/utils';
 import { Dataset, DatasetFilter } from '../data/models';
 import { ApiService, DownloadStatus, SendResult } from '../data/api.service';
 import { StatusBar, Style } from '@capacitor/status-bar';
@@ -162,7 +162,7 @@ export class IntroPage {
 
   async ionViewWillEnter() {
     try {
-      const cardLoaded = structuredClone(this.vm.cardLoaded);
+      const cardLoaded = clone(this.vm.cardLoaded);
       this.vm = initialState();
       this.vm.list = this.settingsService.settings.list;
       this.vm.cardLoaded = cardLoaded;

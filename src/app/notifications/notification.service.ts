@@ -28,7 +28,7 @@ export class NotificationService {
   private db = inject(DbService);
   public hasNotification = signal('');
 
-  public async configure() {
+  public configure() {
     LocalNotifications.addListener('localNotificationActionPerformed', (notification) => {
       this.hasNotification.set(notification.notification.extra.eventId);
     });

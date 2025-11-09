@@ -30,6 +30,7 @@ def capacitor_pods
   pod 'CapacitorStatusBar', :path => '../../node_modules/@capacitor/status-bar'
   pod 'CapacitorTextZoom', :path => '../../node_modules/@capacitor/text-zoom'
   pod 'CapawesomeCapacitorAppUpdate', :path => '../../node_modules/@capawesome/capacitor-app-update'
+  pod 'SentryCapacitor', :path => '../../node_modules/@sentry/capacitor'
   pod 'WebnativellcCapacitorFilesharer', :path => '../../node_modules/@webnativellc/capacitor-filesharer'
   pod 'WebnativellcCapacitorNavigationBar', :path => '../../node_modules/@webnativellc/capacitor-navigation-bar'
   pod 'WebnativellcCapacitorPrintWebview', :path => '../../node_modules/@webnativellc/capacitor-print-webview'

@@ -76,3 +76,6 @@ scripts/rsl
 # Local Netlify folder
 .netlify
 **/*.http
+
+# Sentry Config File
+.sentryclirc
