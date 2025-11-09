@@ -1,4 +1,4 @@
-import { Component, WritableSignal, effect, signal, viewChild, inject, ChangeDetectorRef } from '@angular/core';
+import { Component, WritableSignal, effect, signal, viewChild, inject, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -30,6 +30,7 @@ import { Capacitor } from '@capacitor/core';
 import { ThemePrimaryColor, UiService } from '../ui/ui.service';
 import { environment } from 'src/environments/environment';
 import { Network } from '@capacitor/network';
+import { App, PluginListenerHandle } from '@capacitor/app';
 import { addIcons } from 'ionicons';
 import { arrowForwardOutline, chevronUpCircleSharp, chevronUpOutline, cloudDownloadOutline } from 'ionicons/icons';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
@@ -112,7 +113,7 @@ function initialState(): IntroState {
     BarComponent,
   ],
 })
-export class IntroPage {
+export class IntroPage implements OnDestroy {
   private db = inject(DbService);
   private api = inject(ApiService);
   private settingsService = inject(SettingsService);
@@ -133,6 +134,8 @@ export class IntroPage {
   subtitle: WritableSignal<string> = signal('');
   opened = signal(false);
   carousel = viewChild(CarouselComponent);
+  private resumeListener: PluginListenerHandle | undefined;
+  private isOnIntroPage = false;
 
   constructor() {
     addIcons({ arrowForwardOutline, chevronUpOutline, chevronUpCircleSharp, cloudDownloadOutline });
@@ -154,13 +157,38 @@ export class IntroPage {
         await this.afterEnter();
       }
     });
+
+    // Handle app resume to fix infinite spinner when returning from background
+    if (Capacitor.isNativePlatform()) {
+      App.addListener('resume', async () => {
+        if (this.isOnIntroPage && this.vm.waiting) {
+          console.log('App resumed on intro page with waiting state - reloading datasets');
+          // Reset waiting state and retry loading
+          this.vm.waiting = false;
+          this.vm.downloading = false;
+          this.download.set({ status: '', firstDownload: false });
+          await this.ionViewWillEnter();
+        }
+      }).then((handle) => {
+        this.resumeListener = handle;
+      });
+    }
+  }
+
+  ngOnDestroy() {
+    // Clean up the resume listener
+    if (this.resumeListener) {
+      this.resumeListener.remove();
+    }
   }
 
   ionViewWillLeave() {
+    this.isOnIntroPage = false;
     this.vm.enableCarousel = false;
   }
 
   async ionViewWillEnter() {
+    this.isOnIntroPage = true;
     try {
       const cardLoaded = clone(this.vm.cardLoaded);
       this.vm = initialState();
