@@ -90,8 +90,7 @@ export class AppComponent implements OnInit {
         // Set your dist version, such as "1"
         dist: "<dist>",
       },
-      // Forward the init method from @sentry/angular
-      // @ts-ignore - Type incompatibility between @sentry/capacitor and @sentry/angular core dependencies
+      // Forward the init method from @sentry/angular      
       SentryAngular.init
     );
 
