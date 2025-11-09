@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "ng serve",
-    "build-prod": "NG_BUILD_OPTIMIZE_CHUNKS=1 ng build --configuration=production  && bun scripts/copy-admin.ts",
+    "build-prod": "NG_BUILD_OPTIMIZE_CHUNKS=1 ng build --configuration=production  && bun scripts/copy-admin.ts && bun run sentry:sourcemaps",
     "build-offline-mango": "ng build --configuration=offline --base-href=/dust/",
     "build-offline-part2": "bun scripts/copy-online.ts && cp -r /Users/damiantarnawsky/Code/dust-admin/burning-man/dist/* /Users/damiantarnawsky/Code/dust/www/browser/data/static/",
     "copy-offline": "rsync -avh www/browser/* /Volumes/stuff --progress",
@@ -22,7 +22,8 @@
     "lint": "export NODE_OPTIONS='--max-old-space-size=8192' && ng lint",
     "prettify": "prettier \"**/*.{ts,html}\" --write",
     "format": "prettier \"src/**/*.{ts,html,css,scss,json,md}\" --write",
-    "prepare": "husky"
+    "prepare": "husky",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org none-q2r --project dust ./www/browser && sentry-cli sourcemaps upload --org none-q2r --project dust ./www/browser"
   },
   "private": true,
   "dependencies": {
@@ -61,6 +62,7 @@
     "@ionic/angular": "8.6.5",
     "@sentry/angular": "9.46.0",
     "@sentry/capacitor": "^2.4.1",
+    "@sentry/cli": "^2.58.0",
     "@webnativellc/capacitor-filesharer": "7.0.4",
     "@webnativellc/capacitor-navigation-bar": "^7.0.0",
     "@webnativellc/capacitor-print-webview": "7.0.1",
