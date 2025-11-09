@@ -1,4 +1,7 @@
 ## Changes
+## 2.109
+
+- Fix for structuredClone function missing
 
 ## 2.108
 
