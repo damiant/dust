@@ -10,8 +10,8 @@ import { UiService } from './ui/ui.service';
 import { SettingsService } from './data/settings.service';
 import { SafeArea, SafeAreaInsets } from 'capacitor-plugin-safe-area';
 import { Capacitor } from '@capacitor/core';
-import * as Sentry from "@sentry/capacitor";
-import * as SentryAngular from "@sentry/angular";
+import * as Sentry from '@sentry/capacitor';
+import * as SentryAngular from '@sentry/angular';
 
 @Component({
   selector: 'app-root',
@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
     this.notificationService.configure();
     try {
       await this.initSentry();
-    } catch { }
+    } catch {}
     App.addListener('appUrlOpen', (event: URLOpenListenerEvent) => {
       console.log('appUrlOpen', event);
 
@@ -74,11 +74,12 @@ export class AppComponent implements OnInit {
   }
 
   async initSentry() {
+    // eslint-disable-next-line unused-imports/no-unused-vars
     const { version, build } =
       Capacitor.getPlatform() == 'web' ? { version: '0.0.0', build: '0' } : await App.getInfo();
     Sentry.init(
       {
-        dsn: "https://34028e965be4da5094c23bcdf4ee99f3@o4506898595381248.ingest.us.sentry.io/4506898605735936",
+        dsn: 'https://34028e965be4da5094c23bcdf4ee99f3@o4506898595381248.ingest.us.sentry.io/4506898605735936',
 
         // Adds request headers and IP for users, for more info visit:
         // https://docs.sentry.io/platforms/javascript/guides/capacitor/configuration/options/#sendDefaultPii
@@ -88,12 +89,11 @@ export class AppComponent implements OnInit {
         release: `dust@${version}`,
 
         // Set your dist version, such as "1"
-        dist: "<dist>",
+        dist: '<dist>',
       },
-      // Forward the init method from @sentry/angular      
-      SentryAngular.init
+      // Forward the init method from @sentry/angular
+      SentryAngular.init,
     );
-
   }
 
   private getNavigationBarHeight(): number {

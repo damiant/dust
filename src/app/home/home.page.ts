@@ -61,7 +61,7 @@ import { addDays, delay, localTimeZone } from '../utils/utils';
 import { PinsCardComponent } from '../pins-card/pins-card.component';
 import { UpdateService } from '../update.service';
 import { CardHeaderComponent } from '../card-header/card-header.component';
-import { daysHighlighted } from '../utils/date-utils';
+import { daysHighlighted, toDate } from '../utils/date-utils';
 import { RatingService } from '../rating.service';
 import { PushNotificationService } from '../notifications/push-notification.service';
 import { LinkService } from '../link/link.service';
@@ -251,8 +251,8 @@ export class HomePage implements OnInit {
     this.vm.longEvents = this.settings.settings.longEvents;
     this.vm.eventIsHappening = !this.db.eventHasntBegun() && !this.db.isHistorical();
     this.vm.eventTitle = this.db.selectedDataset().title;
-    this.vm.startDate = addDays(new Date(this.db.selectedDataset().start), -30).toISOString();
-    this.vm.endDate = addDays(new Date(this.db.selectedDataset().end), 7).toISOString();
+    this.vm.startDate = this.dateISO(this.db.selectedDataset().start, -30);
+    this.vm.endDate = this.dateISO(this.db.selectedDataset().end, 7);
     this.vm.highlightedDates = daysHighlighted(this.db.selectedDataset().start, this.db.selectedDataset().end);
     this.vm.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
     if (Capacitor.isNativePlatform()) {
@@ -267,6 +267,12 @@ export class HomePage implements OnInit {
 
     this._change.markForCheck();
     this.notifications();
+  }
+
+  private dateISO(dString: string, days: number): string {
+    const d = toDate(dString);
+    if (!d) return '';
+    return addDays(d, days).toISOString();
   }
 
   private async notifications() {

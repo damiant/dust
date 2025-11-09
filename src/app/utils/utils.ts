@@ -153,7 +153,7 @@ export function isAfter(date2: Date, date1: Date) {
   return date2.getTime() - date1.getTime() > 0;
 }
 
-export function addDays(date: Date, days: number) {
+export function addDays(date: Date, days: number): Date {
   var result = new Date(date);
   result.setDate(result.getDate() + days);
   return result;
@@ -181,11 +181,11 @@ export function time(d: Date, timeZone: string): string {
 
 const weekdayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-// eslint-disable-next-line unused-imports/no-unused-vars
 export function getOccurrenceTimeString(
   start: Date,
   end: Date,
   day: Date | undefined,
+  // eslint-disable-next-line unused-imports/no-unused-vars
   timeZone: string,
 ): TimeString | undefined {
   const startsToday = day && sameDay(start, day);
