@@ -28,6 +28,7 @@ dependencies {
     implementation project(':capacitor-status-bar')
     implementation project(':capacitor-text-zoom')
     implementation project(':capawesome-capacitor-app-update')
+    implementation project(':sentry-capacitor')
     implementation project(':webnativellc-capacitor-filesharer')
     implementation project(':webnativellc-capacitor-navigation-bar')
     implementation project(':webnativellc-capacitor-print-webview')

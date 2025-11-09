@@ -46,61 +46,65 @@ PODS:
     - Capacitor
   - CordovaPlugins (7.4.2):
     - CapacitorCordova
-  - FirebaseCore (11.9.0):
-    - FirebaseCoreInternal (~> 11.9.0)
-    - GoogleUtilities/Environment (~> 8.0)
-    - GoogleUtilities/Logger (~> 8.0)
-  - FirebaseCoreInternal (11.9.0):
-    - "GoogleUtilities/NSData+zlib (~> 8.0)"
-  - FirebaseInstallations (11.9.0):
-    - FirebaseCore (~> 11.9.0)
-    - GoogleUtilities/Environment (~> 8.0)
-    - GoogleUtilities/UserDefaults (~> 8.0)
+  - FirebaseCore (11.15.0):
+    - FirebaseCoreInternal (~> 11.15.0)
+    - GoogleUtilities/Environment (~> 8.1)
+    - GoogleUtilities/Logger (~> 8.1)
+  - FirebaseCoreInternal (11.15.0):
+    - "GoogleUtilities/NSData+zlib (~> 8.1)"
+  - FirebaseInstallations (11.15.0):
+    - FirebaseCore (~> 11.15.0)
+    - GoogleUtilities/Environment (~> 8.1)
+    - GoogleUtilities/UserDefaults (~> 8.1)
     - PromisesObjC (~> 2.4)
-  - FirebaseMessaging (11.9.0):
-    - FirebaseCore (~> 11.9.0)
+  - FirebaseMessaging (11.15.0):
+    - FirebaseCore (~> 11.15.0)
     - FirebaseInstallations (~> 11.0)
     - GoogleDataTransport (~> 10.0)
-    - GoogleUtilities/AppDelegateSwizzler (~> 8.0)
-    - GoogleUtilities/Environment (~> 8.0)
-    - GoogleUtilities/Reachability (~> 8.0)
-    - GoogleUtilities/UserDefaults (~> 8.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 8.1)
+    - GoogleUtilities/Environment (~> 8.1)
+    - GoogleUtilities/Reachability (~> 8.1)
+    - GoogleUtilities/UserDefaults (~> 8.1)
     - nanopb (~> 3.30910.0)
   - GoogleDataTransport (10.1.0):
     - nanopb (~> 3.30910.0)
     - PromisesObjC (~> 2.4)
-  - GoogleUtilities/AppDelegateSwizzler (8.0.2):
+  - GoogleUtilities/AppDelegateSwizzler (8.1.0):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
     - GoogleUtilities/Network
     - GoogleUtilities/Privacy
-  - GoogleUtilities/Environment (8.0.2):
+  - GoogleUtilities/Environment (8.1.0):
     - GoogleUtilities/Privacy
-  - GoogleUtilities/Logger (8.0.2):
+  - GoogleUtilities/Logger (8.1.0):
     - GoogleUtilities/Environment
     - GoogleUtilities/Privacy
-  - GoogleUtilities/Network (8.0.2):
+  - GoogleUtilities/Network (8.1.0):
     - GoogleUtilities/Logger
     - "GoogleUtilities/NSData+zlib"
     - GoogleUtilities/Privacy
     - GoogleUtilities/Reachability
-  - "GoogleUtilities/NSData+zlib (8.0.2)":
+  - "GoogleUtilities/NSData+zlib (8.1.0)":
     - GoogleUtilities/Privacy
-  - GoogleUtilities/Privacy (8.0.2)
-  - GoogleUtilities/Reachability (8.0.2):
+  - GoogleUtilities/Privacy (8.1.0)
+  - GoogleUtilities/Reachability (8.1.0):
     - GoogleUtilities/Logger
     - GoogleUtilities/Privacy
-  - GoogleUtilities/UserDefaults (8.0.2):
+  - GoogleUtilities/UserDefaults (8.1.0):
     - GoogleUtilities/Logger
     - GoogleUtilities/Privacy
-  - IONFilesystemLib (1.0.0)
-  - IONGeolocationLib (1.0.0)
+  - IONFilesystemLib (1.0.1)
+  - IONGeolocationLib (1.0.2)
   - nanopb (3.30910.0):
     - nanopb/decode (= 3.30910.0)
     - nanopb/encode (= 3.30910.0)
   - nanopb/decode (3.30910.0)
   - nanopb/encode (3.30910.0)
   - PromisesObjC (2.4.0)
+  - Sentry/HybridSDK (8.56.2)
+  - SentryCapacitor (2.4.1):
+    - Capacitor
+    - Sentry/HybridSDK (= 8.56.2)
   - WebnativellcCapacitorFilesharer (7.0.4):
     - Capacitor
   - WebnativellcCapacitorNavigationBar (7.0.0):
@@ -133,6 +137,7 @@ DEPENDENCIES:
   - "CapawesomeCapacitorAppUpdate (from `../../node_modules/@capawesome/capacitor-app-update`)"
   - CordovaPlugins (from `../capacitor-cordova-ios-plugins`)
   - FirebaseMessaging
+  - "SentryCapacitor (from `../../node_modules/@sentry/capacitor`)"
   - "WebnativellcCapacitorFilesharer (from `../../node_modules/@webnativellc/capacitor-filesharer`)"
   - "WebnativellcCapacitorNavigationBar (from `../../node_modules/@webnativellc/capacitor-navigation-bar`)"
   - "WebnativellcCapacitorPrintWebview (from `../../node_modules/@webnativellc/capacitor-print-webview`)"
@@ -149,6 +154,7 @@ SPEC REPOS:
     - IONGeolocationLib
     - nanopb
     - PromisesObjC
+    - Sentry
 
 EXTERNAL SOURCES:
   Capacitor:
@@ -197,6 +203,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capawesome/capacitor-app-update"
   CordovaPlugins:
     :path: "../capacitor-cordova-ios-plugins"
+  SentryCapacitor:
+    :path: "../../node_modules/@sentry/capacitor"
   WebnativellcCapacitorFilesharer:
     :path: "../../node_modules/@webnativellc/capacitor-filesharer"
   WebnativellcCapacitorNavigationBar:
@@ -228,20 +236,22 @@ SPEC CHECKSUMS:
   CapacitorTextZoom: ccb82513c95a64bd9d4de4fc2399c2690a8705de
   CapawesomeCapacitorAppUpdate: d1f04c1c870388248889908cf2ca960c7fdbf0ef
   CordovaPlugins: e2ded31c16460830103da1e8805e1cff59eb3e74
-  FirebaseCore: 7cfcf7e8b33985c06478fd2b96e2f7101eb61a1c
-  FirebaseCoreInternal: 154779013b85b4b290fdba38414df475f42e3096
-  FirebaseInstallations: c76d4931a485fc0cc2dc1d62d3ed0369846ea4b8
-  FirebaseMessaging: 07e196b68580e68104df5c1c1b09ac26d04b24ea
+  FirebaseCore: efb3893e5b94f32b86e331e3bd6dadf18b66568e
+  FirebaseCoreInternal: 9afa45b1159304c963da48addb78275ef701c6b4
+  FirebaseInstallations: 317270fec08a5d418fdbc8429282238cab3ac843
+  FirebaseMessaging: 3b26e2cee503815e01c3701236b020aa9b576f09
   GoogleDataTransport: aae35b7ea0c09004c3797d53c8c41f66f219d6a7
-  GoogleUtilities: 26a3abef001b6533cf678d3eb38fd3f614b7872d
-  IONFilesystemLib: ceacae793975039530458eabab0c495c70515a0d
-  IONGeolocationLib: 81f33f88d025846946de2cf63b0c7628e7c6bc9d
+  GoogleUtilities: 00c88b9a86066ef77f0da2fab05f65d7768ed8e1
+  IONFilesystemLib: 89258b8e3e85465da93127d25d7ce37f977e8a6f
+  IONGeolocationLib: adbb2a739b0ccda686d4a66f9bc05f8c4fd3d3c0
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
+  Sentry: b53951377b78e21a734f5dc8318e333dbfc682d7
+  SentryCapacitor: 84549a1440a7f58a336ed3175db0f067d571cd5b
   WebnativellcCapacitorFilesharer: e3a5930240633db3335040251d66aac6762ff111
   WebnativellcCapacitorNavigationBar: 8232f95b82547c0e3a5200d4d8a5220d9bf6607c
   WebnativellcCapacitorPrintWebview: 77ba57165787f6c86d83dac56fd6e3c3c3c5098d
 
-PODFILE CHECKSUM: eb60d1ba1aa746e7f5b57a9719bd3546a7c064ee
+PODFILE CHECKSUM: 52ab16e183a14e7a66547c32d7ee0fe6c45e651f
 
 COCOAPODS: 1.16.2
