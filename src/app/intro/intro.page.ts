@@ -161,12 +161,13 @@ export class IntroPage implements OnDestroy {
     // Handle app resume to fix infinite spinner when returning from background
     if (Capacitor.isNativePlatform()) {
       App.addListener('resume', async () => {
-        if (this.isOnIntroPage && this.vm.waiting) {
-          console.log('App resumed on intro page with waiting state - reloading datasets');
-          // Reset waiting state and retry loading
+        if (this.isOnIntroPage && (this.vm.waiting || this.vm.downloading)) {
+          console.log('App resumed on intro page with waiting/downloading state - reloading datasets');
+          // Reset waiting and downloading state and retry loading
           this.vm.waiting = false;
           this.vm.downloading = false;
           this.download.set({ status: '', firstDownload: false });
+          this._change.markForCheck();
           await this.ionViewWillEnter();
         }
       }).then((handle) => {
