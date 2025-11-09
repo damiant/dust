@@ -1,4 +1,9 @@
 ## Changes
+## 2.110
+
+- Android 15 edge to edge fix
+- Fix invalid time value RangeError
+
 ## 2.109
 
 - Fix for structuredClone function missing

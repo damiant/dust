@@ -140,7 +140,7 @@ export class PinMapPage {
     const currentMapType = this.mapType();
     const currentThingName = this.thingName();
     const mapSet = await this.mapFor(currentMapType);
-    
+
     // This prevents the map from refreshing unnecessarily when navigating back
     if (this.lastMapType !== currentMapType || this.lastThingName !== currentThingName) {
       this.points = [...mapSet.points];
@@ -149,7 +149,7 @@ export class PinMapPage {
       this.lastMapType = currentMapType;
       this.lastThingName = currentThingName;
     }
-    
+
     this._change.detectChanges();
   }
 

@@ -205,10 +205,10 @@ export class SettingsService {
   public applyTheme(): void {
     const primaryColor = this.settings.dataset?.theme?.primaryColor;
     const validatedColor = this.isValidColor(primaryColor) ? primaryColor! : ThemePrimaryColor;
-    
+
     // Set on :root
     document.documentElement.style.setProperty('--ion-color-primary', validatedColor);
-    
+
     // Create or update a style element to override dark mode with !important
     let styleEl = document.getElementById('theme-override-styles') as HTMLStyleElement;
     if (!styleEl) {
@@ -216,7 +216,7 @@ export class SettingsService {
       styleEl.id = 'theme-override-styles';
       document.head.appendChild(styleEl);
     }
-    
+
     // Use !important to override the media query
     styleEl.textContent = `
       body {

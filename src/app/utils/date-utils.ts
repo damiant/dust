@@ -17,6 +17,11 @@ export function getTimeInTimeZone(epoch: number, timeZone: string): string {
   return new Date(epoch + offset * 60 * 60 * 1000).toISOString().replace('Z', '');
 }
 
+export function toDate(d: string | undefined): Date | undefined {
+  if (!d) return undefined;
+  return new Date(d);
+}
+
 export function getTimeZoneOffsetHours(timeZone: string): number {
   const date = new Date();
   const timeZoneString = new Intl.DateTimeFormat('en-US', { timeZone, timeZoneName: 'longOffset' })

@@ -25,7 +25,7 @@ function cleanAndCopyFiles(sourceFolder: string, destinationFolder: string, dele
 function copyFolderRecursive(source: string, destination: string) {
   const files = fs.readdirSync(source);
 
-  files.forEach(file => {
+  files.forEach((file) => {
     const sourcePath = path.join(source, file);
     let destinationPath = path.join(destination, file);
 
@@ -54,7 +54,6 @@ function doesFolderExist(folderPath: string): boolean {
     return false;
   }
 }
-
 
 // Example usage:
 const sourceFolderPath = '../dust-admin/admin-app/www/browser';

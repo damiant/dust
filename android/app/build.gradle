@@ -7,8 +7,8 @@ android {
         applicationId "nexus.concepts.dust"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 160
-        versionName "2.109"
+        versionCode 161
+        versionName "2.110"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
