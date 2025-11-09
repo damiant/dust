@@ -60,7 +60,9 @@ jobs:
         run: bun install     
 
       - name: Build project app
-        run: bun run build-prod  
+        run: bun run build-prod
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
       - name: Capacitor sync
         run: bunx cap sync
