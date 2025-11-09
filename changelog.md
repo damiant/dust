@@ -1,4 +1,8 @@
 ## Changes
+## 2.110
+
+- Android 15 edge to edge fix
+
 ## 2.109
 
 - Fix for structuredClone function missing
