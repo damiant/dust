@@ -41,7 +41,11 @@ export class MessagesService {
     }
     if (inboxEmail) {
       const res = await fetch(`${r2data_dust_events}${datasetId}/messages.json?${Math.random()}`, { method: 'GET' });
-      const emailList: Email[] = await res.json();
+
+      let emailList: Email[] = [];
+      try {
+        emailList = await res.json();
+      } catch { }
       await this.cleanupEmail(emailList);
       await this.db.writeData(datasetId, Names.emails, emailList);
       this.email.set(emailList);

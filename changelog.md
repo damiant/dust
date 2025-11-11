@@ -1,4 +1,9 @@
 ## Changes
+
+## 2.111
+
+- Fix issue with messages data result
+
 ## 2.110
 
 - Android 15 edge to edge fix
