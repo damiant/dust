@@ -12,7 +12,6 @@ export default defineConfig({
       reporter: ['text', 'json', 'html'],
       exclude: [
         'node_modules/',
-        'src/test.ts',
         '**/*.spec.ts',
         '**/*.test.ts',
       ],
