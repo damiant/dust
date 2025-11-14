@@ -33,6 +33,10 @@ jobs:
       run: |
         bun run lint
 
+    - name: Test
+      run: |
+        bun run test --run
+
     - name: Build
       run: |
         bun run build-prod
