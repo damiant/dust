@@ -157,8 +157,8 @@ export class ApiService {
       this.dbService.get(Names.location, Names.location, options),
     ]);
     const location: WebLocation = rLocation.status == 'fulfilled' ? rLocation.value : {};
-    const festivals = rFestivals.status == 'fulfilled' ? rFestivals.value : [];
-    const datasets = rDatasets.status == 'fulfilled' ? rDatasets.value : [];
+    const festivals = rFestivals.status == 'fulfilled' ? (rFestivals.value ?? []) : [];
+    const datasets = rDatasets.status == 'fulfilled' ? (rDatasets.value ?? []) : [];
     const devMode = await this.settingsService.getInteger('developermode');
     return this.cleanNames([...festivals, ...datasets], location, args.filter, args.inactive, devMode === 1);
   }
