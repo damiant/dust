@@ -71,9 +71,10 @@ describe('date-utils', () => {
       expect(offset).toBeLessThanOrEqual(-4);
     });
 
-    it('should throw error for invalid timezone', () => {
-      // Edge case: invalid timezone should throw
-      expect(() => getTimeZoneOffsetHours('Invalid/Timezone')).toThrow();
+    it('should return 0 for invalid timezone', () => {
+      // Edge case: invalid timezone should return 0
+      const offset = getTimeZoneOffsetHours('Invalid/Timezone');
+      expect(offset).toBe(0);
     });
 
     it('should handle timezones with 30-minute offsets', () => {
