@@ -96,10 +96,10 @@ describe('date-utils', () => {
       expect(result).toBeDefined();
       expect(typeof result).toBe('string');
       expect(result).toContain('2024-08-28');
-      // The function adds the timezone offset and returns ISO-ish format without Z
-      // PDT is UTC-7, so 14:30 UTC + (-7 hours offset as milliseconds) = 07:30 in result
-      // But the actual implementation adds offset hours, so we get 14:30 + offset hours
-      // Let's verify the date is correct
+      // The function adds the timezone offset (which may be negative) to the epoch and returns ISO-ish format without Z.
+      // For PDT (UTC-7), the offset is -7, so 14:30 UTC + (-7 hours as milliseconds) = 07:30 local time in result.
+      // In other words, adding a negative offset subtracts hours from UTC, converting to local time.
+      // Let's verify the date is correct.
       expect(result.startsWith('2024-08-28')).toBe(true);
     });
 
