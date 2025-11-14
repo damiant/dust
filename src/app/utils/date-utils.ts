@@ -23,17 +23,22 @@ export function toDate(d: string | undefined): Date | undefined {
 }
 
 export function getTimeZoneOffsetHours(timeZone: string): number {
-  const date = new Date();
-  const timeZoneString = new Intl.DateTimeFormat('en-US', { timeZone, timeZoneName: 'longOffset' })
-    .formatToParts(date)
-    .find((part) => part.type === 'timeZoneName')?.value;
-  if (!timeZoneString) return 0;
+  try {
+    const date = new Date();
+    const timeZoneString = new Intl.DateTimeFormat('en-US', { timeZone, timeZoneName: 'longOffset' })
+      .formatToParts(date)
+      .find((part) => part.type === 'timeZoneName')?.value;
+    if (!timeZoneString) return 0;
 
-  const match = timeZoneString.match(/GMT([+-]\d{2}):?(\d{2})?/);
-  if (!match) return 0;
+    const match = timeZoneString.match(/GMT([+-]\d{2}):?(\d{2})?/);
+    if (!match) return 0;
 
-  const hours = parseInt(match[1], 10);
-  const minutes = match[2] ? parseInt(match[2], 10) : 0;
+    const hours = parseInt(match[1], 10);
+    const minutes = match[2] ? parseInt(match[2], 10) : 0;
 
-  return hours + minutes / 60; // Convert minutes to fraction of an hour
+    return hours + minutes / 60; // Convert minutes to fraction of an hour
+  } catch (error) {
+    // Invalid timezone returns 0
+    return 0;
+  }
 }
