@@ -59,9 +59,15 @@ export function registerWorker(worker: Worker) {
       } else {
         console.error(`Response id cannot be undefined: ` + response);
       }
+      return;
     }
 
     const idx = calls.findIndex((p) => p.id == response.id);
+    if (idx === -1) {
+      console.warn(`Received response for unknown call id: ${response.id}. Possible duplicate response or orphaned call.`);
+      return;
+    }
+    
     calls[idx].resolve(response.data);
     calls.splice(idx, 1);
   };

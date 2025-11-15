@@ -74,6 +74,7 @@ export class AppComponent implements OnInit {
   }
 
   async initSentry() {
+    if (Capacitor.getPlatform() == 'web') return;
     // eslint-disable-next-line unused-imports/no-unused-vars
     const { version, build } =
       Capacitor.getPlatform() == 'web' ? { version: '0.0.0', build: '0' } : await App.getInfo();

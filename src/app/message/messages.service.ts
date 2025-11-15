@@ -45,7 +45,7 @@ export class MessagesService {
       let emailList: Email[] = [];
       try {
         emailList = await res.json();
-      } catch { }
+      } catch {}
       await this.cleanupEmail(emailList);
       await this.db.writeData(datasetId, Names.emails, emailList);
       this.email.set(emailList);
@@ -95,7 +95,7 @@ export class MessagesService {
   }
 
   private async cleanup(data: RSSFeed) {
-    if (!data.rss || !data.rss.channel) return;
+    if (!data || !data.rss || !data.rss.channel) return;
     let list = await this.getReadMessageHashes();
     for (let item of data.rss.channel.item) {
       item.avatar = data.rss.channel.image?.url;

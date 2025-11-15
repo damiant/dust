@@ -44,11 +44,12 @@ async function mapImage(map: MapModel, disposables: any[]): Promise<Mesh | Group
   }
   const texture = await loadTexture(map.image);
   texture.colorSpace = SRGBColorSpace;
-  map.width = texture.image.width;
-  map.height = texture.image.height;
+  const image = texture.image as any;
+  map.width = image.width;
+  map.height = image.height;
 
   const material = new MeshBasicMaterial({ map: texture });
-  const geometry = new PlaneGeometry(texture.image.width, texture.image.height);
+  const geometry = new PlaneGeometry(image.width, image.height);
   const mesh = new Mesh(geometry, material);
   mesh.rotation.x = -Math.PI / 2;
   mesh.uuid = 'map';
