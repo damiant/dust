@@ -3,6 +3,8 @@
 ## 2.111
 
 - Fix issue with messages data result
+- Fix response error from worker
+- Fix flickering map screen
 
 ## 2.110
 
