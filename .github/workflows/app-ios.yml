@@ -76,7 +76,7 @@ jobs:
         run: sudo xcode-select -s /Applications/Xcode_16.4.app/Contents/Developer
 
       - name: Build project
-        run: xcodebuild -workspace './ios/App/App.xcworkspace' -scheme App -destination generic/platform=iOS -archivePath App.xcarchive archive
+        run: xcodebuild -project './ios/App/App.xcodeproj' -scheme App -destination generic/platform=iOS -archivePath App.xcarchive archive
 
       - name: Create binary (.ipa)
         run: xcodebuild archive -archivePath App.xcarchive -exportArchive -exportOptionsPlist ./ios/archive.plist -exportPath output -allowProvisioningUpdates

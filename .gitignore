@@ -79,3 +79,5 @@ scripts/rsl
 
 # Sentry Config File
 .sentryclirc
+App.xcarchive/**
+output/**
