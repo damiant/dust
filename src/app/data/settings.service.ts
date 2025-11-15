@@ -179,7 +179,7 @@ export class SettingsService {
 
   public setOffline(datasetId: string) {
     if (!this.settings.offlineEvents.includes(datasetId)) {
-      this.settings.offlineEvents.push(datasetId);
+      this.settings.offlineEvents = [...this.settings.offlineEvents, datasetId];
     }
   }
 
