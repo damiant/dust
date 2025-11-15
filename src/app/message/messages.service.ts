@@ -45,7 +45,7 @@ export class MessagesService {
       let emailList: Email[] = [];
       try {
         emailList = await res.json();
-      } catch { }
+      } catch {}
       await this.cleanupEmail(emailList);
       await this.db.writeData(datasetId, Names.emails, emailList);
       this.email.set(emailList);
