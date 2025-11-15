@@ -118,22 +118,11 @@ export class PinMapPage {
         await this.refreshMap();
       }
     });
-    effect(async () => {
-      // Monitor mapType and thingName changes
-      const mt = this.mapType();
-      const tn = this.thingName();
-      if (mt || tn) {
-        await this.refreshMap();
-      }
-    });
   }
 
   async ionViewWillEnter() {
-    // Only refresh if mapType or thingName has actually changed
-    // This prevents unnecessary refresh when navigating back
-    if (this.lastMapType !== this.mapType() || this.lastThingName !== this.thingName()) {
-      await this.refreshMap();
-    }
+    // Refresh the map when the view is entered
+    await this.refreshMap();
   }
 
   private async refreshMap() {
