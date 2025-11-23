@@ -35,8 +35,7 @@ let package = Package(
         .package(name: "WebnativellcCapacitorFilesharer", path: "../../../node_modules/@webnativellc/capacitor-filesharer"),
         .package(name: "WebnativellcCapacitorNavigationBar", path: "../../../node_modules/@webnativellc/capacitor-navigation-bar"),
         .package(name: "WebnativellcCapacitorPrintWebview", path: "../../../node_modules/@webnativellc/capacitor-print-webview"),
-        .package(name: "CapacitorPluginSafeArea", path: "../../../node_modules/capacitor-plugin-safe-area"),
-        .package(name: "CordovaPluginDeviceOrientation", path: "../../capacitor-cordova-ios-plugins/sources/CordovaPluginDeviceOrientation")
+        .package(name: "CapacitorPluginSafeArea", path: "../../../node_modules/capacitor-plugin-safe-area")
     ],
     targets: [
         .target(
@@ -67,8 +66,7 @@ let package = Package(
                 .product(name: "WebnativellcCapacitorFilesharer", package: "WebnativellcCapacitorFilesharer"),
                 .product(name: "WebnativellcCapacitorNavigationBar", package: "WebnativellcCapacitorNavigationBar"),
                 .product(name: "WebnativellcCapacitorPrintWebview", package: "WebnativellcCapacitorPrintWebview"),
-                .product(name: "CapacitorPluginSafeArea", package: "CapacitorPluginSafeArea"),
-                .product(name: "CordovaPluginDeviceOrientation", package: "CordovaPluginDeviceOrientation")
+                .product(name: "CapacitorPluginSafeArea", package: "CapacitorPluginSafeArea")
             ]
         )
     ]

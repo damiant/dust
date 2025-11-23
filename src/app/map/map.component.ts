@@ -20,7 +20,7 @@ import { delay } from '../utils/utils';
 import { GeoService } from '../geolocation/geo.service';
 import { SettingsService } from '../data/settings.service';
 import { MessageComponent } from '../message/message.component';
-import { CompassError, CompassHeading } from './compass';
+import { CompassHeading } from './compass';
 import { GpsCoord } from './geo.utils';
 import { Router, RouterModule } from '@angular/router';
 import { environment } from 'src/environments/environment';
@@ -31,6 +31,7 @@ import { LivePoint, MapModel, MapResult, ScrollResult } from './map-model';
 import { init3D } from './map';
 import { UiService } from '../ui/ui.service';
 import { Capacitor } from '@capacitor/core';
+import { Motion } from '@capacitor/motion';
 import { LiveService } from './live.service';
 
 // How often is the map updated with a new location
@@ -68,7 +69,7 @@ export class MapComponent implements OnInit, OnDestroy {
   pins: Pin[] = [];
   private geoInterval: any;
   private nearestPoint: number | undefined;
-  private watchId: any;
+  private orientationListener: any;
   private mapResult: MapResult | undefined;
   private _viewReady = false;
   private disabledMessage = 'Location is disabled';
@@ -575,16 +576,24 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   private setupCompass() {
-    // Plugin is undefined on web
-    if (!(navigator as any).compass) return;
+    // Use Capacitor Motion plugin for orientation
+    if (!Capacitor.isNativePlatform()) {
+      // On web, check if DeviceOrientationEvent is available
+      if (typeof DeviceOrientationEvent === 'undefined') {
+        return;
+      }
+    }
 
-    this.watchId = (navigator as any).compass.watchHeading(
-      (heading: CompassHeading) => {
-        this.geo.heading.set(heading);
-      },
-      this.compassError,
-      { frequency: 1000 },
-    );
+    this.orientationListener = Motion.addListener('orientation', (event) => {
+      // Alpha is the compass heading (0-360 degrees)
+      const heading: CompassHeading = {
+        magneticHeading: event.alpha ?? 0,
+        trueHeading: event.alpha ?? 0,
+        headingAccuracy: 0,
+        timestamp: Date.now(),
+      };
+      this.geo.heading.set(heading);
+    });
   }
 
   closePopover() {
@@ -617,9 +626,9 @@ export class MapComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.routerOutlet.swipeGesture = true;
-    if (this.watchId) {
-      (navigator as any).compass.clearWatch(this.watchId);
-      this.watchId = undefined;
+    if (this.orientationListener) {
+      this.orientationListener.remove();
+      this.orientationListener = undefined;
     }
     if (this.liveInterval) {
       clearInterval(this.liveInterval);
@@ -632,9 +641,6 @@ export class MapComponent implements OnInit, OnDestroy {
     }
   }
 
-  private compassError(error: CompassError) {
-    console.error(error);
-  }
 
   link(url: string | undefined) {
     if (!url) return;

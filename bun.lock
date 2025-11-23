@@ -27,6 +27,7 @@
         "@capacitor/ios": "7.4.4",
         "@capacitor/keyboard": "7.0.3",
         "@capacitor/local-notifications": "7.0.3",
+        "@capacitor/motion": "7.0.1",
         "@capacitor/network": "7.0.2",
         "@capacitor/preferences": "7.0.2",
         "@capacitor/push-notifications": "7.0.3",
@@ -44,7 +45,6 @@
         "@webnativellc/capacitor-navigation-bar": "7.1.0",
         "@webnativellc/capacitor-print-webview": "7.1.0",
         "capacitor-plugin-safe-area": "4.0.0",
-        "cordova-plugin-device-orientation": "3.0.0",
         "fuse.js": "7.0.0",
         "idb-keyval": "^6.2.1",
         "ionicons": "^7.4.0",
@@ -390,6 +390,8 @@
     "@capacitor/keyboard": ["@capacitor/keyboard@7.0.3", "", { "peerDependencies": { "@capacitor/core": ">=7.0.0" } }, "sha512-BIBKjmky5rOYNhvYhNeDi0MMvjwYZ6YF9JoCYcGKvKY+XLJKtezsEL78XfOlgWZBkbfR8uq3tzktY6PqgoYLKA=="],
 
     "@capacitor/local-notifications": ["@capacitor/local-notifications@7.0.3", "", { "peerDependencies": { "@capacitor/core": ">=7.0.0" } }, "sha512-zVHZk5AYRiBwBDynaD7caPUROozgvwOG0L2SPFw1HBTWCscJvo0fsaE67NWW252jzel3PH0XogglJUYFx/jtHA=="],
+
+    "@capacitor/motion": ["@capacitor/motion@7.0.1", "", { "peerDependencies": { "@capacitor/core": ">=7.0.0" } }, "sha512-jExCBAcB7NsCCnD07sfNhVgp2xgwN2dmyehpjsPswWGCJaTToN9lzwYyJz9As9q59sikq9n36DpNnyjP3smGAQ=="],
 
     "@capacitor/network": ["@capacitor/network@7.0.2", "", { "peerDependencies": { "@capacitor/core": ">=7.0.0" } }, "sha512-KKkiUvGfMVKIcYaG+KlGAxrQtoRnwJtT+9yhTkCFzZWeYrY91sBZKOVOfnNHO8RiOxqbKn5VSUlyFLQQiyyfyg=="],
 
@@ -1200,8 +1202,6 @@
     "copy-anything": ["copy-anything@2.0.6", "", { "dependencies": { "is-what": "^3.14.1" } }, "sha512-1j20GZTsvKNkc4BY3NpMOM8tt///wY3FpIzozTOFO2ffuZcV61nojHXVKIy3WM+7ADCy5FVhdZYHYDdgTU0yJw=="],
 
     "copy-webpack-plugin": ["copy-webpack-plugin@13.0.1", "", { "dependencies": { "glob-parent": "^6.0.1", "normalize-path": "^3.0.0", "schema-utils": "^4.2.0", "serialize-javascript": "^6.0.2", "tinyglobby": "^0.2.12" }, "peerDependencies": { "webpack": "^5.1.0" } }, "sha512-J+YV3WfhY6W/Xf9h+J1znYuqTye2xkBUIGyTPWuBAT27qajBa5mR4f8WBmfDY3YjRftT2kqZZiLi1qf0H+UOFw=="],
-
-    "cordova-plugin-device-orientation": ["cordova-plugin-device-orientation@3.0.0", "", {}, "sha512-P33yx+KUb7+MRqhwFIfHN6UBGEcIo/D7c+VM/t3j9ogB+yHXId4l4EudFer1ov1dkH19tCSKYA5+WMUmZB9WJA=="],
 
     "core-js-compat": ["core-js-compat@3.46.0", "", { "dependencies": { "browserslist": "^4.26.3" } }, "sha512-p9hObIIEENxSV8xIu+V68JjSeARg6UVMG5mR+JEUguG3sI6MsiS1njz2jHmyJDvA+8jX/sytkBHup6kxhM9law=="],
 
