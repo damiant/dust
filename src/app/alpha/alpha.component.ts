@@ -322,7 +322,7 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
   @HostListener('touchmove', ['$event', '$event.type'])
   @HostListener('touchstart', ['$event', '$event.type'])
   @HostListener('click', ['$event', '$event.type'])
-  focusEvent(event: MouseEvent & TouchEvent, type?: string): void {
+  focusEvent(event: MouseEvent | TouchEvent, type?: string): void {
     if (!this._lastEmittedActive) {
       this.isActive.emit((this._lastEmittedActive = true));
     }
@@ -330,10 +330,10 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
     if (type == 'click') this._isComponentActive = false;
     else this._isComponentActive = true;
 
-    this.setLetterFromCoordinates(
-      event.touches?.[0].clientX ?? event.clientX,
-      event.touches?.[0].clientY ?? event.clientY,
-    );
+    const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
+    const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
+
+    this.setLetterFromCoordinates(clientX, clientY);
 
     if (this._lastEmittedLetter !== this.letterSelected && (this.navigateOnHover || !type!.includes('mouse'))) {
       this.letterChange.emit((this._lastEmittedLetter = this.letterSelected));

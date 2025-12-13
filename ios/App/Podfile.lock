@@ -26,7 +26,7 @@ PODS:
     - Capacitor
   - CapacitorNetwork (7.0.2):
     - Capacitor
-  - CapacitorPluginSafeArea (4.0.2):
+  - CapacitorPluginSafeArea (4.0.0):
     - Capacitor
   - CapacitorPreferences (7.0.2):
     - Capacitor
@@ -226,7 +226,7 @@ SPEC CHECKSUMS:
   CapacitorKeyboard: 62f36104f26d53d8b3a2a43f2a69fe714f1777d5
   CapacitorLocalNotifications: 0811aef56ab2e5f7f9ae72f47d3473ab50c29038
   CapacitorNetwork: 695069886b3c5ed514db69aa3d026b8dc3c03a6b
-  CapacitorPluginSafeArea: d6b696287c91ab0e790d01213124a3cdba97dc43
+  CapacitorPluginSafeArea: 22031c3436269ca80fac90ec2c94bc7c1e59a81d
   CapacitorPreferences: 65107ed7437d96ee72583df5763985e3c0ff2bc2
   CapacitorPushNotifications: bdd621fbd562be34a41f4a7b1750efa000447d5a
   CapacitorScreenOrientation: e0d5b9ef293b269b8f93373355d5b276f50fabea
