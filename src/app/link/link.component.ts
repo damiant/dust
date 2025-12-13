@@ -12,14 +12,14 @@ import {
   tvOutline,
   createOutline,
 } from 'ionicons/icons';
-import { CommonModule } from '@angular/common';
+
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 @Component({
   selector: 'app-link',
   templateUrl: './link.component.html',
   styleUrls: ['./link.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IonCardContent, IonIcon, IonItem, CommonModule, CachedImgComponent],
+  imports: [IonCardContent, IonIcon, IonItem, CachedImgComponent],
 })
 export class LinkComponent {
   private ui = inject(UiService);

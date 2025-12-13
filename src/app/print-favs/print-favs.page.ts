@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, inject, ViewChild } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { addIcons } from 'ionicons';
 import { closeSharp } from 'ionicons/icons';
@@ -21,7 +21,7 @@ interface PrintState {
   selector: 'app-print-favs',
   templateUrl: './print-favs.page.html',
   styleUrls: ['./print-favs.page.scss'],
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
 })
 export class PrintFavsPage {
   private location = inject(Location);

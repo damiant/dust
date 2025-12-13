@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { MapComponent } from '../map/map.component';
 import { FavoritesService } from '../favs/favorites.service';
@@ -20,7 +20,6 @@ import {
   templateUrl: './fav-map.page.html',
   styleUrls: ['./fav-map.page.scss'],
   imports: [
-    CommonModule,
     FormsModule,
     MapComponent,
     IonHeader,
@@ -29,8 +28,8 @@ import {
     IonToast,
     IonToolbar,
     IonButtons,
-    IonBackButton,
-  ],
+    IonBackButton
+],
 })
 export class FavMapPage {
   private fav = inject(FavoritesService);

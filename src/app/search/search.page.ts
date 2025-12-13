@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import {
   IonContent,
@@ -58,10 +58,9 @@ interface SearchState {
     IonToolbar,
     IonNote,
     SearchComponent,
-    CommonModule,
     RouterModule,
-    FormsModule,
-  ],
+    FormsModule
+],
 })
 export class SearchPage {
   public vm: SearchState = { items: [], busy: false, gps: undefined };

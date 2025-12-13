@@ -1,5 +1,5 @@
 import { Component, effect, viewChild, inject, ChangeDetectorRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import {
   InfiniteScrollCustomEvent,
@@ -76,7 +76,6 @@ function initialState(): RSLState {
   templateUrl: './rsl.page.html',
   styleUrls: ['./rsl.page.scss'],
   imports: [
-    CommonModule,
     FormsModule,
     RslEventComponent,
     IonHeader,
@@ -93,8 +92,8 @@ function initialState(): RSLState {
     SortComponent,
     SearchComponent,
     MapModalComponent,
-    SkeletonEventComponent,
-  ],
+    SkeletonEventComponent
+],
 })
 export class RslPage {
   private ui = inject(UiService);

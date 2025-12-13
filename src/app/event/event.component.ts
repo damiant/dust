@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input, output, inject, computed, ChangeDetectorRef } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { Event } from '../data/models';
-import { CommonModule } from '@angular/common';
+
 import {
   IonButton,
   IonButtons,
@@ -24,7 +24,6 @@ import { DbService } from '../data/db.service';
   styleUrls: ['./event.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
     RouterModule,
     IonButtons,
     IonButton,
@@ -34,8 +33,8 @@ import { DbService } from '../data/db.service';
     IonCardSubtitle,
     IonCardContent,
     IonText,
-    CachedImgComponent,
-  ],
+    CachedImgComponent
+],
 })
 export class EventComponent {
   private router = inject(Router);

@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
   IonContent,
@@ -54,9 +54,8 @@ import { Capacitor } from '@capacitor/core';
     IonHeader,
     IonTitle,
     IonToolbar,
-    CommonModule,
-    FormsModule,
-  ],
+    FormsModule
+],
 })
 export class BroadcastPage implements OnInit {
   public art = signal<Art | undefined>(undefined);

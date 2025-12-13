@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject, OnInit, viewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import {
   IonContent,
@@ -35,9 +35,8 @@ import { UiService } from '../ui/ui.service';
     MessageCardComponent,
     EmailCardComponent,
     IonToolbar,
-    CommonModule,
-    FormsModule,
-  ],
+    FormsModule
+],
 })
 export class MessagesPage implements OnInit {
   private settings = inject(SettingsService);

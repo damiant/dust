@@ -7,7 +7,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import {
   IonActionSheet,
@@ -104,7 +104,6 @@ function initialState(): FavsState {
     IonItemOptions,
     IonItemSliding,
     IonItem,
-    CommonModule,
     FormsModule,
     RouterModule,
     EventComponent,
@@ -123,8 +122,8 @@ function initialState(): FavsState {
     ArtComponent,
     CategoryComponent,
     SearchComponent,
-    MessageComponent,
-  ],
+    MessageComponent
+],
 })
 export class FavsPage implements OnInit {
   private fav = inject(FavoritesService);

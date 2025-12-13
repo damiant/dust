@@ -23,7 +23,7 @@ import {
 } from '@ionic/angular/standalone';
 import { DbService } from '../data/db.service';
 import { Day, Event, MapPoint, Names } from '../data/models';
-import { CommonModule } from '@angular/common';
+
 import { RouterModule } from '@angular/router';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { MapModalComponent } from '../map-modal/map-modal.component';
@@ -101,7 +101,6 @@ function initialState(): EventsState {
   styleUrls: ['events.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
     RouterModule,
     ScrollingModule,
     MapModalComponent,
@@ -120,8 +119,8 @@ function initialState(): EventsState {
     SearchComponent,
     SortComponent,
     IonButton,
-    IonBadge,
-  ],
+    IonBadge
+],
 })
 export class EventsPage implements OnInit, OnDestroy {
   public db = inject(DbService);

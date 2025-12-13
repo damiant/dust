@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import {
   IonCard,
   IonCardContent,
@@ -25,15 +25,14 @@ export type ArtImageStyle = 'top' | 'side' | 'none';
   animations: [FadeOut(500)],
   imports: [
     IonFabButton,
-    CommonModule,
     IonCard,
     IonCardHeader,
     IonCardTitle,
     IonCardSubtitle,
     IonCardContent,
     IonText,
-    IonIcon,
-  ],
+    IonIcon
+],
 })
 export class EmailCardComponent {
   email = input.required<Email>();

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, input, OnInit, output, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import {
   IonCard,
   IonCardContent,
@@ -27,15 +27,14 @@ export type ArtImageStyle = 'top' | 'side' | 'none';
   animations: [FadeOut(500), FadeIn(300)],
   imports: [
     IonAvatar,
-    CommonModule,
     IonCard,
     IonCardHeader,
     IonCardTitle,
     IonCardSubtitle,
     IonCardContent,
     IonText,
-    IonButton,
-  ],
+    IonButton
+],
 })
 export class MessageCardComponent implements OnInit {
   item = input.required<Item>();

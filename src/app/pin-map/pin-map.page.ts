@@ -12,7 +12,7 @@ import {
   ChangeDetectorRef,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MapComponent } from '../map/map.component';
 import { DbService } from '../data/db.service';
@@ -51,7 +51,6 @@ import { SettingsService } from '../data/settings.service';
   imports: [
     IonLoading,
     IonButton,
-    CommonModule,
     FormsModule,
     MapComponent,
     IonContent,
@@ -63,8 +62,8 @@ import { SettingsService } from '../data/settings.service';
     IonBackButton,
     IonText,
     IonIcon,
-    SearchComponent,
-  ],
+    SearchComponent
+],
 })
 export class PinMapPage {
   private db = inject(DbService);

@@ -12,7 +12,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import {
   IonBackButton,
@@ -65,7 +65,6 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./event.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
     FormsModule,
     MapComponent,
     IonItem,
@@ -81,8 +80,8 @@ import { Subscription } from 'rxjs';
     IonBackButton,
     IonHeader,
     IonPopover,
-    CachedImgComponent,
-  ],
+    CachedImgComponent
+],
 })
 export class EventPage implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);

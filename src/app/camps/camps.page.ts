@@ -12,7 +12,7 @@ import {
 } from '@ionic/angular/standalone';
 import { Camp, MapPoint } from '../data/models';
 import { DbService } from '../data/db.service';
-import { CommonModule } from '@angular/common';
+
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { CampComponent } from '../camp/camp.component';
@@ -72,7 +72,6 @@ function initialState(): CampsState {
   styleUrls: ['camps.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
     RouterModule,
     ScrollingModule,
     MapModalComponent,
@@ -87,8 +86,8 @@ function initialState(): CampsState {
     SearchComponent,
     CategoryComponent,
     AlphabeticalScrollBarComponent,
-    SortComponent,
-  ],
+    SortComponent
+],
 })
 export class CampsPage {
   public db = inject(DbService);

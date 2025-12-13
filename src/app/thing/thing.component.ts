@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -28,7 +28,6 @@ export enum ThingResult {
   templateUrl: './thing.component.html',
   styleUrls: ['./thing.component.scss'],
   imports: [
-    CommonModule,
     FormsModule,
     IonItem,
     IonButton,
@@ -37,8 +36,8 @@ export enum ThingResult {
     IonToolbar,
     IonTitle,
     IonInput,
-    IonHeader,
-  ],
+    IonHeader
+],
 })
 export class ThingComponent {
   private modalCtrl = inject(ModalController);

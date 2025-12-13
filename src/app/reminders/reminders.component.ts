@@ -12,7 +12,7 @@ import {
 } from '@ionic/angular/standalone';
 import { FavoritesService } from '../favs/favorites.service';
 import { Reminder } from '../data/models';
-import { CommonModule } from '@angular/common';
+
 import { clone, delay, getDayName, isWhiteSpace } from '../utils/utils';
 import { ReminderComponent, ReminderResult } from './reminder.component';
 import { UiService } from '../ui/ui.service';
@@ -29,7 +29,7 @@ import { getTimeInTimeZone } from '../utils/date-utils';
   selector: 'app-reminders',
   templateUrl: './reminders.component.html',
   styleUrls: ['./reminders.component.scss'],
-  imports: [CommonModule, IonCard, IonIcon, IonCardContent, IonList, IonText, IonItem, IonLabel, CardHeaderComponent],
+  imports: [IonCard, IonIcon, IonCardContent, IonList, IonText, IonItem, IonLabel, CardHeaderComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RemindersComponent implements OnInit {

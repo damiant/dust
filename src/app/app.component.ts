@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EnvironmentInjector, OnInit, effect, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { NotificationService } from './notifications/notification.service';
 import { App, URLOpenListenerEvent } from '@capacitor/app';
 import { ShareInfoType, ShareService } from './share/share.service';
@@ -18,7 +18,7 @@ import * as SentryAngular from '@sentry/angular';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IonApp, IonRouterOutlet, CommonModule],
+  imports: [IonApp, IonRouterOutlet],
 })
 export class AppComponent implements OnInit {
   private notificationService = inject(NotificationService);
