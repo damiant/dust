@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import {
   IonBackButton,
@@ -19,7 +19,6 @@ import { logoTwitter, logoInstagram, mailOutline } from 'ionicons/icons';
   templateUrl: './about.page.html',
   styleUrls: ['./about.page.scss'],
   imports: [
-    CommonModule,
     FormsModule,
     IonHeader,
     IonToolbar,
@@ -28,8 +27,8 @@ import { logoTwitter, logoInstagram, mailOutline } from 'ionicons/icons';
     IonTitle,
     IonContent,
     IonText,
-    IonIcon,
-  ],
+    IonIcon
+],
 })
 export class AboutPage {
   constructor() {

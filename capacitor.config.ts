@@ -30,6 +30,7 @@ const config: CapacitorConfig = {
   },
   android: {
     buildOptions: {
+      signingType: 'apksigner',
       keystorePath: '../android-keys/Untitled',
       keystoreAlias: 'dust',
     },

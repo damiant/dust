@@ -18,7 +18,7 @@ import {
 } from '@ionic/angular/standalone';
 import { Reminder } from '../data/models';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { now, uniqueId } from '../utils/utils';
 
 export enum ReminderResult {
@@ -33,7 +33,6 @@ export enum ReminderResult {
   styleUrls: ['./reminder.component.scss'],
   imports: [
     FormsModule,
-    CommonModule,
     IonItem,
     IonButton,
     IonLabel,
@@ -47,8 +46,8 @@ export enum ReminderResult {
     IonHeader,
     IonTitle,
     IonToolbar,
-    IonTextarea,
-  ],
+    IonTextarea
+],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReminderComponent implements OnInit {

@@ -10,7 +10,7 @@ import {
   ToastController,
 } from '@ionic/angular/standalone';
 import { RSLEvent, RSLOccurrence } from '../data/models';
-import { CommonModule } from '@angular/common';
+
 import { FavoritesService } from '../favs/favorites.service';
 import { addIcons } from 'ionicons';
 import { car, musicalNotes, star, starOutline } from 'ionicons/icons';
@@ -27,7 +27,6 @@ export interface ArtCarEvent {
   styleUrls: ['./rsl-event.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
     IonCard,
     IonCardHeader,
     IonCardTitle,
@@ -35,8 +34,8 @@ export interface ArtCarEvent {
     IonCardContent,
     IonIcon,
     IonText,
-    CachedImgComponent,
-  ],
+    CachedImgComponent
+],
 })
 export class RslEventComponent {
   private fav = inject(FavoritesService);

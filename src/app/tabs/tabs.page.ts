@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectorRef, Component, EnvironmentInjector, OnInit, effect, inject } from '@angular/core';
 import { DbService } from '../data/db.service';
 import { NotificationService } from '../notifications/notification.service';
@@ -26,7 +26,7 @@ import { GeoService } from '../geolocation/geo.service';
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss'],
-  imports: [IonBadge, CommonModule, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel],
+  imports: [IonBadge, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel],
 })
 export class TabsPage implements OnInit {
   public db = inject(DbService);

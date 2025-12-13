@@ -1,5 +1,9 @@
 ## Changes
 
+## 2.112
+
+- Update to Angular 21
+
 ## 2.111
 
 - Fix issue with messages data result

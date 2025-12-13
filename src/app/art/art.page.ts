@@ -15,7 +15,7 @@ import {
 import { Art } from '../data/models';
 import { DbService } from '../data/db.service';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import { ArtComponent, ArtImageStyle } from './art.component';
 import { UiService } from '../ui/ui.service';
 import { SearchComponent } from '../search/search.component';
@@ -68,7 +68,6 @@ function initialState(): ArtState {
   styleUrls: ['art.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
     ScrollingModule,
     IonButtons,
     AlphabeticalScrollBarComponent,
@@ -84,8 +83,8 @@ function initialState(): ArtState {
     SearchComponent,
     SortComponent,
     CategoryComponent,
-    SkeletonArtComponent,
-  ],
+    SkeletonArtComponent
+],
 })
 export class ArtPage {
   public db = inject(DbService);

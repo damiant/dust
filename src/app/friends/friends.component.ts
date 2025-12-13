@@ -3,7 +3,7 @@ import { IonCard, IonCardContent, IonIcon, IonItem, IonLabel, IonList, IonText }
 import { FavoritesService } from '../favs/favorites.service';
 import { FriendsService } from './friends.service';
 import { Friend } from '../data/models';
-import { CommonModule } from '@angular/common';
+
 import { clone } from '../utils/utils';
 import { addIcons } from 'ionicons';
 import { add, person } from 'ionicons/icons';
@@ -14,7 +14,7 @@ import { DbService } from '../data/db.service';
   selector: 'app-friends',
   templateUrl: './friends.component.html',
   styleUrls: ['./friends.component.scss'],
-  imports: [CommonModule, IonCard, IonCardContent, IonList, IonText, IonItem, IonIcon, IonLabel, CardHeaderComponent],
+  imports: [IonCard, IonCardContent, IonList, IonText, IonItem, IonIcon, IonLabel, CardHeaderComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FriendsComponent implements OnInit {

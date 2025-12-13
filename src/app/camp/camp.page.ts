@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject, viewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import {
   IonBackButton,
@@ -48,7 +48,6 @@ import { ScrollResult } from '../map/map-model';
   styleUrls: ['./camp.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
     FormsModule,
     MapComponent,
     EventPage,
@@ -65,8 +64,8 @@ import { ScrollResult } from '../map/map-model';
     IonText,
     IonModal,
     IonPopover,
-    CachedImgComponent,
-  ],
+    CachedImgComponent
+],
 })
 export class CampPage implements OnInit {
   private route = inject(ActivatedRoute);

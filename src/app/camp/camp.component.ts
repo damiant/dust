@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 import { Camp } from '../data/models';
-import { CommonModule } from '@angular/common';
+
 import { Router, RouterModule } from '@angular/router';
 import {
   IonCard,
@@ -18,7 +18,6 @@ import { CachedImgComponent } from '../cached-img/cached-img.component';
   styleUrls: ['./camp.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
     RouterModule,
     IonCard,
     IonCardHeader,
@@ -26,8 +25,8 @@ import { CachedImgComponent } from '../cached-img/cached-img.component';
     IonText,
     IonCardTitle,
     IonCardContent,
-    CachedImgComponent,
-  ],
+    CachedImgComponent
+],
 })
 export class CampComponent {
   camp = input.required<Camp>();
