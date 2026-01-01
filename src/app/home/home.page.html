@@ -81,7 +81,7 @@
   <ion-loading spinner="circular" [isOpen]="vm.downloading" [message]="downloadStatus()"></ion-loading>
   }
   <app-tile-container>
-    @if (!db.allLocationsHidden()) {
+    @if (!db.allLocationsHidden() && this.vm.hasMapURI) {
     <app-tile title="Map" routerLink="/map/all" imgSrc="assets/icon/map.svg"></app-tile>
     }
     <app-tile
@@ -101,7 +101,7 @@
       imgSrc="assets/icon/toilet.svg"
     ></app-tile>
 
-    @if (!db.artLocationsHidden() && !db.featuresHidden().includes('art')) {
+    @if (!db.artLocationsHidden() && !db.featuresHidden().includes('art') && this.vm.hasMapURI) {
     <app-tile title="Art" routerLink="/map/art" imgSrc="assets/icon/art.svg"></app-tile>
     }
     <app-tile [hidden]="!vm.hasIce" title="Ice" routerLink="/map/ice" imgSrc="assets/icon/ice.svg"></app-tile>
