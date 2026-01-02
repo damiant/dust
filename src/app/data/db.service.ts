@@ -100,6 +100,7 @@ export class DbService {
   public networkStatus = signal('');
   public resume = signal('');
   public restart: WritableSignal<string> = signal('');
+  public eventCount = signal(0);
   public showPastEvents = false;
   private initialized = false;
   public locationsHidden = signal({ art: false, camps: false, artMessage: '', campMessage: '' });
@@ -187,6 +188,7 @@ export class DbService {
       timezone,
     );
     await this.writeData(dataset, Names.summary, result);
+    this.eventCount.set(result.events);
     return result;
   }
 

@@ -5,10 +5,12 @@
       <ion-icon aria-hidden="true" [src]="'assets/icon/home.svg'"></ion-icon>
       <ion-label>Home</ion-label>
     </ion-tab-button>
+    @if (hasEvents()) {
     <ion-tab-button tab="events" (click)="select('events')">
       <ion-icon aria-hidden="true" [src]="'assets/icon/calendar.svg'"></ion-icon>
       <ion-label>Events</ion-label>
     </ion-tab-button>
+    }
 
     <ion-tab-button tab="camps" (click)="select('camps')">
       <ion-icon aria-hidden="true" [src]="'assets/icon/camp.svg'"></ion-icon>
