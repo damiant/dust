@@ -27,8 +27,7 @@
       <ion-icon aria-hidden="true" name="musical-notes-outline"></ion-icon>
       <ion-label>Music</ion-label>
     </ion-tab-button>
-    }
-
+    } @if (hasEvents()) {
     <ion-tab-button tab="favs" id="favButton" (click)="select('favs')">
       @if(favs.newFavs() > 0) {
       <ion-badge mode="ios">{{favs.newFavs()}}</ion-badge>
@@ -36,8 +35,7 @@
       <ion-icon aria-hidden="true" [src]="'assets/icon/star.svg'"></ion-icon>
       <ion-label>Favorites </ion-label>
     </ion-tab-button>
-
-    @if (!db.featuresHidden().includes('messages')) {
+    } @if (!db.featuresHidden().includes('messages')) {
     <ion-tab-button tab="messages" (click)="select('messages')">
       <ion-icon aria-hidden="true" name="mail-outline"></ion-icon>
       <ion-label>Messages</ion-label>
