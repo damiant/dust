@@ -13,6 +13,7 @@ export const SettingNames = {
 })
 export class SettingsService {
   public settings!: Settings;
+  private cachedHasMapURI: boolean | undefined;
 
   public async init() {
     this.settings = await this.getSettings();
@@ -36,6 +37,19 @@ export class SettingsService {
 
   public async setMapURI(uri: string) {
     await set(SettingNames.MapURI, uri);
+    this.cachedHasMapURI = undefined; // Clear cache when setting new URI
+  }
+
+  public async hasMapURI(): Promise<boolean> {
+    if (this.cachedHasMapURI !== undefined) {
+      return this.cachedHasMapURI;
+    }
+    const mapURI = await this.getMapURI();
+    this.cachedHasMapURI = mapURI !== undefined && mapURI !== '' && mapURI !== 'data:image/0;base64,';
+    if (this.isBurningMan()) {
+      this.cachedHasMapURI = true;
+    }
+    return this.cachedHasMapURI;
   }
 
   public async setInteger(key: string, value: number) {
@@ -91,6 +105,7 @@ export class SettingsService {
   }
 
   public async getSettings(): Promise<Settings> {
+    this.cachedHasMapURI = undefined;
     try {
       const settings = JSON.parse(await this.getPref('settings'));
       settings.longEvents = true;

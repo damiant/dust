@@ -1,5 +1,5 @@
 
-import { ChangeDetectorRef, Component, EnvironmentInjector, OnInit, effect, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, EnvironmentInjector, OnInit, effect, inject, computed } from '@angular/core';
 import { DbService } from '../data/db.service';
 import { NotificationService } from '../notifications/notification.service';
 import { Router } from '@angular/router';
@@ -43,6 +43,7 @@ export class TabsPage implements OnInit {
   currentTab: string | undefined;
   private activeTab?: HTMLElement;
   public environmentInjector = inject(EnvironmentInjector);
+  public hasEvents = computed(() => this.db.eventCount() > 0);
   constructor() {
     addIcons({ mailOutline, musicalNotesOutline, ellipsisVertical });
     effect(() => {

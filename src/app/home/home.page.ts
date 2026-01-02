@@ -93,6 +93,7 @@ interface HomeState {
   highlightedDates: any[];
   hasRestrooms: boolean;
   hasIce: boolean;
+  hasMapURI: boolean;
   hasFriends: boolean;
   version: string;
   timezone: string;
@@ -170,6 +171,7 @@ export class HomePage implements OnInit {
     hasMedical: true,
     hasRestrooms: true,
     hasIce: true,
+    hasMapURI: true,
     hasFriends: true,
     version: '',
     timezone: '',
@@ -255,6 +257,7 @@ export class HomePage implements OnInit {
     this.vm.endDate = this.dateISO(this.db.selectedDataset().end, 7);
     this.vm.highlightedDates = daysHighlighted(this.db.selectedDataset().start, this.db.selectedDataset().end);
     this.vm.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
+    this.vm.hasMapURI = await this.settings.hasMapURI();
     if (Capacitor.isNativePlatform()) {
       await StatusBar.hide();
     }
