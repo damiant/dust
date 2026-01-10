@@ -69,6 +69,10 @@ export function canCreate(): boolean {
   return depth == 0;
 }
 
+export function resetMapState(): void {
+  depth = 0;
+}
+
 function onMap(map: MapModel): boolean {
   if (map.compass) {
     if (map.compass.x < -map.width / 2) return false;
@@ -324,8 +328,21 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
   };
   container.addEventListener('click', containerClick);
   renderer.setAnimationLoop(renderFn);
+  let disposed = false;
   result.dispose = () => {
+    // Prevent double-disposal
+    if (disposed) {
+      console.warn('Map already disposed, skipping');
+      return;
+    }
+    disposed = true;
     depth--;
+
+    // Ensure depth never goes negative
+    if (depth < 0) {
+      console.warn('Map depth went negative, resetting to 0');
+      depth = 0;
+    }
 
     // Stop the animation loop first
     renderer.setAnimationLoop(null);

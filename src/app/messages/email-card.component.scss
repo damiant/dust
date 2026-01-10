@@ -30,3 +30,35 @@
   right: 0.5rem;
   z-index: 1;
 }
+
+.buttons {
+  padding-top: 1rem;
+  width: 100%;
+  text-align: center;
+}
+
+.title-with-date {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.date {
+  white-space: nowrap;
+  opacity: 0.6;
+  font-size: 0.85em;
+  flex-shrink: 0;
+}
+
+ion-card-title {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+.wrap-text {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}

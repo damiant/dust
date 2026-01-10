@@ -1,19 +1,22 @@
 <ion-card class="image-container" class="item" [@fadeOut]="out()">
-  <div class="right">
-    <ion-fab-button size="small" (click)="markAsRead()"><ion-icon name="checkmark-outline"></ion-icon></ion-fab-button>
-  </div>
-
   <ion-card-header>
-    <ion-card-title>
-      {{ email().subject }}
-    </ion-card-title>
+    <div class="title-with-date">
+      <ion-card-title>
+        {{ email().subject }} 
+      </ion-card-title>
+      
+    </div>
     @if (email().from.name) {
-      <ion-card-subtitle>{{ email().from.name }}</ion-card-subtitle>
+      <ion-card-subtitle class="wrap-text">{{ email().from.name }} <span class="date">@if (formattedDate()) { ({{ formattedDate() }}) }</span></ion-card-subtitle>
     }
   </ion-card-header>
 
   <ion-card-content>
+    
     <div class="body" [innerHTML]="email().html"></div>
     <ion-text color="primary"></ion-text>
+    <div class="buttons">
+      <ion-button mode="md" color="primary" (click)="markAsRead()">Mark Read</ion-button>
+    </div>
   </ion-card-content>
 </ion-card>

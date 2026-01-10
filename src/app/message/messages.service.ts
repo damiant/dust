@@ -39,7 +39,8 @@ export class MessagesService {
       await this.cleanup(data);
       this.feed.set(data);
     }
-    if (inboxEmail) {
+    // We now always fetch from messages because notifications appear here too
+    if (inboxEmail || true) {
       const res = await fetch(`${r2data_dust_events}${datasetId}/messages.json?${Math.random()}`, { method: 'GET' });
 
       let emailList: Email[] = [];
@@ -59,6 +60,7 @@ export class MessagesService {
     inboxEmail: boolean,
   ): Promise<void> {
     const data = await this.db.readData(datasetId, Names.messages);
+    console.log('Loaded messages from DB', data);
     await this.cleanup(data);
     this.feed.set(data);
     const emails = await this.db.readData(datasetId, Names.emails);

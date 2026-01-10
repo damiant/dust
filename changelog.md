@@ -1,4 +1,7 @@
 ## Changes
+## 2.113
+
+- Support for burns that hold back camps, arts, and events.
 
 ## 2.112
 

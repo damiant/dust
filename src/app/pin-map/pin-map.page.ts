@@ -21,6 +21,7 @@ import { GpsCoord } from '../map/geo.utils';
 import { GeoService } from '../geolocation/geo.service';
 import { toMapPoint } from '../map/map.utils';
 import { nowRange, timeRangeToString } from '../utils/utils';
+import { since } from '../utils/date-utils';
 import {
   IonBackButton,
   IonButtons,
@@ -293,7 +294,7 @@ export class PinMapPage {
           title: thing.name,
           label: this.iconFor(thing.name),
           location: '',
-          subtitle: `Saved ${this.since(thing.lastChanged)}. ${thing.notes}`,
+          subtitle: `Saved ${since(thing.lastChanged)}. ${thing.notes}`,
         };
         result.points.push(pt);
         console.log(`thing.${thing.name} is ${thing.gps.lat}, ${thing.gps.lng}. x=${pt.x}, y=${pt.y}`);
@@ -310,18 +311,7 @@ export class PinMapPage {
     return '^';
   }
 
-  private since(v: number | undefined): string {
-    if (!v) return '';
-    const now = new Date().getTime();
-    var differenceValue = (now - v) / 1000;
-    differenceValue /= 60;
-    const mins = Math.abs(Math.round(differenceValue));
-    if (mins > 60) {
-      const hrs = Math.round(mins / 60);
-      return `${hrs} hr${hrs == 1 ? '' : 's'} ago`;
-    }
-    return `${mins} min${mins == 1 ? '' : 's'} ago`;
-  }
+
 
   public async clearThing() {
     await this.favs.clearThing(this.thingName());
