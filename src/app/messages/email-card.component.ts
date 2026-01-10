@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output, signal, computed } from '@angular/core';
 
 import {
   IonCard,
@@ -6,14 +6,13 @@ import {
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
-  IonIcon,
+  IonButton,
   IonText,
-  IonFabButton,
 } from '@ionic/angular/standalone';
 import { Email } from '../message/emails';
 import { addIcons } from 'ionicons';
-import { checkmarkOutline } from 'ionicons/icons';
 import { FadeOut } from '../ui/animation';
+import { formatRelativeTime } from '../utils/date-utils';
 
 export type ArtImageStyle = 'top' | 'side' | 'none';
 
@@ -24,23 +23,23 @@ export type ArtImageStyle = 'top' | 'side' | 'none';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [FadeOut(500)],
   imports: [
-    IonFabButton,
+    IonButton,
     IonCard,
     IonCardHeader,
     IonCardTitle,
     IonCardSubtitle,
     IonCardContent,
     IonText,
-    IonIcon
 ],
 })
 export class EmailCardComponent {
   email = input.required<Email>();
   out = signal(false);
   read = output();
+  formattedDate = computed(() => formatRelativeTime(this.email().date));
 
   constructor() {
-    addIcons({ checkmarkOutline });
+    addIcons({});
   }
 
   markAsRead() {
