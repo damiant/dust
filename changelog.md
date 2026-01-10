@@ -1,4 +1,9 @@
 ## Changes
+## 2.114
+
+- Fix for the map display - open GL deallocation fix to ensure the map shows again
+- Feature to show notifications as messages in the messages tab.
+
 ## 2.113
 
 - Support for burns that hold back camps, arts, and events.
