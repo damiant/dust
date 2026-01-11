@@ -1,0 +1,170 @@
+[
+  {
+    "title": "Import art from a spreadsheet / CSV",
+    "roles": ["admin"],
+    "html": "https://dust.events/docs/Art/importing-art?internal",
+    "tags": ["art", "import"]
+  },
+  {
+    "title": "Import camps from a spreadsheet / CSV",
+    "roles": ["admin"],
+    "html": "https://dust.events/docs/Camps/importing-camps?internal",
+    "tags": ["camps", "import"]
+  },
+  {
+    "title": "Import events from a spreadsheet / CSV",
+    "roles": ["admin"],
+    "html": "https://dust.events/docs/Events/importing-events?internal",
+    "tags": ["events", "import"]
+  },
+  {
+    "title": "Import locations from Google Maps",
+    "roles": ["admin"],
+    "html": "https://dust.events/docs/Maps/importing-google-maps?internal",
+    "tags": ["import", "map", "integrations"]
+  },
+  {
+    "title": "Email newly registered camps and artists",
+    "roles": ["admin"],
+    "html": "https://dust.events/docs/Integrations/forms?internal",
+    "tags": ["camps", "art"]
+  },
+  {
+    "title": "Integrate Volunteeripate",
+    "roles": ["admin"],
+    "html": "https://dust.events/docs/Integrations/volunteeripate?internal",
+    "tags": ["integrations"]
+  },
+  {
+    "title": "Ask additional questions on camp and art applications",
+    "roles": ["admin"],
+    "html": "https://dust.events/docs/Questions?internal",
+    "tags": ["camps", "art"]
+  },
+  {
+    "title": "Add camps, art and events to your website",
+    "roles": ["admin"],
+    "html": "https://dust.events/docs/Integrations/website?internal",
+    "tags": ["camps", "art", "events"]
+  },
+  {
+    "title": "Display your newsletter in dust",
+    "roles": ["admin"],
+    "html": "https://dust.events/docs/Communication/newsletters?internal",
+    "tags": ["communication"]
+  },
+  {
+    "title": "Send notifications to dust app users",
+    "roles": ["admin"],
+    "html": "https://dust.events/docs/Communication/notifications?internal",
+    "tags": ["communication"]
+  },
+  {
+    "title": "Show social media announcements in dust",
+    "roles": ["admin"],
+    "html": "https://dust.events/docs/Communication/social-media?internal",
+    "tags": ["communication", "integrations"]
+  },
+  {
+    "title": "Upload a map image",
+    "roles": ["admin"],
+    "html": "https://dust.events/docs/Maps/uploading-a-map?internal",
+    "tags": ["map"]
+  },
+  {
+    "title": "Create a map",
+    "roles": ["admin"],
+    "html": "https://dust.events/docs/Maps/creating-a-map?internal",
+    "tags": ["map"]
+  },
+  {
+    "title": "Place camps on the map",
+    "roles": ["admin"],
+    "html": "https://dust.events/docs/Maps/placing-camps?internal",
+    "tags": ["map", "camps"]
+  },
+  {
+    "title": "Place art on the map",
+    "roles": ["admin"],
+    "html": "https://dust.events/docs/Maps/placing-art?internal",
+    "tags": ["map", "art"]
+  },
+  {
+    "title": "Place restrooms and other pins on the map",
+    "roles": ["admin"],
+    "html": "https://dust.events/docs/Maps/placing-restrooms-and-other-pins?internal",
+    "tags": ["map"]
+  },
+  {
+    "title": "Make a map GPS accurate",
+    "roles": ["admin"],
+    "html": "https://dust.events/docs/Maps/gps-accurate-map?internal",
+    "tags": ["map"]
+  },
+  {
+    "title": "Clear map locations",
+    "roles": ["admin"],
+    "html": "https://dust.events/docs/Maps/clear-map-locations?internal",
+    "tags": ["map"]
+  },
+  {
+    "title": "Export events to a Spreadsheet / CSV",
+    "roles": ["admin"],
+    "html": "https://dust.events/docs/Events/exporting-events?internal",
+    "tags": ["events", "export"]
+  },
+  {
+    "title": "Export art to a Spreadsheet / CSV",
+    "roles": ["admin"],
+    "html": "https://dust.events/docs/Art/exporting-art?internal",
+    "tags": ["art", "export"]
+  },
+  {
+    "title": "Export camps to a Spreadsheet / CSV",
+    "roles": ["admin"],
+    "html": "https://dust.events/docs/Camps/exporting-camps?internal",
+    "tags": ["camps", "export"]
+  },
+  {
+    "title": "Access events, camps and art via the API",
+    "roles": ["admin"],
+    "html": "https://dust.events/docs/Integrations/api?internal",
+    "tags": ["export", "events", "camps", "art", "integrations"]
+  },
+  {
+    "title": "Register music for Rock Star Librarian",
+    "roles": ["admin", "camp", "artist", "music"],
+    "html": "https://dust.events/docs/music?internal",
+    "tags": []
+  },
+  {
+    "title": "Print an event guide",
+    "roles": ["admin"],
+    "html": "https://dust.events/docs/print?internal",
+    "tags": ["events", "art", "camps"]
+  },
+  {
+    "title": "Register a camp",
+    "roles": ["camp"],
+    "html": "https://dust.events/docs/Camps/registering?internal",
+    "tags": ["camps"]
+  },
+  {
+    "title": "Register art",
+    "roles": ["artist"],
+    "html": "https://dust.events/docs/Art/registering?internal",
+    "tags": ["art"]
+  },
+  {
+    "title": "Approving camps and manage placement",
+    "roles": ["admin", "placement"],
+    "html": "https://dust.events/docs/Camps/approval-and-placement?internal",
+    "tags": ["camps", "map"]
+  },
+  {
+    "title": "Approving art and manage placement",
+    "roles": ["admin", "placement"],
+    "html": "https://dust.events/docs/Art/approval-and-placement?internal",
+    "tags": ["art", "map"]
+  }
+]
