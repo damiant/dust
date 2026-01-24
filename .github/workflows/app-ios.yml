@@ -73,7 +73,7 @@ jobs:
           agvtool new-version -all ${{ github.run_id }}
 
       - name: Select Xcode Version
-        run: sudo xcode-select -s /Applications/Xcode_16.4.app/Contents/Developer
+        run: sudo xcode-select -s /Applications/Xcode_26.2.app/Contents/Developer
 
       - name: Build project
         run: xcodebuild -workspace './ios/App/App.xcworkspace' -scheme App -destination generic/platform=iOS -archivePath App.xcarchive archive
