@@ -110,15 +110,28 @@ export class BroadcastPage implements OnInit {
   async start(): Promise<void> {
     try {
       this.processing.set(true);
-      this.watchId = await Geolocation.watchPosition({}, (position) => {
-        if (!position) {
-          this.location.set(false);
-          console.error('No position');
-          return;
+      this.watchId = await Geolocation.watchPosition(
+        { enableHighAccuracy: true, timeout: 20000 },
+        (position, err) => {
+          if (err) {
+            console.warn('Geolocation watch error:', err?.message);
+            this.location.set(false);
+            return;
+          }
+          if (!position) {
+            this.location.set(false);
+            console.warn('No position received from watch');
+            return;
+          }
+          this.processPosition(position);
         }
-        this.processPosition(position);
-      });
-      this.processPosition(await Geolocation.getCurrentPosition());
+      );
+      try {
+        this.processPosition(await Geolocation.getCurrentPosition({ enableHighAccuracy: true, timeout: 20000 }));
+      } catch (err) {
+        console.warn('Failed to get initial position:', err);
+        this.location.set(false);
+      }
       this.running.set(true);
       this.processNetwork(await Network.getStatus());
       await this.keepAwake(true);
