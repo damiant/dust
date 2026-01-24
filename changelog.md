@@ -1,5 +1,5 @@
 ## Changes
-## 2.115
+## 2.117
 
 - Fix for geolocation to give more time to get a GPS position
 
