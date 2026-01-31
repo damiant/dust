@@ -29,6 +29,18 @@
 - **Icons**: Register icons using `addIcons` in the constructor or initialization logic.
 - **Native Features**: specific native functionality (Haptics, etc.) should be accessed via Capacitor plugins.
 
-## Code Style
-- **Formatting**: Ensure code is formatted (Prettier is configured).
-- **Linting**: Follow the project's ESLint rules.
+## Pre-Commit & Quality
+- **Linting**: Use `bun run lint` (it includes the necessary `--max-old-space-size=8192` memory boost).
+- **Formatting**: Use `bun run format`.
+
+## Developer Setup
+- **VS Code Recommendations**:
+  - Enable **Auto-fix on save** for ESLint to automatically remove unused imports.
+  - Enable **Organize Imports on save**.
+  - Example `settings.json`:
+    ```json
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit",
+      "source.organizeImports": "explicit"
+    }
+    ```
