@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, model } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonIcon, IonBadge } from '@ionic/angular/standalone';
 
@@ -18,10 +18,11 @@ export interface Tab {
 })
 export class TabBarComponent {
   tabs = input<Tab[]>([]);
-  selected = input<string | undefined>(undefined);
+  selected = model<string | undefined>(undefined);
   tabSelected = output<string>();
 
   select(id: string) {
+    this.selected.set(id);
     this.tabSelected.emit(id);
   }
 }

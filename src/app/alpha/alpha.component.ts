@@ -304,7 +304,9 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
     const mappedIndex = Math.round((index / this.visibleLetters.length) * lettersOnly.length);
     const mappedMagIndex = Math.round((this.magIndex / this.visibleLetters.length) * lettersOnly.length);
 
-    const relativeIndex = this.magnifyDividers ? Math.abs(this.magIndex - index) : Math.abs(mappedMagIndex - mappedIndex);
+    const relativeIndex = this.magnifyDividers
+      ? Math.abs(this.magIndex - index)
+      : Math.abs(mappedMagIndex - mappedIndex);
 
     const magnification =
       relativeIndex < this.magnificationCurve.length - 1
