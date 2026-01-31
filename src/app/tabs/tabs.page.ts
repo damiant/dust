@@ -10,7 +10,7 @@ import { Network } from '@capacitor/network';
 import { App } from '@capacitor/app';
 import { environment } from 'src/environments/environment';
 import { Keyboard } from '@capacitor/keyboard';
-import { IonIcon, IonLabel, IonTabBar, IonTabButton, IonTabs, IonBadge } from '@ionic/angular/standalone';
+import { IonTabs } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { musicalNotesOutline, ellipsisVertical, mailOutline } from 'ionicons/icons';
 import { Capacitor } from '@capacitor/core';

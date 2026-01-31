@@ -217,7 +217,7 @@ export class ArtPage {
 
   private addArt(count: number) {
     const chunk = this.allArt.slice(this.vm.arts.length, this.vm.arts.length + count);
-    for (let item of chunk) {
+    for (const item of chunk) {
       this.vm.arts.push(item);
     }
   }
@@ -227,7 +227,7 @@ export class ArtPage {
     let idx = 0;
     this.vm.alphaIndex = [];
     this.vm.alphaValues = [];
-    for (let art of this.allArt) {
+    for (const art of this.allArt) {
       if (art.name.charAt(0) != lastChar) {
         lastChar = art.name.charAt(0);
         this.vm.alphaIndex.push(idx);

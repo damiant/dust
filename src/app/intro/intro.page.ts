@@ -232,7 +232,7 @@ export class IntroPage {
           console.error(`${preview} not found in [${all.map((c) => c.name).join(',')}]`);
           return;
         }
-        let p: Dataset = JSON.parse(JSON.stringify(found));
+        const p: Dataset = JSON.parse(JSON.stringify(found));
         this.settingsService.settings.dataset = p;
         this.settingsService.settings.datasetId = p.id;
         this.settingsService.settings.eventTitle = p.title;
@@ -430,7 +430,7 @@ export class IntroPage {
       }
       if (!this.vm.selected) return;
       this.db.selectedDataset.set(this.vm.selected);
-      let showYear = `${new Date().getFullYear()}` !== this.vm.selected.year && this.vm.selected.year !== '0000';
+      const showYear = `${new Date().getFullYear()}` !== this.vm.selected.year && this.vm.selected.year !== '0000';
       const title = showYear ? this.vm.selected.year : '';
       this.db.selectedYear.set(title);
       const hasOffline = this.settingsService.isOffline(this.settingsService.settings.datasetId);

@@ -208,7 +208,7 @@ export class RslPage {
   private addEvents(count: number) {
     const items = this.allEvents.slice(this.vm.events.length, this.vm.events.length + count);
     let hidingImage: string | undefined;
-    for (let item of items) {
+    for (const item of items) {
       if (hidingImage == item.imageUrl) {
         item.imageUrl = undefined; // This ensures that 2 events with the same image do not appear
       }

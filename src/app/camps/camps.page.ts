@@ -180,7 +180,7 @@ export class CampsPage {
     let idx = 0;
     this.vm.alphaIndex = [];
     this.vm.alphaValues = [];
-    for (let camp of this.vm.camps) {
+    for (const camp of this.vm.camps) {
       if (camp.name.charAt(0) != lastChar) {
         lastChar = camp.name.charAt(0);
         this.vm.alphaIndex.push(idx);

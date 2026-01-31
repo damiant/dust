@@ -166,7 +166,7 @@ export class EventPage implements OnInit, OnDestroy {
 
   private async init(eventId: string | null) {
     try {
-      let tmp = eventId?.split('+');
+      const tmp = eventId?.split('+');
 
       if (!tmp) throw new Error('Route error');
       const id = tmp[0];

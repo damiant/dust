@@ -213,7 +213,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private async fixGPSAndUpdate() {
     this.selectedPoint = undefined;
     let foundPoints = 0;
-    for (let point of this._points) {
+    for (const point of this._points) {
       if (!point.gps) {
         point.gps = await this.geo.getMapPointToGPS(point);
       }
@@ -412,7 +412,7 @@ export class MapComponent implements OnInit, OnDestroy {
       const pin = mapPointToPin(point, defaultMapRadius);
 
       if (pin) {
-        let label = point.info?.label ?? '^';
+        const label = point.info?.label ?? '^';
         let sameList = sameLocation[`${pin.x}+${pin.y}`];
         if (sameList) {
           sameList.push(map.pins.length);
@@ -522,7 +522,7 @@ export class MapComponent implements OnInit, OnDestroy {
     let name = 'Closest point';
     let idx = 0;
     let loggedError = false;
-    for (let point of this.selectedPoint ? [this.selectedPoint] : this._points) {
+    for (const point of this.selectedPoint ? [this.selectedPoint] : this._points) {
       if (!point.gps || !point.gps.lat) {
         if (!environment.production && !loggedError) {
           console.log(`MapPoint is missing gps coordinate: ${JSON.stringify(point)}`);

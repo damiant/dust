@@ -69,7 +69,7 @@ export class RemindersComponent implements OnInit {
   private async applyReminders(shifts: Shift[]) {
     let id = 1000;
     const favs = await this.fav.getFavorites();
-    for (let event of favs.privateEvents) {
+    for (const event of favs.privateEvents) {
       if (parseInt(event.id) > id) {
         await this.fav.deletePrivateEvent(event);
       }
@@ -154,7 +154,7 @@ export class RemindersComponent implements OnInit {
 
   async update() {
     const favs = await this.fav.getFavorites();
-    for (let event of favs.privateEvents) {
+    for (const event of favs.privateEvents) {
       event.startDay = getDayName(event.start);
       event.startTime = this.timeString(event.start);
     }

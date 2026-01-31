@@ -26,8 +26,8 @@ export class LinkComponent {
   text = input('');
   url = input('');
   icon = computed(() => {
-    let url: string = this.url();
-    let txt: string = this.text();
+    const url: string = this.url();
+    const txt: string = this.text();
     if (url.includes('tel:') || url.includes('sms:')) {
       return 'call-outline';
     } else if (url.includes('mailto:')) {
@@ -47,8 +47,8 @@ export class LinkComponent {
   });
 
   type = computed(() => {
-    let txt: string = this.text();
-    let url: string = this.url();
+    const txt: string = this.text();
+    const url: string = this.url();
     if (
       url &&
       (url.endsWith('.jpeg') ||
@@ -66,7 +66,7 @@ export class LinkComponent {
   });
 
   html = computed(() => {
-    let txt: string = this.text();
+    const txt: string = this.text();
 
     return this.removeTagsExceptAllowed(txt, [
       'b',

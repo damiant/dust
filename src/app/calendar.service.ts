@@ -69,13 +69,13 @@ export class CalendarService {
 
   changeTimeZone(date: Date, timeZone: string) {
     // suppose the date is 12:00 UTC
-    var d = new Date(
+    const d = new Date(
       date.toLocaleString('en-US', {
         timeZone,
       }),
     );
 
-    var diff = -(date.getTime() - d.getTime());
+    const diff = -(date.getTime() - d.getTime());
 
     return new Date(date.getTime() - diff); // needs to subtract
   }

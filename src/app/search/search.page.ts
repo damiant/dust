@@ -158,7 +158,7 @@ export class SearchPage {
   private asSearchItems(items: any[], linkName: string, icon: string, gps: GpsCoord | undefined): SearchItem[] {
     const r: SearchItem[] = [];
     for (const item of items) {
-      let title = item.name ?? item.title;
+      const title = item.name ?? item.title;
       const dist = this.dist(gps, item.gpsCoords ?? item.gpsCoord);
       r.push({ title, icon, link: `/${linkName}/${item.uid}+Search`, dist });
     }

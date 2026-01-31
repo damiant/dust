@@ -18,7 +18,7 @@ export class LinkService {
   }
 
   private async group(links: Link[]): Promise<Group[]> {
-    let groups: Group[] = [];
+    const groups: Group[] = [];
     let group: Group = { id: 1, links: [] };
     for (const link of links) {
       if (link.title.startsWith('#')) {

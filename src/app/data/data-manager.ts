@@ -257,7 +257,7 @@ export class DataManager implements WorkerClass {
       event.old = true;
       event.happening = false;
       try {
-        for (let occurrence of event.occurrence_set) {
+        for (const occurrence of event.occurrence_set) {
           // This makes all events happen today
           // let start: Date = new Date(occurrence.start_time);
           // let end: Date = new Date(occurrence.end_time);
@@ -297,7 +297,7 @@ export class DataManager implements WorkerClass {
     const points: Point[] = [];
     if (this.georeferences.length < 3 && this.pins.length > 0) {
       // We can get GPS points from pins (eg SNRG)
-      for (let pin of this.pins) {
+      for (const pin of this.pins) {
         if (points.length < 3 && pin.label.toLowerCase() == 'gps' && hasValue(pin.gpsLat) && hasValue(pin.gpsLng)) {
           gpsCoords.push({ lng: pin.gpsLng!, lat: pin.gpsLat! });
           points.push({ x: pin.x, y: pin.y });
@@ -306,7 +306,7 @@ export class DataManager implements WorkerClass {
     } else {
       // Or from geo.json file (eg Burning Man)
       if (this.georeferences.length > 0) {
-        for (let ref of [this.georeferences[0], this.georeferences[1], this.georeferences[2]]) {
+        for (const ref of [this.georeferences[0], this.georeferences[1], this.georeferences[2]]) {
           if (ref.coordinates && ref.coordinates.length > 0) {
             gpsCoords.push({ lng: ref.coordinates[0], lat: ref.coordinates[1] });
             const mp: MapPoint = { clock: ref.clock, street: ref.street };
@@ -338,7 +338,7 @@ export class DataManager implements WorkerClass {
   }
 
   private setMapPointsGPS(mapPoints: MapPoint[]): MapPoint[] {
-    for (let mapPoint of mapPoints) {
+    for (const mapPoint of mapPoints) {
       const pin = mapPointToPoint(mapPoint, defaultMapRadius);
       if (!isNaN(pin.x)) {
         mapPoint.gps = mapToGps(pin);
@@ -361,15 +361,15 @@ export class DataManager implements WorkerClass {
     this.allEventsOld = false;
     this.initGeoLocation();
 
-    let campCache = new Map<string, Camp>();
-    let pinIndex: any = {};
-    let artIndex: any = {};
-    let artGPS: any = {};
-    let artLocationNames: any = {};
+    const campCache = new Map<string, Camp>();
+    const pinIndex: any = {};
+    const artIndex: any = {};
+    const artGPS: any = {};
+    const artLocationNames: any = {};
     this.campTypes = new Set<string>();
     this.artTypes = new Set<string>();
 
-    for (let camp of this.camps) {
+    for (const camp of this.camps) {
       const pin = this.locateCamp(camp);
 
       if (camp.camp_type && camp.camp_type.trim() != '') {
@@ -408,7 +408,7 @@ export class DataManager implements WorkerClass {
       campCache.set(camp.uid, camp);
     }
 
-    for (let art of this.art) {
+    for (const art of this.art) {
       artIndex[art.uid] = art.name;
       artLocationNames[art.uid] = art.location_string;
       if (art.art_type && art.art_type.trim() != '') {
@@ -451,7 +451,7 @@ export class DataManager implements WorkerClass {
 
     this.allEventsOld = !this.checkEvents();
 
-    for (let event of this.events) {
+    for (const event of this.events) {
       let allLong = true;
       for (let label of event.event_type.label.split(',')) {
         label = label.trim();
@@ -530,8 +530,8 @@ export class DataManager implements WorkerClass {
         this.consoleError(`no location ${JSON.stringify(event)}`);
       }
 
-      for (let [i, occurrence] of event.occurrence_set.entries()) {
-        let start: Date = new Date(occurrence.start_time);
+      for (const [i, occurrence] of event.occurrence_set.entries()) {
+        const start: Date = new Date(occurrence.start_time);
         let end: Date = new Date(occurrence.end_time);
         this.addDay(start);
 
@@ -636,7 +636,7 @@ export class DataManager implements WorkerClass {
 
   public getEventList(ids: string[]): Event[] {
     const result: Event[] = [];
-    for (let event of this.events) {
+    for (const event of this.events) {
       if (ids.includes(event.uid)) {
         result.push(event);
       }
@@ -652,7 +652,7 @@ export class DataManager implements WorkerClass {
 
   public getCampList(ids: string[]): Camp[] {
     const result: Camp[] = [];
-    for (let camp of this.camps) {
+    for (const camp of this.camps) {
       if (ids.includes(camp.uid)) {
         result.push(camp);
       }
@@ -663,7 +663,7 @@ export class DataManager implements WorkerClass {
 
   public getArtList(ids: string[]): Art[] {
     const result: Art[] = [];
-    for (let art of this.art) {
+    for (const art of this.art) {
       if (ids.includes(art.uid)) {
         result.push(art);
       }
@@ -684,7 +684,7 @@ export class DataManager implements WorkerClass {
   }
 
   public findEvent(uid: string): Event | undefined {
-    for (let event of this.events) {
+    for (const event of this.events) {
       if (event.uid == uid) {
         return event;
       }
@@ -693,7 +693,7 @@ export class DataManager implements WorkerClass {
   }
 
   public findCamp(uid: string): Camp | undefined {
-    for (let camp of this.camps) {
+    for (const camp of this.camps) {
       if (camp.uid == uid) {
         return camp;
       }
@@ -702,12 +702,12 @@ export class DataManager implements WorkerClass {
   }
 
   public findArt(uid: string): Art | undefined {
-    for (let art of this.art) {
+    for (const art of this.art) {
       if (art.uid == uid) {
         if (!art.images) {
           art.images = [];
         }
-        for (let image of art.images) {
+        for (const image of art.images) {
           image.ready = false;
         }
         return art;
@@ -729,7 +729,7 @@ export class DataManager implements WorkerClass {
     const found = events.map((e) => e.day).filter(unique);
     const days = this.getDays(Names.rsl);
     const result: Day[] = [];
-    for (let day of days) {
+    for (const day of days) {
       const d = new Date(day.date);
       if (found.includes(this.toRSLDateFormat(d))) {
         result.push(day);
@@ -759,7 +759,7 @@ export class DataManager implements WorkerClass {
       const fDay = day && !sameDay(day, noDate()) ? this.toRSLDateFormat(day) : undefined;
       const today = this.now(this.timezone);
       const campPins: any = {};
-      for (let event of events) {
+      for (const event of events) {
         // Place RSL Events at the camp pin
         if (event.campId) {
           const pin = campPins[event.campId];
@@ -783,7 +783,7 @@ export class DataManager implements WorkerClass {
 
         if (match) {
           let allOld = true;
-          for (let occurrence of event.occurrences) {
+          for (const occurrence of event.occurrences) {
             occurrence.old = new Date(occurrence.endTime).getTime() - today.getTime() < 0;
             if (!occurrence.old) {
               allOld = false;
@@ -869,7 +869,7 @@ export class DataManager implements WorkerClass {
     if (event.artCar && removeDiacritics(event.artCar.toLowerCase()).includes(query)) return true;
     if (event.title && removeDiacritics(event.title.toLowerCase()).includes(query)) return true;
     if (removeDiacritics(event.location.toLowerCase()).includes(query)) return true;
-    for (let occurrence of event.occurrences) {
+    for (const occurrence of event.occurrences) {
       if (removeDiacritics(occurrence.who.toLowerCase()).includes(query)) {
         event.occurrences = event.occurrences.filter((o) => removeDiacritics(o.who.toLowerCase()).includes(query));
         return true;
@@ -977,13 +977,13 @@ export class DataManager implements WorkerClass {
         getFn: this.normalizingGetFn.bind(this),
       });
       const found = fuse.search(query, { limit: top ? top : 10 });
-      for (let c of found) {
+      for (const c of found) {
         result.push(c.item);
       }
       return result;
     }
 
-    for (let event of this.events) {
+    for (const event of this.events) {
       const match = this.eventContains(query, event, allDay);
       if (match != 'No Match' && this.eventIsCategory(category, event)) {
         const occurrences = this.onDayList(day, event, timeRange, showPast);
@@ -991,7 +991,7 @@ export class DataManager implements WorkerClass {
 
         let first = true;
         for (const timeString of timeStrings) {
-          let e = first ? event : JSON.parse(JSON.stringify(event));
+          const e = first ? event : JSON.parse(JSON.stringify(event));
           first = false;
           e.start = timeString.start;
           e.all_day = this.hoursBetween(timeString.start, timeString.end) > 6;
@@ -1020,9 +1020,9 @@ export class DataManager implements WorkerClass {
 
   private sortEvents(events: Event[], top?: number) {
     events.sort((a: Event, b: Event) => {
-      if (!!a.all_day) {
+      if (a.all_day) {
         return 99999; // All day events go to the bottom
-      } else if (!!b.all_day) {
+      } else if (b.all_day) {
         return -99999;
       }
       return a.start.getTime() - b.start.getTime();
@@ -1082,7 +1082,7 @@ export class DataManager implements WorkerClass {
   public getCampEvents(campId: string): Event[] {
     const result: Event[] = [];
 
-    for (let event of this.events) {
+    for (const event of this.events) {
       if (event.hosted_by_camp == campId) {
         result.push(event);
       }
@@ -1094,7 +1094,7 @@ export class DataManager implements WorkerClass {
   public getArtEvents(artId: string): Event[] {
     const result: Event[] = [];
 
-    for (let event of this.events) {
+    for (const event of this.events) {
       if (event.located_at_art == artId) {
         result.push(event);
       }
@@ -1114,12 +1114,12 @@ export class DataManager implements WorkerClass {
         getFn: this.normalizingGetFn.bind(this),
       });
       const found = fuse.search(query, { limit: top ? top : 10 });
-      for (let c of found) {
+      for (const c of found) {
         result.push(c.item);
       }
       return result;
     }
-    for (let camp of this.camps) {
+    for (const camp of this.camps) {
       if (coords) {
         camp.distance = distance(coords, camp.gpsCoord);
         camp.distanceInfo = formatDistance(camp.distance);
@@ -1180,12 +1180,12 @@ export class DataManager implements WorkerClass {
         getFn: this.normalizingGetFn.bind(this),
       });
       const found = fuse.search(query, { limit: top ? top : 10 });
-      for (let c of found) {
+      for (const c of found) {
         result.push(c.item);
       }
       return result;
     }
-    for (let art of this.art) {
+    for (const art of this.art) {
       if (coords) {
         art.distance = distance(coords, art.gpsCoords);
         art.distanceInfo = formatDistance(art.distance);
@@ -1247,7 +1247,7 @@ export class DataManager implements WorkerClass {
 
   private getTimeStrings(day: Date | undefined, occurrences: OccurrenceSet[]): TimeString[] {
     const result: TimeString[] = [];
-    for (let occurrence of occurrences) {
+    for (const occurrence of occurrences) {
       const res = this.getOccurrenceTimeStringCached(
         new Date(occurrence.start_time),
         new Date(occurrence.end_time),
@@ -1283,7 +1283,7 @@ export class DataManager implements WorkerClass {
   public getDays(name: Names): Day[] {
     const result: Day[] = [];
     const days = name == Names.rsl ? this.rslDays : this.days.values();
-    for (let day of days) {
+    for (const day of days) {
       const date = new Date(day);
       result.push({ name: getDayNameFromDate(date).substring(0, 3), dayName: date.getDate().toString(), date });
     }
@@ -1316,7 +1316,7 @@ export class DataManager implements WorkerClass {
 
   private onDay(day: Date | undefined, event: Event, timeRange: TimeRange | undefined, showPast: boolean): boolean {
     if (!day && !timeRange) return true;
-    for (let occurrence of event.occurrence_set) {
+    for (const occurrence of event.occurrence_set) {
       const start = new Date(occurrence.start_time);
       const end = new Date(occurrence.end_time);
 
@@ -1351,7 +1351,7 @@ export class DataManager implements WorkerClass {
   ): OccurrenceSet[] {
     if (!day && !timeRange) return event.occurrence_set;
     const result: OccurrenceSet[] = [];
-    for (let occurrence of event.occurrence_set) {
+    for (const occurrence of event.occurrence_set) {
       const start = new Date(occurrence.start_time);
       const end = new Date(occurrence.end_time);
 
@@ -1419,7 +1419,7 @@ export class DataManager implements WorkerClass {
       const result: MapSet = { title: data.title, description: data.description, points: [] };
 
       if (!data.points) return result;
-      for (let gps of data.points) {
+      for (const gps of data.points) {
         const point = gpsToMap(gps);
         const mapPoint: MapPoint = {
           street: '',
@@ -1507,7 +1507,7 @@ export class DataManager implements WorkerClass {
     try {
       const def: MapSet = { title: '', description: '', points: [] };
       const mapSet: MapSet = await this.read(this.getId(name as any), def);
-      for (let point of mapSet.points) {
+      for (const point of mapSet.points) {
         point.gps = this.getMapPointGPS(point);
       }
       return mapSet;
@@ -1520,7 +1520,7 @@ export class DataManager implements WorkerClass {
     try {
       const pins: PlacedPin[] = await this.read(this.getId(Names.pins), []);
       const mapSet: MapSet = { title: pinType, description: '', points: [] };
-      for (let pin of pins) {
+      for (const pin of pins) {
         const mp: MapPoint = { x: pin.x, y: pin.y, street: '', clock: '' };
         mp.gps = this.getMapPointGPS(mp);
         // Pins with just GPS need this (eg imported from KML)

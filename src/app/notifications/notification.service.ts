@@ -46,7 +46,7 @@ export class NotificationService {
     let count = 0;
     let last;
     let message = '';
-    for (let occurrence of occurrence_set) {
+    for (const occurrence of occurrence_set) {
       try {
         let isValid = true;
         if (!this.sameDate(selectedDay, noDate())) {
@@ -76,13 +76,13 @@ export class NotificationService {
 
   private changeTimezone(date: Date, timeZone: string): Date {
     // suppose the date is 12:00 UTC
-    var invDate = new Date(
+    const invDate = new Date(
       date.toLocaleString('en-US', {
         timeZone: timeZone,
       }),
     );
 
-    var diff = date.getTime() - invDate.getTime();
+    const diff = date.getTime() - invDate.getTime();
 
     // so 12:00 in Toronto is 17:00 UTC
     return new Date(date.getTime() + diff);
@@ -91,7 +91,7 @@ export class NotificationService {
   public async unscheduleAll(eventId: string) {
     const pending = await LocalNotifications.getPending();
     const list: LocalNotificationDescriptor[] = [];
-    for (let notification of pending.notifications) {
+    for (const notification of pending.notifications) {
       if (notification.extra && notification.extra.eventId == eventId) {
         list.push({ id: notification.id });
       }

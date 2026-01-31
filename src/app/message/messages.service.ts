@@ -88,7 +88,7 @@ export class MessagesService {
   }
 
   private async getReadMessageHashes(): Promise<number[]> {
-    let read = await this.settings.get(this.readMessagesKey);
+    const read = await this.settings.get(this.readMessagesKey);
     let list = [];
     if (read) {
       list = JSON.parse(read);
@@ -98,8 +98,8 @@ export class MessagesService {
 
   private async cleanup(data: RSSFeed) {
     if (!data || !data.rss || !data.rss.channel) return;
-    let list = await this.getReadMessageHashes();
-    for (let item of data.rss.channel.item) {
+    const list = await this.getReadMessageHashes();
+    for (const item of data.rss.channel.item) {
       item.avatar = data.rss.channel.image?.url;
 
       const dt = new Date(item.pubDate);
@@ -133,8 +133,8 @@ export class MessagesService {
   }
 
   private async cleanupEmail(data: Email[]) {
-    let list = await this.getReadMessageHashes();
-    for (let email of data) {
+    const list = await this.getReadMessageHashes();
+    for (const email of data) {
       email.html = replaceAll(email.html, 'width="600"', '');
       email.html = replaceAll(email.html, 'Unsubscribe</a>', '</a>');
       email.html = replaceAll(email.html, 'Subscribe</a>', '</a>');

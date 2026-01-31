@@ -453,7 +453,7 @@ export class FavsPage implements OnInit {
   private async addReminders() {
     const favs = await this.fav.getFavorites();
 
-    for (let event of favs.privateEvents) {
+    for (const event of favs.privateEvents) {
       const e = new Date(event.start);
       const offset = getTimeZoneOffsetHours(this.db.getTimeZone());
       e.setUTCMinutes(e.getUTCMinutes() + 60);

@@ -151,11 +151,11 @@ export function distance(g1: GpsCoord, g2: GpsCoord) {
   if (g1.lat == g2.lat && g1.lng == g2.lng) {
     return 0;
   } else {
-    var radlat1 = (Math.PI * g1.lat) / 180;
-    var radlat2 = (Math.PI * g2.lat) / 180;
-    var theta = g1.lng - g2.lng;
-    var radtheta = (Math.PI * theta) / 180;
-    var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+    const radlat1 = (Math.PI * g1.lat) / 180;
+    const radlat2 = (Math.PI * g2.lat) / 180;
+    const theta = g1.lng - g2.lng;
+    const radtheta = (Math.PI * theta) / 180;
+    let dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
     if (dist > 1) {
       dist = 1;
     }
