@@ -1,0 +1,23 @@
+<div class="contain">
+    <div class="bar">
+        @for (tab of tabs(); track tab.id) {
+        <div class="tab-item" [class.selected]="selected() === tab.id" (click)="select(tab.id)">
+            @if (tab.badge && tab.badge > 0) {
+            <ion-badge mode="ios">{{ tab.badge }}</ion-badge>
+            }
+            @if (tab.iconName) {
+            <ion-icon [name]="tab.iconName" aria-hidden="true"></ion-icon>
+            }
+            @if (tab.iconSrc) {
+            <ion-icon [src]="tab.iconSrc" aria-hidden="true"></ion-icon>
+            }
+            <!-- Optional: Show label only when selected or always? BarComponent shows text. 
+             The user wants it similar to BarComponent which has text.
+             However, tabs usually have icons. The request says "similar to the bar component".
+             BarComponent has text pills. Tabs usually have icons.
+             Let's assume we want icons for tabs as per existing tabs, but styled like the bar.
+        -->
+        </div>
+        }
+    </div>
+</div>

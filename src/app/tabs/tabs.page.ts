@@ -22,11 +22,13 @@ import { TextZoom } from '@capacitor/text-zoom';
 import { BurnPlannerService } from '../data/burn-planner.service';
 import { GeoService } from '../geolocation/geo.service';
 
+import { Tab, TabBarComponent } from '../tab-bar/tab-bar.component';
+
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss'],
-  imports: [IonBadge, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel],
+  imports: [IonTabs, TabBarComponent],
 })
 export class TabsPage implements OnInit {
   public db = inject(DbService);
@@ -39,11 +41,35 @@ export class TabsPage implements OnInit {
   private burnPlanner = inject(BurnPlannerService);
   private router = inject(Router);
   private geo = inject(GeoService);
+  public hasEvents = computed(() => this.db.eventCount() > 0);
+  public tabData = computed<Tab[]>(() => {
+    const tabs: Tab[] = [
+      { id: 'profile', iconSrc: 'assets/icon/home.svg', label: 'Home' },
+    ];
+    if (this.hasEvents()) {
+      tabs.push({ id: 'events', iconSrc: 'assets/icon/calendar.svg', label: 'Events' });
+    }
+    tabs.push({ id: 'camps', iconSrc: 'assets/icon/camp.svg', label: 'Camps' });
+    if (!this.db.featuresHidden().includes('art')) {
+      tabs.push({ id: 'art', iconSrc: 'assets/icon/art.svg', label: 'Art' });
+    }
+    if (!this.db.featuresHidden().includes('rsl')) {
+      tabs.push({ id: 'rsl', iconName: 'musical-notes-outline', label: 'Music' });
+    }
+    if (this.hasEvents()) {
+      tabs.push({ id: 'favs', iconSrc: 'assets/icon/star.svg', label: 'Favorites', badge: this.favs.newFavs() });
+    }
+    if (!this.db.featuresHidden().includes('messages')) {
+      tabs.push({ id: 'messages', iconName: 'mail-outline', label: 'Messages' });
+    }
+    return tabs;
+  });
+
   ready = false;
   currentTab: string | undefined;
   private activeTab?: HTMLElement;
   public environmentInjector = inject(EnvironmentInjector);
-  public hasEvents = computed(() => this.db.eventCount() > 0);
+  // removed duplicate hasEvents
   constructor() {
     addIcons({ mailOutline, musicalNotesOutline, ellipsisVertical });
     effect(() => {
@@ -183,9 +209,10 @@ export class TabsPage implements OnInit {
   }
 
   select(tab: string) {
-    this._change.markForCheck();
     if (tab == this.currentTab) {
       this.ui.setTab(tab);
+    } else {
+      this.router.navigateByUrl(`/tabs/${tab}`);
     }
   }
 }

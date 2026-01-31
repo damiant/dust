@@ -1,0 +1,51 @@
+.bar {
+  background-color: black;
+  display: flex;
+  border-radius: 10rem;
+  justify-content: center;
+  padding: 0.5rem;
+  pointer-events: auto; /* Ensure clicks work since we might float it */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.tab-item {
+  margin: 0 0.2rem;
+  padding: 0.8rem;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s, color 0.2s;
+  position: relative;
+  
+  ion-icon {
+    font-size: 1.5rem;
+  }
+
+  &.selected {
+    background-color: white;
+    color: black;
+  }
+}
+
+ion-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 0.6rem;
+    --padding-start: 0.3em;
+    --padding-end: 0.3em;
+}
+
+.contain {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  position: fixed;
+  bottom: 2rem; /* Float above bottom */
+  left: 0;
+  z-index: 999;
+  pointer-events: none; /* Let clicks pass through the container to content below */
+  padding-bottom: var(--safe-area-inset-bottom);
+}
