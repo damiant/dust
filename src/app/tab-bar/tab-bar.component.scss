@@ -7,6 +7,20 @@
   pointer-events: auto;
   /* Ensure clicks work since we might float it */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.indicator {
+  position: absolute;
+  background-color: white;
+  border-radius: 10rem;
+  transition:
+    left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    top 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.1s;
+  z-index: 0;
 }
 
 .tab-item {
@@ -18,8 +32,8 @@
   align-items: center;
   justify-content: center;
   transition:
-    background-color 0.2s,
-    color 0.2s;
+    background-color 0.3s,
+    color 0.3s;
   position: relative;
 
   ion-icon {
@@ -27,9 +41,10 @@
   }
 
   &.selected {
-    background-color: white;
     color: black;
   }
+
+  z-index: 1;
 }
 
 ion-badge {
@@ -52,4 +67,8 @@ ion-badge {
   pointer-events: none;
   /* Let clicks pass through the container to content below */
   padding-bottom: var(--safe-area-inset-bottom);
+
+  @media (min-width: 768px) {
+    bottom: 2rem;
+  }
 }

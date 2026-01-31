@@ -243,7 +243,7 @@ cdk-virtual-scroll-viewport {
 .virtual-scroll-container {
   width: 100%;
   max-width: 100%;
-  height: calc(100% - 60px - env(safe-area-inset-bottom));
+  height: 100%;
 }
 
 @keyframes pulse {
@@ -295,6 +295,7 @@ cdk-virtual-scroll-viewport {
 }
 
 @media screen and (min-width: 1024px) {
+
   ion-card-title,
   ion-card-subtitle {
     width: 60vw;
@@ -346,6 +347,7 @@ cdk-virtual-scroll-viewport {
 }
 
 @media print {
+
   ion-header,
   ion-backdrop,
   .tabbar,
@@ -367,9 +369,9 @@ cdk-virtual-scroll-viewport {
   ion-modal,
   ion-modal .modal-wrapper,
   ion-modal .ion-page,
-  ion-modal .ion-page > ion-content,
+  ion-modal .ion-page>ion-content,
   .ion-page,
-  .ion-page > ion-content,
+  .ion-page>ion-content,
   ion-split-pane,
   ion-tab,
   ion-tabs,
@@ -488,6 +490,7 @@ cdk-virtual-scroll-viewport {
   0% {
     left: -100%;
   }
+
   100% {
     left: 100%;
   }
