@@ -126,14 +126,20 @@ export class GeoService {
       }, 3000);
       return this.gpsPosition(); // Return a fake location
     }
-    Geolocation.getCurrentPosition({ enableHighAccuracy: true }).then((position) => {
-      this.gpsBusy.set(false);
-      let gps = { lat: position.coords.latitude, lng: position.coords.longitude };
-      gps = this.db.offsetGPS(gps);
-      this.lastGpsUpdate = new Date();
-      this.gpsPosition.set(timeStampGPS(gps));
-      this.hasPermission = true;
-    });
+    Geolocation.getCurrentPosition({ enableHighAccuracy: true, timeout: 20000 })
+      .then((position) => {
+        this.gpsBusy.set(false);
+        let gps = { lat: position.coords.latitude, lng: position.coords.longitude };
+        gps = this.db.offsetGPS(gps);
+        this.lastGpsUpdate = new Date();
+        this.gpsPosition.set(timeStampGPS(gps));
+        this.hasPermission = true;
+      })
+      .catch((err) => {
+        this.gpsBusy.set(false);
+        console.warn('Failed to obtain GPS position:', err?.message);
+        // Return last known position or NoGPSCoord if none exists
+      });
     return this.gpsPosition();
   }
 

@@ -1,5 +1,5 @@
 PODS:
-  - Capacitor (8.0.0):
+  - Capacitor (8.0.1):
     - CapacitorCordova
   - CapacitorApp (8.0.0):
     - Capacitor
@@ -11,7 +11,7 @@ PODS:
     - Capacitor
   - CapacitorCommunityKeepAwake (8.0.0):
     - Capacitor
-  - CapacitorCordova (8.0.0)
+  - CapacitorCordova (8.0.1)
   - CapacitorFilesystem (8.0.0):
     - Capacitor
     - IONFilesystemLib (~> 1.0.1)
@@ -44,7 +44,7 @@ PODS:
     - Capacitor
   - CapawesomeCapacitorAppUpdate (8.0.1):
     - Capacitor
-  - CordovaPlugins (8.0.0):
+  - CordovaPlugins (8.0.1):
     - CapacitorCordova
   - FirebaseCore (12.7.0):
     - FirebaseCoreInternal (~> 12.7.0)
@@ -213,13 +213,13 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@webnativellc/capacitor-print-webview"
 
 SPEC CHECKSUMS:
-  Capacitor: 341ff7cf652ec695d1a8ebf604db448ac7b6d635
+  Capacitor: ff35b0f66370b84aa238251b35b91886a3207c16
   CapacitorApp: 3963a84197280757b84f126afd1520a85ae3b092
   CapacitorAppLauncher: 7f2330aa2d8a72a4767ab05af9df4bf68166ebf0
   CapacitorBrowser: b7d7f05f840fe042e46f6528bb8db853e3058fb2
   CapacitorCommunityInAppReview: 4492bdd34aad4d27ed87949376022cc93b294ea1
   CapacitorCommunityKeepAwake: 332bf035bbdf0b1c244fd492b35a8a06c8802111
-  CapacitorCordova: 5dc3912d25ef770a3fe0f431bb65c9fbfa2e92f9
+  CapacitorCordova: 0d65b9bb74e995dcecb9463f34f1af2aba6f955c
   CapacitorFilesystem: 2cb7c29536024668f333266a2177f8c10bbd9c98
   CapacitorGeolocation: 8a405e707de9aff6ac9eca7f408966a370f7ca33
   CapacitorHaptics: 2079d9fa04c5a71e18663b4722323c304c58245c
@@ -235,7 +235,7 @@ SPEC CHECKSUMS:
   CapacitorStatusBar: 312e2e67928dfe9514c4a8916a1fd610552f5f35
   CapacitorTextZoom: bceaf076f134e188f8fd36ff74ef18a7d2bdb160
   CapawesomeCapacitorAppUpdate: b51cf29f28f664ef942feb12a76116d87eee62f0
-  CordovaPlugins: 65a39a81f3f9e7e12bcb0f3ece87d6be2ba107c7
+  CordovaPlugins: 2ff4e20cbb0a1b81fed8356ab796bbb78ad0f25c
   FirebaseCore: c7b57863ce0859281a66d16ca36d665c45d332b5
   FirebaseCoreInternal: 571a2dd8c975410966199623351db3a3265c874d
   FirebaseInstallations: 6d05424a046b68ca146b4de4376f05b4e9262fc3

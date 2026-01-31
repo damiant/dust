@@ -1,4 +1,8 @@
 ## Changes
+## 2.117
+
+- Fix for geolocation to give more time to get a GPS position
+
 ## 2.114
 
 - Fix for the map display - open GL deallocation fix to ensure the map shows again
