@@ -64,8 +64,8 @@ import { ScrollResult } from '../map/map-model';
     IonText,
     IonModal,
     IonPopover,
-    CachedImgComponent
-],
+    CachedImgComponent,
+  ],
 })
 export class CampPage implements OnInit {
   private route = inject(ActivatedRoute);

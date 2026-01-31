@@ -5,7 +5,7 @@
   justify-content: center;
   padding: 0.5rem;
   pointer-events: auto; /* Ensure clicks work since we might float it */
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .tab-item {
@@ -16,9 +16,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.2s, color 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
   position: relative;
-  
+
   ion-icon {
     font-size: 1.5rem;
   }
@@ -30,12 +32,12 @@
 }
 
 ion-badge {
-    position: absolute;
-    top: 0;
-    right: 0;
-    font-size: 0.6rem;
-    --padding-start: 0.3em;
-    --padding-end: 0.3em;
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 0.6rem;
+  --padding-start: 0.3em;
+  --padding-end: 0.3em;
 }
 
 .contain {

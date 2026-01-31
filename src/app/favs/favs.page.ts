@@ -122,8 +122,8 @@ function initialState(): FavsState {
     ArtComponent,
     CategoryComponent,
     SearchComponent,
-    MessageComponent
-],
+    MessageComponent,
+  ],
 })
 export class FavsPage implements OnInit {
   private fav = inject(FavoritesService);

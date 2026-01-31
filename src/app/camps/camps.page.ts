@@ -86,8 +86,8 @@ function initialState(): CampsState {
     SearchComponent,
     CategoryComponent,
     AlphabeticalScrollBarComponent,
-    SortComponent
-],
+    SortComponent,
+  ],
 })
 export class CampsPage {
   public db = inject(DbService);

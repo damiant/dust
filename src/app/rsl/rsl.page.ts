@@ -92,8 +92,8 @@ function initialState(): RSLState {
     SortComponent,
     SearchComponent,
     MapModalComponent,
-    SkeletonEventComponent
-],
+    SkeletonEventComponent,
+  ],
 })
 export class RslPage {
   private ui = inject(UiService);

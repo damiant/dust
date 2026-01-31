@@ -59,8 +59,8 @@ interface SearchState {
     IonNote,
     SearchComponent,
     RouterModule,
-    FormsModule
-],
+    FormsModule,
+  ],
 })
 export class SearchPage {
   public vm: SearchState = { items: [], busy: false, gps: undefined };

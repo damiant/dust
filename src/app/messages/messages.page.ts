@@ -35,8 +35,8 @@ import { UiService } from '../ui/ui.service';
     MessageCardComponent,
     EmailCardComponent,
     IonToolbar,
-    FormsModule
-],
+    FormsModule,
+  ],
 })
 export class MessagesPage implements OnInit {
   private settings = inject(SettingsService);

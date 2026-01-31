@@ -63,8 +63,8 @@ import { SettingsService } from '../data/settings.service';
     IonBackButton,
     IonText,
     IonIcon,
-    SearchComponent
-],
+    SearchComponent,
+  ],
 })
 export class PinMapPage {
   private db = inject(DbService);
@@ -310,8 +310,6 @@ export class PinMapPage {
 
     return '^';
   }
-
-
 
   public async clearThing() {
     await this.favs.clearThing(this.thingName());

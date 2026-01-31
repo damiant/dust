@@ -1,10 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import {
-  daysHighlighted,
-  getTimeInTimeZone,
-  toDate,
-  getTimeZoneOffsetHours,
-} from './date-utils';
+import { daysHighlighted, getTimeInTimeZone, toDate, getTimeZoneOffsetHours } from './date-utils';
 
 describe('date-utils', () => {
   describe('toDate', () => {
@@ -92,7 +87,7 @@ describe('date-utils', () => {
       // Aug 28, 2024, 2:30 PM UTC = Aug 28, 2024, 7:30 AM PDT (UTC-7)
       const epoch = new Date('2024-08-28T14:30:00Z').getTime();
       const result = getTimeInTimeZone(epoch, 'America/Los_Angeles');
-      
+
       expect(result).toBeDefined();
       expect(typeof result).toBe('string');
       expect(result).toContain('2024-08-28');
@@ -107,7 +102,7 @@ describe('date-utils', () => {
       // Baseline: UTC time should match input
       const epoch = new Date('2024-08-28T14:30:00Z').getTime();
       const result = getTimeInTimeZone(epoch, 'UTC');
-      
+
       expect(result).toContain('2024-08-28');
       expect(result).toContain('14:30:00');
     });
@@ -116,11 +111,11 @@ describe('date-utils', () => {
       // Real scenario from favs.page.ts: Adding calendar reminders with timezone adjustment
       const eventStart = new Date('2024-08-30T20:00:00Z').getTime();
       const offset = getTimeZoneOffsetHours('America/Los_Angeles');
-      
+
       // This mimics the calendar reminder logic
-      const adjustedTime = eventStart + (offset * 60 * 60 * 1000);
+      const adjustedTime = eventStart + offset * 60 * 60 * 1000;
       const result = new Date(adjustedTime).toISOString();
-      
+
       expect(result).toBeDefined();
       expect(result).toContain('2024-08-30');
     });
@@ -132,14 +127,14 @@ describe('date-utils', () => {
       const start = '2024-08-25';
       const end = '2024-09-02';
       const result = daysHighlighted(start, end);
-      
+
       // 9 days total (Aug 25, 26, 27, 28, 29, 30, 31, Sept 1, 2)
       expect(result).toHaveLength(9);
       expect(result[0].date).toBe('2024-08-25');
       expect(result[8].date).toBe('2024-09-02');
-      
+
       // All should have primary color for calendar highlighting
-      result.forEach(day => {
+      result.forEach((day) => {
         expect(day.textColor).toBe('var(--ion-color-primary)');
       });
     });
@@ -149,7 +144,7 @@ describe('date-utils', () => {
       const start = '2024-06-15';
       const end = '2024-06-15';
       const result = daysHighlighted(start, end);
-      
+
       expect(result).toHaveLength(1);
       expect(result[0].date).toBe('2024-06-15');
       expect(result[0].textColor).toBe('var(--ion-color-primary)');
@@ -160,7 +155,7 @@ describe('date-utils', () => {
       const start = '2024-07-19';
       const end = '2024-07-21';
       const result = daysHighlighted(start, end);
-      
+
       expect(result).toHaveLength(3);
       expect(result[0].date).toBe('2024-07-19');
       expect(result[1].date).toBe('2024-07-20');
@@ -172,7 +167,7 @@ describe('date-utils', () => {
       const start = '2024-08-30';
       const end = '2024-09-02';
       const result = daysHighlighted(start, end);
-      
+
       expect(result).toHaveLength(4);
       expect(result[0].date).toBe('2024-08-30');
       expect(result[1].date).toBe('2024-08-31');
@@ -185,7 +180,7 @@ describe('date-utils', () => {
       const start = '2024-12-30';
       const end = '2025-01-02';
       const result = daysHighlighted(start, end);
-      
+
       expect(result).toHaveLength(4);
       expect(result[0].date).toBe('2024-12-30');
       expect(result[3].date).toBe('2025-01-02');

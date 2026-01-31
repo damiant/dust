@@ -25,8 +25,8 @@ import { CachedImgComponent } from '../cached-img/cached-img.component';
     IonText,
     IonCardTitle,
     IonCardContent,
-    CachedImgComponent
-],
+    CachedImgComponent,
+  ],
 })
 export class CampComponent {
   camp = input.required<Camp>();

@@ -54,8 +54,8 @@ import { Capacitor } from '@capacitor/core';
     IonHeader,
     IonTitle,
     IonToolbar,
-    FormsModule
-],
+    FormsModule,
+  ],
 })
 export class BroadcastPage implements OnInit {
   public art = signal<Art | undefined>(undefined);

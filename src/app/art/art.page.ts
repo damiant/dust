@@ -83,8 +83,8 @@ function initialState(): ArtState {
     SearchComponent,
     SortComponent,
     CategoryComponent,
-    SkeletonArtComponent
-],
+    SkeletonArtComponent,
+  ],
 })
 export class ArtPage {
   public db = inject(DbService);

@@ -33,8 +33,8 @@ import { DbService } from '../data/db.service';
     IonCardSubtitle,
     IonCardContent,
     IonText,
-    CachedImgComponent
-],
+    CachedImgComponent,
+  ],
 })
 export class EventComponent {
   private router = inject(Router);

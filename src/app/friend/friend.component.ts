@@ -1,4 +1,3 @@
-
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -42,8 +41,8 @@ export enum FriendResult {
     IonToolbar,
     IonTitle,
     IonInput,
-    IonHeader
-],
+    IonHeader,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FriendComponent implements OnInit {

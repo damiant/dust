@@ -119,8 +119,8 @@ function initialState(): EventsState {
     SearchComponent,
     SortComponent,
     IonButton,
-    IonBadge
-],
+    IonBadge,
+  ],
 })
 export class EventsPage implements OnInit, OnDestroy {
   public db = inject(DbService);

@@ -1,4 +1,3 @@
-
 import { ChangeDetectorRef, Component, EnvironmentInjector, OnInit, effect, inject, computed } from '@angular/core';
 import { DbService } from '../data/db.service';
 import { NotificationService } from '../notifications/notification.service';
@@ -43,9 +42,7 @@ export class TabsPage implements OnInit {
   private geo = inject(GeoService);
   public hasEvents = computed(() => this.db.eventCount() > 0);
   public tabData = computed<Tab[]>(() => {
-    const tabs: Tab[] = [
-      { id: 'profile', iconSrc: 'assets/icon/home.svg', label: 'Home' },
-    ];
+    const tabs: Tab[] = [{ id: 'profile', iconSrc: 'assets/icon/home.svg', label: 'Home' }];
     if (this.hasEvents()) {
       tabs.push({ id: 'events', iconSrc: 'assets/icon/calendar.svg', label: 'Events' });
     }

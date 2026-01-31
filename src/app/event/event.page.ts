@@ -80,8 +80,8 @@ import { Subscription } from 'rxjs';
     IonBackButton,
     IonHeader,
     IonPopover,
-    CachedImgComponent
-],
+    CachedImgComponent,
+  ],
 })
 export class EventPage implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
