@@ -26,18 +26,29 @@
 .tab-item {
   margin: 0 0.2rem;
   padding: 0.8rem;
-  border-radius: 50%;
+  border-radius: 10rem; // Changed from 50% to 10rem to support labels
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
   transition:
     background-color 0.3s,
     color 0.3s;
   position: relative;
+  min-width: 3rem;
+  cursor: pointer;
 
   ion-icon {
     font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .label {
+    display: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: nowrap;
   }
 
   &.selected {
@@ -45,6 +56,16 @@
   }
 
   z-index: 1;
+}
+
+.bar.show-labels .tab-item .label {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .tab-item .label {
+    display: block;
+  }
 }
 
 ion-badge {

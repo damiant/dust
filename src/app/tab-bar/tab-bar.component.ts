@@ -23,10 +23,14 @@ export class TabBarComponent {
 
   tabItems = viewChildren<ElementRef>('tabItem');
 
+  showLabels = computed(() => this.tabs().length <= 3);
+
   indicatorStyle = computed(() => {
     const selectedId = this.selected();
     const tabs = this.tabs();
     const items = this.tabItems();
+    // Dependency on showLabels to trigger recalculation when layout changes
+    this.showLabels();
 
     if (!selectedId || items.length === 0) {
       return { opacity: 0 };
