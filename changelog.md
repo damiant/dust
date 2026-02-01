@@ -1,6 +1,10 @@
 ## Changes
 ## 2.117
 
+- New custom floating tab bar with modern design and sliding indicator
+- Tab bar now shows optional labels for improved navigation
+- Improved UI consistency with custom badge component across the app
+- Enhanced messages and favorites pages with better icon usage and text clarity
 - Fix for geolocation to give more time to get a GPS position
 
 ## 2.114
