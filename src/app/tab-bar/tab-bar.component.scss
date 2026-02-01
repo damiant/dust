@@ -8,6 +8,15 @@
   /* Ensure clicks work since we might float it */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   position: relative;
+  transform: translateY(50px);
+  opacity: 0;
+  transition: transform 200ms ease-in, opacity 200ms ease-in;
+
+  &.open {
+    transform: translateY(0);
+    opacity: 1;
+    transition: transform 200ms ease-out, opacity 200ms ease-out;
+  }
 }
 
 .indicator {
@@ -77,6 +86,7 @@ ion-badge {
   position: absolute;
   top: 0;
   right: 0;
+  min-width: 1rem;
   font-size: 0.6rem;
   --padding-start: 0.3em;
   --padding-end: 0.3em;

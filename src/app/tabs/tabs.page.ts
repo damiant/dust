@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EnvironmentInjector, OnInit, effect, inject, computed } from '@angular/core';
+import { ChangeDetectorRef, Component, EnvironmentInjector, OnInit, effect, inject, computed, signal } from '@angular/core';
 import { DbService } from '../data/db.service';
 import { NotificationService } from '../notifications/notification.service';
 import { Router } from '@angular/router';
@@ -41,6 +41,7 @@ export class TabsPage implements OnInit {
   private router = inject(Router);
   private geo = inject(GeoService);
   public hasEvents = computed(() => this.db.eventCount() > 0);
+  opened = signal(false);
   public tabData = computed<Tab[]>(() => {
     const tabs: Tab[] = [{ id: 'profile', iconSrc: 'assets/icon/home.svg', label: 'Home' }];
     if (this.hasEvents()) {
@@ -184,11 +185,13 @@ export class TabsPage implements OnInit {
   }
 
   ionViewWillLeave() {
+    this.opened.set(false);
     this.propagateToActiveTab('ionViewWillLeave');
   }
 
   ionViewDidLeave() {
     this.propagateToActiveTab('ionViewDidLeave');
+
   }
 
   ionViewWillEnter() {
@@ -197,6 +200,7 @@ export class TabsPage implements OnInit {
 
   ionViewDidEnter() {
     this.propagateToActiveTab('ionViewDidEnter');
+    this.opened.set(true);
   }
 
   private propagateToActiveTab(eventName: string) {

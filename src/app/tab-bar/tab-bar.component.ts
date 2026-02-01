@@ -18,6 +18,7 @@ export interface Tab {
 })
 export class TabBarComponent {
   tabs = input<Tab[]>([]);
+  opened = input(false);
   selected = model<string | undefined>(undefined);
   tabSelected = output<string>();
 
@@ -57,7 +58,7 @@ export class TabBarComponent {
       event.target.click(); // Trigger the click event
     }
   }
-  
+
   select(id: string) {
     this.selected.set(id);
     this.tabSelected.emit(id);

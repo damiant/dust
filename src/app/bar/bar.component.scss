@@ -6,6 +6,15 @@
   border-radius: 10rem;
   justify-content: center;
   padding: 0.5rem;
+  transform: translateY(50px);
+  opacity: 0;
+  transition: transform 200ms ease-in, opacity 200ms ease-in;
+
+  &.open {
+    transform: translateY(0);
+    opacity: 1;
+    transition: transform 200ms ease-out, opacity 200ms ease-out;
+  }
 }
 
 p {

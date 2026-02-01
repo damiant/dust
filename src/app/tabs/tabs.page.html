@@ -1,5 +1,5 @@
 @if (ready) {
 <ion-tabs #tabs (ionTabsDidChange)="changeTab(tabs)">
-  <app-tab-bar slot="bottom" [tabs]="tabData()" [selected]="currentTab" (tabSelected)="select($event)"></app-tab-bar>
+  <app-tab-bar slot="bottom" [tabs]="tabData()" [opened]="opened()" [selected]="currentTab" (tabSelected)="select($event)"></app-tab-bar>
 </ion-tabs>
 }

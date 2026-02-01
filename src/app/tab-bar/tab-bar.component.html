@@ -1,5 +1,5 @@
 <div class="contain">
-  <div class="bar" [class.show-labels]="showLabels()">
+  <div class="bar" [class.show-labels]="showLabels()" [class.open]="opened()">
     <div class="indicator" [ngStyle]="indicatorStyle()"></div>
     @for (tab of tabs(); track tab.id) {
     <div role="button" tabindex="0" #tabItem class="tab-item" [class.selected]="selected() === tab.id" (keydown)="handleKey($event)" (click)="select(tab.id)">
