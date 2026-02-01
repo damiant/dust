@@ -1,8 +1,8 @@
-<div #alphabetContainer class="container" [class.cursor-pointer]="!navigateOnHover">
+<div #alphabetContainer class="container" [class.cursor-pointer]="!navigateOnHover()">
   @for (letter of visibleLetters; track $index; let i = $index) {
     <div
       class="letter"
-      [class.letter-disabled]="disableInvalidLetters && !isValid(letter)"
+      [class.letter-disabled]="disableInvalidLetters() && !isValid(letter)"
       [class.letter-is-hidden-value]="letter === hiddenLetterValue"
       [ngStyle]="getLetterStyle(i)"
     >

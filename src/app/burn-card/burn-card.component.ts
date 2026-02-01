@@ -1,4 +1,4 @@
-import { Component, Input, input, output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { Dataset } from '../data/models';
 import { CommonModule } from '@angular/common';
@@ -13,7 +13,7 @@ export class BurnCardComponent {
   loaded: any = {};
   selected = input<Dataset | undefined>();
   clicked = output<Dataset>();
-  @Input() cards: Dataset[] = [];
+  readonly cards = input<Dataset[]>([]);
 
   open(card: Dataset) {
     this.clicked.emit(card);

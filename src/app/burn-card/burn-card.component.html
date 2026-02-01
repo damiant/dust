@@ -1,4 +1,4 @@
-@for (card of cards; track card.id) {
+@for (card of cards(); track card.id) {
   <div class="row" (click)="open(card)" (keyup.enter)="open(card)" tabindex="0">
     <div class="card" [ngClass]="selected()?.id === card.id ? 'select ' + selected()?.class : 'unselect'">
       <app-cached-img
