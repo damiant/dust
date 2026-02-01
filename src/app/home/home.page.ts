@@ -294,7 +294,7 @@ export class HomePage implements OnInit {
   }
 
   hasValue(v: Record<string, number>, property: string): boolean {
-    return v && v.hasOwnProperty(property) && v[property] > 0;
+    return v && Object.prototype.hasOwnProperty.call(v, property) && v[property] > 0;
   }
 
   visit(url: string) {

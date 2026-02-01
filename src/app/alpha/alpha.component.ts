@@ -411,7 +411,7 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
 
   private stringToNumber(value?: string): number {
     if (value == null) return 0;
-    const v = value.match(/[\.\d]+/);
+    const v = value.match(/[.\d]+/);
     if (!v) return 0;
     return Number(v[0]);
   }
