@@ -110,11 +110,11 @@ export class LinkComponent {
     const escapedAllowedTags = allowedTags.map(escapeTag).join('|');
 
     // Match both opening and closing tags, including their attributes
-    const disallowedTagsRegex = new RegExp(`<\/?([^>]+)(?:>)(?!<\/\\1>)`, 'gi');
+    const disallowedTagsRegex = new RegExp(`</?([^>]+)(?:>)(?!</\\1>)`, 'gi');
 
     // Escape special characters in the matched tag
     function escapeTag(tag: string) {
-      return tag.replace(/([\\\/<>+\-*!(){}.^$|\[\]])/g, '\\$&');
+      return tag.replace(/([\\\/<>+\-*!(){}.^$|\[\]])/g, '\\$&'); // eslint-disable-line no-useless-escape
     }
 
     // Replace disallowed tags with an empty string

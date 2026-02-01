@@ -72,10 +72,11 @@ export class DataManager implements WorkerClass {
   // This is required for a WorkerClass
   public async doWork(method: DataMethods, args: any[]): Promise<any> {
     switch (method) {
-      case DataMethods.ConsoleLog:
+      case DataMethods.ConsoleLog: {
         const logs = clone(this.logs);
         this.logs = [];
         return logs;
+      }
       case DataMethods.Populate:
         return await this.populate(args[0], args[1], args[2], args[3]);
       case DataMethods.GetDays:

@@ -175,7 +175,7 @@ export class EventPage implements OnInit, OnDestroy {
       this.event = await this.db.findEvent(id);
       this.mapTitle = this.event.camp;
       this.mapSubtitle = this.event.location;
-      const camp = await this.db.findCamp(this.event?.hosted_by_camp!);
+      const camp = this.event?.hosted_by_camp ? await this.db.findCamp(this.event.hosted_by_camp) : undefined;
       const mapPoint = toMapPoint(this.event.location, {
         title: this.event.title,
         location: this.event.location,
@@ -235,7 +235,7 @@ export class EventPage implements OnInit, OnDestroy {
 
   async showCamp(e: any) {
     this.popover().event = e;
-    const camp = await this.db.findCamp(this.event?.hosted_by_camp!);
+    const camp = this.event?.hosted_by_camp ? await this.db.findCamp(this.event.hosted_by_camp) : undefined;
     if (camp) {
       this.campDescription = camp.description!;
       this.campImage = camp.imageUrl;
@@ -252,7 +252,7 @@ export class EventPage implements OnInit, OnDestroy {
       this._change.detectChanges();
       return;
     }
-    const camp = await this.db.findCamp(this.event?.hosted_by_camp!);
+    const camp = this.event?.hosted_by_camp ? await this.db.findCamp(this.event.hosted_by_camp) : undefined;
     if (camp && camp.landmark) {
       this.locationInfo = `${camp.landmark}. (${camp.facing})`;
       this.isLocationInfoOpen = true;

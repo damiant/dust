@@ -19,7 +19,7 @@
     "rsl": "npx tsx scripts/rsl.ts",
     "restrooms": "npx tsx scripts/restrooms.ts",
     "precommit": "ng lint",
-    "lint": "export NODE_OPTIONS='--max-old-space-size=16384' && ng lint",
+    "lint": "ng lint",
     "prettify": "prettier \"**/*.{ts,html}\" --write",
     "format": "prettier \"src/**/*.{ts,html,css,scss,json,md}\" --write",
     "prepare": "husky",
