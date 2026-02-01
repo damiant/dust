@@ -44,7 +44,7 @@
     "@capacitor/app-launcher": "^8.0.0",
     "@capacitor/browser": "^8.0.0",
     "@capacitor/core": "8.0.2",
-    "@capacitor/filesystem": "^8.0.0",
+    "@capacitor/filesystem": "8.1.0",
     "@capacitor/geolocation": "^8.0.0",
     "@capacitor/haptics": "^8.0.0",
     "@capacitor/ios": "8.0.2",
