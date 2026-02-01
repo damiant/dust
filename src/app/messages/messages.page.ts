@@ -9,6 +9,7 @@ import {
   IonBackButton,
   IonButtons,
   IonText,
+  IonIcon,
 } from '@ionic/angular/standalone';
 import { MessagesService } from '../message/messages.service';
 import { MessageCardComponent } from './message-card.component';
@@ -19,6 +20,8 @@ import { Item } from '../message/rss-feed';
 import { delay } from '../utils/utils';
 import { DbService } from '../data/db.service';
 import { UiService } from '../ui/ui.service';
+import { addIcons } from 'ionicons';
+import { mailOpenOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-messages',
@@ -35,8 +38,9 @@ import { UiService } from '../ui/ui.service';
     MessageCardComponent,
     EmailCardComponent,
     IonToolbar,
-    FormsModule
-],
+    FormsModule,
+    IonIcon,
+  ],
 })
 export class MessagesPage implements OnInit {
   private settings = inject(SettingsService);
@@ -56,6 +60,7 @@ export class MessagesPage implements OnInit {
     return this.emails().filter((i) => !i.read).length + messages;
   });
   constructor() {
+    addIcons({ mailOpenOutline });
     effect(() => {
       this.ui.scrollUpContent('messages', this.ionContent());
     });

@@ -22,15 +22,7 @@ export type ArtImageStyle = 'top' | 'side' | 'none';
   styleUrls: ['./email-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [FadeOut(500)],
-  imports: [
-    IonButton,
-    IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonCardSubtitle,
-    IonCardContent,
-    IonText,
-],
+  imports: [IonButton, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonText],
 })
 export class EmailCardComponent {
   email = input.required<Email>();

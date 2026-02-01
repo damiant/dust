@@ -64,8 +64,8 @@ import { ScrollResult } from '../map/map-model';
     IonText,
     IonModal,
     IonPopover,
-    CachedImgComponent
-],
+    CachedImgComponent,
+  ],
 })
 export class CampPage implements OnInit {
   private route = inject(ActivatedRoute);
@@ -106,7 +106,7 @@ export class CampPage implements OnInit {
 
     const favs = await this.fav.getFavorites();
     this.fav.setFavorites(rslEvents, favs.rslEvents);
-    for (let rsl of rslEvents) {
+    for (const rsl of rslEvents) {
       rsl.camp = this.toDate(rsl.day);
     }
     this.rslEvents = rslEvents;

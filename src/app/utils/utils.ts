@@ -36,7 +36,7 @@ export function nowAtEvent(timeZone: string): Date {
   if (environment.simulatedTime) {
     return clone(environment.simulatedTime);
   }
-  let str = new Date().toLocaleString('en-US', { timeZone });
+  const str = new Date().toLocaleString('en-US', { timeZone });
   return new Date(str);
 }
 
@@ -120,7 +120,7 @@ export function uniqueId(prefix: string): string {
 }
 
 export function getDayName(dateStr: string) {
-  var date = new Date(dateStr);
+  const date = new Date(dateStr);
   return date.toLocaleDateString([], { weekday: 'long' }) + ` ${getOrdinalNum(date.getDate())}`;
 }
 
@@ -144,7 +144,7 @@ export function daysUntil(date1: any, date2: any) {
 }
 
 export function minutesBetween(date2: Date, date1: Date) {
-  var differenceValue = (date2.getTime() - date1.getTime()) / 1000;
+  let differenceValue = (date2.getTime() - date1.getTime()) / 1000;
   differenceValue /= 60;
   return Math.abs(Math.round(differenceValue));
 }
@@ -154,7 +154,7 @@ export function isAfter(date2: Date, date1: Date) {
 }
 
 export function addDays(date: Date, days: number): Date {
-  var result = new Date(date);
+  const result = new Date(date);
   result.setDate(result.getDate() + days);
   return result;
 }

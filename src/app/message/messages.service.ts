@@ -40,17 +40,21 @@ export class MessagesService {
       this.feed.set(data);
     }
     // We now always fetch from messages because notifications appear here too
-    if (inboxEmail || true) {
-      const res = await fetch(`${r2data_dust_events}${datasetId}/messages.json?${Math.random()}`, { method: 'GET' });
 
-      let emailList: Email[] = [];
-      try {
-        emailList = await res.json();
-      } catch {}
-      await this.cleanupEmail(emailList);
-      await this.db.writeData(datasetId, Names.emails, emailList);
-      this.email.set(emailList);
+
+    let emailList: Email[] = [];
+    try {
+      const res = await fetch(`${r2data_dust_events}${datasetId}/messages.json?${Math.random()}`, { method: 'GET' });
+      emailList = await res.json();
+      // eslint-disable-next-line no-empty
+    } catch {
+      return;
+      // Ignore JSON parse errors
     }
+    await this.cleanupEmail(emailList);
+    await this.db.writeData(datasetId, Names.emails, emailList);
+    this.email.set(emailList);
+
   }
 
   public async getMessages(
@@ -88,7 +92,7 @@ export class MessagesService {
   }
 
   private async getReadMessageHashes(): Promise<number[]> {
-    let read = await this.settings.get(this.readMessagesKey);
+    const read = await this.settings.get(this.readMessagesKey);
     let list = [];
     if (read) {
       list = JSON.parse(read);
@@ -98,8 +102,8 @@ export class MessagesService {
 
   private async cleanup(data: RSSFeed) {
     if (!data || !data.rss || !data.rss.channel) return;
-    let list = await this.getReadMessageHashes();
-    for (let item of data.rss.channel.item) {
+    const list = await this.getReadMessageHashes();
+    for (const item of data.rss.channel.item) {
       item.avatar = data.rss.channel.image?.url;
 
       const dt = new Date(item.pubDate);
@@ -133,8 +137,8 @@ export class MessagesService {
   }
 
   private async cleanupEmail(data: Email[]) {
-    let list = await this.getReadMessageHashes();
-    for (let email of data) {
+    const list = await this.getReadMessageHashes();
+    for (const email of data) {
       email.html = replaceAll(email.html, 'width="600"', '');
       email.html = replaceAll(email.html, 'Unsubscribe</a>', '</a>');
       email.html = replaceAll(email.html, 'Subscribe</a>', '</a>');

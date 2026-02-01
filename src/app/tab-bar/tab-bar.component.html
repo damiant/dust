@@ -1,0 +1,23 @@
+<div class="contain">
+  <div class="bar" [class.show-labels]="showLabels()" [class.open]="opened()" 
+       [style.--tab-count]="tabs().length" 
+       [style.--selected-index]="selectedIndex()">
+    <div class="indicator" [class.visible]="selectedIndex() >= 0"></div>
+    @for (tab of tabs(); track tab.id) {
+    <div role="button" tabindex="0" class="tab-item" [class.selected]="selected() === tab.id" (keydown)="handleKey($event)" (click)="select(tab.id)">
+      
+      @if (tab.badge && tab.badge > 0) {
+      <app-badge>{{ tab.badge }}</app-badge>
+      }
+      @if (tab.iconName) {
+      <ion-icon [name]="tab.iconName" aria-hidden="true"></ion-icon>
+      }
+      @if (tab.iconSrc) {
+      <ion-icon [src]="tab.iconSrc" aria-hidden="true"></ion-icon>
+      }
+      <span class="label">{{ tab.label }}</span>
+     
+    </div>
+    }
+  </div>
+</div>

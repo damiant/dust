@@ -203,8 +203,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   private showGeolocationMessage() {
-    if (this.geo.hasShownGeolocationMessage) {
-    } else {
+    if (!this.geo.hasShownGeolocationMessage) {
       this.geo.hasShownGeolocationMessage = true;
       this.showMessage = true;
     }
@@ -213,7 +212,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private async fixGPSAndUpdate() {
     this.selectedPoint = undefined;
     let foundPoints = 0;
-    for (let point of this._points) {
+    for (const point of this._points) {
       if (!point.gps) {
         point.gps = await this.geo.getMapPointToGPS(point);
       }
@@ -412,7 +411,7 @@ export class MapComponent implements OnInit, OnDestroy {
       const pin = mapPointToPin(point, defaultMapRadius);
 
       if (pin) {
-        let label = point.info?.label ?? '^';
+        const label = point.info?.label ?? '^';
         let sameList = sameLocation[`${pin.x}+${pin.y}`];
         if (sameList) {
           sameList.push(map.pins.length);
@@ -522,7 +521,7 @@ export class MapComponent implements OnInit, OnDestroy {
     let name = 'Closest point';
     let idx = 0;
     let loggedError = false;
-    for (let point of this.selectedPoint ? [this.selectedPoint] : this._points) {
+    for (const point of this.selectedPoint ? [this.selectedPoint] : this._points) {
       if (!point.gps || !point.gps.lat) {
         if (!environment.production && !loggedError) {
           console.log(`MapPoint is missing gps coordinate: ${JSON.stringify(point)}`);
@@ -593,20 +592,24 @@ export class MapComponent implements OnInit, OnDestroy {
     this.mapResult?.pinUnselected();
   }
 
-  mapClick(event: MouseEvent) {
+  mapClick(event: Event) {
     this.closePopover();
-    let left = event.clientX - 100;
-    if (left < 0) {
-      left = 0;
-    }
-    if (left + 200 > window.innerWidth) {
-      left = window.innerWidth - 200;
-    }
-    let top = event.clientY;
-    if (top + 300 > window.innerHeight) {
-      top = window.innerHeight - 300;
-      if (top < 0) {
-        top = 0;
+    let left = 0;
+    let top = 0;
+    if (event instanceof MouseEvent) {
+      left = event.clientX - 100;
+      if (left < 0) {
+        left = 0;
+      }
+      if (left + 200 > window.innerWidth) {
+        left = window.innerWidth - 200;
+      }
+      top = event.clientY;
+      if (top + 300 > window.innerHeight) {
+        top = window.innerHeight - 300;
+        if (top < 0) {
+          top = 0;
+        }
       }
     }
     this.popover().nativeElement.style.setProperty('left', `${left}px`);

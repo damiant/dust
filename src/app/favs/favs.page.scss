@@ -23,3 +23,17 @@ ion-item {
   --padding-bottom: 0;
   --background: transparent;
 }
+.center ion-icon {
+  vertical-align: middle;
+  margin: 0 0rem;
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 80%;
+  min-height: 40vh;
+}

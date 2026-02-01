@@ -28,8 +28,6 @@ export function registerWorkerClass(workerClass: WorkerClass) {
   addEventListener('message', async ({ data }) => {
     const call: Call = data;
     const response: Response = { id: call.id, data: undefined, ms: performance.now() };
-    if (!environment.production) {
-    }
     try {
       response.data = await workerClass.doWork(call.method, call.arguments);
       response.ms = performance.now() - response.ms;
@@ -64,10 +62,12 @@ export function registerWorker(worker: Worker) {
 
     const idx = calls.findIndex((p) => p.id == response.id);
     if (idx === -1) {
-      console.warn(`Received response for unknown call id: ${response.id}. Possible duplicate response or orphaned call.`);
+      console.warn(
+        `Received response for unknown call id: ${response.id}. Possible duplicate response or orphaned call.`,
+      );
       return;
     }
-    
+
     calls[idx].resolve(response.data);
     calls.splice(idx, 1);
   };

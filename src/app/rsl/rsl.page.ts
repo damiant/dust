@@ -92,8 +92,8 @@ function initialState(): RSLState {
     SortComponent,
     SearchComponent,
     MapModalComponent,
-    SkeletonEventComponent
-],
+    SkeletonEventComponent,
+  ],
 })
 export class RslPage {
   private ui = inject(UiService);
@@ -208,7 +208,7 @@ export class RslPage {
   private addEvents(count: number) {
     const items = this.allEvents.slice(this.vm.events.length, this.vm.events.length + count);
     let hidingImage: string | undefined;
-    for (let item of items) {
+    for (const item of items) {
       if (hidingImage == item.imageUrl) {
         item.imageUrl = undefined; // This ensures that 2 events with the same image do not appear
       }
@@ -264,7 +264,7 @@ export class RslPage {
   }
 
   public eventsTrackBy(index: number, event: RSLEvent) {
-    return event.uid;
+    return `${index}-${event.uid}`;
   }
 
   public searchEvents(value: string) {
@@ -278,6 +278,9 @@ export class RslPage {
         this.vm.day = day.date;
         return day.date;
       }
+    }
+    if (this.vm.days.length == 0) {
+      return 'all';
     }
     this.vm.day = this.vm.days[0].date;
     return this.vm.days[0].date;

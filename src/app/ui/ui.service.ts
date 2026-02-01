@@ -31,7 +31,7 @@ export class UiService {
 
   public async setNavigationBar(color?: string) {
     if (this.isAndroid()) {
-      let bcolor = color ? color : this.darkMode() ? '#000000' : '#FFFFFF';
+      const bcolor = color ? color : this.darkMode() ? '#000000' : '#FFFFFF';
       await NavigationBar.setColor({ color: bcolor, darkButtons: !this.darkMode() });
     }
   }
@@ -128,8 +128,9 @@ export class UiService {
 
   public async home() {
     if (Capacitor.isNativePlatform()) {
-      await StatusBar.setStyle({ style: Style.Dark });
-      await this.setStatusBarBackgroundColor();
+      await this.setStatusBarBasedOnTheme();
+      // await StatusBar.setStyle({ style: Style.Dark });
+      // await this.setStatusBarBackgroundColor();
     }
 
     this.navCtrl.navigateRoot('/', { animated: false });

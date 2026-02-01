@@ -260,7 +260,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
   container.addEventListener('pointerup', pointerUp);
 
   result.pinSelected = (id: string) => {
-    for (let key of Object.keys(result.pinData)) {
+    for (const key of Object.keys(result.pinData)) {
       const mat: Material = result.pinData[key].background.material as Material;
       if (key !== id) {
         mat.opacity = 0.25;
@@ -271,7 +271,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
   };
 
   result.pinUnselected = () => {
-    for (let key of Object.keys(result.pinData)) {
+    for (const key of Object.keys(result.pinData)) {
       const mat: Material = result.pinData[key].background.material as Material;
       mat.opacity = 1;
     }
@@ -355,9 +355,9 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
     mixers.length = 0;
 
     // Dispose of all tracked disposables
-    for (let d of disposables) {
+    for (const d of disposables) {
       if (Array.isArray(d)) {
-        for (let d2 of d) {
+        for (const d2 of d) {
           d2.dispose();
         }
       } else {
@@ -394,6 +394,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
 
     try {
       console.log((performance as any).memory.usedJSHeapSize);
+    // eslint-disable-next-line no-empty
     } catch {}
   };
   return result;

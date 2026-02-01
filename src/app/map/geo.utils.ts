@@ -13,7 +13,7 @@ function affineTransformation(
   y3: number,
 ) {
   // Compute the coefficients for the affine transformation
-  let detT = lat1 * lon2 + lat2 * lon3 + lat3 * lon1 - lat2 * lon1 - lat3 * lon2 - lat1 * lon3;
+  const detT = lat1 * lon2 + lat2 * lon3 + lat3 * lon1 - lat2 * lon1 - lat3 * lon2 - lat1 * lon3;
 
   const A = (x1 * lon2 + x2 * lon3 + x3 * lon1 - x2 * lon1 - x3 * lon2 - x1 * lon3) / detT;
   const B = (lat1 * x2 + lat2 * x3 + lat3 * x1 - lat2 * x1 - lat3 * x2 - lat1 * x3) / detT;

@@ -348,7 +348,7 @@ export class DbService {
         if (options.revision) {
           url += `?revision=${options.revision}`;
         }
-        if (!!options.onlyFresh) {
+        if (options.onlyFresh) {
           return await this.fetch(this._getkey(dataset, name), url, options.timeout ?? 30000);
         }
 
@@ -407,7 +407,7 @@ export class DbService {
   public async clear() {
     try {
       const d = await Filesystem.readdir({ path: '.', directory: Directory.Cache });
-      for (let file of d.files) {
+      for (const file of d.files) {
         console.log(`Delete file ${file.name}`);
         await Filesystem.deleteFile({ path: file.name, directory: Directory.Cache });
       }

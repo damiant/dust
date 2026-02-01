@@ -2,17 +2,22 @@
   <ion-card-header>
     <div class="title-with-date">
       <ion-card-title>
-        {{ email().subject }} 
+        {{ email().subject }}
       </ion-card-title>
-      
     </div>
     @if (email().from.name) {
-      <ion-card-subtitle class="wrap-text">{{ email().from.name }} <span class="date">@if (formattedDate()) { ({{ formattedDate() }}) }</span></ion-card-subtitle>
+      <ion-card-subtitle class="wrap-text"
+        >{{ email().from.name }}
+        <span class="date">
+          @if (formattedDate()) {
+            ({{ formattedDate() }})
+          }
+        </span></ion-card-subtitle
+      >
     }
   </ion-card-header>
 
   <ion-card-content>
-    
     <div class="body" [innerHTML]="email().html"></div>
     <ion-text color="primary"></ion-text>
     <div class="buttons">

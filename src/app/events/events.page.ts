@@ -9,7 +9,6 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import {
-  IonBadge,
   IonButton,
   IonButtons,
   IonContent,
@@ -28,6 +27,7 @@ import { RouterModule } from '@angular/router';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { FormsModule } from '@angular/forms';
+import { BadgeComponent } from '../badge/badge.component';
 import { noDate, now, nowRange, sameDay, timeRangeToString } from '../utils/utils';
 import { EventComponent } from '../event/event.component';
 import { UiService } from '../ui/ui.service';
@@ -119,8 +119,8 @@ function initialState(): EventsState {
     SearchComponent,
     SortComponent,
     IonButton,
-    IonBadge
-],
+    BadgeComponent,
+  ],
 })
 export class EventsPage implements OnInit, OnDestroy {
   public db = inject(DbService);

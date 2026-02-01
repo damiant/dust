@@ -108,8 +108,8 @@ export class FavoritesService {
   }
 
   public setFavorites(events: RSLEvent[], favs: string[]) {
-    for (let event of events) {
-      for (let occurrence of event.occurrences) {
+    for (const event of events) {
+      for (const occurrence of event.occurrences) {
         occurrence.star = favs.includes(this.rslId(event, occurrence));
       }
     }
@@ -118,7 +118,7 @@ export class FavoritesService {
 
   public async setFavoritedList(events: Event[]): Promise<boolean> {
     let longEvents = false;
-    for (let e of events) {
+    for (const e of events) {
       await this.setEventStars(e);
       const occurrence = this.selectOccurrence(e, this.db.selectedDay());
       e.showStar = !!occurrence;
@@ -150,7 +150,7 @@ export class FavoritesService {
 
   public async setEventStars(event: Event) {
     await this.ready;
-    for (let occurrence of event.occurrence_set) {
+    for (const occurrence of event.occurrence_set) {
       occurrence.star = this.starredEvent(event.uid, occurrence);
     }
   }
@@ -308,7 +308,7 @@ export class FavoritesService {
       happening: false,
       longTimeString: '',
     };
-    let title = event.address ? event.title + ' @ ' + event.address : event.title;
+    const title = event.address ? event.title + ' @ ' + event.address : event.title;
     const result = await this.notificationService.scheduleAll(
       {
         id: event.id,
@@ -394,7 +394,7 @@ export class FavoritesService {
 
   public async deleteThing(thing: Thing) {
     const things = this.things();
-    for (let t of things) {
+    for (const t of things) {
       if (t.name == thing.name) {
         things.splice(things.indexOf(t), 1);
       }
@@ -406,7 +406,7 @@ export class FavoritesService {
   public async clearThing(name: string) {
     let things = this.things();
     if (['My Camp', 'My Bike'].includes(name)) {
-      for (let thing of things) {
+      for (const thing of things) {
         if (thing.name == name) {
           thing.gps = undefined;
         }
@@ -421,8 +421,8 @@ export class FavoritesService {
   public async setThingPosition(name: string, gps: GpsCoord) {
     await this.getThings();
 
-    let things = this.things();
-    for (let thing of things) {
+    const things = this.things();
+    for (const thing of things) {
       if (thing.name == name) {
         thing.gps = gps;
         thing.lastChanged = new Date().getTime();
@@ -442,11 +442,11 @@ export class FavoritesService {
     rslEvents: RSLEvent[],
     today: boolean,
   ): Promise<Event[]> {
-    let events = await this.db.getEventList(this.eventsFrom(ids));
+    const events = await this.db.getEventList(this.eventsFrom(ids));
 
     // Group events and Set event time string to favorited event occurrence
-    let eventItems = await this.splitEvents(events, historical, today);
-    for (let rslEvent of rslEvents) {
+    const eventItems = await this.splitEvents(events, historical, today);
+    for (const rslEvent of rslEvents) {
       this.toEvent(rslEvent, eventItems);
     }
     this.sortByStartTime(eventItems);
@@ -460,7 +460,7 @@ export class FavoritesService {
   }
 
   private toEvent(rslEvent: RSLEvent, items: Event[]) {
-    for (let o of rslEvent.occurrences) {
+    for (const o of rslEvent.occurrences) {
       const party = rslEvent.title ? `the ${rslEvent.title} party ` : '';
       const newEvent: Event = {
         camp: rslEvent.artCar ? `${rslEvent.artCar} mutant vehicle` : rslEvent.camp,
@@ -504,15 +504,15 @@ export class FavoritesService {
   private async splitEvents(events: Event[], historical: boolean, today: boolean): Promise<Event[]> {
     const eventItems: Event[] = [];
     const timeNow = now().getTime();
-    for (let event of events) {
-      for (let occurrence of event.occurrence_set) {
+    for (const event of events) {
+      for (const occurrence of event.occurrence_set) {
         occurrence.star = await this.isFavEventOccurrence(event.uid, occurrence);
         if (occurrence.star) {
           const eventItem = clone(event);
           eventItem.occurrence_set = [clone(occurrence)];
 
-          let start: Date = new Date(occurrence.start_time);
-          let end: Date = new Date(occurrence.end_time);
+          const start: Date = new Date(occurrence.start_time);
+          const end: Date = new Date(occurrence.end_time);
 
           const isOld = end.getTime() - timeNow < 0;
           const isHappening = start.getTime() < timeNow && !isOld;
@@ -545,7 +545,7 @@ export class FavoritesService {
 
   private groupEvents(events: Event[]) {
     let group = '';
-    for (let event of events) {
+    for (const event of events) {
       const day = getDayName(event.occurrence_set[0].start_time);
       if (day !== group) {
         group = day;

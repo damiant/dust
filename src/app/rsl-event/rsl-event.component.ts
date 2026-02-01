@@ -34,8 +34,8 @@ export interface ArtCarEvent {
     IonCardContent,
     IonIcon,
     IonText,
-    CachedImgComponent
-],
+    CachedImgComponent,
+  ],
 })
 export class RslEventComponent {
   private fav = inject(FavoritesService);

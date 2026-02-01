@@ -28,8 +28,8 @@ import {
     IonToast,
     IonToolbar,
     IonButtons,
-    IonBackButton
-],
+    IonBackButton,
+  ],
 })
 export class FavMapPage {
   private fav = inject(FavoritesService);

@@ -39,7 +39,7 @@
         ></app-category>
       </ion-buttons>
       @if (db.selectedYear() !== '') {
-      <ion-badge class="pad-right" (click)="home()" slot="end">{{db.selectedYear()}}</ion-badge>
+      <app-badge [padRight]="true" (click)="home()" slot="end">{{db.selectedYear()}}</app-badge>
       }
     </ion-toolbar>
     <ion-toolbar>
@@ -65,10 +65,10 @@
     [points]="vm.mapPoints"
   ></app-map-modal>
   @if (vm.noFavorites) {
-  <div class="center pad-top pad-sides">
+  <div class="center pad-sides">
     <ion-text class="large" color="medium"
-      >Press the <ion-icon [src]="'assets/icon/star.svg'"></ion-icon> icon on Events, Theme Camps and Art to add them
-      here.</ion-text
+      >Tap the <ion-icon [src]="'assets/icon/star.svg'"></ion-icon> icon on Events, Theme Camps and Art to add them
+      to your favorites</ion-text
     >
   </div>
   } @for (event of vm.events; track eventsTrackBy($index, event)) {
@@ -130,5 +130,4 @@
     </ion-item-options>
   </ion-item-sliding>
   }
-  <div style="padding: 2.5rem"></div>
 </ion-content>

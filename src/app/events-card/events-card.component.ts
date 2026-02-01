@@ -22,7 +22,7 @@ export class EventsCardComponent {
 
     const items: Item[] = [];
     let lastTime = '';
-    for (let event of events) {
+    for (const event of events) {
       if (event.timeString != lastTime) {
         if (items.length > 0) {
           items[items.length - 1].lines = 'inset';

@@ -16,7 +16,6 @@ import {
 import { FormsModule } from '@angular/forms';
 import {
   IonBackButton,
-  IonBadge,
   IonButton,
   IonButtons,
   IonContent,
@@ -58,6 +57,7 @@ import { canCreate } from '../map/map';
 import { ScrollResult } from '../map/map-model';
 import { EventChanged, EventsService } from '../events/events.service';
 import { Subscription } from 'rxjs';
+import { BadgeComponent } from '../badge/badge.component';
 
 @Component({
   selector: 'app-event',
@@ -72,7 +72,7 @@ import { Subscription } from 'rxjs';
     IonText,
     IonIcon,
     IonLabel,
-    IonBadge,
+    BadgeComponent,
     IonContent,
     IonList,
     IonButtons,
@@ -80,8 +80,8 @@ import { Subscription } from 'rxjs';
     IonBackButton,
     IonHeader,
     IonPopover,
-    CachedImgComponent
-],
+    CachedImgComponent,
+  ],
 })
 export class EventPage implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
@@ -166,7 +166,7 @@ export class EventPage implements OnInit, OnDestroy {
 
   private async init(eventId: string | null) {
     try {
-      let tmp = eventId?.split('+');
+      const tmp = eventId?.split('+');
 
       if (!tmp) throw new Error('Route error');
       const id = tmp[0];
@@ -175,7 +175,7 @@ export class EventPage implements OnInit, OnDestroy {
       this.event = await this.db.findEvent(id);
       this.mapTitle = this.event.camp;
       this.mapSubtitle = this.event.location;
-      const camp = await this.db.findCamp(this.event?.hosted_by_camp!);
+      const camp = this.event?.hosted_by_camp ? await this.db.findCamp(this.event.hosted_by_camp) : undefined;
       const mapPoint = toMapPoint(this.event.location, {
         title: this.event.title,
         location: this.event.location,
@@ -235,7 +235,7 @@ export class EventPage implements OnInit, OnDestroy {
 
   async showCamp(e: any) {
     this.popover().event = e;
-    const camp = await this.db.findCamp(this.event?.hosted_by_camp!);
+    const camp = this.event?.hosted_by_camp ? await this.db.findCamp(this.event.hosted_by_camp) : undefined;
     if (camp) {
       this.campDescription = camp.description!;
       this.campImage = camp.imageUrl;
@@ -252,7 +252,7 @@ export class EventPage implements OnInit, OnDestroy {
       this._change.detectChanges();
       return;
     }
-    const camp = await this.db.findCamp(this.event?.hosted_by_camp!);
+    const camp = this.event?.hosted_by_camp ? await this.db.findCamp(this.event.hosted_by_camp) : undefined;
     if (camp && camp.landmark) {
       this.locationInfo = `${camp.landmark}. (${camp.facing})`;
       this.isLocationInfoOpen = true;

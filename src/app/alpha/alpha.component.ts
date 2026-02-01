@@ -5,14 +5,16 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  computed,
   DoCheck,
   ElementRef,
   HostListener,
-  Input,
+  input,
   OnDestroy,
   output,
   viewChild,
   inject,
+  effect,
 } from '@angular/core';
 import { fromEvent, interval, Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -30,161 +32,87 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
   alphabetContainer = viewChild.required<ElementRef>('alphabetContainer');
   hiddenLetterValue = 'zz';
 
-  get alphabet(): any {
-    return this._alphabet;
-  }
   //A custom alphabet to be used instead of the default alphabet. Default is 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-  @Input() set alphabet(value: any) {
-    if (typeof value === 'string') this._alphabet = [...value];
-    else if (Array.isArray(value) && value.every((it) => typeof it === 'string')) this._alphabet = value;
+  alphabet = input<any>([...'ABCDEFGHIJKLMNOPQRSTUVWXYZ']);
+
+  // Computed signal that normalizes alphabet to always be an array
+  private alphabetArray = computed(() => {
+    const value = this.alphabet();
+    if (typeof value === 'string') return [...value];
+    else if (Array.isArray(value) && value.every((it) => typeof it === 'string')) return value;
     else throw new Error('alphabet must be a string or an array of strings');
-    this.checkVisibleLetters(true);
-    this.validLetters = this._alphabet;
-  }
-  private _alphabet: Array<string> = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'];
+  });
 
-  get overflowDivider(): string | undefined | null {
-    return this._overflowDivider;
-  }
   //A custom overflow divider. Can be undefined or null if you don't want to use one. Defaults to '·'
-  @Input() set overflowDivider(value: string | undefined | null) {
-    if (typeof value === 'string' || value === undefined || value === null) this._overflowDivider = value!;
-    else throw new Error('overflowDivider must be a string');
-    this.checkVisibleLetters(true);
-  }
-  private _overflowDivider: string = '·';
+  overflowDivider = input<string | undefined | null>('·');
 
-  get validLetters(): string[] {
-    return this._validLetters;
-  }
   //Valid letters that are available for the user to select. default is all letters
-  @Input() set validLetters(value: string[]) {
-    this._validLetters = value;
-    this.checkVisibleLetters(true);
-  }
-  private _validLetters: Array<string> = this._alphabet;
+  validLetters = input<string[]>([...'ABCDEFGHIJKLMNOPQRSTUVWXYZ']);
 
-  get disableInvalidLetters(): BooleanInput {
-    return this._disableInvalidLetters;
-  }
   //Whether or invalid letters should be disabled (greyed out and do not magnify)
-  @Input() set disableInvalidLetters(value: BooleanInput) {
-    this._disableInvalidLetters = coerceBooleanProperty(value);
-    this.checkVisibleLetters(true);
-  }
-  private _disableInvalidLetters = false;
+  disableInvalidLetters = input<BooleanInput>(false);
 
-  get prioritizeHidingInvalidLetters(): BooleanInput {
-    return this._prioritizeHidingInvalidLetters;
-  }
   //Whether or invalid letters should be disabled (greyed out and do not magnify)
-  @Input() set prioritizeHidingInvalidLetters(value: BooleanInput) {
-    this._prioritizeHidingInvalidLetters = coerceBooleanProperty(value);
-    this.checkVisibleLetters(true);
-  }
-  private _prioritizeHidingInvalidLetters = false;
+  prioritizeHidingInvalidLetters = input<BooleanInput>(false);
 
-  get letterMagnification(): BooleanInput {
-    return this._letterMagnification;
-  }
   //Whether or not letters should be magnified
-  @Input() set letterMagnification(value: BooleanInput) {
-    this._letterMagnification = coerceBooleanProperty(value);
-  }
-  private _letterMagnification = true;
+  letterMagnification = input<BooleanInput>(true);
 
-  get magnifyDividers(): BooleanInput {
-    return this._magnifyDividers;
-  }
   //Whether or not overflow diveders should be magnified
-  @Input() set magnifyDividers(value: BooleanInput) {
-    this._magnifyDividers = coerceBooleanProperty(value);
-  }
-  private _magnifyDividers = false;
+  magnifyDividers = input<BooleanInput>(false);
 
-  get magnificationMultiplier(): number {
-    return this._magnificationMultiplier;
-  }
   //The maximum that the magnification multiplier can be. Default is 3
-  @Input() set magnificationMultiplier(value: number) {
-    this._magnificationMultiplier = value;
-    this.checkVisibleLetters(true);
-  }
-  private _magnificationMultiplier = 2;
+  magnificationMultiplier = input<number>(2);
 
-  get magnificationCurve(): Array<number> {
-    return this._magnificationCurve;
-  }
   //Magnification curve accepts an array of numbers between 1 and 0 that represets the curve of magnification starting from magnificaiton multiplier to 1: defaults to [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1]
-  @Input() set magnificationCurve(value: Array<number>) {
-    if (Array.isArray(value) && value.every((it) => typeof it === 'number' && it >= 0 && it <= 1))
-      this._magnificationCurve = value;
-    else throw new Error('magnificationCurve must be an array of numbers between 0 and 1');
-  }
+  magnificationCurve = input<Array<number>>([1, 0.7, 0.5, 0.3, 0.1]);
 
-  private _magnificationCurve = [1, 0.7, 0.5, 0.3, 0.1];
-
-  get exactX(): BooleanInput {
-    return this._exactX;
-  }
   //If the scrolling for touch screens in the x direction should be lenient. Default is false
-  @Input() set exactX(value: BooleanInput) {
-    this._exactX = coerceBooleanProperty(value);
-  }
-  private _exactX = false;
+  exactX = input<BooleanInput>(false);
 
-  get navigateOnHover(): BooleanInput {
-    return this._navigateOnHover;
-  }
   //Whether or not letter change event is emitted on mouse hover. Default is false
-  @Input() set navigateOnHover(value: BooleanInput) {
-    this._navigateOnHover = coerceBooleanProperty(value);
-  }
-  private _navigateOnHover = false;
+  navigateOnHover = input<BooleanInput>(false);
 
-  get letterSpacing(): number | string | null {
-    return this._letterSpacing;
-  }
   //Percentage or number in pixels of how far apart the letters are. Defaults to 1.75%
-  @Input() set letterSpacing(value: number | string | null) {
-    if (typeof value === 'string') {
-      this._letterSpacing = this.stringToNumber(value);
-      if (value.includes('%')) {
-        this._letterSpacing = this._letterSpacing.toString() + '%';
-      }
-    } else {
-      this._letterSpacing = coerceNumberProperty(value);
-    }
-
-    this.checkVisibleLetters(true);
-  }
-  private _letterSpacing: number | string | null = '1%';
+  letterSpacing = input<number | string | null>('1%');
 
   //Output event when a letter selected
   letterChange = output<string>();
   //Emitted when scrollbar is activated or deactivated
   isActive = output<boolean>();
 
+  //This interval can be used for fast, regular size-checks
+  //Useful, if e.g. a splitter-component resizes the scroll-bar but not the window itself. Set in ms and defaults to 0 (disabled)
+  offsetSizeCheckInterval = input<NumberInput>(0);
+
   private _lastEmittedActive = false;
   private _isComponentActive = false;
+  private _offsetSizeCheckIntervalSubscription!: Subscription;
 
   private readonly _cancellationToken$: Subject<void> = new Subject();
 
-  get offsetSizeCheckInterval(): NumberInput {
-    return this._offsetSizeCheckInterval;
+  constructor() {
+    effect(() => {
+      this._offsetSizeCheckIntervalSubscription?.unsubscribe();
+      const intervalValue = coerceNumberProperty(this.offsetSizeCheckInterval());
+      if (intervalValue) {
+        this._offsetSizeCheckIntervalSubscription = interval(intervalValue)
+          .pipe(takeUntil(this._cancellationToken$))
+          .subscribe(() => this.checkVisibleLetters());
+      }
+    });
+
+    effect(() => {
+      this.alphabet();
+      this.overflowDivider();
+      this.validLetters();
+      this.disableInvalidLetters();
+      this.prioritizeHidingInvalidLetters();
+      this.magnificationMultiplier();
+      this.letterSpacing();
+      this.checkVisibleLetters(true);
+    });
   }
-  //This interval can be used for fast, regular size-checks
-  //Useful, if e.g. a splitter-component resizes the scroll-bar but not the window itself. Set in ms and defaults to 0 (disabled)
-  @Input() set offsetSizeCheckInterval(value: NumberInput) {
-    this._offsetSizeCheckIntervalSubscription?.unsubscribe();
-    this._offsetSizeCheckInterval = coerceNumberProperty(value);
-    this._offsetSizeCheckInterval &&
-      (this._offsetSizeCheckIntervalSubscription = interval(this._offsetSizeCheckInterval)
-        .pipe(takeUntil(this._cancellationToken$))
-        .subscribe(() => this.checkVisibleLetters()));
-  }
-  private _offsetSizeCheckInterval = 0;
-  private _offsetSizeCheckIntervalSubscription!: Subscription;
 
   ngAfterViewInit(): void {
     fromEvent(window, 'resize')
@@ -200,29 +128,30 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
   }
 
   checkVisibleLetters(force?: boolean): void {
-    let height = this.alphabetContainer().nativeElement.clientHeight;
+    const height = this.alphabetContainer().nativeElement.clientHeight;
     if (!force && height === this._lastHeight) {
       return;
     }
 
     this._lastHeight = height;
 
-    let newAlphabet = this.alphabet;
+    let newAlphabet = this.alphabetArray();
     let letterSpacing = 0;
     let letterSize = this.stringToNumber(
       getComputedStyle(this.alphabetContainer().nativeElement).getPropertyValue('font-size'),
     );
 
-    if (this.letterMagnification) {
-      letterSize = letterSize * this.magnificationMultiplier;
+    if (coerceBooleanProperty(this.letterMagnification())) {
+      letterSize = letterSize * this.magnificationMultiplier();
     }
 
     //Calculate actual letter spacing
-    if (typeof this.letterSpacing === 'number') {
-      letterSpacing = this.letterSpacing;
-    } else if (typeof this.letterSpacing === 'string') {
-      letterSpacing = this.stringToNumber(this.letterSpacing);
-      if (this.letterSpacing.endsWith('%')) {
+    const spacing = this.letterSpacing();
+    if (typeof spacing === 'number') {
+      letterSpacing = spacing;
+    } else if (typeof spacing === 'string') {
+      letterSpacing = this.stringToNumber(spacing);
+      if (spacing.endsWith('%')) {
         letterSpacing = height * (letterSpacing / 100);
       }
     }
@@ -230,8 +159,9 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
     letterSize = letterSize + letterSpacing;
 
     //Remove invalid letters (if set and necessary)
-    if (this.prioritizeHidingInvalidLetters && !!this.validLetters && height / letterSize < newAlphabet.length) {
-      newAlphabet = this.validLetters;
+    const validLetters = this.validLetters();
+    if (coerceBooleanProperty(this.prioritizeHidingInvalidLetters()) && !!validLetters && height / letterSize < newAlphabet.length) {
+      newAlphabet = validLetters;
     }
 
     //Check if there is enough free space for letters
@@ -256,20 +186,21 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
       //insert dots between letters
       alphabet1 = alphabet1.reduce((prev: any, curr: any, i: any) => {
         if (i > 0) {
-          if (this.overflowDivider) prev.push(this.overflowDivider);
+          if (this.overflowDivider()) prev.push(this.overflowDivider());
         }
         prev.push(curr);
         return prev;
       }, []);
       alphabet2 = alphabet2.reduce((prev: any, curr: any, i: any) => {
         if (i > 0) {
-          if (this.overflowDivider) prev.push(this.overflowDivider);
+          if (this.overflowDivider()) prev.push(this.overflowDivider());
         }
         prev.push(curr);
         return prev;
       }, []);
 
-      if (this.alphabet.length % 2 === 0 && this.overflowDivider) alphabet1.push(this.overflowDivider);
+      const overflowDiv = this.overflowDivider();
+      if (this.alphabetArray().length % 2 === 0 && overflowDiv) alphabet1.push(overflowDiv);
       newAlphabet = alphabet1.concat(alphabet2.reverse());
     }
 
@@ -289,55 +220,63 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
   }
 
   isValid(letter: string): boolean {
-    return this.validLetters?.includes(letter) !== false || letter === this.overflowDivider;
+    const validLetters = this.validLetters();
+    const overflowDiv = this.overflowDivider();
+    return validLetters?.includes(letter) !== false || letter === overflowDiv;
   }
 
   getLetterStyle(index: number) {
+    const magnifyDiv = coerceBooleanProperty(this.magnifyDividers());
+    const disableInvalid = coerceBooleanProperty(this.disableInvalidLetters());
+    const overflowDiv = this.overflowDivider();
     if (
       (this.magIndex === undefined && this.magIndex === null) ||
-      (!this.magnifyDividers && this.visibleLetters[index] === this.overflowDivider) ||
-      (this.disableInvalidLetters && !this.isValid(this.visibleLetters[index]))
+      (!magnifyDiv && this.visibleLetters[index] === overflowDiv) ||
+      (disableInvalid && !this.isValid(this.visibleLetters[index]))
     )
       return {};
-    const lettersOnly = this.visibleLetters.filter((l) => l !== this.overflowDivider);
+    const lettersOnly = this.visibleLetters.filter((l) => l !== overflowDiv);
 
     const mappedIndex = Math.round((index / this.visibleLetters.length) * lettersOnly.length);
     const mappedMagIndex = Math.round((this.magIndex / this.visibleLetters.length) * lettersOnly.length);
 
-    let relativeIndex = this.magnifyDividers ? Math.abs(this.magIndex - index) : Math.abs(mappedMagIndex - mappedIndex);
+    const relativeIndex = magnifyDiv
+      ? Math.abs(this.magIndex - index)
+      : Math.abs(mappedMagIndex - mappedIndex);
 
+    const magnificationCurve = this.magnificationCurve();
+    const magnificationMult = this.magnificationMultiplier();
     const magnification =
-      relativeIndex < this.magnificationCurve.length - 1
-        ? this.magnificationCurve[relativeIndex] * (this.magnificationMultiplier - 1) + 1
+      relativeIndex < magnificationCurve.length - 1
+        ? magnificationCurve[relativeIndex] * (magnificationMult - 1) + 1
         : 1;
     const style: any = {
       transform: `scale(${magnification})`,
       zIndex: this.magIndex === index ? 1 : 0,
     };
-    return this._isComponentActive && this.letterMagnification ? style : {};
+    return this._isComponentActive && coerceBooleanProperty(this.letterMagnification()) ? style : {};
   }
 
-  @HostListener('mousemove', ['$event', '$event.type'])
-  @HostListener('mouseenter', ['$event', '$event.type'])
   @HostListener('touchmove', ['$event', '$event.type'])
   @HostListener('touchstart', ['$event', '$event.type'])
   @HostListener('click', ['$event', '$event.type'])
   focusEvent(event: MouseEvent | TouchEvent, type?: string): void {
-    if (!this._lastEmittedActive) {
-      this.isActive.emit((this._lastEmittedActive = true));
-    }
-
-    if (type == 'click') this._isComponentActive = false;
-    else this._isComponentActive = true;
-
     const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
     const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
 
-    this.setLetterFromCoordinates(clientX, clientY);
+    if (type === 'click') {
+      this._isComponentActive = true;
+      this.isActive.emit((this._lastEmittedActive = true));
+    }
 
-    if (this._lastEmittedLetter !== this.letterSelected && (this.navigateOnHover || !type!.includes('mouse'))) {
-      this.letterChange.emit((this._lastEmittedLetter = this.letterSelected));
-      Haptics.impact({ style: ImpactStyle.Medium });
+    // Only update letter selection if component is active or this is a touch/click event
+    if (this._isComponentActive || type?.includes('touch') || type === 'click') {
+      this.setLetterFromCoordinates(clientX, clientY);
+
+      if (this._lastEmittedLetter !== this.letterSelected && (coerceBooleanProperty(this.navigateOnHover()) || !type!.includes('mouse'))) {
+        this.letterChange.emit((this._lastEmittedLetter = this.letterSelected));
+        Haptics.impact({ style: ImpactStyle.Medium });
+      }
     }
   }
   private _lastEmittedLetter!: string;
@@ -351,7 +290,7 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
   magIndex!: number;
 
   private setLetterFromCoordinates(x: number, y: number): void {
-    if (this.exactX) {
+    if (coerceBooleanProperty(this.exactX())) {
       const rightX = this.alphabetContainer().nativeElement.getBoundingClientRect().right;
       const leftX = this.alphabetContainer().nativeElement.getBoundingClientRect().left;
 
@@ -376,10 +315,12 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
     this.visualLetterIndex = this.getClosestValidLetterIndex(this.visibleLetters, topRelative, preferNext);
 
     if (this._lettersShortened) {
-      if (this.validLetters) {
-        this.letterSelected = this.validLetters[Math.round((top / height) * (this.validLetters.length - 1))];
+      const validLetters = this.validLetters();
+      if (validLetters) {
+        this.letterSelected = validLetters[Math.round((top / height) * (validLetters.length - 1))];
       } else {
-        this.letterSelected = this.alphabet[this.getClosestValidLetterIndex(this.alphabet, topRelative, preferNext)];
+        const alphaArray = this.alphabetArray();
+        this.letterSelected = alphaArray[this.getClosestValidLetterIndex(alphaArray, topRelative, preferNext)];
       }
     } else {
       this.letterSelected = this.visibleLetters[this.visualLetterIndex];
@@ -390,11 +331,12 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
 
   private getClosestValidLetterIndex(alphabet: string[], visualLetterIndex: number, preferNext: boolean): number {
     const lowercaseAlphabet = alphabet.map((l) => l.toLowerCase());
-    const lowercaseValidLetters = this.validLetters.map((l) => l.toLowerCase());
-    const validLettersAsNumbers = lowercaseValidLetters.map((l) => lowercaseAlphabet.indexOf(l));
+    const validLetters = this.validLetters();
+    const lowercaseValidLetters = validLetters.map((l: string) => l.toLowerCase());
+    const validLettersAsNumbers = lowercaseValidLetters.map((l: string) => lowercaseAlphabet.indexOf(l));
 
     return validLettersAsNumbers.length > 0
-      ? validLettersAsNumbers.reduce((prev, curr) =>
+      ? validLettersAsNumbers.reduce((prev: number, curr: number) =>
           preferNext
             ? Math.abs(curr - visualLetterIndex) > Math.abs(prev - visualLetterIndex)
               ? prev
@@ -408,7 +350,7 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
 
   private stringToNumber(value?: string): number {
     if (value == null) return 0;
-    const v = value.match(/[\.\d]+/);
+    const v = value.match(/[.\d]+/);
     if (!v) return 0;
     return Number(v[0]);
   }

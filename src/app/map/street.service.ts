@@ -11,17 +11,17 @@ export class StreetService {
 
   public getAddresses(): PickerColumn[] {
     const streets: Array<any> = [];
-    for (let street of this.allStreets) {
+    for (const street of this.allStreets) {
       streets.push({ text: street, value: street });
     }
 
     const hours: Array<any> = [];
-    for (let hour of this.allHours) {
+    for (const hour of this.allHours) {
       hours.push({ text: hour, value: hour });
     }
 
     const minutes: Array<any> = [];
-    for (let minute of this.allMinutes) {
+    for (const minute of this.allMinutes) {
       minutes.push({ text: minute, value: minute });
     }
 
@@ -42,6 +42,7 @@ export class StreetService {
       addresses[0].selectedIndex = this.allHours.indexOf(hour);
       addresses[1].selectedIndex = this.allMinutes.indexOf(minutes);
       addresses[2].selectedIndex = this.allStreets.indexOf(street);
+    // eslint-disable-next-line no-empty
     } catch {}
   }
 

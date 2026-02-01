@@ -63,8 +63,8 @@ import { SettingsService } from '../data/settings.service';
     IonBackButton,
     IonText,
     IonIcon,
-    SearchComponent
-],
+    SearchComponent,
+  ],
 })
 export class PinMapPage {
   private db = inject(DbService);
@@ -146,7 +146,7 @@ export class PinMapPage {
     if (value == '') return;
     let idx = 0;
     let found = -1;
-    for (let p of this.points) {
+    for (const p of this.points) {
       if (p.info) {
         if (p.info?.title.toLowerCase().includes(value.toLowerCase())) {
           found = idx;
@@ -228,7 +228,7 @@ export class PinMapPage {
     const allArt = await this.db.findArts(undefined, coords);
     const points = [];
     this.smallPins = allArt.length > 100;
-    for (let art of allArt) {
+    for (const art of allArt) {
       if (art.location_string || art.pin?.x) {
         const point = await this.convertToPoint(art);
         if (point) points.push(point);
@@ -249,7 +249,7 @@ export class PinMapPage {
     const friends = favs.friends;
     const points = [];
     this.smallPins = friends.length > 100;
-    for (let friend of friends) {
+    for (const friend of friends) {
       if (friend.address) {
         const point = await this.convertToPt(
           friend.name,
@@ -276,7 +276,7 @@ export class PinMapPage {
   private async getThings(): Promise<MapSet> {
     const result: MapSet = { title: '', description: '', points: [{ street: '', clock: '' }] };
     result.title = this.thingName();
-    for (let thing of this.favs.things()) {
+    for (const thing of this.favs.things()) {
       if (thing.name == this.thingName()) {
         if (!thing.gps) {
           console.log(`Location enabled when showing isGettingGPS`, this.settings.settings.locationEnabled);
@@ -311,8 +311,6 @@ export class PinMapPage {
     return '^';
   }
 
-
-
   public async clearThing() {
     await this.favs.clearThing(this.thingName());
     this.ui.presentToast(`Removed ${this.thingName()}`, this.toast);
@@ -336,7 +334,7 @@ export class PinMapPage {
     const camps = await this.db.findCamps('', coords);
     const points = [];
 
-    for (let camp of camps) {
+    for (const camp of camps) {
       if (camp.location_string || camp.pin?.x) {
         const point = toMapPoint(
           camp.location_string!,
@@ -360,7 +358,7 @@ export class PinMapPage {
       otherMaps.push(Names.art);
     }
 
-    for (let type of otherMaps) {
+    for (const type of otherMaps) {
       const map = await this.mapFor(type);
       this.applyMapType(type, map);
       points.push(...map.points);
@@ -443,7 +441,7 @@ export class PinMapPage {
     imageUrl: string,
     pin: Pin | undefined,
   ): Promise<MapPoint | undefined> {
-    let point = toMapPoint(location_string, undefined, pin);
+    const point = toMapPoint(location_string, undefined, pin);
     if (point.street == 'unplaced') return undefined;
     point.info = {
       title,
@@ -459,7 +457,7 @@ export class PinMapPage {
 
   private initials(name: string, defaultValue: string | undefined): string {
     if (defaultValue) return defaultValue;
-    let inits = name
+    const inits = name
       .split(' ')
       .map((s) => s.charAt(0))
       .join('');
@@ -473,7 +471,7 @@ export class PinMapPage {
     this.smallPins = true;
     const points = [];
     const allEvents = await this.db.findEvents('', undefined, '', undefined, timeRange, true, false);
-    for (let event of allEvents) {
+    for (const event of allEvents) {
       const mapPoint = toMapPoint(
         event.location,
         {

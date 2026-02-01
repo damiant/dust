@@ -3,7 +3,7 @@
     <ion-title> {{vm.title}} </ion-title>
 
     @if (db.selectedYear() !== '') {
-    <ion-badge (click)="home()" class="pad-right" slot="end">{{db.selectedYear()}}</ion-badge>
+    <app-badge (click)="home()" [padRight]="true" slot="end">{{db.selectedYear()}}</app-badge>
     }
   </ion-toolbar>
 </ion-header>

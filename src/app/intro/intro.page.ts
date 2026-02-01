@@ -232,7 +232,7 @@ export class IntroPage {
           console.error(`${preview} not found in [${all.map((c) => c.name).join(',')}]`);
           return;
         }
-        let p: Dataset = JSON.parse(JSON.stringify(found));
+        const p: Dataset = JSON.parse(JSON.stringify(found));
         this.settingsService.settings.dataset = p;
         this.settingsService.settings.datasetId = p.id;
         this.settingsService.settings.eventTitle = p.title;
@@ -333,6 +333,7 @@ export class IntroPage {
       const result = await this.api.download(this.vm.selected, forceDownload, this.download);
 
       if (result == 'error') {
+        // eslint-disable-next-line no-empty
       }
       // Need to save this otherwise it will think we cant start this event
       this.settingsService.setOffline(this.settingsService.settings.datasetId);
@@ -340,9 +341,9 @@ export class IntroPage {
       return true;
     } finally {
       this.vm.downloading = false;
-      this.download.set({ status: '', firstDownload: false });
-      return false;
+      this.download.set({ status: '', firstDownload: false });      
     }
+    return false;
   }
 
   private async preventAutoStart() {
@@ -430,7 +431,7 @@ export class IntroPage {
       }
       if (!this.vm.selected) return;
       this.db.selectedDataset.set(this.vm.selected);
-      let showYear = `${new Date().getFullYear()}` !== this.vm.selected.year && this.vm.selected.year !== '0000';
+      const showYear = `${new Date().getFullYear()}` !== this.vm.selected.year && this.vm.selected.year !== '0000';
       const title = showYear ? this.vm.selected.year : '';
       this.db.selectedYear.set(title);
       const hasOffline = this.settingsService.isOffline(this.settingsService.settings.datasetId);

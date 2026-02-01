@@ -1,46 +1,5 @@
 @if (ready) {
 <ion-tabs #tabs (ionTabsDidChange)="changeTab(tabs)">
-  <ion-tab-bar slot="bottom" translucent>
-    <ion-tab-button tab="profile" (click)="select('profile')">
-      <ion-icon aria-hidden="true" [src]="'assets/icon/home.svg'"></ion-icon>
-      <ion-label>Home</ion-label>
-    </ion-tab-button>
-    @if (hasEvents()) {
-    <ion-tab-button tab="events" (click)="select('events')">
-      <ion-icon aria-hidden="true" [src]="'assets/icon/calendar.svg'"></ion-icon>
-      <ion-label>Events</ion-label>
-    </ion-tab-button>
-    }
-
-    <ion-tab-button tab="camps" (click)="select('camps')">
-      <ion-icon aria-hidden="true" [src]="'assets/icon/camp.svg'"></ion-icon>
-      <ion-label>Camps</ion-label>
-    </ion-tab-button>
-
-    @if (!db.featuresHidden().includes('art')) {
-    <ion-tab-button tab="art" (click)="select('art')">
-      <ion-icon aria-hidden="true" [src]="'assets/icon/art.svg'"></ion-icon>
-      <ion-label>Art</ion-label>
-    </ion-tab-button>
-    } @if (!db.featuresHidden().includes('rsl')) {
-    <ion-tab-button tab="rsl" (click)="select('rsl')">
-      <ion-icon aria-hidden="true" name="musical-notes-outline"></ion-icon>
-      <ion-label>Music</ion-label>
-    </ion-tab-button>
-    } @if (hasEvents()) {
-    <ion-tab-button tab="favs" id="favButton" (click)="select('favs')">
-      @if(favs.newFavs() > 0) {
-      <ion-badge mode="ios">{{favs.newFavs()}}</ion-badge>
-      }
-      <ion-icon aria-hidden="true" [src]="'assets/icon/star.svg'"></ion-icon>
-      <ion-label>Favorites </ion-label>
-    </ion-tab-button>
-    } @if (!db.featuresHidden().includes('messages')) {
-    <ion-tab-button tab="messages" (click)="select('messages')">
-      <ion-icon aria-hidden="true" name="mail-outline"></ion-icon>
-      <ion-label>Messages</ion-label>
-    </ion-tab-button>
-    }
-  </ion-tab-bar>
+  <app-tab-bar slot="bottom" [tabs]="tabData()" [opened]="opened()" [selected]="currentTab" (tabSelected)="select($event)"></app-tab-bar>
 </ion-tabs>
 }

@@ -1,0 +1,117 @@
+.bar {
+  background-color: black;
+  display: flex;
+  border-radius: 10rem;
+  justify-content: center;
+  padding: 0.5rem;
+  pointer-events: auto;
+  /* Ensure clicks work since we might float it */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  position: relative;
+  transform: translateY(50px);
+  opacity: 0;
+  transition:
+    transform 200ms ease-in,
+    opacity 200ms ease-in;
+
+  &.open {
+    transform: translateY(0);
+    opacity: 1;
+    transition:
+      transform 200ms ease-out,
+      opacity 200ms ease-out;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .bar {
+    border: 2px solid #999;
+  }
+}
+
+.indicator {
+  position: absolute;
+  background-color: white;
+  border-radius: 10rem;
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.1s;
+  z-index: 0;
+  opacity: 0;
+  inset: 0.5rem;
+  width: calc((100% - 1rem) / var(--tab-count, 1));
+  transform: translateX(calc(var(--selected-index, 0) * 100%));
+
+  &.visible {
+    opacity: 1;
+  }
+}
+
+.tab-item {
+  margin: 0 0rem;
+  padding: 0.8rem;
+  border-radius: 10rem; // Changed from 50% to 10rem to support labels
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+  position: relative;
+  min-width: 3rem;
+  cursor: pointer;
+
+  ion-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+  button {
+    color: inherit;
+    background-color: inherit;
+  }
+  app-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 0.6rem;
+  }
+  .label {
+    display: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  &.selected {
+    color: black;
+  }
+}
+
+.bar.show-labels .tab-item .label {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .tab-item .label {
+    display: block;
+  }
+}
+
+.contain {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  position: fixed;
+  bottom: 0rem;
+  left: 0;
+  z-index: 999;
+  pointer-events: none;
+  /* Let clicks pass through the container to content below */
+  padding-bottom: var(--safe-area-inset-bottom);
+
+  @media (min-width: 768px) {
+    bottom: 2rem;
+  }
+}

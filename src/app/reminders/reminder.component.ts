@@ -46,8 +46,8 @@ export enum ReminderResult {
     IonHeader,
     IonTitle,
     IonToolbar,
-    IonTextarea
-],
+    IonTextarea,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReminderComponent implements OnInit {

@@ -59,7 +59,7 @@
       @if (!camp.url) {
       <h1 class="page-focus">{{camp.name}}</h1>
       } @if (camp.url) {
-      <h1 class="page-focus" style="color: var(--ion-color-primary)" (click)="open(camp.url)">{{camp.name}}</h1>
+      <h1 class="page-focus" style="color: var(--ion-color-primary)" (click)="open(camp.url)" (keyup.enter)="open(camp.url)" tabindex="0">{{camp.name}}</h1>
       }
     </ion-item>
     @if (camp.location_string) {

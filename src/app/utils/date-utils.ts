@@ -45,9 +45,9 @@ export function getTimeZoneOffsetHours(timeZone: string): number {
  */
 export function formatRelativeTime(timestamp: number | string | undefined): string {
   if (!timestamp) return '';
-  
+
   let timestampMs: number;
-  
+
   if (typeof timestamp === 'string') {
     // Parse ISO string to milliseconds
     const date = new Date(timestamp);
@@ -55,12 +55,12 @@ export function formatRelativeTime(timestamp: number | string | undefined): stri
   } else {
     timestampMs = timestamp;
   }
-  
+
   const now = new Date().getTime();
   const differenceMs = now - timestampMs;
-  
+
   if (differenceMs < 0) return ''; // Future timestamp
-  
+
   const seconds = Math.floor(differenceMs / 1000);
   const minutes = Math.floor(seconds / 60);
   const hours = Math.floor(minutes / 60);
@@ -68,7 +68,7 @@ export function formatRelativeTime(timestamp: number | string | undefined): stri
   const weeks = Math.floor(days / 7);
   const months = Math.floor(days / 30);
   const years = Math.floor(days / 365);
-  
+
   if (seconds < 60) {
     return seconds === 1 ? '1 second ago' : `${seconds} seconds ago`;
   } else if (minutes < 60) {
@@ -93,16 +93,16 @@ export function formatRelativeTime(timestamp: number | string | undefined): stri
  */
 export function since(timestamp: number | undefined): string {
   if (!timestamp) return '';
-  
+
   const now = new Date().getTime();
   let differenceValue = (now - timestamp) / 1000;
   differenceValue /= 60;
   const mins = Math.abs(Math.round(differenceValue));
-  
+
   if (mins > 60) {
     const hrs = Math.round(mins / 60);
     return `${hrs} hr${hrs === 1 ? '' : 's'} ago`;
   }
-  
+
   return `${mins} min${mins === 1 ? '' : 's'} ago`;
 }

@@ -1,5 +1,4 @@
-
-import { ChangeDetectorRef, Component, EnvironmentInjector, OnInit, effect, inject, computed } from '@angular/core';
+import { ChangeDetectorRef, Component, EnvironmentInjector, OnInit, effect, inject, computed, signal } from '@angular/core';
 import { DbService } from '../data/db.service';
 import { NotificationService } from '../notifications/notification.service';
 import { Router } from '@angular/router';
@@ -11,7 +10,7 @@ import { Network } from '@capacitor/network';
 import { App } from '@capacitor/app';
 import { environment } from 'src/environments/environment';
 import { Keyboard } from '@capacitor/keyboard';
-import { IonIcon, IonLabel, IonTabBar, IonTabButton, IonTabs, IonBadge } from '@ionic/angular/standalone';
+import { IonTabs } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { musicalNotesOutline, ellipsisVertical, mailOutline } from 'ionicons/icons';
 import { Capacitor } from '@capacitor/core';
@@ -22,11 +21,13 @@ import { TextZoom } from '@capacitor/text-zoom';
 import { BurnPlannerService } from '../data/burn-planner.service';
 import { GeoService } from '../geolocation/geo.service';
 
+import { Tab, TabBarComponent } from '../tab-bar/tab-bar.component';
+
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss'],
-  imports: [IonBadge, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel],
+  imports: [IonTabs, TabBarComponent],
 })
 export class TabsPage implements OnInit {
   public db = inject(DbService);
@@ -39,11 +40,34 @@ export class TabsPage implements OnInit {
   private burnPlanner = inject(BurnPlannerService);
   private router = inject(Router);
   private geo = inject(GeoService);
+  public hasEvents = computed(() => this.db.eventCount() > 0);
+  opened = signal(false);
+  public tabData = computed<Tab[]>(() => {
+    const tabs: Tab[] = [{ id: 'profile', iconSrc: 'assets/icon/home.svg', label: 'Home' }];
+    if (this.hasEvents()) {
+      tabs.push({ id: 'events', iconSrc: 'assets/icon/calendar.svg', label: 'Events' });
+    }
+    tabs.push({ id: 'camps', iconSrc: 'assets/icon/camp.svg', label: 'Camps' });
+    if (!this.db.featuresHidden().includes('art')) {
+      tabs.push({ id: 'art', iconSrc: 'assets/icon/art.svg', label: 'Art' });
+    }
+    if (!this.db.featuresHidden().includes('rsl')) {
+      tabs.push({ id: 'rsl', iconName: 'musical-notes-outline', label: 'Music' });
+    }
+    if (this.hasEvents()) {
+      tabs.push({ id: 'favs', iconSrc: 'assets/icon/star.svg', label: 'Favorites', badge: this.favs.newFavs() });
+    }
+    if (!this.db.featuresHidden().includes('messages')) {
+      tabs.push({ id: 'messages', iconName: 'mail-outline', label: 'Messages' });
+    }
+    return tabs;
+  });
+
   ready = false;
   currentTab: string | undefined;
   private activeTab?: HTMLElement;
   public environmentInjector = inject(EnvironmentInjector);
-  public hasEvents = computed(() => this.db.eventCount() > 0);
+  // removed duplicate hasEvents
   constructor() {
     addIcons({ mailOutline, musicalNotesOutline, ellipsisVertical });
     effect(() => {
@@ -161,11 +185,13 @@ export class TabsPage implements OnInit {
   }
 
   ionViewWillLeave() {
+    this.opened.set(false);
     this.propagateToActiveTab('ionViewWillLeave');
   }
 
   ionViewDidLeave() {
     this.propagateToActiveTab('ionViewDidLeave');
+
   }
 
   ionViewWillEnter() {
@@ -174,6 +200,7 @@ export class TabsPage implements OnInit {
 
   ionViewDidEnter() {
     this.propagateToActiveTab('ionViewDidEnter');
+    this.opened.set(true);
   }
 
   private propagateToActiveTab(eventName: string) {
@@ -183,9 +210,10 @@ export class TabsPage implements OnInit {
   }
 
   select(tab: string) {
-    this._change.markForCheck();
     if (tab == this.currentTab) {
       this.ui.setTab(tab);
+    } else {
+      this.router.navigateByUrl(`/tabs/${tab}`);
     }
   }
 }

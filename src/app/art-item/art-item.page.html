@@ -36,7 +36,7 @@
       @if (!art.url) {
       <h1>{{art.name}}</h1>
       } @if (art.url) {
-      <h1 style="color: var(--ion-color-primary)" (click)="open(art.url)">{{art.name}}</h1>
+      <h1 style="color: var(--ion-color-primary)" (click)="open(art.url)" (keyup.enter)="open(art.url)" tabindex="0">{{art.name}}</h1>
       }
     </ion-item>
     @if (art.artist) {

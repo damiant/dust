@@ -9,6 +9,7 @@
         (error)="hideImage.set(true)"
         loading="lazy"
         class="image"
+        [alt]="item().title ?? 'No title'"
         [src]="item()['media:content']?.url"
       />
     </div>
@@ -29,7 +30,7 @@
   <ion-card-content>
     @if (item().avatar) {
       <ion-avatar>
-        <img [src]="item().avatar" />
+        <img alt="Avatar Image" [src]="item().avatar" />
       </ion-avatar>
     }
 

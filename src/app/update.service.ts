@@ -54,8 +54,8 @@ export class UpdateService {
   }
 
   private async presentConfirm(alert: AlertController, message: string): Promise<boolean> {
-    return new Promise(async (resolve) => {
-      const a = await alert.create({
+    return new Promise((resolve) => {
+      alert.create({
         header: 'Confirm',
         message,
         buttons: [
@@ -73,9 +73,7 @@ export class UpdateService {
             },
           },
         ],
-      });
-
-      await a.present();
+      }).then(a => a.present());
     });
   }
 }

@@ -1,7 +1,6 @@
 import { Component, effect, viewChild, inject, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {
-  IonBadge,
   IonButtons,
   IonContent,
   IonHeader,
@@ -27,6 +26,7 @@ import { AlphabeticalScrollBarComponent } from '../alpha/alpha.component';
 import { addIcons } from 'ionicons';
 import { compass, compassOutline } from 'ionicons/icons';
 import { CategoryComponent } from '../category/category.component';
+import { BadgeComponent } from '../badge/badge.component';
 
 interface CampsState {
   camps: Camp[];
@@ -81,13 +81,13 @@ function initialState(): CampsState {
     IonButtons,
     IonContent,
     IonText,
-    IonBadge,
+    BadgeComponent,
     CampComponent,
     SearchComponent,
     CategoryComponent,
     AlphabeticalScrollBarComponent,
-    SortComponent
-],
+    SortComponent,
+  ],
 })
 export class CampsPage {
   public db = inject(DbService);
@@ -180,7 +180,7 @@ export class CampsPage {
     let idx = 0;
     this.vm.alphaIndex = [];
     this.vm.alphaValues = [];
-    for (let camp of this.vm.camps) {
+    for (const camp of this.vm.camps) {
       if (camp.name.charAt(0) != lastChar) {
         lastChar = camp.name.charAt(0);
         this.vm.alphaIndex.push(idx);

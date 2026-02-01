@@ -25,16 +25,7 @@ export type ArtImageStyle = 'top' | 'side' | 'none';
   styleUrls: ['./message-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [FadeOut(500), FadeIn(300)],
-  imports: [
-    IonAvatar,
-    IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonCardSubtitle,
-    IonCardContent,
-    IonText,
-    IonButton
-],
+  imports: [IonAvatar, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonText, IonButton],
 })
 export class MessageCardComponent implements OnInit {
   item = input.required<Item>();

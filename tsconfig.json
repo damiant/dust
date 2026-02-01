@@ -22,6 +22,13 @@
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true
   },
+  "exclude": [
+    "node_modules",
+    "tmp",
+    "www",
+    "dist",
+    ".angular"
+  ],
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,

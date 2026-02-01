@@ -11,7 +11,6 @@ import {
 import { FormsModule } from '@angular/forms';
 import {
   IonActionSheet,
-  IonBadge,
   IonButton,
   IonButtons,
   IonContent,
@@ -47,6 +46,7 @@ import { CalendarService } from '../calendar.service';
 import { ToastController, AlertController } from '@ionic/angular';
 import { MessageComponent } from '../message/message.component';
 import { getTimeZoneOffsetHours } from '../utils/date-utils';
+import { BadgeComponent } from '../badge/badge.component';
 
 enum Filter {
   All = '',
@@ -116,14 +116,14 @@ function initialState(): FavsState {
     IonTitle,
     IonActionSheet,
     IonText,
-    IonBadge,
+    BadgeComponent,
     CampComponent,
     MapModalComponent,
     ArtComponent,
     CategoryComponent,
     SearchComponent,
-    MessageComponent
-],
+    MessageComponent,
+  ],
 })
 export class FavsPage implements OnInit {
   private fav = inject(FavoritesService);
@@ -453,7 +453,7 @@ export class FavsPage implements OnInit {
   private async addReminders() {
     const favs = await this.fav.getFavorites();
 
-    for (let event of favs.privateEvents) {
+    for (const event of favs.privateEvents) {
       const e = new Date(event.start);
       const offset = getTimeZoneOffsetHours(this.db.getTimeZone());
       e.setUTCMinutes(e.getUTCMinutes() + 60);
