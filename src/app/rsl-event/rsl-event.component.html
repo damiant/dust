@@ -88,7 +88,7 @@
   <ion-card-content>
     <div class="rsl-container">
       @for (occurrence of event().occurrences; track occurrence.id) {
-        <div (click)="toggleStar(occurrence)">
+        <div (click)="toggleStar(occurrence)" (keyup.enter)="toggleStar(occurrence)" tabindex="0">
           <ion-text [class.old]="occurrence.old" class="one-line">
             <span class="time">
               @if (dayName()) {

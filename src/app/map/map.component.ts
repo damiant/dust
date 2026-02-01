@@ -592,20 +592,24 @@ export class MapComponent implements OnInit, OnDestroy {
     this.mapResult?.pinUnselected();
   }
 
-  mapClick(event: MouseEvent) {
+  mapClick(event: Event) {
     this.closePopover();
-    let left = event.clientX - 100;
-    if (left < 0) {
-      left = 0;
-    }
-    if (left + 200 > window.innerWidth) {
-      left = window.innerWidth - 200;
-    }
-    let top = event.clientY;
-    if (top + 300 > window.innerHeight) {
-      top = window.innerHeight - 300;
-      if (top < 0) {
-        top = 0;
+    let left = 0;
+    let top = 0;
+    if (event instanceof MouseEvent) {
+      left = event.clientX - 100;
+      if (left < 0) {
+        left = 0;
+      }
+      if (left + 200 > window.innerWidth) {
+        left = window.innerWidth - 200;
+      }
+      top = event.clientY;
+      if (top + 300 > window.innerHeight) {
+        top = window.innerHeight - 300;
+        if (top < 0) {
+          top = 0;
+        }
       }
     }
     this.popover().nativeElement.style.setProperty('left', `${left}px`);

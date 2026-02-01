@@ -137,8 +137,8 @@
   <app-participate></app-participate>
   <app-cache-panel />
   <div class="center text-dim">
-    <p (click)="vm.moreOpen = true">{{ vm.timezone }} {{vm.version}}</p>
+    <p aria-hidden="true" (click)="vm.moreOpen = true">{{ vm.timezone }} {{vm.version}}</p>
   </div>
-  <div (click)="moreClick()" class="pad-top" (click)="vm.hiddenPanel = !vm.hiddenPanel"></div>
+  <div aria-hidden="true" (click)="moreClick()" class="pad-top" (click)="vm.hiddenPanel = !vm.hiddenPanel"></div>
   <div class="pad-top"></div>
 </ion-content>

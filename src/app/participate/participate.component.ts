@@ -75,7 +75,7 @@ export class ParticipateComponent implements OnInit {
     if (token.art.length == 1) {
       return `your art or mutant vehicle`;
     }
-    if ((token.events.length = 1)) {
+    if ((token.events.length === 1)) {
       return `your event`;
     }
     if (token.events.length > 1) {

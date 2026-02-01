@@ -2,7 +2,7 @@
   @if (infoList) {
     @if (infoList.length === 1) {
       @let info = infoList[0];
-      <div style="width: 100%" (click)="link(info.href)">
+      <div style="width: 100%" (click)="link(info.href)" (keyup.enter)="link(info.href)" tabindex="0">
         <b>{{ info.title }}</b
         ><br />{{ info.location }}<br />{{ info.subtitle }}
         <div class="center">
@@ -27,7 +27,7 @@
     } @else if (infoList.length > 1) {
       <div class="row-header">{{ infoList[0].location }}</div>
       @for (info of infoList; track $index) {
-        <div class="row" (click)="link(info.href)">{{ info.title }}</div>
+        <div class="row" (click)="link(info.href)" (keyup.enter)="link(info.href)" tabindex="0">{{ info.title }}</div>
       }
     }
   }
@@ -41,7 +41,7 @@
   message="By enabling geolocation you can see where you are on the map."
 ></app-message>
 
-<div #container [ngClass]="mapClass" (click)="mapClick($event)" [style]="height()" style="width: 100%"></div>
+<div #container [ngClass]="mapClass" (click)="mapClick($event)" (keyup.enter)="mapClick($event)" tabindex="0" [style]="height()" style="width: 100%"></div>
 
 @if (footer) {
   <div [style.paddingBottom.px]="footerPadding()" [ngClass]="isHeader() ? 'header' : 'footer'">

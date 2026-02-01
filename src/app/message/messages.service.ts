@@ -40,20 +40,20 @@ export class MessagesService {
       this.feed.set(data);
     }
     // We now always fetch from messages because notifications appear here too
-    if (inboxEmail || true) {
-      const res = await fetch(`${r2data_dust_events}${datasetId}/messages.json?${Math.random()}`, { method: 'GET' });
 
-      let emailList: Email[] = [];
-      try {
-        emailList = await res.json();
+    const res = await fetch(`${r2data_dust_events}${datasetId}/messages.json?${Math.random()}`, { method: 'GET' });
+
+    let emailList: Email[] = [];
+    try {
+      emailList = await res.json();
       // eslint-disable-next-line no-empty
-      } catch {
-        // Ignore JSON parse errors
-      }
-      await this.cleanupEmail(emailList);
-      await this.db.writeData(datasetId, Names.emails, emailList);
-      this.email.set(emailList);
+    } catch {
+      // Ignore JSON parse errors
     }
+    await this.cleanupEmail(emailList);
+    await this.db.writeData(datasetId, Names.emails, emailList);
+    this.email.set(emailList);
+
   }
 
   public async getMessages(

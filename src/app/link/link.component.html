@@ -4,7 +4,7 @@
   >
 } @else if (type() === 'complex') {
   <ion-card-content>
-    <div (click)="link(url())" [innerHTML]="html()"></div>
+    <div (click)="link(url())" (keyup.enter)="link(url())" tabindex="0" [innerHTML]="html()"></div>
   </ion-card-content>
 } @else {
   <app-cached-img loading="eager" [src]="url()" [alt]="text()"></app-cached-img>

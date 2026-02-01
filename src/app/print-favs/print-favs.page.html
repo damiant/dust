@@ -1,7 +1,7 @@
 <!-- <ion-content  #printSection [fullscreen]="true"> -->
 <!-- <ion-icon name="close-sharp"></ion-icon> -->
 
-<div class="page" [hidden]="vm.hide" (click)="close()">
+<div class="page" [hidden]="vm.hide" (click)="close()" (keyup.enter)="close()" tabindex="0">
   <h2>Events</h2>
   @for (event of vm.events; track event.uid) { @if (event.group) {
   <div class="row">

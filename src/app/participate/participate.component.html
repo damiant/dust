@@ -4,7 +4,7 @@
     <ion-card-content>
       <div class="center" style="padding-top: 0">
         <ion-text class="large" color="medium"
-          ><a (click)="signIn()">{{ cta() }}</a> {{ message() }}</ion-text
+          ><a (click)="signIn()" (keyup.enter)="signIn()" tabindex="0">{{ cta() }}</a> {{ message() }}</ion-text
         >
       </div>
     </ion-card-content>
