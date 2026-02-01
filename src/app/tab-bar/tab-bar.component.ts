@@ -64,6 +64,6 @@ export class TabBarComponent {
 
   select(id: string) {
     this.selected.set(id);
-    this.tabSelected.emit(id);
+    this.tabSelected.emit(id);    
   }
 }
