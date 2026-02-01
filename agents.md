@@ -30,7 +30,7 @@
 - **Native Features**: specific native functionality (Haptics, etc.) should be accessed via Capacitor plugins.
 
 ## Pre-Commit & Quality
-- **Linting**: Use `bun run lint` (it includes the necessary `--max-old-space-size=8192` memory boost).
+- **Linting**: Use `bun run lint`.
 - **Formatting**: Use `bun run format`.
 
 ## Developer Setup
