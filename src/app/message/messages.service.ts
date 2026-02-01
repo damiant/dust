@@ -41,13 +41,14 @@ export class MessagesService {
     }
     // We now always fetch from messages because notifications appear here too
 
-    const res = await fetch(`${r2data_dust_events}${datasetId}/messages.json?${Math.random()}`, { method: 'GET' });
 
     let emailList: Email[] = [];
     try {
+      const res = await fetch(`${r2data_dust_events}${datasetId}/messages.json?${Math.random()}`, { method: 'GET' });
       emailList = await res.json();
       // eslint-disable-next-line no-empty
     } catch {
+      return;
       // Ignore JSON parse errors
     }
     await this.cleanupEmail(emailList);

@@ -264,7 +264,7 @@ export class RslPage {
   }
 
   public eventsTrackBy(index: number, event: RSLEvent) {
-    return event.uid;
+    return `${index}-${event.uid}`;
   }
 
   public searchEvents(value: string) {
@@ -278,6 +278,9 @@ export class RslPage {
         this.vm.day = day.date;
         return day.date;
       }
+    }
+    if (this.vm.days.length == 0) {
+      return 'all';
     }
     this.vm.day = this.vm.days[0].date;
     return this.vm.days[0].date;

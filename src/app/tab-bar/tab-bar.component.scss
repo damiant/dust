@@ -10,12 +10,16 @@
   position: relative;
   transform: translateY(50px);
   opacity: 0;
-  transition: transform 200ms ease-in, opacity 200ms ease-in;
+  transition:
+    transform 200ms ease-in,
+    opacity 200ms ease-in;
 
   &.open {
     transform: translateY(0);
     opacity: 1;
-    transition: transform 200ms ease-out, opacity 200ms ease-out;
+    transition:
+      transform 200ms ease-out,
+      opacity 200ms ease-out;
   }
 }
 
@@ -62,7 +66,6 @@
   button {
     color: inherit;
     background-color: inherit;
-
   }
   .label {
     display: none;
@@ -76,6 +79,9 @@
   }
 
   z-index: 1;
+  @media (max-width: 400px) {
+    margin: 0 0rem;
+  }
 }
 
 .bar.show-labels .tab-item .label {

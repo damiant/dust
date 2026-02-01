@@ -19,7 +19,6 @@
   (!message.read) {
   <app-message-card (read)="markMessageAsRead(message)" [item]="message"></app-message-card>
   } } } @if (unread() <= 0) {
-  <div style="padding: 3rem"></div>
   <div class="center">
     <ion-icon name="mail-open-outline" class="empty-icon"></ion-icon>
     <ion-text class="large">No unread messages</ion-text>
