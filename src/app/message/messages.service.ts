@@ -46,7 +46,10 @@ export class MessagesService {
       let emailList: Email[] = [];
       try {
         emailList = await res.json();
-      } catch {}
+      // eslint-disable-next-line no-empty
+      } catch {
+        // Ignore JSON parse errors
+      }
       await this.cleanupEmail(emailList);
       await this.db.writeData(datasetId, Names.emails, emailList);
       this.email.set(emailList);

@@ -178,10 +178,11 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
   @Input() set offsetSizeCheckInterval(value: NumberInput) {
     this._offsetSizeCheckIntervalSubscription?.unsubscribe();
     this._offsetSizeCheckInterval = coerceNumberProperty(value);
-    this._offsetSizeCheckInterval &&
-      (this._offsetSizeCheckIntervalSubscription = interval(this._offsetSizeCheckInterval)
+    if (this._offsetSizeCheckInterval) {
+      this._offsetSizeCheckIntervalSubscription = interval(this._offsetSizeCheckInterval)
         .pipe(takeUntil(this._cancellationToken$))
-        .subscribe(() => this.checkVisibleLetters()));
+        .subscribe(() => this.checkVisibleLetters());
+    }
   }
   private _offsetSizeCheckInterval = 0;
   private _offsetSizeCheckIntervalSubscription!: Subscription;

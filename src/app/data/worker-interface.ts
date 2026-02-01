@@ -28,8 +28,6 @@ export function registerWorkerClass(workerClass: WorkerClass) {
   addEventListener('message', async ({ data }) => {
     const call: Call = data;
     const response: Response = { id: call.id, data: undefined, ms: performance.now() };
-    if (!environment.production) {
-    }
     try {
       response.data = await workerClass.doWork(call.method, call.arguments);
       response.ms = performance.now() - response.ms;

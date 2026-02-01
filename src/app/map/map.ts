@@ -394,6 +394,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
 
     try {
       console.log((performance as any).memory.usedJSHeapSize);
+    // eslint-disable-next-line no-empty
     } catch {}
   };
   return result;

@@ -203,8 +203,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   private showGeolocationMessage() {
-    if (this.geo.hasShownGeolocationMessage) {
-    } else {
+    if (!this.geo.hasShownGeolocationMessage) {
       this.geo.hasShownGeolocationMessage = true;
       this.showMessage = true;
     }

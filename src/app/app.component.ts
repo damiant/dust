@@ -42,6 +42,7 @@ export class AppComponent implements OnInit {
     this.notificationService.configure();
     try {
       await this.initSentry();
+    // eslint-disable-next-line no-empty
     } catch {}
     App.addListener('appUrlOpen', (event: URLOpenListenerEvent) => {
       console.log('appUrlOpen', event);

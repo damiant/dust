@@ -44,6 +44,11 @@
     flex-shrink: 0;
   }
 
+  button {
+    color: inherit;
+    background-color: inherit;
+
+  }
   .label {
     display: none;
     font-size: 0.9rem;

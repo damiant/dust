@@ -333,6 +333,7 @@ export class IntroPage {
       const result = await this.api.download(this.vm.selected, forceDownload, this.download);
 
       if (result == 'error') {
+        // eslint-disable-next-line no-empty
       }
       // Need to save this otherwise it will think we cant start this event
       this.settingsService.setOffline(this.settingsService.settings.datasetId);
