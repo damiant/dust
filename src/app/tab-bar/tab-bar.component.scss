@@ -34,16 +34,21 @@
   background-color: white;
   border-radius: 10rem;
   transition:
-    left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    top 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
     opacity 0.1s;
   z-index: 0;
+  opacity: 0;
+  inset: 0.5rem;
+  width: calc((100% - 1rem) / var(--tab-count, 1));
+  transform: translateX(calc(var(--selected-index, 0) * 100%));
+
+  &.visible {
+    opacity: 1;
+  }
 }
 
 .tab-item {
-  margin: 0 0.2rem;
+  margin: 0 0rem;
   padding: 0.8rem;
   border-radius: 10rem; // Changed from 50% to 10rem to support labels
   color: white;
@@ -81,10 +86,6 @@
 
   &.selected {
     color: black;
-  }
-
-  @media (max-width: 400px) {
-    margin: 0 0rem;
   }
 }
 

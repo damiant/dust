@@ -1,4 +1,4 @@
-import { Component, input, output, model, viewChildren, ElementRef, computed, ChangeDetectionStrategy, effect, signal, AfterViewInit } from '@angular/core';
+import { Component, input, output, model, computed, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonIcon } from '@ionic/angular/standalone';
 import { BadgeComponent } from '../badge/badge.component';
@@ -24,35 +24,13 @@ export class TabBarComponent {
   selected = model<string | undefined>(undefined);
   tabSelected = output<string>();
 
-  tabItems = viewChildren<ElementRef>('tabItem');
-
   showLabels = computed(() => this.tabs().length <= 3);
 
-  indicatorStyle = computed(() => {
+  selectedIndex = computed(() => {
     const selectedId = this.selected();
     const tabs = this.tabs();
-    const items = this.tabItems();
-    // Force recalculation when opened state changes (for animation)
-    this.opened();
-    this.showLabels();
-
-    if (!selectedId || items.length === 0) {
-      return { opacity: 0 };
-    }
-
-    const index = tabs.findIndex((t) => t.id === selectedId);
-    if (index === -1 || !items[index]) {
-      return { opacity: 0 };
-    }
-
-    const el = items[index].nativeElement as HTMLElement;
-    return {
-      left: `${el.offsetLeft}px`,
-      width: `${el.offsetWidth}px`,
-      height: `${el.offsetHeight}px`,
-      top: `${el.offsetTop}px`,
-      opacity: 1,
-    };
+    if (!selectedId || tabs.length === 0) return -1;
+    return tabs.findIndex((t) => t.id === selectedId);
   });
 
   handleKey(event: any) {
