@@ -19,6 +19,12 @@
   }
 }
 
+@media (prefers-color-scheme: dark) {
+  .bar {
+    border: 2px solid #999;
+  }
+}
+
 .indicator {
   position: absolute;
   background-color: white;
