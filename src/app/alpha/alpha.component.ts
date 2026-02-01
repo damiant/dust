@@ -186,14 +186,14 @@ export class AlphabeticalScrollBarComponent implements AfterViewInit, DoCheck, O
       //insert dots between letters
       alphabet1 = alphabet1.reduce((prev: any, curr: any, i: any) => {
         if (i > 0) {
-          if (this.overflowDivider) prev.push(this.overflowDivider);
+          if (this.overflowDivider()) prev.push(this.overflowDivider());
         }
         prev.push(curr);
         return prev;
       }, []);
       alphabet2 = alphabet2.reduce((prev: any, curr: any, i: any) => {
         if (i > 0) {
-          if (this.overflowDivider) prev.push(this.overflowDivider);
+          if (this.overflowDivider()) prev.push(this.overflowDivider());
         }
         prev.push(curr);
         return prev;
