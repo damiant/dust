@@ -11,7 +11,6 @@ import {
 import { FormsModule } from '@angular/forms';
 import {
   IonActionSheet,
-  IonBadge,
   IonButton,
   IonButtons,
   IonContent,
@@ -47,6 +46,7 @@ import { CalendarService } from '../calendar.service';
 import { ToastController, AlertController } from '@ionic/angular';
 import { MessageComponent } from '../message/message.component';
 import { getTimeZoneOffsetHours } from '../utils/date-utils';
+import { BadgeComponent } from '../badge/badge.component';
 
 enum Filter {
   All = '',
@@ -116,7 +116,7 @@ function initialState(): FavsState {
     IonTitle,
     IonActionSheet,
     IonText,
-    IonBadge,
+    BadgeComponent,
     CampComponent,
     MapModalComponent,
     ArtComponent,

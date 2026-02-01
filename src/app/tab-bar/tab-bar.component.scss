@@ -58,14 +58,19 @@
   min-width: 3rem;
   cursor: pointer;
 
-  ion-icon {
+ion-icon {
     font-size: 1.5rem;
     flex-shrink: 0;
   }
-
   button {
     color: inherit;
     background-color: inherit;
+  }
+  app-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 0.6rem;
   }
   .label {
     display: none;
@@ -78,7 +83,6 @@
     color: black;
   }
 
-  z-index: 1;
   @media (max-width: 400px) {
     margin: 0 0rem;
   }
@@ -92,16 +96,6 @@
   .tab-item .label {
     display: block;
   }
-}
-
-ion-badge {
-  position: absolute;
-  top: 0;
-  right: 0;
-  min-width: 1rem;
-  font-size: 0.6rem;
-  --padding-start: 0.3em;
-  --padding-end: 0.3em;
 }
 
 .contain {

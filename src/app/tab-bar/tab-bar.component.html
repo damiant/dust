@@ -5,7 +5,7 @@
     <div role="button" tabindex="0" #tabItem class="tab-item" [class.selected]="selected() === tab.id" (keydown)="handleKey($event)" (click)="select(tab.id)">
       
       @if (tab.badge && tab.badge > 0) {
-      <ion-badge mode="ios">{{ tab.badge }}</ion-badge>
+      <app-badge>{{ tab.badge }}</app-badge>
       }
       @if (tab.iconName) {
       <ion-icon [name]="tab.iconName" aria-hidden="true"></ion-icon>

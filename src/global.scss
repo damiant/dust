@@ -175,7 +175,11 @@ ion-title {
   -webkit-box-orient: vertical;
 }
 
-ion-badge.pad-right {
+app-badge {
+  display: inline-flex;
+}
+
+.pad-right {
   margin-right: 0.8rem;
 }
 

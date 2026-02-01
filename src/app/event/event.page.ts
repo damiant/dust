@@ -16,7 +16,6 @@ import {
 import { FormsModule } from '@angular/forms';
 import {
   IonBackButton,
-  IonBadge,
   IonButton,
   IonButtons,
   IonContent,
@@ -58,6 +57,7 @@ import { canCreate } from '../map/map';
 import { ScrollResult } from '../map/map-model';
 import { EventChanged, EventsService } from '../events/events.service';
 import { Subscription } from 'rxjs';
+import { BadgeComponent } from '../badge/badge.component';
 
 @Component({
   selector: 'app-event',
@@ -72,7 +72,7 @@ import { Subscription } from 'rxjs';
     IonText,
     IonIcon,
     IonLabel,
-    IonBadge,
+    BadgeComponent,
     IonContent,
     IonList,
     IonButtons,

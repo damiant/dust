@@ -1,7 +1,6 @@
 import { Component, effect, viewChild, inject, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import {
   InfiniteScrollCustomEvent,
-  IonBadge,
   IonButtons,
   IonContent,
   IonHeader,
@@ -27,6 +26,7 @@ import { GeoService } from '../geolocation/geo.service';
 import { AlphabeticalScrollBarComponent } from '../alpha/alpha.component';
 import { SortComponent } from '../sort/sort.component';
 import { CategoryComponent } from '../category/category.component';
+import { BadgeComponent } from '../badge/badge.component';
 
 interface ArtState {
   imageStyle: ArtImageStyle;
@@ -78,7 +78,7 @@ function initialState(): ArtState {
     IonToolbar,
     IonInfiniteScroll,
     IonInfiniteScrollContent,
-    IonBadge,
+    BadgeComponent,
     ArtComponent,
     SearchComponent,
     SortComponent,

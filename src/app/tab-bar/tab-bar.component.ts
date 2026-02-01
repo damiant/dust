@@ -1,6 +1,7 @@
-import { Component, input, output, model, viewChildren, ElementRef, computed } from '@angular/core';
+import { Component, input, output, model, viewChildren, ElementRef, computed, ChangeDetectionStrategy, effect, signal, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonIcon, IonBadge } from '@ionic/angular/standalone';
+import { IonIcon } from '@ionic/angular/standalone';
+import { BadgeComponent } from '../badge/badge.component';
 
 export interface Tab {
   id: string;
@@ -14,7 +15,8 @@ export interface Tab {
   selector: 'app-tab-bar',
   templateUrl: './tab-bar.component.html',
   styleUrls: ['./tab-bar.component.scss'],
-  imports: [CommonModule, IonIcon, IonBadge],
+  imports: [CommonModule, IonIcon, BadgeComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TabBarComponent {
   tabs = input<Tab[]>([]);
@@ -30,7 +32,8 @@ export class TabBarComponent {
     const selectedId = this.selected();
     const tabs = this.tabs();
     const items = this.tabItems();
-    // Dependency on showLabels to trigger recalculation when layout changes
+    // Force recalculation when opened state changes (for animation)
+    this.opened();
     this.showLabels();
 
     if (!selectedId || items.length === 0) {

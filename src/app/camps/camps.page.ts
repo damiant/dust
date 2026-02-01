@@ -1,7 +1,6 @@
 import { Component, effect, viewChild, inject, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {
-  IonBadge,
   IonButtons,
   IonContent,
   IonHeader,
@@ -27,6 +26,7 @@ import { AlphabeticalScrollBarComponent } from '../alpha/alpha.component';
 import { addIcons } from 'ionicons';
 import { compass, compassOutline } from 'ionicons/icons';
 import { CategoryComponent } from '../category/category.component';
+import { BadgeComponent } from '../badge/badge.component';
 
 interface CampsState {
   camps: Camp[];
@@ -81,7 +81,7 @@ function initialState(): CampsState {
     IonButtons,
     IonContent,
     IonText,
-    IonBadge,
+    BadgeComponent,
     CampComponent,
     SearchComponent,
     CategoryComponent,
