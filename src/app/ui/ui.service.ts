@@ -128,8 +128,9 @@ export class UiService {
 
   public async home() {
     if (Capacitor.isNativePlatform()) {
-      await StatusBar.setStyle({ style: Style.Dark });
-      await this.setStatusBarBackgroundColor();
+      await this.setStatusBarBasedOnTheme();
+      // await StatusBar.setStyle({ style: Style.Dark });
+      // await this.setStatusBarBackgroundColor();
     }
 
     this.navCtrl.navigateRoot('/', { animated: false });
