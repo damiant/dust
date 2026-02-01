@@ -341,9 +341,9 @@ export class IntroPage {
       return true;
     } finally {
       this.vm.downloading = false;
-      this.download.set({ status: '', firstDownload: false });
-      return false;
+      this.download.set({ status: '', firstDownload: false });      
     }
+    return false;
   }
 
   private async preventAutoStart() {
