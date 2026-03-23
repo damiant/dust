@@ -48,7 +48,7 @@ async function mapImage(map: MapModel, disposables: any[]): Promise<Mesh | Group
   map.width = image.width;
   map.height = image.height;
 
-  const material = new MeshBasicMaterial({ map: texture });
+  const material = new MeshBasicMaterial({ map: texture, side: DoubleSide });
   const geometry = new PlaneGeometry(image.width, image.height);
   const mesh = new Mesh(geometry, material);
   mesh.rotation.x = -Math.PI / 2;
@@ -122,10 +122,20 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
   let snapImage: string | undefined = undefined;
   const scene = new Scene();
   scene.background = new Color(map.backgroundColor);
-  scene.add(await mapImage(map, disposables));
+  try {
+    scene.add(await mapImage(map, disposables));
+  } catch (error) {
+    console.error('Failed to load map image:', error);
+    depth--;
+    throw error;
+  }
 
   const w = container.clientWidth;
   const h = container.clientHeight;
+
+  if (w === 0 || h === 0) {
+    console.error('Container has zero dimensions! Map will not render.');
+  }
 
   // Create local renderer instance instead of global
   const renderer = new WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
@@ -151,6 +161,13 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
   container.appendChild(renderer.domElement);
 
   const renderFn = () => {
+    // Prevent NaN camera positions that break rendering
+    if (!isFinite(camera.position.x) || !isFinite(camera.position.y) || !isFinite(camera.position.z)) {
+      camera.position.set(0, map.height / targetZoomLevel, 20);
+      controls.target.set(0, 0, 0);
+      camera.updateProjectionMatrix();
+    }
+
     const delta = clock.getDelta();
     for (const mixer of mixers) {
       mixer.update(delta);
@@ -183,16 +200,38 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
 
   const mixers: AnimationMixer[] = [];
   const clock = new Clock();
-  const font = await loadFont('assets/helvetiker_regular.typeface.json');
+  let font;
+  try {
+    font = await loadFont('assets/helvetiker_regular.typeface.json');
+  } catch (error) {
+    console.error('Failed to load font, map will render without text:', error);
+    // Create a dummy font object so we can continue
+    font = null;
+  }
   const raycaster = new Raycaster();
   const mouse = new Vector2();
 
-  const p = await createScene(map, font, scene, mixers, disposables, renderFn, result);
+  let p;
+  try {
+    p = await createScene(map, font, scene, mixers, disposables, renderFn, result);
+  } catch (error) {
+    console.error('Failed to create scene:', error);
+    depth--;
+    throw error;
+  }
 
   function centerOn(pin: Mesh | Group, zoom: number = 4) {
+    // Validate pin position before centering
+    if (!isFinite(pin.position.x) || !isFinite(pin.position.z)) {
+      return;
+    }
     const z = pin.position.z + map.height / zoom;
-    camera.position.set(pin.position.x, map.height / zoom, z + 20);
-    controls.target.set(pin.position.x, 0, z);
+    const x = pin.position.x;
+    const y = map.height / zoom;
+    if (isFinite(x) && isFinite(y) && isFinite(z)) {
+      camera.position.set(x, y, z + 20);
+      controls.target.set(x, 0, z);
+    }
   }
 
   // Positions the camera over the pin
@@ -607,29 +646,53 @@ async function addPin(
 }
 
 function loadFont(name: string): Promise<any> {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const loader = new FontLoader();
-    loader.load(name, function (font) {
-      resolve(font);
-    });
+    loader.load(
+      name,
+      function (font) {
+        resolve(font);
+      },
+      undefined,
+      function (error) {
+        console.error(`Failed to load font: ${name}`, error);
+        reject(new Error(`Failed to load font: ${name}`));
+      }
+    );
   });
 }
 
 async function loadSVG(name: string): Promise<SVGResult> {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const loader = new SVGLoader();
-    loader.load(name, function (svg) {
-      resolve(svg);
-    });
+    loader.load(
+      name,
+      function (svg) {
+        resolve(svg);
+      },
+      undefined,
+      function (error) {
+        console.error(`Failed to load SVG: ${name}`, error);
+        reject(new Error(`Failed to load SVG: ${name}`));
+      }
+    );
   });
 }
 
 async function loadTexture(name: string): Promise<Texture> {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const loader = new TextureLoader();
-    loader.load(name, function (svg) {
-      resolve(svg);
-    });
+    loader.load(
+      name,
+      function (texture) {
+        resolve(texture);
+      },
+      undefined,
+      function (error) {
+        console.error(`Failed to load texture: ${name}`, error);
+        reject(new Error(`Failed to load map image: ${name}`));
+      }
+    );
   });
 }
 
@@ -673,6 +736,17 @@ async function addSVG(
 }
 
 function addText(message: string, font: any, size: number, disposables: MapDisposable[]): Mesh {
+  // Return empty mesh if font is not available
+  if (!font) {
+    const geometry = new PlaneGeometry(size, size);
+    const material = new MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0 });
+    const text = new Mesh(geometry, material);
+    text.position.y = 2;
+    text.rotation.x = -Math.PI / 2;
+    disposables.push(geometry);
+    disposables.push(material);
+    return text;
+  }
   const shapes = font.generateShapes(message, size * 0.7);
   const geometry = new ShapeGeometry(shapes);
   geometry.computeBoundingBox();
