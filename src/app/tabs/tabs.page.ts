@@ -42,6 +42,7 @@ export class TabsPage implements OnInit {
   private geo = inject(GeoService);
   public hasEvents = computed(() => this.db.eventCount() > 0);
   opened = signal(false);
+  keyboardOpen = signal(false);
   public tabData = computed<Tab[]>(() => {
     const tabs: Tab[] = [{ id: 'profile', iconSrc: 'assets/icon/home.svg', label: 'Home' }];
     if (this.hasEvents()) {
@@ -130,6 +131,14 @@ export class TabsPage implements OnInit {
       if (Capacitor.getPlatform() !== 'web') {
         await Keyboard.hide();
       }
+    });
+
+    Keyboard.addListener('keyboardDidShow', () => {
+      this.keyboardOpen.set(true);
+    });
+
+    Keyboard.addListener('keyboardDidHide', () => {
+      this.keyboardOpen.set(false);
     });
 
     await Network.addListener('networkStatusChange', (status) => {

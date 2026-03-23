@@ -1,0 +1,1 @@
+var i=["Art","Mutant Vehicle"];function a(e){let t=e.replace("u-","");return r(t)}function r(e){let t=0;for(let n=0;n<e.length;n++)t=(t<<5)-t+e.charCodeAt(n),t|=0;return(Math.abs(t)%1e4).toString().padStart(4,"0")}export{i as a,a as b};
