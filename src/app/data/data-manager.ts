@@ -186,6 +186,7 @@ export class DataManager implements WorkerClass {
     return {
       events: this.events.length,
       art: this.art.length,
+      artPlaced: this.countPlacedArtLocations(this.art),
       pins: this.pins.length,
       camps: this.camps.length,
       rsl: this.rslEvents.length,
@@ -582,6 +583,27 @@ export class DataManager implements WorkerClass {
     return locationStringToPin(camp.location_string, this.mapRadius, camp.facing);
   }
 
+  private countPlacedArtLocations(artList: Art[]): number {
+    let count = 0;
+    for (const art of artList) {
+      const fromLocationString = !!locationStringToPin(art.location_string ?? '', this.mapRadius, undefined);
+      if (fromLocationString) {
+        count++;
+        continue;
+      }
+
+      const pin = art.pin as any;
+      if (!!pin && ((pin.lat && (pin.lng || pin.long)) || (Number.isFinite(pin.x) && Number.isFinite(pin.y)))) {
+        if (pin.x === 0 && pin.y === 0) {
+        } else {
+          count++;
+        }
+      }
+    }
+
+    return count;
+  }
+
   private log(message: string) {
     this.logs.push(message);
   }
@@ -606,6 +628,7 @@ export class DataManager implements WorkerClass {
         events: this.events.length,
         camps: this.camps.length,
         art: this.art.length,
+        artPlaced: this.countPlacedArtLocations(this.art),
         pins: this.pins.length,
         links: this.links.length,
         rsl: this.rslEvents.length,
