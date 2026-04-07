@@ -29,7 +29,7 @@ export class MessagesService {
     datasetId: string,
     rssFeed: string | undefined,
     mastodonHandle: string | undefined,
-    inboxEmail: boolean,
+    _inboxEmail: boolean,
   ): Promise<void> {
     const url = mastodonHandle ? this.mastodonURL(mastodonHandle) : this.rssFeedUrl(rssFeed);
     if (url) {

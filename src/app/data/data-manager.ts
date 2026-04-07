@@ -595,6 +595,7 @@ export class DataManager implements WorkerClass {
       const pin = art.pin as any;
       if (!!pin && ((pin.lat && (pin.lng || pin.long)) || (Number.isFinite(pin.x) && Number.isFinite(pin.y)))) {
         if (pin.x === 0 && pin.y === 0) {
+          // Skip pins at origin (0,0)
         } else {
           count++;
         }
