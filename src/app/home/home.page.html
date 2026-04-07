@@ -101,7 +101,7 @@
       imgSrc="assets/icon/toilet.svg"
     ></app-tile>
 
-    @if (!db.artLocationsHidden() && !db.featuresHidden().includes('art') && this.vm.hasMapURI) {
+    @if (!db.artLocationsHidden() && !db.featuresHidden().includes('art') && this.vm.hasMapURI && this.vm.hasArt) {
     <app-tile title="Art" routerLink="/map/art" imgSrc="assets/icon/art.svg"></app-tile>
     }
     <app-tile [hidden]="!vm.hasIce" title="Ice" routerLink="/map/ice" imgSrc="assets/icon/ice.svg"></app-tile>

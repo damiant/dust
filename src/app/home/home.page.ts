@@ -94,6 +94,7 @@ interface HomeState {
   hasRestrooms: boolean;
   hasIce: boolean;
   hasMapURI: boolean;
+  hasArt: boolean;
   hasFriends: boolean;
   version: string;
   timezone: string;
@@ -172,6 +173,7 @@ export class HomePage implements OnInit {
     hasRestrooms: true,
     hasIce: true,
     hasMapURI: true,
+    hasArt: true,
     hasFriends: true,
     version: '',
     timezone: '',
@@ -249,6 +251,17 @@ export class HomePage implements OnInit {
     this.vm.hasRestrooms = this.hasValue(summary?.pinTypes, 'Restrooms');
     this.vm.hasMedical = this.hasValue(summary?.pinTypes, 'Medical');
     this.vm.hasIce = this.hasValue(summary?.pinTypes, 'Ice');
+    this.vm.hasArt = (summary?.artPlaced ?? summary?.art ?? 0) > 0;
+    this.vm.hasMapURI = await this.settings.hasMapURI();
+    const artLocationsVisible = !this.db.artLocationsHidden();
+    const artFeatureVisible = !this.db.featuresHidden().includes('art');
+    const hasArtData = this.vm.hasArt;
+    const hasMap = this.vm.hasMapURI;
+    const v = artLocationsVisible && artFeatureVisible && hasMap && hasArtData;
+    console.log(
+      `Art tile gates => visible=${v}, artLocationsVisible=${artLocationsVisible}, artFeatureVisible=${artFeatureVisible}, hasMapURI=${hasMap}, hasArtData=${hasArtData}, artPlaced=${summary?.artPlaced}, art=${summary?.art}, hiddenFeatures=${this.db.featuresHidden()}`,
+    );
+
     this.vm.mapPin = this.getMapPin();
     this.vm.longEvents = this.settings.settings.longEvents;
     this.vm.eventIsHappening = !this.db.eventHasntBegun() && !this.db.isHistorical();
@@ -257,7 +270,6 @@ export class HomePage implements OnInit {
     this.vm.endDate = this.dateISO(this.db.selectedDataset().end, 7);
     this.vm.highlightedDates = daysHighlighted(this.db.selectedDataset().start, this.db.selectedDataset().end);
     this.vm.locationEnabled = this.settings.settings.locationEnabled == LocationEnabledStatus.Enabled;
-    this.vm.hasMapURI = await this.settings.hasMapURI();
     if (Capacitor.isNativePlatform()) {
       await StatusBar.hide();
     }

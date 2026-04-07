@@ -422,6 +422,7 @@ export interface DatasetResult {
   events: number;
   camps: number;
   art: number;
+  artPlaced?: number;
   pins: number;
   links: number;
   rsl: number;

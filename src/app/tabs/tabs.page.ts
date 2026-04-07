@@ -133,6 +133,7 @@ export class TabsPage implements OnInit {
       }
     });
 
+    if (Capacitor.getPlatform() !== 'web') {
     Keyboard.addListener('keyboardDidShow', () => {
       this.keyboardOpen.set(true);
     });
@@ -140,6 +141,7 @@ export class TabsPage implements OnInit {
     Keyboard.addListener('keyboardDidHide', () => {
       this.keyboardOpen.set(false);
     });
+  }
 
     await Network.addListener('networkStatusChange', (status) => {
       this.db.networkStatus.set(status.connectionType);
