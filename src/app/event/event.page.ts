@@ -173,6 +173,7 @@ export class EventPage implements OnInit, OnDestroy {
 
       this.back.set(tmp[1]);
       this.event = await this.db.findEvent(id);
+      if (!this.event) return;
       this.mapTitle = this.event.camp;
       this.mapSubtitle = this.event.location;
       const camp = this.event?.hosted_by_camp ? await this.db.findCamp(this.event.hosted_by_camp) : undefined;
