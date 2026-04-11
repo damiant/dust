@@ -442,7 +442,7 @@ export class DataManager implements WorkerClass {
         }
       }
 
-      if (locationsHidden.art) {
+      if (locationsHidden.art && art.art_type !== 'Mutant Vehicle') {
         art.location_string = locationsHidden.artMessage;
       }
     }

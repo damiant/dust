@@ -168,7 +168,7 @@ export class ArtItemPage implements OnInit {
   }
 
   map() {
-    if (this.db.artLocationsHidden()) {
+    if (this.db.artLocationsHidden() && this.art?.art_type !== 'Mutant Vehicle') {
       this.ui.presentDarkToast(
         `Art locations cannot be displayed yet. ${this.db.locationsHidden().artMessage}.`,
         this.toastController,
