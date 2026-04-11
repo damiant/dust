@@ -1,0 +1,15 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "nexus.concepts.dust",
+      "sha256_cert_fingerprints": [
+        "FA:96:A2:1E:62:D2:5E:46:EE:0D:B4:64:30:4F:A3:4E:AA:94:6C:E1:CC:F3:E3:E1:98:F7:BE:FC:B5:94:54:E0",
+        "93:0A:5D:E9:26:FF:DE:64:16:AF:17:96:C2:13:1F:F4:7D:F7:B1:FC:5E:2D:33:FE:EB:98:B4:E7:53:9E:A1:65"
+      ]
+    }
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "DCC5P9FAQ3.nexus.concepts.dust",
+        "paths": ["*"]
+      }
+    ]
+  }
+}
