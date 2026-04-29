@@ -1,4 +1,8 @@
 ## Changes
+## 2.122
+
+- Fix in Admin App for map uploads
+
 ## 2.117
 
 - New custom floating tab bar with modern design and sliding indicator
