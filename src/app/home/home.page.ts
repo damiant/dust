@@ -356,22 +356,26 @@ export class HomePage implements OnInit {
 
   async share() {
     await this.dismiss();
+    try {
     await Share.share({
       title: 'Dust in Curious Places',
       text: 'Check out the dust app for Burning Man events, art and theme camps. ',
       url: 'https://dust.events/',
       dialogTitle: 'Share dust with friends',
     });
+    } catch (e: any) { if (e?.message !== 'Share canceled') throw e; }
   }
 
   async shareEvent() {
     await this.dismiss();
+    try {
     await Share.share({
       title: `${this.db.selectedDataset().title}`,
       text: `${this.db.selectedDataset().title} - ${this.db.selectedDataset().region}. ${this.db.eventInfo()}`,
       url: `https://${this.db.selectedDataset().id}.dust.events/home/`,
       dialogTitle: `Share ${this.db.selectedDataset().title} with friends`,
     });
+    } catch (e: any) { if (e?.message !== 'Share canceled') throw e; }
   }
 
   async enableLiveMap() {
