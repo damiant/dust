@@ -1,9 +1,14 @@
-<ion-modal [isOpen]="show()" (didDismiss)="close()" [initialBreakpoint]="0.6" [breakpoints]="[0, 0.6, 0.75]">
+<ion-modal [isOpen]="show()" (didDismiss)="close()">
   <ng-template>
     <app-map [isHeader]="true" [points]="points()"></app-map>
     <div class="float">
       <h2>{{ title() }}</h2>
       <ion-text>{{ subtitle() }}</ion-text>
     </div>
+    <ion-fab class="close-fab">
+      <ion-fab-button color="dark" size="small" (click)="close()">
+        <ion-icon name="close"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
   </ng-template>
 </ion-modal>
