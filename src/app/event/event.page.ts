@@ -172,28 +172,29 @@ export class EventPage implements OnInit, OnDestroy {
       const id = tmp[0];
 
       this.back.set(tmp[1]);
-      this.event = await this.db.findEvent(id);
-      if (!this.event) return;
-      this.mapTitle = this.event.camp;
-      this.mapSubtitle = this.event.location;
-      const camp = this.event?.hosted_by_camp ? await this.db.findCamp(this.event.hosted_by_camp) : undefined;
-      const mapPoint = toMapPoint(this.event.location, {
-        title: this.event.title,
-        location: this.event.location,
-        subtitle: this.event.camp,
-        imageUrl: this.event.imageUrl ?? camp?.imageUrl,
+      const event = await this.db.findEvent(id);
+      if (!event) return;
+      this.event = event;
+      this.mapTitle = event.camp;
+      this.mapSubtitle = event.location;
+      const camp = event.hosted_by_camp ? await this.db.findCamp(event.hosted_by_camp) : undefined;
+      const mapPoint = toMapPoint(event.location, {
+        title: event.title,
+        location: event.location,
+        subtitle: event.camp,
+        imageUrl: event.imageUrl ?? camp?.imageUrl,
       });
-      if (this.event.pin) {
-        mapPoint.x = this.event.pin.x;
-        mapPoint.y = this.event.pin.y;
+      if (event.pin) {
+        mapPoint.x = event.pin.x;
+        mapPoint.y = event.pin.y;
       } else {
         mapPoint.gps = await this.db.getMapPointGPS(mapPoint);
       }
       this.mapPoints = [mapPoint];
       const selectedDay = this.db.selectedDay();
-      const occurrences = JSON.parse(JSON.stringify(this.event.occurrence_set));
+      const occurrences = JSON.parse(JSON.stringify(event.occurrence_set));
       const isNoDate = sameDay(selectedDay, noDate());
-      this.event.occurrence_set = occurrences.filter((o: any) => {
+      event.occurrence_set = occurrences.filter((o: any) => {
         const isSelectedDay = dateMatches(selectedDay, o);
         if (!isNoDate && !isSelectedDay) {
           if (this.filterDays()) {
@@ -204,10 +205,11 @@ export class EventPage implements OnInit, OnDestroy {
       });
       if (isNoDate) {
         if (occurrences.every((o: any) => o.old)) {
-          this.event.occurrence_set = occurrences;
+          event.occurrence_set = occurrences;
         }
       }
-      await this.fav.setEventStars(this.event);
+      await this.fav.setEventStars(event);
+      this.event = event;
     } finally {
       this.ready = true;
       this._change.markForCheck();
