@@ -125,7 +125,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
   try {
     scene.add(await mapImage(map, disposables));
   } catch (error) {
-    console.error('Failed to load map image:', error);
+    console.error(`Failed to load map image for "${map.name}":`, error);
     depth--;
     throw error;
   }

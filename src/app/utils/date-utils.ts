@@ -1,15 +1,21 @@
 import { addDays, isAfter } from './utils';
 
 export function daysHighlighted(start: string, end: string): any[] {
-  const result: any[] = [];
-  let day = new Date(start);
-  const endDate = new Date(end);
-  while (!isAfter(day, endDate)) {
-    const dayStr = day.toISOString().substring(0, 10);
-    result.push({ date: dayStr, textColor: 'var(--ion-color-primary)' });
-    day = addDays(day, 1);
+  try {
+    const result: any[] = [];
+    let day = new Date(start);
+    const endDate = new Date(end);
+    if (isNaN(day.getTime()) || isNaN(endDate.getTime())) return result;
+    while (!isAfter(day, endDate)) {
+      const dayStr = day.toISOString().substring(0, 10);
+      result.push({ date: dayStr, textColor: 'var(--ion-color-primary)' });
+      day = addDays(day, 1);
+    }
+    return result;
+  } catch (error) {
+    console.error('daysHighlighted error', { start, end }, error);
+    throw error;
   }
-  return result;
 }
 
 export function getTimeInTimeZone(epoch: number, timeZone: string): string {

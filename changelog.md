@@ -1,4 +1,8 @@
 ## Changes
+## 2.123
+
+- Map model for art improved
+
 ## 2.122
 
 - Fix in Admin App for map uploads

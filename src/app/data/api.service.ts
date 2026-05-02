@@ -281,15 +281,25 @@ export class ApiService {
   }
 
   public async registerToken(token: string, dataset: string): Promise<boolean> {
-    const payload = { token, festival: dataset };
-    const res = await fetch(`https://api.dust.events/pushtokens`, { method: 'POST', body: JSON.stringify(payload) });
-    return res.status == 200;
+    try {
+      const payload = { token, festival: dataset };
+      const res = await fetch(`https://api.dust.events/pushtokens`, { method: 'POST', body: JSON.stringify(payload) });
+      return res.status == 200;
+    } catch (err) {
+      console.error(`Failed to register token`, err);
+      return false;
+    }
   }
 
   public async unregisterToken(token: string, dataset: string): Promise<boolean> {
-    const payload = { token, festival: dataset };
-    const res = await fetch(`https://api.dust.events/pushtokens`, { method: 'DELETE', body: JSON.stringify(payload) });
-    return res.status == 200;
+    try {
+      const payload = { token, festival: dataset };
+      const res = await fetch(`https://api.dust.events/pushtokens`, { method: 'DELETE', body: JSON.stringify(payload) });
+      return res.status == 200;
+    } catch (err) {
+      console.error(`Failed to unregister token`, err);
+      return false;
+    }
   }
 
   public async hasEverDownloaded(selected: Dataset) {

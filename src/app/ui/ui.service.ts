@@ -43,7 +43,11 @@ export class UiService {
   }
 
   public async share(options: ShareOptions) {
-    await Share.share(options);
+    try {
+      await Share.share(options);
+    } catch (e: any) {
+      if (e?.message !== 'Share canceled') throw e;
+    }
   }
 
   public async shareFile(options: ShareFileOptions) {

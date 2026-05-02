@@ -112,6 +112,10 @@ export class ArtItemPage implements OnInit {
     const id = tmp[0];
     this.backText = tmp[1];
     this.art = await this.db.findArt(id);
+    if (!this.art) {
+      throw new Error('Art not found: ' + id);
+      return;
+    }
     this.mapTitle = this.art.name;
     this.hometown = this.art.hometown ? `(${this.art.hometown})` : '';
     this.mapSubtitle = this.art.location_string!;

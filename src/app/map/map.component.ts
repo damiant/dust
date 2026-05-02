@@ -390,6 +390,7 @@ export class MapComponent implements OnInit, OnDestroy {
     }
 
     const map: MapModel = {
+      name: this.db.selectedDataset().name,
       image: this.src, // 'assets/map2.webp',
       width: 0,
       height: 0,

@@ -1,3 +1,9 @@
+ion-modal {
+  --height: 95%;
+  --border-radius: 16px 16px 0 0;
+  align-items: flex-end;
+}
+
 .float {
   position: absolute;
   padding: 2rem;
@@ -7,6 +13,9 @@ app-map {
   height: 100%;
 }
 
-ion-fab {
-  padding-top: 2rem;
+.close-fab {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 10;
 }
