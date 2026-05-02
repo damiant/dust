@@ -1,6 +1,7 @@
 import { AddPinResult } from './map';
 
 export interface MapModel {
+  name: string;
   image: string;
   width: number;
   height: number;
