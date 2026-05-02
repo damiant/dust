@@ -374,7 +374,7 @@ export class IntroPage {
       // This can happen if offline and just need to launch
     }
     console.log(`Starting.....`);
-    if (!isWhiteSpace(this.vm.selected.pin)) {
+    if (!isWhiteSpace(this.vm.selected?.pin)) {
       if (!(await this.verifyPin())) {
         await this.preventAutoStart();
         return;
