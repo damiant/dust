@@ -1,4 +1,9 @@
 ## Changes
+## 2.124
+
+- Updated admin app with mutant vehicle registration options
+- Admin app scheduling improvements with time slot management
+
 ## 2.123
 
 - Map model for art improved
