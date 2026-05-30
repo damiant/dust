@@ -76,8 +76,12 @@ export class RemindersComponent implements OnInit {
     }
     const titles: string[] = [];
     let count = 0;
+    const skipped = shifts.filter((s) => s.shift_end * 1000 <= Date.now()).length;
     const timeZone = this.db.getTimeZone();
     for (const shift of shifts) {
+      if (shift.shift_end * 1000 <= Date.now()) {
+        continue;
+      }
       id++;
       const start = getTimeInTimeZone(shift.shift_start * 1000, timeZone);
       const end = getTimeInTimeZone(shift.shift_end * 1000, timeZone);
@@ -101,7 +105,10 @@ export class RemindersComponent implements OnInit {
       count++;
     }
     this.update();
-    this.ui.presentDarkToast(`${count} reminders added for shifts.`, this.toastController);
+    this.ui.presentDarkToast(
+      `${count} reminders added for shifts.${skipped ? ` ${skipped} past shift${skipped === 1 ? '' : 's'} skipped.` : ''}`,
+      this.toastController,
+    );
   }
 
   async addReminder(event?: Reminder) {

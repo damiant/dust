@@ -1,4 +1,8 @@
 ## Changes
+## 2.125
+
+- Filter reminders from Volunteeripate to exclude previous years shifts
+
 ## 2.124
 
 - Updated admin app with mutant vehicle registration options
