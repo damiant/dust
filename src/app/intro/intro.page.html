@@ -48,7 +48,7 @@
         loadingImage="./assets/busy-img.png"
         (loaded)="vm.cardLoaded[card.id] = true"
         [loading]="'eager'"
-        [ngClass]="(vm.selected?.id === card.id) ? 'select ' + vm.selected?.class : 'unselect'"
+        [ngClass]="(vm.selected?.id === card.id) ? 'select ' + $safeNavigationMigration(vm.selected?.class) : 'unselect'"
         [src]="card.imageUrl"
       />
       <p [ngClass]="!vm.cardLoaded[card.id] ? 'busy' : ''" aria-hidden="true">{{card.title}}</p>

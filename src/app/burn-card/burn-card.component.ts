@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { Dataset } from '../data/models';
 import { CommonModule } from '@angular/common';
@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-burn-card',
   templateUrl: './burn-card.component.html',
   styleUrls: ['./burn-card.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CommonModule, CachedImgComponent],
 })
 export class BurnCardComponent {

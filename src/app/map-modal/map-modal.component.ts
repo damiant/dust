@@ -1,4 +1,4 @@
-import { Component, input, model, output } from '@angular/core';
+import { Component, input, model, output, ChangeDetectionStrategy, linkedSignal } from '@angular/core';
 import { MapComponent } from '../map/map.component';
 import { MapPoint } from '../data/models';
 import { IonFab, IonFabButton, IonIcon, IonModal, IonText } from '@ionic/angular/standalone';
@@ -9,13 +9,15 @@ import { close } from 'ionicons/icons';
   selector: 'app-map-modal',
   templateUrl: './map-modal.component.html',
   styleUrls: ['./map-modal.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MapComponent, IonModal, IonText, IonFab, IonFabButton, IonIcon],
 })
 export class MapModalComponent {
   constructor() {
     addIcons({ close });
   }
-  show = model(false);
+  showInput = input(false, { alias: 'show' });
+  show = linkedSignal(this.showInput);
   title = input('');
   subtitle = input('');
   showChange = output<boolean>();

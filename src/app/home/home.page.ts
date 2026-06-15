@@ -1,4 +1,14 @@
-import { Component, OnInit, effect, viewChild, inject, WritableSignal, signal, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  effect,
+  viewChild,
+  inject,
+  WritableSignal,
+  signal,
+  ChangeDetectorRef,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -106,6 +116,7 @@ interface HomeState {
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     IonLoading,
     IonModal,
@@ -357,25 +368,29 @@ export class HomePage implements OnInit {
   async share() {
     await this.dismiss();
     try {
-    await Share.share({
-      title: 'Dust in Curious Places',
-      text: 'Check out the dust app for Burning Man events, art and theme camps. ',
-      url: 'https://dust.events/',
-      dialogTitle: 'Share dust with friends',
-    });
-    } catch (e: any) { if (e?.message !== 'Share canceled') throw e; }
+      await Share.share({
+        title: 'Dust in Curious Places',
+        text: 'Check out the dust app for Burning Man events, art and theme camps. ',
+        url: 'https://dust.events/',
+        dialogTitle: 'Share dust with friends',
+      });
+    } catch (e: any) {
+      if (e?.message !== 'Share canceled') throw e;
+    }
   }
 
   async shareEvent() {
     await this.dismiss();
     try {
-    await Share.share({
-      title: `${this.db.selectedDataset().title}`,
-      text: `${this.db.selectedDataset().title} - ${this.db.selectedDataset().region}. ${this.db.eventInfo()}`,
-      url: `https://${this.db.selectedDataset().id}.dust.events/home/`,
-      dialogTitle: `Share ${this.db.selectedDataset().title} with friends`,
-    });
-    } catch (e: any) { if (e?.message !== 'Share canceled') throw e; }
+      await Share.share({
+        title: `${this.db.selectedDataset().title}`,
+        text: `${this.db.selectedDataset().title} - ${this.db.selectedDataset().region}. ${this.db.eventInfo()}`,
+        url: `https://${this.db.selectedDataset().id}.dust.events/home/`,
+        dialogTitle: `Share ${this.db.selectedDataset().title} with friends`,
+      });
+    } catch (e: any) {
+      if (e?.message !== 'Share canceled') throw e;
+    }
   }
 
   async enableLiveMap() {

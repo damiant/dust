@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { MapComponent } from '../map/map.component';
@@ -19,6 +19,7 @@ import {
   selector: 'app-fav-map',
   templateUrl: './fav-map.page.html',
   styleUrls: ['./fav-map.page.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FormsModule,
     MapComponent,

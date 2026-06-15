@@ -1,4 +1,4 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, ChangeDetectionStrategy } from '@angular/core';
 import { IonCard, IonCardHeader, IonItem, IonCardTitle } from '@ionic/angular/standalone';
 import { Event } from '../data/models';
 import { RouterModule } from '@angular/router';
@@ -14,6 +14,7 @@ interface Item {
   selector: 'app-events-card',
   templateUrl: './events-card.component.html',
   styleUrls: ['./events-card.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [IonCardTitle, IonItem, CommonModule, IonCardHeader, IonCard, RouterModule],
 })
 export class EventsCardComponent {

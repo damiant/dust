@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { IonFabButton, IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { arrowForwardOutline, stop } from 'ionicons/icons';
@@ -7,6 +7,7 @@ import { arrowForwardOutline, stop } from 'ionicons/icons';
   selector: 'app-card-header',
   templateUrl: './card-header.component.html',
   styleUrls: ['./card-header.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [IonFabButton, IonIcon],
 })
 export class CardHeaderComponent {

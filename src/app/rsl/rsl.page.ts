@@ -1,4 +1,4 @@
-import { Component, effect, viewChild, inject, ChangeDetectorRef } from '@angular/core';
+import { Component, effect, viewChild, inject, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import {
@@ -75,6 +75,7 @@ function initialState(): RSLState {
   selector: 'app-rsl',
   templateUrl: './rsl.page.html',
   styleUrls: ['./rsl.page.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FormsModule,
     RslEventComponent,

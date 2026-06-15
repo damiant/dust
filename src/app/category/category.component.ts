@@ -1,4 +1,4 @@
-import { Component, input, model, output } from '@angular/core';
+import { Component, input, model, output, ChangeDetectionStrategy, linkedSignal } from '@angular/core';
 import {
   IonButton,
   IonContent,
@@ -15,6 +15,7 @@ import { chevronDown } from 'ionicons/icons';
   selector: 'app-category',
   templateUrl: './category.component.html',
   styleUrls: ['./category.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [IonItem, IonButton, IonPopover, IonContent, IonRadioGroup, IonRadio, IonIcon],
 })
 export class CategoryComponent {
@@ -24,9 +25,11 @@ export class CategoryComponent {
   ];
   id = input('');
   allTitle = input<string>('');
-  category = model<string>('');
+  categoryInput = input<string>('', { alias: 'category' });
+  category = linkedSignal(this.categoryInput);
   categories = input<string[]>([]);
-  sortType = model<string>('alpha');
+  sortTypeInput = input<string>('alpha', { alias: 'sortType' });
+  sortType = linkedSignal(this.sortTypeInput);
   showSortBy = input<boolean>(false);
   categoryChange = output<string>();
   sortTypeChange = output<string>();
