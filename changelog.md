@@ -1,4 +1,8 @@
 ## Changes
+## 2.126
+
+- Upgrade to Angular 22
+
 ## 2.125
 
 - Filter reminders from Volunteeripate to exclude previous years shifts
