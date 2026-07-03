@@ -1,4 +1,13 @@
-import { ChangeDetectorRef, Component, inject, input, OnInit, output, viewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  inject,
+  input,
+  OnInit,
+  output,
+  viewChild,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormControl } from '@angular/forms';
 import { Capacitor } from '@capacitor/core';
@@ -9,6 +18,7 @@ import { IonSearchbar } from '@ionic/angular/standalone';
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ReactiveFormsModule, IonSearchbar],
 })
 export class SearchComponent implements OnInit {

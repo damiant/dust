@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   IonButton,
@@ -26,6 +26,7 @@ export enum ThingResult {
   selector: 'app-thing',
   templateUrl: './thing.component.html',
   styleUrls: ['./thing.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FormsModule, IonItem, IonButton, IonContent, IonButtons, IonToolbar, IonTitle, IonInput, IonHeader],
 })
 export class ThingComponent {

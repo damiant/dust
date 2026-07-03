@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { IonCard, IonText, IonCardContent, ToastController, IonProgressBar } from '@ionic/angular/standalone';
 import { CardHeaderComponent } from '../card-header/card-header.component';
 
@@ -11,6 +11,7 @@ import { DbService } from '../data/db.service';
   templateUrl: './cache-panel.component.html',
   styleUrls: ['./cache-panel.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [IonProgressBar, IonCardContent, IonCard, IonText, CardHeaderComponent],
 })
 export class CachePanelComponent implements OnInit {

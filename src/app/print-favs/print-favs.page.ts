@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { addIcons } from 'ionicons';
@@ -21,6 +21,7 @@ interface PrintState {
   selector: 'app-print-favs',
   templateUrl: './print-favs.page.html',
   styleUrls: ['./print-favs.page.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FormsModule],
 })
 export class PrintFavsPage {

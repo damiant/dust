@@ -1,4 +1,14 @@
-import { ChangeDetectorRef, Component, EnvironmentInjector, OnInit, effect, inject, computed, signal } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EnvironmentInjector,
+  OnInit,
+  effect,
+  inject,
+  computed,
+  signal,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { DbService } from '../data/db.service';
 import { NotificationService } from '../notifications/notification.service';
 import { Router } from '@angular/router';
@@ -27,6 +37,7 @@ import { Tab, TabBarComponent } from '../tab-bar/tab-bar.component';
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [IonTabs, TabBarComponent],
 })
 export class TabsPage implements OnInit {
@@ -134,14 +145,14 @@ export class TabsPage implements OnInit {
     });
 
     if (Capacitor.getPlatform() !== 'web') {
-    Keyboard.addListener('keyboardDidShow', () => {
-      this.keyboardOpen.set(true);
-    });
+      Keyboard.addListener('keyboardDidShow', () => {
+        this.keyboardOpen.set(true);
+      });
 
-    Keyboard.addListener('keyboardDidHide', () => {
-      this.keyboardOpen.set(false);
-    });
-  }
+      Keyboard.addListener('keyboardDidHide', () => {
+        this.keyboardOpen.set(false);
+      });
+    }
 
     await Network.addListener('networkStatusChange', (status) => {
       this.db.networkStatus.set(status.connectionType);
@@ -202,7 +213,6 @@ export class TabsPage implements OnInit {
 
   ionViewDidLeave() {
     this.propagateToActiveTab('ionViewDidLeave');
-
   }
 
   ionViewWillEnter() {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
   IonCard,
   IonCardContent,
@@ -12,6 +12,7 @@ import {
   selector: 'app-skeleton-event',
   templateUrl: './skeleton-event.component.html',
   styleUrls: ['./skeleton-event.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonSkeletonText, IonCardContent],
 })
 export class SkeletonEventComponent {}

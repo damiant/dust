@@ -1,6 +1,9 @@
 @for (card of cards(); track card.id) {
   <div class="row" (click)="open(card)" (keyup.enter)="open(card)" tabindex="0">
-    <div class="card" [ngClass]="selected()?.id === card.id ? 'select ' + selected()?.class : 'unselect'">
+    <div
+      class="card"
+      [ngClass]="selected()?.id === card.id ? 'select ' + $safeNavigationMigration(selected()?.class) : 'unselect'"
+    >
       <app-cached-img
         errorImage="./assets/error-img.png"
         (loaded)="loaded[card.id] = true"

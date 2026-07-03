@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -38,6 +38,7 @@ import { Capacitor } from '@capacitor/core';
   templateUrl: './broadcast.page.html',
   styleUrls: ['./broadcast.page.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     IonFab,
     IonFabButton,
@@ -110,22 +111,19 @@ export class BroadcastPage implements OnInit {
   async start(): Promise<void> {
     try {
       this.processing.set(true);
-      this.watchId = await Geolocation.watchPosition(
-        { enableHighAccuracy: true, timeout: 20000 },
-        (position, err) => {
-          if (err) {
-            console.warn('Geolocation watch error:', err?.message);
-            this.location.set(false);
-            return;
-          }
-          if (!position) {
-            this.location.set(false);
-            console.warn('No position received from watch');
-            return;
-          }
-          this.processPosition(position);
+      this.watchId = await Geolocation.watchPosition({ enableHighAccuracy: true, timeout: 20000 }, (position, err) => {
+        if (err) {
+          console.warn('Geolocation watch error:', err?.message);
+          this.location.set(false);
+          return;
         }
-      );
+        if (!position) {
+          this.location.set(false);
+          console.warn('No position received from watch');
+          return;
+        }
+        this.processPosition(position);
+      });
       try {
         this.processPosition(await Geolocation.getCurrentPosition({ enableHighAccuracy: true, timeout: 20000 }));
       } catch (err) {

@@ -1,0 +1,1 @@
+import {ax as R}from'./main-UYASXDQQ.js';var r=R("Geolocation",{web:()=>import('./chunk-B2D52764.js').then(e=>new e.GeolocationWeb)});export{r};

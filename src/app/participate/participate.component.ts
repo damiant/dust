@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { IonCard, IonCardContent, IonText } from '@ionic/angular/standalone';
 import { CardHeaderComponent } from '../card-header/card-header.component';
 import { DbService } from '../data/db.service';
@@ -10,6 +10,7 @@ import { SettingsService } from '../data/settings.service';
   selector: 'app-participate',
   templateUrl: './participate.component.html',
   styleUrls: ['./participate.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [IonCard, IonCardContent, CardHeaderComponent, IonText],
 })
 export class ParticipateComponent implements OnInit {
@@ -75,7 +76,7 @@ export class ParticipateComponent implements OnInit {
     if (token.art.length == 1) {
       return `your art or mutant vehicle`;
     }
-    if ((token.events.length === 1)) {
+    if (token.events.length === 1) {
       return `your event`;
     }
     if (token.events.length > 1) {

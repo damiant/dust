@@ -10,7 +10,7 @@
         loading="lazy"
         class="image"
         [alt]="item().title ?? 'No title'"
-        [src]="item()['media:content']?.url"
+        [src]="$safeNavigationMigration(item()['media:content']?.url)"
       />
     </div>
   }

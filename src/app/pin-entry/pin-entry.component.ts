@@ -1,4 +1,4 @@
-import { Component, inject, input, model, output } from '@angular/core';
+import { Component, inject, input, model, output, ChangeDetectionStrategy } from '@angular/core';
 import { IonButton, IonIcon, IonText, IonModal, IonInput, ToastController } from '@ionic/angular/standalone';
 import { decryptString } from '../utils/utils';
 import { FormsModule } from '@angular/forms';
@@ -8,6 +8,7 @@ import { UiService } from '../ui/ui.service';
   selector: 'app-pin-entry',
   templateUrl: './pin-entry.component.html',
   styleUrls: ['./pin-entry.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [IonInput, IonModal, IonText, IonButton, IonIcon, FormsModule],
 })
 export class PinEntryComponent {

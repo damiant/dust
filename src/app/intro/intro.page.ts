@@ -1,4 +1,13 @@
-import { Component, WritableSignal, effect, signal, viewChild, inject, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  WritableSignal,
+  effect,
+  signal,
+  viewChild,
+  inject,
+  ChangeDetectorRef,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -89,6 +98,7 @@ function initialState(): IntroState {
   selector: 'app-intro',
   templateUrl: './intro.page.html',
   styleUrls: ['./intro.page.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     IonFabButton,
     IonFab,
@@ -341,7 +351,7 @@ export class IntroPage {
       return true;
     } finally {
       this.vm.downloading = false;
-      this.download.set({ status: '', firstDownload: false });      
+      this.download.set({ status: '', firstDownload: false });
     }
     return false;
   }
