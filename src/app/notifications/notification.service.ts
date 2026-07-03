@@ -5,6 +5,7 @@ import { OccurrenceSet } from '../data/models';
 import { getDayName, noDate, now, randomInt, time } from '../utils/utils';
 import { Capacitor } from '@capacitor/core';
 import { DbService } from '../data/db.service';
+import { SettingsService } from '../data/settings.service';
 
 export interface Reminder {
   title: string;
@@ -26,6 +27,7 @@ export interface ScheduleResult {
 export class NotificationService {
   public router = inject(Router);
   private db = inject(DbService);
+  private settings = inject(SettingsService);
   public hasNotification = signal('');
 
   public configure() {
@@ -108,7 +110,8 @@ export class NotificationService {
 
   private reminderTime(d: Date): Date {
     let when = d;
-    when.setMinutes(when.getMinutes() - 15);
+    const minutesBefore = this.settings.isBurningMan() ? 30 : 15;
+    when.setMinutes(when.getMinutes() - minutesBefore);
     if (this.hasHappened(when)) {
       const soon = now();
       soon.setMinutes(soon.getMinutes() + 1);
