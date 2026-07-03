@@ -18,7 +18,7 @@ import { logoTwitter, logoInstagram, mailOutline } from 'ionicons/icons';
   selector: 'app-about',
   templateUrl: './about.page.html',
   styleUrls: ['./about.page.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [FormsModule, IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonContent, IonText, IonIcon],
 })
 export class AboutPage {

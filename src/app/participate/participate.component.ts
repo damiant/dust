@@ -10,7 +10,7 @@ import { SettingsService } from '../data/settings.service';
   selector: 'app-participate',
   templateUrl: './participate.component.html',
   styleUrls: ['./participate.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [IonCard, IonCardContent, CardHeaderComponent, IonText],
 })
 export class ParticipateComponent implements OnInit {

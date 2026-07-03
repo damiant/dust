@@ -26,7 +26,7 @@ export enum ThingResult {
   selector: 'app-thing',
   templateUrl: './thing.component.html',
   styleUrls: ['./thing.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [FormsModule, IonItem, IonButton, IonContent, IonButtons, IonToolbar, IonTitle, IonInput, IonHeader],
 })
 export class ThingComponent {

@@ -19,7 +19,7 @@ import {
   selector: 'app-fav-map',
   templateUrl: './fav-map.page.html',
   styleUrls: ['./fav-map.page.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     FormsModule,
     MapComponent,

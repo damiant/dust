@@ -21,7 +21,7 @@ interface PrintState {
   selector: 'app-print-favs',
   templateUrl: './print-favs.page.html',
   styleUrls: ['./print-favs.page.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [FormsModule],
 })
 export class PrintFavsPage {

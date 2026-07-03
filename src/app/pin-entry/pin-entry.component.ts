@@ -8,7 +8,7 @@ import { UiService } from '../ui/ui.service';
   selector: 'app-pin-entry',
   templateUrl: './pin-entry.component.html',
   styleUrls: ['./pin-entry.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [IonInput, IonModal, IonText, IonButton, IonIcon, FormsModule],
 })
 export class PinEntryComponent {

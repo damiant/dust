@@ -75,7 +75,7 @@ function initialState(): RSLState {
   selector: 'app-rsl',
   templateUrl: './rsl.page.html',
   styleUrls: ['./rsl.page.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     FormsModule,
     RslEventComponent,

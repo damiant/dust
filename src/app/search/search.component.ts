@@ -18,7 +18,7 @@ import { IonSearchbar } from '@ionic/angular/standalone';
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ReactiveFormsModule, IonSearchbar],
 })
 export class SearchComponent implements OnInit {

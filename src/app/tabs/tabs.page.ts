@@ -37,7 +37,7 @@ import { Tab, TabBarComponent } from '../tab-bar/tab-bar.component';
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [IonTabs, TabBarComponent],
 })
 export class TabsPage implements OnInit {

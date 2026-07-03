@@ -1,4 +1,4 @@
-import { Component, input, model, output, ChangeDetectionStrategy, linkedSignal } from '@angular/core';
+import { Component, input, model, output, signal, ChangeDetectionStrategy } from '@angular/core';
 import {
   IonButton,
   IonContent,
@@ -15,7 +15,7 @@ import { chevronDown } from 'ionicons/icons';
   selector: 'app-category',
   templateUrl: './category.component.html',
   styleUrls: ['./category.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [IonItem, IonButton, IonPopover, IonContent, IonRadioGroup, IonRadio, IonIcon],
 })
 export class CategoryComponent {
@@ -25,25 +25,21 @@ export class CategoryComponent {
   ];
   id = input('');
   allTitle = input<string>('');
-  categoryInput = input<string>('', { alias: 'category' });
-  category = linkedSignal(this.categoryInput);
+  category = model('');
   categories = input<string[]>([]);
-  sortTypeInput = input<string>('alpha', { alias: 'sortType' });
-  sortType = linkedSignal(this.sortTypeInput);
+  sortType = signal('alpha');
   showSortBy = input<boolean>(false);
-  categoryChange = output<string>();
   sortTypeChange = output<string>();
 
   constructor() {
     addIcons({ chevronDown });
   }
 
-  changed(e: any) {
+  changed(e: CustomEvent) {
     this.category.set(e.detail.value);
-    this.categoryChange.emit(this.category());
   }
 
-  sortChanged(e: any) {
+  sortChanged(e: CustomEvent) {
     this.sortType.set(e.detail.value);
     this.sortTypeChange.emit(this.sortType());
   }

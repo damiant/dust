@@ -14,7 +14,7 @@ interface Item {
   selector: 'app-events-card',
   templateUrl: './events-card.component.html',
   styleUrls: ['./events-card.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [IonCardTitle, IonItem, CommonModule, IonCardHeader, IonCard, RouterModule],
 })
 export class EventsCardComponent {

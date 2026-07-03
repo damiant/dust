@@ -7,7 +7,7 @@ import { arrowForwardOutline, stop } from 'ionicons/icons';
   selector: 'app-card-header',
   templateUrl: './card-header.component.html',
   styleUrls: ['./card-header.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [IonFabButton, IonIcon],
 })
 export class CardHeaderComponent {
