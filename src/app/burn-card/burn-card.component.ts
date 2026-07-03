@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-burn-card',
   templateUrl: './burn-card.component.html',
   styleUrls: ['./burn-card.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, CachedImgComponent],
 })
 export class BurnCardComponent {

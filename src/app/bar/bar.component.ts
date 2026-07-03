@@ -7,7 +7,7 @@ import { addIcons } from 'ionicons';
   selector: 'app-bar',
   templateUrl: './bar.component.html',
   styleUrls: ['./bar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule],
 })
 export class BarComponent {

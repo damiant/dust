@@ -38,7 +38,7 @@ import { Capacitor } from '@capacitor/core';
   templateUrl: './broadcast.page.html',
   styleUrls: ['./broadcast.page.scss'],
   standalone: true,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     IonFab,
     IonFabButton,

@@ -33,10 +33,10 @@ export class TabBarComponent {
     return tabs.findIndex((t) => t.id === selectedId);
   });
 
-  handleKey(event: any) {
-    if (event.keyCode === 13 || event.keyCode === 32) {
-      event.preventDefault(); // Prevent default actions like page scrolling on Space
-      event.target.click(); // Trigger the click event
+  handleKey(event: KeyboardEvent) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      (event.target as HTMLElement).click();
     }
   }
 

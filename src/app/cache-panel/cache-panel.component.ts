@@ -11,7 +11,7 @@ import { DbService } from '../data/db.service';
   templateUrl: './cache-panel.component.html',
   styleUrls: ['./cache-panel.component.scss'],
   standalone: true,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [IonProgressBar, IonCardContent, IonCard, IonText, CardHeaderComponent],
 })
 export class CachePanelComponent implements OnInit {

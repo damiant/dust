@@ -4,7 +4,7 @@ import { AfterViewInit, Component, ElementRef, viewChild, ChangeDetectionStrateg
   selector: 'app-carousel-item',
   templateUrl: './carousel-item.component.html',
   styleUrls: ['./carousel-item.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
 export class CarouselItemComponent implements AfterViewInit {

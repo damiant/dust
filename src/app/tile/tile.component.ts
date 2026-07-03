@@ -5,7 +5,7 @@ import { IonButton, IonIcon, IonText } from '@ionic/angular/standalone';
   selector: 'app-tile',
   templateUrl: './tile.component.html',
   styleUrls: ['./tile.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [IonButton, IonIcon, IonText],
 })
 export class TileComponent {

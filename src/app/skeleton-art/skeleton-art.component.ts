@@ -12,7 +12,7 @@ import {
   selector: 'app-skeleton-art',
   templateUrl: './skeleton-art.component.html',
   styleUrls: ['./skeleton-art.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [IonCard, IonCardHeader, IonSkeletonText, IonCardContent, IonCardTitle, IonCardSubtitle],
 })
 export class SkeletonArtComponent {}

@@ -1,4 +1,4 @@
-import { Component, input, model, output, ChangeDetectionStrategy, linkedSignal } from '@angular/core';
+import { Component, input, output, signal, ChangeDetectionStrategy } from '@angular/core';
 import { IonCheckbox } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { locationSharp } from 'ionicons/icons';
@@ -7,12 +7,11 @@ import { locationSharp } from 'ionicons/icons';
   selector: 'app-sort',
   templateUrl: './sort.component.html',
   styleUrls: ['./sort.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [IonCheckbox],
 })
 export class SortComponent {
-  sortTypeInput = input<string>('alpha', { alias: 'sortType' });
-  sortType = linkedSignal(this.sortTypeInput);
+  sortType = signal('alpha');
   padChecked = input(true);
   sortTypeChange = output<string>();
 
@@ -20,8 +19,9 @@ export class SortComponent {
     addIcons({ locationSharp });
   }
 
-  sortChanged(e: any) {
-    this.sortType.set(e.detail.checked ? 'dist' : 'alpha');
-    this.sortTypeChange.emit(this.sortType());
+  sortChanged(e: CustomEvent) {
+    const value = e.detail.checked ? 'dist' : 'alpha';
+    this.sortType.set(value);
+    this.sortTypeChange.emit(value);
   }
 }

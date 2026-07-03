@@ -12,7 +12,7 @@ import {
   selector: 'app-skeleton-event',
   templateUrl: './skeleton-event.component.html',
   styleUrls: ['./skeleton-event.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonSkeletonText, IonCardContent],
 })
 export class SkeletonEventComponent {}
