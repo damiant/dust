@@ -280,7 +280,8 @@ export class EventPage implements OnInit, OnDestroy {
   }
 
   share() {
-    const url = `https://dust.events?${ShareInfoType.event}=${this.event?.uid}`;
+    //const url = `https://dust.events?${ShareInfoType.event}=${this.event?.uid}`;
+    const url = `https://${this.settings.settings.dataset!.id}.dust.events/event/${this.event?.uid}`;
     this.ui.share({
       title: this.event?.title,
       dialogTitle: this.event?.title,
