@@ -35,7 +35,6 @@ import { DbService } from '../data/db.service';
 import { Event, MapPoint, OccurrenceSet } from '../data/models';
 import { MapComponent } from '../map/map.component';
 import { FavoritesService } from '../favs/favorites.service';
-import { ShareInfoType } from '../share/share.service';
 import { SettingsService } from '../data/settings.service';
 import { UiService } from '../ui/ui.service';
 import { toMapPoint } from '../map/map.utils';

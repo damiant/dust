@@ -8,7 +8,6 @@ import { MapModalComponent } from '../map-modal/map-modal.component';
 import { FavoritesService } from '../favs/favorites.service';
 import { UiService } from '../ui/ui.service';
 import { SettingsService } from '../data/settings.service';
-import { ShareInfoType } from '../share/share.service';
 import { toMapPoint } from '../map/map.utils';
 import { getCachedAudio } from '../data/cache-store';
 import {
