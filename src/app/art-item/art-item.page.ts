@@ -8,7 +8,6 @@ import { MapModalComponent } from '../map-modal/map-modal.component';
 import { FavoritesService } from '../favs/favorites.service';
 import { UiService } from '../ui/ui.service';
 import { SettingsService } from '../data/settings.service';
-import { ShareInfoType } from '../share/share.service';
 import { toMapPoint } from '../map/map.utils';
 import { getCachedAudio } from '../data/cache-store';
 import {
@@ -206,13 +205,12 @@ export class ArtItemPage implements OnInit {
   }
 
   share() {
-    const url = `https://dust.events?${ShareInfoType.art}=${this.art?.uid}`;
+    const url = `https://${this.settings.settings.dataset!.id}.dust.events/art/${this.art?.uid}`;
     this.ui.share({
       title: this.art?.name,
       dialogTitle: this.art?.name,
-      text: `Check out ${this.art?.name} at ${this.settings.eventTitle()} using the dust app: ${url}`,
-      url: this.art?.images[0].thumbnail_url,
-      //url: `https://dust.events/art/${this.art?.uid}`
+      text: `Check out ${this.art?.name} at ${this.settings.eventTitle()} using the dust app. `,
+      url,
     });
   }
 }
