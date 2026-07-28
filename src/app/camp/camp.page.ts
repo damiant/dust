@@ -27,6 +27,7 @@ import { FriendsService } from '../friends/friends.service';
 import { UiService } from '../ui/ui.service';
 import { SettingsService } from '../data/settings.service';
 import { toMapPoint } from '../map/map.utils';
+import { getCampCenterPin } from '../map/camp-polygon.utils';
 import { getOrdinalNum } from '../utils/utils';
 import { addIcons } from 'ionicons';
 import {
@@ -111,10 +112,11 @@ export class CampPage implements OnInit {
     }
     this.rslEvents = rslEvents;
     if (this.camp) {
+      const pin = await getCampCenterPin(this.camp, (gps) => this.db.gpsToPoint(gps));
       const mp = toMapPoint(
-        this.camp.location_string!,
-        { title: this.camp.name, location: this.camp.location_string!, subtitle: '', imageUrl: this.camp.imageUrl },
-        this.camp.pin,
+        this.camp.location_string,
+        { title: this.camp.name, location: this.camp.location_string ?? '', subtitle: '', imageUrl: this.camp.imageUrl },
+        pin,
         this.camp.facing,
       );
       this.mapPoints = [mp];

@@ -53,7 +53,8 @@ import {
 } from 'ionicons/icons';
 import { CachedImgComponent, ImageLocation } from '../cached-img/cached-img.component';
 import { canCreate } from '../map/map';
-import { ScrollResult } from '../map/map-model';
+import { ScrollResult, MapPolygon } from '../map/map-model';
+import { campToMapPolygon } from '../map/camp-polygon.utils';
 import { EventChanged, EventsService } from '../events/events.service';
 import { Subscription } from 'rxjs';
 import { BadgeComponent } from '../badge/badge.component';
@@ -104,6 +105,7 @@ export class EventPage implements OnInit, OnDestroy {
   ready = false;
   showMap = false;
   mapPoints: MapPoint[] = [];
+  mapPolygons: MapPolygon[] = [];
   mapTitle = '';
   mapSubtitle = '';
   campDescription = '';
@@ -190,6 +192,12 @@ export class EventPage implements OnInit, OnDestroy {
         mapPoint.gps = await this.db.getMapPointGPS(mapPoint);
       }
       this.mapPoints = [mapPoint];
+
+      this.mapPolygons = [];
+      if (camp) {
+        const polygon = await campToMapPolygon(camp, (coord) => this.db.gpsToPoint(coord), 0);
+        if (polygon) this.mapPolygons = [polygon];
+      }
       const selectedDay = this.db.selectedDay();
       const occurrences = JSON.parse(JSON.stringify(event.occurrence_set));
       const isNoDate = sameDay(selectedDay, noDate());

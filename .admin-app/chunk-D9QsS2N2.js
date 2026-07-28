@@ -1,1 +1,0 @@
-import {ax as R}from'./main-5QDBEVG6.js';var r=R("Geolocation",{web:()=>import('./chunk-BRvj4O-_.js').then(e=>new e.GeolocationWeb)});export{r};

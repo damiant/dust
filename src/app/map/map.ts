@@ -17,7 +17,9 @@ import {
   Material,
   Group,
   DoubleSide,
+  Shape,
   ShapeGeometry,
+  ExtrudeGeometry,
   BufferGeometry,
   CylinderGeometry,
   DirectionalLight,
@@ -29,13 +31,22 @@ import {
 import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import { SVGLoader, SVGResult } from 'three/examples/jsm/loaders/SVGLoader.js';
-import { LivePoint, MapModel, MapPin, MapResult, PinColor } from './map-model';
+import { LivePoint, MapModel, MapPin, MapPolygon, MapResult, PinColor } from './map-model';
 import { delay } from '../utils/utils';
 
 export interface AddPinResult {
   pin: Mesh | Group;
   compass?: Mesh | Group;
   background: Mesh;
+}
+
+interface AddPolygonResult {
+  fill: Mesh;
+  baseColor: number;
+  selectedColor: number;
+  baseOpacity: number;
+  selectedOpacity: number;
+  pinIndex?: number;
 }
 
 async function mapImage(map: MapModel, disposables: any[]): Promise<Mesh | Group> {
@@ -192,7 +203,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
   controls.screenSpacePanning = false;
   controls.zoomToCursor = true;
   controls.enableRotate = false;
-  controls.minDistance = 50;
+  controls.minDistance = 20;
   controls.maxDistance = map.height;
   controls.maxPolarAngle = Math.PI / 2;
 
@@ -299,21 +310,24 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
   container.addEventListener('pointerup', pointerUp);
 
   result.pinSelected = (id: string) => {
+    const selectedPinIndex = Number.parseInt(id, 10);
+    result.selectedPinIndex = Number.isInteger(selectedPinIndex) ? selectedPinIndex : undefined;
     for (const key of Object.keys(result.pinData)) {
       const mat: Material = result.pinData[key].background.material as Material;
-      if (key !== id) {
-        mat.opacity = 0.25;
-      }
+      mat.opacity = key === id ? 1 : 0.25;
     }
+    updatePolygonSelection(result);
     centerOn(result.pinData[id].pin, 16);
     animateMesh(result.pinData[id].background, mixers);
   };
 
   result.pinUnselected = () => {
+    result.selectedPinIndex = undefined;
     for (const key of Object.keys(result.pinData)) {
       const mat: Material = result.pinData[key].background.material as Material;
       mat.opacity = 1;
     }
+    updatePolygonSelection(result);
   };
 
   result.capture = async () => {
@@ -338,8 +352,13 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
     const hits: number[] = [];
     intersects.forEach((hit) => {
       if (hit.object.uuid !== 'map' && hit.object.uuid !== 'txt') {
-        highlight(hit.object as any, result);
-        hits.push(parseInt(hit.object.uuid));
+        const object = hit.object as Mesh;
+        const pinIndex = object.userData['pinIndex'];
+        const index = Number.isInteger(pinIndex) ? pinIndex : Number.parseInt(object.uuid, 10);
+        if (Number.isInteger(index)) {
+          highlight(object, result);
+          if (!hits.includes(index)) hits.push(index);
+        }
       }
     });
     if (hits.length > 0) {
@@ -355,6 +374,9 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
           targetZoomLevel = 16;
           break;
         case 16:
+          targetZoomLevel = 32;
+          break;
+        case 32:
           targetZoomLevel = 4;
           break;
       }
@@ -456,6 +478,18 @@ async function createScene(
     result.pinData[pin.uuid] = p;
   }
 
+  result.polygonData = [];
+
+  // Render camp/area polygons
+  if (map.polygons) {
+    for (const polygon of map.polygons) {
+      const polygonResult = addPolygon(polygon, map.width, map.height, scene, disposables);
+      if (polygonResult) {
+        result.polygonData.push(polygonResult);
+      }
+    }
+  }
+
   if (map.compass) {
     map.compass.animated = map.pins.length > 1;
     scaleToMap(map.compass, map.width, map.height, map.pinSizeMultiplier);
@@ -522,14 +556,31 @@ function scaleToMap(pin: MapPin, width: number, height: number, pinSizeMultiplie
 }
 
 function highlight(mesh: Mesh, result: MapResult) {
-  result.currentHex = (mesh.material as MeshPhongMaterial).emissive.getHex();
+  const material = mesh.material as MeshPhongMaterial;
+  if (!material.emissive) return;
+  result.currentHex = material.emissive.getHex();
   result.currentObject = mesh;
-  (mesh.material as MeshPhongMaterial).emissive.setHex(0x999999);
+  material.emissive.setHex(0x999999);
+}
+
+function updatePolygonSelection(result: MapResult) {
+  for (const polygon of result.polygonData ?? []) {
+    const fillMaterial = polygon.fill.material as MeshPhongMaterial;
+    const isSelected =
+      result.selectedPinIndex !== undefined && polygon.pinIndex === result.selectedPinIndex;
+    fillMaterial.color.setHex(isSelected ? polygon.selectedColor : polygon.baseColor);
+    fillMaterial.opacity = isSelected ? polygon.selectedOpacity : polygon.baseOpacity;
+    fillMaterial.emissive.setHex(0x000000);
+    fillMaterial.needsUpdate = true;
+  }
 }
 
 function unhighlight(result: MapResult) {
   if (result.currentObject) {
-    (result.currentObject.material as MeshPhongMaterial).emissive.setHex(result.currentHex);
+    const material = result.currentObject.material as MeshPhongMaterial;
+    if (material.emissive && result.currentHex !== undefined) {
+      material.emissive.setHex(result.currentHex);
+    }
     result.currentObject = undefined;
     result.currentHex = undefined;
   }
@@ -764,4 +815,89 @@ function addText(message: string, font: any, size: number, disposables: MapDispo
   text.position.y = 2;
   text.rotation.x = -Math.PI / 2;
   return text;
+}
+
+function addPolygon(
+  polygon: MapPolygon,
+  mapWidth: number,
+  mapHeight: number,
+  scene: Scene,
+  disposables: MapDisposable[],
+): AddPolygonResult | undefined {
+  if (!polygon.points || polygon.points.length < 3) return undefined;
+
+  const shape = new Shape();
+  const scaledPoints = polygon.points.map((pt) => ({
+    x: Math.trunc((pt.x * mapWidth) / 10000) - mapWidth / 2,
+    z: Math.trunc((pt.z * mapHeight) / 10000) - mapHeight / 2,
+  }));
+
+  shape.moveTo(scaledPoints[0].x, -scaledPoints[0].z);
+  for (let i = 1; i < scaledPoints.length; i++) {
+    shape.lineTo(scaledPoints[i].x, -scaledPoints[i].z);
+  }
+  shape.closePath();
+
+  const geometry = new ExtrudeGeometry(shape, {
+    depth: 1,
+    bevelEnabled: false,
+  });
+  const baseColor = getPolygonColor(polygon.color);
+  const selectedColor = lightenColor(baseColor, 0.4);
+  const baseOpacity = polygon.opacity ?? 0.55;
+  const selectedOpacity = Math.min(1, baseOpacity + 0.25);
+  const material = new MeshPhongMaterial({
+    color: baseColor,
+    side: DoubleSide,
+    transparent: true,
+    opacity: baseOpacity,
+    depthWrite: false,
+    shininess: 20,
+  });
+
+  disposables.push(geometry);
+  disposables.push(material);
+
+  const mesh = new Mesh(geometry, material);
+  mesh.position.y = 0.5;
+  mesh.rotation.x = -Math.PI / 2;
+  mesh.uuid = 'polygon';
+  if (polygon.pinIndex !== undefined) mesh.userData['pinIndex'] = polygon.pinIndex;
+  scene.add(mesh);
+
+  return {
+    fill: mesh,
+    baseColor,
+    selectedColor,
+    baseOpacity,
+    selectedOpacity,
+    pinIndex: polygon.pinIndex,
+  };
+}
+
+function getPolygonColor(pinColor: PinColor): number {
+  switch (pinColor) {
+    case 'primary':
+      return 0xf61067;
+    case 'secondary':
+      return 0x2196f3;
+    case 'tertiary':
+      return 0x2dd36f;
+    case 'accent':
+      return 0x9e9e9e;
+    case 'warning':
+      return 0xffc409;
+    case 'compass':
+      return 0x8bc34a;
+    case 'medical':
+      return 0x5260ff;
+    default:
+      return 0xf61067;
+  }
+}
+
+function lightenColor(hex: number, amount: number): number {
+  const color = new Color(hex);
+  color.lerp(new Color(0xffffff), amount);
+  return color.getHex();
 }

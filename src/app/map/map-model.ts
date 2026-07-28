@@ -1,5 +1,13 @@
 import { AddPinResult } from './map';
 
+export interface MapPolygon {
+  points: { x: number; z: number }[];
+  color: PinColor;
+  opacity?: number;
+  /** Index of the map point to activate when this polygon is clicked. */
+  pinIndex?: number;
+}
+
 export interface MapModel {
   name: string;
   image: string;
@@ -10,6 +18,7 @@ export interface MapModel {
   pinSizeMultiplier: number;
   backgroundColor: number;
   compass: MapPin | undefined;
+  polygons?: MapPolygon[];
 
   // When a user clicks a pin this signal emits the uuid
   pinClicked: (indexes: number[], event: PointerEvent) => void;
@@ -31,6 +40,16 @@ export interface MapResult {
   myPosition: (x: number, y: number) => void;
   setNearest: (nearest: string) => void;
   capture: () => Promise<string | undefined>;
+
+  polygonData?: {
+    fill: any;
+    baseColor: number;
+    selectedColor: number;
+    baseOpacity: number;
+    selectedOpacity: number;
+    pinIndex?: number;
+  }[];
+  selectedPinIndex?: number;
 
   scrolled: (result: ScrollResult) => void;
   // When a user searches for a pin and one is found

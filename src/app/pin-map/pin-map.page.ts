@@ -38,7 +38,8 @@ import {
 import { addIcons } from 'ionicons';
 import { compassOutline, shareOutline } from 'ionicons/icons';
 import { SearchComponent } from '../search/search.component';
-import { PinColor } from '../map/map-model';
+import { MapPolygon, PinColor } from '../map/map-model';
+import { campToMapPolygon, getCampCenterPin } from '../map/camp-polygon.utils';
 import { FavoritesService } from '../favs/favorites.service';
 import { UiService } from '../ui/ui.service';
 import { ToastController } from '@ionic/angular';
@@ -79,6 +80,7 @@ export class PinMapPage {
   mapType = input('');
   thingName = input('');
   points: MapPoint[] = [];
+  polygons: MapPolygon[] = [];
   smallPins: boolean = false;
   isGettingGPS = false;
   canClearThing = false;
@@ -133,6 +135,7 @@ export class PinMapPage {
     // This prevents the map from refreshing unnecessarily when navigating back
     if (this.lastMapType !== currentMapType || this.lastThingName !== currentThingName) {
       this.points = [...mapSet.points];
+      if (currentMapType !== MapType.All) this.polygons = [];
       this.title.set(mapSet.title);
       this.description = mapSet.description;
       this.lastMapType = currentMapType;
@@ -333,25 +336,33 @@ export class PinMapPage {
 
     const camps = await this.db.findCamps('', coords);
     const points = [];
+    const polygons: MapPolygon[] = [];
 
     for (const camp of camps) {
-      if (camp.location_string || camp.pin?.x) {
+      const pin = await getCampCenterPin(camp, (gps) => this.db.gpsToPoint(gps));
+      if (camp.location_string || pin?.x) {
         const point = toMapPoint(
-          camp.location_string!,
+          camp.location_string,
           {
             title: camp.name,
-            location: camp.location_string!,
+            location: camp.location_string ?? '',
             subtitle: '',
             imageUrl: camp.imageUrl,
             label: this.initials(camp.name, camp.label),
             href: '/camp/' + camp.uid + '+' + 'Map',
           },
-          camp.pin,
+          pin,
           camp.facing,
         );
-        if (point) points.push(point);
+        if (point) {
+          const pinIndex = points.length;
+          points.push(point);
+          const polygon = await campToMapPolygon(camp, (gps) => this.db.gpsToPoint(gps), pinIndex);
+          if (polygon) polygons.push(polygon);
+        }
       }
     }
+    this.polygons = polygons;
 
     const otherMaps = [Names.restrooms, Names.ice, Names.medical, Names.other];
     if (!this.db.artLocationsHidden()) {

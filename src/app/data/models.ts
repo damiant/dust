@@ -107,6 +107,8 @@ export interface Camp {
   imageUrl?: string; // Added by dust
   label?: string; // Added by dust
   gpsCoord: GpsCoord;
+  gps?: { lat: number; long: number } | GpsCoord; // GPS center supplied by the camps endpoint
+  border?: Array<GpsCoord | { lat: number; long: number }>; // Polygon boundary coordinates for the camp
   landmark: string;
   facing: string;
   pin: Pin;

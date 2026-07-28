@@ -27,7 +27,7 @@ import { environment } from 'src/environments/environment';
 import { IonButton, IonRouterOutlet, IonText, ToastController } from '@ionic/angular/standalone';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { DbService } from '../data/db.service';
-import { LivePoint, MapModel, MapResult, ScrollResult } from './map-model';
+import { LivePoint, MapPolygon, MapModel, MapResult, ScrollResult } from './map-model';
 import { init3D } from './map';
 import { UiService } from '../ui/ui.service';
 import { Capacitor } from '@capacitor/core';
@@ -53,6 +53,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private ui = inject(UiService);
   private _change = inject(ChangeDetectorRef);
   _points: MapPoint[];
+  _polygons: MapPolygon[] | undefined;
   isOpen = false;
   secondButton = '';
   footer: string | undefined;
@@ -128,6 +129,10 @@ export class MapComponent implements OnInit, OnDestroy {
   }
   get points() {
     return this._points;
+  }
+
+  @Input() set polygons(polygons: MapPolygon[] | undefined) {
+    this._polygons = polygons;
   }
 
   private matchesId(m: MapPoint, l: LiveLocation): boolean {
@@ -400,6 +405,7 @@ export class MapComponent implements OnInit, OnDestroy {
       backgroundColor: this.ui.darkMode() ? 0x111111 : 0xdddddd,
       compass: { uuid: 'compass', x: compassPt.x, z: compassPt.y, color: 'compass', size: pinSize, label: '' },
       pinClicked: this.pinClicked.bind(this),
+      polygons: this._polygons,
     };
 
     if (this.points.length == 1) {
@@ -460,6 +466,12 @@ export class MapComponent implements OnInit, OnDestroy {
     }
     if (this.infoList.length == 0) {
       return;
+    }
+    const selectedIndex = indexes.length === 1 ? indexes[0] : undefined;
+    if (selectedIndex !== undefined) {
+      this.mapResult?.pinSelected(`${selectedIndex}`);
+    } else {
+      this.mapResult?.pinUnselected();
     }
     //this.popover().event = event;
     //    this.popover().event = event;

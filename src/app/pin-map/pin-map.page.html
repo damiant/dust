@@ -32,5 +32,11 @@
     [isOpen]="isGettingGPS"
     message="Getting Location: This may take up to 10 seconds."
   ></ion-loading>
-  <app-map #map [(loadingDialog)]="isGettingGPS" [smallPins]="smallPins" [points]="points"></app-map>
+  <app-map
+    #map
+    [(loadingDialog)]="isGettingGPS"
+    [smallPins]="smallPins"
+    [polygons]="polygons"
+    [points]="points"
+  ></app-map>
 </ion-content>
