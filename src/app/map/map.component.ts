@@ -409,7 +409,9 @@ export class MapComponent implements OnInit, OnDestroy {
         ...polygon,
         label:
           polygon.label ??
-          (polygon.pinIndex !== undefined ? (this._points[polygon.pinIndex]?.info?.title ?? '') : undefined),
+          (polygon.pinIndex !== undefined
+            ? (this._points[polygon.pinIndex]?.info?.label ?? this._points[polygon.pinIndex]?.info?.title ?? '')
+            : undefined),
       })),
       recenterOnSelect: this.isHeader(),
     };

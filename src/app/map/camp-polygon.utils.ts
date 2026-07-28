@@ -46,6 +46,16 @@ export function campPolygonColor(camp: Camp): number {
   return PRIMARY_SHADES[campColorShadeIndex(camp)];
 }
 
+/** Camp abbreviation for map pins/polygons (`camp.label`, else initials). */
+export function campAbbreviation(camp: Camp): string {
+  if (camp.label) return camp.label;
+  const inits = camp.name
+    .split(' ')
+    .map((s) => s.charAt(0))
+    .join('');
+  return inits.substring(0, 2).toUpperCase();
+}
+
 export async function campToMapPolygon(
   camp: Camp,
   gpsToPoint: (coord: GpsCoord) => Promise<Point>,
@@ -64,5 +74,12 @@ export async function campToMapPolygon(
   const points = converted.filter((point): point is { x: number; z: number } => point !== undefined);
   if (points.length < 3) return undefined;
 
-  return { points, color: 'primary', colorHex: campPolygonColor(camp), opacity: 1, pinIndex };
+  return {
+    points,
+    color: 'primary',
+    colorHex: campPolygonColor(camp),
+    opacity: 1,
+    label: campAbbreviation(camp),
+    pinIndex,
+  };
 }

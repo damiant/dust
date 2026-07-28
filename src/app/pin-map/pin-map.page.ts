@@ -39,7 +39,7 @@ import { addIcons } from 'ionicons';
 import { compassOutline, shareOutline } from 'ionicons/icons';
 import { SearchComponent } from '../search/search.component';
 import { MapPolygon, PinColor } from '../map/map-model';
-import { campToMapPolygon, getCampCenterPin } from '../map/camp-polygon.utils';
+import { campToMapPolygon, getCampCenterPin, campAbbreviation } from '../map/camp-polygon.utils';
 import { FavoritesService } from '../favs/favorites.service';
 import { UiService } from '../ui/ui.service';
 import { ToastController } from '@ionic/angular';
@@ -348,7 +348,7 @@ export class PinMapPage {
             location: camp.location_string ?? '',
             subtitle: '',
             imageUrl: camp.imageUrl,
-            label: this.initials(camp.name, camp.label),
+            label: campAbbreviation(camp),
             href: '/camp/' + camp.uid + '+' + 'Map',
           },
           pin,

@@ -1,3 +1,2 @@
-
---- 2026-07-28T05:16:28.400Z ---
-The front-page Map opens PinMapPage (src/app/pin-map), not EventPage. Camp polygon wiring only existed on EventPage, so the overview 3D map could never receive polygons. GPS transforms live in the data worker and must be called through DbService.gpsToPoint().
+--- 2026-07-28T06:46:00.000Z ---
+Camp polygons now show a centered abbreviation label (camp.label or name initials), sized from the polygon bounds.

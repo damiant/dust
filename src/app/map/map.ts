@@ -896,8 +896,36 @@ function addPolygon(
   edges.raycast = () => {};
   scene.add(edges);
 
+  let labelMesh: Mesh | undefined;
+  if (polygon.label) {
+    let minX = scaledPoints[0].x;
+    let maxX = scaledPoints[0].x;
+    let minZ = scaledPoints[0].z;
+    let maxZ = scaledPoints[0].z;
+    let sumX = 0;
+    let sumZ = 0;
+    for (const pt of scaledPoints) {
+      sumX += pt.x;
+      sumZ += pt.z;
+      minX = Math.min(minX, pt.x);
+      maxX = Math.max(maxX, pt.x);
+      minZ = Math.min(minZ, pt.z);
+      maxZ = Math.max(maxZ, pt.z);
+    }
+    const span = Math.min(maxX - minX, maxZ - minZ);
+    const textSize = Math.max(3.2, Math.min(16, span * 0.14));
+    labelMesh = addText(polygon.label, font, textSize, disposables);
+    labelMesh.position.x = sumX / scaledPoints.length;
+    labelMesh.position.y = 2.2;
+    labelMesh.position.z = sumZ / scaledPoints.length;
+    labelMesh.uuid = 'txt';
+    labelMesh.raycast = () => {};
+    scene.add(labelMesh);
+  }
+
   return {
     fill: mesh,
+    label: labelMesh,
     baseColor,
     selectedColor,
     baseOpacity,
