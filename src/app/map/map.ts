@@ -20,6 +20,9 @@ import {
   Shape,
   ShapeGeometry,
   ExtrudeGeometry,
+  EdgesGeometry,
+  LineSegments,
+  LineBasicMaterial,
   BufferGeometry,
   CylinderGeometry,
   DirectionalLight,
@@ -42,6 +45,7 @@ export interface AddPinResult {
 
 interface AddPolygonResult {
   fill: Mesh;
+  label?: Mesh;
   baseColor: number;
   selectedColor: number;
   baseOpacity: number;
@@ -312,13 +316,19 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
   result.pinSelected = (id: string) => {
     const selectedPinIndex = Number.parseInt(id, 10);
     result.selectedPinIndex = Number.isInteger(selectedPinIndex) ? selectedPinIndex : undefined;
+    const selectedPin = result.pinData[id];
     for (const key of Object.keys(result.pinData)) {
       const mat: Material = result.pinData[key].background.material as Material;
-      mat.opacity = key === id ? 1 : 0.25;
+      // Polygon-only camps have no pin mesh; dim all pins when one of those is selected.
+      mat.opacity = selectedPin && key === id ? 1 : 0.25;
     }
     updatePolygonSelection(result);
-    centerOn(result.pinData[id].pin, 16);
-    animateMesh(result.pinData[id].background, mixers);
+    if (selectedPin) {
+      if (map.recenterOnSelect) {
+        centerOn(selectedPin.pin, 16);
+      }
+      animateMesh(selectedPin.background, mixers);
+    }
   };
 
   result.pinUnselected = () => {
@@ -356,7 +366,9 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
         const pinIndex = object.userData['pinIndex'];
         const index = Number.isInteger(pinIndex) ? pinIndex : Number.parseInt(object.uuid, 10);
         if (Number.isInteger(index)) {
-          highlight(object, result);
+          if (object.uuid !== 'polygon') {
+            highlight(object, result);
+          }
           if (!hits.includes(index)) hits.push(index);
         }
       }
@@ -470,6 +482,7 @@ async function createScene(
   renderFn: () => void,
   result: MapResult,
 ) {
+  const polygonPinIndexes = new Set((map.polygons ?? []).map((polygon) => polygon.pinIndex).filter((idx): idx is number => idx !== undefined));
   let p: AddPinResult | undefined = undefined;
   for (const pin of map.pins) {
     scaleToMap(pin, map.width, map.height, map.pinSizeMultiplier);
@@ -483,7 +496,7 @@ async function createScene(
   // Render camp/area polygons
   if (map.polygons) {
     for (const polygon of map.polygons) {
-      const polygonResult = addPolygon(polygon, map.width, map.height, scene, disposables);
+      const polygonResult = addPolygon(polygon, map.width, map.height, font, scene, disposables);
       if (polygonResult) {
         result.polygonData.push(polygonResult);
       }
@@ -491,7 +504,7 @@ async function createScene(
   }
 
   if (map.compass) {
-    map.compass.animated = map.pins.length > 1;
+    map.compass.animated = map.pins.length > 1 || polygonPinIndexes.size > 0;
     scaleToMap(map.compass, map.width, map.height, map.pinSizeMultiplier);
     const { pin: compass, background: background } = await addPin(
       map.compass,
@@ -821,6 +834,7 @@ function addPolygon(
   polygon: MapPolygon,
   mapWidth: number,
   mapHeight: number,
+  font: any,
   scene: Scene,
   disposables: MapDisposable[],
 ): AddPolygonResult | undefined {
@@ -839,20 +853,21 @@ function addPolygon(
   shape.closePath();
 
   const geometry = new ExtrudeGeometry(shape, {
-    depth: 1,
+    depth: 1.5,
     bevelEnabled: false,
   });
-  const baseColor = getPolygonColor(polygon.color);
-  const selectedColor = lightenColor(baseColor, 0.4);
-  const baseOpacity = polygon.opacity ?? 0.55;
-  const selectedOpacity = Math.min(1, baseOpacity + 0.25);
+  const baseColor = polygon.colorHex ?? getPolygonColor(polygon.color);
+  const selectedColor = lightenColor(baseColor, 0.35);
+  const baseOpacity = polygon.opacity ?? 1;
+  const selectedOpacity = 1;
   const material = new MeshPhongMaterial({
     color: baseColor,
     side: DoubleSide,
-    transparent: true,
+    transparent: baseOpacity < 1,
     opacity: baseOpacity,
-    depthWrite: false,
-    shininess: 20,
+    depthWrite: true,
+    flatShading: true,
+    shininess: 8,
   });
 
   disposables.push(geometry);
@@ -864,6 +879,22 @@ function addPolygon(
   mesh.uuid = 'polygon';
   if (polygon.pinIndex !== undefined) mesh.userData['pinIndex'] = polygon.pinIndex;
   scene.add(mesh);
+
+  // Dark outline so adjacent camp borders stay readable
+  const edgesGeometry = new EdgesGeometry(geometry, 20);
+  const edgeMaterial = new LineBasicMaterial({
+    color: darkenColor(baseColor, 0.55),
+    linewidth: 2,
+  });
+  disposables.push(edgesGeometry);
+  disposables.push(edgeMaterial);
+  const edges = new LineSegments(edgesGeometry, edgeMaterial);
+  edges.position.copy(mesh.position);
+  edges.rotation.copy(mesh.rotation);
+  edges.renderOrder = 1;
+  // Visual only — clicks should hit the fill mesh
+  edges.raycast = () => {};
+  scene.add(edges);
 
   return {
     fill: mesh,
@@ -899,5 +930,11 @@ function getPolygonColor(pinColor: PinColor): number {
 function lightenColor(hex: number, amount: number): number {
   const color = new Color(hex);
   color.lerp(new Color(0xffffff), amount);
+  return color.getHex();
+}
+
+function darkenColor(hex: number, amount: number): number {
+  const color = new Color(hex);
+  color.lerp(new Color(0x000000), amount);
   return color.getHex();
 }

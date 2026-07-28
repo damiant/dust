@@ -3,7 +3,10 @@ import { AddPinResult } from './map';
 export interface MapPolygon {
   points: { x: number; z: number }[];
   color: PinColor;
+  /** Explicit hex color; when set, overrides `color`. */
+  colorHex?: number;
   opacity?: number;
+  label?: string;
   /** Index of the map point to activate when this polygon is clicked. */
   pinIndex?: number;
 }
@@ -19,6 +22,7 @@ export interface MapModel {
   backgroundColor: number;
   compass: MapPin | undefined;
   polygons?: MapPolygon[];
+  recenterOnSelect?: boolean;
 
   // When a user clicks a pin this signal emits the uuid
   pinClicked: (indexes: number[], event: PointerEvent) => void;

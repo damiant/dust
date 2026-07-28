@@ -405,7 +405,13 @@ export class MapComponent implements OnInit, OnDestroy {
       backgroundColor: this.ui.darkMode() ? 0x111111 : 0xdddddd,
       compass: { uuid: 'compass', x: compassPt.x, z: compassPt.y, color: 'compass', size: pinSize, label: '' },
       pinClicked: this.pinClicked.bind(this),
-      polygons: this._polygons,
+      polygons: this._polygons?.map((polygon) => ({
+        ...polygon,
+        label:
+          polygon.label ??
+          (polygon.pinIndex !== undefined ? (this._points[polygon.pinIndex]?.info?.title ?? '') : undefined),
+      })),
+      recenterOnSelect: this.isHeader(),
     };
 
     if (this.points.length == 1) {
@@ -413,8 +419,12 @@ export class MapComponent implements OnInit, OnDestroy {
     }
 
     const size = map.defaultPinSize;
+    const polygonPinIndexes = new Set((this._polygons ?? []).map((polygon) => polygon.pinIndex).filter((idx): idx is number => idx !== undefined));
     const sameLocation: Record<string, number[]> = {};
     for (const [i, point] of this._points.entries()) {
+      if (polygonPinIndexes.has(i)) {
+        continue;
+      }
       const pin = mapPointToPin(point, defaultMapRadius);
 
       if (pin) {
@@ -457,6 +467,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   // eslint-disable-next-line unused-imports/no-unused-vars
   private pinClicked(indexes: number[], event?: PointerEvent) {
+    this.closePopover();
     this.infoList = [];
     for (const index of indexes) {
       const point = this._points[index];
@@ -602,6 +613,7 @@ export class MapComponent implements OnInit, OnDestroy {
   closePopover() {
     if (!this.isOpen) return;
     this.isOpen = false;
+    this.infoList = [];
     this.mapResult?.pinUnselected();
   }
 
