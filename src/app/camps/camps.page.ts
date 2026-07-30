@@ -19,7 +19,6 @@ import { SortComponent } from '../sort/sort.component';
 import { UiService } from '../ui/ui.service';
 import { SearchComponent } from '../search/search.component';
 import { hasValue, isWhiteSpace } from '../utils/utils';
-import { toMapPoint } from '../map/map.utils';
 import { GeoService } from '../geolocation/geo.service';
 import { GpsCoord } from '../map/geo.utils';
 import { AlphabeticalScrollBarComponent } from '../alpha/alpha.component';
@@ -27,6 +26,8 @@ import { addIcons } from 'ionicons';
 import { compass, compassOutline } from 'ionicons/icons';
 import { CategoryComponent } from '../category/category.component';
 import { BadgeComponent } from '../badge/badge.component';
+import { buildCampMapFeatures } from '../map/camp-polygon.utils';
+import { MapPolygon } from '../map/map-model';
 
 interface CampsState {
   camps: Camp[];
@@ -38,6 +39,7 @@ interface CampsState {
   mapSubtitle: string;
   noCampsMessage: string;
   mapPoints: MapPoint[];
+  mapPolygons: MapPolygon[];
   alphaIndex: number[];
   alphaValues: string[];
   cardHeight: number;
@@ -57,6 +59,7 @@ function initialState(): CampsState {
     mapSubtitle: '',
     noCampsMessage: 'No camps were found.',
     mapPoints: [],
+    mapPolygons: [],
     cardHeight: 180,
     alphaIndex: [],
     alphaValues: [],
@@ -156,11 +159,14 @@ export class CampsPage {
     return camp.uid;
   }
 
-  map(camp: Camp) {
-    this.vm.mapPoints = [toMapPoint(camp.location_string!, undefined, camp.pin)];
+  async map(camp: Camp) {
+    const features = await buildCampMapFeatures(camp, (gps) => this.db.gpsToPoint(gps), 0);
+    this.vm.mapPoints = features ? [features.point] : [];
+    this.vm.mapPolygons = features?.polygon ? [features.polygon] : [];
     this.vm.mapTitle = camp.name;
-    this.vm.mapSubtitle = camp.location_string!;
+    this.vm.mapSubtitle = camp.location_string ?? '';
     this.vm.showMap = true;
+    this._change.markForCheck();
   }
 
   async update(search: string) {

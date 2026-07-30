@@ -4,6 +4,7 @@ import { MapPoint } from '../data/models';
 import { IonFab, IonFabButton, IonIcon, IonModal, IonText } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { close } from 'ionicons/icons';
+import { MapPolygon } from '../map/map-model';
 
 @Component({
   selector: 'app-map-modal',
@@ -20,6 +21,7 @@ export class MapModalComponent {
   title = input('');
   subtitle = input('');
   points = input<MapPoint[]>([]);
+  polygons = input<MapPolygon[]>([]);
 
   close() {
     this.show.set(false);

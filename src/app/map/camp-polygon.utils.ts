@@ -1,6 +1,7 @@
-import { Camp, Pin } from '../data/models';
+import { Camp, MapPoint, Pin } from '../data/models';
 import { GpsCoord, Point } from './geo.utils';
 import { MapPolygon } from './map-model';
+import { toMapPoint } from './map.utils';
 
 type ApiGpsCoord = { lat?: number | string; lng?: number | string; long?: number | string };
 
@@ -54,6 +55,37 @@ export function campAbbreviation(camp: Camp): string {
     .map((s) => s.charAt(0))
     .join('');
   return inits.substring(0, 2).toUpperCase();
+}
+
+export interface CampMapFeatures {
+  point: MapPoint;
+  polygon?: MapPolygon;
+}
+
+export async function buildCampMapFeatures(
+  camp: Camp,
+  gpsToPoint: (coord: GpsCoord) => Promise<Point>,
+  pinIndex: number,
+  href?: string,
+): Promise<CampMapFeatures | undefined> {
+  const pin = await getCampCenterPin(camp, gpsToPoint);
+  if (!camp.location_string && !pin) return undefined;
+
+  const point = toMapPoint(
+    camp.location_string,
+    {
+      title: camp.name,
+      location: camp.location_string ?? '',
+      subtitle: '',
+      imageUrl: camp.imageUrl,
+      label: campAbbreviation(camp),
+      href,
+    },
+    pin,
+    camp.facing,
+  );
+  const polygon = await campToMapPolygon(camp, gpsToPoint, pinIndex);
+  return { point, polygon };
 }
 
 export async function campToMapPolygon(

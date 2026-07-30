@@ -1,6 +1,6 @@
 <ion-modal [isOpen]="show()" (didDismiss)="close()">
   <ng-template>
-    <app-map [isHeader]="true" [points]="points()"></app-map>
+    <app-map [isHeader]="true" [points]="points()" [polygons]="polygons()"></app-map>
     <div class="float">
       <h2>{{ title() }}</h2>
       <ion-text>{{ subtitle() }}</ion-text>

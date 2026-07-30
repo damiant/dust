@@ -39,7 +39,7 @@ import { addIcons } from 'ionicons';
 import { compassOutline, shareOutline } from 'ionicons/icons';
 import { SearchComponent } from '../search/search.component';
 import { MapPolygon, PinColor } from '../map/map-model';
-import { campToMapPolygon, getCampCenterPin, campAbbreviation } from '../map/camp-polygon.utils';
+import { buildCampMapFeatures } from '../map/camp-polygon.utils';
 import { FavoritesService } from '../favs/favorites.service';
 import { UiService } from '../ui/ui.service';
 import { ToastController } from '@ionic/angular';
@@ -339,28 +339,15 @@ export class PinMapPage {
     const polygons: MapPolygon[] = [];
 
     for (const camp of camps) {
-      const pin = await getCampCenterPin(camp, (gps) => this.db.gpsToPoint(gps));
-      if (camp.location_string || pin?.x) {
-        const point = toMapPoint(
-          camp.location_string,
-          {
-            title: camp.name,
-            location: camp.location_string ?? '',
-            subtitle: '',
-            imageUrl: camp.imageUrl,
-            label: campAbbreviation(camp),
-            href: '/camp/' + camp.uid + '+' + 'Map',
-          },
-          pin,
-          camp.facing,
-        );
-        if (point) {
-          const pinIndex = points.length;
-          points.push(point);
-          const polygon = await campToMapPolygon(camp, (gps) => this.db.gpsToPoint(gps), pinIndex);
-          if (polygon) polygons.push(polygon);
-        }
-      }
+      const features = await buildCampMapFeatures(
+        camp,
+        (gps) => this.db.gpsToPoint(gps),
+        points.length,
+        '/camp/' + camp.uid + '+' + 'Map',
+      );
+      if (!features) continue;
+      points.push(features.point);
+      if (features.polygon) polygons.push(features.polygon);
     }
     this.polygons = polygons;
 

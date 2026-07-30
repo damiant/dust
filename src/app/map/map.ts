@@ -55,6 +55,32 @@ interface AddPolygonResult {
 
 const GEOJSON_MAP_SIZE = 10000;
 
+/**
+ * Everything is drawn flat on the XZ plane and viewed from above, so geometry
+ * sharing a height z-fights and flickers. Each layer gets its own height band
+ * with a gap between, and pins are posts tall enough to clear every polygon.
+ */
+const layer = {
+  cityBlockBase: 0.1,
+  cityBlockDepth: 0.4, // Top at 0.5
+  campBase: 0.6,
+  campDepth: 1.4, // Top at 2.0
+  campLabel: 2.4,
+  pinBase: 0.3,
+  pinTop: 10,
+  pinIcon: 10.6,
+  compassRaise: 1, // Your own location sits above every other pin
+};
+
+/**
+ * Adjacent camp polygons often overlap slightly, and coplanar overlaps flicker.
+ * Nudging each one by a bounded, index-derived amount keeps them separated
+ * without letting any polygon reach the label layer.
+ */
+function campPolygonOffset(index: number): number {
+  return (index % 16) * 0.02;
+}
+
 async function mapImage(map: MapModel, disposables: any[]): Promise<Mesh | Group> {
   if (map.image.endsWith('.geojson') || (map.backgroundPolygons?.length && !map.image)) {
     // Pin / GPS space is a 10,000 × 10,000 grid; match that so overlays align.
@@ -168,7 +194,13 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
   }
 
   // Create local renderer instance instead of global
-  const renderer = new WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+  // Log depth buffer: the map is ~10,000 units wide but layers are separated by
+  // fractions of a unit, which a linear depth buffer cannot resolve when zoomed out.
+  const renderer = new WebGLRenderer({
+    antialias: true,
+    preserveDrawingBuffer: true,
+    logarithmicDepthBuffer: true,
+  });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(w, h);
 
@@ -511,14 +543,21 @@ async function createScene(
   // Base map from GeoJSON city blocks (non-interactive)
   if (map.backgroundPolygons) {
     for (const polygon of map.backgroundPolygons) {
-      addPolygon(polygon, map.width, map.height, font, scene, disposables, { interactive: false, depth: 0.4 });
+      addPolygon(polygon, map.width, map.height, font, scene, disposables, {
+        interactive: false,
+        base: layer.cityBlockBase,
+        depth: layer.cityBlockDepth,
+      });
     }
   }
 
   // Render camp/area polygons
   if (map.polygons) {
-    for (const polygon of map.polygons) {
-      const polygonResult = addPolygon(polygon, map.width, map.height, font, scene, disposables);
+    for (const [i, polygon] of map.polygons.entries()) {
+      const polygonResult = addPolygon(polygon, map.width, map.height, font, scene, disposables, {
+        base: layer.campBase + campPolygonOffset(i),
+        depth: layer.campDepth,
+      });
       if (polygonResult) {
         result.polygonData.push(polygonResult);
       }
@@ -537,6 +576,7 @@ async function createScene(
       mixers,
       scene,
       disposables,
+      layer.compassRaise,
     );
     if (p) {
       p.compass = compass;
@@ -667,10 +707,13 @@ async function addPin(
   mixers: AnimationMixer[],
   scene: Scene,
   disposables: MapDisposable[],
+  raise = 0,
 ): Promise<AddPinResult> {
-  const geometry = new CylinderGeometry(pin.size, pin.size, 1, 24);
+  // A post rather than a disc, so pins stay above (and clickable in front of) polygons
+  const pinHeight = layer.pinTop + raise - layer.pinBase;
+  const geometry = new CylinderGeometry(pin.size, pin.size, pinHeight, 24);
   const mesh = new Mesh(geometry, material);
-  mesh.position.set(pin.x, 1, pin.z);
+  mesh.position.set(pin.x, layer.pinBase + pinHeight / 2, pin.z);
   mesh.uuid = pin.uuid;
   if (pin.animated) {
     animateMesh(mesh, mixers);
@@ -711,6 +754,7 @@ async function addPin(
     }
     const p = await addSVG(svg, scale, rotation, disposables, 'txt');
     p.position.x = mesh.position.x;
+    p.position.y = layer.pinIcon + raise;
     p.position.z = mesh.position.z;
     if (pin.animated) {
       animateMesh(p, mixers, 1, 2);
@@ -721,6 +765,7 @@ async function addPin(
     if (pin.label && pin.label.length > 0) {
       const txt = addText(pin.label, font, pin.size, disposables);
       txt.position.x = mesh.position.x;
+      txt.position.y = layer.pinIcon + raise;
       txt.position.z = mesh.position.z;
       txt.uuid = 'txt';
       scene.add(txt);
@@ -859,11 +904,12 @@ function addPolygon(
   font: any,
   scene: Scene,
   disposables: MapDisposable[],
-  options: { interactive?: boolean; depth?: number } = {},
+  options: { interactive?: boolean; base?: number; depth?: number } = {},
 ): AddPolygonResult | undefined {
   if (!polygon.points || polygon.points.length < 3) return undefined;
   const interactive = options.interactive !== false;
-  const depth = options.depth ?? 1.5;
+  const depth = options.depth ?? layer.campDepth;
+  const base = options.base ?? (interactive ? layer.campBase : layer.cityBlockBase);
 
   const shape = new Shape();
   const scaledPoints = polygon.points.map((pt) => ({
@@ -893,13 +939,17 @@ function addPolygon(
     depthWrite: true,
     flatShading: true,
     shininess: 8,
+    // Pushes the fill back so the outline below does not z-fight with the top face
+    polygonOffset: true,
+    polygonOffsetFactor: 1,
+    polygonOffsetUnits: 1,
   });
 
   disposables.push(geometry);
   disposables.push(material);
 
   const mesh = new Mesh(geometry, material);
-  mesh.position.y = interactive ? 0.5 : 0.1;
+  mesh.position.y = base;
   mesh.rotation.x = -Math.PI / 2;
   mesh.uuid = interactive ? 'polygon' : 'map';
   if (interactive && polygon.pinIndex !== undefined) mesh.userData['pinIndex'] = polygon.pinIndex;
@@ -944,7 +994,7 @@ function addPolygon(
     const textSize = Math.max(3.2, Math.min(16, span * 0.14));
     labelMesh = addText(polygon.label, font, textSize, disposables);
     labelMesh.position.x = sumX / scaledPoints.length;
-    labelMesh.position.y = 2.2;
+    labelMesh.position.y = layer.campLabel;
     labelMesh.position.z = sumZ / scaledPoints.length;
     labelMesh.uuid = 'txt';
     labelMesh.raycast = () => {};
