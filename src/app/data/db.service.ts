@@ -291,6 +291,10 @@ export class DbService {
     return await call(this.worker, DataMethods.GpsToPoint, gpsCoord);
   }
 
+  public async gpsToPoints(gpsCoords: GpsCoord[]): Promise<Point[]> {
+    return await call(this.worker, DataMethods.GpsToPoints, gpsCoords);
+  }
+
   public async getWorkerLogs(): Promise<void> {
     const logs = await call(this.worker, DataMethods.ConsoleLog);
     for (const log of logs) {

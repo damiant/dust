@@ -53,7 +53,22 @@ interface AddPolygonResult {
   pinIndex?: number;
 }
 
+const GEOJSON_MAP_SIZE = 10000;
+
 async function mapImage(map: MapModel, disposables: any[]): Promise<Mesh | Group> {
+  if (map.image.endsWith('.geojson') || (map.backgroundPolygons?.length && !map.image)) {
+    // Pin / GPS space is a 10,000 × 10,000 grid; match that so overlays align.
+    map.width = GEOJSON_MAP_SIZE;
+    map.height = GEOJSON_MAP_SIZE;
+    const material = new MeshBasicMaterial({ color: map.backgroundColor, side: DoubleSide });
+    const geometry = new PlaneGeometry(map.width, map.height);
+    const mesh = new Mesh(geometry, material);
+    mesh.rotation.x = -Math.PI / 2;
+    mesh.uuid = 'map';
+    disposables.push(mesh.geometry);
+    disposables.push(mesh.material);
+    return mesh;
+  }
   if (map.image.endsWith('.svg')) {
     map.image = map.image.replace('.svg', '.png');
   }
@@ -493,6 +508,13 @@ async function createScene(
 
   result.polygonData = [];
 
+  // Base map from GeoJSON city blocks (non-interactive)
+  if (map.backgroundPolygons) {
+    for (const polygon of map.backgroundPolygons) {
+      addPolygon(polygon, map.width, map.height, font, scene, disposables, { interactive: false, depth: 0.4 });
+    }
+  }
+
   // Render camp/area polygons
   if (map.polygons) {
     for (const polygon of map.polygons) {
@@ -837,8 +859,11 @@ function addPolygon(
   font: any,
   scene: Scene,
   disposables: MapDisposable[],
+  options: { interactive?: boolean; depth?: number } = {},
 ): AddPolygonResult | undefined {
   if (!polygon.points || polygon.points.length < 3) return undefined;
+  const interactive = options.interactive !== false;
+  const depth = options.depth ?? 1.5;
 
   const shape = new Shape();
   const scaledPoints = polygon.points.map((pt) => ({
@@ -853,7 +878,7 @@ function addPolygon(
   shape.closePath();
 
   const geometry = new ExtrudeGeometry(shape, {
-    depth: 1.5,
+    depth,
     bevelEnabled: false,
   });
   const baseColor = polygon.colorHex ?? getPolygonColor(polygon.color);
@@ -874,16 +899,19 @@ function addPolygon(
   disposables.push(material);
 
   const mesh = new Mesh(geometry, material);
-  mesh.position.y = 0.5;
+  mesh.position.y = interactive ? 0.5 : 0.1;
   mesh.rotation.x = -Math.PI / 2;
-  mesh.uuid = 'polygon';
-  if (polygon.pinIndex !== undefined) mesh.userData['pinIndex'] = polygon.pinIndex;
+  mesh.uuid = interactive ? 'polygon' : 'map';
+  if (interactive && polygon.pinIndex !== undefined) mesh.userData['pinIndex'] = polygon.pinIndex;
+  if (!interactive) {
+    mesh.raycast = () => {};
+  }
   scene.add(mesh);
 
   // Dark outline so adjacent camp borders stay readable
   const edgesGeometry = new EdgesGeometry(geometry, 20);
   const edgeMaterial = new LineBasicMaterial({
-    color: darkenColor(baseColor, 0.55),
+    color: darkenColor(baseColor, interactive ? 0.55 : 0.35),
     linewidth: 2,
   });
   disposables.push(edgesGeometry);

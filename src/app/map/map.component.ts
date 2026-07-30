@@ -29,6 +29,7 @@ import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { DbService } from '../data/db.service';
 import { LivePoint, MapPolygon, MapModel, MapResult, ScrollResult } from './map-model';
 import { init3D } from './map';
+import { loadGeoJsonMapPolygons } from './map-geojson.utils';
 import { UiService } from '../ui/ui.service';
 import { Capacitor } from '@capacitor/core';
 import { LiveService } from './live.service';
@@ -60,7 +61,7 @@ export class MapComponent implements OnInit, OnDestroy {
   footerClass: string | undefined;
   popover = viewChild.required<ElementRef>('popover');
   infoList: MapInfo[] | undefined;
-  src = 'assets/map.svg';
+  src = 'assets/map.geojson';
   showMessage = false;
   hideCompass = false;
   pointsSet = false;
@@ -322,8 +323,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.routerOutlet.swipeGesture = false;
-    const darkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    this.src = darkMode ? 'assets/map-dark-2026.svg' : 'assets/map-2026.svg';
+    this.src = `assets/map-${this.db.selectedDataset().year}.geojson`;
     const mapURI = await this.settings.getMapURI();
     if (mapURI !== undefined && mapURI !== '') {
       this.src = mapURI;
@@ -394,17 +394,36 @@ export class MapComponent implements OnInit, OnDestroy {
       compassPt.x -= 1000;
     }
 
+    const dark = this.ui.darkMode();
+    let backgroundPolygons: MapPolygon[] | undefined;
+    let mapImage = this.src;
+    if (this.src.endsWith('.geojson')) {
+      try {
+        // City blocks from map-{year}.geojson (same shape as map-2025.geojson)
+        backgroundPolygons = await loadGeoJsonMapPolygons(
+          this.src,
+          (coords) => this.db.gpsToPoints(coords),
+          { colorHex: dark ? 0x2a2a2a : 0xffffff, opacity: 1 },
+        );
+      } catch (error) {
+        console.warn(`GeoJSON map unavailable (${this.src}), falling back to raster:`, error);
+        const year = this.db.selectedDataset().year;
+        mapImage = dark ? `assets/map-dark-${year}.svg` : `assets/map-${year}.svg`;
+      }
+    }
+
     const map: MapModel = {
       name: this.db.selectedDataset().name,
-      image: this.src, // 'assets/map2.webp',
+      image: mapImage,
       width: 0,
       height: 0,
       defaultPinSize: pinSize,
       pinSizeMultiplier: this.db.selectedDataset().pin_size_multiplier,
       pins: [],
-      backgroundColor: this.ui.darkMode() ? 0x111111 : 0xdddddd,
+      backgroundColor: dark ? 0x111111 : 0xdddddd,
       compass: { uuid: 'compass', x: compassPt.x, z: compassPt.y, color: 'compass', size: pinSize, label: '' },
       pinClicked: this.pinClicked.bind(this),
+      backgroundPolygons,
       polygons: this._polygons?.map((polygon) => ({
         ...polygon,
         label:

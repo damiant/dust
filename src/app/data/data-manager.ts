@@ -111,6 +111,8 @@ export class DataManager implements WorkerClass {
         return this.findArt(args[0]);
       case DataMethods.GpsToPoint:
         return this.gpsToPoint(args[0]);
+      case DataMethods.GpsToPoints:
+        return this.gpsToPoints(args[0]);
       case DataMethods.GetMapPointGPS:
         return this.getMapPointGPS(args[0]);
       case DataMethods.SetMapPointsGPS:
@@ -332,6 +334,10 @@ export class DataManager implements WorkerClass {
 
   private gpsToPoint(gpsCoord: GpsCoord): Point {
     return gpsToMap(gpsCoord);
+  }
+
+  private gpsToPoints(gpsCoords: GpsCoord[]): Point[] {
+    return gpsCoords.map((coord) => gpsToMap(coord));
   }
 
   private getMapPointGPS(mapPoint: MapPoint): GpsCoord {

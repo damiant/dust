@@ -21,6 +21,8 @@ export interface MapModel {
   pinSizeMultiplier: number;
   backgroundColor: number;
   compass: MapPin | undefined;
+  /** City-block / base-map polygons (e.g. from map-{year}.geojson). */
+  backgroundPolygons?: MapPolygon[];
   polygons?: MapPolygon[];
   recenterOnSelect?: boolean;
 
