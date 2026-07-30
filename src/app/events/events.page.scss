@@ -3,6 +3,10 @@ ion-segment {
   margin-right: 12px;
 }
 
+.event-types-trigger {
+  cursor: pointer;
+}
+
 // Hides the scroll bar without affecting scrolling
 ion-segment::-webkit-scrollbar {
   display: none;

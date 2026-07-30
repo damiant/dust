@@ -140,6 +140,7 @@ export class EventsPage implements OnInit, OnDestroy {
   vm: EventsState = initialState();
 
   virtualScroll = viewChild.required(CdkVirtualScrollViewport);
+  eventCategories = viewChild.required<CategoryComponent>('eventCategories');
 
   constructor() {
     addIcons({ compass, compassOutline });
@@ -299,6 +300,10 @@ export class EventsPage implements OnInit, OnDestroy {
 
   home() {
     this.ui.home();
+  }
+
+  openEventTypes(event: globalThis.Event) {
+    this.eventCategories().open(event);
   }
 
   searchEvents(value: string) {

@@ -1,4 +1,4 @@
-import { Component, input, model, output, signal, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, model, output, signal, viewChild } from '@angular/core';
 import {
   IonButton,
   IonContent,
@@ -19,6 +19,7 @@ import { chevronDown } from 'ionicons/icons';
   imports: [IonItem, IonButton, IonPopover, IonContent, IonRadioGroup, IonRadio, IonIcon],
 })
 export class CategoryComponent {
+  popover = viewChild.required<IonPopover>('popover');
   sortTypes = [
     { title: 'Distance', value: 'dist' },
     { title: 'Time', value: 'alpha' },
@@ -33,6 +34,11 @@ export class CategoryComponent {
 
   constructor() {
     addIcons({ chevronDown });
+  }
+
+  async open(event: Event) {
+    this.popover().event = event;
+    await this.popover().present();
   }
 
   changed(e: CustomEvent) {

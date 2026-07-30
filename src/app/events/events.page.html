@@ -1,6 +1,15 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title> {{vm.title}} </ion-title>
+    <ion-title
+      class="event-types-trigger"
+      role="button"
+      tabindex="0"
+      (click)="openEventTypes($event)"
+      (keydown.enter)="openEventTypes($event)"
+      (keydown.space)="openEventTypes($event)"
+    >
+      {{vm.title}}
+    </ion-title>
 
     @if (db.selectedYear() !== '') {
     <app-badge (click)="home()" [padRight]="true" slot="end">{{db.selectedYear()}}</app-badge>
@@ -12,7 +21,17 @@
   <div class="virtual-scroll-container ion-content-scroll-host" cdkVirtualScrollingElement>
     <ion-header collapse="condense">
       <ion-toolbar>
-        <ion-title class="page-focus" size="large">{{vm.title}}</ion-title>
+        <ion-title
+          class="page-focus event-types-trigger"
+          size="large"
+          role="button"
+          tabindex="0"
+          (click)="openEventTypes($event)"
+          (keydown.enter)="openEventTypes($event)"
+          (keydown.space)="openEventTypes($event)"
+        >
+          {{vm.title}}
+        </ion-title>
         <ion-buttons class="b-pad-r" slot="end">
           <app-sort [padChecked]="false" id="event-sort" (sortTypeChange)="sortTypeChanged($event)"></app-sort>
         </ion-buttons>
@@ -21,6 +40,7 @@
         <app-search placeholder="Find Events" (searched)="searchEvents($event)" />
         <ion-buttons class="b-pad-r" slot="end">
           <app-category
+            #eventCategories
             [showSortBy]="false"
             id="event-categories"
             allTitle="All Events"
