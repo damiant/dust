@@ -1,4 +1,8 @@
 ## Changes
+## 2.129
+
+- Add Display From and Display To options for links
+
 ## 2.126
 
 - Upgrade to Angular 22
