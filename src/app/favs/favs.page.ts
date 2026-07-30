@@ -47,6 +47,8 @@ import { ToastController, AlertController } from '@ionic/angular';
 import { MessageComponent } from '../message/message.component';
 import { getTimeZoneOffsetHours } from '../utils/date-utils';
 import { BadgeComponent } from '../badge/badge.component';
+import { MapPolygon } from '../map/map-model';
+import { buildCampMapFeatures, buildEventMapFeatures } from '../map/camp-polygon.utils';
 
 enum Filter {
   All = '',
@@ -70,6 +72,7 @@ interface FavsState {
   rslId: string | undefined;
   isActionSheetOpen: boolean;
   mapPoints: MapPoint[];
+  mapPolygons: MapPolygon[];
 }
 
 function initialState(): FavsState {
@@ -88,6 +91,7 @@ function initialState(): FavsState {
     rslId: undefined,
     isActionSheetOpen: false,
     mapPoints: [],
+    mapPolygons: [],
   };
 }
 
@@ -279,9 +283,9 @@ export class FavsPage implements OnInit {
     this.isPopoverOpen = false;
   }
 
-  groupClick(gevent: Event) {
-    console.log(gevent);
+  async groupClick(gevent: Event) {
     const points: MapPoint[] = [];
+    const polygons: MapPolygon[] = [];
     let thisGroup = false;
     for (const event of this.vm.events) {
       if (event.group == gevent.group) {
@@ -290,31 +294,32 @@ export class FavsPage implements OnInit {
         thisGroup = false;
       }
       if (thisGroup) {
-        points.push(
-          toMapPoint(
-            event.location,
-            { title: event.title, location: event.location, subtitle: event.longTimeString, imageUrl: event.imageUrl },
-            event.pin,
-          ),
+        const features = await buildEventMapFeatures(
+          event,
+          (uid) => this.db.findCamp(uid),
+          (gps) => this.db.gpsToPoint(gps),
+          points.length,
         );
+        if (!features) continue;
+        if (features.point.info) features.point.info.subtitle = event.longTimeString;
+        points.push(features.point);
+        if (features.polygon) polygons.push(features.polygon);
       }
     }
 
-    this.displayPoints(points, `${gevent.group} Events`);
+    this.displayPoints(points, `${gevent.group} Events`, polygons);
   }
 
-  mapCamps() {
+  async mapCamps() {
     const points: MapPoint[] = [];
+    const polygons: MapPolygon[] = [];
     for (const camp of this.vm.camps) {
-      points.push(
-        toMapPoint(
-          camp.location_string,
-          { title: camp.name, location: camp.location_string!, subtitle: '', imageUrl: camp.imageUrl },
-          camp.pin,
-        ),
-      );
+      const features = await buildCampMapFeatures(camp, (gps) => this.db.gpsToPoint(gps), points.length);
+      if (!features) continue;
+      points.push(features.point);
+      if (features.polygon) polygons.push(features.polygon);
     }
-    this.displayPoints(points, 'Favorite Camps');
+    this.displayPoints(points, 'Favorite Camps', polygons);
   }
 
   async mapArt() {
@@ -337,10 +342,11 @@ export class FavsPage implements OnInit {
     this.displayPoints(points, 'Favorite Art');
   }
 
-  private async displayPoints(points: MapPoint[], title: string) {
+  private async displayPoints(points: MapPoint[], title: string, polygons: MapPolygon[] = []) {
     const gpsPoints = await this.db.setMapPointsGPS(points);
     this.fav.setMapPointsTitle(title);
     this.fav.setMapPoints(gpsPoints);
+    this.fav.setMapPolygons(polygons);
     this.router.navigate(['tabs/favs/map']);
   }
 
@@ -349,12 +355,21 @@ export class FavsPage implements OnInit {
   }
 
   async mapEvent(event: Event) {
-    const mp = toMapPoint(event.location, undefined, event.pin);
-    mp.gps = await this.db.getMapPointGPS(mp);
-    this.vm.mapPoints = [mp];
+    const features = await buildEventMapFeatures(
+      event,
+      (uid) => this.db.findCamp(uid),
+      (gps) => this.db.gpsToPoint(gps),
+      0,
+    );
+    if (features && features.point.x === undefined && features.point.y === undefined) {
+      features.point.gps = await this.db.getMapPointGPS(features.point);
+    }
+    this.vm.mapPoints = features ? [features.point] : [];
+    this.vm.mapPolygons = features?.polygon ? [features.polygon] : [];
     this.vm.mapTitle = event.title;
     this.vm.mapSubtitle = event.location;
     this.vm.showMap = true;
+    this._change.markForCheck();
   }
 
   public async removeEvent(event: Event) {
@@ -376,12 +391,13 @@ export class FavsPage implements OnInit {
   }
 
   async mapCamp(camp: Camp) {
-    const mp = toMapPoint(camp.location_string!, undefined, camp.pin);
-    mp.gps = await this.db.getMapPointGPS(mp);
-    this.vm.mapPoints = [mp];
+    const features = await buildCampMapFeatures(camp, (gps) => this.db.gpsToPoint(gps), 0);
+    this.vm.mapPoints = features ? [features.point] : [];
+    this.vm.mapPolygons = features?.polygon ? [features.polygon] : [];
     this.vm.mapTitle = camp.name;
-    this.vm.mapSubtitle = camp.location_string!;
+    this.vm.mapSubtitle = camp.location_string ?? '';
     this.vm.showMap = true;
+    this._change.markForCheck();
   }
 
   async removeCamp(camp: Camp) {

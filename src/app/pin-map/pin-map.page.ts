@@ -39,7 +39,7 @@ import { addIcons } from 'ionicons';
 import { compassOutline, shareOutline } from 'ionicons/icons';
 import { SearchComponent } from '../search/search.component';
 import { MapPolygon, PinColor } from '../map/map-model';
-import { buildCampMapFeatures } from '../map/camp-polygon.utils';
+import { buildCampMapFeatures, buildEventMapFeatures } from '../map/camp-polygon.utils';
 import { FavoritesService } from '../favs/favorites.service';
 import { UiService } from '../ui/ui.service';
 import { ToastController } from '@ionic/angular';
@@ -135,7 +135,7 @@ export class PinMapPage {
     // This prevents the map from refreshing unnecessarily when navigating back
     if (this.lastMapType !== currentMapType || this.lastThingName !== currentThingName) {
       this.points = [...mapSet.points];
-      if (currentMapType !== MapType.All) this.polygons = [];
+      if (currentMapType !== MapType.All && currentMapType !== MapType.Now) this.polygons = [];
       this.title.set(mapSet.title);
       this.description = mapSet.description;
       this.lastMapType = currentMapType;
@@ -468,22 +468,24 @@ export class PinMapPage {
     const timeRange = nowRange(this.db.getTimeZone());
     this.smallPins = true;
     const points = [];
+    const polygons: MapPolygon[] = [];
     const allEvents = await this.db.findEvents('', undefined, '', undefined, timeRange, true, false);
     for (const event of allEvents) {
-      const mapPoint = toMapPoint(
-        event.location,
-        {
-          title: event.title,
-          location: event.location,
-          subtitle: event.camp,
-          href: `event/${event.uid}+Now`,
-        },
-        event.pin,
-        event.facing,
+      const features = await buildEventMapFeatures(
+        event,
+        (uid) => this.db.findCamp(uid),
+        (gps) => this.db.gpsToPoint(gps),
+        points.length,
+        `event/${event.uid}+Now`,
       );
-      mapPoint.gps = await this.db.getMapPointGPS(mapPoint);
-      points.push(mapPoint);
+      if (!features) continue;
+      if (features.point.x === undefined && features.point.y === undefined) {
+        features.point.gps = await this.db.getMapPointGPS(features.point);
+      }
+      points.push(features.point);
+      if (features.polygon) polygons.push(features.polygon);
     }
+    this.polygons = polygons;
     return {
       title,
       description: `Map of ${allEvents.length} events happening ${timeRangeToString(timeRange, this.db.getTimeZone())}`,

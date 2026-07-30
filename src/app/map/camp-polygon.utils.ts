@@ -1,4 +1,4 @@
-import { Camp, MapPoint, Pin } from '../data/models';
+import { Camp, Event, MapInfo, MapPoint, Pin } from '../data/models';
 import { GpsCoord, Point } from './geo.utils';
 import { MapPolygon } from './map-model';
 import { toMapPoint } from './map.utils';
@@ -86,6 +86,34 @@ export async function buildCampMapFeatures(
   );
   const polygon = await campToMapPolygon(camp, gpsToPoint, pinIndex);
   return { point, polygon };
+}
+
+export async function buildEventMapFeatures(
+  event: Event,
+  findCamp: (uid: string) => Promise<Camp | undefined>,
+  gpsToPoint: (coord: GpsCoord) => Promise<Point>,
+  pinIndex: number,
+  href?: string,
+): Promise<CampMapFeatures | undefined> {
+  const camp = event.hosted_by_camp ? await findCamp(event.hosted_by_camp) : undefined;
+  const info: MapInfo = {
+    title: event.title,
+    location: event.location,
+    subtitle: event.camp,
+    imageUrl: event.imageUrl ?? camp?.imageUrl,
+    href,
+  };
+
+  if (camp) {
+    const features = await buildCampMapFeatures(camp, gpsToPoint, pinIndex);
+    if (features) {
+      features.point.info = info;
+      return features;
+    }
+  }
+
+  if (!event.location && !event.pin) return undefined;
+  return { point: toMapPoint(event.location, info, event.pin, event.facing) };
 }
 
 export async function campToMapPolygon(

@@ -14,6 +14,7 @@ import {
   IonToast,
   IonToolbar,
 } from '@ionic/angular/standalone';
+import { MapPolygon } from '../map/map-model';
 
 @Component({
   selector: 'app-fav-map',
@@ -37,17 +38,20 @@ export class FavMapPage {
   private db = inject(DbService);
   isToastOpen = false;
   points: MapPoint[] = [];
+  polygons: MapPolygon[] = [];
   title = '';
 
   ionViewWillEnter() {
     const newTitle = this.fav.getMapPointsTitle();
     const newPoints = this.fav.getMapPoints();
+    const newPolygons = this.fav.getMapPolygons();
 
     // Only update if the reference has changed (which means favorites were modified)
     // This prevents unnecessary map refresh when just navigating back
     if (this.points !== newPoints) {
       this.title = newTitle;
       this.points = newPoints;
+      this.polygons = newPolygons;
     }
 
     if (this.db.anyLocationsHidden()) {

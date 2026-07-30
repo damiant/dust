@@ -31,6 +31,8 @@ import { FavoritesService } from '../favs/favorites.service';
 import { addIcons } from 'ionicons';
 import { compass, compassOutline } from 'ionicons/icons';
 import { SortComponent } from '../sort/sort.component';
+import { MapPolygon } from '../map/map-model';
+import { buildCampMapFeatures } from '../map/camp-polygon.utils';
 
 interface RSLState {
   byDist: boolean;
@@ -45,6 +47,7 @@ interface RSLState {
   noEvents: boolean;
   noEventsMessage: string;
   mapPoints: MapPoint[];
+  mapPolygons: MapPolygon[];
   day: Date;
   isOpen: boolean;
   message: string;
@@ -61,6 +64,7 @@ function initialState(): RSLState {
     mapTitle: '',
     mapSubtitle: '',
     mapPoints: [],
+    mapPolygons: [],
     showMap: false,
     noEvents: false,
     noEventsMessage: '',
@@ -236,13 +240,23 @@ export class RslPage {
   }
 
   public async map(event: RSLEvent) {
-    console.log('map', event);
-    const mp = toMapPoint(event.location, undefined, event.pin);
-    mp.gps = await this.db.getMapPointGPS(mp);
-    this.vm.mapPoints = [mp];
+    const camp = event.campId ? await this.db.findCamp(event.campId) : undefined;
+    const features = camp
+      ? await buildCampMapFeatures(camp, (gps) => this.db.gpsToPoint(gps), 0)
+      : undefined;
+    if (features) {
+      this.vm.mapPoints = [features.point];
+      this.vm.mapPolygons = features.polygon ? [features.polygon] : [];
+    } else {
+      const point = toMapPoint(event.location, undefined, event.pin);
+      point.gps = await this.db.getMapPointGPS(point);
+      this.vm.mapPoints = [point];
+      this.vm.mapPolygons = [];
+    }
     this.vm.mapTitle = event.camp;
     this.vm.mapSubtitle = event.location;
     this.vm.showMap = true;
+    this._change.markForCheck();
   }
 
   public async dayChange(event: any) {

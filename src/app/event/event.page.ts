@@ -37,7 +37,6 @@ import { MapComponent } from '../map/map.component';
 import { FavoritesService } from '../favs/favorites.service';
 import { SettingsService } from '../data/settings.service';
 import { UiService } from '../ui/ui.service';
-import { toMapPoint } from '../map/map.utils';
 import { dateMatches, noDate, sameDay } from '../utils/utils';
 import { addIcons } from 'ionicons';
 import {
@@ -54,7 +53,7 @@ import {
 import { CachedImgComponent, ImageLocation } from '../cached-img/cached-img.component';
 import { canCreate } from '../map/map';
 import { ScrollResult, MapPolygon } from '../map/map-model';
-import { campToMapPolygon } from '../map/camp-polygon.utils';
+import { buildEventMapFeatures } from '../map/camp-polygon.utils';
 import { EventChanged, EventsService } from '../events/events.service';
 import { Subscription } from 'rxjs';
 import { BadgeComponent } from '../badge/badge.component';
@@ -178,26 +177,17 @@ export class EventPage implements OnInit, OnDestroy {
       this.event = event;
       this.mapTitle = event.camp;
       this.mapSubtitle = event.location;
-      const camp = event.hosted_by_camp ? await this.db.findCamp(event.hosted_by_camp) : undefined;
-      const mapPoint = toMapPoint(event.location, {
-        title: event.title,
-        location: event.location,
-        subtitle: event.camp,
-        imageUrl: event.imageUrl ?? camp?.imageUrl,
-      });
-      if (event.pin) {
-        mapPoint.x = event.pin.x;
-        mapPoint.y = event.pin.y;
-      } else {
-        mapPoint.gps = await this.db.getMapPointGPS(mapPoint);
+      const features = await buildEventMapFeatures(
+        event,
+        (uid) => this.db.findCamp(uid),
+        (gps) => this.db.gpsToPoint(gps),
+        0,
+      );
+      if (features && features.point.x === undefined && features.point.y === undefined) {
+        features.point.gps = await this.db.getMapPointGPS(features.point);
       }
-      this.mapPoints = [mapPoint];
-
-      this.mapPolygons = [];
-      if (camp) {
-        const polygon = await campToMapPolygon(camp, (coord) => this.db.gpsToPoint(coord), 0);
-        if (polygon) this.mapPolygons = [polygon];
-      }
+      this.mapPoints = features ? [features.point] : [];
+      this.mapPolygons = features?.polygon ? [features.polygon] : [];
       const selectedDay = this.db.selectedDay();
       const occurrences = JSON.parse(JSON.stringify(event.occurrence_set));
       const isNoDate = sameDay(selectedDay, noDate());

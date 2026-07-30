@@ -18,6 +18,7 @@ import { clone, getDayName, getOccurrenceTimeString, now, sameDay } from '../uti
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { GpsCoord } from '../map/geo.utils';
 import { RatingService } from '../rating.service';
+import { MapPolygon } from '../map/map-model';
 
 enum DbId {
   favorites = 'favorites',
@@ -38,6 +39,7 @@ export class FavoritesService {
   private dataset: string = '';
   private mapPointsTitle: string = '';
   private mapPoints: MapPoint[] = [];
+  private mapPolygons: MapPolygon[] = [];
   public things: WritableSignal<Thing[]> = signal([]);
 
   private favorites: Favorites = { art: [], events: [], camps: [], friends: [], rslEvents: [], privateEvents: [] };
@@ -55,6 +57,10 @@ export class FavoritesService {
     this.mapPoints = mapPoints;
   }
 
+  public setMapPolygons(mapPolygons: MapPolygon[]) {
+    this.mapPolygons = mapPolygons;
+  }
+
   public setMapPointsTitle(title: string) {
     this.mapPointsTitle = title;
   }
@@ -65,6 +71,10 @@ export class FavoritesService {
 
   public getMapPoints(): MapPoint[] {
     return this.mapPoints;
+  }
+
+  public getMapPolygons(): MapPolygon[] {
+    return this.mapPolygons;
   }
 
   private noData(): Favorites {
@@ -478,6 +488,7 @@ export class FavoritesService {
         distanceInfo: '',
         event_type: { abbr: '', label: '', id: 0 },
         gpsCoords: { lat: 0, lng: 0 },
+        hosted_by_camp: rslEvent.artCar ? undefined : rslEvent.campId,
         slug: this.rslId(rslEvent, o),
         description: `${o.who} is playing ${party}${
           rslEvent.artCar ? 'on the ' + rslEvent.artCar + ' mutant vehicle' : 'at ' + rslEvent.camp

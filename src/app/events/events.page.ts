@@ -34,7 +34,6 @@ import { UiService } from '../ui/ui.service';
 import { CategoryComponent } from '../category/category.component';
 import { SkeletonEventComponent } from '../skeleton-event/skeleton-event.component';
 import { SearchComponent } from '../search/search.component';
-import { toMapPoint } from '../map/map.utils';
 import { GpsCoord } from '../map/geo.utils';
 import { GeoService } from '../geolocation/geo.service';
 import { SettingsService } from '../data/settings.service';
@@ -44,6 +43,8 @@ import { FavoritesService } from '../favs/favorites.service';
 import { EventPositionChange, EventsService } from './events.service';
 import { Subscription } from 'rxjs';
 import { SortComponent } from '../sort/sort.component';
+import { MapPolygon } from '../map/map-model';
+import { buildEventMapFeatures } from '../map/camp-polygon.utils';
 
 interface EventsState {
   title: string;
@@ -63,6 +64,7 @@ interface EventsState {
   mapTitle: string;
   mapSubtitle: string;
   mapPoints: MapPoint[];
+  mapPolygons: MapPolygon[];
   byDist: boolean;
   isNow: boolean;
   timeRange: string;
@@ -88,6 +90,7 @@ function initialState(): EventsState {
     mapTitle: '',
     mapSubtitle: '',
     mapPoints: [],
+    mapPolygons: [],
     byDist: false,
     isNow: false,
     timeRange: '',
@@ -337,11 +340,19 @@ export class EventsPage implements OnInit, OnDestroy {
     }
   }
 
-  map(event: Event) {
-    this.vm.mapPoints = [toMapPoint(event.location, undefined, event.pin)];
+  async map(event: Event) {
+    const features = await buildEventMapFeatures(
+      event,
+      (uid) => this.db.findCamp(uid),
+      (gps) => this.db.gpsToPoint(gps),
+      0,
+    );
+    this.vm.mapPoints = features ? [features.point] : [];
+    this.vm.mapPolygons = features?.polygon ? [features.polygon] : [];
     this.vm.mapTitle = event.camp;
     this.vm.mapSubtitle = event.location;
     this.vm.showMap = true;
+    this._change.markForCheck();
   }
 
   showPastEvents() {
