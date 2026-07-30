@@ -7,6 +7,28 @@ ion-segment {
   cursor: pointer;
 }
 
+.map-loading {
+  animation: map-pulse 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes map-pulse {
+  from {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .map-loading {
+    animation: none;
+  }
+}
+
 // Hides the scroll bar without affecting scrolling
 ion-segment::-webkit-scrollbar {
   display: none;

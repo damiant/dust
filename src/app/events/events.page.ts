@@ -3,6 +3,7 @@ import {
   effect,
   viewChild,
   inject,
+  signal,
   OnDestroy,
   OnInit,
   ChangeDetectionStrategy,
@@ -13,6 +14,7 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
+  IonIcon,
   IonSegment,
   IonSegmentButton,
   IonText,
@@ -38,7 +40,7 @@ import { GpsCoord } from '../map/geo.utils';
 import { GeoService } from '../geolocation/geo.service';
 import { SettingsService } from '../data/settings.service';
 import { addIcons } from 'ionicons';
-import { compass, compassOutline } from 'ionicons/icons';
+import { compass, compassOutline, map, mapOutline } from 'ionicons/icons';
 import { FavoritesService } from '../favs/favorites.service';
 import { EventPositionChange, EventsService } from './events.service';
 import { Subscription } from 'rxjs';
@@ -117,6 +119,7 @@ function initialState(): EventsState {
     IonButtons,
     IonTitle,
     IonHeader,
+    IonIcon,
     IonContent,
     SkeletonEventComponent,
     SearchComponent,
@@ -138,12 +141,13 @@ export class EventsPage implements OnInit, OnDestroy {
   private geo = inject(GeoService);
   private _change = inject(ChangeDetectorRef);
   vm: EventsState = initialState();
+  mapLoading = signal(false);
 
   virtualScroll = viewChild.required(CdkVirtualScrollViewport);
   eventCategories = viewChild.required<CategoryComponent>('eventCategories');
 
   constructor() {
-    addIcons({ compass, compassOutline });
+    addIcons({ compass, compassOutline, map, mapOutline });
     effect(() => {
       this.ui.scrollUp('events', this.virtualScroll());
     });
@@ -358,6 +362,51 @@ export class EventsPage implements OnInit, OnDestroy {
     this.vm.mapSubtitle = event.location;
     this.vm.showMap = true;
     this._change.markForCheck();
+  }
+
+  async mapListedEvents() {
+    if (this.mapLoading()) return;
+    this.mapLoading.set(true);
+    let mapWillOpen = false;
+
+    try {
+      const points: MapPoint[] = [];
+      const polygons: MapPolygon[] = [];
+      for (const event of this.vm.events) {
+        const features = await buildEventMapFeatures(
+          event,
+          (uid) => this.db.findCamp(uid),
+          (gps) => this.db.gpsToPoint(gps),
+          points.length,
+        );
+        if (!features) continue;
+        if (features.point.x === undefined && features.point.y === undefined) {
+          features.point.gps = await this.db.getMapPointGPS(features.point);
+        }
+        points.push(features.point);
+        if (features.polygon) polygons.push(features.polygon);
+      }
+
+      if (points.length === 0) {
+        this.ui.presentToast('None of the listed events have a mapped location.', this.toastController);
+        return;
+      }
+
+      this.vm.mapPoints = points;
+      this.vm.mapPolygons = polygons;
+      this.vm.mapTitle = this.vm.title.trim() || 'Events';
+      this.vm.mapSubtitle =
+        points.length === this.vm.events.length
+          ? `Map of ${points.length} listed events`
+          : `Map of ${points.length} of ${this.vm.events.length} listed events`;
+      this.vm.showMap = true;
+      mapWillOpen = true;
+      this._change.markForCheck();
+    } finally {
+      if (!mapWillOpen) {
+        this.mapLoading.set(false);
+      }
+    }
   }
 
   showPastEvents() {

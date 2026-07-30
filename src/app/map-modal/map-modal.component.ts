@@ -1,4 +1,4 @@
-import { Component, input, model, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, model, output } from '@angular/core';
 import { MapComponent } from '../map/map.component';
 import { MapPoint } from '../data/models';
 import { IonFab, IonFabButton, IonIcon, IonModal, IonText } from '@ionic/angular/standalone';
@@ -22,6 +22,8 @@ export class MapModalComponent {
   subtitle = input('');
   points = input<MapPoint[]>([]);
   polygons = input<MapPolygon[]>([]);
+  smallPins = input(false);
+  opened = output<void>();
 
   close() {
     this.show.set(false);

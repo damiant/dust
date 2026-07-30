@@ -11,6 +11,15 @@
       {{vm.title}}
     </ion-title>
 
+    <ion-button
+      slot="end"
+      fill="clear"
+      aria-label="Map listed events"
+      [disabled]="vm.events.length === 0"
+      (click)="mapListedEvents()"
+    >
+      <ion-icon slot="icon-only" [class.map-loading]="mapLoading()" [name]="mapLoading() ? 'map' : 'map-outline'"></ion-icon>
+    </ion-button>
     @if (db.selectedYear() !== '') {
     <app-badge (click)="home()" [padRight]="true" slot="end">{{db.selectedYear()}}</app-badge>
     }
@@ -69,6 +78,8 @@
       [(show)]="vm.showMap"
       [points]="vm.mapPoints"
       [polygons]="vm.mapPolygons"
+      [smallPins]="vm.mapPoints.length > 1"
+      (opened)="mapLoading.set(false)"
     ></app-map-modal>
     @if (!vm.noEvents && this.vm.events.length === 0) {
     <div>
