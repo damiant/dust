@@ -64,6 +64,7 @@
     [(show)]="vm.showMap"
     [points]="vm.mapPoints"
     [polygons]="vm.mapPolygons"
+    [smallPins]="vm.mapPoints.length > 1"
   ></app-map-modal>
   @if (vm.noFavorites) {
   <div class="center pad-sides">

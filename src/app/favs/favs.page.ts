@@ -301,13 +301,26 @@ export class FavsPage implements OnInit {
           points.length,
         );
         if (!features) continue;
-        if (features.point.info) features.point.info.subtitle = event.longTimeString;
+        if (features.point.info) features.point.info.time = event.longTimeString;
+        if (features.point.x === undefined && features.point.y === undefined) {
+          features.point.gps = await this.db.getMapPointGPS(features.point);
+        }
         points.push(features.point);
         if (features.polygon) polygons.push(features.polygon);
       }
     }
 
-    this.displayPoints(points, `${gevent.group} Events`, polygons);
+    if (points.length === 0) {
+      this.ui.presentToast('None of these events have a mapped location.', this.toastController);
+      return;
+    }
+
+    this.vm.mapPoints = points;
+    this.vm.mapPolygons = polygons;
+    this.vm.mapTitle = `${gevent.group} Events`;
+    this.vm.mapSubtitle = `Map of ${points.length} events`;
+    this.vm.showMap = true;
+    this._change.markForCheck();
   }
 
   async mapCamps() {
