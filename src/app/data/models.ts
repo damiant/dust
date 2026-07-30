@@ -337,6 +337,8 @@ export interface Link {
   uid: string;
   title: string;
   url: string;
+  displayFrom?: string;
+  displayTo?: string;
 }
 
 export interface MapPoint {

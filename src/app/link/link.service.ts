@@ -3,6 +3,7 @@ import { Group, Link } from '../data/models';
 import { DbService } from '../data/db.service';
 import { UiService } from '../ui/ui.service';
 import { SettingsService } from '../data/settings.service';
+import { nowAtEvent } from '../utils/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,27 @@ export class LinkService {
 
   public async getGroupedLinks(): Promise<Group[]> {
     const links = await this.db.getLinks();
-    return await this.group(links);
+    const filteredLinks = this.filterLinksByDate(links);
+    return await this.group(filteredLinks);
+  }
+
+  private filterLinksByDate(links: Link[]): Link[] {
+    const now = nowAtEvent(this.db.getTimeZone());
+    return links.filter((link) => {
+      if (link.displayFrom) {
+        const displayFrom = new Date(link.displayFrom);
+        if (now < displayFrom) {
+          return false;
+        }
+      }
+      if (link.displayTo) {
+        const displayTo = new Date(link.displayTo);
+        if (now > displayTo) {
+          return false;
+        }
+      }
+      return true;
+    });
   }
 
   private async group(links: Link[]): Promise<Group[]> {
