@@ -14,7 +14,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
 } from '@angular/core';
-import { LiveLocation, LocationEnabledStatus, MapInfo, MapPoint, Pin } from '../data/models';
+import { LiveLocation, LocationEnabledStatus, MapFavoriteChange, MapInfo, MapPoint, Pin } from '../data/models';
 import { calculateRelativePosition, defaultMapRadius, distance, formatDistanceNice, mapPointToPin } from './map.utils';
 import { delay } from '../utils/utils';
 import { GeoService } from '../geolocation/geo.service';
@@ -24,7 +24,7 @@ import { CompassError, CompassHeading } from './compass';
 import { GpsCoord } from './geo.utils';
 import { Router, RouterModule } from '@angular/router';
 import { environment } from 'src/environments/environment';
-import { IonButton, IonRouterOutlet, IonText, ToastController } from '@ionic/angular/standalone';
+import { IonButton, IonIcon, IonRouterOutlet, IonText, ToastController } from '@ionic/angular/standalone';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { DbService } from '../data/db.service';
 import { LivePoint, MapPolygon, MapModel, MapResult, ScrollResult } from './map-model';
@@ -33,6 +33,8 @@ import { loadGeoJsonMapPolygons } from './map-geojson.utils';
 import { UiService } from '../ui/ui.service';
 import { Capacitor } from '@capacitor/core';
 import { LiveService } from './live.service';
+import { addIcons } from 'ionicons';
+import { star as starIcon, starOutline } from 'ionicons/icons';
 
 // How often is the map updated with a new location
 const geolocateInterval = 10000;
@@ -41,7 +43,7 @@ const geolocateInterval = 10000;
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
-  imports: [RouterModule, CommonModule, MessageComponent, IonText, IonButton, CachedImgComponent],
+  imports: [RouterModule, CommonModule, MessageComponent, IonText, IonButton, IonIcon, CachedImgComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MapComponent implements OnInit, OnDestroy {
@@ -84,6 +86,7 @@ export class MapComponent implements OnInit, OnDestroy {
   wasLoadingDialog = false;
   private liveInterval: any;
   scrolled = output<ScrollResult>();
+  favoriteChange = output<MapFavoriteChange>();
 
   @Input() set points(points: MapPoint[]) {
     if (this.pointsSet) {
@@ -287,6 +290,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   constructor() {
     this._points = [];
+    addIcons({ star: starIcon, starOutline });
     effect(async () => {
       const gpsPos = this.geo.gpsPosition();
       await this.viewReady();
@@ -692,6 +696,18 @@ export class MapComponent implements OnInit, OnDestroy {
       this.router.navigateByUrl(url);
       this._change.detectChanges();
     }, 500);
+  }
+
+  toggleFavorite(info: MapInfo, event: globalThis.Event) {
+    event.stopPropagation();
+    if (!info.eventUid || !info.eventStartTime) return;
+    info.star = !info.star;
+    this.favoriteChange.emit({
+      eventUid: info.eventUid,
+      eventStartTime: info.eventStartTime,
+      star: info.star,
+    });
+    this._change.markForCheck();
   }
 
   store(x: number, y: number) {

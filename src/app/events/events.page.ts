@@ -23,7 +23,7 @@ import {
   ToastController,
 } from '@ionic/angular/standalone';
 import { DbService } from '../data/db.service';
-import { Day, Event, MapPoint, Names } from '../data/models';
+import { Day, Event, MapFavoriteChange, MapPoint, Names } from '../data/models';
 
 import { RouterModule } from '@angular/router';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
@@ -380,6 +380,18 @@ export class EventsPage implements OnInit, OnDestroy {
           points.length,
         );
         if (!features) continue;
+        const occurrence =
+          event.occurrence_set.find(
+            (candidate) => new Date(candidate.start_time).getTime() === event.start.getTime(),
+          ) ?? event.occurrence_set[0];
+        if (features.point.info) {
+          features.point.info.time = event.longTimeString;
+          if (occurrence) {
+            features.point.info.eventUid = event.uid;
+            features.point.info.eventStartTime = occurrence.start_time;
+            features.point.info.star = !!occurrence.star;
+          }
+        }
         if (features.point.x === undefined && features.point.y === undefined) {
           features.point.gps = await this.db.getMapPointGPS(features.point);
         }
@@ -407,6 +419,34 @@ export class EventsPage implements OnInit, OnDestroy {
         this.mapLoading.set(false);
       }
     }
+  }
+
+  async mapFavoriteChanged(change: MapFavoriteChange) {
+    const event = this.vm.events.find(
+      (candidate) =>
+        candidate.uid === change.eventUid &&
+        candidate.occurrence_set.some((occurrence) => occurrence.start_time === change.eventStartTime),
+    );
+    const occurrence = event?.occurrence_set.find(
+      (candidate) => candidate.start_time === change.eventStartTime,
+    );
+    if (!event || !occurrence) return;
+
+    const message = await this.fav.starEvent(change.star, event, this.db.selectedDay(), occurrence);
+    occurrence.star = change.star;
+    for (const point of this.vm.mapPoints) {
+      if (
+        point.info?.eventUid === change.eventUid &&
+        point.info.eventStartTime === change.eventStartTime
+      ) {
+        point.info.star = change.star;
+      }
+    }
+    await this.fav.setFavoritedList(this.vm.events);
+    if (message) {
+      this.ui.presentToast(message, this.toastController);
+    }
+    this._change.markForCheck();
   }
 
   showPastEvents() {

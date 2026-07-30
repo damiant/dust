@@ -5,6 +5,9 @@
       <div style="width: 100%" (click)="link(info.href)" (keyup.enter)="link(info.href)" tabindex="0">
         <b>{{ info.title }}</b
         ><br />{{ info.location }}<br />{{ info.subtitle }}
+        @if (info.time) {
+          <br />{{ info.time }}
+        }
         <div class="center">
           @if (info.imageUrl) {
             <app-cached-img
@@ -23,11 +26,40 @@
             >
           }
         </div>
+        @if (info.eventUid && info.eventStartTime) {
+          <div class="center">
+            <ion-button
+              size="small"
+              shape="round"
+              [fill]="info.star ? 'clear' : 'solid'"
+              (click)="toggleFavorite(info, $event)"
+            >
+              {{ info.star ? 'Remove from Favorites' : 'Add to Favorites' }}
+            </ion-button>
+          </div>
+        }
       </div>
     } @else if (infoList.length > 1) {
       <div class="row-header">{{ infoList[0].location }}</div>
       @for (info of infoList; track $index) {
-        <div class="row" (click)="link(info.href)" (keyup.enter)="link(info.href)" tabindex="0">{{ info.title }}</div>
+        <div class="row event-row" (click)="link(info.href)" (keyup.enter)="link(info.href)" tabindex="0">
+          <div>
+            <div>{{ info.title }}</div>
+            @if (info.time) {
+              <small>{{ info.time }}</small>
+            }
+          </div>
+          @if (info.eventUid && info.eventStartTime) {
+            <ion-button
+              fill="clear"
+              size="small"
+              [attr.aria-label]="info.star ? 'Remove from favorites' : 'Add to favorites'"
+              (click)="toggleFavorite(info, $event)"
+            >
+              <ion-icon slot="icon-only" [name]="info.star ? 'star' : 'star-outline'"></ion-icon>
+            </ion-button>
+          }
+        </div>
       }
     }
   }

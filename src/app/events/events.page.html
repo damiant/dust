@@ -80,6 +80,7 @@
       [polygons]="vm.mapPolygons"
       [smallPins]="vm.mapPoints.length > 1"
       (opened)="mapLoading.set(false)"
+      (favoriteChange)="mapFavoriteChanged($event)"
     ></app-map-modal>
     @if (!vm.noEvents && this.vm.events.length === 0) {
     <div>

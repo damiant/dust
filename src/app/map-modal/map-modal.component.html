@@ -5,6 +5,7 @@
       [points]="points()"
       [polygons]="polygons()"
       [smallPins]="smallPins()"
+      (favoriteChange)="favoriteChange.emit($event)"
     ></app-map>
     <div class="float">
       <h2>{{ title() }}</h2>

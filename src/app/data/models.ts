@@ -358,11 +358,21 @@ export interface MapInfo {
   title: string;
   location: string;
   subtitle: string;
+  time?: string;
   imageUrl?: string;
   href?: string;
   bgColor?: PinColor;
   label?: string;
   id?: string; // Unique identifier for art/camp etc
+  eventUid?: string;
+  eventStartTime?: string;
+  star?: boolean;
+}
+
+export interface MapFavoriteChange {
+  eventUid: string;
+  eventStartTime: string;
+  star: boolean;
 }
 
 export interface Reminder {

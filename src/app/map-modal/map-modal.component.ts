@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input, model, output } from '@angular/core';
 import { MapComponent } from '../map/map.component';
-import { MapPoint } from '../data/models';
+import { MapFavoriteChange, MapPoint } from '../data/models';
 import { IonFab, IonFabButton, IonIcon, IonModal, IonText } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { close } from 'ionicons/icons';
@@ -24,6 +24,7 @@ export class MapModalComponent {
   polygons = input<MapPolygon[]>([]);
   smallPins = input(false);
   opened = output<void>();
+  favoriteChange = output<MapFavoriteChange>();
 
   close() {
     this.show.set(false);
