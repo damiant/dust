@@ -122,7 +122,7 @@ export class TabsPage implements OnInit {
       }
       const until = await this.daysUntilStarts();
       console.log(`${until} days until event.`);
-      const start = new Date(this.settings.settings.dataset?.start!);
+      const start = new Date(this.settings.settings.dataset?.start ?? '');
       const burningMan = this.settingsServiceIsBurningMan();
       let hideArt = now() < new Date(start.getTime() - 24 * 60 * 60 * 1000) && burningMan;
       let hideCamps = now() < new Date(start.getTime() - 7 * 24 * 60 * 60 * 1000) && burningMan;
