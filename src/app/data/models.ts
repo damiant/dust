@@ -262,6 +262,8 @@ export interface TimeString {
 
 export interface LocationHidden {
   camps: boolean;
+  /** Precise camp center and polygon locations remain hidden until this is false. */
+  campGps: boolean;
   art: boolean;
   campMessage: string;
   artMessage: string;

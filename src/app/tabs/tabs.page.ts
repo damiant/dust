@@ -122,14 +122,26 @@ export class TabsPage implements OnInit {
       }
       const until = await this.daysUntilStarts();
       console.log(`${until} days until event.`);
-      let hide = until > 1;
+      const start = new Date(this.settings.settings.dataset?.start!);
+      const burningMan = this.settingsServiceIsBurningMan();
+      let hideArt = now() < new Date(start.getTime() - 24 * 60 * 60 * 1000) && burningMan;
+      let hideCamps = now() < new Date(start.getTime() - 7 * 24 * 60 * 60 * 1000) && burningMan;
+      let hideCampGps = hideArt;
       if (environment.overrideLocations) {
-        hide = false;
+        hideArt = false;
+        hideCamps = false;
+        hideCampGps = false;
       }
       const timeZone = this.db.getTimeZone();
-      if (this.db.anyLocationsHidden() && !hide) {
-        // Locations were unlocked
-        this.db.setLocationHidden({ art: false, camps: false, artMessage: '', campMessage: '' });
+      const current = this.db.locationsHidden();
+      if (current.art !== hideArt || current.camps !== hideCamps || current.campGps !== hideCampGps) {
+        this.db.setLocationHidden({
+          art: hideArt,
+          camps: hideCamps,
+          campGps: hideCampGps,
+          artMessage: 'Locations available August 30',
+          campMessage: 'Locations available August 23',
+        });
         await this.db.populate(this.settings.settings.datasetId, timeZone);
       }
       this.ui.setStatusBarBasedOnTheme();
@@ -163,6 +175,10 @@ export class TabsPage implements OnInit {
     if (Capacitor.getPlatform() !== 'web') {
       await ScreenOrientation.lock({ orientation: 'portrait' });
     }
+  }
+
+  private settingsServiceIsBurningMan(): boolean {
+    return this.settings.settings.dataset?.id?.toLowerCase().startsWith('ttitd') ?? false;
   }
 
   public async daysUntilStarts(): Promise<number> {

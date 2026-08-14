@@ -16,7 +16,9 @@ function normalizeGps(coord: ApiGpsCoord | undefined): GpsCoord | undefined {
 }
 
 export function getCampCenterGps(camp: Camp): GpsCoord | undefined {
-  return normalizeGps((camp.gps ?? camp.gpsCoord) as ApiGpsCoord);
+  // gps is the precise endpoint value. gpsCoord may be derived from a
+  // street/clock location and must not opt a camp into the polygon view.
+  return normalizeGps(camp.gps as ApiGpsCoord);
 }
 
 export async function getCampCenterPin(
@@ -71,19 +73,21 @@ export async function buildCampMapFeatures(
   const pin = await getCampCenterPin(camp, gpsToPoint);
   if (!camp.location_string && !pin) return undefined;
 
-  const point = toMapPoint(
-    camp.location_string,
-    {
-      title: camp.name,
-      location: camp.location_string ?? '',
-      subtitle: '',
-      imageUrl: camp.imageUrl,
-      label: campAbbreviation(camp),
-      href,
-    },
-    pin,
-    camp.facing,
-  );
+  const info: MapInfo = {
+    title: camp.name,
+    location: camp.location_string ?? '',
+    subtitle: '',
+    imageUrl: camp.imageUrl,
+    label: campAbbreviation(camp),
+    href,
+  };
+
+  // Prefer the dataset GPS center when available. A location string is only
+  // a fallback because its street/clock position may differ from the GPS
+  // center supplied by the camps endpoint.
+  const point = pin
+    ? toMapPoint(undefined, info, pin)
+    : toMapPoint(camp.location_string, info, undefined, camp.facing);
   const polygon = await campToMapPolygon(camp, gpsToPoint, pinIndex);
   return { point, polygon };
 }
