@@ -103,7 +103,7 @@ export class DbService {
   public eventCount = signal(0);
   public showPastEvents = false;
   private initialized = false;
-  public locationsHidden = signal({ art: false, camps: false, artMessage: '', campMessage: '' });
+  public locationsHidden = signal({ art: false, camps: false, campGps: false, artMessage: '', campMessage: '' });
 
   private prefix = '';
   public overrideDataset: string | undefined;

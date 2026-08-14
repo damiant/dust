@@ -330,7 +330,7 @@ export class HomePage implements OnInit {
       this.ui.presentToast('Locations now enabled', this.toastController);
       environment.overrideLocations = true;
       this.settings.save();
-      this.db.setLocationHidden({ art: false, camps: false, artMessage: '', campMessage: '' });
+      this.db.setLocationHidden({ art: false, camps: false, campGps: false, artMessage: '', campMessage: '' });
       await this.db.populate(this.settings.settings.datasetId, this.db.getTimeZone());
       this.db.resume.set(new Date().toString());
     }
@@ -471,7 +471,7 @@ export class HomePage implements OnInit {
     } else {
       if (!this.settings.settings.dataset?.lat) {
         // Golden Spike at Burning Man
-        return { lat: 40.786958, long: -119.202994 };
+        return { lat: 40.783242, long: -119.207871 };        
       } else {
         return undefined;
       }

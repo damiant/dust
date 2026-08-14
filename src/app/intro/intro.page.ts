@@ -396,17 +396,23 @@ export class IntroPage {
     const x = daysUntil(manBurns, now());
     const until = daysUntil(start, now());
 
-    let hideArtLocations = until > 1 && this.settingsService.isBurningMan();
-    let hideCampLocations = until > 7 && this.settingsService.isBurningMan();
+    const burningMan = this.settingsService.isBurningMan();
+    const artRelease = addDays(start, -1);
+    const campRelease = addDays(start, -7);
+    let hideArtLocations = now() < artRelease && burningMan;
+    let hideCampLocations = now() < campRelease && burningMan;
+    let hideCampGps = now() < artRelease && burningMan;
     if (environment.overrideLocations) {
       hideArtLocations = false;
       hideCampLocations = false;
+      hideCampGps = false;
       console.error('Overriding hiding locations');
     }
     console.debug(`Event starts ${start}, today is ${now()} and there are ${until} days until then`);
     this.db.setLocationHidden({
       art: hideArtLocations,
       camps: hideCampLocations,
+      campGps: hideCampGps,
       artMessage: 'Locations available August 30',
       campMessage: 'Locations available August 23',
     });

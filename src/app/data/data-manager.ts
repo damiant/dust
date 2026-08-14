@@ -410,6 +410,15 @@ export class DataManager implements WorkerClass {
       if (locationsHidden.camps) {
         camp.location_string = locationsHidden.campMessage;
         camp.landmark = '';
+        camp.pin = undefined as any;
+        camp.gpsCoord = undefined as any;
+        camp.gps = undefined;
+        camp.border = undefined;
+      } else if (locationsHidden.campGps) {
+        // Street locations are public first; do not expose the precise GPS center
+        // or polygon until the later release date.
+        camp.gps = undefined;
+        camp.border = undefined;
       } else if (!camp.location_string) {
         camp.location_string = LocationName.Undefined;
       }

@@ -5,7 +5,7 @@
   "homepage": "https://dust.events",
   "type": "module",
   "scripts": {
-    "start": "ng serve",
+    "start": "ng serve --port 0",
     "build-prod": "NG_BUILD_OPTIMIZE_CHUNKS=1 ng build --configuration=production  && bun scripts/copy-admin.ts && bun run sentry:sourcemaps",
     "build-offline-mango": "ng build --configuration=offline --base-href=/dust/",
     "build-offline-part2": "bun scripts/copy-online.ts && cp -r /Users/damiantarnawsky/Code/dust-admin/burning-man/dist/* /Users/damiantarnawsky/Code/dust/www/browser/data/static/",
@@ -28,7 +28,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "22.0.8",
-    "@angular/cdk": "22",
+    "@angular/cdk": "^22.1.0",
     "@angular/common": "22.0.8",
     "@angular/compiler": "22.0.8",
     "@angular/core": "22.0.8",
@@ -62,7 +62,7 @@
     "@ionic/angular": "8.8.13",
     "@sentry/angular": "9.46.0",
     "@sentry/capacitor": "^2.4.1",
-    "@sentry/cli": "^2.58.4",
+    "@sentry/cli": "^2.58.6",
     "@webnativellc/capacitor-filesharer": "7.1.0",
     "@webnativellc/capacitor-navigation-bar": "^7.1.0",
     "@webnativellc/capacitor-print-webview": "7.1.0",
@@ -93,7 +93,7 @@
     "@typescript-eslint/eslint-plugin": "8.26.1",
     "@typescript-eslint/parser": "8.26.1",
     "@vitest/ui": "4.0.18",
-    "baseline-browser-mapping": "^2.9.19",
+    "baseline-browser-mapping": "^2.11.8",
     "eslint": "9.39.2",
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-jsdoc": "62.5.0",
@@ -109,7 +109,7 @@
     "sharp": "0.35.3",
     "tsx": "4.7.0",
     "typescript": "6.0.3",
-    "vitest": "^4.0.16"
+    "vitest": "^4.1.10"
   },
   "license": "MIT",
   "description": "An offline guide for the events, theme camps & art of Burning Man.",
