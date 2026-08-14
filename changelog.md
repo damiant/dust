@@ -1,4 +1,8 @@
 ## Changes
+## 2.130
+
+- Support polygon based mapping for camps
+
 ## 2.129
 
 - Add Display From and Display To options for links
