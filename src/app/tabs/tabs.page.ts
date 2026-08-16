@@ -10,7 +10,7 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { DbService } from '../data/db.service';
-import { NotificationService } from '../notifications/notification.service';
+import { NotificationAction, NotificationService } from '../notifications/notification.service';
 import { Router } from '@angular/router';
 import { daysUntil, delay, now } from '../utils/utils';
 import { UiService } from '../ui/ui.service';
@@ -83,10 +83,10 @@ export class TabsPage implements OnInit {
   constructor() {
     addIcons({ mailOutline, musicalNotesOutline, ellipsisVertical });
     effect(() => {
-      const eventId = this.notificationService.hasNotification();
-      if (eventId && eventId.length > 0) {
+      const action = this.notificationService.hasNotification();
+      if (action) {
         console.log('go to notification');
-        this.goToFavEvent(eventId);
+        void this.handleNotification(action);
       }
     });
     effect(async () => {
@@ -196,6 +196,21 @@ export class TabsPage implements OnInit {
       this.router.navigateByUrl(`/${page}/${id}`);
       this._change.markForCheck();
     }, 100);
+  }
+
+  private async handleNotification(action: NotificationAction) {
+    if (action.type === 'link' && action.url) {
+      this.db.resume.set(new Date().toISOString());
+      await this.router.navigateByUrl('/tabs/profile');
+      await delay(300);
+      await this.ui.openUrl(action.url);
+      this.notificationService.hasNotification.set(undefined);
+      return;
+    }
+    if (action.eventId) {
+      await this.goToFavEvent(action.eventId);
+    }
+    this.notificationService.hasNotification.set(undefined);
   }
 
   async goToFavEvent(eventId: string) {

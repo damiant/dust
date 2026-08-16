@@ -13,6 +13,14 @@ export interface Reminder {
   id: string;
   when?: Date;
   comment: string;
+  type?: 'link' | 'event';
+  url?: string;
+}
+
+export interface NotificationAction {
+  eventId?: string;
+  type: 'link' | 'event';
+  url?: string;
 }
 
 export interface ScheduleResult {
@@ -28,11 +36,16 @@ export class NotificationService {
   public router = inject(Router);
   private db = inject(DbService);
   private settings = inject(SettingsService);
-  public hasNotification = signal('');
+  public hasNotification = signal<NotificationAction | undefined>(undefined);
 
   public configure() {
     LocalNotifications.addListener('localNotificationActionPerformed', (notification) => {
-      this.hasNotification.set(notification.notification.extra.eventId);
+      const extra = notification.notification.extra ?? {};
+      this.hasNotification.set({
+        eventId: extra.eventId,
+        type: extra.type === 'link' ? 'link' : 'event',
+        url: extra.url,
+      });
     });
   }
 
@@ -123,7 +136,7 @@ export class NotificationService {
   }
 
   /** Schedule a link announcement without prompting for notification permission. */
-  public async scheduleLink(link: Link): Promise<boolean> {
+  public async scheduleLink(link: Link, eventTitle: string): Promise<boolean> {
     const status = await LocalNotifications.checkPermissions();
     if (status.display !== 'granted') {
       return false;
@@ -136,10 +149,12 @@ export class NotificationService {
 
     await this.schedule({
       id: link.uid,
-      title: 'New link available',
+      title: eventTitle,
       body: link.title,
       comment: '',
       when,
+      type: 'link',
+      url: link.url,
     });
     return true;
   }
@@ -191,7 +206,9 @@ export class NotificationService {
           sound: isAndroid ? undefined : sound,
           schedule: { at: reminder.when, allowWhileIdle: true },
           extra: {
-            eventId: reminder.id, // Assume it is an event
+            eventId: reminder.id,
+            type: reminder.type ?? 'event',
+            url: reminder.url,
           },
         },
       ],

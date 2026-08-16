@@ -37,7 +37,7 @@ export class LinkService {
 
       this.displayNotificationInProgress.add(key);
       try {
-        const scheduled = await this.notifications.scheduleLink(link);
+        const scheduled = await this.notifications.scheduleLink(link, this.db.selectedDataset().title);
         if (scheduled) sessionStorage.setItem(key, '1');
       } catch (error) {
         console.error('Unable to schedule link notification', error);

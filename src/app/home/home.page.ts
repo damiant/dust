@@ -232,7 +232,9 @@ export class HomePage implements OnInit {
     effect(async () => {
       const resumed = this.db.resume();
       if (resumed.length > 0) {
+        this.vm.groups = await this.linkService.getGroupedLinks();
         await this.update();
+        this._change.markForCheck();
       }
     });
   }
@@ -463,6 +465,8 @@ export class HomePage implements OnInit {
   }
 
   async ionViewWillEnter() {
+    this.vm.groups = await this.linkService.getGroupedLinks();
+    this._change.markForCheck();
     if (Capacitor.isNativePlatform() && !this.ui.isAndroid()) {
       await StatusBar.hide({ animation: Animation.Fade });
     }
