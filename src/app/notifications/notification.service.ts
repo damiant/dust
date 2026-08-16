@@ -1,7 +1,7 @@
 import { Injectable, signal, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Channel, LocalNotificationDescriptor, LocalNotifications } from '@capacitor/local-notifications';
-import { OccurrenceSet } from '../data/models';
+import { Link, OccurrenceSet } from '../data/models';
 import { getDayName, noDate, now, randomInt, time } from '../utils/utils';
 import { Capacitor } from '@capacitor/core';
 import { DbService } from '../data/db.service';
@@ -13,6 +13,14 @@ export interface Reminder {
   id: string;
   when?: Date;
   comment: string;
+  type?: 'link' | 'event';
+  url?: string;
+}
+
+export interface NotificationAction {
+  eventId?: string;
+  type: 'link' | 'event';
+  url?: string;
 }
 
 export interface ScheduleResult {
@@ -28,11 +36,16 @@ export class NotificationService {
   public router = inject(Router);
   private db = inject(DbService);
   private settings = inject(SettingsService);
-  public hasNotification = signal('');
+  public hasNotification = signal<NotificationAction | undefined>(undefined);
 
   public configure() {
     LocalNotifications.addListener('localNotificationActionPerformed', (notification) => {
-      this.hasNotification.set(notification.notification.extra.eventId);
+      const extra = notification.notification.extra ?? {};
+      this.hasNotification.set({
+        eventId: extra.eventId,
+        type: extra.type === 'link' ? 'link' : 'event',
+        url: extra.url,
+      });
     });
   }
 
@@ -122,6 +135,30 @@ export class NotificationService {
     return when;
   }
 
+  /** Schedule a link announcement without prompting for notification permission. */
+  public async scheduleLink(link: Link, eventTitle: string): Promise<boolean> {
+    const status = await LocalNotifications.checkPermissions();
+    if (status.display !== 'granted') {
+      return false;
+    }
+
+    const when = new Date(link.displayFrom ?? '');
+    if (Number.isNaN(when.getTime()) || when.getTime() <= Date.now()) {
+      return false;
+    }
+
+    await this.schedule({
+      id: link.uid,
+      title: eventTitle,
+      body: link.title,
+      comment: '',
+      when,
+      type: 'link',
+      url: link.url,
+    });
+    return true;
+  }
+
   private async verifyPermissions(): Promise<string | undefined> {
     let status = await LocalNotifications.checkPermissions();
     if (status.display == 'granted') {
@@ -169,7 +206,9 @@ export class NotificationService {
           sound: isAndroid ? undefined : sound,
           schedule: { at: reminder.when, allowWhileIdle: true },
           extra: {
-            eventId: reminder.id, // Assume it is an event
+            eventId: reminder.id,
+            type: reminder.type ?? 'event',
+            url: reminder.url,
           },
         },
       ],
