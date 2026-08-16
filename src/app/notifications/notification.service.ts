@@ -1,7 +1,7 @@
 import { Injectable, signal, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Channel, LocalNotificationDescriptor, LocalNotifications } from '@capacitor/local-notifications';
-import { OccurrenceSet } from '../data/models';
+import { Link, OccurrenceSet } from '../data/models';
 import { getDayName, noDate, now, randomInt, time } from '../utils/utils';
 import { Capacitor } from '@capacitor/core';
 import { DbService } from '../data/db.service';
@@ -120,6 +120,28 @@ export class NotificationService {
       console.log(`Event has happened already so setting for ${soon}`);
     }
     return when;
+  }
+
+  /** Schedule a link announcement without prompting for notification permission. */
+  public async scheduleLink(link: Link): Promise<boolean> {
+    const status = await LocalNotifications.checkPermissions();
+    if (status.display !== 'granted') {
+      return false;
+    }
+
+    const when = new Date(link.displayFrom ?? '');
+    if (Number.isNaN(when.getTime()) || when.getTime() <= Date.now()) {
+      return false;
+    }
+
+    await this.schedule({
+      id: link.uid,
+      title: 'New link available',
+      body: link.title,
+      comment: '',
+      when,
+    });
+    return true;
   }
 
   private async verifyPermissions(): Promise<string | undefined> {

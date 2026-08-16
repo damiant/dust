@@ -237,8 +237,17 @@ export class HomePage implements OnInit {
     });
   }
 
+  private displayNotificationTimeout?: ReturnType<typeof setTimeout>;
+
   async ngOnInit() {
     await this.init();
+  }
+
+  ionViewDidEnter() {
+    clearTimeout(this.displayNotificationTimeout);
+    this.displayNotificationTimeout = setTimeout(() => {
+      void this.linkService.scheduleDisplayFromNotifications();
+    }, 10000);
   }
 
   async init() {
@@ -460,6 +469,7 @@ export class HomePage implements OnInit {
   }
 
   async ionViewWillLeave() {
+    clearTimeout(this.displayNotificationTimeout);
     if (Capacitor.isNativePlatform() && !this.ui.isAndroid()) {
       await StatusBar.show({ animation: Animation.Fade });
     }
@@ -471,7 +481,7 @@ export class HomePage implements OnInit {
     } else {
       if (!this.settings.settings.dataset?.lat) {
         // Golden Spike at Burning Man
-        return { lat: 40.783242, long: -119.207871 };        
+        return { lat: 40.783242, long: -119.207871 };
       } else {
         return undefined;
       }

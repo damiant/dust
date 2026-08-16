@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Group, Link } from '../data/models';
+import { NotificationService } from '../notifications/notification.service';
 import { DbService } from '../data/db.service';
 import { UiService } from '../ui/ui.service';
 import { SettingsService } from '../data/settings.service';
@@ -12,11 +13,38 @@ export class LinkService {
   db = inject(DbService);
   settings = inject(SettingsService);
   ui = inject(UiService);
+  private notifications = inject(NotificationService);
+  private displayNotificationInProgress = new Set<string>();
 
   public async getGroupedLinks(): Promise<Group[]> {
     const links = await this.db.getLinks();
     const filteredLinks = this.filterLinksByDate(links);
     return await this.group(filteredLinks);
+  }
+
+  /** Schedule future link announcements once per link for this app session. */
+  public async scheduleDisplayFromNotifications(): Promise<void> {
+    const links = await this.db.getLinks();
+    const datasetId = this.db.selectedDataset().id;
+
+    for (const link of links) {
+      if (!link.displayFrom || !link.uid) continue;
+      const key = `display-from-notification:${datasetId}:${link.uid}`;
+      if (sessionStorage.getItem(key) || this.displayNotificationInProgress.has(key)) continue;
+
+      const displayFrom = new Date(link.displayFrom);
+      if (Number.isNaN(displayFrom.getTime()) || displayFrom.getTime() <= Date.now()) continue;
+
+      this.displayNotificationInProgress.add(key);
+      try {
+        const scheduled = await this.notifications.scheduleLink(link);
+        if (scheduled) sessionStorage.setItem(key, '1');
+      } catch (error) {
+        console.error('Unable to schedule link notification', error);
+      } finally {
+        this.displayNotificationInProgress.delete(key);
+      }
+    }
   }
 
   private filterLinksByDate(links: Link[]): Link[] {
