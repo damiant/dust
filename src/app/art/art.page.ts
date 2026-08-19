@@ -1,4 +1,4 @@
-import { Component, effect, viewChild, inject, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, effect, viewChild, inject, ChangeDetectorRef, ChangeDetectionStrategy, OnDestroy, OnInit } from '@angular/core';
 import {
   InfiniteScrollCustomEvent,
   IonButtons,
@@ -27,6 +27,8 @@ import { AlphabeticalScrollBarComponent } from '../alpha/alpha.component';
 import { SortComponent } from '../sort/sort.component';
 import { CategoryComponent } from '../category/category.component';
 import { BadgeComponent } from '../badge/badge.component';
+import { Subscription } from 'rxjs';
+import { ArtService } from './art.service';
 
 interface ArtState {
   imageStyle: ArtImageStyle;
@@ -86,15 +88,19 @@ function initialState(): ArtState {
     SkeletonArtComponent,
   ],
 })
-export class ArtPage {
+export class ArtPage implements OnInit, OnDestroy {
   public db = inject(DbService);
   private ui = inject(UiService);
   private router = inject(Router);
   private geo = inject(GeoService);
   private _change = inject(ChangeDetectorRef);
   private toastController = inject(ToastController);
+  private artService = inject(ArtService);
+  private nextSubscription?: Subscription;
+  private prevSubscription?: Subscription;
   vm: ArtState = initialState();
   private allArt: Art[] = [];
+
   virtualScroll = viewChild.required(CdkVirtualScrollViewport);
 
   constructor() {
@@ -109,6 +115,32 @@ export class ArtPage {
       this.calcCardHeight();
       this.init();
     });
+  }
+
+  ngOnInit(): void {
+    this.nextSubscription = this.artService.next.subscribe((artId: string) => {
+      const idx = this.allArt.findIndex((a) => a.uid == artId);
+      if (idx == -1 || idx + 1 >= this.allArt.length) return;
+      const a = this.allArt[idx + 1];
+      this.artService.position.set(idx === this.allArt.length - 2 ? 'end' : 'middle');
+      this.artService.artChanged.emit({ artId: a.uid });
+    });
+    this.prevSubscription = this.artService.prev.subscribe((artId) => {
+      const idx = this.allArt.findIndex((a) => a.uid == artId);
+      if (idx <= 0) return;
+      const a = this.allArt[idx - 1];
+      this.artService.position.set(idx === 1 ? 'start' : 'middle');
+      this.artService.artChanged.emit({ artId: a.uid });
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.nextSubscription) {
+      this.nextSubscription.unsubscribe();
+    }
+    if (this.prevSubscription) {
+      this.prevSubscription.unsubscribe();
+    }
   }
 
   isThisYear(): boolean {

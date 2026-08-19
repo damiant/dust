@@ -4,6 +4,12 @@
       <ion-back-button [text]="backText"></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end">
+      <ion-button [disabled]="prevDisabled" (click)="prev()">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-button>
+      <ion-button [disabled]="nextDisabled" (click)="next()">
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </ion-button>
       <ion-button (click)="toggleStar()">
         @if (star) {
         <ion-icon name="star"></ion-icon>
@@ -63,7 +69,7 @@
         </div>
         } @else {
         <div class="audio-container">
-          <audio controls style="width: 100%">
+          <audio #audioPlayer controls style="width: 100%" (ended)="next()">
             <source [src]="cachedAudioUrl() || art.audio" type="audio/mpeg" />
           </audio>
         </div>

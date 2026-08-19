@@ -47,6 +47,8 @@ ion-label.text {
 
 .audio-container {
   width: 100%;
+  display: flex;
+  align-items: center;
 
   audio {
     width: 100%;

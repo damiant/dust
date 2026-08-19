@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject, signal, effect, OnDestroy } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { Art, Event, MapPoint } from '../data/models';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ArtService, ArtChanged } from '../art/art.service';
 import { DbService } from '../data/db.service';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { FavoritesService } from '../favs/favorites.service';
@@ -10,6 +11,7 @@ import { UiService } from '../ui/ui.service';
 import { SettingsService } from '../data/settings.service';
 import { toMapPoint } from '../map/map.utils';
 import { getCachedAudio } from '../data/cache-store';
+import { Subscription } from 'rxjs';
 import {
   IonBackButton,
   IonButton,
@@ -36,6 +38,8 @@ import {
   locationOutline,
   volumeHighOutline,
   checkmarkCircleOutline,
+  chevronForwardOutline,
+  chevronBackOutline,
 } from 'ionicons/icons';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { EventPage } from '../event/event.page';
@@ -67,7 +71,7 @@ import { canCreate } from '../map/map';
     EventPage,
   ],
 })
-export class ArtItemPage implements OnInit {
+export class ArtItemPage implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private ui = inject(UiService);
   private db = inject(DbService);
@@ -76,6 +80,7 @@ export class ArtItemPage implements OnInit {
   private _change = inject(ChangeDetectorRef);
   private toastController = inject(ToastController);
   private router = inject(Router);
+  private artService = inject(ArtService);
   art: Art | undefined;
   showMap = false;
   mapPoints: MapPoint[] = [];
@@ -90,6 +95,10 @@ export class ArtItemPage implements OnInit {
   star = false;
   cachedAudioUrl = signal<string | undefined>(undefined);
   audioLoading = signal(false);
+  autoPlayAudio = signal(false);
+  prevDisabled = false;
+  nextDisabled = false;
+  private artChangeSubscription?: Subscription;
 
   constructor() {
     addIcons({
@@ -101,6 +110,13 @@ export class ArtItemPage implements OnInit {
       locationOutline,
       volumeHighOutline,
       checkmarkCircleOutline,
+      chevronForwardOutline,
+      chevronBackOutline,
+    });
+    effect(() => {
+      const position = this.artService.position();
+      this.prevDisabled = position == 'start';
+      this.nextDisabled = position == 'end';
     });
   }
 
@@ -133,9 +149,46 @@ export class ArtItemPage implements OnInit {
 
     this.star = await this.fav.isFavArt(this.art.uid);
     this._change.markForCheck();
+
+    this.artChangeSubscription = this.artService.artChanged.subscribe(async (artChanged: ArtChanged) => {
+      this.artService.currentArtId = artChanged.artId;
+      await this.init(artChanged.artId);
+      if (this.autoPlayAudio()) {
+        await this.setupAudio(true);
+      }
+    });
   }
 
-  private async setupAudio() {
+  ngOnDestroy(): void {
+    if (this.artChangeSubscription) {
+      this.artChangeSubscription.unsubscribe();
+    }
+  }
+
+  private async init(artId: string) {
+    try {
+      this.art = await this.db.findArt(artId);
+      if (!this.art) return;
+      this.mapTitle = this.art.name;
+      this.hometown = this.art.hometown ? `(${this.art.hometown})` : '';
+      this.mapSubtitle = this.art.location_string!;
+      const pin = this.art.pin;
+      let point = toMapPoint(this.art.location_string!, undefined, pin);
+      if (this.art.location?.gps_latitude && this.art.location?.gps_longitude) {
+        const gps = { lng: this.art.location.gps_longitude, lat: this.art.location.gps_latitude };
+        point = await this.db.gpsToMapPoint(gps, undefined);
+      }
+      this.events = await this.db.getArtEvents(artId);
+      point.info = { title: this.art.name, subtitle: '', location: '', id: this.art.uid };
+      this.mapPoints = [point];
+      this.star = await this.fav.isFavArt(this.art.uid);
+    } finally {
+      this._change.markForCheck();
+    }
+  }
+
+  private async setupAudio(autoPlay = false) {
+    this.autoPlayAudio.set(autoPlay);
     if (!this.art?.audio) return;
 
     try {
@@ -158,6 +211,15 @@ export class ArtItemPage implements OnInit {
       }
     } finally {
       this.audioLoading.set(false);
+      if (this.autoPlayAudio() && this.art?.audio) {
+        setTimeout(() => {
+          const audio = document.querySelector('app-art-item audio') as HTMLAudioElement;
+          if (audio) {
+            audio.play().catch((e) => console.warn('Auto-play failed:', e));
+          }
+          this.autoPlayAudio.set(false);
+        }, 100);
+      }
     }
   }
 
@@ -212,5 +274,14 @@ export class ArtItemPage implements OnInit {
       text: `Check out ${this.art?.name} at ${this.settings.eventTitle()} using the dust app. `,
       url,
     });
+  }
+
+  next() {
+    this.autoPlayAudio.set(true);
+    this.artService.next.emit(`${this.art?.uid}`);
+  }
+
+  prev() {
+    this.artService.prev.emit(`${this.art?.uid}`);
   }
 }
