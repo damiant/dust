@@ -555,7 +555,8 @@ export class IntroPage {
     return success;
   }
 
-  async open(card: Dataset, isClick?: boolean): Promise<void> {
+  async open(card: Dataset | undefined, isClick?: boolean): Promise<void> {
+    if (!card) return;
     if (isClick && this.vm.selected && this.vm.selected.id == card.id) {
       // Already selected so treat it like you pressed get dusty button
       if (this.vm.ready) {
@@ -570,10 +571,9 @@ export class IntroPage {
 
   slideChanged(slide: SlideSelect) {
     if (!this.vm.ready) return;
-    if (slide.index < this.vm.cards.length) {
-      this.vm.scrollLeft = slide.scrollLeft;
-      this.open(this.vm.cards[slide.index]);
-    }
+    if (slide.index < 0 || slide.index >= this.vm.cards.length) return;
+    this.vm.scrollLeft = slide.scrollLeft;
+    this.open(this.vm.cards[slide.index]);
   }
 
   save() {
