@@ -54,4 +54,10 @@ export const routes: Routes = [
     path: 'messages',
     loadComponent: () => import('./messages/messages.page').then((m) => m.MessagesPage),
   },
+  // Fallback for any URL the SPA may be served at (eg `/index`, `/index.html`)
+  // that doesn't match a real route, so startup never throws "Cannot match any routes".
+  {
+    path: '**',
+    redirectTo: '/intro',
+  },
 ];

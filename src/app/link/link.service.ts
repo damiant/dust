@@ -114,6 +114,6 @@ export class LinkService {
       title += `<p>${startDay} ${dates}, ${start.getFullYear()}</p>`;
     }
     const url = ds.website;
-    return { uid: '0', title, url };
+    return { uid: 'event-info', title, url };
   }
 }

@@ -29,6 +29,7 @@ import { Router, RouterModule } from '@angular/router';
 import { DbService, Feature } from '../data/db.service';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { SettingsService } from '../data/settings.service';
+import { StartupService } from '../data/startup.service';
 import { FavoritesService } from '../favs/favorites.service';
 import { MessageComponent } from '../message/message.component';
 import { addDays, clone, daysUntil, delay, isWhiteSpace, now } from '../utils/utils';
@@ -126,6 +127,7 @@ export class IntroPage {
   private db = inject(DbService);
   private api = inject(ApiService);
   private settingsService = inject(SettingsService);
+  private startup = inject(StartupService);
   private ui = inject(UiService);
   private fav = inject(FavoritesService);
   private updateService = inject(UpdateService);
@@ -291,8 +293,11 @@ export class IntroPage {
         await StatusBar.setStyle({ style: Style.Dark });
         await this.ui.setStatusBarBackgroundColor();
         await SplashScreen.hide();
+        this.startup.markFinished();
         await delay(200);
         await this.ui.setStatusBarBackgroundColor();
+      } else {
+         this.startup.markFinished();
       }
     });
 
@@ -550,7 +555,8 @@ export class IntroPage {
     return success;
   }
 
-  async open(card: Dataset, isClick?: boolean): Promise<void> {
+  async open(card: Dataset | undefined, isClick?: boolean): Promise<void> {
+    if (!card) return;
     if (isClick && this.vm.selected && this.vm.selected.id == card.id) {
       // Already selected so treat it like you pressed get dusty button
       if (this.vm.ready) {
@@ -565,10 +571,9 @@ export class IntroPage {
 
   slideChanged(slide: SlideSelect) {
     if (!this.vm.ready) return;
-    if (slide.index < this.vm.cards.length) {
-      this.vm.scrollLeft = slide.scrollLeft;
-      this.open(this.vm.cards[slide.index]);
-    }
+    if (slide.index < 0 || slide.index >= this.vm.cards.length) return;
+    this.vm.scrollLeft = slide.scrollLeft;
+    this.open(this.vm.cards[slide.index]);
   }
 
   save() {

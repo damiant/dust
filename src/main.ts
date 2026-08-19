@@ -24,6 +24,7 @@ import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
 import { DbService } from './app/data/db.service';
 import { SettingsService } from './app/data/settings.service';
+import { StartupService } from './app/data/startup.service';
 
 if (environment.production) {
   enableProdMode();
@@ -51,8 +52,20 @@ bootstrapApplication(AppComponent, {
     provideAnimations(),
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideAppInitializer(async () => {
+      // All inject() calls must happen before the first await, otherwise the
+      // injection context is lost (NG0203).
+      const startup = inject(StartupService);
       const dbService = inject(DbService);
       const settings = inject(SettingsService);
+      // Detect a previous run that never finished starting up. If found, clear
+      // all local data so the app boots clean (same effect as delete + reinstall).
+      if (startup.isStuck()) {
+        console.warn('StartupService: previous startup never completed. Clearing all stored data.');
+        await startup.clearAll();
+      }
+      // Flag startup as in progress before any data is read.
+      startup.markStarted();
+
       await settings.init();
       await dbService.initWorker();
     }),
