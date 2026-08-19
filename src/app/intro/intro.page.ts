@@ -29,6 +29,7 @@ import { Router, RouterModule } from '@angular/router';
 import { DbService, Feature } from '../data/db.service';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { SettingsService } from '../data/settings.service';
+import { StartupService } from '../data/startup.service';
 import { FavoritesService } from '../favs/favorites.service';
 import { MessageComponent } from '../message/message.component';
 import { addDays, clone, daysUntil, delay, isWhiteSpace, now } from '../utils/utils';
@@ -126,6 +127,7 @@ export class IntroPage {
   private db = inject(DbService);
   private api = inject(ApiService);
   private settingsService = inject(SettingsService);
+  private startup = inject(StartupService);
   private ui = inject(UiService);
   private fav = inject(FavoritesService);
   private updateService = inject(UpdateService);
@@ -291,6 +293,7 @@ export class IntroPage {
         await StatusBar.setStyle({ style: Style.Dark });
         await this.ui.setStatusBarBackgroundColor();
         await SplashScreen.hide();
+        this.startup.markFinished();
         await delay(200);
         await this.ui.setStatusBarBackgroundColor();
       }
