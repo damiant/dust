@@ -67,12 +67,17 @@ export class StartupService {
       console.error('Failed to clear Preferences', e);
     }
     try {
-      const dir = await Filesystem.readdir({ path: '.', directory: Directory.Cache });
-      for (const file of dir.files) {
-        await Filesystem.deleteFile({ path: file.name, directory: Directory.Cache });
+      // The cache directory may not exist yet (eg first launch on web). Check
+      // before reading so we don't throw a noisy "Folder does not exist" error.
+      const stat = await Filesystem.stat({ path: '.', directory: Directory.Cache });
+      if (stat.type === 'directory') {
+        const dir = await Filesystem.readdir({ path: '.', directory: Directory.Cache });
+        for (const file of dir.files) {
+          await Filesystem.deleteFile({ path: file.name, directory: Directory.Cache });
+        }
       }
     } catch (e) {
-      console.error('Failed to clear filesystem cache', e);
+      console.debug('Cache directory not present; nothing to clear', e);
     }
     try {
       localStorage.clear();

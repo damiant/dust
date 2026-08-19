@@ -119,7 +119,7 @@
   <app-card-header [title]="vm.eventTitle" [addHidden]="true"></app-card-header>
   @for (group of vm.groups; track group.id) {
   <ion-card class="ion-padding-top ion-padding-bottom">
-    @for (link of group.links; track link) {
+    @for (link of group.links; track link.uid) {
     <app-link [url]="link.url" [text]="link.title"></app-link>
     }
   </ion-card>

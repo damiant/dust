@@ -296,6 +296,8 @@ export class IntroPage {
         this.startup.markFinished();
         await delay(200);
         await this.ui.setStatusBarBackgroundColor();
+      } else {
+         this.startup.markFinished();
       }
     });
 

@@ -52,7 +52,11 @@ bootstrapApplication(AppComponent, {
     provideAnimations(),
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideAppInitializer(async () => {
+      // All inject() calls must happen before the first await, otherwise the
+      // injection context is lost (NG0203).
       const startup = inject(StartupService);
+      const dbService = inject(DbService);
+      const settings = inject(SettingsService);
       // Detect a previous run that never finished starting up. If found, clear
       // all local data so the app boots clean (same effect as delete + reinstall).
       if (startup.isStuck()) {
@@ -62,8 +66,6 @@ bootstrapApplication(AppComponent, {
       // Flag startup as in progress before any data is read.
       startup.markStarted();
 
-      const dbService = inject(DbService);
-      const settings = inject(SettingsService);
       await settings.init();
       await dbService.initWorker();
     }),
