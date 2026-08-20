@@ -144,6 +144,7 @@ export async function campToMapPolygon(
     colorHex: campPolygonColor(camp),
     opacity: 1,
     label: campAbbreviation(camp),
+    fullLabel: camp.name,
     pinIndex,
   };
 }

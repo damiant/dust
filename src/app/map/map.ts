@@ -176,6 +176,8 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
   let targetZoomLevel = 4;
   let snap = false;
   let snapImage: string | undefined = undefined;
+
+  const polygonLabels: { short: Mesh; full?: Mesh }[] = [];
   const scene = new Scene();
   scene.background = new Color(map.backgroundColor);
   try {
@@ -185,6 +187,13 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
     depth--;
     throw error;
   }
+
+  // Camp polygons show their initials when zoomed out and their full name once
+  // the camera gets close enough. The initial view sits at map.height / 4, so
+  // this threshold switches to full names about one notch further in. It must be
+  // derived AFTER mapImage() sets the real map dimensions (the model starts at
+  // width/height 0 for GeoJSON maps).
+  const fullLabelThreshold = map.height / 33; // ≈300 for a 10000-tall map
 
   const w = container.clientWidth;
   const h = container.clientHeight;
@@ -235,6 +244,14 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
       mixer.update(delta);
     }
 
+    // Swap polygon labels between initials and the full camp name based on zoom.
+    const showFullLabel = camera.position.y < fullLabelThreshold;
+    for (const pair of polygonLabels) {
+      if (!pair.full) continue;
+      pair.short.visible = !showFullLabel;
+      pair.full.visible = showFullLabel;
+    }
+
     renderer.render(scene, camera);
     if (snap) {
       snapImage = getCaptureBase64(container);
@@ -275,7 +292,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
 
   let p;
   try {
-    p = await createScene(map, font, scene, mixers, disposables, renderFn, result);
+    p = await createScene(map, font, scene, mixers, disposables, renderFn, result, polygonLabels);
   } catch (error) {
     console.error('Failed to create scene:', error);
     depth--;
@@ -528,6 +545,7 @@ async function createScene(
   disposables: MapDisposable[],
   renderFn: () => void,
   result: MapResult,
+  polygonLabels: { short: Mesh; full?: Mesh }[],
 ) {
   const polygonPinIndexes = new Set((map.polygons ?? []).map((polygon) => polygon.pinIndex).filter((idx): idx is number => idx !== undefined));
   let p: AddPinResult | undefined = undefined;
@@ -547,6 +565,7 @@ async function createScene(
         interactive: false,
         base: layer.cityBlockBase,
         depth: layer.cityBlockDepth,
+        labels: polygonLabels,
       });
     }
   }
@@ -557,6 +576,7 @@ async function createScene(
       const polygonResult = addPolygon(polygon, map.width, map.height, font, scene, disposables, {
         base: layer.campBase + campPolygonOffset(i),
         depth: layer.campDepth,
+        labels: polygonLabels,
       });
       if (polygonResult) {
         result.polygonData.push(polygonResult);
@@ -904,7 +924,12 @@ function addPolygon(
   font: any,
   scene: Scene,
   disposables: MapDisposable[],
-  options: { interactive?: boolean; base?: number; depth?: number } = {},
+  options: {
+    interactive?: boolean;
+    base?: number;
+    depth?: number;
+    labels?: { short: Mesh; full?: Mesh }[];
+  } = {},
 ): AddPolygonResult | undefined {
   if (!polygon.points || polygon.points.length < 3) return undefined;
   const interactive = options.interactive !== false;
@@ -999,6 +1024,21 @@ function addPolygon(
     labelMesh.uuid = 'txt';
     labelMesh.raycast = () => {};
     scene.add(labelMesh);
+
+    // A second, longer label with the camp's full name. It is hidden until the
+    // camera zooms in far enough that the initials no longer fit well.
+    let fullLabelMesh: Mesh | undefined;
+    if (options.labels && polygon.fullLabel && polygon.fullLabel !== polygon.label) {
+      const fullSize = Math.max(2.5, Math.min(10, span * 0.05));
+      fullLabelMesh = addText(polygon.fullLabel, font, fullSize, disposables);
+      fullLabelMesh.position.copy(labelMesh.position);
+      fullLabelMesh.rotation.copy(labelMesh.rotation);
+      fullLabelMesh.uuid = 'txt';
+      fullLabelMesh.raycast = () => {};
+      fullLabelMesh.visible = false;
+      scene.add(fullLabelMesh);
+    }
+    options.labels?.push({ short: labelMesh, full: fullLabelMesh });
   }
 
   return {
