@@ -36,6 +36,13 @@
     </ng-template>
   </ion-modal>
   <app-map-modal [title]="mapTitle" [subtitle]="mapSubtitle" [(show)]="showMap" [points]="mapPoints"></app-map-modal>
+  <app-map-modal
+    [title]="partyMapTitle"
+    [subtitle]="partyMapSubtitle"
+    [(show)]="partyShowMap"
+    [points]="partyMapPoints"
+    [polygons]="partyMapPolygons"
+  ></app-map-modal>
   @if (art) {
   <ion-list lines="none">
     <ion-item>
@@ -104,6 +111,30 @@
         @for (occurrence of event.occurrence_set; track occurrence) {
         <ion-item class="small">
           <ion-label class="pad-left text" (click)="show(event)">{{occurrence.longTimeString}}</ion-label>
+        </ion-item>
+        }
+      </div>
+      }
+    </ion-list>
+    }
+    @if (rslEvents.length > 0) {
+    <ion-list lines="none">
+      <ion-item>
+        <h1>Parties</h1>
+      </ion-item>
+      @for (event of rslEvents; track event) {
+      <div>
+        <ion-item class="event">
+          <ion-icon aria-hidden="true" class="event-icon" slot="start" name="calendar-outline"></ion-icon>
+          <ion-label (click)="partyTitleClick(event)" class="bold" color="primary">{{partyLabel(event)}}</ion-label>
+        </ion-item>
+        @for (occurrence of event.occurrences; track occurrence) {
+        <ion-item class="small" (click)="toggleRSLStar(occurrence, event)">
+          <ion-label class="text">
+            <span class="time">{{occurrence.time}}{{occurrence.end ? '-' + occurrence.end : ''}}</span> {{occurrence.who}} @if(occurrence.star === true) {
+            <ion-icon class="star" color="primary" name="star"></ion-icon>
+            }
+          </ion-label>
         </ion-item>
         }
       </div>

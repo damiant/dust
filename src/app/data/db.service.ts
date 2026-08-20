@@ -533,6 +533,9 @@ export class DbService {
   public async getCampRSLEvents(campId: string): Promise<RSLEvent[]> {
     return await call(this.worker, DataMethods.GetCampRSLEvents, campId);
   }
+  public async getArtRSLEvents(artId: string): Promise<RSLEvent[]> {
+    return await call(this.worker, DataMethods.GetArtRSLEvents, artId);
+  }
 
   public async getCamps(idx: number, count: number): Promise<Camp[]> {
     return await call(this.worker, DataMethods.GetCamps, idx, count);
@@ -549,6 +552,11 @@ export class DbService {
     }
     if (name == Names.live) {
       return `${r2data_dust_events}${dataset}/${name}.${ext ? ext : this.defaultExtension}`;
+    }
+    // When running the dev build (port 8100) against ttitd-2026, load the
+    // development RSL data instead of the released rsl.json.
+    if (name == Names.rsl && dataset == 'ttitd-2026' && !environment.production) {
+      return `${static_dust_events}${dataset}/${name}-dev.${ext ? ext : this.defaultExtension}`;
     }
     if (this.isStatic(dataset)) {
       return `${static_dust_events}${dataset}/${name}.${ext ? ext : this.defaultExtension}`;

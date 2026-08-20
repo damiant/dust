@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject, signal, effect, OnDestroy } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
-import { Art, Event, MapPoint } from '../data/models';
+import { Art, Event, MapPoint, RSLEvent, RSLOccurrence } from '../data/models';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ArtService, ArtChanged } from '../art/art.service';
 import { DbService } from '../data/db.service';
@@ -10,6 +10,7 @@ import { FavoritesService } from '../favs/favorites.service';
 import { UiService } from '../ui/ui.service';
 import { SettingsService } from '../data/settings.service';
 import { toMapPoint } from '../map/map.utils';
+import { MapPolygon } from '../map/map-model';
 import { getCachedAudio } from '../data/cache-store';
 import { Subscription } from 'rxjs';
 import {
@@ -44,6 +45,8 @@ import {
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { EventPage } from '../event/event.page';
 import { canCreate } from '../map/map';
+import { buildCampMapFeatures } from '../map/camp-polygon.utils';
+import { getOrdinalNum } from '../utils/utils';
 
 @Component({
   selector: 'app-art-item',
@@ -84,7 +87,13 @@ export class ArtItemPage implements OnInit, OnDestroy {
   art: Art | undefined;
   showMap = false;
   mapPoints: MapPoint[] = [];
+  partyShowMap = false;
+  partyMapPoints: MapPoint[] = [];
+  partyMapPolygons: MapPolygon[] = [];
+  partyMapTitle = '';
+  partyMapSubtitle = '';
   events: Event[] = [];
+  rslEvents: RSLEvent[] = [];
   eventId: string | undefined;
   showEvent = false;
   mapTitle = '';
@@ -147,6 +156,14 @@ export class ArtItemPage implements OnInit, OnDestroy {
     // Handle audio caching
     await this.setupAudio();
 
+    const rslEvents = await this.db.getArtRSLEvents(id);
+    const favs = await this.fav.getFavorites();
+    this.fav.setFavorites(rslEvents, favs.rslEvents);
+    for (const rsl of rslEvents) {
+      rsl.camp = this.toDate(rsl.day);
+    }
+    this.rslEvents = rslEvents;
+
     this.star = await this.fav.isFavArt(this.art.uid);
     this._change.markForCheck();
 
@@ -179,6 +196,13 @@ export class ArtItemPage implements OnInit, OnDestroy {
         point = await this.db.gpsToMapPoint(gps, undefined);
       }
       this.events = await this.db.getArtEvents(artId);
+      const rslEvents = await this.db.getArtRSLEvents(artId);
+      const favs = await this.fav.getFavorites();
+      this.fav.setFavorites(rslEvents, favs.rslEvents);
+      for (const rsl of rslEvents) {
+        rsl.camp = this.toDate(rsl.day);
+      }
+      this.rslEvents = rslEvents;
       point.info = { title: this.art.name, subtitle: '', location: '', id: this.art.uid };
       this.mapPoints = [point];
       this.star = await this.fav.isFavArt(this.art.uid);
@@ -230,6 +254,67 @@ export class ArtItemPage implements OnInit, OnDestroy {
   show(event: Event) {
     this.eventId = event.uid;
     this.showEvent = true;
+  }
+
+  public async toggleRSLStar(occurrence: RSLOccurrence, rslEvent: RSLEvent) {
+    occurrence.star = !occurrence.star;
+    const message = await this.fav.starRSLEvent(occurrence.star, rslEvent, occurrence);
+    if (message) {
+      this.ui.presentToast(message, this.toastController);
+    }
+  }
+
+  rslInfo() {
+    this.ui.presentToast(`To favorite these events press a name below.`, this.toastController);
+  }
+
+  // When a party has a location, tapping the title shows it on the map
+  // (like the Music page); otherwise fall back to the favorites hint.
+  partyTitleClick(event: RSLEvent) {
+    if (event.location && event.location !== 'On The Playa') {
+      this.partyMap(event);
+    } else {
+      this.rslInfo();
+    }
+  }
+
+  public async partyMap(event: RSLEvent) {
+    const camp = event.campId ? await this.db.findCamp(event.campId) : undefined;
+    const features = camp
+      ? await buildCampMapFeatures(camp, (gps) => this.db.gpsToPoint(gps), 0)
+      : undefined;
+    if (features) {
+      this.partyMapPoints = [features.point];
+      this.partyMapPolygons = features.polygon ? [features.polygon] : [];
+    } else {
+      const point = toMapPoint(event.location, undefined, event.pin);
+      point.gps = await this.db.getMapPointGPS(point);
+      this.partyMapPoints = [point];
+      this.partyMapPolygons = [];
+    }
+    this.partyMapTitle = event.camp;
+    this.partyMapSubtitle = event.location;
+    this.partyShowMap = true;
+    this._change.markForCheck();
+  }
+
+  // Party label: "Monday 31st", plus " - {title}" if a title exists,
+  // otherwise " - {location}" if there's a meaningful location.
+  partyLabel(event: RSLEvent): string {
+    const suffix = event.title
+      ? event.title
+      : event.location && event.location !== 'On The Playa'
+        ? event.location
+        : '';
+    return suffix ? `${event.camp} - ${suffix}` : event.camp;
+  }
+
+  // d is in the format of 2024-07-23
+  private toDate(d: string): string {
+    const t = d.split('-');
+    const day = parseInt(t[2]);
+    const date = new Date(parseInt(t[0]), parseInt(t[1]) - 1, parseInt(t[2]));
+    return date.toLocaleDateString([], { weekday: 'long' }) + ` ${getOrdinalNum(day)}`;
   }
 
   map() {
