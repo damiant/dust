@@ -431,6 +431,9 @@ export class DataManager implements WorkerClass {
       if (art.art_type && art.art_type.trim() != '') {
         this.artTypes.add(titlePlural(art.art_type));
       }
+      if (hasValue(art.audio)) {
+        this.artTypes.add('Audio Tour');
+      }
       const pin = locationStringToPin(art.location_string!, this.mapRadius, undefined);
       if (pin) {
         const gpsCoords = mapToGps({ x: pin.x, y: pin.y });
@@ -1214,7 +1217,10 @@ export class DataManager implements WorkerClass {
     const result: Art[] = [];
     if (query && !this.isClockString(query)) {
       query = this.scrubQuery(query);
-      const fuse = new Fuse(this.art, {
+      const searchableArt = hasValue(artType)
+        ? this.art.filter((art) => this.artMatchesType(art, artType))
+        : this.art;
+      const fuse = new Fuse(searchableArt, {
         keys: ['name', 'description', 'location_string', 'artist'],
         ignoreLocation: true,
         getFn: this.normalizingGetFn.bind(this),
@@ -1232,10 +1238,8 @@ export class DataManager implements WorkerClass {
       }
       let match = this.artMatches(query ? query.toLowerCase() : '', art);
 
-      if (hasValue(artType)) {
-        if (!this.typeMatch(art.art_type, artType)) {
-          match = 'No Match';
-        }
+      if (hasValue(artType) && !this.artMatchesType(art, artType)) {
+        match = 'No Match';
       }
 
       if (match !== 'No Match') {
@@ -1254,6 +1258,13 @@ export class DataManager implements WorkerClass {
       }
     }
     return result;
+  }
+
+  private artMatchesType(art: Art, type: string | undefined): boolean {
+    if (type === 'Audio Tour') {
+      return hasValue(art.audio);
+    }
+    return this.typeMatch(art.art_type, type);
   }
 
   private typeMatch(campTypes: string | undefined, type: string | undefined): boolean {
