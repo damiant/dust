@@ -565,7 +565,7 @@ export class IntroPage {
       return;
     }
     this.vm.selected = card;
-    this.subtitle.set(this.vm.selected.subTitle);
+    this.subtitle.set(this.vm.selected?.subTitle ?? '');
     await this.save();
   }
 
