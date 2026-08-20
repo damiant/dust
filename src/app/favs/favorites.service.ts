@@ -516,6 +516,11 @@ export class FavoritesService {
     const eventItems: Event[] = [];
     const timeNow = now().getTime();
     for (const event of events) {
+      if (!Array.isArray(event.occurrence_set) || event.occurrence_set.length === 0) {
+        // Stale/corrupt dataset entry may lack occurrences; skip it rather than crash
+        console.warn('Skipping favorited event without occurrences', event.uid, event.title);
+        continue;
+      }
       for (const occurrence of event.occurrence_set) {
         occurrence.star = await this.isFavEventOccurrence(event.uid, occurrence);
         if (occurrence.star) {

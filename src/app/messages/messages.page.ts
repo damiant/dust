@@ -51,13 +51,11 @@ export class MessagesPage implements OnInit {
   emails = this.messages.email;
   ionContent = viewChild.required(IonContent);
   unread = computed(() => {
-    if (!this.feed().rss && this.emails().length == 0) {
-      {
-        return -1;
-      }
-    }
-    const messages = this.feed().rss ? this.feed().rss.channel.item.filter((i) => !i.read).length : 0;
-    return this.emails().filter((i) => !i.read).length + messages;
+    const feed = this.feed();
+    const emails = this.emails();
+    const items: Item[] = feed?.rss?.channel?.item ?? [];
+    const messages = items.filter((i) => i && !i.read).length;
+    return emails.filter((i) => i && !i.read).length + messages;
   });
   constructor() {
     addIcons({ mailOpenOutline });
@@ -95,13 +93,23 @@ export class MessagesPage implements OnInit {
     email.reading = true;
     await delay(500);
     await this.messages.markEmailAsRead(email);
-    this.ngOnInit();
+    // Remove just this item so the card is dropped after its fade-out finishes,
+    // without re-rendering the whole list (which destroys sibling cards while
+    // their enter/leave animations are still running and crashes the Web
+    // Animations API with "duration must be non-negative or auto").
+    this.emails.update((list) => list.filter((e) => e !== email));
   }
 
   async markMessageAsRead(message: Item) {
     message.reading = true;
     await delay(500);
     await this.messages.markMessageAsRead(message);
-    this.ngOnInit();
+    this.feed.update((f) => {
+      const items = f?.rss?.channel?.item;
+      if (Array.isArray(items)) {
+        f.rss.channel.item = items.filter((i) => i !== message);
+      }
+      return f;
+    });
   }
 }

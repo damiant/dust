@@ -13,10 +13,10 @@
       <ion-title size="large">Messages </ion-title>
     </ion-toolbar>
   </ion-header>
-  @if (emails().length > 0) { @for (email of emails(); track $index) { @if (!email.read) {
+  @if (emails().length > 0) { @for (email of emails(); track $index) { @if (email && !email.read) {
   <app-email-card (read)="markAsRead(email)" [email]="email"></app-email-card>
   } } } @if (feed().rss && feed().rss.channel) { @for (message of feed().rss.channel.item; track $index) { @if
-  (!message.read) {
+  (message && !message.read) {
   <app-message-card (read)="markMessageAsRead(message)" [item]="message"></app-message-card>
   } } } @if (unread() <= 0) {
   <div class="center">

@@ -33,11 +33,15 @@ export class MessagesService {
   ): Promise<void> {
     const url = mastodonHandle ? this.mastodonURL(mastodonHandle) : this.rssFeedUrl(rssFeed);
     if (url) {
-      const res = await fetch(url, { method: 'GET' });
-      const data: RSSFeed = await res.json();
-      await this.db.writeData(datasetId, Names.messages, data);
-      await this.cleanup(data);
-      this.feed.set(data);
+      try {
+        const res = await fetch(url, { method: 'GET' });
+        const data: RSSFeed = await res.json();
+        await this.db.writeData(datasetId, Names.messages, data);
+        await this.cleanup(data);
+        this.feed.set(this.toFeed(data));
+      } catch (err) {
+        console.error(`Failed to load messages feed ${url}`, err);
+      }
     }
     // We now always fetch from messages because notifications appear here too
 
@@ -51,10 +55,10 @@ export class MessagesService {
       return;
       // Ignore JSON parse errors
     }
-    await this.cleanupEmail(emailList);
-    await this.db.writeData(datasetId, Names.emails, emailList);
-    this.email.set(emailList);
-
+    const safeEmails = this.toEmails(emailList);
+    await this.cleanupEmail(safeEmails);
+    await this.db.writeData(datasetId, Names.emails, safeEmails);
+    this.email.set(safeEmails);
   }
 
   public async getMessages(
@@ -66,13 +70,37 @@ export class MessagesService {
     const data = await this.db.readData(datasetId, Names.messages);
     console.log('Loaded messages from DB', data);
     await this.cleanup(data);
-    this.feed.set(data);
+    this.feed.set(this.toFeed(data));
     const emails = await this.db.readData(datasetId, Names.emails);
-    await this.cleanupEmail(emails);
-    this.email.set(emails);
+    const safeEmails = this.toEmails(emails);
+    await this.cleanupEmail(safeEmails);
+    this.email.set(safeEmails);
     if (mastodonHandle || inboxEmail || rssFeed) {
       this.updateData(datasetId, rssFeed, mastodonHandle, inboxEmail);
     }
+  }
+
+  /**
+   * Normalise a raw value into a proper RSSFeed object. Guards against null/array
+   * defaults (e.g. when nothing is cached yet) and missing rss/channel structure.
+   */
+  private toFeed(data: any): RSSFeed {
+    if (!data || typeof data !== 'object' || !data.rss || !data.rss.channel) {
+      return {} as any;
+    }
+    const item = data.rss.channel.item;
+    if (!Array.isArray(item)) {
+      data.rss.channel.item = [];
+    } else {
+      data.rss.channel.item = item.filter((i: any) => !!i && typeof i === 'object');
+    }
+    return data as RSSFeed;
+  }
+
+  /** Normalise raw email data into a non-null array. */
+  private toEmails(data: any): Email[] {
+    if (!Array.isArray(data)) return [];
+    return data.filter((email) => !!email && typeof email === 'object');
   }
 
   private readMessagesKey = 'messagesRead';
@@ -103,7 +131,10 @@ export class MessagesService {
   private async cleanup(data: RSSFeed) {
     if (!data || !data.rss || !data.rss.channel) return;
     const list = await this.getReadMessageHashes();
-    for (const item of data.rss.channel.item) {
+    const items = data.rss.channel.item;
+    if (!Array.isArray(items)) return;
+    for (const item of items) {
+      if (!item) continue;
       item.avatar = data.rss.channel.image?.url;
 
       const dt = new Date(item.pubDate);
@@ -118,13 +149,15 @@ export class MessagesService {
       if (item.title) {
         item.title = this.decodeHTMLEntities(item.title);
       }
-      item.description = item.description
-        .replace(/\u00AD/g, '')
-        .replace(/\u200C/g, '')
-        .replace(/\u00A0/g, '')
-        .replace(/\s+/g, ' ')
-        .replace(/ ͏/g, '')
-        .replace(/\s{2,}/g, ' ');
+      if (item.description) {
+        item.description = item.description
+          .replace(/\u00AD/g, '')
+          .replace(/\u200C/g, '')
+          .replace(/\u00A0/g, '')
+          .replace(/\s+/g, ' ')
+          .replace(/ ͏/g, '')
+          .replace(/\s{2,}/g, ' ');
+      }
     }
   }
 
@@ -137,22 +170,26 @@ export class MessagesService {
   }
 
   private async cleanupEmail(data: Email[]) {
+    if (!Array.isArray(data)) return;
     const list = await this.getReadMessageHashes();
     for (const email of data) {
-      email.html = replaceAll(email.html, 'width="600"', '');
-      email.html = replaceAll(email.html, 'Unsubscribe</a>', '</a>');
-      email.html = replaceAll(email.html, 'Subscribe</a>', '</a>');
-      email.html = replaceAll(email.html, 'Click here</a>', '</a>');
-      email.html = replaceAll(email.html, 'inbox@dust.events', 'you');
-      email.html = replaceAll(email.html, 'Unsubscribe instantly</a>', '</a>');
-      email.html = replaceAll(email.html, 'list-manage.com/unsubscribe?', '');
-      email.html = replaceAll(email.html, 'list-manage.com/profile?', '');
-      email.html = replaceAll(email.html, 'unsubscribe', '');
-      email.html = replaceAll(
-        email.html,
-        '<img src="https://cdn-images.mailchimp.com/monkey_rewards/intuit-mc-rewards-2.png"',
-        '<div ',
-      );
+      if (!email) continue;
+      if (email.html) {
+        email.html = replaceAll(email.html, 'width="600"', '');
+        email.html = replaceAll(email.html, 'Unsubscribe</a>', '</a>');
+        email.html = replaceAll(email.html, 'Subscribe</a>', '</a>');
+        email.html = replaceAll(email.html, 'Click here</a>', '</a>');
+        email.html = replaceAll(email.html, 'inbox@dust.events', 'you');
+        email.html = replaceAll(email.html, 'Unsubscribe instantly</a>', '</a>');
+        email.html = replaceAll(email.html, 'list-manage.com/unsubscribe?', '');
+        email.html = replaceAll(email.html, 'list-manage.com/profile?', '');
+        email.html = replaceAll(email.html, 'unsubscribe', '');
+        email.html = replaceAll(
+          email.html,
+          '<img src="https://cdn-images.mailchimp.com/monkey_rewards/intuit-mc-rewards-2.png"',
+          '<div ',
+        );
+      }
       email.read = list.includes(this.hashOfEmail(email));
     }
   }
