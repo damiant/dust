@@ -51,13 +51,11 @@ export class MessagesPage implements OnInit {
   emails = this.messages.email;
   ionContent = viewChild.required(IonContent);
   unread = computed(() => {
-    if (!this.feed().rss && this.emails().length == 0) {
-      {
-        return -1;
-      }
-    }
-    const messages = this.feed().rss ? this.feed().rss.channel.item.filter((i) => !i.read).length : 0;
-    return this.emails().filter((i) => !i.read).length + messages;
+    const feed = this.feed();
+    const emails = this.emails();
+    const items: Item[] = feed?.rss?.channel?.item ?? [];
+    const messages = items.filter((i) => i && !i.read).length;
+    return emails.filter((i) => i && !i.read).length + messages;
   });
   constructor() {
     addIcons({ mailOpenOutline });
