@@ -407,6 +407,7 @@ export interface RSLEvent {
   title?: string;
   location: string;
   campId?: string;
+  artId?: string;
   day: string; // Format yyyy-mm-dd
   gpsCoords?: GpsCoord;
   pin?: Pin; // Added by dust
@@ -501,6 +502,7 @@ export enum DataMethods {
   GetCampEvents = 'getCampEvents',
   GetArtEvents = 'getArtEvents',
   GetCampRSLEvents = 'getCampRSLEvents',
+  GetArtRSLEvents = 'getArtRSLEvents',
   GetCamps = 'getCamps',
   GetGeoReferences = 'getGeoReferences',
   GpsToPoint = 'gpsToPoint',

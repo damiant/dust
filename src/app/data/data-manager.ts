@@ -36,6 +36,7 @@ import {
   removeDiacritics,
   sameDay,
   static_dust_events,
+  time,
   titlePlural,
 } from '../utils/utils';
 import { defaultMapRadius, distance, formatDistance, locationStringToPin, mapPointToPoint } from '../map/map.utils';
@@ -157,6 +158,8 @@ export class DataManager implements WorkerClass {
         return this.getArtEvents(args[0]);
       case DataMethods.GetCampRSLEvents:
         return await this.getRSLEvents('', undefined, undefined, undefined, args[0]);
+      case DataMethods.GetArtRSLEvents:
+        return await this.getRSLEvents('', undefined, undefined, undefined, undefined, undefined, args[0]);
       case DataMethods.GetCamps:
         return this.getCamps(args[0], args[1]);
       case DataMethods.Clear:
@@ -638,6 +641,9 @@ export class DataManager implements WorkerClass {
       this.links = await this.loadData(ds.links);
       this.pins = await this.loadData(ds.pins);
       this.rslEvents = await this.loadData(ds.rsl);
+      // Persist RSL to IndexedDB so the Music page (getRSLEvents) reads the
+      // same data we just loaded into memory (e.g. rsl-dev.json during dev).
+      await this.writeData(this.getId(Names.rsl), this.rslEvents);
       const map = await this.loadData(ds.map);
 
       this.consoleLog(
@@ -794,6 +800,7 @@ export class DataManager implements WorkerClass {
     ids?: string[] | undefined,
     campId?: string | undefined,
     isHistorical?: boolean,
+    artId?: string | undefined,
   ): Promise<RSLEvent[]> {
     try {
       const events: RSLEvent[] = await this.read(this.getId(Names.rsl), []);
@@ -802,7 +809,22 @@ export class DataManager implements WorkerClass {
       const fDay = day && !sameDay(day, noDate()) ? this.toRSLDateFormat(day) : undefined;
       const today = this.now(this.timezone);
       const campPins: any = {};
+      const artPins: any = {};
       for (const event of events) {
+        // Place RSL Events at the art pin
+        if (event.artId) {
+          const pin = artPins[event.artId];
+          if (pin) {
+            event.pin = pin;
+          } else {
+            const arts = this.getArtList([event.artId]);
+            if (!event.pin) {
+              event.pin = arts && arts.length > 0 ? arts[0].pin : undefined;
+              Object.defineProperty(artPins, event.artId, { value: event.pin, enumerable: true });
+            }
+          }
+        }
+
         // Place RSL Events at the camp pin
         if (event.campId) {
           const pin = campPins[event.campId];
@@ -820,6 +842,8 @@ export class DataManager implements WorkerClass {
         let match = false;
         if (campId) {
           match = event.campId == campId && this.nullOrEmpty(event.artCar);
+        } else if (artId) {
+          match = event.artId == artId;
         } else {
           match = this.rslEventContains(event, query) && (event.day == fDay || !!ids || !fDay);
         }
@@ -830,6 +854,11 @@ export class DataManager implements WorkerClass {
             occurrence.old = new Date(occurrence.endTime).getTime() - today.getTime() < 0;
             if (!occurrence.old) {
               allOld = false;
+            }
+            // rsl data provides endTime but no display end; derive it so UIs can
+            // show a from-to range (eg "8:30pm-9:30pm").
+            if (!hasValue(occurrence.end) && hasValue(occurrence.endTime)) {
+              occurrence.end = time(new Date(occurrence.endTime), this.timezone);
             }
           }
           if (ids && ids.length > 0) {
@@ -852,7 +881,7 @@ export class DataManager implements WorkerClass {
       }
       if (coords) {
         this.sortRSLEventsByDistance(result);
-      } else if (campId) {
+      } else if (campId || artId) {
         this.sortRSLEventsByDay(result);
       } else if (!fDay) {
         // When "All" is selected (fDay is undefined), sort by date

@@ -7,6 +7,8 @@ export interface MapPolygon {
   colorHex?: number;
   opacity?: number;
   label?: string;
+  /** Full camp name shown on the polygon when zoomed in (falls back to `label` when unset). */
+  fullLabel?: string;
   /** Index of the map point to activate when this polygon is clicked. */
   pinIndex?: number;
 }

@@ -110,7 +110,9 @@
     <div>
       <ion-item class="event">
         <ion-icon class="event-icon" slot="start" name="calendar-outline"></ion-icon>
-        <ion-label (click)="rslInfo()" class="bold" color="primary">{{event.camp}} - {{event.title}}</ion-label>
+        <ion-label (click)="rslInfo()" class="bold" color="primary"
+          >{{event.camp}}{{event.title ? ' - ' + event.title : ''}}</ion-label
+        >
       </ion-item>
       @for (occurrence of event.occurrences; track occurrence) {
       <ion-item class="small" (click)="toggleRSLStar(occurrence, event)">

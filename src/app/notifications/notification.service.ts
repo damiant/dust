@@ -205,6 +205,7 @@ export class NotificationService {
           channelId,
           sound: isAndroid ? undefined : sound,
           schedule: { at: reminder.when, allowWhileIdle: true },
+          isExactNotification: false,
           extra: {
             eventId: reminder.id,
             type: reminder.type ?? 'event',
