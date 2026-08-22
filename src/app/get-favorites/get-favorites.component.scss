@@ -1,0 +1,13 @@
+.get-favorites-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.error-message {
+  display: block;
+  margin: 1rem;
+  color: var(--ion-color-danger);
+  text-align: center;
+}

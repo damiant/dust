@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, effect, inject, signal, viewChild } from '@angular/core';
 import {
   IonButton,
   IonButtons,
@@ -15,6 +15,7 @@ import { Network } from '@capacitor/network';
 import { addIcons } from 'ionicons';
 import { shareOutline } from 'ionicons/icons';
 import { FavoritesService } from '../favs/favorites.service';
+import QRCode from 'qrcode';
 
 export type ShareStatus = 'loading' | 'success' | 'failed' | 'no-network';
 
@@ -43,6 +44,7 @@ export type ShareStatus = 'loading' | 'success' | 'failed' | 'no-network';
           <ion-spinner name="crescent"></ion-spinner>
         }
         @if (status() === 'success') {
+          <canvas #qrCode class="favorite-qr" aria-label="QR code for your favorite ID"></canvas>
           <div class="favorite-id">{{ uniqueId() }}</div>
         }
         @if (status() === 'failed') {
@@ -56,16 +58,7 @@ export type ShareStatus = 'loading' | 'success' | 'failed' | 'no-network';
   `,
   styleUrls: ['./share-favorites.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    IonButton,
-    IonButtons,
-    IonContent,
-    IonHeader,
-    IonIcon,
-    IonSpinner,
-    IonTitle,
-    IonToolbar,
-  ],
+  imports: [IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonSpinner, IonTitle, IonToolbar],
 })
 export class ShareFavoritesComponent {
   private modalCtrl = inject(ModalController);
@@ -73,9 +66,17 @@ export class ShareFavoritesComponent {
 
   status = signal<ShareStatus>('loading');
   uniqueId = signal<string>('');
+  private qrCode = viewChild<ElementRef<HTMLCanvasElement>>('qrCode');
 
   constructor() {
     addIcons({ shareOutline });
+    effect(() => {
+      const id = this.uniqueId();
+      const canvas = this.qrCode()?.nativeElement;
+      if (id && canvas) {
+        void QRCode.toCanvas(canvas, id, { width: 240, margin: 2 });
+      }
+    });
     this.start();
   }
 
