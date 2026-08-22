@@ -98,6 +98,7 @@ export class GetFavoritesComponent implements OnInit {
     this.errorMessage.set('');
     const scannedId = await this.scanner.scan();
     if (!scannedId) {
+      await this.cancel();
       return;
     }
 
