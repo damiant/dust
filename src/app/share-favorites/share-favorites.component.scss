@@ -29,6 +29,15 @@ ion-spinner {
   color: var(--ion-color-primary);
 }
 
+.favorite-info {
+  max-width: 28rem;
+  margin-top: 1.5rem;
+  color: var(--ion-color-medium-shade);
+  font-size: 1rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
 .share-message {
   font-size: 1.5rem;
   font-weight: bold;

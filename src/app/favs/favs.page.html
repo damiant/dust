@@ -25,9 +25,13 @@
                   <ion-icon name="share-outline" slot="start"></ion-icon>
                   <ion-label>Share Favorites</ion-label>
                 </ion-item>
-                <ion-item detail="false" aria-label="Get Favorites" button (click)="getFavorites()">
+                <ion-item detail="false" aria-label="Scan Favorites" button (click)="scanFavorites()">
+                  <ion-icon name="qr-code-outline" slot="start"></ion-icon>
+                  <ion-label>Scan Favorites</ion-label>
+                </ion-item>
+                <ion-item detail="false" aria-label="Enter Favorite ID" button (click)="getFavorites()">
                   <ion-icon name="download-outline" slot="start"></ion-icon>
-                  <ion-label>Get Favorites</ion-label>
+                  <ion-label>Enter ID</ion-label>
                 </ion-item>
                 <ion-item detail="false" aria-label="Clear Favorites" button (click)="clearFavs()">
                   <ion-icon name="trash-outline" slot="start"></ion-icon>
@@ -77,8 +81,8 @@
   @if (vm.noFavorites) {
   <div class="center pad-sides">
     <ion-text class="large" color="medium"
-      >Tap the <ion-icon [src]="'assets/icon/star.svg'"></ion-icon> icon on Events, Theme Camps and Art to add them
-      to your favorites</ion-text
+      >Tap the <ion-icon [src]="'assets/icon/star.svg'"></ion-icon> icon on Events, Theme Camps and Art to add them to
+      your favorites</ion-text
     >
   </div>
   } @for (event of vm.events; track eventsTrackBy($index, event)) {

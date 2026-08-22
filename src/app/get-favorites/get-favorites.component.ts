@@ -37,15 +37,6 @@ export enum GetFavoritesResult {
     </ion-header>
 
     <ion-content class="ion-padding">
-      @if (!showManualEntry()) {
-        <div class="get-favorites-actions">
-          <ion-button expand="block" (click)="scanQrCode()">Scan QR code</ion-button>
-          <ion-button expand="block" fill="outline" (click)="enterFavoriteIdManually()">
-            Enter Favorite ID Manually
-          </ion-button>
-        </div>
-      }
-
       @if (showManualEntry()) {
         <ion-item>
           <ion-label position="stacked">Enter the favorite ID</ion-label>
@@ -85,21 +76,22 @@ export enum GetFavoritesResult {
 export class GetFavoritesComponent implements OnInit {
   private modalCtrl = inject(ModalController);
   private scanner = inject(ScanService);
+  mode: 'scan' | 'manual' = 'manual';
   uniqueId = '';
-  showManualEntry = signal(false);
+  showManualEntry = signal(true);
   errorMessage = signal('');
   favIdInput = viewChild<IonInput>('favIdInput');
 
   ngOnInit() {
     void this.scanner.prepare();
-  }
-
-  enterFavoriteIdManually() {
-    this.errorMessage.set('');
-    this.showManualEntry.set(true);
-    setTimeout(() => {
-      void this.favIdInput()?.setFocus();
-    });
+    if (this.mode === 'scan') {
+      this.showManualEntry.set(false);
+      setTimeout(() => void this.scanQrCode());
+    } else {
+      setTimeout(() => {
+        void this.favIdInput()?.setFocus();
+      }, 1000);
+    }
   }
 
   async scanQrCode() {

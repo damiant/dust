@@ -41,7 +41,17 @@ import { SearchComponent } from '../search/search.component';
 import { distance, formatDistanceMiles, toMapPoint } from '../map/map.utils';
 import { GeoService } from '../geolocation/geo.service';
 import { addIcons } from 'ionicons';
-import { star, starOutline, mapOutline, printOutline, calendarOutline, trashOutline, shareOutline, downloadOutline } from 'ionicons/icons';
+import {
+  star,
+  starOutline,
+  mapOutline,
+  printOutline,
+  calendarOutline,
+  trashOutline,
+  shareOutline,
+  downloadOutline,
+  qrCodeOutline,
+} from 'ionicons/icons';
 import { CalendarService } from '../calendar.service';
 import { ToastController, AlertController } from '@ionic/angular';
 import { MessageComponent } from '../message/message.component';
@@ -151,7 +161,17 @@ export class FavsPage implements OnInit {
   isPopoverOpen = false;
 
   constructor() {
-    addIcons({ printOutline, calendarOutline, mapOutline, star, starOutline, trashOutline, shareOutline, downloadOutline });
+    addIcons({
+      printOutline,
+      calendarOutline,
+      mapOutline,
+      star,
+      starOutline,
+      trashOutline,
+      shareOutline,
+      downloadOutline,
+      qrCodeOutline,
+    });
     effect(async () => {
       this.fav.changed();
       await this.update();
@@ -223,7 +243,15 @@ export class FavsPage implements OnInit {
     await modal.present();
   }
 
+  async scanFavorites() {
+    await this.openGetFavorites('scan');
+  }
+
   async getFavorites() {
+    await this.openGetFavorites('manual');
+  }
+
+  private async openGetFavorites(mode: 'scan' | 'manual') {
     this.isPopoverOpen = false;
 
     const networkStatus = await Network.getStatus();
@@ -240,6 +268,7 @@ export class FavsPage implements OnInit {
     const e: any = document.getElementById('my-outlet');
     const modal = await this.modalCtrl.create({
       component: GetFavoritesComponent,
+      componentProps: { mode },
       presentingElement: e,
     });
     await modal.present();

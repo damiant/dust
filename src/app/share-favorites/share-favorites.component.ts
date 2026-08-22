@@ -46,6 +46,7 @@ export type ShareStatus = 'loading' | 'success' | 'failed' | 'no-network';
         @if (status() === 'success') {
           <canvas #qrCode class="favorite-qr" aria-label="QR code for your favorite ID"></canvas>
           <div class="favorite-id">{{ uniqueId() }}</div>
+          <div class="favorite-info">{{ favoriteInfo() }}</div>
         }
         @if (status() === 'failed') {
           <div class="share-message failed">Failed to Share</div>
@@ -66,6 +67,7 @@ export class ShareFavoritesComponent {
 
   status = signal<ShareStatus>('loading');
   uniqueId = signal<string>('');
+  favoriteInfo = signal('');
   private qrCode = viewChild<ElementRef<HTMLCanvasElement>>('qrCode');
 
   constructor() {
@@ -87,7 +89,15 @@ export class ShareFavoritesComponent {
         this.status.set('no-network');
         return;
       }
+      const favorites = await this.fav.getFavorites();
       const id = await this.fav.shareFavorites();
+      const eventCount = favorites.events.length + favorites.rslEvents.length;
+      const campAndArtCount = favorites.camps.length + favorites.art.length;
+      this.favoriteInfo.set(
+        eventCount === 0 && campAndArtCount === 0
+          ? 'You have not favorited any events, camps or art'
+          : `On another phone choose “Scan Favorites” and point to this QR code, or choose “Enter ID” and type in this ID to download these ${eventCount} events, ${campAndArtCount} favorite camps & art`,
+      );
       this.uniqueId.set(id);
       this.status.set('success');
     } catch (error) {
