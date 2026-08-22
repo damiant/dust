@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { MapComponent } from '../map/map.component';
@@ -36,10 +36,10 @@ import { MapPolygon } from '../map/map-model';
 export class FavMapPage {
   private fav = inject(FavoritesService);
   private db = inject(DbService);
-  isToastOpen = false;
-  points: MapPoint[] = [];
-  polygons: MapPolygon[] = [];
-  title = '';
+  isToastOpen = signal(false);
+  points = signal<MapPoint[]>([]);
+  polygons = signal<MapPolygon[]>([]);
+  title = signal('');
 
   ionViewWillEnter() {
     const newTitle = this.fav.getMapPointsTitle();
@@ -48,14 +48,14 @@ export class FavMapPage {
 
     // Only update if the reference has changed (which means favorites were modified)
     // This prevents unnecessary map refresh when just navigating back
-    if (this.points !== newPoints) {
-      this.title = newTitle;
-      this.points = newPoints;
-      this.polygons = newPolygons;
+    if (this.points() !== newPoints) {
+      this.title.set(newTitle);
+      this.points.set(newPoints);
+      this.polygons.set(newPolygons);
     }
 
     if (this.db.anyLocationsHidden()) {
-      this.isToastOpen = true;
+      this.isToastOpen.set(true);
     }
   }
 }

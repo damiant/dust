@@ -1,0 +1,115 @@
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import {
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonSpinner,
+  IonTitle,
+  IonToolbar,
+  ModalController,
+} from '@ionic/angular/standalone';
+import { Share } from '@capacitor/share';
+import { Network } from '@capacitor/network';
+import { addIcons } from 'ionicons';
+import { shareOutline } from 'ionicons/icons';
+import { FavoritesService } from '../favs/favorites.service';
+
+export type ShareStatus = 'loading' | 'success' | 'failed' | 'no-network';
+
+@Component({
+  selector: 'app-share-favorites',
+  template: `
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="close()">Close</ion-button>
+        </ion-buttons>
+        <ion-title>Share this favorite ID</ion-title>
+        <ion-buttons slot="end">
+          @if (status() === 'success') {
+            <ion-button (click)="share()">
+              <ion-icon color="primary" name="share-outline"></ion-icon>
+            </ion-button>
+          }
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="ion-padding">
+      <div class="share-container">
+        @if (status() === 'loading') {
+          <ion-spinner name="crescent"></ion-spinner>
+        }
+        @if (status() === 'success') {
+          <div class="favorite-id">{{ uniqueId() }}</div>
+        }
+        @if (status() === 'failed') {
+          <div class="share-message failed">Failed to Share</div>
+        }
+        @if (status() === 'no-network') {
+          <div class="share-message no-network">No Network</div>
+        }
+      </div>
+    </ion-content>
+  `,
+  styleUrls: ['./share-favorites.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    IonButton,
+    IonButtons,
+    IonContent,
+    IonHeader,
+    IonIcon,
+    IonSpinner,
+    IonTitle,
+    IonToolbar,
+  ],
+})
+export class ShareFavoritesComponent {
+  private modalCtrl = inject(ModalController);
+  private fav = inject(FavoritesService);
+
+  status = signal<ShareStatus>('loading');
+  uniqueId = signal<string>('');
+
+  constructor() {
+    addIcons({ shareOutline });
+    this.start();
+  }
+
+  private async start() {
+    try {
+      const networkStatus = await Network.getStatus();
+      if (!networkStatus.connected) {
+        this.status.set('no-network');
+        return;
+      }
+      const id = await this.fav.shareFavorites();
+      this.uniqueId.set(id);
+      this.status.set('success');
+    } catch (error) {
+      console.error('Failed to share favorites', error);
+      this.status.set('failed');
+    }
+  }
+
+  async close() {
+    await this.modalCtrl.dismiss();
+  }
+
+  async share() {
+    try {
+      await Share.share({
+        title: 'Favorites',
+        text: `Check out my favorites! Enter this ID: ${this.uniqueId()}`,
+        dialogTitle: 'Share Favorites',
+      });
+    } catch (e: any) {
+      if (e?.message !== 'Share canceled') {
+        console.error('Share failed', e);
+      }
+    }
+  }
+}

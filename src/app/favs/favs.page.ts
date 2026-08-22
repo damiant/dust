@@ -41,10 +41,14 @@ import { SearchComponent } from '../search/search.component';
 import { distance, formatDistanceMiles, toMapPoint } from '../map/map.utils';
 import { GeoService } from '../geolocation/geo.service';
 import { addIcons } from 'ionicons';
-import { star, starOutline, mapOutline, printOutline, calendarOutline, trashOutline } from 'ionicons/icons';
+import { star, starOutline, mapOutline, printOutline, calendarOutline, trashOutline, shareOutline, downloadOutline } from 'ionicons/icons';
 import { CalendarService } from '../calendar.service';
 import { ToastController, AlertController } from '@ionic/angular';
 import { MessageComponent } from '../message/message.component';
+import { GetFavoritesComponent, GetFavoritesResult } from '../get-favorites/get-favorites.component';
+import { ShareFavoritesComponent } from '../share-favorites/share-favorites.component';
+import { ModalController } from '@ionic/angular/standalone';
+import { Network } from '@capacitor/network';
 import { getTimeZoneOffsetHours } from '../utils/date-utils';
 import { BadgeComponent } from '../badge/badge.component';
 import { MapPolygon } from '../map/map-model';
@@ -137,6 +141,7 @@ export class FavsPage implements OnInit {
   public db = inject(DbService);
   private toastController = inject(ToastController);
   private alertController = inject(AlertController);
+  private modalCtrl = inject(ModalController);
   private _change = inject(ChangeDetectorRef);
   private calendarUrl: string | undefined;
   private router = inject(Router);
@@ -146,7 +151,7 @@ export class FavsPage implements OnInit {
   isPopoverOpen = false;
 
   constructor() {
-    addIcons({ printOutline, calendarOutline, mapOutline, star, starOutline, trashOutline });
+    addIcons({ printOutline, calendarOutline, mapOutline, star, starOutline, trashOutline, shareOutline, downloadOutline });
     effect(async () => {
       this.fav.changed();
       await this.update();
@@ -206,6 +211,61 @@ export class FavsPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  async shareFavorites() {
+    this.isPopoverOpen = false;
+    const e: any = document.getElementById('my-outlet');
+    const modal = await this.modalCtrl.create({
+      component: ShareFavoritesComponent,
+      presentingElement: e,
+    });
+    await modal.present();
+  }
+
+  async getFavorites() {
+    this.isPopoverOpen = false;
+
+    const networkStatus = await Network.getStatus();
+    if (!networkStatus.connected) {
+      const errorAlert = await this.alertController.create({
+        header: 'No Network',
+        message: 'You do not have a network connection. Please connect to the internet and try again.',
+        buttons: ['OK'],
+      });
+      await errorAlert.present();
+      return;
+    }
+
+    const e: any = document.getElementById('my-outlet');
+    const modal = await this.modalCtrl.create({
+      component: GetFavoritesComponent,
+      presentingElement: e,
+    });
+    await modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+
+    if (role === GetFavoritesResult.confirm && data) {
+      try {
+        await this.fav.getFavoritesById(data);
+        this.fav.changed();
+        await this.update();
+        const successAlert = await this.alertController.create({
+          header: 'Favorites Applied',
+          message: 'Your favorites have been downloaded and applied successfully.',
+          buttons: ['OK'],
+        });
+        await successAlert.present();
+      } catch (error: any) {
+        const errorAlert = await this.alertController.create({
+          header: 'Download Failed',
+          message: error.message || 'Failed to download favorites. Please check the ID and try again.',
+          buttons: ['OK'],
+        });
+        await errorAlert.present();
+      }
+    }
   }
 
   home() {

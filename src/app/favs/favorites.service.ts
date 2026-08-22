@@ -25,6 +25,9 @@ enum DbId {
   things = 'things',
 }
 
+const FAVORITES_API_KEY = '3f8b0ace-f43d-4955-94e2-8e8a02bfa897';
+const FAVORITES_API_URL = 'https://api.dust.events/api/favorites';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -611,5 +614,196 @@ export class FavoritesService {
       items.splice(i, 1);
     }
     return items;
+  }
+
+  /**
+   * Split a list of stored event favorites into already-specific occurrence IDs
+   * (e.g. "55518-2026-09-01T18:00:00" or "u-1234-2026-09-01T18:00:00") and bare
+   * event UIDs that still need to be expanded (e.g. "55518" or "u-1234").
+   */
+  private classifyFavoriteEventIds(ids: string[]): { occurrenceIds: string[]; bareUids: string[] } {
+    const occurrenceIds: string[] = [];
+    const bareUids: string[] = [];
+    for (const entry of ids) {
+      if (entry.includes('-') && entry.split('-')[0] === 'u') {
+        const parts = entry.split('-');
+        if (parts.length > 2) {
+          occurrenceIds.push(entry);
+        } else {
+          bareUids.push(entry);
+        }
+      } else if (!entry.includes('-')) {
+        bareUids.push(entry);
+      } else {
+        occurrenceIds.push(entry);
+      }
+    }
+    return { occurrenceIds, bareUids };
+  }
+
+  /**
+   * Resolve any bare event UIDs into occurrence-specific IDs by looking up the
+   * event in the local DB and emitting one entry per occurrence.
+   */
+  private async expandBareEventUids(
+    occurrenceIds: string[],
+    bareUids: string[],
+  ): Promise<string[]> {
+    if (bareUids.length === 0) return occurrenceIds;
+    const events = await this.db.getEventList(bareUids);
+    const result = occurrenceIds.slice();
+    for (const event of events) {
+      for (const occurrence of event.occurrence_set) {
+        const occurrenceId = `${event.uid}-${occurrence.start_time}`;
+        if (!result.includes(occurrenceId)) {
+          result.push(occurrenceId);
+        }
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Serialize all favorites and POST to the favorites API
+   * Returns the unique ID for sharing
+   */
+  async shareFavorites(): Promise<string> {
+    await this.ready;
+    this.scrub();
+
+    // Expand any bare event UIDs into specific occurrence IDs so the recipient
+    // only receives the occurrences that were actually favorited (not every
+    // occurrence of the event).
+    const { occurrenceIds, bareUids } = this.classifyFavoriteEventIds(this.favorites.events);
+    const expandedEvents = await this.expandBareEventUids(occurrenceIds, bareUids);
+
+    const payload = {
+      events: expandedEvents,
+      camps: this.favorites.camps,
+      art: this.favorites.art,
+      rslEvents: this.favorites.rslEvents,
+    };
+
+    const response = await fetch(FAVORITES_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-API-Key': FAVORITES_API_KEY,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      throw new Error(`Failed to share favorites: ${response.status} - ${error}`);
+    }
+
+    const result = await response.json();
+    return result.uniqueid;
+  }
+
+  /**
+   * Get favorites from the API by unique ID and merge them
+   * Avoids duplicating any existing favorites and schedules
+   * notifications for the newly added event-style items.
+   */
+  async getFavoritesById(uniqueId: string): Promise<void> {
+    await this.ready;
+    this.scrub();
+
+    const response = await fetch(`${FAVORITES_API_URL}/${uniqueId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-API-Key': FAVORITES_API_KEY,
+      },
+    });
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error('Invalid or expired favorite list ID');
+      }
+      throw new Error(`Failed to get favorites: ${response.status}`);
+    }
+
+    const payload = await response.json();
+    if (!payload || typeof payload !== 'object') {
+      throw new Error('Malformed favorites payload');
+    }
+
+    // Expand any bare event UIDs into specific occurrence IDs so that
+    // importing only marks the occurrences the sender favorited (rather
+    // than treating the bare UID as "star every occurrence").
+    const incomingEvents: string[] = payload.events || [];
+    const { occurrenceIds, bareUids } = this.classifyFavoriteEventIds(incomingEvents);
+    const expandedEvents = await this.expandBareEventUids(occurrenceIds, bareUids);
+
+    const newEventIds: string[] = [];
+    for (const eventId of expandedEvents) {
+      if (!this.favorites.events.includes(eventId)) {
+        this.favorites.events.push(eventId);
+        newEventIds.push(eventId);
+      }
+    }
+    for (const campId of payload.camps || []) {
+      if (!this.favorites.camps.includes(campId)) {
+        this.favorites.camps.push(campId);
+      }
+    }
+    for (const artId of payload.art || []) {
+      if (!this.favorites.art.includes(artId)) {
+        this.favorites.art.push(artId);
+      }
+    }
+    const newRslIds: string[] = [];
+    for (const rslEventId of payload.rslEvents || []) {
+      if (!this.favorites.rslEvents.includes(rslEventId)) {
+        this.favorites.rslEvents.push(rslEventId);
+        newRslIds.push(rslEventId);
+      }
+    }
+    await this.saveFavorites();
+
+    // Schedule notifications for newly-imported events so the user gets the
+    // same reminders they would have if they had starred them themselves.
+    await this.scheduleImportedEventNotifications(newEventIds);
+    await this.scheduleImportedRslNotifications(newRslIds);
+  }
+
+  private async scheduleImportedEventNotifications(eventIds: string[]): Promise<void> {
+    if (eventIds.length === 0) return;
+    const baseIds = this.eventsFrom(eventIds);
+    const events = await this.db.getEventList(baseIds);
+    const eventsByUid = new Map<string, Event>();
+    for (const event of events) {
+      eventsByUid.set(event.uid, event);
+    }
+    const selectedDay = this.db.selectedDay();
+    // Iterate the specific occurrence IDs from the share so each one is
+    // starred (and notified) on its own day, instead of falling back to the
+    // bare event UID when the selected day does not match any occurrence
+    // (which would star every occurrence and schedule every notification).
+    for (const eventId of eventIds) {
+      const dashIdx = eventId.indexOf('-');
+      if (dashIdx < 0) continue;
+      const uid = eventId.substring(0, dashIdx);
+      const startTime = eventId.substring(dashIdx + 1);
+      const event = eventsByUid.get(uid);
+      if (!event) continue;
+      const occurrence = event.occurrence_set.find((o) => o.start_time === startTime);
+      if (!occurrence) continue;
+      await this.starEvent(true, event, selectedDay, occurrence, true);
+    }
+  }
+
+  private async scheduleImportedRslNotifications(rslIds: string[]): Promise<void> {
+    if (rslIds.length === 0) return;
+    const rslEvents = await this.db.getRSLEvents(rslIds);
+    for (const rslEvent of rslEvents) {
+      for (const occurrence of rslEvent.occurrences) {
+        if (!rslIds.includes(this.rslId(rslEvent, occurrence))) continue;
+        await this.starRSLEvent(true, rslEvent, occurrence);
+      }
+    }
   }
 }
