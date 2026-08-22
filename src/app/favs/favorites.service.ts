@@ -617,6 +617,53 @@ export class FavoritesService {
   }
 
   /**
+   * Split a list of stored event favorites into already-specific occurrence IDs
+   * (e.g. "55518-2026-09-01T18:00:00" or "u-1234-2026-09-01T18:00:00") and bare
+   * event UIDs that still need to be expanded (e.g. "55518" or "u-1234").
+   */
+  private classifyFavoriteEventIds(ids: string[]): { occurrenceIds: string[]; bareUids: string[] } {
+    const occurrenceIds: string[] = [];
+    const bareUids: string[] = [];
+    for (const entry of ids) {
+      if (entry.includes('-') && entry.split('-')[0] === 'u') {
+        const parts = entry.split('-');
+        if (parts.length > 2) {
+          occurrenceIds.push(entry);
+        } else {
+          bareUids.push(entry);
+        }
+      } else if (!entry.includes('-')) {
+        bareUids.push(entry);
+      } else {
+        occurrenceIds.push(entry);
+      }
+    }
+    return { occurrenceIds, bareUids };
+  }
+
+  /**
+   * Resolve any bare event UIDs into occurrence-specific IDs by looking up the
+   * event in the local DB and emitting one entry per occurrence.
+   */
+  private async expandBareEventUids(
+    occurrenceIds: string[],
+    bareUids: string[],
+  ): Promise<string[]> {
+    if (bareUids.length === 0) return occurrenceIds;
+    const events = await this.db.getEventList(bareUids);
+    const result = occurrenceIds.slice();
+    for (const event of events) {
+      for (const occurrence of event.occurrence_set) {
+        const occurrenceId = `${event.uid}-${occurrence.start_time}`;
+        if (!result.includes(occurrenceId)) {
+          result.push(occurrenceId);
+        }
+      }
+    }
+    return result;
+  }
+
+  /**
    * Serialize all favorites and POST to the favorites API
    * Returns the unique ID for sharing
    */
@@ -627,34 +674,8 @@ export class FavoritesService {
     // Expand any bare event UIDs into specific occurrence IDs so the recipient
     // only receives the occurrences that were actually favorited (not every
     // occurrence of the event).
-    const expandedEvents: string[] = [];
-    const bareUids = new Set<string>();
-    for (const entry of this.favorites.events) {
-      if (entry.includes('-') && entry.split('-')[0] === 'u') {
-        const parts = entry.split('-');
-        const hasStartTime = parts.length > 2;
-        if (hasStartTime) {
-          expandedEvents.push(entry);
-        } else {
-          bareUids.add(entry);
-        }
-      } else if (!entry.includes('-')) {
-        bareUids.add(entry);
-      } else {
-        expandedEvents.push(entry);
-      }
-    }
-    if (bareUids.size > 0) {
-      const events = await this.db.getEventList(Array.from(bareUids));
-      for (const event of events) {
-        for (const occurrence of event.occurrence_set) {
-          const occurrenceId = `${event.uid}-${occurrence.start_time}`;
-          if (!expandedEvents.includes(occurrenceId)) {
-            expandedEvents.push(occurrenceId);
-          }
-        }
-      }
-    }
+    const { occurrenceIds, bareUids } = this.classifyFavoriteEventIds(this.favorites.events);
+    const expandedEvents = await this.expandBareEventUids(occurrenceIds, bareUids);
 
     const payload = {
       events: expandedEvents,
@@ -710,33 +731,14 @@ export class FavoritesService {
       throw new Error('Malformed favorites payload');
     }
 
-    const newEventIds: string[] = [];
     // Expand any bare event UIDs into specific occurrence IDs so that
     // importing only marks the occurrences the sender favorited (rather
     // than treating the bare UID as "star every occurrence").
-    const incomingEvents: string[] = (payload.events || []).slice();
-    const bareUids = new Set<string>();
-    for (const entry of incomingEvents) {
-      const isUidWithStartTime = entry.startsWith('u-') && entry.split('-').length > 2;
-      if (isUidWithStartTime || (!entry.startsWith('u-') && !entry.includes('-'))) {
-        // already a specific occurrence or a non-event entry
-        continue;
-      }
-      // Bare event UID (e.g. "u-1234" or similar) — expand it.
-      bareUids.add(entry);
-    }
-    let expandedEvents: string[] = incomingEvents.filter((e) => !bareUids.has(e));
-    if (bareUids.size > 0) {
-      const events = await this.db.getEventList(Array.from(bareUids));
-      for (const event of events) {
-        for (const occurrence of event.occurrence_set) {
-          const occurrenceId = `${event.uid}-${occurrence.start_time}`;
-          if (!expandedEvents.includes(occurrenceId)) {
-            expandedEvents.push(occurrenceId);
-          }
-        }
-      }
-    }
+    const incomingEvents: string[] = payload.events || [];
+    const { occurrenceIds, bareUids } = this.classifyFavoriteEventIds(incomingEvents);
+    const expandedEvents = await this.expandBareEventUids(occurrenceIds, bareUids);
+
+    const newEventIds: string[] = [];
     for (const eventId of expandedEvents) {
       if (!this.favorites.events.includes(eventId)) {
         this.favorites.events.push(eventId);
