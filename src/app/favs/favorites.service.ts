@@ -774,9 +774,24 @@ export class FavoritesService {
     if (eventIds.length === 0) return;
     const baseIds = this.eventsFrom(eventIds);
     const events = await this.db.getEventList(baseIds);
-    const selectedDay = this.db.selectedDay();
+    const eventsByUid = new Map<string, Event>();
     for (const event of events) {
-      const occurrence = this.selectOccurrence(event, selectedDay);
+      eventsByUid.set(event.uid, event);
+    }
+    const selectedDay = this.db.selectedDay();
+    // Iterate the specific occurrence IDs from the share so each one is
+    // starred (and notified) on its own day, instead of falling back to the
+    // bare event UID when the selected day does not match any occurrence
+    // (which would star every occurrence and schedule every notification).
+    for (const eventId of eventIds) {
+      const dashIdx = eventId.indexOf('-');
+      if (dashIdx < 0) continue;
+      const uid = eventId.substring(0, dashIdx);
+      const startTime = eventId.substring(dashIdx + 1);
+      const event = eventsByUid.get(uid);
+      if (!event) continue;
+      const occurrence = event.occurrence_set.find((o) => o.start_time === startTime);
+      if (!occurrence) continue;
       await this.starEvent(true, event, selectedDay, occurrence, true);
     }
   }
