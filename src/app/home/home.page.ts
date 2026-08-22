@@ -532,6 +532,16 @@ export class HomePage implements OnInit {
           this.home();
           return;
         }
+        case 'partial': {
+          this.vm.downloading = false;
+          this.downloadStatus.set(`Downloading images`);
+          this.ui.presentToast(
+            'Update complete, but a network issue caused the map download to fail',
+            this.toastController,
+          );
+          this.home();
+          return;
+        }
         case 'already-updated': {
           this.ui.presentToast('You have the latest camps, events & art for this event', this.toastController);
           this.vm.downloading = false;

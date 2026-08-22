@@ -32,7 +32,7 @@ import { getCachedImage } from './cache-store';
 import { distance } from '../map/map.utils';
 import { liveBurnDataset } from '../broadcast/utils';
 
-export type DownloadResult = 'success' | 'error' | 'already-updated';
+export type DownloadResult = 'success' | 'partial' | 'error' | 'already-updated';
 
 interface Version {
   version: string;
@@ -418,15 +418,23 @@ export class ApiService {
       `events=${rEvents.status} art=${rArt.status} camps=${rCamps.status} pins=${rPins.status} links=${rLinks.status} map=${rMap.status} geo=${rGeo.status} restrooms=${rRestrooms.status} ice=${rIce.status} medical=${rMedical.status} rsl=${rRSL.status}`,
     );
     let uri: string | undefined = undefined;
+    let mapFailed = false;
     if (map) {
       const ext = map.filename ? map.filename.split('.').pop() : 'svg';
       if (map.filename) {
-        console.info(`download.map ${map.filename} ext=${ext}`);
-        uri = await this.dbService.getLiveBinary(dataset, map.filename, currentVersion);
-        console.info(`download.map uri=${uri}`);
-        downloadSignal.set({ status: `${selected.title}  Map`, firstDownload: myRevision === undefined });
-        uri = await getCachedImage(uri);
-        console.info(`download.map completed`);
+        try {
+          console.info(`download.map ${map.filename} ext=${ext}`);
+          uri = await this.dbService.getLiveBinary(dataset, map.filename, currentVersion);
+          console.info(`download.map uri=${uri}`);
+          downloadSignal.set({ status: `${selected.title}  Map`, firstDownload: myRevision === undefined });
+          uri = await getCachedImage(uri);
+          console.info(`download.map completed`);
+        } catch (err) {
+          // A network issue fetching the map should not abort the launch: continue with any previously cached map
+          console.error(`Download of map ${map.filename} failed`, err);
+          mapFailed = true;
+          uri = undefined;
+        }
       }
     }
 
@@ -440,10 +448,13 @@ export class ApiService {
 
     await this.dbService.writeData(dataset, Names.revision, revision);
     await this.dbService.writeData(dataset, Names.version, { version: await this.getVersion() });
-    map.uri = uri;
+    // Only overwrite the stored map uri when a fresh one was cached: keep any previously cached map on failure
+    if (uri) {
+      map.uri = uri;
+    }
     await this.dbService.writeData(dataset, Names.map, map);
 
     downloadSignal.set({ status: '', firstDownload: false });
-    return 'success';
+    return mapFailed ? 'partial' : 'success';
   }
 }
