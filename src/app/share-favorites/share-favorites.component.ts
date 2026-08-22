@@ -102,9 +102,9 @@ export class ShareFavoritesComponent {
   async share() {
     try {
       await Share.share({
-        title: 'Favorite List ID',
-        text: `Check out my favorite list! Enter this ID: ${this.uniqueId()}`,
-        dialogTitle: 'Share favorite ID',
+        title: 'Favorites',
+        text: `Check out my favorites! Enter this ID: ${this.uniqueId()}`,
+        dialogTitle: 'Share Favorites',
       });
     } catch (e: any) {
       if (e?.message !== 'Share canceled') {
