@@ -21,6 +21,14 @@
           <ng-template>
             <ion-content>
               <ion-list lines="none">
+                <ion-item detail="false" aria-label="Share Favorites" button (click)="shareFavorites()">
+                  <ion-icon name="share-outline" slot="start"></ion-icon>
+                  <ion-label>Share Favorites</ion-label>
+                </ion-item>
+                <ion-item detail="false" aria-label="Get Favorites" button (click)="getFavorites()">
+                  <ion-icon name="download-outline" slot="start"></ion-icon>
+                  <ion-label>Get Favorites</ion-label>
+                </ion-item>
                 <ion-item detail="false" aria-label="Clear Favorites" button (click)="clearFavs()">
                   <ion-icon name="trash-outline" slot="start"></ion-icon>
                   <ion-label>Clear Favorites</ion-label>
