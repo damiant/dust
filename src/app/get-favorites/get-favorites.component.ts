@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   IonButton,
@@ -39,6 +39,7 @@ export enum GetFavoritesResult {
       <ion-item>
         <ion-label position="stacked">Enter the favorite ID</ion-label>
         <ion-input
+          #favIdInput
           type="text"
           [(ngModel)]="uniqueId"
           placeholder="e.g., ab459f"
@@ -65,12 +66,19 @@ export enum GetFavoritesResult {
     IonLabel,
   ],
 })
-export class GetFavoritesComponent {
+export class GetFavoritesComponent implements OnInit {
   private modalCtrl = inject(ModalController);
   uniqueId: string = '';
+  favIdInput = viewChild.required<IonInput>('favIdInput');
 
   constructor() {
     addIcons({ download });
+  }
+
+  ngOnInit() {
+    setTimeout(() => {
+      this.favIdInput().setFocus();
+    }, 1000);
   }
 
   async cancel() {
