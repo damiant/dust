@@ -51,6 +51,7 @@ import {
   shareOutline,
   downloadOutline,
   qrCodeOutline,
+  watchOutline,
 } from 'ionicons/icons';
 import { CalendarService } from '../calendar.service';
 import { ToastController, AlertController } from '@ionic/angular';
@@ -59,10 +60,14 @@ import { GetFavoritesComponent, GetFavoritesResult } from '../get-favorites/get-
 import { ShareFavoritesComponent } from '../share-favorites/share-favorites.component';
 import { ModalController } from '@ionic/angular/standalone';
 import { Network } from '@capacitor/network';
+import { Capacitor } from '@capacitor/core';
+import { Haptics, NotificationType } from '@capacitor/haptics';
 import { getTimeZoneOffsetHours } from '../utils/date-utils';
 import { BadgeComponent } from '../badge/badge.component';
 import { MapPolygon } from '../map/map-model';
 import { buildCampMapFeatures, buildEventMapFeatures } from '../map/camp-polygon.utils';
+import { WatchService } from '../watch/watch.service';
+import { buildWatchCatalog } from '../watch/watch.catalog';
 
 enum Filter {
   All = '',
@@ -155,10 +160,12 @@ export class FavsPage implements OnInit {
   private _change = inject(ChangeDetectorRef);
   private calendarUrl: string | undefined;
   private router = inject(Router);
+  private watch = inject(WatchService);
   vm: FavsState = initialState();
 
   ionContent = viewChild.required(IonContent);
   isPopoverOpen = false;
+  watchAvailable = false;
 
   constructor() {
     addIcons({
@@ -171,6 +178,7 @@ export class FavsPage implements OnInit {
       shareOutline,
       downloadOutline,
       qrCodeOutline,
+      watchOutline,
     });
     effect(async () => {
       this.fav.changed();
@@ -366,10 +374,31 @@ export class FavsPage implements OnInit {
 
   openPopover() {
     this.isPopoverOpen = true;
+    void this.refreshWatchAvailable();
   }
 
   closePopover() {
     this.isPopoverOpen = false;
+  }
+
+  private async refreshWatchAvailable() {
+    this.watchAvailable = await this.watch.isWatchAvailable();
+    this._change.detectChanges();
+  }
+
+  async updateWatch() {
+    this.closePopover();
+    const catalog = await buildWatchCatalog(this.fav, this.db);
+    const result = await this.watch.sendCatalog(catalog);
+    if (result.ok) {
+      if (Capacitor.isNativePlatform()) {
+        await Haptics.notification({ type: NotificationType.Success });
+      }
+      this.ui.presentToast('Watch updated with your favorites.', this.toastController);
+    } else {
+      const message = result.error ?? 'Your Apple Watch could not be reached right now.';
+      await this.ui.presentAlert(this.alertController, message, 'Watch not available');
+    }
   }
 
   async groupClick(gevent: Event) {

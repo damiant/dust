@@ -21,6 +21,12 @@
           <ng-template>
             <ion-content>
               <ion-list lines="none">
+                @if (watchAvailable) {
+                <ion-item detail="false" aria-label="Update Apple Watch" button (click)="updateWatch()">
+                  <ion-icon name="watch-outline" slot="start"></ion-icon>
+                  <ion-label>Update Watch</ion-label>
+                </ion-item>
+                }
                 <ion-item detail="false" aria-label="Share Favorites" button (click)="shareFavorites()">
                   <ion-icon name="share-outline" slot="start"></ion-icon>
                   <ion-label>Share Favorites</ion-label>

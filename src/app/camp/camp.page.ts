@@ -177,7 +177,7 @@ export class CampPage implements OnInit {
     this.closePopover();
   }
 
-  openPopover() {
+  async openPopover() {
     this.isPopoverOpen = true;
   }
 

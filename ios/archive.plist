@@ -8,6 +8,8 @@
 <dict>
     <key>nexus.concepts.dust</key>
     <string>dust-distribution-2026</string>
+    <key>nexus.concepts.dust.watchkitapp</key>
+    <string>Dust Watch App</string>
 </dict>
 </dict>
 </plist>
