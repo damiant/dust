@@ -16,11 +16,8 @@ import {
   IonText,
   IonToolbar,
   ToastController,
-  AlertController,
 } from '@ionic/angular/standalone';
 import { ActivatedRoute } from '@angular/router';
-import { Capacitor } from '@capacitor/core';
-import { Haptics, NotificationType } from '@capacitor/haptics';
 import { DbService } from '../data/db.service';
 import { Camp, Event, Friend, MapPoint, RSLEvent, RSLOccurrence } from '../data/models';
 import { MapComponent } from '../map/map.component';
@@ -29,9 +26,8 @@ import { FavoritesService } from '../favs/favorites.service';
 import { FriendsService } from '../friends/friends.service';
 import { UiService } from '../ui/ui.service';
 import { SettingsService } from '../data/settings.service';
-import { buildCampMapFeatures, getCampCenterGps } from '../map/camp-polygon.utils';
+import { buildCampMapFeatures } from '../map/camp-polygon.utils';
 import { getOrdinalNum } from '../utils/utils';
-import { WatchService } from '../watch/watch.service';
 import { addIcons } from 'ionicons';
 import {
   star,
@@ -41,7 +37,6 @@ import {
   calendarOutline,
   ellipsisVertical,
   personAddOutline,
-  watchOutline,
 } from 'ionicons/icons';
 import { CachedImgComponent } from '../cached-img/cached-img.component';
 import { canCreate } from '../map/map';
@@ -79,8 +74,6 @@ export class CampPage implements OnInit {
   private friendsService = inject(FriendsService);
   private settings = inject(SettingsService);
   private toastController = inject(ToastController);
-  private alertController = inject(AlertController);
-  private watch = inject(WatchService);
   private ui = inject(UiService);
   private _change = inject(ChangeDetectorRef);
   content = viewChild.required(IonContent);
@@ -95,10 +88,9 @@ export class CampPage implements OnInit {
   showMap = false;
   backText = 'Camps';
   isPopoverOpen = false;
-  watchAvailable = false;
 
   constructor() {
-    addIcons({ star, starOutline, shareOutline, locationOutline, calendarOutline, ellipsisVertical, personAddOutline, watchOutline });
+    addIcons({ star, starOutline, shareOutline, locationOutline, calendarOutline, ellipsisVertical, personAddOutline });
   }
 
   async ngOnInit() {
@@ -185,33 +177,8 @@ export class CampPage implements OnInit {
     this.closePopover();
   }
 
-  public async showOnWatch() {
-    this.closePopover();
-    const camp = this.camp;
-    if (!camp) return;
-    const gps = getCampCenterGps(camp);
-    if (!gps) {
-      this.ui.presentToast(`No GPS coordinates to send ${camp.name} to your watch.`, this.toastController);
-      return;
-    }
-    const result = await this.watch.sendCamp({ name: camp.name, lat: gps.lat, lng: gps.lng });
-    if (result.ok) {
-      if (Capacitor.isNativePlatform()) {
-        await Haptics.notification({ type: NotificationType.Success });
-      }
-      this.ui.presentToast(`Sent ${camp.name} to your watch.`, this.toastController);
-    } else {
-      const message = result.error ?? 'Your Apple Watch could not be reached right now.';
-      await this.ui.presentAlert(this.alertController, message, 'Watch not available');
-    }
-  }
-
   async openPopover() {
     this.isPopoverOpen = true;
-    // Refresh watch availability so the menu reflects current pairing state.
-    console.log(`[camp] openPopover() checking watch availability…`);
-    this.watchAvailable = await this.watch.isWatchAvailable();
-    console.log(`[camp] openPopover() watchAvailable=%o`, this.watchAvailable);
   }
 
   closePopover() {

@@ -7,7 +7,7 @@ const { mockCapacitor, mockPlugin } = vi.hoisted(() => ({
   },
   mockPlugin: {
     isWatchAppInstalled: vi.fn(),
-    sendCamp: vi.fn(),
+    sendCatalog: vi.fn(),
   },
 }));
 
@@ -17,6 +17,15 @@ vi.mock('@capacitor/core', () => ({
 }));
 
 import { WatchService } from './watch.service';
+import { WatchCatalog } from './watch.catalog';
+
+const catalog: WatchCatalog = {
+  camps: [{ name: 'Center Camp', lat: 40.78, lng: -119.21 }],
+  art: [],
+  events: [],
+  restrooms: [{ lat: 40.77, lng: -119.2 }],
+  ice: [],
+};
 
 describe('WatchService', () => {
   let service: WatchService;
@@ -61,31 +70,33 @@ describe('WatchService', () => {
     });
   });
 
-  describe('sendCamp', () => {
+  describe('sendCatalog', () => {
     it('returns a structured error on non-iOS platforms', async () => {
       mockCapacitor.isNativePlatform.mockReturnValue(false);
-      const result = await service.sendCamp({ name: 'Camp', lat: 1, lng: 2 });
+      const result = await service.sendCatalog(catalog);
       expect(result.ok).toBe(false);
       expect(result.reachable).toBe(false);
       expect(result.error).toBeTruthy();
-      expect(mockPlugin.sendCamp).not.toHaveBeenCalled();
+      expect(mockPlugin.sendCatalog).not.toHaveBeenCalled();
     });
 
-    it('returns ok on iOS when the native send succeeds', async () => {
+    it('stringifies the catalog on iOS when the native send succeeds', async () => {
       mockCapacitor.isNativePlatform.mockReturnValue(true);
       mockCapacitor.getPlatform.mockReturnValue('ios');
-      mockPlugin.sendCamp.mockResolvedValue({ success: true });
-      const result = await service.sendCamp({ name: 'Camp', lat: 40.78, lng: -119.21 });
+      mockPlugin.sendCatalog.mockResolvedValue({ success: true });
+      const result = await service.sendCatalog(catalog);
       expect(result.ok).toBe(true);
       expect(result.reachable).toBe(true);
-      expect(mockPlugin.sendCamp).toHaveBeenCalledWith({ name: 'Camp', lat: 40.78, lng: -119.21 });
+      expect(mockPlugin.sendCatalog).toHaveBeenCalledWith({
+        catalogJson: JSON.stringify(catalog),
+      });
     });
 
     it('maps native errors into the result', async () => {
       mockCapacitor.isNativePlatform.mockReturnValue(true);
       mockCapacitor.getPlatform.mockReturnValue('ios');
-      mockPlugin.sendCamp.mockResolvedValue({ success: false, error: 'Watch not installed' });
-      const result = await service.sendCamp({ name: 'Camp', lat: 1, lng: 2 });
+      mockPlugin.sendCatalog.mockResolvedValue({ success: false, error: 'Watch not installed' });
+      const result = await service.sendCatalog(catalog);
       expect(result.ok).toBe(false);
       expect(result.reachable).toBe(true);
       expect(result.error).toBe('Watch not installed');

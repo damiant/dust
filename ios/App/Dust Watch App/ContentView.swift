@@ -1,6 +1,6 @@
+import CoreLocation
 import SwiftUI
 
-/// Root watch UI. Idle until the iPhone pushes a camp, then live tracking.
 struct ContentView: View {
     @EnvironmentObject private var model: WatchViewModel
 
@@ -8,7 +8,11 @@ struct ContentView: View {
         Group {
             switch model.state {
             case .idle:
-                IdleView()
+                if model.hasCatalog {
+                    CatalogHomeView()
+                } else {
+                    EmptyCatalogView()
+                }
             case .tracking, .arrived:
                 TrackingView()
             }
@@ -16,25 +20,160 @@ struct ContentView: View {
     }
 }
 
-/// Shown when no target has been sent yet (and after Stop).
-struct IdleView: View {
+struct EmptyCatalogView: View {
     var body: some View {
         VStack(spacing: 6) {
             Image(systemName: "applewatch")
                 .font(.system(size: 34))
                 .foregroundStyle(.secondary)
-            Text("Open Dust on your iPhone")
+            Text("Update Watch from Favorites")
                 .font(.footnote)
-            Text("and choose Show on Watch.")
+                .multilineTextAlignment(.center)
+            Text("on your iPhone.")
                 .font(.caption2)
                 .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
         }
         .padding()
     }
 }
 
-/// Arrow (top), distance (middle), camp label (bottom), stop button.
+struct CatalogHomeView: View {
+    @EnvironmentObject private var model: WatchViewModel
+
+    var body: some View {
+        NavigationStack {
+            List {
+                Button {
+                    model.navigateToNearest(.restroom)
+                } label: {
+                    Label("Restroom", systemImage: "toilet")
+                }
+
+                Button {
+                    model.navigateToNearest(.ice)
+                } label: {
+                    Label("Ice", systemImage: "snowflake")
+                }
+
+                NavigationLink {
+                    PlaceListView(title: "Camps", kind: .camp)
+                } label: {
+                    Label("Camps", systemImage: "tent")
+                }
+
+                NavigationLink {
+                    PlaceListView(title: "Art", kind: .art)
+                } label: {
+                    Label("Art", systemImage: "paintpalette")
+                }
+
+                NavigationLink {
+                    EventListView()
+                } label: {
+                    Label("Events", systemImage: "calendar")
+                }
+            }
+            .navigationTitle("Dust")
+            .onAppear { model.startBrowsingLocation() }
+        }
+    }
+}
+
+enum PlaceKind {
+    case camp
+    case art
+}
+
+struct PlaceListView: View {
+    @EnvironmentObject private var model: WatchViewModel
+    let title: String
+    let kind: PlaceKind
+
+    private var places: [WatchPlace] {
+        kind == .camp ? model.campsByDistance : model.artByDistance
+    }
+
+    var body: some View {
+        List {
+            if places.isEmpty {
+                Text("Star items on iPhone, then Update Watch.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            ForEach(places) { place in
+                if let coordinate = place.coordinate {
+                    Button {
+                        model.beginTracking(to: coordinate, name: place.name)
+                    } label: {
+                        placeRow(place, coordinate: coordinate)
+                    }
+                    .buttonStyle(.plain)
+                } else {
+                    placeRow(place, coordinate: nil)
+                }
+            }
+        }
+        .navigationTitle(title)
+    }
+
+    private func placeRow(_ place: WatchPlace, coordinate: CLLocationCoordinate2D?) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(place.name)
+                .foregroundStyle(coordinate == nil ? .secondary : .primary)
+                .lineLimit(2)
+            if let distance = model.formattedDistance(to: coordinate) {
+                Text(distance)
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            }
+        }
+    }
+}
+
+struct EventListView: View {
+    @EnvironmentObject private var model: WatchViewModel
+
+    var body: some View {
+        List {
+            if model.upcomingEvents.isEmpty {
+                Text("No upcoming Events or Parties.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            ForEach(model.upcomingEvents) { event in
+                if let coordinate = event.coordinate {
+                    Button {
+                        model.beginTracking(to: coordinate, name: event.name)
+                    } label: {
+                        eventRow(event, tappable: true)
+                    }
+                    .buttonStyle(.plain)
+                } else {
+                    eventRow(event, tappable: false)
+                }
+            }
+        }
+        .navigationTitle("Events")
+    }
+
+    private func eventRow(_ event: WatchTimed, tappable: Bool) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(event.name)
+                .foregroundStyle(tappable ? .primary : .secondary)
+                .lineLimit(2)
+            Text(event.when ?? Self.whenText(event.start))
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+        }
+    }
+
+    private static func whenText(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEE h:mma"
+        return formatter.string(from: date)
+    }
+}
+
 struct TrackingView: View {
     @EnvironmentObject private var model: WatchViewModel
 
@@ -92,7 +231,6 @@ struct DirectionArrowView: View {
                     .font(.system(size: 58))
                     .foregroundStyle(.green)
             } else {
-                // Top tick indicates "up" (the direction you're facing).
                 Image(systemName: "triangle.fill")
                     .font(.system(size: 6))
                     .foregroundStyle(.secondary)

@@ -1,38 +1,44 @@
-# Apple Watch companion — "Show on Watch"
+# Apple Watch companion — Update Watch
 
-The Dust iPhone app can send a camp to a paired Apple Watch. The watch then
-tracks its **own GPS** and shows a compass-needle arrow toward the camp, the
-straight-line distance below it, the camp name below that, and a **Stop** button.
+The Dust iPhone app copies a **Watch Catalog** to a paired Apple Watch from
+Favorites **⋯ ▸ Update Watch**. The watch then chooses locally: nearest
+Restroom or Ice, Favorite Camps and Art (nearest first), and upcoming Favorite
+Events and Parties. Tracking uses the watch's **own GPS** and shows a
+compass-needle arrow, live straight-line distance, the destination name, and
+**Stop**.
 
 This is a **native** watchOS feature. watchOS cannot run the Capacitor/Angular
-stack, so it lives as a SwiftUI/WatchKit companion app bridged to the JS layer
-via WatchConnectivity.
+stack, so it lives as a SwiftUI companion app bridged to the JS layer via
+WatchConnectivity.
 
 ## Architecture
 
 ```
-Angular camp page (camp.page.html)
-  └─ "Show on Watch" menu item (only on iOS + installed watch)
-      └─ WatchService (src/app/watch/watch.service.ts)
+Angular Favorites page (favs.page.html)
+  └─ "Update Watch" menu item (only on iOS + installed watch)
+      └─ buildWatchCatalog + WatchService.sendCatalog
             └─ @capacitor/core registerPlugin('WatchConnectivity')
-                  └─ iOS: WatchConnectivityPlugin (ios/App/App/WatchConnectivityPlugin.swift)
-                        └─ WCSession.sendMessage / updateApplicationContext
-                              └─ watchOS: WatchViewModel (receives name/lat/lng)
-                                    └─ CoreLocation: arrow rotation + distance
-                                    └─ SwiftUI: ContentView (arrow/distance/label/Stop)
+                  └─ iOS: WatchConnectivityPlugin (ios/App/WatchConnectivityPlugin.swift)
+                        └─ WCSession.updateApplicationContext + sendMessage
+                              └─ watchOS: WatchViewModel (Watch Catalog JSON)
+                                    └─ SwiftUI: chooser list → compass
+                                    └─ CoreLocation: nearest sort, live distance
 ```
 
 ## What's already in the repo
 
+- `src/app/watch/watch.catalog.ts` — builds the catalog from Favorites plus
+  Restroom and Ice points. Upcoming-only Events/Parties. Unit tested.
 - `src/app/watch/watch.service.ts` — JS wrapper (`isWatchAvailable`,
-  `sendCamp`). Guards non-iOS and structured errors. Unit tested.
-- `src/app/camp/camp.page.ts` / `.html` — "Show on Watch" item in the camp
-  "…" menu, hidden unless a watch is available; shows a success toast + haptic
-  or a "Watch not available" alert; refuses camps without usable GPS.
-- `ios/App/App/WatchConnectivityPlugin.swift` — the native Capacitor plugin.
-- `ios/App/App/AppBridgeViewController.swift` — registers the plugin once the
+  `sendCatalog`). Guards non-iOS and structured errors. Unit tested.
+- `src/app/favs/favs.page.ts` / `.html` — "Update Watch" in the Favorites "…"
+  menu, hidden unless a watch is available; success toast + haptic or a
+  "Watch not available" alert.
+- `ios/App/WatchConnectivityPlugin.swift` — the native Capacitor plugin.
+- `ios/App/AppBridgeViewController.swift` — registers the plugin once the
   Capacitor bridge is ready.
-- `ios/dust-watch/DustWatch/` — the watchOS app sources.
+- `ios/dust-watch/DustWatch/` — the watchOS app sources (seed for the Xcode
+  target). Live target: `ios/App/Dust Watch App/`.
 
 ## Manual Xcode steps (required once)
 
@@ -42,8 +48,8 @@ the CLI reliably, so they are documented here.
 ### 1. Add the native bridge to the iOS app target
 
 1. Open `ios/App/App.xcworkspace` (use the workspace so CocoaPods are linked).
-2. Add **`App/App/AppBridgeViewController.swift`** and
-   **`App/App/WatchConnectivityPlugin.swift`** to the **`App`** target
+2. Add **`App/AppBridgeViewController.swift`** and
+   **`App/WatchConnectivityPlugin.swift`** to the **`App`** target
    (File ▸ Add Files… ▸ check the App target; enable "Add to target").
 3. In **`App/App/Base.lproj/Main.storyboard`**, change the root view
    controller's class from `CAPBridgeViewController` (module `Capacitor`) to
@@ -64,6 +70,7 @@ the CLI reliably, so they are documented here.
 2. Delete the generated template files and add the sources from
    `ios/dust-watch/DustWatch/`:
    - `DustWatchApp.swift`
+   - `WatchCatalog.swift`
    - `WatchViewModel.swift`
    - `ContentView.swift`
 3. Set **deployment target ≥ watchOS 10.0** (the code uses SwiftUI
@@ -75,9 +82,10 @@ the CLI reliably, so they are documented here.
    `INFOPLIST_KEY_NSLocationWhenInUseUsageDescription`. If you recreate the
    target, add it under Build Settings (Debug + Release):
    `INFOPLIST_KEY_NSLocationWhenInUseUsageDescription` = `Uses your location to
-   point toward a camp on the playa.`
-   (`requestWhenInUseAuthorization()` is called on tracking start; a foreground
-   "when in use" permission is all this feature needs.)
+   point toward places on the playa.`
+   (`requestWhenInUseAuthorization()` is called while the catalog is on the
+   watch so lists can sort by nearest; a foreground "when in use" permission is
+   all this feature needs.)
 
 ### 4. Signing / provisioning
 
@@ -93,22 +101,29 @@ the CLI reliably, so they are documented here.
 1. Build the iOS app with the watch app embedded (Product ▸ Build).
 2. Pair a real Apple Watch (a watchOS **simulator** does not support
    WatchConnectivity messaging reliably — test on a device).
-3. Launch the iPhone app → open a camp → **… ▸ Show on Watch**.
-   - Success toast appears and the watch switches to tracking.
-   - Watch shows arrow (rotates with your facing), distance, camp name, Stop.
-   - The **Stop** button ends tracking and returns the watch to the idle screen.
+3. Launch the iPhone app → **Favorites ▸ ⋯ ▸ Update Watch**.
+   - Success toast appears and the watch shows Restroom, Ice, Camps, Art, Events.
+   - Restroom / Ice start the compass to the nearest point.
+   - Camps / Art / Events open a shortlist; tap a placed row for the compass.
+   - Distance on the compass counts down as you walk. **Stop** returns to the list.
 
 ## Behavior notes (as designed)
 
-- The watch uses its **own GPS**; it works even when the iPhone is back at camp.
+- The watch uses its **own GPS** after Update Watch; choosing and tracking work
+  even when the iPhone is back at camp.
+- Star something later, then Update Watch again — the catalog is a snapshot.
+- Restroom and Ice pick the nearest point **at tap time** and stick to it.
+  Distance and bearing to that point update as you walk.
+- Camps and Art lists sort nearest-first. Events and Parties sort soonest-first
+  and drop off the watch when they end.
+- Rows without a place (art-car Parties) are listed; tap does not start the
+  compass.
 - The arrow is a **compass needle**: it rotates so "up" on screen = the way to
   walk, using the watch heading, falling back to GPS course when no compass
   heading is available.
 - Distance is **straight-line, imperial** ("0.6 mi" / "950 ft").
-- Entering ~15 m of the camp shows an **"You've arrived"** state + haptic; Stop
-  still exits.
-- Camps without usable coordinates don't offer the menu item.
-- Sending a second camp while tracking **live-overwrites** the target.
+- Entering ~15 m of the destination shows an **"You've arrived"** state + haptic;
+  Stop still exits.
 
 ## Things to double-check before building
 
@@ -122,11 +137,9 @@ the CLI reliably, so they are documented here.
 - **WatchConnectivity has no entitlements requirement** — no App Group, no
   special capability. Just the same Team on all targets and the watch app
   embedded in the iOS app.
-- **Delivery when the watch app is closed**: if the watch app isn't running,
-  `sendCamp` falls back to the application context; the target appears the next
-  time the watch app is opened (the watch reads the pending context on
-  activation). A "reachable" live message is only used while the watch app is
-  active.
+- **Delivery when the watch app is closed**: `sendCatalog` always writes the
+  application context; the catalog appears the next time the watch app is
+  opened. A reachable live message also refreshes an already-open watch app.
 - **Compatibility**: embedding a watchOS 10 companion app needs **Xcode 15+**, and
   it only pairs with an iPhone running **iOS 17+**. The iOS app's own deployment
   target must be high enough to embed the watch app.

@@ -2,7 +2,7 @@ import Foundation
 import Capacitor
 import WatchConnectivity
 
-/// Bridges the Angular "Show on Watch" flow to the paired Apple Watch via
+/// Bridges the Angular "Update Watch" flow to the paired Apple Watch via
 /// WatchConnectivity. Registered natively (see AppBridgeViewController) and
 /// invoked from `WatchService` in src/app/watch/watch.service.ts.
 @objc(WatchConnectivityPlugin)
@@ -12,7 +12,7 @@ class WatchConnectivityPlugin: CAPInstancePlugin, CAPBridgedPlugin, WCSessionDel
     let jsName = "WatchConnectivity"
     let pluginMethods: [CAPPluginMethod] = [
         CAPPluginMethod(name: "isWatchAppInstalled", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "sendCamp", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "sendCatalog", returnType: CAPPluginReturnPromise),
     ]
 
     private let session: WCSession
@@ -40,7 +40,6 @@ class WatchConnectivityPlugin: CAPInstancePlugin, CAPBridgedPlugin, WCSessionDel
             return
         }
         guard session.activationState == .activated else {
-            // Not yet active — hold the call and resolve once activation completes.
             pendingInstalledCalls.append(call)
             session.activate()
             return
@@ -48,14 +47,11 @@ class WatchConnectivityPlugin: CAPInstancePlugin, CAPBridgedPlugin, WCSessionDel
         call.resolve(["installed": session.isWatchAppInstalled])
     }
 
-    /// Sends a camp (name + center GPS) to the watch. Prefers a live message
-    /// when the watch app is reachable, otherwise stores it in the application
-    /// context so the watch picks it up the moment it becomes active.
-    @objc func sendCamp(_ call: CAPPluginCall) {
-        guard let name = call.getString("name"),
-              let lat = call.getDouble("lat"),
-              let lng = call.getDouble("lng") else {
-            call.reject("Missing camp name or coordinates")
+    /// Replaces the Watch Catalog. Always writes application context so a closed
+    /// watch app picks it up on open; also sends a live message when reachable.
+    @objc func sendCatalog(_ call: CAPPluginCall) {
+        guard let catalogJson = call.getString("catalogJson"), !catalogJson.isEmpty else {
+            call.reject("Missing catalog")
             return
         }
 
@@ -69,23 +65,23 @@ class WatchConnectivityPlugin: CAPInstancePlugin, CAPBridgedPlugin, WCSessionDel
             return
         }
 
-        let payload: [String: Any] = ["type": "camp", "name": name, "lat": lat, "lng": lng]
+        do {
+            try session.updateApplicationContext(["dustCatalog": catalogJson])
+        } catch {
+            call.reject(error.localizedDescription)
+            return
+        }
 
+        let payload: [String: Any] = ["type": "catalog", "catalogJson": catalogJson]
         if session.isReachable {
-            session.sendMessage(payload, replyHandler: { reply in
-                let ok = (reply["ok"] as? Bool) ?? true
-                call.resolve(["success": ok])
-            }, errorHandler: { error in
-                call.reject(error.localizedDescription)
+            session.sendMessage(payload, replyHandler: { _ in
+                call.resolve(["success": true])
+            }, errorHandler: { _ in
+                // Context already persisted; the watch will read it on open.
+                call.resolve(["success": true])
             })
         } else {
-            // Watch app not foregrounded; persist for the watch to consume later.
-            do {
-                try session.updateApplicationContext(["dustTarget": payload])
-                call.resolve(["success": true])
-            } catch {
-                call.reject(error.localizedDescription)
-            }
+            call.resolve(["success": true])
         }
     }
 
@@ -101,7 +97,6 @@ class WatchConnectivityPlugin: CAPInstancePlugin, CAPBridgedPlugin, WCSessionDel
     func sessionDidBecomeInactive(_ session: WCSession) {}
 
     func sessionDidDeactivate(_ session: WCSession) {
-        // Re-activate so future sends keep working after switching watches.
         WCSession.default.activate()
     }
 }

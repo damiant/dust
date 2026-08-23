@@ -25,12 +25,6 @@
                 <ion-icon name="share-outline" slot="start"></ion-icon>
                 <ion-label>Share</ion-label>
               </ion-item>
-              @if (watchAvailable) {
-              <ion-item detail="false" aria-label="Show camp on Apple Watch" button (click)="showOnWatch()">
-                <ion-icon name="watch-outline" slot="start"></ion-icon>
-                <ion-label>Show on Watch</ion-label>
-              </ion-item>
-              }
               <ion-item detail="false" aria-label="Add Friend" button (click)="addFriend()">
                 <ion-icon name="person-add-outline" slot="start"></ion-icon>
                 <ion-label>Add Friend</ion-label>
@@ -65,7 +59,15 @@
       @if (!camp.url) {
       <h1 class="page-focus">{{camp.name}}</h1>
       } @if (camp.url) {
-      <h1 class="page-focus" style="color: var(--ion-color-primary)" (click)="open(camp.url)" (keyup.enter)="open(camp.url)" tabindex="0">{{camp.name}}</h1>
+      <h1
+        class="page-focus"
+        style="color: var(--ion-color-primary)"
+        (click)="open(camp.url)"
+        (keyup.enter)="open(camp.url)"
+        tabindex="0"
+      >
+        {{camp.name}}
+      </h1>
       }
     </ion-item>
     @if (camp.location_string) {
@@ -135,11 +137,6 @@
   }
   <div class="pad"></div>
   @if (showMap) {
-  <app-map
-    (scrolled)="scrolled($event)"
-    aria-hidden="true"
-    [points]="mapPoints"
-    [polygons]="mapPolygons"
-  ></app-map>
+  <app-map (scrolled)="scrolled($event)" aria-hidden="true" [points]="mapPoints" [polygons]="mapPolygons"></app-map>
   }
 </ion-content>
