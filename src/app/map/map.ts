@@ -22,7 +22,7 @@ import {
   LineBasicMaterial,
   LineLoop,
   BufferGeometry,
-  CylinderGeometry,
+  CircleGeometry,
   DirectionalLight,
   MeshPhongMaterial,
   Texture,
@@ -54,31 +54,33 @@ interface AddPolygonResult {
 const GEOJSON_MAP_SIZE = 10000;
 
 /**
- * Everything is drawn flat on the XZ plane and viewed from above. Polygons are
- * flat shapes composited in paint order (see paintOrder below) with depth
- * writes disabled, so coplanar layers can never z-fight and no extrusion or
- * logarithmic depth buffer is needed. Pins remain 3D posts so they stay above
- * (and clickable in front of) the flat layers.
+ * Everything is drawn flat on the XZ plane and viewed from above. All layers -
+ * polygons, pin discs, icons and labels - are flat shapes composited in paint
+ * order (see paintOrder below) with depth writes disabled, so coplanar layers
+ * can never z-fight and no extrusion or logarithmic depth buffer is needed.
+ * The small height offsets only keep raycast hit order and the transparent
+ * paint order deterministic.
  */
 const layer = {
   cityBlockBase: 0.1,
   campBase: 0.6,
   campLabel: 2.4,
-  pinBase: 0.3,
-  pinTop: 10,
-  pinIcon: 10.6,
-  compassRaise: 1, // Your own location sits above every other pin
+  pin: 3.0,
+  pinIcon: 3.6,
+  compassRaise: 0.6, // Your own location sits above every other pin
 };
 
 /**
- * Draw order for the flat layers. Everything else (pins, icons, labels) keeps
- * its depth buffer behavior and resolves stacking in 3D as before.
+ * Draw order for the flat layers. Higher layers paint over lower ones, so
+ * stacking never depends on the depth buffer.
  */
 const paintOrder = {
   cityBlockFill: 1,
   cityBlockOutline: 2,
   campFill: 3,
   campOutline: 4,
+  pin: 5,
+  overlay: 6, // Pin icons and text labels
 };
 
 /**
@@ -95,7 +97,7 @@ async function mapImage(map: MapModel, disposables: any[]): Promise<Mesh | Group
     // Pin / GPS space is a 10,000 × 10,000 grid; match that so overlays align.
     map.width = GEOJSON_MAP_SIZE;
     map.height = GEOJSON_MAP_SIZE;
-    const material = new MeshBasicMaterial({ color: map.backgroundColor, side: DoubleSide });
+    const material = new MeshBasicMaterial({ color: map.backgroundColor, side: DoubleSide, depthWrite: false });
     const geometry = new PlaneGeometry(map.width, map.height);
     const mesh = new Mesh(geometry, material);
     mesh.rotation.x = -Math.PI / 2;
@@ -113,7 +115,7 @@ async function mapImage(map: MapModel, disposables: any[]): Promise<Mesh | Group
   map.width = image.width;
   map.height = image.height;
 
-  const material = new MeshBasicMaterial({ map: texture, side: DoubleSide });
+  const material = new MeshBasicMaterial({ map: texture, side: DoubleSide, depthWrite: false });
   const geometry = new PlaneGeometry(image.width, image.height);
   const mesh = new Mesh(geometry, material);
   mesh.rotation.x = -Math.PI / 2;
@@ -757,11 +759,16 @@ async function addPin(
   disposables: MapDisposable[],
   raise = 0,
 ): Promise<AddPinResult> {
-  // A post rather than a disc, so pins stay above (and clickable in front of) polygons
-  const pinHeight = layer.pinTop + raise - layer.pinBase;
-  const geometry = new CylinderGeometry(pin.size, pin.size, pinHeight, 24);
+  // A flat disc rather than a 3D post: the map has no height, so pins are just
+  // circles painted above (and clickable in front of) the polygons.
+  const geometry = new CircleGeometry(pin.size, 24);
+  // Bake the rotation into the geometry so the pulse animation scales in the map plane
+  geometry.rotateX(-Math.PI / 2);
+  material.transparent = true;
+  material.depthWrite = false;
   const mesh = new Mesh(geometry, material);
-  mesh.position.set(pin.x, layer.pinBase + pinHeight / 2, pin.z);
+  mesh.position.set(pin.x, layer.pin + raise, pin.z);
+  mesh.renderOrder = paintOrder.pin;
   mesh.uuid = pin.uuid;
   if (pin.animated) {
     animateMesh(mesh, mixers);
@@ -892,11 +899,7 @@ async function addSVG(
   const group = new Group();
 
   for (const path of svg.paths) {
-    const material = new MeshBasicMaterial({
-      color: path.color,
-      // side: DoubleSide,
-      // depthWrite: false
-    });
+    const material = new MeshBasicMaterial({ color: path.color, transparent: true, depthWrite: false });
     const shapes = SVGLoader.createShapes(path);
     const geometry = new ShapeGeometry(shapes);
     geometry.scale(scale, scale, scale);
@@ -906,6 +909,7 @@ async function addSVG(
     disposables.push(mesh.geometry);
     disposables.push(mesh.material);
     mesh.uuid = uuid;
+    mesh.renderOrder = paintOrder.overlay;
     group.add(mesh);
   }
   group.position.y = 2;
@@ -918,8 +922,9 @@ function addText(message: string, font: any, size: number, disposables: MapDispo
   // Return empty mesh if font is not available
   if (!font) {
     const geometry = new PlaneGeometry(size, size);
-    const material = new MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0 });
+    const material = new MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0, depthWrite: false });
     const text = new Mesh(geometry, material);
+    text.renderOrder = paintOrder.overlay;
     text.position.y = 2;
     text.rotation.x = -Math.PI / 2;
     disposables.push(geometry);
@@ -935,11 +940,14 @@ function addText(message: string, font: any, size: number, disposables: MapDispo
   const material = new MeshBasicMaterial({
     color: 0xffffff,
     side: DoubleSide,
+    transparent: true,
+    depthWrite: false,
   });
 
   disposables.push(geometry);
   disposables.push(material);
   const text = new Mesh(geometry, material);
+  text.renderOrder = paintOrder.overlay;
   text.position.y = 2;
   text.rotation.x = -Math.PI / 2;
   return text;
