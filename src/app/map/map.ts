@@ -305,6 +305,9 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
   controls.target.set(0, 0, 0);
 
   const mixers: AnimationMixer[] = [];
+  // The pulse animation belonging to the currently selected pin. Only this one
+  // may run at a time; selecting a different pin stops the previous pulse.
+  let selectedAnimMixer: AnimationMixer | undefined;
   const clock = new Clock();
   let font;
   try {
@@ -419,13 +422,17 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
       if (map.recenterOnSelect) {
         centerOn(selectedPin.pin, 16);
       }
-      animateMesh(selectedPin.background, mixers);
+      // Only the currently selected pin should animate; stop the previous pulse.
+      stopMixer(selectedAnimMixer, mixers);
+      selectedAnimMixer = animateMesh(selectedPin.background, mixers);
     }
     requestRender();
   };
 
   result.pinUnselected = () => {
     result.selectedPinIndex = undefined;
+    stopMixer(selectedAnimMixer, mixers);
+    selectedAnimMixer = undefined;
     for (const key of Object.keys(result.pinData)) {
       const mat: Material = result.pinData[key].background.material as Material;
       mat.opacity = 1;
@@ -734,7 +741,7 @@ function getMaterial(pinColor: PinColor): MeshPhongMaterial {
   }
 }
 
-function animateMesh(mesh: Mesh | Group, mixers: AnimationMixer[], scaleFrom = 1, scaleTo = 2) {
+function animateMesh(mesh: Mesh | Group, mixers: AnimationMixer[], scaleFrom = 1, scaleTo = 2): AnimationMixer {
   const duration = 2;
 
   //const track = new NumberKeyframeTrack('.material.opacity', [0, 1, 2], [1, 0, 1]);
@@ -746,6 +753,20 @@ function animateMesh(mesh: Mesh | Group, mixers: AnimationMixer[], scaleFrom = 1
   action.setLoop(LoopRepeat, 9999);
   action.play();
   mixers.push(mixer);
+  return mixer;
+}
+
+/**
+ * Stop a running animation and remove it from the shared mixer list so the
+ * render loop no longer steps it. Used to stop the previously selected pin's
+ * pulse when a different pin is selected.
+ */
+function stopMixer(mixer: AnimationMixer | undefined, mixers: AnimationMixer[]) {
+  if (!mixer) return;
+  const index = mixers.indexOf(mixer);
+  if (index !== -1) mixers.splice(index, 1);
+  mixer.stopAllAction();
+  mixer.uncacheRoot(mixer.getRoot());
 }
 
 async function addPin(
