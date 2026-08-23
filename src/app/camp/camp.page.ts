@@ -209,7 +209,9 @@ export class CampPage implements OnInit {
   async openPopover() {
     this.isPopoverOpen = true;
     // Refresh watch availability so the menu reflects current pairing state.
+    console.log(`[camp] openPopover() checking watch availability…`);
     this.watchAvailable = await this.watch.isWatchAvailable();
+    console.log(`[camp] openPopover() watchAvailable=%o`, this.watchAvailable);
   }
 
   closePopover() {

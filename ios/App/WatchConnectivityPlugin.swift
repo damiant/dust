@@ -6,9 +6,19 @@ import WatchConnectivity
 /// WatchConnectivity. Registered natively (see AppBridgeViewController) and
 /// invoked from `WatchService` in src/app/watch/watch.service.ts.
 @objc(WatchConnectivityPlugin)
-class WatchConnectivityPlugin: CAPInstancePlugin, WCSessionDelegate {
+class WatchConnectivityPlugin: CAPInstancePlugin, CAPBridgedPlugin, WCSessionDelegate {
+
+    let identifier = "WatchConnectivityPlugin"
+    let jsName = "WatchConnectivity"
+    let pluginMethods: [CAPPluginMethod] = [
+        CAPPluginMethod(name: "isWatchAppInstalled", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "sendCamp", returnType: CAPPluginReturnPromise),
+    ]
 
     private let session: WCSession
+
+    /// Calls awaiting WCSession activation before they can report readiness.
+    private var pendingInstalledCalls: [CAPPluginCall] = []
 
     override init() {
         self.session = WCSession.default
@@ -22,9 +32,17 @@ class WatchConnectivityPlugin: CAPInstancePlugin, WCSessionDelegate {
     // MARK: - Plugin methods
 
     /// Reports whether a Dust Apple Watch companion app is installed & paired.
+    /// Waits for WCSession activation before reading `isWatchAppInstalled`, since
+    /// this flag only reflects reality once the session is `.activated`.
     @objc func isWatchAppInstalled(_ call: CAPPluginCall) {
         guard WCSession.isSupported() else {
             call.resolve(["installed": false])
+            return
+        }
+        guard session.activationState == .activated else {
+            // Not yet active — hold the call and resolve once activation completes.
+            pendingInstalledCalls.append(call)
+            session.activate()
             return
         }
         call.resolve(["installed": session.isWatchAppInstalled])
@@ -54,8 +72,9 @@ class WatchConnectivityPlugin: CAPInstancePlugin, WCSessionDelegate {
         let payload: [String: Any] = ["type": "camp", "name": name, "lat": lat, "lng": lng]
 
         if session.isReachable {
-            session.sendMessage(payload, replyHandler: { _ in
-                call.resolve(["success": true])
+            session.sendMessage(payload, replyHandler: { reply in
+                let ok = (reply["ok"] as? Bool) ?? true
+                call.resolve(["success": ok])
             }, errorHandler: { error in
                 call.reject(error.localizedDescription)
             })
@@ -72,7 +91,12 @@ class WatchConnectivityPlugin: CAPInstancePlugin, WCSessionDelegate {
 
     // MARK: - WCSessionDelegate
 
-    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {}
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+        let pending = pendingInstalledCalls
+        pendingInstalledCalls.removeAll()
+        let installed = (activationState == .activated) && session.isWatchAppInstalled
+        pending.forEach { $0.resolve(["installed": installed]) }
+    }
 
     func sessionDidBecomeInactive(_ session: WCSession) {}
 

@@ -38,13 +38,19 @@ export class WatchService {
    * app. Used to conditionally reveal the "Show on Watch" menu item.
    */
   public async isWatchAvailable(): Promise<boolean> {
-    if (!Capacitor.isNativePlatform() || Capacitor.getPlatform() !== 'ios') {
+    const native = Capacitor.isNativePlatform();
+    const platform = Capacitor.getPlatform();
+    console.log(`[watch] isWatchAvailable() native=%o platform=%o`, native, platform);
+    if (!native || platform !== 'ios') {
+      console.log(`[watch] not native iOS -> unavailable`);
       return false;
     }
     try {
       const result = await WatchConnectivity.isWatchAppInstalled();
+      console.log(`[watch] isWatchAppInstalled() result=%o`, result);
       return result.installed === true;
-    } catch {
+    } catch (e) {
+      console.warn(`[watch] isWatchAppInstalled() threw:`, e);
       return false;
     }
   }
