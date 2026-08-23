@@ -19,10 +19,8 @@ import {
   DoubleSide,
   Shape,
   ShapeGeometry,
-  ExtrudeGeometry,
-  EdgesGeometry,
-  LineSegments,
   LineBasicMaterial,
+  LineLoop,
   BufferGeometry,
   CylinderGeometry,
   DirectionalLight,
@@ -56,15 +54,15 @@ interface AddPolygonResult {
 const GEOJSON_MAP_SIZE = 10000;
 
 /**
- * Everything is drawn flat on the XZ plane and viewed from above, so geometry
- * sharing a height z-fights and flickers. Each layer gets its own height band
- * with a gap between, and pins are posts tall enough to clear every polygon.
+ * Everything is drawn flat on the XZ plane and viewed from above. Polygons are
+ * flat shapes composited in paint order (see paintOrder below) with depth
+ * writes disabled, so coplanar layers can never z-fight and no extrusion or
+ * logarithmic depth buffer is needed. Pins remain 3D posts so they stay above
+ * (and clickable in front of) the flat layers.
  */
 const layer = {
   cityBlockBase: 0.1,
-  cityBlockDepth: 0.4, // Top at 0.5
   campBase: 0.6,
-  campDepth: 1.4, // Top at 2.0
   campLabel: 2.4,
   pinBase: 0.3,
   pinTop: 10,
@@ -73,9 +71,20 @@ const layer = {
 };
 
 /**
- * Adjacent camp polygons often overlap slightly, and coplanar overlaps flicker.
- * Nudging each one by a bounded, index-derived amount keeps them separated
- * without letting any polygon reach the label layer.
+ * Draw order for the flat layers. Everything else (pins, icons, labels) keeps
+ * its depth buffer behavior and resolves stacking in 3D as before.
+ */
+const paintOrder = {
+  cityBlockFill: 1,
+  cityBlockOutline: 2,
+  campFill: 3,
+  campOutline: 4,
+};
+
+/**
+ * Adjacent camp polygons often overlap slightly. Nudging each height by a
+ * bounded, index-derived amount keeps the transparent paint order stable for
+ * the overlaps.
  */
 function campPolygonOffset(index: number): number {
   return (index % 16) * 0.02;
@@ -202,34 +211,24 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
     console.error('Container has zero dimensions! Map will not render.');
   }
 
-  // Create local renderer instance instead of global
-  // Log depth buffer: the map is ~10,000 units wide but layers are separated by
-  // fractions of a unit, which a linear depth buffer cannot resolve when zoomed out.
+  // Create local renderer instance instead of global. Flat layers are drawn in
+  // paint order with depth writes off, so no logarithmic depth buffer is needed.
   const renderer = new WebGLRenderer({
     antialias: true,
     preserveDrawingBuffer: true,
-    logarithmicDepthBuffer: true,
   });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(w, h);
 
-  // Add WebGL context loss/restore event handlers
   const canvas = renderer.domElement;
-  const handleContextLost = (event: Event) => {
-    event.preventDefault();
-    console.warn('WebGL context lost. Stopping animation loop.');
-    renderer.setAnimationLoop(null);
-  };
-
-  const handleContextRestored = () => {
-    console.log('WebGL context restored. Resuming animation loop.');
-    renderer.setAnimationLoop(renderFn);
-  };
-
-  canvas.addEventListener('webglcontextlost', handleContextLost, false);
-  canvas.addEventListener('webglcontextrestored', handleContextRestored, false);
-
   container.appendChild(renderer.domElement);
+
+  // This is a mostly static 2D map: only render when a change was requested or
+  // while pin animations are running, instead of re-rendering every frame.
+  let needsRender = true;
+  const requestRender = () => {
+    needsRender = true;
+  };
 
   const renderFn = () => {
     // Prevent NaN camera positions that break rendering
@@ -237,11 +236,6 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
       camera.position.set(0, map.height / targetZoomLevel, 20);
       controls.target.set(0, 0, 0);
       camera.updateProjectionMatrix();
-    }
-
-    const delta = clock.getDelta();
-    for (const mixer of mixers) {
-      mixer.update(delta);
     }
 
     // Swap polygon labels between initials and the full camp name based on zoom.
@@ -259,13 +253,44 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
     }
   };
 
-  // Create local camera instance instead of global
-  const camera = new PerspectiveCamera(130, w / h, 1, 10000);
+  // The loop keeps running to step pin animations and consume the clock, but
+  // skips the render call when nothing changed.
+  const renderLoop = () => {
+    const delta = clock.getDelta();
+    for (const mixer of mixers) {
+      mixer.update(delta);
+    }
+    if (needsRender || mixers.length > 0) {
+      needsRender = false;
+      renderFn();
+    }
+  };
+
+  // Add WebGL context loss/restore event handlers
+  const handleContextLost = (event: Event) => {
+    event.preventDefault();
+    console.warn('WebGL context lost. Stopping animation loop.');
+    renderer.setAnimationLoop(null);
+  };
+
+  const handleContextRestored = () => {
+    console.log('WebGL context restored. Resuming animation loop.');
+    needsRender = true;
+    renderer.setAnimationLoop(renderLoop);
+  };
+
+  canvas.addEventListener('webglcontextlost', handleContextLost, false);
+  canvas.addEventListener('webglcontextrestored', handleContextRestored, false);
+
+  // Create local camera instance instead of global. The camera never comes nearer
+  // than 20 units (controls.minDistance), so a near plane of 10 tightens depth
+  // precision 10x. Far covers the map diagonal when fully zoomed out.
+  const camera = new PerspectiveCamera(130, w / h, 10, 20000);
   camera.position.set(0, map.height / targetZoomLevel, 20);
 
   // Create local controls instance instead of global
   const controls = new MapControls(camera, renderer.domElement);
-  //controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
+  controls.addEventListener('change', requestRender); // damping is off, so this fires for every interaction
   controls.enableDamping = false; // an animation loop is required when either damping or auto-rotation are enabled
   controls.dampingFactor = 0.05;
   controls.screenSpacePanning = false;
@@ -341,6 +366,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
     renderer.setSize(w, h);
+    requestRender();
   };
   window.addEventListener('resize', windowResize);
 
@@ -393,6 +419,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
       }
       animateMesh(selectedPin.background, mixers);
     }
+    requestRender();
   };
 
   result.pinUnselected = () => {
@@ -402,6 +429,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
       mat.opacity = 1;
     }
     updatePolygonSelection(result);
+    requestRender();
   };
 
   result.capture = async () => {
@@ -422,6 +450,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
     mouse.set(((e.clientX - box.left) / width) * 2 - 1, -((e.clientY - box.top) / height) * 2 + 1);
     raycaster.setFromCamera(mouse, camera);
     unhighlight(result);
+    requestRender(); // highlight / camera zoom may have changed the scene
     const intersects = raycaster.intersectObjects(scene.children, true);
     const hits: number[] = [];
     intersects.forEach((hit) => {
@@ -464,7 +493,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
     lastClick = new Date();
   };
   container.addEventListener('click', containerClick);
-  renderer.setAnimationLoop(renderFn);
+  renderer.setAnimationLoop(renderLoop);
   let disposed = false;
   result.dispose = () => {
     // Prevent double-disposal
@@ -531,7 +560,7 @@ export async function init3D(container: HTMLElement, map: MapModel): Promise<Map
 
     try {
       console.log((performance as any).memory.usedJSHeapSize);
-    // eslint-disable-next-line no-empty
+      // eslint-disable-next-line no-empty
     } catch {}
   };
   return result;
@@ -547,7 +576,9 @@ async function createScene(
   result: MapResult,
   polygonLabels: { short: Mesh; full?: Mesh }[],
 ) {
-  const polygonPinIndexes = new Set((map.polygons ?? []).map((polygon) => polygon.pinIndex).filter((idx): idx is number => idx !== undefined));
+  const polygonPinIndexes = new Set(
+    (map.polygons ?? []).map((polygon) => polygon.pinIndex).filter((idx): idx is number => idx !== undefined),
+  );
   let p: AddPinResult | undefined = undefined;
   for (const pin of map.pins) {
     scaleToMap(pin, map.width, map.height, map.pinSizeMultiplier);
@@ -564,7 +595,6 @@ async function createScene(
       addPolygon(polygon, map.width, map.height, font, scene, disposables, {
         interactive: false,
         base: layer.cityBlockBase,
-        depth: layer.cityBlockDepth,
         labels: polygonLabels,
       });
     }
@@ -575,7 +605,6 @@ async function createScene(
     for (const [i, polygon] of map.polygons.entries()) {
       const polygonResult = addPolygon(polygon, map.width, map.height, font, scene, disposables, {
         base: layer.campBase + campPolygonOffset(i),
-        depth: layer.campDepth,
         labels: polygonLabels,
       });
       if (polygonResult) {
@@ -661,8 +690,7 @@ function highlight(mesh: Mesh, result: MapResult) {
 function updatePolygonSelection(result: MapResult) {
   for (const polygon of result.polygonData ?? []) {
     const fillMaterial = polygon.fill.material as MeshPhongMaterial;
-    const isSelected =
-      result.selectedPinIndex !== undefined && polygon.pinIndex === result.selectedPinIndex;
+    const isSelected = result.selectedPinIndex !== undefined && polygon.pinIndex === result.selectedPinIndex;
     fillMaterial.color.setHex(isSelected ? polygon.selectedColor : polygon.baseColor);
     fillMaterial.opacity = isSelected ? polygon.selectedOpacity : polygon.baseOpacity;
     fillMaterial.emissive.setHex(0x000000);
@@ -808,7 +836,7 @@ function loadFont(name: string): Promise<any> {
       function (error) {
         console.error(`Failed to load font: ${name}`, error);
         reject(new Error(`Failed to load font: ${name}`));
-      }
+      },
     );
   });
 }
@@ -825,7 +853,7 @@ async function loadSVG(name: string): Promise<SVGResult> {
       function (error) {
         console.error(`Failed to load SVG: ${name}`, error);
         reject(new Error(`Failed to load SVG: ${name}`));
-      }
+      },
     );
   });
 }
@@ -842,7 +870,7 @@ async function loadTexture(name: string): Promise<Texture> {
       function (error) {
         console.error(`Failed to load texture: ${name}`, error);
         reject(new Error(`Failed to load map image: ${name}`));
-      }
+      },
     );
   });
 }
@@ -927,13 +955,11 @@ function addPolygon(
   options: {
     interactive?: boolean;
     base?: number;
-    depth?: number;
     labels?: { short: Mesh; full?: Mesh }[];
   } = {},
 ): AddPolygonResult | undefined {
   if (!polygon.points || polygon.points.length < 3) return undefined;
   const interactive = options.interactive !== false;
-  const depth = options.depth ?? layer.campDepth;
   const base = options.base ?? (interactive ? layer.campBase : layer.cityBlockBase);
 
   const shape = new Shape();
@@ -948,26 +974,20 @@ function addPolygon(
   }
   shape.closePath();
 
-  const geometry = new ExtrudeGeometry(shape, {
-    depth,
-    bevelEnabled: false,
-  });
+  // Flat shape: layering is resolved by paint order, not by extrusion height
+  const geometry = new ShapeGeometry(shape);
   const baseColor = polygon.colorHex ?? getPolygonColor(polygon.color);
   const selectedColor = lightenColor(baseColor, 0.35);
   const baseOpacity = polygon.opacity ?? 1;
   const selectedOpacity = 1;
+  // Flat layers composite in paint order and never write depth, so adjacent
+  // polygons cannot z-fight, even when fully zoomed out on a 10,000-unit map.
   const material = new MeshPhongMaterial({
     color: baseColor,
-    side: DoubleSide,
-    transparent: baseOpacity < 1,
+    transparent: true,
     opacity: baseOpacity,
-    depthWrite: true,
-    flatShading: true,
+    depthWrite: false,
     shininess: 8,
-    // Pushes the fill back so the outline below does not z-fight with the top face
-    polygonOffset: true,
-    polygonOffsetFactor: 1,
-    polygonOffsetUnits: 1,
   });
 
   disposables.push(geometry);
@@ -976,6 +996,7 @@ function addPolygon(
   const mesh = new Mesh(geometry, material);
   mesh.position.y = base;
   mesh.rotation.x = -Math.PI / 2;
+  mesh.renderOrder = interactive ? paintOrder.campFill : paintOrder.cityBlockFill;
   mesh.uuid = interactive ? 'polygon' : 'map';
   if (interactive && polygon.pinIndex !== undefined) mesh.userData['pinIndex'] = polygon.pinIndex;
   if (!interactive) {
@@ -983,21 +1004,23 @@ function addPolygon(
   }
   scene.add(mesh);
 
-  // Dark outline so adjacent camp borders stay readable
-  const edgesGeometry = new EdgesGeometry(geometry, 20);
-  const edgeMaterial = new LineBasicMaterial({
+  // Dark outline so adjacent camp borders stay readable. Built straight from
+  // the ring points - much cheaper than edge extraction on generated geometry.
+  const outlineGeometry = new BufferGeometry().setFromPoints(scaledPoints.map((pt) => new Vector3(pt.x, -pt.z, 0)));
+  const outlineMaterial = new LineBasicMaterial({
     color: darkenColor(baseColor, interactive ? 0.55 : 0.35),
-    linewidth: 2,
+    transparent: true,
+    depthWrite: false,
   });
-  disposables.push(edgesGeometry);
-  disposables.push(edgeMaterial);
-  const edges = new LineSegments(edgesGeometry, edgeMaterial);
-  edges.position.copy(mesh.position);
-  edges.rotation.copy(mesh.rotation);
-  edges.renderOrder = 1;
+  disposables.push(outlineGeometry);
+  disposables.push(outlineMaterial);
+  const outline = new LineLoop(outlineGeometry, outlineMaterial);
+  outline.position.copy(mesh.position);
+  outline.rotation.copy(mesh.rotation);
+  outline.renderOrder = interactive ? paintOrder.campOutline : paintOrder.cityBlockOutline;
   // Visual only — clicks should hit the fill mesh
-  edges.raycast = () => {};
-  scene.add(edges);
+  outline.raycast = () => {};
+  scene.add(outline);
 
   let labelMesh: Mesh | undefined;
   if (polygon.label) {
