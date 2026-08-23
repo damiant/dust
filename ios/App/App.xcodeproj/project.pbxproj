@@ -25,12 +25,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		61DA5078303A8BD400AF4161 /* PBXContainerItemProxy */ = {
+		6187E423303B4AA40083BFFD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 504EC2FC1FED79650016851F /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 61DA506F303A8BD300AF4161;
-			remoteInfo = "Dust Watch Watch App";
+			remoteInfo = "Dust Watch App";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -72,7 +72,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		61DA5071303A8BD300AF4161 /* Dust Watch Watch App */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Dust Watch Watch App"; sourceTree = "<group>"; };
+		61DA5071303A8BD300AF4161 /* Dust Watch App */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Dust Watch App"; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,7 +110,7 @@
 				61DA5066303A89DA00AF4161 /* AppBridgeViewController.swift */,
 				61DA5067303A89DA00AF4161 /* WatchConnectivityPlugin.swift */,
 				504EC3061FED79650016851F /* App */,
-				61DA5071303A8BD300AF4161 /* Dust Watch Watch App */,
+				61DA5071303A8BD300AF4161 /* Dust Watch App */,
 				504EC3051FED79650016851F /* Products */,
 				7F8756D8B27F46E3366F6CEA /* Pods */,
 				27E2DDA53C4D2A4D1A88CE4A /* Frameworks */,
@@ -171,7 +171,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				61DA5079303A8BD400AF4161 /* PBXTargetDependency */,
+				6187E424303B4AA40083BFFD /* PBXTargetDependency */,
 			);
 			name = App;
 			productName = App;
@@ -191,7 +191,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				61DA5071303A8BD300AF4161 /* Dust Watch Watch App */,
+				61DA5071303A8BD300AF4161 /* Dust Watch App */,
 			);
 			name = "Dust Watch App";
 			packageProductDependencies = (
@@ -212,7 +212,6 @@
 					504EC3031FED79650016851F = {
 						CreatedOnToolsVersion = 9.2;
 						LastSwiftMigration = 1100;
-						ProvisioningStyle = Automatic;
 					};
 					61DA506F303A8BD300AF4161 = {
 						CreatedOnToolsVersion = 26.6;
@@ -322,10 +321,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		61DA5079303A8BD400AF4161 /* PBXTargetDependency */ = {
+		6187E424303B4AA40083BFFD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 61DA506F303A8BD300AF4161 /* Dust Watch App */;
-			targetProxy = 61DA5078303A8BD400AF4161 /* PBXContainerItemProxy */;
+			targetProxy = 6187E423303B4AA40083BFFD /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -470,6 +469,7 @@
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = DCC5P9FAQ3;
 				INFOPLIST_FILE = App/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Dust;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -500,6 +500,7 @@
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = DCC5P9FAQ3;
 				INFOPLIST_FILE = App/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Dust;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -553,6 +554,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = nexus.concepts.dust.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = "Dust Watch App";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -561,7 +563,7 @@
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "Dust Watch Watch App/Dust Watch Watch App-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Dust Watch App/Dust Watch Watch App-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
@@ -606,6 +608,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = nexus.concepts.dust.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = "Dust Watch App";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -613,7 +616,7 @@
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "Dust Watch Watch App/Dust Watch Watch App-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Dust Watch App/Dust Watch Watch App-Bridging-Header.h";
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
