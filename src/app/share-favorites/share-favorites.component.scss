@@ -12,12 +12,30 @@ ion-spinner {
   height: 3rem;
 }
 
+.favorite-qr {
+  width: 240px;
+  height: 240px;
+  max-width: 80vw;
+  max-height: 80vw;
+  margin-bottom: 1rem;
+  background: white;
+}
+
 .favorite-id {
   font-size: 3rem;
   font-weight: bold;
   text-align: center;
   letter-spacing: 0.25rem;
   color: var(--ion-color-primary);
+}
+
+.favorite-info {
+  max-width: 28rem;
+  margin-top: 1.5rem;
+  color: var(--ion-color-medium-shade);
+  font-size: 1rem;
+  line-height: 1.5;
+  text-align: center;
 }
 
 .share-message {

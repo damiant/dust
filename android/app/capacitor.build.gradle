@@ -13,6 +13,7 @@ dependencies {
     implementation project(':capacitor-community-keep-awake')
     implementation project(':capacitor-app')
     implementation project(':capacitor-app-launcher')
+    implementation project(':capacitor-barcode-scanner')
     implementation project(':capacitor-browser')
     implementation project(':capacitor-filesystem')
     implementation project(':capacitor-geolocation')

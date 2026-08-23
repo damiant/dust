@@ -326,7 +326,7 @@ export class IntroPage {
     document.location.href = '';
   }
 
-  // Returns false with failure
+  // Always returns true: a download failure (typically a network issue) must not prevent the launch
   async preDownload(): Promise<boolean> {
     try {
       if (this.api.hasStarted(this.vm.selected!)) {
@@ -348,17 +348,30 @@ export class IntroPage {
       const result = await this.api.download(this.vm.selected, forceDownload, this.download);
 
       if (result == 'error') {
-        // eslint-disable-next-line no-empty
+        await this.notifyNetworkIssue();
+      } else if (result == 'partial') {
+        await this.notifyNetworkIssue(true);
       }
       // Need to save this otherwise it will think we cant start this event
       this.settingsService.setOffline(this.settingsService.settings.datasetId);
       await this.settingsService.save();
       return true;
+    } catch (err) {
+      // A download failure (typically a network issue) should not prevent the event launching
+      console.error(`Download failed during preDownload, launching anyway`, err);
+      await this.notifyNetworkIssue();
+      return true;
     } finally {
       this.vm.downloading = false;
       this.download.set({ status: '', firstDownload: false });
     }
-    return false;
+  }
+
+  private async notifyNetworkIssue(mapOnly = false) {
+    const message = mapOnly
+      ? 'A network issue caused the map download to fail. The event will open without the latest map.'
+      : 'A network issue caused the download to fail. The event will open with previously downloaded data.';
+    await this.ui.presentToast(message, this.toastController, undefined, 4000);
   }
 
   private async preventAutoStart() {

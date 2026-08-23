@@ -5,6 +5,9 @@ PODS:
     - Capacitor
   - CapacitorAppLauncher (8.0.1):
     - Capacitor
+  - CapacitorBarcodeScanner (3.1.1):
+    - Capacitor
+    - OSBarcodeLib (= 2.2.0)
   - CapacitorBrowser (8.0.4):
     - Capacitor
   - CapacitorCommunityInAppReview (8.0.0):
@@ -100,6 +103,7 @@ PODS:
     - nanopb/encode (= 3.30910.0)
   - nanopb/decode (3.30910.0)
   - nanopb/encode (3.30910.0)
+  - OSBarcodeLib (2.2.0)
   - PromisesObjC (2.4.0)
   - Sentry/HybridSDK (8.56.2)
   - SentryCapacitor (2.4.1):
@@ -116,6 +120,7 @@ DEPENDENCIES:
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorApp (from `../../node_modules/@capacitor/app`)"
   - "CapacitorAppLauncher (from `../../node_modules/@capacitor/app-launcher`)"
+  - "CapacitorBarcodeScanner (from `../../node_modules/@capacitor/barcode-scanner`)"
   - "CapacitorBrowser (from `../../node_modules/@capacitor/browser`)"
   - "CapacitorCommunityInAppReview (from `../../node_modules/@capacitor-community/in-app-review`)"
   - "CapacitorCommunityKeepAwake (from `../../node_modules/@capacitor-community/keep-awake`)"
@@ -153,6 +158,7 @@ SPEC REPOS:
     - IONFilesystemLib
     - IONGeolocationLib
     - nanopb
+    - OSBarcodeLib
     - PromisesObjC
     - Sentry
 
@@ -163,6 +169,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/app"
   CapacitorAppLauncher:
     :path: "../../node_modules/@capacitor/app-launcher"
+  CapacitorBarcodeScanner:
+    :path: "../../node_modules/@capacitor/barcode-scanner"
   CapacitorBrowser:
     :path: "../../node_modules/@capacitor/browser"
   CapacitorCommunityInAppReview:
@@ -216,6 +224,7 @@ SPEC CHECKSUMS:
   Capacitor: 52f999235b8bd6a7d01694753f4f4d54d182e3a3
   CapacitorApp: 305bd13c44f6f9d164e2ee66a4faa956ed8c0e06
   CapacitorAppLauncher: 43949ccc5aaa5139a1ebe27a98c0a4d76c883fa7
+  CapacitorBarcodeScanner: 735028a8496e205c61e89634918b6b42f429e2bb
   CapacitorBrowser: 752e0208aa07c7aa63d1f7cde895a3e9519b2656
   CapacitorCommunityInAppReview: 4492bdd34aad4d27ed87949376022cc93b294ea1
   CapacitorCommunityKeepAwake: d41922812644562e94a79acaf7f41e6d9413af8c
@@ -245,6 +254,7 @@ SPEC CHECKSUMS:
   IONFilesystemLib: 21a63377696b2d8fab5632ecfb7d2ac67bddb68a
   IONGeolocationLib: 6a7b6f76063fb1b01cfb14fae7d0f526e3c9b271
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
+  OSBarcodeLib: aa520d51576362d0dfea290b82653e31df1a6fc4
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   Sentry: b53951377b78e21a734f5dc8318e333dbfc682d7
   SentryCapacitor: 84549a1440a7f58a336ed3175db0f067d571cd5b
@@ -252,6 +262,6 @@ SPEC CHECKSUMS:
   WebnativellcCapacitorNavigationBar: d6dc1402911a5110d771614a9818387947646472
   WebnativellcCapacitorPrintWebview: ac04ee3fcdc1706b053542b935993709730b7898
 
-PODFILE CHECKSUM: 20678badee4cbdf6fb9cba25bb90fcde4eb4a370
+PODFILE CHECKSUM: 3ab124fa10d8ee89827abca62649b0532d273085
 
 COCOAPODS: 1.16.2

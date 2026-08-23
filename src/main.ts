@@ -1,4 +1,5 @@
 import {
+  ApplicationConfig,
   provideAppInitializer,
   enableProdMode,
   inject,
@@ -20,6 +21,7 @@ import { provideServiceWorker } from '@angular/service-worker';
 import { Capacitor } from '@capacitor/core';
 
 import { routes } from './app/app.routes';
+import { showWebViewUpdateScreen, webViewTooOld } from './webview-check';
 import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
 import { DbService } from './app/data/db.service';
@@ -47,7 +49,7 @@ function shouldEnableServiceWorker(): boolean {
   return shouldEnable;
 }
 
-bootstrapApplication(AppComponent, {
+const appConfig: ApplicationConfig = {
   providers: [
     provideAnimations(),
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
@@ -84,4 +86,10 @@ bootstrapApplication(AppComponent, {
       registrationStrategy: 'registerWhenStable:30000',
     }),
   ],
-});
+};
+
+if (webViewTooOld()) {
+  showWebViewUpdateScreen();
+} else {
+  bootstrapApplication(AppComponent, appConfig);
+}
