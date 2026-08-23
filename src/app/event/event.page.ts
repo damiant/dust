@@ -177,17 +177,26 @@ export class EventPage implements OnInit, OnDestroy {
       this.event = event;
       this.mapTitle = event.camp;
       this.mapSubtitle = event.location;
-      const features = await buildEventMapFeatures(
-        event,
-        (uid) => this.db.findCamp(uid),
-        (gps) => this.db.gpsToPoint(gps),
-        0,
-      );
-      if (features && features.point.x === undefined && features.point.y === undefined) {
-        features.point.gps = await this.db.getMapPointGPS(features.point);
+      // Events hosted at art behave like the art detail page: when art
+      // locations are hidden, do not reveal the location on the map.
+      const hideArtLocation = this.isAtArt() && this.db.artLocationsHidden();
+      if (hideArtLocation) {
+        this.showMap = false;
+        this.mapPoints = [];
+        this.mapPolygons = [];
+      } else {
+        const features = await buildEventMapFeatures(
+          event,
+          (uid) => this.db.findCamp(uid),
+          (gps) => this.db.gpsToPoint(gps),
+          0,
+        );
+        if (features && features.point.x === undefined && features.point.y === undefined) {
+          features.point.gps = await this.db.getMapPointGPS(features.point);
+        }
+        this.mapPoints = features ? [features.point] : [];
+        this.mapPolygons = features?.polygon ? [features.polygon] : [];
       }
-      this.mapPoints = features ? [features.point] : [];
-      this.mapPolygons = features?.polygon ? [features.polygon] : [];
       const selectedDay = this.db.selectedDay();
       const occurrences = JSON.parse(JSON.stringify(event.occurrence_set));
       const isNoDate = sameDay(selectedDay, noDate());
@@ -244,8 +253,28 @@ export class EventPage implements OnInit, OnDestroy {
     this._change.detectChanges();
   }
 
+  // Whether this event is hosted at an art installation.
+  private isAtArt(): boolean {
+    return !!this.event?.located_at_art;
+  }
+
+  // The location label to display. Events hosted at art behave like the art
+  // detail page: when art locations are hidden, show the art message.
+  locationLabel(): string {
+    if (this.isAtArt() && this.db.artLocationsHidden()) {
+      return this.db.locationsHidden().artMessage;
+    }
+    return this.event?.location ?? '';
+  }
+
   async showLocationInfo(e: any) {
     this.locationPopover().event = e;
+    if (this.isAtArt() && this.db.artLocationsHidden()) {
+      this.locationInfo = `Art locations cannot be displayed yet. ${this.db.locationsHidden().artMessage}.`;
+      this.isLocationInfoOpen = true;
+      this._change.detectChanges();
+      return;
+    }
     if (this.db.locationsHidden().camps) {
       this.locationInfo = `Locations cannot be display yet. ${this.db.locationsHidden().campMessage}.`;
       this.isLocationInfoOpen = true;

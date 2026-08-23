@@ -73,10 +73,10 @@
       <ion-label attr.aria-label="{{event.camp}}" role="button">{{event.camp}}</ion-label>
     </ion-item>
 
-    @if (event.location) {
+    @if (locationLabel()) {
     <ion-item (click)="showLocationInfo($event)">
       <ion-icon aria-hidden="true" slot="start" color="primary" name="location-outline"></ion-icon>
-      <ion-label attr.aria-label="Camp location is {{event.location}}">{{event.location}}</ion-label>
+      <ion-label attr.aria-label="Camp location is {{locationLabel()}}">{{locationLabel()}}</ion-label>
     </ion-item>
     } @for (occurrence of event.occurrence_set; track $index) {
     <ion-item (click)="toggleStar(occurrence)">
