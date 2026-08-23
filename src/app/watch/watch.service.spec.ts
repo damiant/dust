@@ -23,8 +23,11 @@ const catalog: WatchCatalog = {
   camps: [{ name: 'Center Camp', lat: 40.78, lng: -119.21 }],
   art: [],
   events: [],
+  friends: [],
+  reminders: [],
   restrooms: [{ lat: 40.77, lng: -119.2 }],
   ice: [],
+  medical: [],
 };
 
 describe('WatchService', () => {

@@ -50,8 +50,11 @@ struct WatchCatalog: Equatable {
     var camps: [WatchPlace] = []
     var art: [WatchPlace] = []
     var events: [WatchTimed] = []
+    var friends: [WatchPlace] = []
+    var reminders: [WatchTimed] = []
     var restrooms: [WatchPoint] = []
     var ice: [WatchPoint] = []
+    var medical: [WatchPoint] = []
 
     static func parse(_ json: String) -> WatchCatalog? {
         guard let data = json.data(using: .utf8),
@@ -62,8 +65,11 @@ struct WatchCatalog: Equatable {
             camps: places(from: obj["camps"]),
             art: places(from: obj["art"]),
             events: timed(from: obj["events"]),
+            friends: places(from: obj["friends"]),
+            reminders: timed(from: obj["reminders"]),
             restrooms: points(from: obj["restrooms"]),
-            ice: points(from: obj["ice"])
+            ice: points(from: obj["ice"]),
+            medical: points(from: obj["medical"])
         )
     }
 

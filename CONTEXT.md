@@ -30,6 +30,17 @@ _Avoid_: bathroom, toilet, Block of restrooms (as a thing you pick from a list)
 **Ice**:
 An ice sales location. Like Restroom, the useful Ice is the nearest.
 
+**Medical**:
+A first-aid or medical station. Like Restroom, the useful Medical is the nearest.
+
+**Friend**:
+A person whose playa address or Camp you saved.
+_Avoid_: contact
+
+**Reminder**:
+A private timed note the user created. It is not an Event.
+_Avoid_: Event, private event
+
 **Favorite**:
 A Camp, Art, Event, or Party the user has starred.
 
@@ -37,7 +48,7 @@ A Camp, Art, Event, or Party the user has starred.
 A named GPS pin the user drops (My Camp, My Bike, or a custom pin).
 
 **Watch Catalog**:
-A snapshot the user copies to the watch: Favorite Camps, Favorite Art, upcoming Favorite Events and Parties, plus every Restroom and Ice point. The watch chooses from this snapshot without the iPhone. Items with no place still appear; they are not Watch Destinations.
+A snapshot the user copies to the watch: Favorite Camps, Favorite Art, Friends, upcoming Favorite Events and Parties, upcoming Reminders, plus every Restroom, Ice, and Medical point. The watch chooses from this snapshot without the iPhone. Items with no place still appear; they are not Watch Destinations.
 _Avoid_: dataset, sync payload
 
 **Watch Destination**:

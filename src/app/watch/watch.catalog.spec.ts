@@ -1,13 +1,17 @@
 import { describe, it, expect } from 'vitest';
-import { Art, Camp, Event, MapPoint, RSLEvent } from '../data/models';
+import { Art, Camp, Event, MapPoint, Reminder, RSLEvent } from '../data/models';
 import {
+  amenityWatchPoints,
   artCoord,
   campCoord,
+  hasPlayaAddress,
   placesFromArt,
   placesFromCamps,
   pointsFromMapPoints,
+  reminderDurationMs,
   timedFromOfficialEvents,
   timedFromParties,
+  timedFromReminders,
   validGps,
 } from './watch.catalog';
 
@@ -124,6 +128,77 @@ describe('pointsFromMapPoints', () => {
       { street: '', clock: '' },
     ] as MapPoint[];
     expect(pointsFromMapPoints(points)).toEqual([{ lat: 40.7, lng: -119.2 }]);
+  });
+});
+
+describe('amenityWatchPoints', () => {
+  it('calculates GPS from map pins when lat/lng is missing', async () => {
+    const points = await amenityWatchPoints(
+      [
+        async () => ({ points: [] }),
+        async () => ({ points: [{ street: '', clock: '', x: 100, y: 200 }] as MapPoint[] }),
+      ],
+      async (pts) => pts.map((p) => ({ ...p, gps: { lat: 40.78, lng: -119.21 } })),
+    );
+    expect(points).toEqual([{ lat: 40.78, lng: -119.21 }]);
+  });
+
+  it('skips a GPS file of 0,0 and uses the next source', async () => {
+    const points = await amenityWatchPoints(
+      [
+        async () => ({ points: [{ street: '', clock: '', gps: { lat: 0, lng: 0 } }] as MapPoint[] }),
+        async () => ({ points: [{ street: '', clock: '', gps: { lat: 40.7, lng: -119.2 } }] as MapPoint[] }),
+      ],
+      async (pts) => pts,
+    );
+    expect(points).toEqual([{ lat: 40.7, lng: -119.2 }]);
+  });
+});
+
+describe('hasPlayaAddress', () => {
+  it('rejects empty and the Choose Address placeholder', () => {
+    expect(hasPlayaAddress(undefined)).toBe(false);
+    expect(hasPlayaAddress('')).toBe(false);
+    expect(hasPlayaAddress('Choose Address')).toBe(false);
+    expect(hasPlayaAddress('3:00 & C')).toBe(true);
+  });
+});
+
+describe('timedFromReminders', () => {
+  const now = new Date('2026-08-28T20:00:00.000Z');
+
+  it('keeps upcoming reminders, drops ended ones, and lists those without GPS', () => {
+    const upcoming: Reminder = {
+      id: '1',
+      title: 'Meet at 9',
+      start: '2026-08-28T21:00:00.000Z',
+      address: '3:00 & C',
+      notes: '',
+    };
+    const ended: Reminder = {
+      id: '2',
+      title: 'Yesterday',
+      start: '2026-08-27T21:00:00.000Z',
+      address: undefined,
+      notes: '',
+    };
+    const noPlace: Reminder = {
+      id: '3',
+      title: 'Call camp',
+      start: '2026-08-28T22:00:00.000Z',
+      address: '',
+      notes: '',
+    };
+    const rows = timedFromReminders(
+      [upcoming, ended, noPlace],
+      [{ lat: 40.78, lng: -119.21 }, undefined, undefined],
+      now,
+    );
+    expect(rows).toHaveLength(2);
+    expect(rows[0]).toMatchObject({ name: 'Meet at 9', lat: 40.78, lng: -119.21 });
+    expect(rows[0].end - rows[0].start).toBe(reminderDurationMs);
+    expect(rows[1]).toMatchObject({ name: 'Call camp' });
+    expect(rows[1].lat).toBeUndefined();
   });
 });
 

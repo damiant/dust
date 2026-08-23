@@ -1,8 +1,9 @@
-import { Art, Camp, Event, MapPoint, Names, RSLEvent } from '../data/models';
+import { Art, Camp, Event, Friend, MapPoint, Names, Reminder, RSLEvent } from '../data/models';
 import { FavoritesService } from '../favs/favorites.service';
 import { DbService } from '../data/db.service';
 import { GpsCoord } from '../map/geo.utils';
 import { getCampCenterGps } from '../map/camp-polygon.utils';
+import { toMapPoint } from '../map/map.utils';
 import { now } from '../utils/utils';
 
 /** A named catalog row. lat/lng omitted when the place is unknown. */
@@ -31,8 +32,11 @@ export interface WatchCatalog {
   camps: WatchPlace[];
   art: WatchPlace[];
   events: WatchTimed[];
+  friends: WatchPlace[];
+  reminders: WatchTimed[];
   restrooms: WatchPoint[];
   ice: WatchPoint[];
+  medical: WatchPoint[];
 }
 
 export function validGps(coord?: GpsCoord | null): GpsCoord | undefined {
@@ -62,6 +66,27 @@ export function placesFromCamps(camps: Camp[]): WatchPlace[] {
 
 export function placesFromArt(art: Art[]): WatchPlace[] {
   return art.map((item) => place(item.name, artCoord(item)));
+}
+
+export function hasPlayaAddress(address?: string | null): boolean {
+  const value = address?.trim();
+  return !!value && value !== 'Choose Address';
+}
+
+/** Reminders have a start time only; treat them as one hour long, like the phone calendar. */
+export const reminderDurationMs = 60 * 60 * 1000;
+
+export function timedFromReminders(reminders: Reminder[], gpsFor: Array<GpsCoord | undefined>, at: Date): WatchTimed[] {
+  const result: WatchTimed[] = [];
+  reminders.forEach((reminder, index) => {
+    const start = Date.parse(reminder.start);
+    if (!Number.isFinite(start)) return;
+    const end = start + reminderDurationMs;
+    if (end <= at.getTime()) return;
+    const name = reminder.title?.trim() || 'Reminder';
+    result.push(timed(name, start, end, undefined, gpsFor[index]));
+  });
+  return result;
 }
 
 export function timedFromOfficialEvents(events: Event[], at: Date): WatchTimed[] {
@@ -101,18 +126,61 @@ export function pointsFromMapPoints(points: MapPoint[]): WatchPoint[] {
 }
 
 /**
- * Snapshot of Favorites plus Restroom and Ice points for the watch.
- * Upcoming-only for Events and Parties; items without GPS are still listed.
+ * Load Restroom/Ice/Medical points, filling GPS from map x/y or street/clock when the
+ * dataset has no lat/lng. Tries each loader until one yields usable coordinates.
+ */
+export async function amenityWatchPoints(
+  loaders: Array<() => Promise<{ points?: MapPoint[] }>>,
+  fillGps: (points: MapPoint[]) => Promise<MapPoint[]>,
+): Promise<WatchPoint[]> {
+  for (const load of loaders) {
+    const set = await load();
+    if (!set?.points?.length) continue;
+    const filled = await fillGps(set.points);
+    const points = pointsFromMapPoints(filled);
+    if (points.length) return points;
+  }
+  return [];
+}
+
+/**
+ * Snapshot of Favorites plus Restroom, Ice, and Medical points for the watch.
+ * Upcoming-only for Events, Parties, and Reminders; items without GPS are still listed.
  */
 export async function buildWatchCatalog(fav: FavoritesService, db: DbService, at: Date = now()): Promise<WatchCatalog> {
   const favs = await fav.getFavorites();
-  const [camps, art, events, parties, restrooms, ice] = await Promise.all([
+  const friends = favs.friends ?? [];
+  const reminders = favs.privateEvents ?? [];
+  const [camps, art, events, parties, restrooms, ice, medical, friendPlaces, reminderRows] = await Promise.all([
     db.getCampList(favs.camps ?? []),
     db.getArtList(favs.art ?? []),
     fav.getEventList(favs.events ?? [], false, [], false),
     fav.getRSLEventList(favs.rslEvents ?? []),
-    db.getGPSPoints(Names.restrooms, 'Restrooms'),
-    db.getGPSPoints(Names.ice, 'Ice'),
+    amenityWatchPoints(
+      [
+        () => db.getGPSPoints(Names.restrooms, 'Restrooms'),
+        () => db.getPins('Restrooms'),
+        () => db.getMapPoints(Names.restrooms),
+      ],
+      (points) => db.setMapPointsGPS(points),
+    ),
+    amenityWatchPoints(
+      [() => db.getMapPoints(Names.ice), () => db.getPins('Ice'), () => db.getGPSPoints(Names.ice, 'Ice')],
+      (points) => db.setMapPointsGPS(points),
+    ),
+    amenityWatchPoints(
+      [
+        () => db.getMapPoints(Names.medical),
+        () => db.getPins('Medical'),
+        () => db.getGPSPoints(Names.medical, 'Medical'),
+      ],
+      (points) => db.setMapPointsGPS(points),
+    ),
+    placesFromFriends(friends, db),
+    gpsListForAddresses(
+      db,
+      reminders.map((reminder) => reminder.address),
+    ),
   ]);
 
   const partyRows = await Promise.all(
@@ -127,9 +195,44 @@ export async function buildWatchCatalog(fav: FavoritesService, db: DbService, at
     camps: placesFromCamps(camps ?? []),
     art: placesFromArt(art ?? []),
     events: timedEvents,
-    restrooms: pointsFromMapPoints(restrooms?.points ?? []),
-    ice: pointsFromMapPoints(ice?.points ?? []),
+    friends: friendPlaces,
+    reminders: timedFromReminders(reminders, reminderRows, at).sort((a, b) => a.start - b.start),
+    restrooms,
+    ice,
+    medical,
   };
+}
+
+async function placesFromFriends(friends: Friend[], db: DbService): Promise<WatchPlace[]> {
+  return Promise.all(
+    friends.map(async (friend) => {
+      let gps = await gpsFromAddress(db, friend.address);
+      if (!gps && friend.camp) {
+        try {
+          const camp = await db.findCamp(friend.camp);
+          gps = camp ? campCoord(camp) : undefined;
+        } catch {
+          // Camp may have been removed from the dataset.
+        }
+      }
+      return place(friend.name || 'Friend', gps);
+    }),
+  );
+}
+
+async function gpsListForAddresses(
+  db: DbService,
+  addresses: Array<string | undefined>,
+): Promise<Array<GpsCoord | undefined>> {
+  return Promise.all(addresses.map((address) => gpsFromAddress(db, address)));
+}
+
+export async function gpsFromAddress(db: DbService, address?: string): Promise<GpsCoord | undefined> {
+  if (!hasPlayaAddress(address)) return undefined;
+  const point = toMapPoint(address);
+  if (point.street === 'unplaced') return undefined;
+  const filled = await db.setMapPointsGPS([point]);
+  return validGps(filled[0]?.gps);
 }
 
 async function gpsForParty(party: RSLEvent, db: DbService): Promise<GpsCoord | undefined> {

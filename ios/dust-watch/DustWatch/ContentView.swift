@@ -1,6 +1,8 @@
 import CoreLocation
 import SwiftUI
 
+private let dustPink = Color(red: 246 / 255, green: 16 / 255, blue: 103 / 255)
+
 struct ContentView: View {
     @EnvironmentObject private var model: WatchViewModel
 
@@ -22,18 +24,21 @@ struct ContentView: View {
 
 struct EmptyCatalogView: View {
     var body: some View {
-        VStack(spacing: 6) {
-            Image(systemName: "applewatch")
-                .font(.system(size: 34))
-                .foregroundStyle(.secondary)
-            Text("Update Watch from Favorites")
-                .font(.footnote)
-                .multilineTextAlignment(.center)
-            Text("on your iPhone.")
-                .font(.caption2)
-                .foregroundStyle(.secondary)
+        NavigationStack {
+            VStack(spacing: 6) {
+                Image(systemName: "applewatch")
+                    .font(.system(size: 34))
+                    .foregroundStyle(.secondary)
+                Text("Update Watch from Favorites")
+                    .font(.footnote)
+                    .multilineTextAlignment(.center)
+                Text("on your iPhone.")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            }
+            .padding()
+            .dustTitle()
         }
-        .padding()
     }
 }
 
@@ -55,6 +60,12 @@ struct CatalogHomeView: View {
                     Label("Ice", systemImage: "snowflake")
                 }
 
+                Button {
+                    model.navigateToNearest(.medical)
+                } label: {
+                    Label("Medical", systemImage: "staroflife")
+                }
+
                 NavigationLink {
                     PlaceListView(title: "Camps", kind: .camp)
                 } label: {
@@ -68,12 +79,32 @@ struct CatalogHomeView: View {
                 }
 
                 NavigationLink {
-                    EventListView()
+                    PlaceListView(title: "Friends", kind: .friend)
+                } label: {
+                    Label("Friends", systemImage: "person.2")
+                }
+
+                NavigationLink {
+                    TimedListView(
+                        title: "Events",
+                        empty: "No upcoming Events or Parties.",
+                        events: model.upcomingEvents
+                    )
                 } label: {
                     Label("Events", systemImage: "calendar")
                 }
+
+                NavigationLink {
+                    TimedListView(
+                        title: "Reminders",
+                        empty: "No upcoming Reminders.",
+                        events: model.upcomingReminders
+                    )
+                } label: {
+                    Label("Reminders", systemImage: "bell")
+                }
             }
-            .navigationTitle("Dust")
+            .dustTitle()
             .onAppear { model.startBrowsingLocation() }
         }
     }
@@ -82,6 +113,7 @@ struct CatalogHomeView: View {
 enum PlaceKind {
     case camp
     case art
+    case friend
 }
 
 struct PlaceListView: View {
@@ -90,13 +122,17 @@ struct PlaceListView: View {
     let kind: PlaceKind
 
     private var places: [WatchPlace] {
-        kind == .camp ? model.campsByDistance : model.artByDistance
+        switch kind {
+        case .camp: return model.campsByDistance
+        case .art: return model.artByDistance
+        case .friend: return model.friendsByDistance
+        }
     }
 
     var body: some View {
         List {
             if places.isEmpty {
-                Text("Star items on iPhone, then Update Watch.")
+                Text("Add them on iPhone, then Update Watch.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -130,17 +166,20 @@ struct PlaceListView: View {
     }
 }
 
-struct EventListView: View {
+struct TimedListView: View {
     @EnvironmentObject private var model: WatchViewModel
+    let title: String
+    let empty: String
+    let events: [WatchTimed]
 
     var body: some View {
         List {
-            if model.upcomingEvents.isEmpty {
-                Text("No upcoming Events or Parties.")
+            if events.isEmpty {
+                Text(empty)
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
-            ForEach(model.upcomingEvents) { event in
+            ForEach(events) { event in
                 if let coordinate = event.coordinate {
                     Button {
                         model.beginTracking(to: coordinate, name: event.name)
@@ -153,7 +192,7 @@ struct EventListView: View {
                 }
             }
         }
-        .navigationTitle("Events")
+        .navigationTitle(title)
     }
 
     private func eventRow(_ event: WatchTimed, tappable: Bool) -> some View {
@@ -202,11 +241,16 @@ struct TrackingView: View {
                     .foregroundStyle(.orange)
             }
 
-            Button("Stop") {
+            Button {
                 model.stopTracking()
+            } label: {
+                Text("Stop")
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
             }
-            .buttonStyle(.bordered)
-            .tint(.red)
+            .buttonStyle(.borderedProminent)
+            .tint(dustPink)
         }
         .padding(.vertical, 4)
     }
@@ -243,5 +287,14 @@ struct DirectionArrowView: View {
                     .animation(.easeOut(duration: 0.2), value: rotation)
             }
         }
+    }
+}
+
+private extension View {
+    func dustTitle() -> some View {
+        navigationTitle("dust.")
+            .toolbarBackground(dustPink, for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbarColorScheme(.dark, for: .navigationBar)
     }
 }

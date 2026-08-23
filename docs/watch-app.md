@@ -2,8 +2,8 @@
 
 The Dust iPhone app copies a **Watch Catalog** to a paired Apple Watch from
 Favorites **⋯ ▸ Update Watch**. The watch then chooses locally: nearest
-Restroom or Ice, Favorite Camps and Art (nearest first), and upcoming Favorite
-Events and Parties. Tracking uses the watch's **own GPS** and shows a
+Restroom, Ice, or Medical, Favorite Camps, Art, and Friends (nearest first), upcoming Favorite
+Events and Parties, and upcoming Reminders. Tracking uses the watch's **own GPS** and shows a
 compass-needle arrow, live straight-line distance, the destination name, and
 **Stop**.
 
@@ -28,7 +28,7 @@ Angular Favorites page (favs.page.html)
 ## What's already in the repo
 
 - `src/app/watch/watch.catalog.ts` — builds the catalog from Favorites plus
-  Restroom and Ice points. Upcoming-only Events/Parties. Unit tested.
+  Restroom, Ice, and Medical points. Upcoming-only Events, Parties, and Reminders. Includes Friends. Unit tested.
 - `src/app/watch/watch.service.ts` — JS wrapper (`isWatchAvailable`,
   `sendCatalog`). Guards non-iOS and structured errors. Unit tested.
 - `src/app/favs/favs.page.ts` / `.html` — "Update Watch" in the Favorites "…"
@@ -102,9 +102,9 @@ the CLI reliably, so they are documented here.
 2. Pair a real Apple Watch (a watchOS **simulator** does not support
    WatchConnectivity messaging reliably — test on a device).
 3. Launch the iPhone app → **Favorites ▸ ⋯ ▸ Update Watch**.
-   - Success toast appears and the watch shows Restroom, Ice, Camps, Art, Events.
-   - Restroom / Ice start the compass to the nearest point.
-   - Camps / Art / Events open a shortlist; tap a placed row for the compass.
+   - Success toast appears and the watch shows Restroom, Ice, Medical, Camps, Art, Friends, Events, Reminders.
+   - Restroom, Ice, and Medical start the compass to the nearest point.
+   - Camps / Art / Friends / Events / Reminders open a shortlist; tap a placed row for the compass.
    - Distance on the compass counts down as you walk. **Stop** returns to the list.
 
 ## Behavior notes (as designed)
@@ -112,7 +112,7 @@ the CLI reliably, so they are documented here.
 - The watch uses its **own GPS** after Update Watch; choosing and tracking work
   even when the iPhone is back at camp.
 - Star something later, then Update Watch again — the catalog is a snapshot.
-- Restroom and Ice pick the nearest point **at tap time** and stick to it.
+- Restroom, Ice, and Medical pick the nearest point **at tap time** and stick to it.
   Distance and bearing to that point update as you walk.
 - Camps and Art lists sort nearest-first. Events and Parties sort soonest-first
   and drop off the watch when they end.

@@ -16,12 +16,21 @@ enum WatchState {
 enum WatchAmenity {
     case restroom
     case ice
+    case medical
+
+    var title: String {
+        switch self {
+        case .restroom: return "Restroom"
+        case .ice: return "Ice"
+        case .medical: return "Medical"
+        }
+    }
 }
 
 /// Owns WatchConnectivity + CoreLocation for the watch companion app.
 ///
 /// The iPhone pushes a Watch Catalog over WatchConnectivity. This model
-/// chooses locally (nearest Restroom/Ice, Favorite lists) and tracks the
+/// chooses locally (nearest Restroom/Ice/Medical, Favorite lists) and tracks the
 /// watch's own GPS for a compass-needle and live straight-line distance.
 final class WatchViewModel: NSObject, ObservableObject {
     @Published var state: WatchState = .idle
@@ -81,12 +90,20 @@ final class WatchViewModel: NSObject, ObservableObject {
         catalog.events.filter { $0.isUpcoming(at: now) }.sorted { $0.start < $1.start }
     }
 
+    var upcomingReminders: [WatchTimed] {
+        catalog.reminders.filter { $0.isUpcoming(at: now) }.sorted { $0.start < $1.start }
+    }
+
     var campsByDistance: [WatchPlace] {
         sortedByDistance(catalog.camps)
     }
 
     var artByDistance: [WatchPlace] {
         sortedByDistance(catalog.art)
+    }
+
+    var friendsByDistance: [WatchPlace] {
+        sortedByDistance(catalog.friends)
     }
 
     func beginTracking(to coordinate: CLLocationCoordinate2D, name: String) {
@@ -117,14 +134,18 @@ final class WatchViewModel: NSObject, ObservableObject {
     }
 
     func navigateToNearest(_ amenity: WatchAmenity) {
-        let points = amenity == .restroom ? catalog.restrooms : catalog.ice
-        let name = amenity == .restroom ? "Restroom" : "Ice"
+        let points: [WatchPoint]
+        switch amenity {
+        case .restroom: points = catalog.restrooms
+        case .ice: points = catalog.ice
+        case .medical: points = catalog.medical
+        }
         guard !points.isEmpty else {
             WKInterfaceDevice.current().play(.failure)
             return
         }
         if let here = currentLocation {
-            startNearest(points: points, name: name, from: here)
+            startNearest(points: points, name: amenity.title, from: here)
         } else {
             pendingAmenity = amenity
             startBrowsingLocation()
