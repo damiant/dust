@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "name": "Dust",
+  "setupScript": "bun install",
+  "runCommand": "npm start",
+  "commitMethod": "pull-request",
+  "projectIcon": "tarsk-project-icon.png",
+  "disabledTools": [],
+  "commands": []
+}
