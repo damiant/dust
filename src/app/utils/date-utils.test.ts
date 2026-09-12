@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { daysHighlighted, getTimeInTimeZone, toDate, getTimeZoneOffsetHours } from './date-utils';
+import { daysHighlighted, getTimeInTimeZone, isEndingSoon, toDate, getTimeZoneOffsetHours } from './date-utils';
 
 describe('date-utils', () => {
   describe('toDate', () => {
@@ -118,6 +118,35 @@ describe('date-utils', () => {
 
       expect(result).toBeDefined();
       expect(result).toContain('2024-08-30');
+    });
+  });
+
+  describe('isEndingSoon', () => {
+    const start = new Date('2024-08-28T13:00:00-07:00').getTime();
+    const end = new Date('2024-08-28T17:00:00-07:00').getTime();
+
+    it('is true when less than 25% of a running event remains', () => {
+      const now = new Date('2024-08-28T16:30:00-07:00').getTime();
+      expect(isEndingSoon(start, end, now)).toBe(true);
+    });
+
+    it('is false at exactly 25% remaining and true immediately after', () => {
+      const quarterLeft = new Date('2024-08-28T16:00:00-07:00').getTime();
+      const underQuarter = new Date('2024-08-28T16:01:00-07:00').getTime();
+      expect(isEndingSoon(start, end, quarterLeft)).toBe(false);
+      expect(isEndingSoon(start, end, underQuarter)).toBe(true);
+    });
+
+    it('is false before the event starts and once it ends', () => {
+      expect(isEndingSoon(start, end, start - 1)).toBe(false);
+      expect(isEndingSoon(start, end, end)).toBe(false);
+      expect(isEndingSoon(start, end, end + 1)).toBe(false);
+    });
+
+    it('rejects invalid and non-positive durations', () => {
+      expect(isEndingSoon(start, start, start)).toBe(false);
+      expect(isEndingSoon(end, start, start)).toBe(false);
+      expect(isEndingSoon(Number.NaN, end, start)).toBe(false);
     });
   });
 

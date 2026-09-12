@@ -15,7 +15,9 @@
       <app-cached-img class="image" [alt]="event().title" [src]="event().imageUrl" />
     </div>
   }
-  @if (event().happening) {
+  @if (event().endingSoon) {
+    <p class="badge">ENDING SOON</p>
+  } @else if (event().happening) {
     <p class="badge">NOW</p>
   }
   <ion-card-header>

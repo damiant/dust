@@ -39,6 +39,7 @@ import {
   time,
   titlePlural,
 } from '../utils/utils';
+import { isEndingSoon } from '../utils/date-utils';
 import { defaultMapRadius, distance, formatDistance, locationStringToPin, mapPointToPoint } from '../map/map.utils';
 import { GpsCoord, Point, gpsToMap, mapToGps, setReferencePoints } from '../map/geo.utils';
 import { set, get, clear } from 'idb-keyval';
@@ -263,6 +264,7 @@ export class DataManager implements WorkerClass {
     for (const event of this.events) {
       event.old = true;
       event.happening = false;
+      event.endingSoon = false;
       try {
         for (const occurrence of event.occurrence_set) {
           // This makes all events happen today
@@ -274,20 +276,28 @@ export class DataManager implements WorkerClass {
           if (this.allEventsOld) {
             event.old = false;
             event.happening = false;
+            event.endingSoon = false;
             occurrence.old = false;
             occurrence.happening = false;
+            occurrence.endingSoon = false;
             hasLiveEvents = false;
           } else {
-            const isOld = new Date(occurrence.end_time).getTime() - todayTime < 0;
-            const isHappening = !isOld && new Date(occurrence.start_time).getTime() < todayTime;
+            const startTime = new Date(occurrence.start_time).getTime();
+            const endTime = new Date(occurrence.end_time).getTime();
+            const isOld = endTime - todayTime < 0;
+            const isHappening = !isOld && startTime < todayTime;
             occurrence.old = isOld;
             occurrence.happening = isHappening;
+            occurrence.endingSoon = isHappening && isEndingSoon(startTime, endTime, todayTime);
             if (!occurrence.old) {
               event.old = false;
               hasLiveEvents = true;
             }
             if (occurrence.happening) {
               event.happening = true;
+            }
+            if (occurrence.endingSoon) {
+              event.endingSoon = true;
             }
           }
         }

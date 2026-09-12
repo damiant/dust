@@ -28,6 +28,22 @@ export function toDate(d: string | undefined): Date | undefined {
   return new Date(d);
 }
 
+export function isEndingSoon(startTime: number, endTime: number, nowTime = Date.now()): boolean {
+  const duration = endTime - startTime;
+  if (
+    !Number.isFinite(startTime) ||
+    !Number.isFinite(endTime) ||
+    !Number.isFinite(nowTime) ||
+    duration <= 0 ||
+    nowTime <= startTime ||
+    nowTime >= endTime
+  ) {
+    return false;
+  }
+
+  return endTime - nowTime < duration * 0.25;
+}
+
 export function getTimeZoneOffsetHours(timeZone: string): number {
   const date = new Date();
   const timeZoneString = new Intl.DateTimeFormat('en-US', { timeZone, timeZoneName: 'longOffset' })

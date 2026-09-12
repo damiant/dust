@@ -20,6 +20,7 @@ export interface Event {
   longTimeString: string; // Calculated
   old: boolean; // Calculated (whether the event has already passed)
   happening: boolean; // Calculated (whether the event is happening now)
+  endingSoon?: boolean; // Calculated (whether a current occurrence has less than 25% of its duration left)
   group?: string; // Calculated (grouping for favorites)
   distance: number; // Calculated
   distanceInfo: string; // Calculated
@@ -74,6 +75,7 @@ export interface OccurrenceSet {
   start_time: string;
   old: boolean; // Calculated
   happening: boolean; // Calculated (whether the event is happening now)
+  endingSoon?: boolean; // Calculated (whether this occurrence has less than 25% of its duration left)
   longTimeString: string; // Calculated
   star?: boolean;
 }

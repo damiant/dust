@@ -82,7 +82,9 @@
     <ion-item (click)="toggleStar(occurrence)">
       <ion-icon aria-hidden="true" name="time-outline" slot="start"></ion-icon>
       <ion-label>{{occurrence.longTimeString}}</ion-label>
-      @if (occurrence.happening) {
+      @if (occurrence.endingSoon) {
+      <app-badge>Ending Soon</app-badge>
+      } @else if (occurrence.happening) {
       <app-badge>Now</app-badge>
       } @if (!occurrence.happening) {
       <ion-button aria-label="Make this event a favorite" color="primary" fill="clear" slot="end">

@@ -10,7 +10,9 @@
         [routerLink]="'/event/' + event.uid + '+' + 'Home'"
         [lines]="items()[index].lines"
       >
-        @if (event.happening) {
+        @if (event.endingSoon) {
+          <p class="badge">ENDING SOON</p>
+        } @else if (event.happening) {
           <p class="badge">NOW</p>
         }
         <span slot="start">{{ items()[index].time }}</span>
